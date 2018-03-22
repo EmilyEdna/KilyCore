@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\KilyCore.Cache\KilyCore.Cache.csproj" />
+    <ProjectReference Include="..\KilyCore.Configure\KilyCore.Configure.csproj" />
+    <ProjectReference Include="..\KilyCore.DataEntity\KilyCore.DataEntity.csproj" />
+    <ProjectReference Include="..\KilyCore.EntityFrameWork\KilyCore.EntityFrameWork.csproj" />
+    <ProjectReference Include="..\KilyCore.Extension\KilyCore.Extension.csproj" />
+  </ItemGroup>
+
+</Project>

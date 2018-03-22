@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link type="image/x-icon" rel="shortcut icon" href="~/Images/icon/title.ico" />
+    <meta charset="UTF-8">
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/BootStrap/Css/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/FontAwesome/Css/font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/BootStrap-Table/Css/bootstrap-table.css" rel="stylesheet" />
+    <link href="~/Content/HPlus/Css/Hplus.css" rel="stylesheet" />
+    <link href="~/Content/TreeView/Css/bootstrap-treeview.css" rel="stylesheet" />
+
+    <script src="~/Content/JavaScript/jquery.min.js"></script>
+    <script src="~/Content/JavaScript/jquery.cookie.js"></script>
+    <script src="~/Content/BootStrap/Script/bootstrap.js"></script>
+    <script src="~/Content/BootStrap-Table/Script/bootstrap-table.js"></script>
+    <script src="~/Content/BootStrap-Table/Script/bootstrap-table-zh-CN.js"></script>
+    <script src="~/Content/Validate/jquery.validate.js"></script>
+    <script src="~/Content/Validate/jqury.validate_zh.js"></script>
+    <script src="~/Content/TreeView/Script/bootstrap-treeview.js"></script>
+    <script src="~/Content/JavaScript/jquery.extension.js"></script>
+    <script src="~/Content/Layer/layer.js"></script>
+    <script src="~/Content/JavaScript/Controller.js"></script>
+    <script>
+        var SysUserInfo = parent.UserInfo;
+        //配置
+        var option = {
+            Init: function () {
+                this.InitDom();
+            },
+            //元素
+            InitDom: function () {
+                //加载区域菜单
+                controller.ajax({
+                    url: "System/GetSystemAreaTree",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (res) {
+                        $('#TreeView').treeview({
+                            levels: 1,
+                            data: res.data,
+                            onNodeSelected: nodeSelected  //继承页面必须写出此函数否则报错
+                        });
+                    }
+                });
+                $("#leftTree").css("height", $(window).height());
+                //恢复高度
+                $(window).resize(function (e) {
+                    window.setTimeout(function () {
+                        $("#leftTree").css({ height: $(window).height() });
+                    }, 200);
+                    e.stopPropagation();
+                });
+            },
+        };
+        //初始化
+        $(document).ready(function () {
+            option.Init();
+        });
+    </script>
+    @RenderSection("script", false)
+    @RenderSection("css", false)
+</head>
+<body>
+    <div class="col-md-2 col-sm-2">
+        <h5 style="font-size:14px"><span class="fa fa-book"></span>区域菜单</h5>
+        <div style="overflow:scroll;margin-top:20px;" id="leftTree">
+            <div id="TreeView"></div>
+        </div>
+    </div>
+    <div class="col-md-10 col-sm-10">
+        @RenderBody()
+    </div>
+</body>
+</html>

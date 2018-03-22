@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html lang="zh-hans">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link type="image/x-icon" rel="shortcut icon" href="~/Images/icon/title.ico" />
+    <meta charset="UTF-8">
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/BootStrap/Css/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/FontAwesome/Css/font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/BootStrap-Table/Css/bootstrap-table.css" rel="stylesheet" />
+    <link href="~/Content/HPlus/Css/Hplus.css" rel="stylesheet" />
+    <link href="~/Content/TreeView/Css/bootstrap-treeview.css" rel="stylesheet" />
+
+    <script src="~/Content/JavaScript/jquery.min.js"></script>
+    <script src="~/Content/JavaScript/jquery.cookie.js"></script>
+    <script src="~/Content/BootStrap/Script/bootstrap.js"></script>
+    <script src="~/Content/BootStrap-Table/Script/bootstrap-table.js"></script>
+    <script src="~/Content/BootStrap-Table/Script/bootstrap-table-zh-CN.js"></script>
+    <script src="~/Content/Validate/jquery.validate.js"></script>
+    <script src="~/Content/Validate/jqury.validate_zh.js"></script>
+    <script src="~/Content/TreeView/Script/bootstrap-treeview.js"></script>
+    <script src="~/Content/JavaScript/jquery.extension.js"></script>
+    <script src="~/Content/Layer/layer.js"></script>
+    <script src="~/Content/JavaScript/Controller.js"></script>
+    <script>
+        var SysUserInfo = parent.UserInfo;
+    </script>
+    @RenderSection("script", false)
+    @RenderSection("css", false)
+</head>
+<body>
+    @RenderBody()
+</body>
+</html>
