@@ -13,17 +13,17 @@ namespace KilyCore.EntityFrameWork.ModelEnum
         /// <summary>
         /// 运行
         /// </summary>
-        [Description("运行")]
+        [Description("运行中")]
         Run=10,
         /// <summary>
         /// 暂停
         /// </summary>
-        [Description("暂停")]
+        [Description("已暂停")]
         Pause =20,
         /// <summary>
         /// 停止
         /// </summary>
-        [Description("停止")]
+        [Description("已停止")]
         Stop =30
     }
 }

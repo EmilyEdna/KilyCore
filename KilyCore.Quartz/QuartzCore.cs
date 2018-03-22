@@ -15,16 +15,22 @@ namespace KilyCore.Quartz
     /// </summary>
     public class QuartzCore :IQuartzCore
     {
-        private static Task<IScheduler> instance;
+        private Task<IScheduler> instance;
         /// <summary>
         /// 初始化任务调度器
         /// </summary>
-        public static Task<IScheduler> Instance
+        public Task<IScheduler> Instance
         {
             get
             {
-                NameValueCollection props = new NameValueCollection { { "quartz.serializer.type", "binary" } };
-                return Instance ?? new StdSchedulerFactory(props).GetScheduler();
+                if (instance != null)
+                    return instance;
+                else
+                {
+                    NameValueCollection props = new NameValueCollection { { "quartz.serializer.type", "binary" } };
+                     instance = new StdSchedulerFactory(props).GetScheduler();
+                    return instance;
+                }
             }
         }
         /// <summary>
@@ -116,6 +122,7 @@ namespace KilyCore.Quartz
         {
             try
             {
+                await Instance.Result.Start();
                 JobKey key = new JobKey(quartz.JobName, quartz.JobGroup);
                 //任务存在则先删除
                 if (await Instance.Result.CheckExists(key))
@@ -131,7 +138,6 @@ namespace KilyCore.Quartz
             {
                 throw new Exception("添加任务出错!");
             }
-
         }
         /// <summary>
         /// 添加任务反射程序集模式
@@ -142,6 +148,7 @@ namespace KilyCore.Quartz
         {
             try
             {
+                await Instance.Result.Start();
                 JobKey key = new JobKey(quartz.JobName, quartz.JobGroup);
                 //任务存在则先删除
                 if (await Instance.Result.CheckExists(key))

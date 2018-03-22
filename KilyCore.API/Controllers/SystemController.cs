@@ -281,5 +281,76 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(SystemService.GetTown(param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 任务调度
+        /// <summary>
+        /// 添加任务
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("AddJob")]
+        public ObjectResultEx AddJob(RequestQuartz Param)
+        {
+            return ObjectResultEx.Instance(SystemService.AddJob(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 任务分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetJobPage")]
+        public ObjectResultEx GetJobPage(PageParamList<RequestQuartz> pageParam)
+        {
+            return ObjectResultEx.Instance(SystemService.GetJobPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        ///  执行任务
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("ExcuteJob")]
+        public ObjectResultEx ExcuteJob(RequestQuartz Param)
+        {
+            return ObjectResultEx.Instance(SystemService.ExcuteJob(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 停止所有任务
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("StopJob")]
+        public ObjectResultEx StopJob()
+        {
+            return ObjectResultEx.Instance(SystemService.StopJob(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 恢复暂停任务
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("RecoverPauseJob")]
+        public ObjectResultEx RecoverPauseJob(RequestQuartz Param)
+        {
+            return ObjectResultEx.Instance(SystemService.RecoverPauseJob(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 暂停指定任务
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("PauseAppointJob")]
+        public ObjectResultEx PauseAppointJob(RequestQuartz Param)
+        {
+            return ObjectResultEx.Instance(SystemService.PauseAppointJob(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除任务
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveJob")]
+        public ObjectResultEx RemoveJob(RequestQuartz Param)
+        {
+            return ObjectResultEx.Instance(SystemService.RemoveJob(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }

@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KilyCore.Cache", "KilyCore.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KilyCore.API", "KilyCore.API\KilyCore.API.csproj", "{D6F01AEA-1481-4F84-85A9-7C83E481A6D0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KilyCore.Quartz", "KilyCore.Quartz\KilyCore.Quartz.csproj", "{E5F67F4D-4B57-4FE9-957D-C64487780248}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KilyCore.Quartz", "KilyCore.Quartz\KilyCore.Quartz.csproj", "{E5F67F4D-4B57-4FE9-957D-C64487780248}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

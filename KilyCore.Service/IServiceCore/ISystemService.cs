@@ -52,13 +52,13 @@ namespace KilyCore.Service.IServiceCore
         ResponseAdmin GetAdminDetail(Guid Id);
         #endregion
         #region 任务调度
-        string AddJob(RequestQuartz Param);
+        String AddJob(RequestQuartz Param);
         PagedResult<ResponseQuartz> GetJobPage(PageParamList<RequestQuartz> pageParam);
-        string ExcuteJob(RequestQuartz Param);
-        void StopJob();
-        void RecoverPauseJob(RequestQuartz Param);
-        void PauseAppointJob(RequestQuartz Param);
-        string RemoveJob(RequestQuartz Param);
+        String ExcuteJob(RequestQuartz Param);
+        String StopJob();
+        String RecoverPauseJob(RequestQuartz Param);
+        String PauseAppointJob(RequestQuartz Param);
+        String RemoveJob(RequestQuartz Param);
         #endregion
     }
 }
