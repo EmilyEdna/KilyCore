@@ -5,6 +5,7 @@ using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AttributeExtension;
 using KilyCore.Extension.AutoMapperExtension;
+using KilyCore.Quartz;
 using KilyCore.Repositories.BaseRepository;
 using KilyCore.Service.ConstMessage;
 using KilyCore.Service.IServiceCore;
@@ -14,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace KilyCore.Service.ServiceCore
 {
@@ -696,6 +698,130 @@ namespace KilyCore.Service.ServiceCore
                   TownName = t.Name
               }).OrderBy(t => t.TownId).ToList();
             return data;
+        }
+        #endregion
+
+        #region 任务调度
+        /// <summary>
+        /// 添加任务
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string AddJob(RequestQuartz  Param)
+        {
+            SystemQuartz quartz = Param.MapToEntity<SystemQuartz>();
+            if (Insert(quartz))
+                return ServiceMessage.INSERTSUCCESS;
+            else
+                return ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 任务调度分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseQuartz> GetJobPage(PageParamList<RequestQuartz> pageParam)
+        {
+            IQueryable<SystemQuartz> queryable = Kily.Set<SystemQuartz>();
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.JobName))
+                queryable = queryable.Where(t => t.JobName.Contains(pageParam.QueryParam.JobName));
+            if (pageParam.QueryParam.JobType.HasValue)
+                queryable = queryable.Where(t => t.JobType == (JobEnum)pageParam.QueryParam.JobType);
+            var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseQuartz() {
+                Id = t.Id,
+                JobGroup = t.JobGroup,
+                JobName = t.JobName,
+                StartTime=t.StartTime,
+                EndTime=t.EndTime,
+                IntervalSecond=t.IntervalSecond,
+                RunTimes= t.RunTimes>0?t.RunTimes.ToString():"无限执行",
+                Cron=t.Cron
+            }).ToPagedResult(pageParam.pageNumber,pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 执行任务
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string ExcuteJob(RequestQuartz Param)
+        {
+            try
+            {
+                QuartzMap quartz = Param.MapToEntity<QuartzMap>();
+                return QuartzCoreFactory.QuartzCore().AddJob(quartz).Result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// 停止任务
+        /// </summary>
+        public void StopJob()
+        {
+            try
+            {
+                QuartzCoreFactory.QuartzCore().StopJob();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// 恢复暂停任务
+        /// </summary>
+        /// <param name="Param"></param>
+        public void RecoverPauseJob(RequestQuartz Param)
+        {
+            try
+            {
+                QuartzMap quartz = Param.MapToEntity<QuartzMap>();
+                QuartzCoreFactory.QuartzCore().ResumeJob(quartz);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// 暂停指定任务
+        /// </summary>
+        /// <param name="Param"></param>
+        public void PauseAppointJob(RequestQuartz Param)
+        {
+            try
+            {
+                QuartzMap quartz = Param.MapToEntity<QuartzMap>();
+                QuartzCoreFactory.QuartzCore().StopResumeJob(quartz);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// 删除任务
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string RemoveJob(RequestQuartz Param) {
+            try
+            {
+                QuartzMap quartz = Param.MapToEntity<QuartzMap>();
+                SystemQuartz quartzs= Param.MapToEntity<SystemQuartz>();
+                QuartzCoreFactory.QuartzCore().StopResumeJob(quartz);
+                if (Remove<SystemQuartz>(ExpressionExtension.GetExpression<SystemQuartz>("Id", quartzs.Id, ExpressionEnum.Equals)))
+                    return ServiceMessage.REMOVESUCCESS;
+                else
+                    return ServiceMessage.REMOVEFAIL;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         #endregion
     }

@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace KilyCore.Quartz
+namespace KilyCore.DataEntity.ResponseMapper.System
 {
-    /// <summary>
-    /// 作业实体
-    /// </summary>
-    public class QuartzMap
+    public class ResponseQuartz
     {
+        public Guid Id { get; set; }
         /// <summary>
         /// 任务分组
         /// </summary>
@@ -32,7 +30,7 @@ namespace KilyCore.Quartz
         /// <summary>
         /// 执行次数
         /// </summary>
-        public int RunTimes { get; set; }
+        public string RunTimes { get; set; }
         /// <summary>
         /// 时间表达式
         /// </summary>

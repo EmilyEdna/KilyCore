@@ -13,7 +13,7 @@ namespace KilyCore.Quartz
     /// <summary>
     /// 任务调度
     /// </summary>
-    public class QuartzCore
+    public class QuartzCore :IQuartzCore
     {
         private static Task<IScheduler> instance;
         /// <summary>
@@ -34,7 +34,7 @@ namespace KilyCore.Quartz
         /// <returns></returns>
         protected ITrigger CreateSimpleTrigger(QuartzMap quartz)
         {
-            if (quartz.ExcunteNum != null)
+            if (quartz.RunTimes >0)
             {
                 return TriggerBuilder.Create().WithIdentity(quartz.JobName, quartz.JobGroup)
                      .StartAt(quartz.StartTime).EndAt(quartz.EndTime)

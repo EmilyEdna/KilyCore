@@ -1,13 +1,11 @@
-﻿using System;
+﻿using KilyCore.EntityFrameWork.ModelEnum;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace KilyCore.Quartz
+namespace KilyCore.DataEntity.RequestMapper.System
 {
-    /// <summary>
-    /// 作业实体
-    /// </summary>
-    public class QuartzMap
+    public class RequestQuartz
     {
         /// <summary>
         /// 任务分组
@@ -37,5 +35,6 @@ namespace KilyCore.Quartz
         /// 时间表达式
         /// </summary>
         public string Cron { get; set; }
+        public JobEnum? JobType { get; set; }
     }
 }

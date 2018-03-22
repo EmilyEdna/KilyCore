@@ -51,5 +51,14 @@ namespace KilyCore.Service.IServiceCore
         String RemoveAdmin(Guid Id);
         ResponseAdmin GetAdminDetail(Guid Id);
         #endregion
+        #region 任务调度
+        string AddJob(RequestQuartz Param);
+        PagedResult<ResponseQuartz> GetJobPage(PageParamList<RequestQuartz> pageParam);
+        string ExcuteJob(RequestQuartz Param);
+        void StopJob();
+        void RecoverPauseJob(RequestQuartz Param);
+        void PauseAppointJob(RequestQuartz Param);
+        string RemoveJob(RequestQuartz Param);
+        #endregion
     }
 }
