@@ -725,8 +725,6 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<SystemQuartz> queryable = Kily.Set<SystemQuartz>();
             if (!string.IsNullOrEmpty(pageParam.QueryParam.JobName))
                 queryable = queryable.Where(t => t.JobName.Contains(pageParam.QueryParam.JobName));
-            if (pageParam.QueryParam.JobType.HasValue)
-                queryable = queryable.Where(t => t.JobType == (JobEnum)pageParam.QueryParam.JobType);
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseQuartz()
             {
                 Id = t.Id,
@@ -736,7 +734,9 @@ namespace KilyCore.Service.ServiceCore
                 EndTime = t.EndTime,
                 IntervalSecond = t.IntervalSecond,
                 RunTimes = t.RunTimes > 0 ? t.RunTimes.ToString() : "无限执行",
-                Cron = t.Cron
+                Cron = t.Cron,
+                JobDetail = t.JobDetail,
+                JobState = AttrExtension.GetSingleDescription<JobEnum, DescriptionAttribute>(t.JobType)
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }

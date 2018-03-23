@@ -43,5 +43,9 @@ namespace KilyCore.EntityFrameWork.Model.System
         /// 任务状态
         /// </summary>
         public virtual JobEnum JobType { get; set; }
+        /// <summary>
+        /// 任务详情
+        /// </summary>
+        public virtual string JobDetail { get; set; }
     }
 }

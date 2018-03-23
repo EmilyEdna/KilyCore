@@ -7,6 +7,7 @@ namespace KilyCore.DataEntity.RequestMapper.System
 {
     public class RequestQuartz
     {
+        public Guid Id { get; set; }
         /// <summary>
         /// 任务分组
         /// </summary>
@@ -35,6 +36,13 @@ namespace KilyCore.DataEntity.RequestMapper.System
         /// 时间表达式
         /// </summary>
         public string Cron { get; set; }
-        public JobEnum? JobType { get; set; }
+        /// <summary>
+        /// 任务状态
+        /// </summary>
+        public JobEnum JobType { get; set; }
+        /// <summary>
+        /// 任务详情
+        /// </summary>
+        public string JobDetail { get; set; }
     }
 }

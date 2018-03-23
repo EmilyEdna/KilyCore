@@ -35,5 +35,10 @@ namespace KilyCore.DataEntity.ResponseMapper.System
         /// 时间表达式
         /// </summary>
         public string Cron { get; set; }
+        /// <summary>
+        /// 任务详情
+        /// </summary>
+        public string JobDetail { get; set; }
+        public string JobState { get; set; }
     }
 }

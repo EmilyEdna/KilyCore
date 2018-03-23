@@ -75,7 +75,9 @@ namespace KilyCore.Quartz
         /// <returns></returns>
         public async void StopResumeJob(QuartzMap quartz)
         {
-            await Instance.Result.PauseJob(new JobKey(quartz.JobName, quartz.JobGroup));
+            var key = new JobKey(quartz.JobName, quartz.JobGroup);
+            if (await Instance.Result.CheckExists(key))
+                await Instance.Result.PauseJob(key);
         }
         /// <summary>
         /// 恢复运行已经暂停的指定任务

@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewData["Title"] = "编辑任务";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                controller.LayDate({ elem: "#StartTime" });
+                controller.LayDate({ elem: "#EndTime" });
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="System/AddJob" id="Edit">
+            <input  type="hidden" name="JobType" value="20"/>
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">任务组别</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="JobGroup" data-msg-required="请输入任务组别" />
+                    </td>
+                    <th><label class="control-label">任务名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="JobName" data-msg-required="请输入任务名称" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">开始时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="StartTime" id="StartTime" data-msg-required="请输入任务名称" />
+                    </td>
+                    <th><label class="control-label">结束时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="EndTime" id="EndTime" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">执行次数</label></th>
+                    <td class="has-warning">
+                        <input type="number" class="form-control" name="RunTimes" min="0" />
+                    </td>
+                    <th><label class="control-label">执行周期</label></th>
+                    <td class="has-warning">
+                        <input type="number" class="form-control required" name="IntervalSecond"  placeholder="请输入数字(单位:秒)" min="0" data-msg-required="请输入执行任务间隔时间" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">时间表达式</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" class="form-control" name="Cron" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">任务描述</label></th>
+                    <td class="has-warning" colspan="3">
+                        <textarea class="form-control required" rows="5" maxlength="200" name="JobDetail" data-msg-required="请输入任务描述" ></textarea>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

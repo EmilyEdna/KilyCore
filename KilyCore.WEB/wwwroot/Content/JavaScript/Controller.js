@@ -596,3 +596,17 @@ controller.TreeCtrl = function (element, option, document) {
         $(document).html(html);
     }
 }
+//日期选择器
+controller.LayDate = function (option)
+{
+    defaultOption = {
+        elem: undefined,
+        theme: 'molv',
+        type: 'datetime',
+        format: 'yyyy-MM-dd HH:mm:ss',
+        showBottom: true,
+        calendar: true
+    };
+    options = $.extend(defaultOption, option);
+    laydate.render(options);
+}

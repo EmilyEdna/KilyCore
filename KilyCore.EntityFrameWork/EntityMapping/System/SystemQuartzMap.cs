@@ -13,6 +13,8 @@ namespace KilyCore.EntityFrameWork.EntityMapping.System
         {
             builder.ToTable(typeof(SystemQuartz).Name);
             builder.HasKey(t => t.Id);
+            builder.Property(t => t.StartTime).HasColumnType(typeof(DateTime).Name);
+            builder.Property(t => t.EndTime).HasColumnType(typeof(DateTime).Name);
         }
     }
 }

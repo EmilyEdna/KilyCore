@@ -34,5 +34,13 @@ namespace KilyCore.WEB.Areas.SysManage.Controllers
             return View();
         }
         #endregion
+        #region 任务
+        public IActionResult SysQuartz() {
+            return View();
+        }
+        public IActionResult SysQuartzEdit() {
+            return View();
+        }
+        #endregion
     }
 }
