@@ -1,4 +1,7 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.IdGenerators;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,6 +18,7 @@ namespace KilyCore.EntityFrameWork.Model.Base
         /// 主键
         /// </summary>
         //[Key,DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [BsonId(IdGenerator = typeof(GuidGenerator)), BsonRepresentation(BsonType.String)]
         public virtual Guid Id { get; set; }
         /// <summary>
         /// 创建时间

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace KilyCore.Cache
+namespace KilyCore.Cache.RedisCache
 {
     /// <summary>
     /// Redis缓存

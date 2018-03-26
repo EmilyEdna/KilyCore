@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KilyCore.Cache
+namespace KilyCore.Cache.RedisCache
 {
     /// <summary>
     /// Redis缓存

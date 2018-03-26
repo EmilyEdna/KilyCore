@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace KilyCore.Cache
+namespace KilyCore.Cache.RedisCache
 {
     public interface ICache
     {

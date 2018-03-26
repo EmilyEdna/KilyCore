@@ -1,4 +1,6 @@
-﻿using KilyCore.Cache.RedisCache;
+﻿using KilyCore.Cache;
+using KilyCore.Cache.MongoCache;
+using KilyCore.Cache.RedisCache;
 using KilyCore.Configure;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.EntityFrameWork;
@@ -15,6 +17,7 @@ namespace KilyCore.Repositories.BaseRepository
     public class Repository : IRepository
     {
         public ICache Cache = CacheFactory.Cache();
+        public IMongoDbCache Caches = CacheFactory.Caches();
         public KilyContext Kily = KilyContextFactory.GetContext();
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿using KilyCore.Cache.RedisCache;
+﻿using KilyCore.Cache;
 using KilyCore.Configure;
 using KilyCore.Extension.RSACryption;
 using System;
