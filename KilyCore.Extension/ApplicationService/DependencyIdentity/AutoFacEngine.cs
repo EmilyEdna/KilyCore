@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using KilyCore.Cache;
+using KilyCore.Cache.RedisCache;
 using KilyCore.Configure;
 using KilyCore.EntityFrameWork;
 using KilyCore.Extension.ApplicationService.IocManager;

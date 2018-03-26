@@ -1,4 +1,4 @@
-﻿using KilyCore.Cache;
+﻿using KilyCore.Cache.RedisCache;
 using KilyCore.Configure;
 using KilyCore.Extension.RSACryption;
 using System;
@@ -32,16 +32,16 @@ namespace KilyCore.Extension.Token
         /// <returns></returns>
         public static CookieInfo Verification()
         {
-            CookieInfo Storage = (CookieInfo)Configer.httpContext.Items["Storage"];
+            CookieInfo Storage = (CookieInfo)Configer.HttpContext.Items["Storage"];
             if (Storage != null)
             {
                 return Storage;
             }
-            if (String.IsNullOrEmpty(Configer.httpContext.Request.Headers["Token"].ToList().FirstOrDefault()))
+            if (String.IsNullOrEmpty(Configer.HttpContext.Request.Headers["Token"].ToList().FirstOrDefault()))
                 return null;
-            String Token = RSACryptionExtension.RSADecrypt(Configer.httpContext.Request.Headers["Token"].ToString());
+            String Token = RSACryptionExtension.RSADecrypt(Configer.HttpContext.Request.Headers["Token"].ToString());
             CookieInfo cookie = CacheFactory.Cache().GetCache<CookieInfo>(Token);
-            Configer.httpContext.Items["Storage"] = cookie;
+            Configer.HttpContext.Items["Storage"] = cookie;
             return cookie;
         }
         /// <summary>

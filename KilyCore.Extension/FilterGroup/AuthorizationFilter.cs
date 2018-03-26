@@ -21,7 +21,7 @@ namespace KilyCore.Extension.FilterGroup
         /// <param name="context"></param>
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            Configer.httpContext = context.HttpContext;
+            Configer.HttpContext = context.HttpContext;
             if (context.Filters.Any(t => (t as AllowAnonymousFilter) != null))
                 return;
             //验证用户是否登录

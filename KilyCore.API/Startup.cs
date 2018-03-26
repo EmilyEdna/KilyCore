@@ -32,7 +32,7 @@ namespace KilyCore.API
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
             GetAssembly();
-            GetConfiger();
+            GetSystemConfiger();
             Engine = EngineExtension.Context;
         }
 
@@ -101,13 +101,15 @@ namespace KilyCore.API
 
         }
         /// <summary>
-        /// 获取连接字符串
+        /// 获取系统配置
         /// </summary>
-        public void GetConfiger()
+        public void GetSystemConfiger()
         {
             Configer.DataProvider = Configuration.GetConnectionString("DataProvider");
             Configer.ConnentionString = Configuration.GetConnectionString("ConnectionString");
-            Configer.RedisConnectionString = Configuration["RedisConnectionString:host"];
+            Configer.RedisConnectionString = Configuration["RedisConnectionString:ConnectionString"];
+            Configer.MongoDBConnectionString = Configuration["MongoDBConnectionString:ConnectionString"];
+            Configer.MongoDBName= Configuration["MongoDBConnectionString:MongoDBName"];
             Configer.ApiKey = Configuration["Key:ApiKey"];
         }
     }

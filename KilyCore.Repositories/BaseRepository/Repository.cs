@@ -1,4 +1,4 @@
-﻿using KilyCore.Cache;
+﻿using KilyCore.Cache.RedisCache;
 using KilyCore.Configure;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.EntityFrameWork;
