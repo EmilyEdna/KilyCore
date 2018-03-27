@@ -5,6 +5,7 @@ using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AttributeExtension;
 using KilyCore.Extension.AutoMapperExtension;
+using KilyCore.Extension.EmailExtension;
 using KilyCore.Repositories.BaseRepository;
 using KilyCore.Service.ConstMessage;
 using KilyCore.Service.IServiceCore;
@@ -18,7 +19,6 @@ using System.Text;
 
 namespace KilyCore.Service.ServiceCore
 {
-
     public class FinanceService : Repository, IFinanceService
     {
         #region 加盟缴费-财务
@@ -90,6 +90,11 @@ namespace KilyCore.Service.ServiceCore
                 return ServiceMessage.INSERTSUCCESS;
             else
                 return ServiceMessage.INSERTFAIL;
+        }
+        public string SendEmail(string receive)
+        {
+            EmailExSend.SendEmail(receive, "测试", "测试");
+            return "";
         }
         #endregion
 
