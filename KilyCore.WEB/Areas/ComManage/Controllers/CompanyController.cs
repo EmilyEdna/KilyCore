@@ -10,29 +10,29 @@ namespace KilyCore.WEB.Areas.ComManage.Controllers
     public class CompanyController : Controller
     {
         #region 资料审核
-        public IActionResult AuditInfo()
+        public IActionResult AuditData()
         {
             return View();
         }
-        public IActionResult CompanyDetail()
+        public IActionResult AuditDataDetail()
         {
             return View();
         }
-        public IActionResult AuditCompany()
+        public IActionResult AuditDataInfo()
         {
             return View();
         }
         #endregion
         #region 企业认证
-        public IActionResult CompanyIdent()
+        public IActionResult IdentAudit()
         {
             return View();
         }
-        public IActionResult AuditIdent()
+        public IActionResult IdentAuditDetail()
         {
             return View();
         }
-        public IActionResult CompanyIdentDetail()
+        public IActionResult IdentAuditInfo()
         {
             return View();
         }

@@ -29,6 +29,16 @@ namespace KilyCore.EntityFrameWork.ModelEnum
         /// 审核通过
         /// </summary>
         [Description("审核通过")]
-        AuditSuccess=40
+        AuditSuccess=40,
+        /// <summary>
+        /// 财务审核不通过
+        /// </summary>
+        [Description("财务审核不通过")]
+        FinanceFail=50,
+        /// <summary>
+        /// 财务审核通过
+        /// </summary>
+        [Description("财务审核通过")]
+        FinanceSuccess=60
     }
 }

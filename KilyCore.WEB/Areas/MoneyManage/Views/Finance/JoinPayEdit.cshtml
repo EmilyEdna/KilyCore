@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewData["Title"] = "加盟归档";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#AdminId").val(controller.GetParam("AdminId"));
+                controller.LayDate({ elem: "#StartTime" });
+                controller.LayDate({ elem: "#EndTime" });
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="Finance/Archive" id="Edit">
+            <input  type="hidden" name="AdminId"  id="AdminId"/>
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">加盟时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="StartTime" id="StartTime" data-msg-required="请输入加盟时间" />
+                    </td>
+                    <th><label class="control-label">截至时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="EndTime" id="EndTime" data-msg-required="请输入加盟截至时间" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">加盟金额</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Money" />
+                    </td>
+                    <th><label class="control-label">缴费人</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="PayUser" data-msg-required="请输入加盟商缴费人名称" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">是否缴费</label></th>
+                    <td class="has-warning" colspan="3">
+                        <label class="radio-inline">
+                            <input type="radio" name="IsPay" value="true" style="margin-top:3px" />已缴费
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="IsPay" value="false" style="margin-top:3px" />未缴费
+                        </label>
+                    </td>
+                </tr>
+
+            </table>
+        </form>
+    </div>
+</div>
+
+

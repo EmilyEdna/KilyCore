@@ -1,0 +1,151 @@
+﻿
+@{
+    ViewData["Title"] = "认证审核";
+    Layout = "~/Views/Shared/BaseAreaView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                //恢复高度
+                $(window).resize(function (e) {
+                    window.setTimeout(function () {
+                        options.$table.bootstrapTable("resetView", { height: $(window).height() - 150 });
+                    }, 200);
+                    e.stopPropagation();
+                });
+                //设置表单
+                this.$table = controller.Table("#tableList", { url: "Company/GetCompanyIdentPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#IdentCompany" });
+            },
+            //事件
+            InitEvents: function () {
+                options.BtnGroupSearch();
+            },
+            //按钮组查询
+            BtnGroupSearch: function () {
+                $("div[type='button']").on('click', function () {
+                    $(this).siblings().removeClass("active").end().addClass("active");
+                    options.$table.queryParams.CompanyType = $(this).data().value;
+                    $("#CompanyType").val($(this).data().value);
+                    $("#IdentCompany").submit();
+                });
+            },
+            //行为
+            action: {
+                TableFormatter: function (val, row, index) {
+                    var action = [];
+                    action.push('<button class="btn btn-sm btn-primary detail"><i class="fa fa-trash-o"></i>详情</button>');
+                    if (row.AuditInfo.length == 0) {
+                        action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-pencil-square-o"></i>审核</button>');
+                    }
+                    else {
+                        var Array = [];
+                        $.each(row.AuditInfo, function (i, obj) {
+                            Array.push(obj.CreateUser);
+                        });
+                        if ($.inArray(SysUserInfo.Id, Array) < 0)
+                            action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-pencil-square-o"></i>审核</button>');
+                    }
+                    return action.join("&nbsp;");
+                },
+                TableEvents: {
+                    'click .detail': function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "认证详情",
+                            type: 2,
+                            height: "600px",
+                            width: "800px",
+                            url: "ComManage/Company/IdentAuditDetail?Id=" + row.Id + "&CompanyType=" + row.CompanyType,
+                            callBack: function (result) {
+                                result.popClose();
+                            }
+                        });
+                    },
+                    'click .audit': function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "认证审核",
+                            type: 2,
+                            height: "400px",
+                            width: "600px",
+                            url: "ComManage/Company/IdentAuditInfo?Id=" + row.Id + "&TableName=" + row.TableName,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        });
+                    }
+                }//表单事件结束
+            }//行为结束
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+        //来子父页面的树选中事件
+        function nodeSelected(event, node) {
+            options.$table.queryParams.AreaTree = node.id;
+            $("#IdentCompany").submit();
+            //清空查询参数
+            options.$table.queryParams = {};
+        }
+    </script>
+}
+@section css{
+
+}
+<div class="container-fluid">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>认证审核</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <form id="IdentCompany">
+                        <div class="col-sm-8 m-b-xs">
+                            <div class="input-group">
+                                <div type="button" class="btn btn-outline btn-info active" data-value="">全部企业</div>
+                                <div type="button" class="btn btn-outline btn-info" data-value="10">种养企业</div>
+                                <div type="button" class="btn btn-outline btn-info" data-value="20">生产企业</div>
+                                <div type="button" class="btn btn-outline btn-info" data-value="30">餐饮企业</div>
+                                <div type="button" class="btn btn-outline btn-info" data-value="40">流通企业</div>
+                                <div type="button" class="btn btn-outline btn-info" data-value="50">其他企业</div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="hidden" name="CompanyType" id="CompanyType" />
+                                <input type="text" placeholder="公司名称" class="input-sm form-control" name="CompanyName">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
+                                    <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive m-t-sm">
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="IdentNo" data-halign="center" data-align="center" data-valign="middle">认证编号</th>
+                                <th data-field="CompanyName" data-halign="center" data-align="center" data-valign="middle">公司名称</th>
+                                <th data-field="IdentStarName" data-halign="center" data-align="center" data-valign="middle">认证星级</th>
+                                <th data-field="Representative" data-halign="center" data-align="center" data-valign="middle">法人代表</th>
+                                <th data-field="CommunityCode" data-halign="center" data-align="center" data-valign="middle">信用代码</th>
+                                <th data-field="LinkPhone" data-halign="center" data-align="center" data-valign="middle">联系电话</th>
+                                <th data-field="AuditTypeName" data-halign="center" data-align="center" data-valign="middle">审核状态</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

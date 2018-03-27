@@ -291,6 +291,11 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.REMOVEFAIL;
         }
+        /// <summary>
+        /// 获取用户详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         public ResponseAdmin GetAdminDetail(Guid Id)
         {
             return Kily.Set<SystemAdmin>().Where(t => t.Id == Id).AsNoTracking()

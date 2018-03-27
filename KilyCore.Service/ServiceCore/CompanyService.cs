@@ -119,6 +119,7 @@ namespace KilyCore.Service.ServiceCore
                 return ServiceMessage.INSERTFAIL;
         }
         #endregion
+
         #region 认证审核
         /// <summary>
         /// 企业认证分页列表

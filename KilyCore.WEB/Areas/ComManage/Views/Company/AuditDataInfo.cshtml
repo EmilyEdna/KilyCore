@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewData["Title"] = "企业审核";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var Guid = controller.GetParam("Id");
+                var TableName = controller.GetParam("TableName");
+                $("#TableId").val(Guid);
+                $("#TableName").val(TableName);
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+                $(".btn").click(function () {
+                    if ($(this).attr("disabled") == undefined)
+                    {
+                        $("#AuditType").val($(this).data().value);
+                         $(this).siblings().removeClass("active").end().addClass("active");
+                    }
+                });
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="Company/AuditCompany" id="Edit">
+            <input name="TableId" id="TableId" type="hidden" />
+            <input name="TableName" id="TableName" type="hidden" />
+            <input  name="AuditType" type="hidden" id="AuditType"/>
+            <div class="btn-group-sm">
+                <div class="btn btn-sm btn-warning" data-value="10">
+                    <span>审核不通过</span>
+                </div>
+                <div class="btn btn-sm btn-info" disabled data-value="20">
+                    <span>等待审核</span>
+                </div>
+                <div class="btn btn-sm  btn-success" disabled data-value="30">
+                    <span>审核中</span>
+                </div>
+                <div class="btn btn-sm btn-danger" data-value="40">
+                    <span>审核通过</span>
+                </div>
+            </div>
+            <div class="m-t-sm">
+                <textarea class="form-control required" name="AuditSuggestion" data-msg-required="请输入审核意见" maxlength="120" placeholder="请在此输入审核意见"></textarea>
+            </div>
+        </form>
+    </div>
+</div>
+
