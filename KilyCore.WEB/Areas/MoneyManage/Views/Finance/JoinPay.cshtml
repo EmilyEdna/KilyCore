@@ -37,16 +37,14 @@
                 },
                 TableEvents: {
                     "click .info": function (event, val, row, index) {
-                        controller.Confirm("确认催缴？", function (bool) {
-                            if (bool) {
-                                controller.ajax({
-                                    url: "Finance/RemoveMenu",
-                                    data: { Id: row.Id },
-                                    type: 'post',
-                                    success: function (result) {
-                                        options.$table.refresh();
-                                    }
-                                });
+                        controller.OpenWindow({
+                            title: "催缴通知",
+                            type: 1,
+                            height: "400px",
+                            width: "600px",
+                            url: "MoneyManage/Finance/JoinPayNotice?Email=" + row.Email,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
                             }
                         });
                     },

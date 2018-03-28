@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KilyCore.DataEntity.RequestMapper.Company;
 using KilyCore.DataEntity.RequestMapper.Finance;
 using KilyCore.Extension.ResultExtension;
 using KilyCore.Service.QueryExtend;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -50,8 +52,42 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("Archive")]
-        public ObjectResultEx Archive(RequestAdminAttach Param) {
+        public ObjectResultEx Archive(RequestAdminAttach Param)
+        {
             return ObjectResultEx.Instance(FinanceService.Archive(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 发送邮件
+        /// </summary>
+        /// <param name="receive"></param>
+        /// <returns></returns>
+        [HttpPost("SendEmail")]
+        public ObjectResultEx SendEmail(RequestEMail Param)
+        {
+            return ObjectResultEx.Instance(FinanceService.SendEmail(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #region 认证缴费
+        /// <summary>
+        /// 认证缴费
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetIdentPayPage")]
+        public ObjectResultEx GetIdentPayPage(PageParamList<RequestCompanyIdent> pageParam)
+        {
+            return ObjectResultEx.Instance(FinanceService.GetIdentPayPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 是否通过终审
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="Value"></param>
+        /// <returns></returns>
+        [HttpPost("AuditIndetPay")]
+        public ObjectResultEx AuditIndetPay(SimlpeParam<Guid> Key, SimlpeParam<bool> Value)
+        {
+            return ObjectResultEx.Instance(FinanceService.AuditIndetPay(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

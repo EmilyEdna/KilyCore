@@ -33,5 +33,6 @@ namespace KilyCore.Service.QueryExtend
     public class SimlpeParam<T>
     {
         public T Id { get; set; }
+        public T Parameter { get; set; }
     }
 }

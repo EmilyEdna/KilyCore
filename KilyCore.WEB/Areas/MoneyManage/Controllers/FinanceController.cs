@@ -9,12 +9,22 @@ namespace KilyCore.WEB.Areas.MoneyManage.Controllers
     [Area("MoneyManage")]
     public class FinanceController : Controller
     {
-        #region 加盟管理
+        #region 加盟缴费
         public IActionResult JoinPay()
         {
             return View();
         }
         public IActionResult JoinPayEdit()
+        {
+            return View();
+        }
+        public IActionResult JoinPayNotice()
+        {
+            return View();
+        }
+        #endregion
+        #region 认证缴费
+        public IActionResult IdentPay()
         {
             return View();
         }

@@ -1,5 +1,8 @@
-﻿using KilyCore.DataEntity.RequestMapper.Finance;
+﻿using KilyCore.DataEntity.RequestMapper.Company;
+using KilyCore.DataEntity.RequestMapper.Finance;
+using KilyCore.DataEntity.ResponseMapper.Company;
 using KilyCore.DataEntity.ResponseMapper.Finance;
+using KilyCore.EntityFrameWork.Model.Company;
 using KilyCore.EntityFrameWork.Model.Finance;
 using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
@@ -91,12 +94,66 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.INSERTFAIL;
         }
-        public string SendEmail(string receive)
+        /// <summary>
+        /// 发送邮件
+        /// </summary>
+        /// <param name="Email"></param>
+        /// <returns></returns>
+        public string SendEmail(RequestEMail Param)
         {
-            EmailExSend.SendEmail(receive, "测试", "测试");
-            return "";
+            if (EmailExSend.SendEmail(Param.Receive, Param.Title, Param.Content))
+                return ServiceMessage.HANDLESUCCESS;
+            else
+                return ServiceMessage.HANDLEFAIL;
         }
         #endregion
-
+        #region 认证缴费-财务
+        /// <summary>
+        /// 认证缴费
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseCompanyIdent> GetIdentPayPage(PageParamList<RequestCompanyIdent> pageParam)
+        {
+            IQueryable<CompanyIdent> queryable = Kily.Set<CompanyIdent>().Where(t => t.IsDelete == false);
+            IQueryable<CompanyInfo> queryables = Kily.Set<CompanyInfo>().Where(t => t.IsDelete == false);
+            queryable = queryable.Where(t => t.AuditType >= AuditEnum.AuditSuccess);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.CompanyName))
+                queryable = queryable.Where(t => t.CompanyName.Contains(pageParam.QueryParam.CompanyName));
+            var data = queryable.OrderByDescending(t => t.CreateTime)
+                .Join(queryables, x => x.CompanyId, y => y.Id, (x, y) => new ResponseCompanyIdent()
+                {
+                    Id = x.Id,
+                    IdentNo = x.IdentNo,
+                    CompanyName = x.CompanyName,
+                    IdentStarName = AttrExtension.GetSingleDescription<IdentEnum, DescriptionAttribute>(x.IdentStar),
+                    Representative = x.Representative,
+                    LinkPhone = x.LinkPhone,
+                    AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(x.AuditType),
+                    CompanyType = x.CompanyType,
+                    CommunityCode = x.CommunityCode,
+                    TableName = x.GetType().Name
+                }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 是否通过终审
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string AuditIndetPay(Guid Key, bool Param)
+        {
+            CompanyIdent Ident = Kily.Set<CompanyIdent>().Where(t => t.Id == Key).FirstOrDefault();
+            if (Param)
+                Ident.AuditType = AuditEnum.FinanceSuccess;
+            else
+                Ident.AuditType = AuditEnum.FinanceFail; ;
+            if (UpdateField<CompanyIdent>(Ident, "AuditType"))
+                return ServiceMessage.HANDLESUCCESS;
+            else
+                return ServiceMessage.HANDLEFAIL;
+        }
+        #endregion
     }
 }
