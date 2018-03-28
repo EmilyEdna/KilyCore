@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KilyCore.WEB.Areas.SysManage.Controllers
 {
-   [Area("SysManage")]
+    [Area("SysManage")]
     public class SystemController : Controller
     {
         #region 菜单
@@ -15,6 +15,14 @@ namespace KilyCore.WEB.Areas.SysManage.Controllers
             return View();
         }
         public IActionResult SysMenuEdit()
+        {
+            return View();
+        }
+        public IActionResult SysCompanyMenu()
+        {
+            return View();
+        }
+        public IActionResult SysCompanyMenuEdit()
         {
             return View();
         }
@@ -30,15 +38,18 @@ namespace KilyCore.WEB.Areas.SysManage.Controllers
         {
             return View();
         }
-        public IActionResult SysUserEdit() {
+        public IActionResult SysUserEdit()
+        {
             return View();
         }
         #endregion
         #region 任务
-        public IActionResult SysQuartz() {
+        public IActionResult SysQuartz()
+        {
             return View();
         }
-        public IActionResult SysQuartzEdit() {
+        public IActionResult SysQuartzEdit()
+        {
             return View();
         }
         #endregion

@@ -197,6 +197,110 @@ namespace KilyCore.Service.ServiceCore
             }
         }
         #endregion
+
+        #region 企业菜单
+        /// <summary>
+        /// 获取父级菜单
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseMenu> GetCompanyParentMenu()
+        {
+            var query = Kily.Set<SystemCompanyMenu>().Where(t => t.Level == MenuEnum.LevelOne).Where(t => t.ParentId == null).AsNoTracking().AsQueryable();
+            var data = query.Select(t => new ResponseMenu()
+            {
+                MenuId = t.MenuId,
+                MenuName = t.MenuName
+            }).ToList();
+            return data;
+        }
+        /// <summary>
+        /// 获取菜单详情
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ResponseMenu GetCompanyMenuDetail(Guid Id)
+        {
+            var data = Kily.Set<SystemCompanyMenu>().Where(t => t.Id == Id).AsNoTracking().Select(t => new ResponseMenu()
+            {
+                Id = t.Id,
+                ParentId = t.ParentId,
+                MenuId = t.MenuId,
+                MenuName = t.MenuName,
+                MenuIcon = t.MenuIcon,
+                MenuAddress = t.MenuAddress,
+                HasChildrenNode = t.HasChildrenNode
+            }).FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 企业菜单分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseMenu> GetCompanyMenuPage(PageParamList<RequestMenu> pageParam)
+        {
+            var query = Kily.Set<SystemCompanyMenu>().Where(t => t.IsDelete == false).AsNoTracking().AsQueryable();
+            if (!String.IsNullOrEmpty(pageParam.QueryParam.MenuName))
+                query = query.Where(t => t.MenuName.Contains(pageParam.QueryParam.MenuName));
+            var data = query.OrderByDescending(t => t.CreateTime).Select(t => new ResponseMenu()
+            {
+                Id = t.Id,
+                MenuId = t.MenuId,
+                ParentId = t.ParentId,
+                MenuAddress = t.MenuAddress,
+                MenuName = t.MenuName,
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 删除菜单
+        /// </summary>
+        /// <param name="Id"></param>
+        public string RemoveCompanyMenu(Guid Id)
+        {
+            if (Delete<SystemCompanyMenu>(ExpressionExtension.GetExpression<SystemCompanyMenu>("Id", Id, ExpressionEnum.Equals)))
+                return ServiceMessage.REMOVESUCCESS;
+            else
+                return ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 新增菜单
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public string EditCompanyMenu(RequestMenu Param)
+        {
+            SystemCompanyMenu tree = Param.MapToEntity<SystemCompanyMenu>();
+            if (Param.Id != Guid.Empty)
+            {
+                //修改
+                if (Update<SystemCompanyMenu, RequestMenu>(tree, Param))
+                    return ServiceMessage.UPDATESUCCESS;
+                else
+                    return ServiceMessage.UPDATEFAIL;
+            }
+            else
+            {
+                //新增
+                if (tree.HasChildrenNode) //true就是一级菜单
+                {
+                    tree.ParentId = null;
+                    tree.Level = MenuEnum.LevelOne;
+                    tree.MenuAddress = null;
+                    tree.MenuId = Guid.NewGuid();
+                }
+                else
+                {
+                    tree.Level = MenuEnum.LevelTwo;
+                    tree.MenuId = Guid.NewGuid();
+                }
+                if (Insert<SystemCompanyMenu>(tree))
+                    return ServiceMessage.INSERTSUCCESS;
+                else
+                    return ServiceMessage.INSERTFAIL;
+            }
+        }
+        #endregion
         #endregion
 
         #region 用户管理

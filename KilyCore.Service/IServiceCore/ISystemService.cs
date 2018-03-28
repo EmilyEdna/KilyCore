@@ -17,6 +17,13 @@ namespace KilyCore.Service.IServiceCore
         #region 用户登陆
         ResponseAdmin SystemLogin(RequestValidate LoginValidate);
         #endregion
+        #region 企业菜单
+        PagedResult<ResponseMenu> GetCompanyMenuPage(PageParamList<RequestMenu> pageParam);
+        String RemoveCompanyMenu(Guid Id);
+        IList<ResponseMenu> GetCompanyParentMenu();
+        ResponseMenu GetCompanyMenuDetail(Guid Id);
+        String EditCompanyMenu(RequestMenu Param);
+        #endregion
         #region 系统菜单
         IList<ResponseMenu> GetSystemMenu();
         IList<ResponseMenu> GetParentMenu();

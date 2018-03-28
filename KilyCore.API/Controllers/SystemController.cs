@@ -79,6 +79,57 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(SystemService.GetMenuDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 企业菜单
+        /// <summary>
+        /// 修改新增菜单
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        [HttpPost("EditCompanyMenu")]
+        public ObjectResultEx EditCompanyMenu(RequestMenu Param)
+        {
+            return ObjectResultEx.Instance(SystemService.EditCompanyMenu(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取菜单详情
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        [HttpPost("GetCompanyMenuDetail")]
+        public ObjectResultEx GetCompanyMenuDetail(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(SystemService.GetCompanyMenuDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取父节菜单
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetCompanyParentMenu")]
+        public ObjectResultEx GetCompanyParentMenu()
+        {
+            return ObjectResultEx.Instance(SystemService.GetCompanyParentMenu(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 企业菜单分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetCompanyMenuPage")]
+        public ObjectResultEx GetCompanyMenuPage(PageParamList<RequestMenu> pageParam)
+        {
+            return ObjectResultEx.Instance(SystemService.GetCompanyMenuPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除企业菜单
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveCompanyMenu")]
+        public ObjectResultEx RemoveCompanyMenu(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(SystemService.RemoveCompanyMenu(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
         #region 角色权限
         /// <summary>
         /// 权限等级
