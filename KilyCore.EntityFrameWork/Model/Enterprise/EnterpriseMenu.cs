@@ -4,12 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace KilyCore.EntityFrameWork.Model.System
+namespace KilyCore.EntityFrameWork.Model.Enterprise
 {
     /// <summary>
-    /// 企业菜单表
+    /// 集团菜单表
     /// </summary>
-    public class SystemCompanyMenu:BaseEntity
+    public class EnterpriseMenu: BaseEntity
     {
         /// <summary>
         /// 树Id

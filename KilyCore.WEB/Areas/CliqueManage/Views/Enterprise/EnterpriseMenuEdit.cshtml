@@ -19,13 +19,15 @@
                 if (Guid != null || Guid == "") {
                     //获取详情
                     controller.ajax({
-                        url: "System/GeCompanytMenuDetail",
+                        url: "Enterprise/GetEnterpriseMenuDetail",
                         data: { Id: Guid },
                         type: "post",
+                        async: false,
                         success: function (result) {
                             controller.SetCtrlValue("#Edit", result.data);
-                            if (!result.data.hasChildrenNode)
+                            if (!result.data.HasChildrenNode)
                                 options.AppendParentMenu();
+                            controller.SetCtrlValue("#Edit", result.data);
                         }
                     });
                 }
@@ -33,13 +35,14 @@
             //追加父菜单
             AppendParentMenu: function () {
                 controller.ajax({
-                    url: 'System/GetCompanyParentMenu',
+                    url: 'Enterprise/GetEnterpriseParentMenu',
                     data: {},
                     type: "post",
+                    async: false,
                     success: function (result) {
                         var html = '<th id="title"><label class="control-label">父级菜单</label></th>';
                         html += '<td class="has-warning" id="content">';
-                        html += '<select class="form-control" name="parentId" id="ParentId">';
+                        html += '<select class="form-control" name="ParentId" id="ParentId" type="select">';
                         $.each(result.data, function (i, data) {
                             html += '<option value="' + data.MenuId + '">' + data.MenuName + '</option>';
                         });
@@ -75,7 +78,7 @@
 }
 <div class="ibox float-e-margins">
     <div class="ibox-content">
-        <form class="orm-horizontal" method="post" action="System/EditCompanyMenu" id="Edit">
+        <form class="orm-horizontal" method="post" action="Enterprise/EditEnterpriseMenu" id="Edit">
             <input name="Id" id="id" type="hidden" />
             <input name="MenuId" id="menuId" type="hidden" />
             <table class="table table-hover table-bordered">

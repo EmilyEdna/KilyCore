@@ -21,7 +21,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", {url: "System/GetCompanyMenuPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Menu" });
+                this.$table = controller.Table("#tableList", { url: "Enterprise/GetEnterpriseMenuPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Menu" });
             },
             //事件
             InitEvents: function () {
@@ -31,7 +31,7 @@
                         type: 2,
                         height: "400px",
                         width: "600px",
-                        url: "SysManage/system/SysCompanyMenuEdit",
+                        url: "CliqueManage/Enterprise/EnterpriseMenuEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
                         }
@@ -51,7 +51,7 @@
                         controller.Confirm("确认删除？", function (bool) {
                             if (bool) {
                                 controller.ajax({
-                                    url: "System/RemoveCompanyMenu",
+                                    url: "Enterprise/RemoveEnterpriseMenu",
                                     data: { Id: row.Id },
                                     type: 'post',
                                     success: function (result) {
@@ -67,7 +67,7 @@
                             type: 2,
                             height: "400px",
                             width: "600px",
-                            url: "SysManage/System/SysCompanyMenuEdit?Id=" + row.Id,
+                            url: "CliqueManage/Enterprise/EnterpriseMenuEdit?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                              }
