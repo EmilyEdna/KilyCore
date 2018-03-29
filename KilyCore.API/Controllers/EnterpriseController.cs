@@ -9,7 +9,7 @@ namespace KilyCore.API.Controllers
     [Route("api/[controller]")]
     public class EnterpriseController : BaseController
     {
-        #region 企业菜单
+        #region 集团菜单
         /// <summary>
         /// 修改新增菜单
         /// </summary>
@@ -59,7 +59,38 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.RemoveEnterpriseMenu(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 角色权限菜单
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetEnterpriseTree")]
+        public ObjectResultEx GetEnterpriseTree()
+        {
+            return ObjectResultEx.Instance(EnterpriseService.GetEnterpriseTree(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
 
+        #region 集团角色
+        /// <summary>
+        /// 集团角色分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetCompanyRoleAuthorPage")]
+        public ObjectResultEx GetCompanyRoleAuthorPage(PageParamList<RequestEnterpriseRoleAuthor> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseService.GetCompanyRoleAuthorPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑集团角色菜单
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditEnterpriseRoleAuthor")]
+        public ObjectResultEx EditEnterpriseRoleAuthor(RequestEnterpriseRoleAuthor Param) {
+            return ObjectResultEx.Instance(EnterpriseService.EditEnterpriseRoleAuthor(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }

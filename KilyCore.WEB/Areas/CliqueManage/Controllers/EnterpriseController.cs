@@ -19,9 +19,16 @@ namespace KilyCore.WEB.Areas.CliqueManage.Controllers
             return View();
         }
         #endregion
+
+        #region 集团角色
         public IActionResult EnterpriseRole()
         {
             return View();
         }
+        public IActionResult EnterpriseRoleEdit()
+        {
+            return View();
+        }
+        #endregion
     }
 }

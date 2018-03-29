@@ -202,14 +202,16 @@ controller.OpenWindow = function (option) {
         callBack: null,
         maxmin: true,
         scrollbar: false,
+        fixed: true,
+        resize: true,
     }, option || {});
     var options = {
         id: defaultOptions.id,
         type: 2,
         shade: defaultOptions.shade,
         title: defaultOptions.title,
-        fix: false,
-        resize: true,
+        fixed: defaultOptions.fixed,
+        resize: defaultOptions.resize,
         offset: "50px",
         anim: 4,
         skin: 'layui-layer-molv',
