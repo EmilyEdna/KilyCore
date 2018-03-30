@@ -11,9 +11,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
     public class EnterpriseUserRoleAuthor:BaseEntity
     {
         /// <summary>
-        /// 企业ID
+        /// 用户角色名称
         /// </summary>
-        public virtual Guid GroupUserId { get; set; }
+        public virtual string UserRoleAuthorName{ get; set; }
         /// <summary>
         /// 选中的菜单
         /// </summary>

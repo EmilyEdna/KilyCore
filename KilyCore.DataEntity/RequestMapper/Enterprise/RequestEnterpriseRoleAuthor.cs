@@ -6,9 +6,10 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
 {
     public class RequestEnterpriseRoleAuthor
     {
+        public string EnterpriseRoleName { get; set; }
+        public Guid? EnterpriseRoleId { get; set; }
         public Guid Id { get; set; }
         public string CompanyName { get; set; }
-        public Guid CompanyId { get; set; }
         public List<string> AuthorPath { get; set; }
         public string AuthorMenuPath
         {

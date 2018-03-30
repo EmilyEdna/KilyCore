@@ -26,6 +26,10 @@ namespace KilyCore.Service.IServiceCore
         #region 集团角色
         PagedResult<ResponseEnterpriseRoleAuthor> GetCompanyRoleAuthorPage(PageParamList<RequestEnterpriseRoleAuthor> pageParam);
         String EditEnterpriseRoleAuthor(RequestEnterpriseRoleAuthor Param);
+        PagedResult<ResponseEnterpriseRoleAuthor> GetRoleAuthorPage(PageParamList<RequestEnterpriseRoleAuthor> pageParam);
+        String RemoveEnterpriseRoleAuthor(Guid Id);
+        IList<ResponseEnterpriseRoleAuthor> GetRoleAuthorList();
+        String DistributionRole(RequestEnterpriseRoleAuthor Param);
         #endregion
     }
 }

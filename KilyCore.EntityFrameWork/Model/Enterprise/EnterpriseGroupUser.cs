@@ -38,5 +38,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 集团用户邮箱
         /// </summary>
         public virtual string EnterpriseUserEmail { get; set; }
+        /// <summary>
+        /// 集团用户角色Id
+        /// </summary>
+        public virtual Guid? UserRoleId { get; set; }
     }
 }

@@ -77,7 +77,7 @@ controller.SetRequestTime = function () {
 controller.GetParam = function (option) {
     var reg = new RegExp("(^|&)" + option + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
     var r = window.location.search.substr(1).match(reg);  //匹配目标参数
-    if (r != null) return unescape(r[2]); return null; //返回参数值
+    if (r != null) return decodeURI(r[2]); return null; //返回参数值
 }
 //设置表单控件值
 controller.SetCtrlValue = function (element, option) {

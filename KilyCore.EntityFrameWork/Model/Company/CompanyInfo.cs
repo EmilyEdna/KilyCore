@@ -75,5 +75,9 @@ namespace KilyCore.EntityFrameWork.Model.Company
         /// 荣誉证书
         /// </summary>
         public virtual string HonorCertification { get; set; }
+        /// <summary>
+        /// 集团角色Id
+        /// </summary>
+        public virtual Guid? EnterpriseRoleId { get; set; }
     }
 }

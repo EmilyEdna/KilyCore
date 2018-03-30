@@ -125,50 +125,6 @@ namespace KilyCore.Service.ServiceCore
         }
         #endregion
 
-        #region 集团角色
-        /// <summary>
-        /// 集团角色分页列表
-        /// </summary>
-        /// <param name="pageParam"></param>
-        /// <returns></returns>
-        public PagedResult<ResponseEnterpriseRoleAuthor> GetCompanyRoleAuthorPage(PageParamList<RequestEnterpriseRoleAuthor> pageParam)
-        {
-            IQueryable<EnterpriseRoleAuthor> queryable = Kily.Set<EnterpriseRoleAuthor>().Where(t => t.IsDelete == false);
-            IQueryable<CompanyInfo> queryables = Kily.Set<CompanyInfo>().Where(t => t.IsDelete == false);
-            if (!string.IsNullOrEmpty(pageParam.QueryParam.CompanyName))
-                queryables = queryables.Where(t => t.CompanyName.Contains(pageParam.QueryParam.CompanyName));
-            var data = queryables.OrderBy(t => t.CreateTime).GroupJoin(queryable, t => t.Id, x => x.CompanyId, (t, x) => new ResponseEnterpriseRoleAuthor()
-            {
-                Id = x.FirstOrDefault().Id,
-                CompanyId=t.Id,
-                CompanyName = t.CompanyName,
-                CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
-                AuthorMenuPath = x.FirstOrDefault().AuthorMenuPath
-            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
-            return data;
-        }
-        /// <summary>
-        /// 编辑集团角色菜单
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditEnterpriseRoleAuthor(RequestEnterpriseRoleAuthor Param)
-        {
-            EnterpriseRoleAuthor RoleAuthor = Param.MapToEntity<EnterpriseRoleAuthor>();
-            if (Param.Id != null)
-            {
-                return "";
-            }
-            else
-            {
-                if (Insert<EnterpriseRoleAuthor>(RoleAuthor))
-                    return ServiceMessage.INSERTSUCCESS;
-                else
-                    return ServiceMessage.INSERTFAIL;
-            }
-        }
-        #endregion
-
         #region 权限菜单树
         /// <summary>
         /// 获取权限菜单树
@@ -199,6 +155,101 @@ namespace KilyCore.Service.ServiceCore
                  }).AsQueryable();
             var data = queryable.ToList();
             return data;
+        }
+        #endregion
+
+        #region 集团角色
+        /// <summary>
+        /// 集团角色分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseRoleAuthor> GetCompanyRoleAuthorPage(PageParamList<RequestEnterpriseRoleAuthor> pageParam)
+        {
+            IQueryable<EnterpriseRoleAuthor> queryable = Kily.Set<EnterpriseRoleAuthor>();
+            IQueryable<CompanyInfo> queryables = Kily.Set<CompanyInfo>().Where(t => t.IsDelete == false);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.CompanyName))
+                queryables = queryables.Where(t => t.CompanyName.Contains(pageParam.QueryParam.CompanyName));
+            var data = queryables.OrderBy(t => t.CreateTime).GroupJoin(queryable, t => t.EnterpriseRoleId, x => x.Id, (t, x) => new ResponseEnterpriseRoleAuthor()
+            {
+                Id = t.Id,
+                EnterpriseRoleId = x.FirstOrDefault().Id,
+                CompanyName = t.CompanyName,
+                EnterpriseRoleName = x.FirstOrDefault().EnterpriseRoleName,
+                CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
+                AuthorMenuPath = x.FirstOrDefault().AuthorMenuPath
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑集团角色菜单
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditEnterpriseRoleAuthor(RequestEnterpriseRoleAuthor Param)
+        {
+            EnterpriseRoleAuthor RoleAuthor = Param.MapToEntity<EnterpriseRoleAuthor>();
+            if (Insert<EnterpriseRoleAuthor>(RoleAuthor))
+                return ServiceMessage.INSERTSUCCESS;
+            else
+                return ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 角色分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseRoleAuthor> GetRoleAuthorPage(PageParamList<RequestEnterpriseRoleAuthor> pageParam)
+        {
+            IQueryable<EnterpriseRoleAuthor> queryable = Kily.Set<EnterpriseRoleAuthor>();
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.EnterpriseRoleName))
+                queryable = queryable.Where(t => t.EnterpriseRoleName.Contains(pageParam.QueryParam.EnterpriseRoleName));
+            var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseRoleAuthor()
+            {
+                Id = t.Id,
+                EnterpriseRoleName = t.EnterpriseRoleName,
+                AuthorMenuPath = t.AuthorMenuPath
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 删除集团角色
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveEnterpriseRoleAuthor(Guid Id)
+        {
+            if (Remove<EnterpriseRoleAuthor>(t => t.Id == Id))
+                return ServiceMessage.REMOVESUCCESS;
+            else
+                return ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 获取角色列表
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public IList<ResponseEnterpriseRoleAuthor> GetRoleAuthorList()
+        {
+            return Kily.Set<EnterpriseRoleAuthor>().Select(t => new ResponseEnterpriseRoleAuthor()
+            {
+                Id = t.Id,
+                EnterpriseRoleName = t.EnterpriseRoleName
+            }).ToList();
+        }
+        /// <summary>
+        /// 分配角色
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string DistributionRole(RequestEnterpriseRoleAuthor Param)
+        {
+            CompanyInfo info = Kily.Set<CompanyInfo>().Where(t => t.IsDelete == false).Where(t => t.Id == Param.Id).FirstOrDefault();
+            info.EnterpriseRoleId = Param.EnterpriseRoleId;
+            if (UpdateField<CompanyInfo>(info, "EnterpriseRoleId"))
+                return ServiceMessage.HANDLESUCCESS;
+            else
+                return ServiceMessage.HANDLEFAIL;
         }
         #endregion
     }

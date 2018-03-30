@@ -88,8 +88,47 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("EditEnterpriseRoleAuthor")]
-        public ObjectResultEx EditEnterpriseRoleAuthor(RequestEnterpriseRoleAuthor Param) {
+        public ObjectResultEx EditEnterpriseRoleAuthor(RequestEnterpriseRoleAuthor Param)
+        {
             return ObjectResultEx.Instance(EnterpriseService.EditEnterpriseRoleAuthor(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 角色列表分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetRoleAuthorPage")]
+        public ObjectResultEx GetRoleAuthorPage(PageParamList<RequestEnterpriseRoleAuthor> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseService.GetRoleAuthorPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除角色
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveEnterpriseRoleAuthor")]
+        public ObjectResultEx RemoveEnterpriseRoleAuthor(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseService.RemoveEnterpriseRoleAuthor(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 角色列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetRoleAuthorList")]
+        public ObjectResultEx GetRoleAuthorList() {
+            return ObjectResultEx.Instance(EnterpriseService.GetRoleAuthorList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 分配角色
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("DistributionRole")]
+        public ObjectResultEx DistributionRole(RequestEnterpriseRoleAuthor Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseService.DistributionRole(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

@@ -7,8 +7,9 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
     public class ResponseEnterpriseRoleAuthor
     {
         public Guid Id { get; set; }
-        public Guid CompanyId { get; set; }
+        public Guid? EnterpriseRoleId { get; set; }
         public string CompanyName { get; set; }
+        public string EnterpriseRoleName { get; set; }
         public string CompanyTypeName { get; set; }
         public string AuthorMenuPath { get; set; }
         public string AuthorMenuCount
