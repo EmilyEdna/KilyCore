@@ -32,12 +32,12 @@ controller.ajax = function (option) {
         },
         error: function (xhr, msg) {
             if (xhr.status == 401)
-                controller.Confirm("您还未登录系统，请先登录", function () {
-                    window.location.href = "Login"
-                })
-            else {
-                controller.Confirm(msg, function () { });
-            }
+                controller.Confirm("您还未登录系统，请先登录", function (flag) { window.location.href = "Login" });
+            else if (xhr.status == 404)
+                controller.Confirm("页面未找到!", function (flag) { });
+            else
+                controller.Confirm(msg, function (flag) { });
+
         }
     });
 }
@@ -599,8 +599,7 @@ controller.TreeCtrl = function (element, option, document) {
     }
 }
 //日期选择器
-controller.LayDate = function (option)
-{
+controller.LayDate = function (option) {
     defaultOption = {
         elem: undefined,
         theme: 'molv',
