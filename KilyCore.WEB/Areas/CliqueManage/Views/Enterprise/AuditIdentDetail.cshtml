@@ -46,7 +46,7 @@
             //获取详情
             GetCompanyIdentDetail: function (Guid, CompanyType) {
                 controller.ajax({
-                    url: 'Company/GetCompanyIdentDetail',
+                    url: 'Enterprise/GetCompanyIdentDetail',
                     data: { Id: Guid, CompanyType: CompanyType },
                     type: "post",
                     async: false,
@@ -109,7 +109,7 @@
         });
     </script>
 }
-<form class="orm-horizontal" method="post" action="Company/GetCompanyIdentDetail" id="CompanyIdentDetail">
+<form class="orm-horizontal" method="post" action="Enterprise/GetCompanyIdentDetail" id="CompanyIdentDetail">
     <div class="tabs-container">
         <ul class="nav nav-tabs">
             <li class="active">

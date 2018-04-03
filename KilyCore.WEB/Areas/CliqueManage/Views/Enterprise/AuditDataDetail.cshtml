@@ -45,7 +45,7 @@
             //获取详情
             GetCompanyDetail: function (Guid) {
                 controller.ajax({
-                    url: 'Company/GetCompanyDetail',
+                    url: 'Enterprise/GetCompanyDetail',
                     data: { Id: Guid },
                     type: "post",
                     async: false,
@@ -150,7 +150,7 @@
         });
     </script>
 }
-<form class="orm-horizontal" method="post" action="Company/GetCompanyDetail" id="CompanyDetail">
+<form class="orm-horizontal" method="post" action="Enterprise/GetCompanyDetail" id="CompanyDetail">
     <div class="tabs-container">
         <ul class="nav nav-tabs">
             <li class="active">

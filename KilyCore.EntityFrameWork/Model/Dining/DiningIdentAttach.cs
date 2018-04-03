@@ -3,15 +3,15 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace KilyCore.EntityFrameWork.Model.Company
+namespace KilyCore.EntityFrameWork.Model.Dining
 {
     /// <summary>
-    /// 餐饮企业认证附加表
+    /// 商家认证审核附加表
     /// </summary>
-    public class CompanyDiningIdentAttach :BaseEntity
+    public class DiningIdentAttach:BaseEntity
     {
         /// <summary>
-        /// 企业认证表主键
+        /// 商家认证表主键
         /// </summary>
         public Guid IdentId { get; set; }
         /// <summary>

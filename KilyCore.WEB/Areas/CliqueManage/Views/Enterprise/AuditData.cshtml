@@ -21,7 +21,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "Company/GetCompanyPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Company" });
+                this.$table = controller.Table("#tableList", { url: "Enterprise/GetCompanyPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Company" });
             },
             //事件
             InitEvents: function () {
@@ -42,7 +42,7 @@
                             type: 2,
                             height: "400px",
                             width: "600px",
-                            url: "ComManage/Company/AuditDataDetail?Id=" + row.Id,
+                            url: "CliqueManage/Enterprise/AuditDataDetail?Id=" + row.Id,
                             callBack: function (result) {
                                 result.popClose();
                             }
@@ -54,7 +54,7 @@
                             type: 1,
                             height: "260px",
                             width: "400px",
-                            url: "ComManage/Company/AuditDataInfo?Id=" + row.Id + "&TableName=" + row.TableName,
+                            url: "CliqueManage/Enterprise/AuditDataInfo?Id=" + row.Id + "&TableName=" + row.TableName,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }

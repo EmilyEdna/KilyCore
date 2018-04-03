@@ -23,14 +23,6 @@ namespace KilyCore.EntityFrameWork.EntityMapping.Company
             builder.HasKey(t => t.Id);
         }
     }
-    public class CompanyDiningIdentAttachMap : IEntityTypeConfiguration<CompanyDiningIdentAttach>
-    {
-        public void Configure(EntityTypeBuilder<CompanyDiningIdentAttach> builder)
-        {
-            builder.ToTable(typeof(CompanyDiningIdentAttach).Name);
-            builder.HasKey(t => t.Id);
-        }
-    }
     public class CompanyPlantIdentAttachMap : IEntityTypeConfiguration<CompanyPlantIdentAttach>
     {
         public void Configure(EntityTypeBuilder<CompanyPlantIdentAttach> builder)

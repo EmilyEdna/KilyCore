@@ -1,5 +1,8 @@
 ﻿using KilyCore.Configure;
+using KilyCore.DataEntity.RequestMapper.Company;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
+using KilyCore.DataEntity.RequestMapper.System;
+using KilyCore.DataEntity.ResponseMapper.Company;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.Service.QueryExtend;
@@ -30,6 +33,18 @@ namespace KilyCore.Service.IServiceCore
         String RemoveEnterpriseRoleAuthor(Guid Id);
         IList<ResponseEnterpriseRoleAuthor> GetRoleAuthorList();
         String DistributionRole(RequestEnterpriseRoleAuthor Param);
+        #endregion
+
+        #region 资料审核
+        PagedResult<ResponseCompany> GetCompanyPage(PageParamList<RequestCompany> pageParam);
+        ResponseCompany GetCompanyDetail(Guid Id);
+        String AuditCompany(RequestAudit Param);
+        #endregion
+
+        #region 认证审核
+        PagedResult<ResponseCompanyIdent> GetCompanyIdentPage(PageParamList<RequestCompanyIdent> pageParam);
+        ResponseCompanyIdent GetCompanyIdentDetail(RequestCompanyIdent Param);
+        String AuditIdent(RequestAudit Param);
         #endregion
     }
 }

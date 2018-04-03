@@ -9,7 +9,7 @@ namespace KilyCore.WEB.Areas.CliqueManage.Controllers
     [Area("CliqueManage")]
     public class EnterpriseController : Controller
     {
-        #region 菜单
+        #region 集团菜单
         public IActionResult EnterpriseMenu()
         {
             return View();
@@ -26,6 +26,36 @@ namespace KilyCore.WEB.Areas.CliqueManage.Controllers
             return View();
         }
         public IActionResult EnterpriseRoleEdit()
+        {
+            return View();
+        }
+        #endregion
+
+        #region 资料审核
+        public IActionResult AuditData()
+        {
+            return View();
+        }
+        public IActionResult AuditDataDetail()
+        {
+            return View();
+        }
+        public IActionResult AuditDataInfo()
+        {
+            return View();
+        }
+        #endregion
+
+        #region 企业认证
+        public IActionResult AuditIdent()
+        {
+            return View();
+        }
+        public IActionResult AuditIdentDetail()
+        {
+            return View();
+        }
+        public IActionResult AuditIdentInfo()
         {
             return View();
         }

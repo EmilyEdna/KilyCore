@@ -50,7 +50,7 @@ namespace KilyCore.Service.ServiceCore
         public IList<ResponseMenu> GetSystemMenu()
         {
             IQueryable<SystemMenu> queryable = Kily.Set<SystemMenu>().Where(t => t.Level == MenuEnum.LevelOne)
-                   .Where(t => t.IsDelete == false).AsNoTracking().AsQueryable();
+                   .Where(t => t.IsDelete == false).AsNoTracking().AsQueryable().OrderBy(t=>t.CreateTime);
             if (UserInfo().AccountType == AccountEnum.Admin)
             {
                 var data = queryable.Select(t => new ResponseMenu()

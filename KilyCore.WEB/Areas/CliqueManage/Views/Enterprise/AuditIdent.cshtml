@@ -21,7 +21,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "Company/GetCompanyIdentPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#IdentCompany" });
+                this.$table = controller.Table("#tableList", { url: "Enterprise/GetCompanyIdentPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#IdentCompany" });
             },
             //事件
             InitEvents: function () {
@@ -61,7 +61,7 @@
                             type: 2,
                             height: "600px",
                             width: "800px",
-                            url: "ComManage/Company/IdentAuditDetail?Id=" + row.Id + "&CompanyType=" + row.CompanyType,
+                            url: "CliqueManage/Enterprise/AuditIdentDetail?Id=" + row.Id + "&CompanyType=" + row.CompanyType,
                             callBack: function (result) {
                                 result.popClose();
                             }
@@ -73,7 +73,7 @@
                             type: 2,
                             height: "400px",
                             width: "600px",
-                            url: "ComManage/Company/IdentAuditInfo?Id=" + row.Id + "&TableName=" + row.TableName,
+                            url: "CliqueManage/Enterprise/AuditIdentInfo?Id=" + row.Id + "&TableName=" + row.TableName,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }
@@ -112,9 +112,8 @@
                                 <div type="button" class="btn btn-outline btn-info active" data-value="">全部企业</div>
                                 <div type="button" class="btn btn-outline btn-info" data-value="10">种养企业</div>
                                 <div type="button" class="btn btn-outline btn-info" data-value="20">生产企业</div>
-                                <div type="button" class="btn btn-outline btn-info" data-value="30">餐饮企业</div>
-                                <div type="button" class="btn btn-outline btn-info" data-value="40">流通企业</div>
-                                <div type="button" class="btn btn-outline btn-info" data-value="50">其他企业</div>
+                                <div type="button" class="btn btn-outline btn-info" data-value="30">流通企业</div>
+                                <div type="button" class="btn btn-outline btn-info" data-value="40">其他企业</div>
                             </div>
                         </div>
                         <div class="col-sm-4">
