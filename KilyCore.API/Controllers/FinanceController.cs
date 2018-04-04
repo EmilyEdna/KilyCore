@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using KilyCore.DataEntity.RequestMapper.Company;
+using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.Finance;
 using KilyCore.Extension.ResultExtension;
 using KilyCore.Service.QueryExtend;
@@ -74,7 +74,7 @@ namespace KilyCore.API.Controllers
         /// <param name="pageParam"></param>
         /// <returns></returns>
         [HttpPost("GetIdentPayPage")]
-        public ObjectResultEx GetIdentPayPage(PageParamList<RequestCompanyIdent> pageParam)
+        public ObjectResultEx GetIdentPayPage(PageParamList<RequestEnterpriseIdent> pageParam)
         {
             return ObjectResultEx.Instance(FinanceService.GetIdentPayPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }

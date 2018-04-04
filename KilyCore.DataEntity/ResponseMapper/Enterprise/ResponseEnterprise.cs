@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace KilyCore.DataEntity.ResponseMapper.Company
+namespace KilyCore.DataEntity.ResponseMapper.Enterprise
 {
-    public class ResponseCompany
+    public class ResponseEnterprise
     {
         public Guid Id { get; set; }
         public string CompanyName { get; set; }
@@ -75,5 +75,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Company
         public string AuditTypeName { get; set; }
         public string Honor { get; set; }
         public AuditEnum AuditType { get; set; }
+        public bool IsEnable { get; set; }
+        public string EnableTypeName { get=>IsEnable?"启用":"禁用"; }
     }
 }

@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "系统用户";
+    ViewData["Title"] = "商家列表";
     Layout = "~/Views/Shared/BaseAreaView.cshtml";
 }
 @section script{
@@ -20,37 +20,37 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "System/GetAdminPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Admin" });
+                this.$table = controller.Table("#tableList", { url: "Dining/GetMerchantPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Merchant" });
             },
             //事件
             InitEvents: function () {
-                $("#add").on('click', function () {
-                    controller.OpenWindow({
-                        title: "新增用户",
-                        type: 2,
-                        height: "440px",
-                        width: "600px",
-                        url: "SysManage/system/SysUserEdit",
-                        callBack: function (result) {
-                            result.$("#Edit").submit();
-                        }
-                    })
-                });
             },
             //行为
             action: {
                 TableFormatter: function (val, row, index) {
                     var action = [];
-                    action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
-                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
+                    action.push('<button class="btn btn-sm btn-primary detail"><i class="fa fa-trash-o"></i>详情</button>');
+                    action.push('<button class="btn btn-sm btn-primary enable"><i class="fa fa-trash-o"></i>启用</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
-                    "click .del": function (event, val, row, index) {
-                        controller.Confirm("确认删除？", function (bool) {
+                    "click .detail": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "商家详情",
+                            type: 2,
+                            height: "400px",
+                            width: "600px",
+                            url: "FoodManage/Dining/MerchantDetail?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.popClose();
+                            }
+                        });
+                    },
+                    "click .enable": function (event, val, row, index) {
+                        controller.Confirm("确认启用？", function (bool) {
                             if (bool) {
                                 controller.ajax({
-                                    url: "System/RemoveAdmin",
+                                    url: "Dining/EnableAccount",
                                     data: { Id: row.Id },
                                     type: 'post',
                                     success: function (result) {
@@ -59,18 +59,6 @@
                                 });
                             }
                         });
-                    },
-                    "click .edit": function (event, val, row, index) {
-                        controller.OpenWindow({
-                            title: "编辑用户",
-                            type: 2,
-                            height: "445px",
-                            width: "605px",
-                            url: "SysManage/System/SysUserEdit?Id=" + row.Id,
-                            callBack: function (result) {
-                                result.$("#Edit").submit();
-                            }
-                        })
                     }
                 }//表单事件结束
             }//行为结束
@@ -82,7 +70,7 @@
         //来至父页面的树选中事件
         function nodeSelected(event, node) {
             options.$table.queryParams.AreaTree = node.id;
-            $("#Admin").submit();
+            $("#Merchant").submit();
             //清空查询参数
             options.$table.queryParams = {};
         }
@@ -95,19 +83,19 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>用户管理</h5>
+                <h5>商家中心</h5>
             </div>
             <div class="ibox-content">
                 <div class="row">
-                    <form id="Admin">
-                        <div class="col-sm-8 m-b-xs">
+                    <form id="Merchant">
+                        <div class="col-sm-6 m-b-xs">
                             <div class="input-group">
-                                <button type="button" class="btn btn-sm btn-white" id="add"><i class="fa fa-plus"></i>新增</button>
+                           
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-6">
                             <div class="input-group">
-                                <input type="text" placeholder="姓名" class="input-sm form-control" name="TrueName"> <span class="input-group-btn">
+                                <input type="text" placeholder="商家名称" class="input-sm form-control" name="MerchantName"> <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
                                     <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
                                 </span>
@@ -119,10 +107,10 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="TrueName" data-halign="center" data-align="center" data-valign="middle">姓名</th>
-                                <th data-field="Account" data-halign="center" data-align="center" data-valign="middle">账号</th>
-                                <th data-field="AccountTypeName" data-halign="center" data-align="center" data-valign="middle">账号类型</th>
-                                <th data-field="Phone" data-halign="center" data-align="center" data-valign="middle">电话</th>
+                                <th data-field="MerchantName" data-halign="center" data-align="center" data-valign="middle">商家名称</th>
+                                <th data-field="Account" data-halign="center" data-align="center" data-valign="middle">商家账号</th>
+                                <th data-field="DiningTypeName" data-halign="center" data-align="center" data-valign="middle">商家类型</th>
+                                <th data-field="EnableTypeName" data-halign="center" data-align="center" data-valign="middle">账号状态</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>
@@ -132,4 +120,3 @@
         </div>
     </div>
 </div>
-

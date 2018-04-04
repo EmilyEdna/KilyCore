@@ -1,7 +1,5 @@
-﻿using KilyCore.DataEntity.RequestMapper.Company;
-using KilyCore.DataEntity.RequestMapper.Enterprise;
+﻿using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.System;
-using KilyCore.DataEntity.ResponseMapper.Company;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.EntityFrameWork.Model.Company;
@@ -263,7 +261,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="pageParam"></param>
         /// <returns></returns>
-        public PagedResult<ResponseCompany> GetCompanyPage(PageParamList<RequestCompany> pageParam)
+        public PagedResult<ResponseEnterprise> GetCompanyPage(PageParamList<RequestEnterprise> pageParam)
         {
             IQueryable<CompanyInfo> queryable = Kily.Set<CompanyInfo>().Where(t => t.IsDelete == false).AsQueryable().AsNoTracking();
             if (!string.IsNullOrEmpty(pageParam.QueryParam.CompanyName))
@@ -278,7 +276,7 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().Area));
             if (UserInfo().AccountType == AccountEnum.Village)
                 queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().Town));
-            var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseCompany()
+            var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterprise()
             {
                 Id = t.Id,
                 CompanyName = t.CompanyName,
@@ -287,7 +285,8 @@ namespace KilyCore.Service.ServiceCore
                 CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
                 AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
                 TableName = t.GetType().Name,
-                AuditType = t.AuditType
+                AuditType = t.AuditType,
+                IsEnable = t.IsEnable
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -296,11 +295,11 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public ResponseCompany GetCompanyDetail(Guid Id)
+        public ResponseEnterprise GetCompanyDetail(Guid Id)
         {
             var data = Kily.Set<CompanyInfo>().Where(t => t.IsDelete == false)
                  .Where(t => t.Id == Id)
-                 .AsNoTracking().Select(t => new ResponseCompany()
+                 .AsNoTracking().Select(t => new ResponseEnterprise()
                  {
                      Id = t.Id,
                      CompanyName = t.CompanyName,
@@ -353,6 +352,20 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.INSERTFAIL;
         }
+        /// <summary>
+        /// 启用账号
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string EnableAccount(Guid Id)
+        {
+            CompanyInfo info= Kily.Set<CompanyInfo>().Where(t => t.Id == Id).FirstOrDefault();
+            info.IsEnable = true;
+            if (UpdateField<CompanyInfo>(info, "IsEnable"))
+                return ServiceMessage.HANDLESUCCESS;
+            else
+                return ServiceMessage.HANDLEFAIL;
+        }
         #endregion
 
         #region 认证审核
@@ -361,7 +374,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="pageParam"></param>
         /// <returns></returns>
-        public PagedResult<ResponseCompanyIdent> GetCompanyIdentPage(PageParamList<RequestCompanyIdent> pageParam)
+        public PagedResult<ResponseEnterpriseIdent> GetCompanyIdentPage(PageParamList<RequestEnterpriseIdent> pageParam)
         {
             IQueryable<CompanyIdent> queryable = Kily.Set<CompanyIdent>().Where(t => t.IsDelete == false);
             IQueryable<CompanyInfo> queryables = Kily.Set<CompanyInfo>().Where(t => t.IsDelete == false);
@@ -380,7 +393,7 @@ namespace KilyCore.Service.ServiceCore
             if (UserInfo().AccountType == AccountEnum.Village)
                 queryables = queryables.Where(t => t.TypePath.Contains(UserInfo().Town));
             var data = queryable.OrderByDescending(t => t.CreateTime)
-                .Join(queryables, x => x.CompanyId, y => y.Id, (x, y) => new ResponseCompanyIdent()
+                .Join(queryables, x => x.CompanyId, y => y.Id, (x, y) => new ResponseEnterpriseIdent()
                 {
                     Id = x.Id,
                     IdentNo = x.IdentNo,
@@ -403,15 +416,15 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public ResponseCompanyIdent GetCompanyIdentDetail(RequestCompanyIdent Param)
+        public ResponseEnterpriseIdent GetCompanyIdentDetail(RequestEnterpriseIdent Param)
         {
             IQueryable<CompanyIdent> queryable = Kily.Set<CompanyIdent>().Where(t => t.Id == Param.Id);
-            ResponseCompanyIdent data = null;
+            ResponseEnterpriseIdent data = null;
             //种养企业
             if (Param.CompanyType == CompanyEnum.Plant)
             {
                 IQueryable<CompanyPlantIdentAttach> Plant = Kily.Set<CompanyPlantIdentAttach>();
-                data = queryable.GroupJoin(Plant, x => x.Id, y => y.IdentId, (x, y) => new { x, y }).GroupJoin(Kily.Set<SystemAudit>(), t => t.x.Id, o => o.TableId, (t, o) => new ResponseCompanyIdent()
+                data = queryable.GroupJoin(Plant, x => x.Id, y => y.IdentId, (x, y) => new { x, y }).GroupJoin(Kily.Set<SystemAudit>(), t => t.x.Id, o => o.TableId, (t, o) => new ResponseEnterpriseIdent()
                 {
                     Id = t.x.Id,
                     IdentNo = t.x.IdentNo,
@@ -442,7 +455,7 @@ namespace KilyCore.Service.ServiceCore
             if (Param.CompanyType == CompanyEnum.Production)
             {
                 IQueryable<CompanyProductionIdentAttach> Production = Kily.Set<CompanyProductionIdentAttach>();
-                data = queryable.GroupJoin(Production, x => x.Id, y => y.IdentId, (x, y) => new { x, y }).GroupJoin(Kily.Set<SystemAudit>(), t => t.x.Id, o => o.TableId, (t, o) => new ResponseCompanyIdent()
+                data = queryable.GroupJoin(Production, x => x.Id, y => y.IdentId, (x, y) => new { x, y }).GroupJoin(Kily.Set<SystemAudit>(), t => t.x.Id, o => o.TableId, (t, o) => new ResponseEnterpriseIdent()
                 {
                     Id = t.x.Id,
                     IdentNo = t.x.IdentNo,
@@ -472,7 +485,7 @@ namespace KilyCore.Service.ServiceCore
             if (Param.CompanyType == CompanyEnum.Circulation)
             {
                 IQueryable<CompanyCirculationIdentAttach> Circulation = Kily.Set<CompanyCirculationIdentAttach>();
-                data = queryable.GroupJoin(Circulation, x => x.Id, y => y.IdentId, (x, y) => new { x, y }).GroupJoin(Kily.Set<SystemAudit>(), t => t.x.Id, o => o.TableId, (t, o) => new ResponseCompanyIdent()
+                data = queryable.GroupJoin(Circulation, x => x.Id, y => y.IdentId, (x, y) => new { x, y }).GroupJoin(Kily.Set<SystemAudit>(), t => t.x.Id, o => o.TableId, (t, o) => new ResponseEnterpriseIdent()
                 {
                     Id = t.x.Id,
                     IdentNo = t.x.IdentNo,
@@ -503,7 +516,7 @@ namespace KilyCore.Service.ServiceCore
             if (Param.CompanyType == CompanyEnum.Other)
             {
                 IQueryable<CompanyOtherIdentAttach> Other = Kily.Set<CompanyOtherIdentAttach>();
-                data = queryable.GroupJoin(Other, x => x.Id, y => y.IdentId, (x, y) => new { x, y }).GroupJoin(Kily.Set<SystemAudit>(), t => t.x.Id, o => o.TableId, (t, o) => new ResponseCompanyIdent()
+                data = queryable.GroupJoin(Other, x => x.Id, y => y.IdentId, (x, y) => new { x, y }).GroupJoin(Kily.Set<SystemAudit>(), t => t.x.Id, o => o.TableId, (t, o) => new ResponseEnterpriseIdent()
                 {
                     Id = t.x.Id,
                     IdentNo = t.x.IdentNo,

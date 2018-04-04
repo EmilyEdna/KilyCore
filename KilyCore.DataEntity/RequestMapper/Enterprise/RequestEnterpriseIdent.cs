@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace KilyCore.DataEntity.RequestMapper.Company
+namespace KilyCore.DataEntity.RequestMapper.Enterprise
 {
-    public class RequestCompanyIdent
+    public class RequestEnterpriseIdent
     {
         #region 认证企业基本信息
         public Guid Id { get; set; }

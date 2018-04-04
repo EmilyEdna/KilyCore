@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace KilyCore.DataEntity.ResponseMapper.Company
+namespace KilyCore.DataEntity.ResponseMapper.Enterprise
 {
-    public class ResponseCompanyIdent
+    public class ResponseEnterpriseIdent
     {
         #region 认证企业基本信息
         public Guid Id { get; set; }

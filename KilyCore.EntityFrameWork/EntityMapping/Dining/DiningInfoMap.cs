@@ -13,6 +13,9 @@ namespace KilyCore.EntityFrameWork.EntityMapping.Dining
         {
             builder.ToTable(typeof(DiningInfo).Name);
             builder.HasKey(t => t.Id);
+            builder.Property(t => t.Account).IsRequired();
+            builder.Property(t => t.PassWord).IsRequired();
+            builder.Property(t => t.MerchantName).IsRequired();
         }
     }
     public class DiningInfoAttachMap : IEntityTypeConfiguration<DiningInfoAttach> {

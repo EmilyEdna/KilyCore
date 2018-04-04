@@ -9,7 +9,7 @@ namespace KilyCore.EntityFrameWork.Model.Dining
     /// <summary>
     /// 餐饮用户表
     /// </summary>
-    public class DiningInfo:BaseEntity
+    public class DiningInfo : BaseEntity
     {
         /// <summary>
         /// 账号
@@ -47,5 +47,13 @@ namespace KilyCore.EntityFrameWork.Model.Dining
         /// 审核类型
         /// </summary>
         public virtual AuditEnum AuditType { get; set; }
+        /// <summary>
+        /// 邮箱
+        /// </summary>
+        public virtual string Email { get; set; }
+        /// <summary>
+        /// 是否启用账号
+        /// </summary>
+        public virtual bool IsEnable { get; set; }
     }
 }

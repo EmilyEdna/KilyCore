@@ -1,8 +1,6 @@
 ﻿using KilyCore.Configure;
-using KilyCore.DataEntity.RequestMapper.Company;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.System;
-using KilyCore.DataEntity.ResponseMapper.Company;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.Service.QueryExtend;
@@ -36,14 +34,15 @@ namespace KilyCore.Service.IServiceCore
         #endregion
 
         #region 资料审核
-        PagedResult<ResponseCompany> GetCompanyPage(PageParamList<RequestCompany> pageParam);
-        ResponseCompany GetCompanyDetail(Guid Id);
+        PagedResult<ResponseEnterprise> GetCompanyPage(PageParamList<RequestEnterprise> pageParam);
+        ResponseEnterprise GetCompanyDetail(Guid Id);
         String AuditCompany(RequestAudit Param);
+        String EnableAccount(Guid Id);
         #endregion
 
         #region 认证审核
-        PagedResult<ResponseCompanyIdent> GetCompanyIdentPage(PageParamList<RequestCompanyIdent> pageParam);
-        ResponseCompanyIdent GetCompanyIdentDetail(RequestCompanyIdent Param);
+        PagedResult<ResponseEnterpriseIdent> GetCompanyIdentPage(PageParamList<RequestEnterpriseIdent> pageParam);
+        ResponseEnterpriseIdent GetCompanyIdentDetail(RequestEnterpriseIdent Param);
         String AuditIdent(RequestAudit Param);
         #endregion
     }

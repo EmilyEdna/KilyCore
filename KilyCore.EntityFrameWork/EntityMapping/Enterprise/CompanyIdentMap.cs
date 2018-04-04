@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace KilyCore.EntityFrameWork.EntityMapping.Company
+namespace KilyCore.EntityFrameWork.EntityMapping.Enterprise
 {
     public class CompanyIdentMap : IEntityTypeConfiguration<CompanyIdent>
     {

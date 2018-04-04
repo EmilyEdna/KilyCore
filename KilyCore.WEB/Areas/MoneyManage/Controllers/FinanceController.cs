@@ -24,7 +24,7 @@ namespace KilyCore.WEB.Areas.MoneyManage.Controllers
         }
         #endregion
         #region 认证缴费
-        public IActionResult IdentPay()
+        public IActionResult IdentEnterprisePay()
         {
             return View();
         }

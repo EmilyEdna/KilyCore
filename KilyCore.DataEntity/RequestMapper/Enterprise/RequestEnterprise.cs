@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace KilyCore.DataEntity.RequestMapper.Company
+namespace KilyCore.DataEntity.RequestMapper.Enterprise
 {
-    public class RequestCompany
+    public class RequestEnterprise
     {
         public Guid Id { get; set; }
         public string CompanyName { get; set; }
@@ -37,6 +37,7 @@ namespace KilyCore.DataEntity.RequestMapper.Company
         public string VideoAddress { get; set; }
         public string Discription { get; set; }
         public string Certification { get; set; }
+        public bool IsEnable { get; set; }
         public AuditEnum AuditType { get; set; }
     }
 }

@@ -98,7 +98,6 @@ namespace KilyCore.API
                 ass.Add(assembly);
             }
             Configer.Assembly = ass;
-
         }
         /// <summary>
         /// 获取系统配置

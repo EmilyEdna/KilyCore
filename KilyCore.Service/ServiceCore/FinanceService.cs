@@ -1,6 +1,6 @@
-﻿using KilyCore.DataEntity.RequestMapper.Company;
+﻿using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.Finance;
-using KilyCore.DataEntity.ResponseMapper.Company;
+using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.Finance;
 using KilyCore.EntityFrameWork.Model.Company;
 using KilyCore.EntityFrameWork.Model.Finance;
@@ -114,7 +114,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="pageParam"></param>
         /// <returns></returns>
-        public PagedResult<ResponseCompanyIdent> GetIdentPayPage(PageParamList<RequestCompanyIdent> pageParam)
+        public PagedResult<ResponseEnterpriseIdent> GetIdentPayPage(PageParamList<RequestEnterpriseIdent> pageParam)
         {
             IQueryable<CompanyIdent> queryable = Kily.Set<CompanyIdent>().Where(t => t.IsDelete == false);
             IQueryable<CompanyInfo> queryables = Kily.Set<CompanyInfo>().Where(t => t.IsDelete == false);
@@ -122,7 +122,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.CompanyName))
                 queryable = queryable.Where(t => t.CompanyName.Contains(pageParam.QueryParam.CompanyName));
             var data = queryable.OrderByDescending(t => t.CreateTime)
-                .Join(queryables, x => x.CompanyId, y => y.Id, (x, y) => new ResponseCompanyIdent()
+                .Join(queryables, x => x.CompanyId, y => y.Id, (x, y) => new ResponseEnterpriseIdent()
                 {
                     Id = x.Id,
                     IdentNo = x.IdentNo,

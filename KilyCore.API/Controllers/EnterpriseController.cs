@@ -1,5 +1,4 @@
 ﻿using System;
-using KilyCore.DataEntity.RequestMapper.Company;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.Extension.ResultExtension;
@@ -119,7 +118,8 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetRoleAuthorList")]
-        public ObjectResultEx GetRoleAuthorList() {
+        public ObjectResultEx GetRoleAuthorList()
+        {
             return ObjectResultEx.Instance(EnterpriseService.GetRoleAuthorList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -141,7 +141,7 @@ namespace KilyCore.API.Controllers
         /// <param name="pageParam"></param>
         /// <returns></returns>
         [HttpPost("GetCompanyPage")]
-        public ObjectResultEx GetCompanyPage(PageParamList<RequestCompany> pageParam)
+        public ObjectResultEx GetCompanyPage(PageParamList<RequestEnterprise> pageParam)
         {
             return ObjectResultEx.Instance(EnterpriseService.GetCompanyPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -164,6 +164,16 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.AuditCompany(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 启用账号
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EnableAccount")]
+        public ObjectResultEx EnableAccount(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseService.EnableAccount(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
 
         #region 认证审核
@@ -173,7 +183,7 @@ namespace KilyCore.API.Controllers
         /// <param name="pageParam"></param>
         /// <returns></returns>
         [HttpPost("GetCompanyIdentPage")]
-        public ObjectResultEx GetCompanyIdentPage(PageParamList<RequestCompanyIdent> pageParam)
+        public ObjectResultEx GetCompanyIdentPage(PageParamList<RequestEnterpriseIdent> pageParam)
         {
             return ObjectResultEx.Instance(EnterpriseService.GetCompanyIdentPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -183,7 +193,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetCompanyIdentDetail")]
-        public ObjectResultEx GetCompanyIdentDetail(RequestCompanyIdent Param)
+        public ObjectResultEx GetCompanyIdentDetail(RequestEnterpriseIdent Param)
         {
             return ObjectResultEx.Instance(EnterpriseService.GetCompanyIdentDetail(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }

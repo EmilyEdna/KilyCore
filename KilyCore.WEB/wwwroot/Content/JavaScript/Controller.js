@@ -11,6 +11,7 @@ controller.ajax = function (option) {
         crossDomain: undefined,
         xhrFields: undefined,
         async: true,
+        cache: false,
         success: null
     };
     var options = $.extend(defaultOption, option);
@@ -21,6 +22,7 @@ controller.ajax = function (option) {
         dataType: options.dataType,
         type: options.type,
         async: options.async,
+        cache: options.cache,
         crossDomain: options.crossDomain,
         xhrFields: options.xhrFields,
         success: function (result) {
