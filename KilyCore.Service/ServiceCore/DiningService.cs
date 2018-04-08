@@ -54,7 +54,8 @@ namespace KilyCore.Service.ServiceCore
                 DingRoleId = t.DingRoleId,
                 Phone = t.Phone,
                 Email = t.Email,
-                TypePath = t.TypePath
+                TypePath = t.TypePath,
+                TableName=t.GetType().Name
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -79,7 +80,10 @@ namespace KilyCore.Service.ServiceCore
                 Email = t.Email,
                 TypePath = t.TypePath,
                 Certification=t.Certification,
-                ImplUser=t.ImplUser
+                ImplUser=t.ImplUser,
+                AuditInfo= Kily.Set<SystemAudit>()
+                    .Where(x => x.IsDelete == false)
+                    .Where(x => x.TableId == t.Id).ToList().MapToList<SystemAudit, ResponseAudit>()
             }).FirstOrDefault();
             return data;
         }

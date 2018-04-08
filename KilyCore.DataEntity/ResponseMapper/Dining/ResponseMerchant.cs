@@ -1,4 +1,5 @@
-﻿using KilyCore.EntityFrameWork.ModelEnum;
+﻿using KilyCore.DataEntity.ResponseMapper.System;
+using KilyCore.EntityFrameWork.ModelEnum;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -48,5 +49,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Dining
         }
         public string Certification { get; set; }
         public string ImplUser { get; set; }
+        public string TableName { get; set; }
+        public IList<ResponseAudit> AuditInfo { get; set; }
     }
 }

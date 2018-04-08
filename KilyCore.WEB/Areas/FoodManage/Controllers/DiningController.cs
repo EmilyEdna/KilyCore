@@ -35,5 +35,11 @@ namespace KilyCore.WEB.Areas.FoodManage.Controllers
             return View();
         }
         #endregion
+        #region  审核商家
+        public IActionResult AuditMerchant()
+        {
+            return View();
+        }
+        #endregion
     }
 }

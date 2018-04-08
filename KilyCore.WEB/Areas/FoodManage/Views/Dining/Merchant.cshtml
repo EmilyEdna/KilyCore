@@ -30,6 +30,7 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary detail"><i class="fa fa-trash-o"></i>详情</button>');
+                    action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-trash-o"></i>审核</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
@@ -37,11 +38,23 @@
                         controller.OpenWindow({
                             title: "商家详情",
                             type: 2,
-                            height: "400px",
-                            width: "600px",
+                            height: "600px",
+                            width: "800px",
                             url: "FoodManage/Dining/MerchantDetail?Id=" + row.Id,
                             callBack: function (result) {
                                 result.popClose();
+                            }
+                        });
+                    },
+                    "click .audit": function (event, val, row, index) { 
+                        controller.OpenWindow({
+                            title: "商家审核",
+                            type: 2,
+                            height: "400px",
+                            width: "600px",
+                            url: "FoodManage/Dining/AuditMerchant?Id=" + row.Id + "&TableName="+row.TableName,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
                             }
                         });
                     }
