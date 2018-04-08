@@ -79,9 +79,5 @@ namespace KilyCore.EntityFrameWork.Model.Company
         /// 集团角色Id
         /// </summary>
         public virtual Guid? EnterpriseRoleId { get; set; }
-        /// <summary>
-        /// 是否启用
-        /// </summary>
-        public virtual bool IsEnable { get; set; }
     }
 }

@@ -18,7 +18,7 @@ namespace KilyCore.Service.IServiceCore
         #region 集团菜单
         PagedResult<ResponseEnterpriseMenu> GetEnterpriseMenuPage(PageParamList<RequestEnterpriseMenu> pageParam);
         String RemoveEnterpriseMenu(Guid Id);
-        IList<ResponseEnterpriseMenu> GetEnterpriseParentMenu();
+        IList<ResponseEnterpriseMenu> AddEnterpriseParentMenu();
         ResponseEnterpriseMenu GetEnterpriseMenuDetail(Guid Id);
         String EditEnterpriseMenu(RequestEnterpriseMenu Param);
         IList<ResponseParentTree> GetEnterpriseTree();
@@ -37,7 +37,6 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseEnterprise> GetCompanyPage(PageParamList<RequestEnterprise> pageParam);
         ResponseEnterprise GetCompanyDetail(Guid Id);
         String AuditCompany(RequestAudit Param);
-        String EnableAccount(Guid Id);
         #endregion
 
         #region 认证审核

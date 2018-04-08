@@ -13,10 +13,10 @@ namespace KilyCore.EntityFrameWork.Model.Dining
         /// <summary>
         /// 角色名称
         /// </summary>
-        public virtual string RoleName { get; set; }
+        public virtual string AuthorName { get; set; }
         /// <summary>
-        /// 角色菜单
+        /// 选中的菜单
         /// </summary>
-        public virtual string MenuPath { get; set; }
+        public virtual string AuthorMenuPath { get; set; }
     }
 }

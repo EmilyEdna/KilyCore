@@ -19,5 +19,21 @@ namespace KilyCore.WEB.Areas.FoodManage.Controllers
             return View();
         }
         #endregion
+        #region 餐饮菜单
+        public IActionResult FoodMenu()
+        {
+            return View();
+        }
+        public IActionResult FoodMenuEdit()
+        {
+            return View();
+        }
+        #endregion
+        #region 餐饮角色
+        public IActionResult FoodRole()
+        {
+            return View();
+        }
+        #endregion
     }
 }

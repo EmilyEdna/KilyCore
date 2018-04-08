@@ -32,13 +32,13 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseService.GetEnterpriseMenuDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
-        /// 获取父节菜单
+        /// 父节菜单
         /// </summary>
         /// <returns></returns>
-        [HttpPost("GetEnterpriseParentMenu")]
-        public ObjectResultEx GetEnterpriseParentMenu()
+        [HttpPost("AddEnterpriseParentMenu")]
+        public ObjectResultEx AddEnterpriseParentMenu()
         {
-            return ObjectResultEx.Instance(EnterpriseService.GetEnterpriseParentMenu(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseService.AddEnterpriseParentMenu(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 企业菜单分页
@@ -163,16 +163,6 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx AuditCompany(RequestAudit Param)
         {
             return ObjectResultEx.Instance(EnterpriseService.AuditCompany(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }
-        /// <summary>
-        /// 启用账号
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        [HttpPost("EnableAccount")]
-        public ObjectResultEx EnableAccount(SimlpeParam<Guid> Param)
-        {
-            return ObjectResultEx.Instance(EnterpriseService.EnableAccount(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
 

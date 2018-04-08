@@ -52,8 +52,12 @@ namespace KilyCore.EntityFrameWork.Model.Dining
         /// </summary>
         public virtual string Email { get; set; }
         /// <summary>
-        /// 是否启用账号
+        /// 营业执照
         /// </summary>
-        public virtual bool IsEnable { get; set; }
+        public virtual string Certification { get; set; }
+        /// <summary>
+        /// 代表人
+        /// </summary>
+        public virtual string ImplUser { get; set; }
     }
 }

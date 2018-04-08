@@ -20,7 +20,7 @@
                 {
                     //获取详情
                     controller.ajax({
-                        url: "System/GetMenuDetail",
+                        url: "Dining/GetDiningMenuDetail",
                         data: { Id: Guid },
                         type: "post",
                         async: false,
@@ -34,9 +34,9 @@
                 }
             },
              //追加父菜单
-            AppendParentMenu: function () { 
+            AppendParentMenu: function () {
                 controller.ajax({
-                    url: 'System/AddSystemParentMenu',
+                    url: 'Dining/AddDiningParentMenu',
                     data: {},
                     type: "post",
                     async: false,
@@ -79,7 +79,7 @@
 }
 <div class="ibox float-e-margins">
     <div class="ibox-content">
-        <form class="orm-horizontal" method="post" action="System/EditMenu" id="Edit">
+        <form class="orm-horizontal" method="post" action="Dining/EditDiningMenu" id="Edit">
             <input name="Id" id="id" type="hidden" />
             <input name="MenuId" id="menuId" type="hidden" />
             <table class="table table-hover table-bordered">
@@ -112,3 +112,4 @@
         </form>
     </div>
 </div>
+

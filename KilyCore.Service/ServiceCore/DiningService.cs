@@ -1,6 +1,7 @@
 ﻿using KilyCore.DataEntity.RequestMapper.Dining;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Dining;
+using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.EntityFrameWork.Model.Dining;
 using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
@@ -21,21 +22,7 @@ namespace KilyCore.Service.ServiceCore
 {
     public class DiningService : Repository, IDiningService
     {
-        #region 商家中心
-        /// <summary>
-        /// 启用账号
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public string EnableAccount(Guid Id)
-        {
-            DiningInfo info = Kily.Set<DiningInfo>().Where(t => t.Id == Id).FirstOrDefault();
-            info.IsEnable = true;
-            if (UpdateField<DiningInfo>(info, "IsEnable"))
-                return ServiceMessage.HANDLESUCCESS;
-            else
-                return ServiceMessage.HANDLEFAIL;
-        }
+        #region 商家资料
         /// <summary>
         /// 商家分页列表
         /// </summary>
@@ -67,8 +54,7 @@ namespace KilyCore.Service.ServiceCore
                 DingRoleId = t.DingRoleId,
                 Phone = t.Phone,
                 Email = t.Email,
-                TypePath = t.TypePath,
-                IsEnable = t.IsEnable
+                TypePath = t.TypePath
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -92,12 +78,11 @@ namespace KilyCore.Service.ServiceCore
                 Phone = t.Phone,
                 Email = t.Email,
                 TypePath = t.TypePath,
-                IsEnable = t.IsEnable
+                Certification=t.Certification,
+                ImplUser=t.ImplUser
             }).FirstOrDefault();
             return data;
         }
-        #endregion
-        #region 资料审核
         /// <summary>
         /// 审核商家资料
         /// </summary>
@@ -118,6 +103,195 @@ namespace KilyCore.Service.ServiceCore
             }
             else
                 return ServiceMessage.INSERTFAIL;
+        }
+        #endregion
+        #region 餐饮菜单
+        /// <summary>
+        /// 菜单分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseDiningMenu> GetDiningMenuPage(PageParamList<RequestDiningMenu> pageParam)
+        {
+            IQueryable<DiningMenu> queryable = Kily.Set<DiningMenu>().Where(t => t.IsDelete == false).AsQueryable();
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.MenuName))
+                queryable = queryable.Where(t => t.MenuName.Contains(pageParam.QueryParam.MenuName));
+            var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseDiningMenu()
+            {
+                Id = t.Id,
+                MenuId = t.MenuId,
+                ParentId = t.ParentId,
+                MenuAddress = t.MenuAddress,
+                MenuName = t.MenuName,
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑菜单
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditDiningMenu(RequestDiningMenu Param)
+        {
+            DiningMenu tree = Param.MapToEntity<DiningMenu>();
+            if (Param.Id != Guid.Empty)
+            {
+                //修改
+                if (Update<DiningMenu, RequestDiningMenu>(tree, Param))
+                    return ServiceMessage.UPDATESUCCESS;
+                else
+                    return ServiceMessage.UPDATEFAIL;
+            }
+            else
+            {
+                //新增
+                if (tree.HasChildrenNode) //true就是一级菜单
+                {
+                    tree.ParentId = null;
+                    tree.Level = MenuEnum.LevelOne;
+                    tree.MenuAddress = null;
+                    tree.MenuId = Guid.NewGuid();
+                }
+                else
+                {
+                    tree.Level = MenuEnum.LevelTwo;
+                    tree.MenuId = Guid.NewGuid();
+                }
+                if (Insert<DiningMenu>(tree))
+                    return ServiceMessage.INSERTSUCCESS;
+                else
+                    return ServiceMessage.INSERTFAIL;
+            }
+        }
+        /// <summary>
+        /// 删除菜单
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveMenu(Guid Id)
+        {
+            if (Delete<DiningMenu>(ExpressionExtension.GetExpression<DiningMenu>("Id", Id, ExpressionEnum.Equals)))
+                return ServiceMessage.REMOVESUCCESS;
+            else
+                return ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 菜单详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseDiningMenu GetDiningMenuDetail(Guid Id)
+        {
+            var data = Kily.Set<DiningMenu>().Where(t => t.Id == Id).AsNoTracking().Select(t => new ResponseDiningMenu()
+            {
+                Id = t.Id,
+                ParentId = t.ParentId,
+                MenuId = t.MenuId,
+                MenuName = t.MenuName,
+                MenuIcon = t.MenuIcon,
+                MenuAddress = t.MenuAddress,
+                HasChildrenNode = t.HasChildrenNode
+            }).FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 父级菜单
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseDiningMenu> AddDiningParentMenu()
+        {
+            var query = Kily.Set<DiningMenu>().Where(t => t.Level == MenuEnum.LevelOne).Where(t => t.ParentId == null).AsNoTracking().AsQueryable();
+            var data = query.Select(t => new ResponseDiningMenu()
+            {
+                MenuId = t.MenuId,
+                MenuName = t.MenuName
+            }).ToList();
+            return data;
+        }
+        #endregion
+        #region 餐饮权限菜单树
+        /// <summary>
+        /// 餐饮权限菜单树
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseParentTree> GetDiningTree()
+        {
+            IQueryable<ResponseParentTree> queryable = Kily.Set<DiningMenu>().Where(t => t.IsDelete == false)
+              .Where(t => t.Level == MenuEnum.LevelOne)
+              .AsNoTracking().Select(t => new ResponseParentTree()
+              {
+                  Id = t.Id,
+                  Text = t.MenuName,
+                  Color = "black",
+                  BackClolor = "white",
+                  SelectedIcon = "fa fa-refresh fa-spin",
+                  Nodes = Kily.Set<DiningMenu>().Where(x => x.IsDelete == false)
+                  .Where(x => x.Level != MenuEnum.LevelOne)
+                  .Where(x => x.ParentId == t.MenuId).AsNoTracking()
+                  .Select(x => new ResponseChildTree()
+                  {
+                      Id = x.Id,
+                      Text = x.MenuName,
+                      Color = "black",
+                      BackClolor = "white",
+                      SelectedIcon = "fa fa-refresh fa-spin",
+                  }).AsQueryable()
+              }).AsQueryable();
+            var data = queryable.ToList();
+            return data;
+        }
+        #endregion
+        #region 餐饮权限
+        /// <summary>
+        ///编辑角色
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditRole(RequestAuthorRole Param)
+        {
+            DiningRoleAuthor Author = Param.MapToEntity<DiningRoleAuthor>();
+            if (Kily.Set<DiningRoleAuthor>().Where(t => t.IsDelete == false).Where(t => t.AuthorName.Equals(Author.AuthorName)).AsNoTracking().FirstOrDefault() != null)
+            {
+                return "角色名称重复请重新添加!";
+            }
+            else
+            {
+                if (Insert<DiningRoleAuthor>(Author))
+                    return ServiceMessage.INSERTSUCCESS;
+                else
+                    return ServiceMessage.INSERTFAIL;
+            }
+        }
+        /// <summary>
+        /// 角色权限列表分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseAuthorRole> GetAuthorPage(PageParamList<RequestAuthorRole> pageParam)
+        {
+            IQueryable<DiningRoleAuthor> queryable = Kily.Set<DiningRoleAuthor>().Where(t => t.IsDelete == false).AsQueryable();
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.AuthorName))
+                queryable = queryable.Where(t => t.AuthorName.Contains(pageParam.QueryParam.AuthorName));
+            var data = queryable.Select(t => new ResponseAuthorRole()
+            {
+
+                Id = t.Id,
+                AuthorName = t.AuthorName,
+                AuthorMenuPath = t.AuthorMenuPath
+            }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 删除角色
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveAuthorRole(Guid Id)
+        {
+            if (Delete<DiningRoleAuthor>(t => t.Id == Id))
+                return ServiceMessage.REMOVESUCCESS;
+            else
+                return ServiceMessage.REMOVEFAIL;
         }
         #endregion
     }

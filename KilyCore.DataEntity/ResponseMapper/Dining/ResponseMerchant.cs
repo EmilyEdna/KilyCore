@@ -18,8 +18,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Dining
         public string Phone { get; set; }
         public Guid? DingRoleId { get; set; }
         public string TypePath { get; set; }
-        public bool IsEnable { get; set; }
-        public string EnableTypeName { get => IsEnable ? "启用" : "禁用"; }
         public string Province
         {
             get
@@ -48,17 +46,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Dining
                 return !string.IsNullOrEmpty(TypePath) ? (TypePath.Split(',').Length >= 4 ? (TypePath.Split(',')[3]) : null) : null;
             }
         }
-    }
-    public class ResponseMerchantAttach
-    {
-        public Guid Id { get; set; }
         public string Certification { get; set; }
         public string ImplUser { get; set; }
-        public string MerchantName { get; set; }
-        public string Phone { get; set; }
-        public string Email { get; set; }
-        public AuditEnum AuditType { get; set; }
-        public string AuditTypeName { get; set; }
-        public string TableName { get; set; }
     }
 }

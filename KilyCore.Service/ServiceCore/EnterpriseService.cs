@@ -25,10 +25,10 @@ namespace KilyCore.Service.ServiceCore
     {
         #region 集团菜单
         /// <summary>
-        /// 获取父级菜单
+        /// 父级菜单
         /// </summary>
         /// <returns></returns>
-        public IList<ResponseEnterpriseMenu> GetEnterpriseParentMenu()
+        public IList<ResponseEnterpriseMenu> AddEnterpriseParentMenu()
         {
             var query = Kily.Set<EnterpriseMenu>().Where(t => t.Level == MenuEnum.LevelOne).Where(t => t.ParentId == null).AsNoTracking().AsQueryable();
             var data = query.Select(t => new ResponseEnterpriseMenu()
@@ -285,8 +285,7 @@ namespace KilyCore.Service.ServiceCore
                 CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
                 AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
                 TableName = t.GetType().Name,
-                AuditType = t.AuditType,
-                IsEnable = t.IsEnable
+                AuditType = t.AuditType
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -351,20 +350,6 @@ namespace KilyCore.Service.ServiceCore
             }
             else
                 return ServiceMessage.INSERTFAIL;
-        }
-        /// <summary>
-        /// 启用账号
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public string EnableAccount(Guid Id)
-        {
-            CompanyInfo info= Kily.Set<CompanyInfo>().Where(t => t.Id == Id).FirstOrDefault();
-            info.IsEnable = true;
-            if (UpdateField<CompanyInfo>(info, "IsEnable"))
-                return ServiceMessage.HANDLESUCCESS;
-            else
-                return ServiceMessage.HANDLEFAIL;
         }
         #endregion
 

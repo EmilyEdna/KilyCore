@@ -1,0 +1,155 @@
+﻿@{
+    ViewData["Title"] = "餐饮角色";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                //恢复高度
+                $(window).resize(function (e) {
+                    window.setTimeout(function () {
+                        options.$table.bootstrapTable("resetView", { height: $(window).height() - 150 });
+                    }, 200);
+                    e.stopPropagation();
+                });
+                //设置表单
+                this.$table = controller.Table("#tableList", { url: "Dining/GetAuthorPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Role" });
+                //设置权限菜单
+                controller.ajax({
+                    url: "Dining/GetDiningTree",
+                    type: "post",
+                    async: false,
+                    data: {},
+                    success: function (result) {
+                        controller.TreeCtrl("#TreeView", { levels: 1, data: result.data }, "#ShowMenu");
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                $("#save").click(function () {
+                    controller.Validate("#Edit", $("#Edit").SerializeOver());
+                    $("#Edit").submit();
+                });
+            },
+            //行为
+            action: {
+                TableFormatter: function (val, row, index) {
+                    var action = [];
+                    action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
+                    return action.join("&nbsp;");
+                },
+                TableEvents: {
+                    "click .del": function (event, val, row, index) {
+                        controller.Confirm("确认删除？", function (bool) {
+                            if (bool) {
+                                controller.ajax({
+                                    url: "Dining/RemoveAuthorRole",
+                                    data: { Id: row.Id },
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
+                    },
+                }//表单事件结束
+            }//行为结束
+        }
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+@section css{
+    <style>
+        .ibox-content {
+            border-top-style: none;
+        }
+    </style>
+}
+<!--导航-->
+<div class="tabs-container" style="margin-top:10px;">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a data-toggle="tab" href="#tab-1" aria-expanded="true"> 权限列表</a>
+        </li>
+        <li>
+            <a data-toggle="tab" href="#tab-2" aria-expanded="false">基本信息</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div id="tab-1" class="tab-pane active">
+            <div class="ibox-content">
+                <div class="row">
+                    <form id="Role">
+                        <div class="col-sm-9 m-b-xs">
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input type="text" placeholder="角色名称" class="input-sm form-control" name="AuthorName">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
+                                    <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive m-t-sm">
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="AuthorName" data-halign="center" data-align="center" data-valign="middle">角色名称</th>
+                                <th data-field="AuthorCount" data-halign="center" data-align="center" data-valign="middle">菜单总数</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="tab-2" class="tab-pane">
+            <div class="panel-body">
+                <form method="post" class="form-horizontal" action="Dining/EditRole" id="Edit">
+                    <!--名称-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">请输入角色名称</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control required" name="AuthorName" data-msg-required="请输入角色名称">
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--菜单-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">请分配权限菜单</label>
+                        <div class="col-sm-4">
+                            <div id="TreeView"></div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div id="ShowMenu"></div>
+                        </div>
+                    </div>
+                    <!--结束-->
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <button class="btn btn-primary" type="button" id="save">保存内容</button>
+                            <button class="btn btn-white" type="button">取消</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

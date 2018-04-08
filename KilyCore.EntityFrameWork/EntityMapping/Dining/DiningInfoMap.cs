@@ -18,11 +18,4 @@ namespace KilyCore.EntityFrameWork.EntityMapping.Dining
             builder.Property(t => t.MerchantName).IsRequired();
         }
     }
-    public class DiningInfoAttachMap : IEntityTypeConfiguration<DiningInfoAttach> {
-        public void Configure(EntityTypeBuilder<DiningInfoAttach> builder)
-        {
-            builder.ToTable(typeof(DiningInfoAttach).Name);
-            builder.HasKey(t => t.Id);
-        }
-    }
 }

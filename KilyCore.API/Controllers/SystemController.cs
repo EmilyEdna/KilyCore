@@ -33,10 +33,10 @@ namespace KilyCore.API.Controllers
         /// 获取父节菜单
         /// </summary>
         /// <returns></returns>
-        [HttpPost("GetParentMenu")]
-        public ObjectResultEx GetParentMenu()
+        [HttpPost("AddSystemParentMenu")]
+        public ObjectResultEx AddSystemParentMenu()
         {
-            return ObjectResultEx.Instance(SystemService.GetParentMenu(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(SystemService.AddSystemParentMenu(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 菜单分页
@@ -194,10 +194,10 @@ namespace KilyCore.API.Controllers
         /// 权限区域树
         /// </summary>
         /// <returns></returns>
-        [HttpPost("GetSystemParentTree")]
-        public ObjectResultEx GetSystemParentTree()
+        [HttpPost("GetSystemAdminTree")]
+        public ObjectResultEx GetSystemAdminTree()
         {
-            return ObjectResultEx.Instance(SystemService.GetSystemParentTree(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(SystemService.GetSystemAdminTree(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 用户管理

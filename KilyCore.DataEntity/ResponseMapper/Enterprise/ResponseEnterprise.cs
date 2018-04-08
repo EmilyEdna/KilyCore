@@ -75,7 +75,5 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string AuditTypeName { get; set; }
         public string Honor { get; set; }
         public AuditEnum AuditType { get; set; }
-        public bool IsEnable { get; set; }
-        public string EnableTypeName { get=>IsEnable?"启用":"禁用"; }
     }
 }

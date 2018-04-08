@@ -19,7 +19,7 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 系统菜单
         IList<ResponseMenu> GetSystemMenu();
-        IList<ResponseMenu> GetParentMenu();
+        IList<ResponseMenu> AddSystemParentMenu();
         PagedResult<ResponseMenu> GetMenuPage(PageParamList<RequestMenu> pageParam);
         ResponseMenu GetMenuDetail(Guid Id);
         String RemoveMenu(Guid Id);
@@ -37,7 +37,7 @@ namespace KilyCore.Service.IServiceCore
         IList<ResponseTree> GetSystemAreaTrees();
         #endregion
         #region 权限菜单树
-        IList<ResponseParentTree> GetSystemParentTree();
+        IList<ResponseParentTree> GetSystemAdminTree();
         #endregion
         #region 省市区
         IList<ResponseProvince> GetProvince();

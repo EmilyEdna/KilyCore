@@ -31,7 +31,6 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary detail"><i class="fa fa-trash-o"></i>详情</button>');
-                    action.push('<button class="btn btn-sm btn-primary enable"><i class="fa fa-trash-o"></i>启用</button>');
                     if (row.AuditType == 20)
                         action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-pencil-square-o"></i>审核</button>');
                     return action.join("&nbsp;")
@@ -58,20 +57,6 @@
                             url: "CliqueManage/Enterprise/AuditDataInfo?Id=" + row.Id + "&TableName=" + row.TableName,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
-                            }
-                        });
-                    },
-                    "click .enable": function (event, val, row, index) { 
-                        controller.Confirm("确认启用？", function (bool) {
-                            if (bool) {
-                                controller.ajax({
-                                    url: "Enterprise/EnableAccount",
-                                    data: { Id: row.Id },
-                                    type: 'post',
-                                    success: function (result) {
-                                        options.$table.refresh();
-                                    }
-                                });
                             }
                         });
                     }

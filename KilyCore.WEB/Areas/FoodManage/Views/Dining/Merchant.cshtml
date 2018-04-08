@@ -30,7 +30,6 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary detail"><i class="fa fa-trash-o"></i>详情</button>');
-                    action.push('<button class="btn btn-sm btn-primary enable"><i class="fa fa-trash-o"></i>启用</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
@@ -43,20 +42,6 @@
                             url: "FoodManage/Dining/MerchantDetail?Id=" + row.Id,
                             callBack: function (result) {
                                 result.popClose();
-                            }
-                        });
-                    },
-                    "click .enable": function (event, val, row, index) {
-                        controller.Confirm("确认启用？", function (bool) {
-                            if (bool) {
-                                controller.ajax({
-                                    url: "Dining/EnableAccount",
-                                    data: { Id: row.Id },
-                                    type: 'post',
-                                    success: function (result) {
-                                        options.$table.refresh();
-                                    }
-                                });
                             }
                         });
                     }

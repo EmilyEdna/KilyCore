@@ -116,7 +116,7 @@ namespace KilyCore.Service.ServiceCore
         /// 获取父级菜单
         /// </summary>
         /// <returns></returns>
-        public IList<ResponseMenu> GetParentMenu()
+        public IList<ResponseMenu> AddSystemParentMenu()
         {
             var query = Kily.Set<SystemMenu>().Where(t => t.Level == MenuEnum.LevelOne).Where(t => t.ParentId == null).AsNoTracking().AsQueryable();
             var data = query.Select(t => new ResponseMenu()
@@ -579,7 +579,7 @@ namespace KilyCore.Service.ServiceCore
         /// 获取权限菜单树
         /// </summary>
         /// <returns></returns>
-        public IList<ResponseParentTree> GetSystemParentTree()
+        public IList<ResponseParentTree> GetSystemAdminTree()
         {
             if (UserInfo().AccountType == AccountEnum.Admin)
             {
