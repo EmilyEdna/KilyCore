@@ -38,6 +38,7 @@ namespace KilyCore.Service.IServiceCore
         #region 认证审核
         PagedResult<ResponseDiningIdent> GetDiningIdentPage(PageParamList<RequestDiningIdent> pageParam);
         ResponseDiningIdent GetDiningIdentDetail(Guid Id);
+        String AuditIdent(RequestAudit Param);
         #endregion
     }
 }

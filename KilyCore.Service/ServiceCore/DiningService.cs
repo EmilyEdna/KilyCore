@@ -346,7 +346,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<DiningIdent> queryable = Kily.Set<DiningIdent>().Where(t => t.IsDelete == false);
             IQueryable<DiningIdentAttach> queryables = Kily.Set<DiningIdentAttach>().Where(t => t.IsDelete == false);
-            var data = queryable.Join(queryables, x => x.Id, t => t.IdentId, (x, t) => new ResponseDiningIdent()
+            var data = queryable.GroupJoin(queryables, x => x.Id, p => p.IdentId, (x, t) => new ResponseDiningIdent()
             {
                 MerchantName = x.MerchantName,
                 IdentStarName = AttrExtension.GetSingleDescription<IdentEnum, DescriptionAttribute>(x.IdentStar),
@@ -362,22 +362,43 @@ namespace KilyCore.Service.ServiceCore
                 Remark=x.Remark,
                 IdentStartTime=x.IdentStartTime,
                 IdentEndTime=x.IdentEndTime,
-                ImgCard=t.ImgCard,
-                ImgApply=t.ImgApply,
-                ImgResearch=t.ImgResearch,
-                ImgAgreement=t.ImgAgreement,
-                ImgMaterialOrder=t.ImgMaterialOrder,
-                ImgDisinfection=t.ImgDisinfection,
-                ImgMaterialSave=t.ImgMaterialSave,
-                ImgAbandoned=t.ImgAbandoned,
-                ImgSample=t.ImgSample,
-                ImgWorkingPerson=t.ImgWorkingPerson,
-                ImgOther=t.ImgOther,
+                ImgCard=t.FirstOrDefault().ImgCard,
+                ImgApply=t.FirstOrDefault().ImgApply,
+                ImgResearch=t.FirstOrDefault().ImgResearch,
+                ImgAgreement=t.FirstOrDefault().ImgAgreement,
+                ImgMaterialOrder=t.FirstOrDefault().ImgMaterialOrder,
+                ImgDisinfection=t.FirstOrDefault().ImgDisinfection,
+                ImgMaterialSave=t.FirstOrDefault().ImgMaterialSave,
+                ImgAbandoned=t.FirstOrDefault().ImgAbandoned,
+                ImgSample=t.FirstOrDefault().ImgSample,
+                ImgWorkingPerson=t.FirstOrDefault().ImgWorkingPerson,
+                ImgOther=t.FirstOrDefault().ImgOther,
                 AuditInfo = Kily.Set<SystemAudit>()
                     .Where(o => o.IsDelete == false)
                     .Where(o => o.TableId == x.Id).ToList().MapToList<SystemAudit, ResponseAudit>()
             }).FirstOrDefault();
             return data;
+        }
+        /// <summary>
+        /// 审核认证
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string AuditIdent(RequestAudit Param)
+        {
+            Param.AuditName = UserInfo().TrueName;
+            SystemAudit Audit = Param.MapToEntity<SystemAudit>();
+            if (Insert<SystemAudit>(Audit))
+            {
+                DiningIdent Ident = Kily.Set<DiningIdent>().Where(t => t.IsDelete == false).Where(t => t.Id == Param.TableId).FirstOrDefault();
+                Ident.AuditType = Param.AuditType;
+                if (UpdateField<DiningIdent>(Ident, "AuditType"))
+                    return ServiceMessage.HANDLESUCCESS;
+                else
+                    return ServiceMessage.HANDLEFAIL;
+            }
+            else
+                return ServiceMessage.INSERTFAIL;
         }
         #endregion
     }

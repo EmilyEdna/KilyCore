@@ -75,6 +75,10 @@
                         html += '<td class="text-warning">待上级审核</td></tr>';
                     if (obj.AuditType == 40)
                         html += '<td class="text-warning">审核通过</td></tr>';
+                    if (obj.AuditType == 50)
+                        html += '<td class="text-warning">终审未通过</td></tr>';
+                    if (obj.AuditType == 60)
+                        html += '<td class="text-warning">终审通过</td></tr>';
                 })
                 $("#AuditInfo").html(html);
             },
