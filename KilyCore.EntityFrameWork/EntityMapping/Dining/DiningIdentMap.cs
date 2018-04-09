@@ -13,6 +13,8 @@ namespace KilyCore.EntityFrameWork.EntityMapping.Dining
         {
             builder.ToTable(typeof(DiningIdent).Name);
             builder.HasKey(t => t.Id);
+            builder.Property(t => t.IdentStartTime).HasColumnType(typeof(DateTime).Name);
+            builder.Property(t => t.IdentEndTime).HasColumnType(typeof(DateTime).Name);
         }
     }
     public class DiningIdentAttachMap : IEntityTypeConfiguration<DiningIdentAttach>

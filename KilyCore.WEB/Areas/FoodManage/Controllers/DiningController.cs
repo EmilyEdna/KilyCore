@@ -41,5 +41,19 @@ namespace KilyCore.WEB.Areas.FoodManage.Controllers
             return View();
         }
         #endregion
+        #region 认证审核
+        public IActionResult AuditIdent()
+        {
+            return View();
+        }
+        public IActionResult AuditIdentInfo()
+        {
+            return View();
+        }
+        public IActionResult AuditIdentDetail()
+        {
+            return View();
+        }
+        #endregion
     }
 }

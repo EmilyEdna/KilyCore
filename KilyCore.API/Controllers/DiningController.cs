@@ -90,7 +90,8 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("AddDiningParentMenu")]
-        public ObjectResultEx AddDiningParentMenu() {
+        public ObjectResultEx AddDiningParentMenu()
+        {
             return ObjectResultEx.Instance(DiningService.AddDiningParentMenu(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
@@ -134,6 +135,28 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx RemoveAuthorRole(SimlpeParam<Guid> Param)
         {
             return ObjectResultEx.Instance(DiningService.RemoveAuthorRole(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #region 认证审核
+        /// <summary>
+        /// 商家认证分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetDiningIdentPage")]
+        public ObjectResultEx GetDiningIdentPage(PageParamList<RequestDiningIdent> pageParam)
+        {
+            return ObjectResultEx.Instance(DiningService.GetDiningIdentPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取认证审核详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetDiningIdentDetail")]
+        public ObjectResultEx GetDiningIdentDetail(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(DiningService.GetDiningIdentDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

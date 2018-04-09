@@ -88,13 +88,10 @@
                     if (options.CompanyType == 20 && field.indexOf("_Y") > 0)
                         if (obj != null)
                             html += "<img src='" + obj + "' class='img-preview-sm'  title='点击放大' style='width:251px;height:300px;padding:5px'/>";
-                    if (options.CompanyType == 30 && field.indexOf("_F") > 0)
+                    if (options.CompanyType == 30 && field.indexOf("_M") > 0)
                         if (obj != null)
                             html += "<img src='" + obj + "' class='img-preview-sm'  title='点击放大' style='width:251px;height:300px;padding:5px'/>";
-                    if (options.CompanyType == 40 && field.indexOf("_M") > 0)
-                        if (obj != null)
-                            html += "<img src='" + obj + "' class='img-preview-sm'  title='点击放大' style='width:251px;height:300px;padding:5px'/>";
-                    if ((field.indexOf("_X") < 0 && field.indexOf("_F") < 0 && field.indexOf("_M") < 0 && field.indexOf("_Y") < 0) && (field.indexOf("Img") >= 0))
+                    if ((field.indexOf("_X") < 0 && field.indexOf("_M") < 0 && field.indexOf("_Y") < 0) && (field.indexOf("Img") >= 0))
                         if (obj != null)
                             html += "<img src='" + obj + "' class='img-preview-sm'  title='点击放大' style='width:251px;height:300px;padding:5px'/>";
                 });
@@ -153,6 +150,16 @@
                         <th><label class="control-label">联系电话</label></th>
                         <td class="has-warning">
                             <input type="text" class="form-control" name="LinkPhone" readonly="readonly" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label class="control-label">认证时间</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="IdentStartTime" readonly="readonly" />
+                        </td>
+                        <th><label class="control-label">截至时间</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="IdentEndTime" readonly="readonly" />
                         </td>
                     </tr>
                     <tr>

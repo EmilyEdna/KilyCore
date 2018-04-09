@@ -412,6 +412,8 @@ namespace KilyCore.Service.ServiceCore
                 data = queryable.GroupJoin(Plant, x => x.Id, y => y.IdentId, (x, y) => new { x, y }).GroupJoin(Kily.Set<SystemAudit>(), t => t.x.Id, o => o.TableId, (t, o) => new ResponseEnterpriseIdent()
                 {
                     Id = t.x.Id,
+                    IdentStartTime=t.x.IdentStartTime,
+                    IdentEndTime = t.x.IdentEndTime,
                     IdentNo = t.x.IdentNo,
                     CompanyName = t.x.CompanyName,
                     CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.x.CompanyType),
@@ -443,6 +445,8 @@ namespace KilyCore.Service.ServiceCore
                 data = queryable.GroupJoin(Production, x => x.Id, y => y.IdentId, (x, y) => new { x, y }).GroupJoin(Kily.Set<SystemAudit>(), t => t.x.Id, o => o.TableId, (t, o) => new ResponseEnterpriseIdent()
                 {
                     Id = t.x.Id,
+                    IdentStartTime = t.x.IdentStartTime,
+                    IdentEndTime = t.x.IdentEndTime,
                     IdentNo = t.x.IdentNo,
                     CompanyName = t.x.CompanyName,
                     CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.x.CompanyType),
@@ -473,6 +477,8 @@ namespace KilyCore.Service.ServiceCore
                 data = queryable.GroupJoin(Circulation, x => x.Id, y => y.IdentId, (x, y) => new { x, y }).GroupJoin(Kily.Set<SystemAudit>(), t => t.x.Id, o => o.TableId, (t, o) => new ResponseEnterpriseIdent()
                 {
                     Id = t.x.Id,
+                    IdentStartTime = t.x.IdentStartTime,
+                    IdentEndTime = t.x.IdentEndTime,
                     IdentNo = t.x.IdentNo,
                     CompanyName = t.x.CompanyName,
                     CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.x.CompanyType),
@@ -505,6 +511,8 @@ namespace KilyCore.Service.ServiceCore
                 {
                     Id = t.x.Id,
                     IdentNo = t.x.IdentNo,
+                    IdentStartTime = t.x.IdentStartTime,
+                    IdentEndTime = t.x.IdentEndTime,
                     CompanyName = t.x.CompanyName,
                     CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.x.CompanyType),
                     IdentStarName = AttrExtension.GetSingleDescription<IdentEnum, DescriptionAttribute>(t.x.IdentStar),

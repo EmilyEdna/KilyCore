@@ -55,7 +55,7 @@ namespace KilyCore.Service.ServiceCore
                 Phone = t.Phone,
                 Email = t.Email,
                 TypePath = t.TypePath,
-                TableName=t.GetType().Name
+                TableName = t.GetType().Name
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -79,9 +79,9 @@ namespace KilyCore.Service.ServiceCore
                 Phone = t.Phone,
                 Email = t.Email,
                 TypePath = t.TypePath,
-                Certification=t.Certification,
-                ImplUser=t.ImplUser,
-                AuditInfo= Kily.Set<SystemAudit>()
+                Certification = t.Certification,
+                ImplUser = t.ImplUser,
+                AuditInfo = Kily.Set<SystemAudit>()
                     .Where(x => x.IsDelete == false)
                     .Where(x => x.TableId == t.Id).ToList().MapToList<SystemAudit, ResponseAudit>()
             }).FirstOrDefault();
@@ -296,6 +296,88 @@ namespace KilyCore.Service.ServiceCore
                 return ServiceMessage.REMOVESUCCESS;
             else
                 return ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+        #region 认证审核
+        /// <summary>
+        /// 商家认证分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseDiningIdent> GetDiningIdentPage(PageParamList<RequestDiningIdent> pageParam)
+        {
+            IQueryable<DiningIdent> queryable = Kily.Set<DiningIdent>().Where(t => t.IsDelete == false);
+            IQueryable<DiningInfo> queryables = Kily.Set<DiningInfo>().Where(t => t.IsDelete == false);
+            if (pageParam.QueryParam.DiningType.HasValue)
+                queryable = queryable.Where(t => t.DiningType == pageParam.QueryParam.DiningType);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.MerchantName))
+                queryable = queryable.Where(t => t.MerchantName.Contains(pageParam.QueryParam.MerchantName));
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.AreaTree))
+                queryables = queryables.Where(t => t.TypePath.Contains(pageParam.QueryParam.AreaTree));
+            if (UserInfo().AccountType == AccountEnum.Province)
+                queryables = queryables.Where(t => t.TypePath.Contains(UserInfo().Province));
+            if (UserInfo().AccountType == AccountEnum.City)
+                queryables = queryables.Where(t => t.TypePath.Contains(UserInfo().City));
+            if (UserInfo().AccountType == AccountEnum.Area)
+                queryables = queryables.Where(t => t.TypePath.Contains(UserInfo().Area));
+            if (UserInfo().AccountType == AccountEnum.Village)
+                queryables = queryables.Where(t => t.TypePath.Contains(UserInfo().Town));
+            var data = queryables.Join(queryable, a => a.Id, t => t.InfoId, (a, t) => new ResponseDiningIdent()
+            {
+                Id = t.Id,
+                MerchantName = t.MerchantName,
+                IdentStarName = AttrExtension.GetSingleDescription<IdentEnum, DescriptionAttribute>(t.IdentStar),
+                AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
+                DiningTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
+                IdentYear = t.IdentYear,
+                TableName = t.GetType().Name,
+                AuditInfo = Kily.Set<SystemAudit>()
+                    .Where(x => x.IsDelete == false)
+                    .Where(x => x.TableId == t.Id).ToList().MapToList<SystemAudit, ResponseAudit>()
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 获取认证详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseDiningIdent GetDiningIdentDetail(Guid Id)
+        {
+            IQueryable<DiningIdent> queryable = Kily.Set<DiningIdent>().Where(t => t.IsDelete == false);
+            IQueryable<DiningIdentAttach> queryables = Kily.Set<DiningIdentAttach>().Where(t => t.IsDelete == false);
+            var data = queryable.Join(queryables, x => x.Id, t => t.IdentId, (x, t) => new ResponseDiningIdent()
+            {
+                MerchantName = x.MerchantName,
+                IdentStarName = AttrExtension.GetSingleDescription<IdentEnum, DescriptionAttribute>(x.IdentStar),
+                AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(x.AuditType),
+                DiningTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(x.DiningType),
+                IdentYear = x.IdentYear,
+                CommunityCode=x.CommunityCode,
+                Representative=x.Representative,
+                RepresentativeCard=x.RepresentativeCard,
+                SendPerson=x.SendPerson,
+                SendCard=x.SendCard,
+                LinkPhone=x.LinkPhone,
+                Remark=x.Remark,
+                IdentStartTime=x.IdentStartTime,
+                IdentEndTime=x.IdentEndTime,
+                ImgCard=t.ImgCard,
+                ImgApply=t.ImgApply,
+                ImgResearch=t.ImgResearch,
+                ImgAgreement=t.ImgAgreement,
+                ImgMaterialOrder=t.ImgMaterialOrder,
+                ImgDisinfection=t.ImgDisinfection,
+                ImgMaterialSave=t.ImgMaterialSave,
+                ImgAbandoned=t.ImgAbandoned,
+                ImgSample=t.ImgSample,
+                ImgWorkingPerson=t.ImgWorkingPerson,
+                ImgOther=t.ImgOther,
+                AuditInfo = Kily.Set<SystemAudit>()
+                    .Where(o => o.IsDelete == false)
+                    .Where(o => o.TableId == x.Id).ToList().MapToList<SystemAudit, ResponseAudit>()
+            }).FirstOrDefault();
+            return data;
         }
         #endregion
     }

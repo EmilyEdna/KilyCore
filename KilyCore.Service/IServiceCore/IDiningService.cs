@@ -35,5 +35,9 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseAuthorRole> GetAuthorPage(PageParamList<RequestAuthorRole> pageParam);
         String RemoveAuthorRole(Guid Id);
         #endregion
+        #region 认证审核
+        PagedResult<ResponseDiningIdent> GetDiningIdentPage(PageParamList<RequestDiningIdent> pageParam);
+        ResponseDiningIdent GetDiningIdentDetail(Guid Id);
+        #endregion
     }
 }

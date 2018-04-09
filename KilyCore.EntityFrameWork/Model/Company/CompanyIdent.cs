@@ -28,6 +28,14 @@ namespace KilyCore.EntityFrameWork.Model.Company
         /// </summary>
         public virtual CompanyEnum CompanyType { get; set; }
         /// <summary>
+        /// 认证开始时间
+        /// </summary>
+        public virtual DateTime IdentStartTime { get; set; }
+        /// <summary>
+        /// 认证截至时间
+        /// </summary>
+        public virtual DateTime IdentEndTime { get; set; }
+        /// <summary>
         /// 认证星级
         /// </summary>
         public virtual IdentEnum IdentStar { get; set; }

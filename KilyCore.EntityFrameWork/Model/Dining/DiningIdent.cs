@@ -36,6 +36,14 @@ namespace KilyCore.EntityFrameWork.Model.Dining
         /// </summary>
         public virtual int IdentYear { get; set; }
         /// <summary>
+        /// 认证开始时间
+        /// </summary>
+        public virtual DateTime IdentStartTime { get; set; }
+        /// <summary>
+        /// 认证截至时间
+        /// </summary>
+        public virtual DateTime IdentEndTime { get; set; }
+        /// <summary>
         /// 信用代码
         /// </summary>
         public virtual string CommunityCode { get; set; }

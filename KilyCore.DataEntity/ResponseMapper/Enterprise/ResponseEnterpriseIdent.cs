@@ -10,6 +10,14 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
     public class ResponseEnterpriseIdent
     {
         #region 认证企业基本信息
+        /// <summary>
+        /// 认证开始时间
+        /// </summary>
+        public virtual DateTime IdentStartTime { get; set; }
+        /// <summary>
+        /// 认证截至时间
+        /// </summary>
+        public virtual DateTime IdentEndTime { get; set; }
         public Guid Id { get; set; }
         /// <summary>
         /// 认证编号
@@ -113,32 +121,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// 生产检测
         /// </summary>
         public string ImgProduction_Y { get; set; }
-        #endregion
-        #region 餐饮企业字段
-        /// <summary>
-        /// 原料购买证明
-        /// </summary>
-        public string ImgMaterialOrder_F { get; set; }
-        /// <summary>
-        /// 消毒证明
-        /// </summary>
-        public string ImgDisinfection_F { get; set; }
-        /// <summary>
-        /// 原料储藏证明
-        /// </summary>
-        public string ImgMaterialSave_F { get; set; }
-        /// <summary>
-        /// 废弃物处理证明
-        /// </summary>
-        public string ImgAbandoned_F { get; set; }
-        /// <summary>
-        /// 留样证明
-        /// </summary>
-        public string ImgSample_F { get; set; }
-        /// <summary>
-        /// 从业证明
-        /// </summary>
-        public string ImgWorkingPerson_F { get; set; }
         #endregion
         #region 流通企业字段
         /// <summary>
