@@ -12,6 +12,10 @@ namespace KilyCore.EntityFrameWork.Model.Dining
     public class DiningIdent:BaseEntity
     {
         /// <summary>
+        /// 认证编号
+        /// </summary>
+        public virtual string IdentNo { get; set; }
+        /// <summary>
         /// 商家名称
         /// </summary>
         public virtual string MerchantName { get; set; }

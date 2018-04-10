@@ -348,6 +348,7 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<DiningIdentAttach> queryables = Kily.Set<DiningIdentAttach>().Where(t => t.IsDelete == false);
             var data = queryable.GroupJoin(queryables, x => x.Id, p => p.IdentId, (x, t) => new ResponseDiningIdent()
             {
+                IdentNo=x.IdentNo,
                 MerchantName = x.MerchantName,
                 IdentStarName = AttrExtension.GetSingleDescription<IdentEnum, DescriptionAttribute>(x.IdentStar),
                 AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(x.AuditType),

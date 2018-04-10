@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "企业认证";
+    ViewData["Title"] = "餐饮认证";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
@@ -21,7 +21,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "Finance/IdentEnterprisePay", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#IdentPay" });
+                this.$table = controller.Table("#tableList", { url: "Finance/IdentFoodPay", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#IdentPay" });
             },
             //事件
             InitEvents: function () {
@@ -39,7 +39,7 @@
                         controller.Confirm("确认通过？", function (bool) {
                             if (bool) {
                                 controller.ajax({
-                                    url: "Finance/AuditIndetEnterprisePay",
+                                    url: "Finance/AuditIndetFoodPay",
                                     data: { Id: row.Id, Parameter: true },
                                     type: 'post',
                                     success: function (result) {
@@ -53,7 +53,7 @@
                         controller.Confirm("确认未通过？", function (bool) {
                             if (bool) {
                                 controller.ajax({
-                                    url: "Finance/AuditIndetEnterprisePay",
+                                    url: "Finance/AuditIndetFoodPay",
                                     data: { Id: row.Id, Parameter: false },
                                     type: 'post',
                                     success: function (result) {
@@ -79,7 +79,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>企业认证</h5>
+                <h5>餐饮认证</h5>
             </div>
             <div class="ibox-content">
                 <div class="row">
@@ -90,7 +90,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input type="text" placeholder="公司名称" class="input-sm form-control" name="CompanyName">
+                                <input type="text" placeholder="商家名称" class="input-sm form-control" name="MerchantName">
                                 <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
                                     <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
@@ -104,13 +104,11 @@
                         <thead>
                             <tr>
                                 <th data-field="IdentNo" data-halign="center" data-align="center" data-valign="middle">认证编号</th>
-                                <th data-field="CompanyName" data-halign="center" data-align="center" data-valign="middle">公司名称</th>
+                                <th data-field="MerchantName" data-halign="center" data-align="center" data-valign="middle">商家名称</th>
                                 <th data-field="IdentStarName" data-halign="center" data-align="center" data-valign="middle">认证星级</th>
                                 <th data-field="Representative" data-halign="center" data-align="center" data-valign="middle">法人代表</th>
                                 <th data-field="CommunityCode" data-halign="center" data-align="center" data-valign="middle">信用代码</th>
                                 <th data-field="LinkPhone" data-halign="center" data-align="center" data-valign="middle">联系电话</th>
-                                <th data-field="IdentStartTime" data-halign="center" data-align="center" data-valign="middle">开始时间</th>
-                                <th data-field="IdentEndTime" data-halign="center" data-align="center" data-valign="middle">截止时间</th>
                                 <th data-field="AuditTypeName" data-halign="center" data-align="center" data-valign="middle">审核状态</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
@@ -121,4 +119,5 @@
         </div>
     </div>
 </div>
+
 

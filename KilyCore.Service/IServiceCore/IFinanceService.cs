@@ -1,6 +1,8 @@
 ﻿using KilyCore.Configure;
+using KilyCore.DataEntity.RequestMapper.Dining;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.Finance;
+using KilyCore.DataEntity.ResponseMapper.Dining;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.Finance;
 using KilyCore.Service.QueryExtend;
@@ -22,9 +24,13 @@ namespace KilyCore.Service.IServiceCore
         String Archive(RequestAdminAttach param);
         String SendEmail(RequestEMail Param);
         #endregion
-        #region 认证缴费
-        PagedResult<ResponseEnterpriseIdent> GetIdentPayPage(PageParamList<RequestEnterpriseIdent> pageParam);
-        String AuditIndetPay(Guid Key, bool Param);
+        #region 企业认证
+        PagedResult<ResponseEnterpriseIdent> IdentEnterprisePay(PageParamList<RequestEnterpriseIdent> pageParam);
+        String AuditIndetEnterprisePay(Guid Key, bool Param);
+        #endregion
+        #region 餐饮认证
+        PagedResult<ResponseDiningIdent> IdentFoodPay(PageParamList<RequestDiningIdent> pageParam);
+        String AuditIndetFoodPay(Guid Key, bool Param);
         #endregion
     }
 }

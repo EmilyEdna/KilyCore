@@ -9,6 +9,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Dining
     public class ResponseDiningIdent
     {
         /// <summary>
+        /// 认证编号
+        /// </summary>
+        public string IdentNo { get; set; }
+        /// <summary>
         /// 认证开始时间
         /// </summary>
         public  DateTime IdentStartTime { get; set; }

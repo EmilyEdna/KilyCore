@@ -1,8 +1,11 @@
-﻿using KilyCore.DataEntity.RequestMapper.Enterprise;
+﻿using KilyCore.DataEntity.RequestMapper.Dining;
+using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.Finance;
+using KilyCore.DataEntity.ResponseMapper.Dining;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.Finance;
 using KilyCore.EntityFrameWork.Model.Company;
+using KilyCore.EntityFrameWork.Model.Dining;
 using KilyCore.EntityFrameWork.Model.Finance;
 using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
@@ -108,21 +111,20 @@ namespace KilyCore.Service.ServiceCore
         }
         #endregion
 
-        #region 认证缴费-财务
+        #region 企业认证-财务
         /// <summary>
-        /// 认证缴费
+        /// 企业认证
         /// </summary>
         /// <param name="pageParam"></param>
         /// <returns></returns>
-        public PagedResult<ResponseEnterpriseIdent> GetIdentPayPage(PageParamList<RequestEnterpriseIdent> pageParam)
+        public PagedResult<ResponseEnterpriseIdent> IdentEnterprisePay(PageParamList<RequestEnterpriseIdent> pageParam)
         {
             IQueryable<CompanyIdent> queryable = Kily.Set<CompanyIdent>().Where(t => t.IsDelete == false);
-            IQueryable<CompanyInfo> queryables = Kily.Set<CompanyInfo>().Where(t => t.IsDelete == false);
             queryable = queryable.Where(t => t.AuditType >= AuditEnum.AuditSuccess);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.CompanyName))
                 queryable = queryable.Where(t => t.CompanyName.Contains(pageParam.QueryParam.CompanyName));
             var data = queryable.OrderByDescending(t => t.CreateTime)
-                .Join(queryables, x => x.CompanyId, y => y.Id, (x, y) => new ResponseEnterpriseIdent()
+                .Select(x => new ResponseEnterpriseIdent()
                 {
                     Id = x.Id,
                     IdentNo = x.IdentNo,
@@ -131,9 +133,10 @@ namespace KilyCore.Service.ServiceCore
                     Representative = x.Representative,
                     LinkPhone = x.LinkPhone,
                     AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(x.AuditType),
-                    CompanyType = x.CompanyType,
                     CommunityCode = x.CommunityCode,
-                    TableName = x.GetType().Name
+                    TableName = x.GetType().Name,
+                    IdentStartTime = x.IdentStartTime,
+                    IdentEndTime = x.IdentEndTime
                 }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -143,7 +146,7 @@ namespace KilyCore.Service.ServiceCore
         /// <param name="Key"></param>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public string AuditIndetPay(Guid Key, bool Param)
+        public string AuditIndetEnterprisePay(Guid Key, bool Param)
         {
             CompanyIdent Ident = Kily.Set<CompanyIdent>().Where(t => t.Id == Key).FirstOrDefault();
             if (Param)
@@ -151,6 +154,53 @@ namespace KilyCore.Service.ServiceCore
             else
                 Ident.AuditType = AuditEnum.FinanceFail; ;
             if (UpdateField<CompanyIdent>(Ident, "AuditType"))
+                return ServiceMessage.HANDLESUCCESS;
+            else
+                return ServiceMessage.HANDLEFAIL;
+        }
+        #endregion
+
+        #region 餐饮认证-财务
+        /// <summary>
+        /// 餐饮认证
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseDiningIdent> IdentFoodPay(PageParamList<RequestDiningIdent> pageParam)
+        {
+            IQueryable<DiningIdent> queryable = Kily.Set<DiningIdent>().Where(t => t.IsDelete == false);
+            queryable = queryable.Where(t => t.AuditType >= AuditEnum.AuditSuccess);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.MerchantName))
+                queryable = queryable.Where(t => t.MerchantName.Contains(pageParam.QueryParam.MerchantName));
+            var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseDiningIdent()
+            {
+                IdentNo = t.IdentNo,
+                MerchantName = t.MerchantName,
+                IdentStarName = AttrExtension.GetSingleDescription<IdentEnum, DescriptionAttribute>(t.IdentStar),
+                Representative = t.Representative,
+                CommunityCode = t.CommunityCode,
+                LinkPhone = t.LinkPhone,
+                AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
+                TableName = t.GetType().Name,
+                IdentStartTime = t.IdentStartTime,
+                IdentEndTime = t.IdentEndTime
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 是否通过终审
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string AuditIndetFoodPay(Guid Key, bool Param)
+        {
+            DiningIdent Ident = Kily.Set<DiningIdent>().Where(t => t.Id == Key).FirstOrDefault();
+            if (Param)
+                Ident.AuditType = AuditEnum.FinanceSuccess;
+            else
+                Ident.AuditType = AuditEnum.FinanceFail; ;
+            if (UpdateField<DiningIdent>(Ident, "AuditType"))
                 return ServiceMessage.HANDLESUCCESS;
             else
                 return ServiceMessage.HANDLEFAIL;

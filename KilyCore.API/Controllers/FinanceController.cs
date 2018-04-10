@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KilyCore.DataEntity.RequestMapper.Dining;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.Finance;
 using KilyCore.Extension.ResultExtension;
@@ -67,16 +68,16 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(FinanceService.SendEmail(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
-        #region 认证缴费
+        #region 企业认证
         /// <summary>
-        /// 认证缴费
+        /// 企业认证
         /// </summary>
         /// <param name="pageParam"></param>
         /// <returns></returns>
-        [HttpPost("GetIdentPayPage")]
-        public ObjectResultEx GetIdentPayPage(PageParamList<RequestEnterpriseIdent> pageParam)
+        [HttpPost("IdentEnterprisePay")]
+        public ObjectResultEx IdentEnterprisePay(PageParamList<RequestEnterpriseIdent> pageParam)
         {
-            return ObjectResultEx.Instance(FinanceService.GetIdentPayPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(FinanceService.IdentEnterprisePay(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 是否通过终审
@@ -84,10 +85,33 @@ namespace KilyCore.API.Controllers
         /// <param name="Key"></param>
         /// <param name="Value"></param>
         /// <returns></returns>
-        [HttpPost("AuditIndetPay")]
-        public ObjectResultEx AuditIndetPay(SimlpeParam<Guid> Key, SimlpeParam<bool> Value)
+        [HttpPost("AuditIndetEnterprisePay")]
+        public ObjectResultEx AuditIndetEnterprisePay(SimlpeParam<Guid> Key, SimlpeParam<bool> Value)
         {
-            return ObjectResultEx.Instance(FinanceService.AuditIndetPay(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(FinanceService.AuditIndetEnterprisePay(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #region 餐饮认证
+        /// <summary>
+        /// 餐饮认证
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("IdentFoodPay")]
+        public ObjectResultEx IdentFoodPay(PageParamList<RequestDiningIdent> pageParam)
+        {
+            return ObjectResultEx.Instance(FinanceService.IdentFoodPay(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 是否通过终审
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="Value"></param>
+        /// <returns></returns>
+        [HttpPost("AuditIndetFoodPay")]
+        public ObjectResultEx AuditIndetFoodPay(SimlpeParam<Guid> Key, SimlpeParam<bool> Value)
+        {
+            return ObjectResultEx.Instance(FinanceService.AuditIndetFoodPay(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

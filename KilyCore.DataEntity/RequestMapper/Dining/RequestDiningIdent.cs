@@ -7,6 +7,10 @@ namespace KilyCore.DataEntity.RequestMapper.Dining
 {
    public class RequestDiningIdent
     {
+        /// <summary>
+        /// 认证编号
+        /// </summary>
+        public string IdentNo { get; set; }
         public Guid Id { get; set; }
         /// <summary>
         /// 商家名称
