@@ -331,6 +331,7 @@ namespace KilyCore.Service.ServiceCore
                 DiningTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
                 IdentYear = t.IdentYear,
                 TableName = t.GetType().Name,
+                AuditType=t.AuditType,
                 AuditInfo = Kily.Set<SystemAudit>()
                     .Where(x => x.IsDelete == false)
                     .Where(x => x.TableId == t.Id).ToList().MapToList<SystemAudit, ResponseAudit>()
@@ -348,32 +349,32 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<DiningIdentAttach> queryables = Kily.Set<DiningIdentAttach>().Where(t => t.IsDelete == false);
             var data = queryable.GroupJoin(queryables, x => x.Id, p => p.IdentId, (x, t) => new ResponseDiningIdent()
             {
-                IdentNo=x.IdentNo,
+                IdentNo = x.IdentNo,
                 MerchantName = x.MerchantName,
                 IdentStarName = AttrExtension.GetSingleDescription<IdentEnum, DescriptionAttribute>(x.IdentStar),
                 AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(x.AuditType),
                 DiningTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(x.DiningType),
                 IdentYear = x.IdentYear,
-                CommunityCode=x.CommunityCode,
-                Representative=x.Representative,
-                RepresentativeCard=x.RepresentativeCard,
-                SendPerson=x.SendPerson,
-                SendCard=x.SendCard,
-                LinkPhone=x.LinkPhone,
-                Remark=x.Remark,
-                IdentStartTime=x.IdentStartTime,
-                IdentEndTime=x.IdentEndTime,
-                ImgCard=t.FirstOrDefault().ImgCard,
-                ImgApply=t.FirstOrDefault().ImgApply,
-                ImgResearch=t.FirstOrDefault().ImgResearch,
-                ImgAgreement=t.FirstOrDefault().ImgAgreement,
-                ImgMaterialOrder=t.FirstOrDefault().ImgMaterialOrder,
-                ImgDisinfection=t.FirstOrDefault().ImgDisinfection,
-                ImgMaterialSave=t.FirstOrDefault().ImgMaterialSave,
-                ImgAbandoned=t.FirstOrDefault().ImgAbandoned,
-                ImgSample=t.FirstOrDefault().ImgSample,
-                ImgWorkingPerson=t.FirstOrDefault().ImgWorkingPerson,
-                ImgOther=t.FirstOrDefault().ImgOther,
+                CommunityCode = x.CommunityCode,
+                Representative = x.Representative,
+                RepresentativeCard = x.RepresentativeCard,
+                SendPerson = x.SendPerson,
+                SendCard = x.SendCard,
+                LinkPhone = x.LinkPhone,
+                Remark = x.Remark,
+                IdentStartTime = x.IdentStartTime,
+                IdentEndTime = x.IdentEndTime,
+                ImgCard = t.FirstOrDefault().ImgCard,
+                ImgApply = t.FirstOrDefault().ImgApply,
+                ImgResearch = t.FirstOrDefault().ImgResearch,
+                ImgAgreement = t.FirstOrDefault().ImgAgreement,
+                ImgMaterialOrder = t.FirstOrDefault().ImgMaterialOrder,
+                ImgDisinfection = t.FirstOrDefault().ImgDisinfection,
+                ImgMaterialSave = t.FirstOrDefault().ImgMaterialSave,
+                ImgAbandoned = t.FirstOrDefault().ImgAbandoned,
+                ImgSample = t.FirstOrDefault().ImgSample,
+                ImgWorkingPerson = t.FirstOrDefault().ImgWorkingPerson,
+                ImgOther = t.FirstOrDefault().ImgOther,
                 AuditInfo = Kily.Set<SystemAudit>()
                     .Where(o => o.IsDelete == false)
                     .Where(o => o.TableId == x.Id).ToList().MapToList<SystemAudit, ResponseAudit>()
@@ -398,6 +399,18 @@ namespace KilyCore.Service.ServiceCore
                 else
                     return ServiceMessage.HANDLEFAIL;
             }
+            else
+                return ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 认证缴费
+        /// </summary>
+        /// <returns></returns>
+        public string AuditPayment(RequestPayment Param)
+        {
+            SystemPayment payment = Param.MapToEntity<SystemPayment>();
+            if (Insert<SystemPayment>(payment))
+                return ServiceMessage.INSERTSUCCESS;
             else
                 return ServiceMessage.INSERTFAIL;
         }

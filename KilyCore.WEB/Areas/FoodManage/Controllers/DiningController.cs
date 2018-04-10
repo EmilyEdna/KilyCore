@@ -54,6 +54,10 @@ namespace KilyCore.WEB.Areas.FoodManage.Controllers
         {
             return View();
         }
+        public IActionResult Payment()
+        {
+            return View();
+        }
         #endregion
     }
 }

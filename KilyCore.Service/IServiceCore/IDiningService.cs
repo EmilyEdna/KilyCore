@@ -39,6 +39,7 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseDiningIdent> GetDiningIdentPage(PageParamList<RequestDiningIdent> pageParam);
         ResponseDiningIdent GetDiningIdentDetail(Guid Id);
         String AuditIdent(RequestAudit Param);
+        String AuditPayment(RequestPayment Param);
         #endregion
     }
 }

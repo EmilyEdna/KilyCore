@@ -174,6 +174,7 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.MerchantName.Contains(pageParam.QueryParam.MerchantName));
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseDiningIdent()
             {
+                Id=t.Id,
                 IdentNo = t.IdentNo,
                 MerchantName = t.MerchantName,
                 IdentStarName = AttrExtension.GetSingleDescription<IdentEnum, DescriptionAttribute>(t.IdentStar),
@@ -208,3 +209,4 @@ namespace KilyCore.Service.ServiceCore
         #endregion
     }
 }
+

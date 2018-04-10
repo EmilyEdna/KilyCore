@@ -41,6 +41,8 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary detail"><i class="fa fa-trash-o"></i>详情</button>');
+                    if (row.AuditType == 40)
+                        action.push('<button class="btn btn-sm btn-primary pay"><i class="fa fa-credit-card"></i>缴费</button>');
                     if (row.AuditInfo.length == 0) {
                         action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-pencil-square-o"></i>审核</button>');
                     }
@@ -74,6 +76,18 @@
                             height: "400px",
                             width: "600px",
                             url: "FoodManage/Dining/AuditIdentInfo?Id=" + row.Id + "&TableName=" + row.TableName,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        });
+                    },
+                    'click .pay': function (event, val, row, index) { 
+                        controller.OpenWindow({
+                            title: "认证缴费",
+                            type: 2,
+                            height: "600px",
+                            width: "800px",
+                            url: "FoodManage/Dining/Payment?Id=" + row.Id + "&TableName=" + row.TableName,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }

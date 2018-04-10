@@ -23,8 +23,20 @@ namespace KilyCore.WEB.Areas.MoneyManage.Controllers
             return View();
         }
         #endregion
-        #region 认证缴费
+        #region 企业认证
         public IActionResult IdentEnterprisePay()
+        {
+            return View();
+        }
+        #endregion
+        #region 餐饮认证
+        public IActionResult IdentFoodPay()
+        {
+            return View();
+        }
+        #endregion
+        #region 餐饮缴费
+        public IActionResult FoodPay()
         {
             return View();
         }
