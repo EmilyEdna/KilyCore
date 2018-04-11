@@ -613,3 +613,26 @@ controller.LayDate = function (option) {
     options = $.extend(defaultOption, option);
     laydate.render(options);
 }
+//文件上传
+controller.Upload = function (option) {
+    defaultOption = {
+        url: undefined,
+        data: { timespan: controller.SetRequestTime() },
+        maxNum: 3,
+        element: undefined,
+        success: null
+    }
+    var options = $.extend(defaultOption, option)
+    return $(options.element).ajaxImageUpload({
+        url: host+options.url,
+        data: options.data,
+        maxNum: options.maxNum,
+        maxSize: 1,
+        success: function (result) {
+            options.success(result);
+        },
+        error: function (errer) {
+            controller.Msg(errer);
+        }
+    });
+}

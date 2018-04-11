@@ -352,5 +352,13 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(SystemService.RemoveJob(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 图片上传
+        [HttpPost("Uploader")]
+        [AllowAnonymous]
+        public ObjectResultEx Uploader(IFormCollection files)
+        {
+
+        }
+        #endregion
     }
 }
