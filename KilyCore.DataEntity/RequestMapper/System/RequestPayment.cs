@@ -12,7 +12,7 @@ namespace KilyCore.DataEntity.RequestMapper.System
         public string PaymentUser { get; set; }
         public string LinkPhone { get; set; }
         public DateTime PayTime { get; set; }
-        public decimal Paymony { get; set; }
+        public decimal Paymoney { get; set; }
         public  string Remark { get; set; }
     }
 }

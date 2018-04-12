@@ -5,6 +5,7 @@ using KilyCore.DataEntity.RequestMapper.Finance;
 using KilyCore.DataEntity.ResponseMapper.Dining;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.Finance;
+using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.Service.QueryExtend;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,9 @@ namespace KilyCore.Service.IServiceCore
         #region 餐饮认证
         PagedResult<ResponseDiningIdent> IdentFoodPay(PageParamList<RequestDiningIdent> pageParam);
         String AuditIndetFoodPay(Guid Key, bool Param);
+        #endregion
+        #region 缴费凭证
+        ResponsePayment WatchCertificate(Guid Id, string Param);
         #endregion
     }
 }

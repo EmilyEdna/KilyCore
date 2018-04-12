@@ -4,6 +4,7 @@ using KilyCore.DataEntity.RequestMapper.Finance;
 using KilyCore.DataEntity.ResponseMapper.Dining;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.Finance;
+using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.EntityFrameWork.Model.Company;
 using KilyCore.EntityFrameWork.Model.Dining;
 using KilyCore.EntityFrameWork.Model.Finance;
@@ -174,7 +175,7 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.MerchantName.Contains(pageParam.QueryParam.MerchantName));
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseDiningIdent()
             {
-                Id=t.Id,
+                Id = t.Id,
                 IdentNo = t.IdentNo,
                 MerchantName = t.MerchantName,
                 IdentStarName = AttrExtension.GetSingleDescription<IdentEnum, DescriptionAttribute>(t.IdentStar),
@@ -205,6 +206,31 @@ namespace KilyCore.Service.ServiceCore
                 return ServiceMessage.HANDLESUCCESS;
             else
                 return ServiceMessage.HANDLEFAIL;
+        }
+        #endregion
+
+        #region 缴费凭证
+        /// <summary>
+        /// 查看缴费凭证
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public ResponsePayment WatchCertificate(Guid Id, string Param)
+        {
+            var data = Kily.Set<SystemPayment>().Where(t => t.IsDelete == false)
+                .Where(t => t.TableId == Id).Where(t => t.TableName == Param)
+                .Select(t => new ResponsePayment()
+                {
+                    Id=t.Id,
+                    LinkPhone=t.LinkPhone,
+                    PayCertificate=t.PayCertificate,
+                    PaymentUser=t.PaymentUser,
+                    PayTime=t.PayTime,
+                    Paymoney = t.Paymoney,
+                    Remark= t.Remark
+                }).AsNoTracking().FirstOrDefault();
+            return data;
         }
         #endregion
     }

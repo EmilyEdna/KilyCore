@@ -13,7 +13,7 @@ namespace KilyCore.EntityFrameWork.Model.System
         /// <summary>
         /// 缴费目标表Id
         /// </summary>
-        public virtual string TableId { get; set; }
+        public virtual Guid TableId { get; set; }
         /// <summary>
         /// 缴费目标表表明
         /// </summary>
@@ -37,7 +37,7 @@ namespace KilyCore.EntityFrameWork.Model.System
         /// <summary>
         /// 缴费金额
         /// </summary>
-        public virtual decimal Paymony { get; set; }
+        public virtual decimal Paymoney { get; set; }
         /// <summary>
         /// 备注
         /// </summary>

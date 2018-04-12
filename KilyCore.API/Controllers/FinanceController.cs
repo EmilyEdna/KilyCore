@@ -114,5 +114,17 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(FinanceService.AuditIndetFoodPay(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 缴费凭证
+        /// <summary>
+        /// 查看缴费凭证
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("WatchCertificate")]
+        public ObjectResultEx WatchCertificate(SimlpeParam<Guid> Key, SimlpeParam<string> Value) {
+            return ObjectResultEx.Instance(FinanceService.WatchCertificate(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }

@@ -13,7 +13,7 @@ namespace KilyCore.EntityFrameWork.EntityMapping.System
         {
             builder.HasKey(t => t.Id);
             builder.Property(t => t.PayTime).HasColumnType(typeof(DateTime).Name);
-            builder.Property(t => t.Paymony).HasColumnType("decimal(18, 2)");
+            builder.Property(t => t.Paymoney).HasColumnType("decimal(18, 2)");
         }
     }
 }

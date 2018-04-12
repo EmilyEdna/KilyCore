@@ -41,5 +41,11 @@ namespace KilyCore.WEB.Areas.MoneyManage.Controllers
             return View();
         }
         #endregion
+        #region 认证缴费
+        public IActionResult PaymentNotice()
+        {
+            return View();
+        }
+        #endregion
     }
 }

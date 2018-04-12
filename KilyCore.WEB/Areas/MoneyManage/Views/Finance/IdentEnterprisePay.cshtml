@@ -30,6 +30,7 @@
             action: {
                 TableFormatter: function (val, row, index) {
                     var action = [];
+                    action.push('<button class="btn btn-sm btn-primary show"><i class="fa fa-check"></i>查看凭证</button>')
                     action.push('<button class="btn btn-sm btn-primary finals"><i class="fa fa-check"></i>终审通过</button>');
                     action.push('<button class="btn btn-sm btn-primary finalf"><i class="fa fa-close"></i>终审不通过</button>');
                     return action.join("&nbsp;");
@@ -60,6 +61,18 @@
                                         options.$table.refresh();
                                     }
                                 });
+                            }
+                        });
+                    },
+                    "click .show": function (event, val, row, index) { 
+                        controller.OpenWindow({
+                            title: "缴费凭证",
+                            type: 1,
+                            height: "400px",
+                            width: "600px",
+                            url: "MoneyManage/Finance/PaymentNotice?Id=" + row.Id + "&TableName=" + row.TableName,
+                            callBack: function (result) {
+                                result.popClose();
                             }
                         });
                     }
