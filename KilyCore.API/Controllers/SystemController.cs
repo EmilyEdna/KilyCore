@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using KilyCore.Configure;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.System;
@@ -350,14 +349,6 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx RemoveJob(RequestQuartz Param)
         {
             return ObjectResultEx.Instance(SystemService.RemoveJob(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }
-        #endregion
-        #region 图片上传
-        [HttpPost("Uploader")]
-        [AllowAnonymous]
-        public ObjectResultEx Uploader(IFormCollection files)
-        {
-
         }
         #endregion
     }

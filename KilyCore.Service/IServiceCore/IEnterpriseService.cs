@@ -43,6 +43,7 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseEnterpriseIdent> GetCompanyIdentPage(PageParamList<RequestEnterpriseIdent> pageParam);
         ResponseEnterpriseIdent GetCompanyIdentDetail(RequestEnterpriseIdent Param);
         String AuditIdent(RequestAudit Param);
+        String AuditPayment(RequestPayment param);
         #endregion
     }
 }

@@ -168,6 +168,15 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(DiningService.AuditIdent(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 认证缴费
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("AuditPayment")]
+        public ObjectResultEx AuditPayment(RequestPayment Param) {
+            return ObjectResultEx.Instance(DiningService.AuditPayment(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
     }
 }

@@ -59,6 +59,10 @@ namespace KilyCore.WEB.Areas.CliqueManage.Controllers
         {
             return View();
         }
+        public IActionResult Payment()
+        {
+            return View();
+        }
         #endregion
     }
 }

@@ -11,7 +11,7 @@
             data: null,
             url: '',
             zoom: true, //上传图片是否可以放大
-            allowType: ["gif", "jpeg", "jpg", "bmp",'png'],
+            allowType: ["gif", "jpeg", "jpg", "bmp",'png','ico'],
             maxNum: 10,//允许上传图片数量
             hidenInputName: '', // 上传成功后追加的隐藏input名，注意不要带[]，会自动带[]，不写默认和上传按钮的name相同
             maxSize: 2, //设置允许上传图片的最大尺寸，单位M
@@ -144,11 +144,20 @@
                 dataType: 'json',
                 success: function (json) {
 
+                    if (json.httpCode == 10 && !json.data) {
+                        alert('服务器返回的json数据中必须包含src元素');
+                        imageSection.remove();
+                        return false;
+                    } else if (json.httpCode != 10) {
+                        alert(json.msg);
+                        imageSection.remove();
+                        return false;
+                    }
+
                     imageSection.removeClass("image-loading");
                     imageShow.removeClass("image-opcity");
-
-                    imageShow.attr('src', json.src);
-                    imageShow.siblings('input').val(json.src);
+                    imageShow.attr('src', json.data);
+                    imageShow.siblings('input').val(json.data);
 
                     // 将上传状态设为非上传中
                     isUploading = false;
@@ -283,7 +292,7 @@
 
             var fileExt = getFileExt(fileName).toLowerCase();
             if (!allowType) {
-                allowType = ['jpg', 'jpeg', 'png', 'gif', 'bmp'];
+                allowType = ['jpg', 'jpeg', 'png', 'gif', 'bmp','ico'];
             }
 
             if ($.inArray(fileExt, allowType) != -1) {

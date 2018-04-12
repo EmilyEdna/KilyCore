@@ -610,24 +610,25 @@ controller.LayDate = function (option) {
         showBottom: true,
         calendar: true
     };
-    options = $.extend(defaultOption, option);
-    laydate.render(options);
+    Setting = $.extend(defaultOption, option);
+    laydate.render(Setting);
 }
 //文件上传
 controller.Upload = function (option) {
     defaultOption = {
         url: undefined,
-        data: { timespan: controller.SetRequestTime() },
+        data: null,
         maxNum: 3,
         element: undefined,
+        maxSize:2,
         success: null
     }
     var options = $.extend(defaultOption, option)
     return $(options.element).ajaxImageUpload({
-        url: host+options.url,
+        url: WebUrl+options.url,
         data: options.data,
         maxNum: options.maxNum,
-        maxSize: 1,
+        maxSize: options.maxSize,
         success: function (result) {
             options.success(result);
         },

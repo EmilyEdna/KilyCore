@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
-using System.Threading.Tasks;
 using KilyCore.Configure;
 using KilyCore.Extension.ApplicationService.DependencyIdentity;
 using KilyCore.Extension.FilterGroup;
@@ -13,7 +12,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyModel;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Serialization;
 using NLog.Extensions.Logging;
 using NLog.Web;
@@ -81,7 +79,6 @@ namespace KilyCore.API
             {
                 app.UseDeveloperExceptionPage();
             }
-
             app.UseMvc();
         }
         /// <summary>

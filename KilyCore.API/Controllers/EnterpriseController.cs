@@ -197,6 +197,16 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.AuditIdent(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 认证缴费
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("AuditPayment")]
+        public ObjectResultEx AuditPayment(RequestPayment Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseService.AuditPayment(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
     }
 }

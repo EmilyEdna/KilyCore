@@ -24,7 +24,11 @@ namespace KilyCore.Extension.ResultExtension
         /// <summary>
         /// 404
         /// </summary>
-        NULL=40
+        NULL=40,
+        /// <summary>
+        /// 失败
+        /// </summary>
+        FAIL=50
 
     }
     /// <summary>

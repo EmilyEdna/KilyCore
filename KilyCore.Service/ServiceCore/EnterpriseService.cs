@@ -555,6 +555,19 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.INSERTFAIL;
         }
+        /// <summary>
+        /// 认证缴费
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string AuditPayment(RequestPayment Param)
+        {
+            SystemPayment payment = Param.MapToEntity<SystemPayment>();
+            if (Insert<SystemPayment>(payment))
+                return ServiceMessage.INSERTSUCCESS;
+            else
+                return ServiceMessage.INSERTFAIL;
+        }
         #endregion
     }
 }
