@@ -6,7 +6,7 @@
 @section css{
     <style>
         .line-width {
-        display:block;
+            display: block;
         }
     </style>
 }
@@ -22,9 +22,30 @@
             InitDom: function () {
                 var Guid = controller.GetParam("Id");
                 var TableName = controller.GetParam("TableName");
+                //查看缴费信息
+                controller.ajax({
+                    url: "Finance/WatchCertificate",
+                    type: "post",
+                    data: { Id: Guid, Parameter: TableName },
+                    success: function (result) {
+                        debugger;
+                        controller.SetCtrlValue("#Edit", result.data);
+                    }
+                });
             },
             //事件
             InitEvents: function () {
+                //查看大图
+                $(".upload-btn").click(function () {
+                    var option = {
+                        title: "缴费凭证",
+                        data: [{
+                            alt: "缴费凭证",
+                            src: $(this).attr("src")
+                        }]
+                    };
+                    controller.Photos(option);
+                 });
             },
             //行为
             action: {}
@@ -37,18 +58,18 @@
 }
 <div class="ibox float-e-margins">
     <div class="ibox-content">
-        <form class="orm-horizontal"  id="Edit">
+        <form class="orm-horizontal" id="Edit">
             <div class="row">
                 <div class="col-sm-6 col-md-6">
                     <div class="input-group line-width">
                         <span class="label label-warning">缴费人</span>
-                        <input type="text" class="form-control" name="PaymentUser" readonly/>
+                        <input type="text" class="form-control" name="PaymentUser" readonly />
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-6">
                     <div class="input-group line-width">
                         <span class="label label-warning">联系电话</span>
-                        <input type="text" class="form-control" name="LinkPhone" readonly/>
+                        <input type="text" class="form-control" name="LinkPhone" readonly />
                     </div>
                 </div>
             </div>
@@ -56,13 +77,13 @@
                 <div class="col-sm-6 col-md-6">
                     <div class="input-group line-width">
                         <span class="label label-warning">缴费时间</span>
-                        <input type="text" class="form-control" name="PayTime" id="PayTime" readonly/>
+                        <input type="text" class="form-control" name="PayTime" id="PayTime" readonly />
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-6">
                     <div class="input-group line-width">
                         <span class="label label-warning">缴费金额</span>
-                        <input type="text" class="form-control" name="Paymony" readonly/>
+                        <input type="text" class="form-control" name="Paymony" readonly />
                     </div>
                 </div>
             </div>
@@ -74,11 +95,10 @@
             </div>
             <div class="m-t-sm">
                 <div class="input-group line-width">
-                    <span class="label label-warning">上传缴费凭证</span>
+                    <span class="label label-warning">缴费凭证</span>
                     <div class="image-box clear">
                         <section class="upload-section">
-                            <div class="upload-btn"></div>
-                            <input type="file" name="Files" id="upload-input" value="" accept="image/*" multiple="multiple" />
+                            <img class="upload-btn" src="" type="image" name="PayCertificate" style="display:block;margin:auto" title="点击放大" />
                         </section>
                     </div>
                 </div>

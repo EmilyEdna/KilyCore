@@ -32,6 +32,7 @@
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary finals"><i class="fa fa-check"></i>终审通过</button>');
                     action.push('<button class="btn btn-sm btn-primary finalf"><i class="fa fa-close"></i>终审不通过</button>');
+                    action.push('<button class="btn btn-sm btn-primary shows"><i class="fa fa-eye"></i>查看凭证</button>');
                     return action.join("&nbsp;");
                 },
                 TableEvents: {
@@ -60,6 +61,18 @@
                                         options.$table.refresh();
                                     }
                                 });
+                            }
+                        });
+                    },
+                    "click .shows": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "缴费凭证",
+                            type: 1,
+                            height: "600px",
+                            width: "800px",
+                            url: "MoneyManage/Finance/PaymentNotice?Id=" + row.Id + "&TableName=" + row.TableName,
+                            callBack: function (result) {
+                                result.popClose();
                             }
                         });
                     }
@@ -106,9 +119,9 @@
                                 <th data-field="IdentNo" data-halign="center" data-align="center" data-valign="middle">认证编号</th>
                                 <th data-field="MerchantName" data-halign="center" data-align="center" data-valign="middle">商家名称</th>
                                 <th data-field="IdentStarName" data-halign="center" data-align="center" data-valign="middle">认证星级</th>
-                                <th data-field="Representative" data-halign="center" data-align="center" data-valign="middle">法人代表</th>
-                                <th data-field="CommunityCode" data-halign="center" data-align="center" data-valign="middle">信用代码</th>
                                 <th data-field="LinkPhone" data-halign="center" data-align="center" data-valign="middle">联系电话</th>
+                                <th data-field="IdentStartTime" data-halign="center" data-align="center" data-valign="middle">开始时间</th>
+                                <th data-field="IdentEndTime" data-halign="center" data-align="center" data-valign="middle">截止时间</th>
                                 <th data-field="AuditTypeName" data-halign="center" data-align="center" data-valign="middle">审核状态</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
