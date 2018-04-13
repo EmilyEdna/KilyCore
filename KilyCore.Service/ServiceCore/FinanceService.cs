@@ -205,7 +205,7 @@ namespace KilyCore.Service.ServiceCore
         }
         #endregion
 
-        #region 缴费凭证
+        #region 缴费凭证-财务
         /// <summary>
         /// 查看缴费凭证
         /// </summary>
@@ -218,14 +218,37 @@ namespace KilyCore.Service.ServiceCore
                 .Where(t => t.TableId == Id).Where(t => t.TableName == Param)
                 .Select(t => new ResponsePayment()
                 {
-                    Id=t.Id,
-                    LinkPhone=t.LinkPhone,
-                    PayCertificate=t.PayCertificate,
-                    PaymentUser=t.PaymentUser,
-                    PayTime=t.PayTime,
+                    Id = t.Id,
+                    LinkPhone = t.LinkPhone,
+                    PayCertificate = t.PayCertificate,
+                    PaymentUser = t.PaymentUser,
+                    PayTime = t.PayTime,
                     Paymoney = t.Paymoney,
-                    Remark= t.Remark
+                    Remark = t.Remark
                 }).AsNoTracking().FirstOrDefault();
+            return data;
+        }
+        #endregion
+
+        #region 餐饮合同-财务
+        /// <summary>
+        /// 合同分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseContract> GetContractPage(PageParamList<RequestContract> pageParam)
+        {
+            IQueryable<DiningContract> queryable = Kily.Set<DiningContract>().Where(t => t.IsDelete == false);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.MerchantName))
+                queryable = queryable.Where(t => t.MerchantName.Contains(pageParam.QueryParam.MerchantName));
+            var data = queryable.OrderByDescending(t => t.CreateTime).AsNoTracking()
+                .Select(t => new ResponseContract()
+                {
+                    Id = t.Id,
+                    MerchantName = t.MerchantName,
+                    PayType = t.PayType,
+                    Contract = t.Contract
+                }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
         #endregion

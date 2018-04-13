@@ -36,5 +36,8 @@ namespace KilyCore.Service.IServiceCore
         #region 缴费凭证
         ResponsePayment WatchCertificate(Guid Id, string Param);
         #endregion
+        #region 餐饮合同
+        PagedResult<ResponseContract> GetContractPage(PageParamList<RequestContract> pageParam);
+        #endregion
     }
 }

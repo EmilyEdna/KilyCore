@@ -6,7 +6,7 @@ using System.Text;
 namespace KilyCore.EntityFrameWork.Model.Finance
 {
     /// <summary>
-    /// 餐饮合同
+    /// 餐饮合同表
     /// </summary>
     public class DiningContract : BaseEntity
     {

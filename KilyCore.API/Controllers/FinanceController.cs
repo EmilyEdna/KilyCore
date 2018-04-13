@@ -117,8 +117,21 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("WatchCertificate")]
-        public ObjectResultEx WatchCertificate(SimlpeParam<Guid> Key, SimlpeParam<string> Value) {
+        public ObjectResultEx WatchCertificate(SimlpeParam<Guid> Key, SimlpeParam<string> Value)
+        {
             return ObjectResultEx.Instance(FinanceService.WatchCertificate(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #region 餐饮合同
+        /// <summary>
+        /// 餐饮合同分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetContractPage")]
+        public ObjectResultEx GetContractPage(PageParamList<RequestContract> pageParam)
+        {
+            return ObjectResultEx.Instance(FinanceService.GetContractPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

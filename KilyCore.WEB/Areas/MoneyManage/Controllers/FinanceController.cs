@@ -47,5 +47,11 @@ namespace KilyCore.WEB.Areas.MoneyManage.Controllers
             return View();
         }
         #endregion
+        #region 餐饮合同
+        public IActionResult FoodContract()
+        {
+            return View();
+        }
+        #endregion
     }
 }
