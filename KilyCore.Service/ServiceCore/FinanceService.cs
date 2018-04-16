@@ -252,6 +252,38 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         #endregion
+
+        #region 餐饮缴费
+        /// <summary>
+        /// 餐饮缴费列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseDiningPay> GetDiningPayPage(PageParamList<RequestDiningPay> pageParam)
+        {
+            IQueryable<DiningPayment> queryable = Kily.Set<DiningPayment>().Where(t => t.IsDelete == false);
+            if (pageParam.QueryParam.PayType != 0)
+                queryable = queryable.Where(t => t.PayType == pageParam.QueryParam.PayType);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.MerchantName))
+                queryable = queryable.Where(t => t.MerchantName.Contains(pageParam.QueryParam.MerchantName));
+            var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseDiningPay()
+            {
+                Id=t.Id,
+                MerchantName=t.MerchantName,
+                PayType=t.PayType,
+                MerchantId=t.MerchantId,
+                PayTime=t.PayTime,
+                EnableYear=t.EnableYear,
+                EnableYearEndTime=t.EnableYearEndTime,
+                Paymoney=t.Paymoney,
+                OrderMoneySum=t.OrderMoneySum,
+                PayUser=t.PayUser,
+                LinkPhone=t.LinkPhone,
+                PayCertificate=t.PayCertificate
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        #endregion
     }
 }
 

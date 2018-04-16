@@ -134,5 +134,17 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(FinanceService.GetContractPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 餐饮缴费
+        /// <summary>
+        /// 餐饮缴费分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetDiningPayPage")]
+        public ObjectResultEx GetDiningPayPage(PageParamList<RequestDiningPay> pageParam)
+        {
+            return ObjectResultEx.Instance(FinanceService.GetDiningPayPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }

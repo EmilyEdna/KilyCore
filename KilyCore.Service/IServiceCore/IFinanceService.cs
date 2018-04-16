@@ -39,5 +39,8 @@ namespace KilyCore.Service.IServiceCore
         #region 餐饮合同
         PagedResult<ResponseContract> GetContractPage(PageParamList<RequestContract> pageParam);
         #endregion
+        #region 餐饮减肥
+        PagedResult<ResponseDiningPay> GetDiningPayPage(PageParamList<RequestDiningPay> pageParam);
+        #endregion
     }
 }
