@@ -20,5 +20,6 @@ namespace KilyCore.DataEntity.ResponseMapper.System
                 else return null;
             }
         }
+        public string AuthorMenuName { get; set; }
     }
 }

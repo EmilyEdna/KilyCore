@@ -40,6 +40,10 @@ namespace KilyCore.WEB.Areas.MoneyManage.Controllers
         {
             return View();
         }
+        public IActionResult FoodPayUpdate()
+        {
+            return View();
+        }
         #endregion
         #region 认证缴费
         public IActionResult PaymentNotice()

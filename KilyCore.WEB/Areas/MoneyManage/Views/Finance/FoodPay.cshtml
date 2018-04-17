@@ -21,7 +21,6 @@
                 });
                 //设置表单
                 this.$table = controller.Table("#tableList", { url: "Finance/GetDiningPayPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#FoodPay"});
-                debugger;
             },
             //事件
             InitEvents: function () {
@@ -40,10 +39,23 @@
             action: {
                 TableFormatter: function (val, row, index) {
                     var action = [];
-                    action.push('<button class="btn btn-sm btn-primary watch"><i class="fa fa-eye"></i>查看</button>');
+                    action.push('<a class="btn btn-sm btn-primary" download="' + row.PayCertificate + '" href="' + row.PayCertificate + '"><i class="fa fa-download"></i>下载凭证</a>');
+                    action.push('<button class="btn btn-sm btn-primary down"><i class="fa fa-edit"></i>更新功能</button>')
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
+                    "click .down": function (event, val, row, index) { 
+                        controller.OpenWindow({
+                            title: "更新功能",
+                            type: 1,
+                            height: "400px",
+                            width: "600px",
+                            url: "MoneyManage/Finance/FoodPayUpdate?Id=" + row.MerchantId + "&Name=" + row.MerchantName,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        });
+                    }
                 }//表单事件结束
             }//行为结束
         };

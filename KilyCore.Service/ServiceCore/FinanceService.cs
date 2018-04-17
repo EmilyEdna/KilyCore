@@ -253,7 +253,7 @@ namespace KilyCore.Service.ServiceCore
         }
         #endregion
 
-        #region 餐饮缴费
+        #region 餐饮缴费-财务
         /// <summary>
         /// 餐饮缴费列表
         /// </summary>
@@ -268,20 +268,52 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.MerchantName.Contains(pageParam.QueryParam.MerchantName));
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseDiningPay()
             {
-                Id=t.Id,
-                MerchantName=t.MerchantName,
-                PayType=t.PayType,
-                MerchantId=t.MerchantId,
-                PayTime=t.PayTime,
-                EnableYear=t.EnableYear,
-                EnableYearEndTime=t.EnableYearEndTime,
-                Paymoney=t.Paymoney,
-                OrderMoneySum=t.OrderMoneySum,
-                PayUser=t.PayUser,
-                LinkPhone=t.LinkPhone,
-                PayCertificate=t.PayCertificate
+                Id = t.Id,
+                MerchantName = t.MerchantName,
+                PayType = t.PayType,
+                MerchantId = t.MerchantId,
+                PayTime = t.PayTime,
+                EnableYear = t.EnableYear,
+                EnableYearEndTime = t.EnableYearEndTime,
+                Paymoney = t.Paymoney,
+                OrderMoneySum = t.OrderMoneySum,
+                PayUser = t.PayUser,
+                LinkPhone = t.LinkPhone,
+                PayCertificate = t.PayCertificate
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
+        }
+        /// <summary>
+        /// 权限列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseAuthorRole> GetDiningRoles()
+        {
+            var data = Kily.Set<DiningRoleAuthor>().Where(t => t.IsDelete == false).AsNoTracking().Select(t => new ResponseAuthorRole()
+            {
+                Id = t.Id,
+                AuthorName = t.AuthorName,
+                AuthorMenuPath = t.AuthorMenuPath,
+                AuthorMenuName = String.Join(',', Kily.Set<DiningMenu>()
+                    .Where(x => x.IsDelete == false)
+                    .Where(x => t.AuthorMenuPath.Contains(x.Id.ToString()))
+                    .Select(x => x.MenuName).AsNoTracking().ToArray())
+            }).ToList();
+            return data;
+        }
+        /// <summary>
+        /// 更新餐饮商家是否开启点餐
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditDiningRole(RequestDiningInfo Param)
+        {
+            DiningInfo info = Kily.Set<DiningInfo>().Where(t => t.IsDelete == false).Where(t => t.Id == Param.Id).FirstOrDefault();
+            info.DingRoleId = Param.DingRoleId;
+            if (UpdateField<DiningInfo>(info, "DingRoleId"))
+                return ServiceMessage.UPDATESUCCESS;
+            else
+                return ServiceMessage.UPDATEFAIL;
         }
         #endregion
     }

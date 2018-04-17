@@ -145,6 +145,25 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(FinanceService.GetDiningPayPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 权限列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetDiningRoles")]
+        public ObjectResultEx GetDiningRoles()
+        {
+            return ObjectResultEx.Instance(FinanceService.GetDiningRoles(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 更新餐饮权限
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditDiningRole")]
+        public ObjectResultEx EditDiningRole(RequestDiningInfo Param)
+        {
+            return ObjectResultEx.Instance(FinanceService.EditDiningRole(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
     }
 }
