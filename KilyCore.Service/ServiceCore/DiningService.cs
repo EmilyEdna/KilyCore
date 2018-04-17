@@ -109,6 +109,7 @@ namespace KilyCore.Service.ServiceCore
                 return ServiceMessage.INSERTFAIL;
         }
         #endregion
+
         #region 餐饮菜单
         /// <summary>
         /// 菜单分页列表
@@ -213,6 +214,7 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         #endregion
+
         #region 餐饮权限菜单树
         /// <summary>
         /// 餐饮权限菜单树
@@ -245,6 +247,7 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         #endregion
+
         #region 餐饮权限
         /// <summary>
         ///编辑角色
@@ -298,6 +301,7 @@ namespace KilyCore.Service.ServiceCore
                 return ServiceMessage.REMOVEFAIL;
         }
         #endregion
+
         #region 认证审核
         /// <summary>
         /// 商家认证分页列表
