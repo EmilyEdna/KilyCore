@@ -26,6 +26,10 @@ namespace KilyCore.WEB.Areas.FunManage.Controllers
         {
             return View();
         }
+        public IActionResult AreaPriceEdit()
+        {
+            return View();
+        }
         #endregion
     }
 }

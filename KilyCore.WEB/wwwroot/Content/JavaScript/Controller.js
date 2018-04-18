@@ -37,9 +37,14 @@ controller.ajax = function (option) {
                 controller.Confirm("您还未登录系统，请先登录", function (flag) { window.location.href = "Login" });
             else if (xhr.status == 404)
                 controller.Confirm("页面未找到!", function (flag) { });
+            else if (xhr.status == 500)
+                controller.Confirm("服务器发生错误", function (flag) { });
+            else if (xhr.status == 502)
+                controller.Confirm("无效的网关", function (flag) { });
+            else if (xhr.status==0)
+                controller.Confirm("服务器停止运行", function (flag) { });
             else
                 controller.Confirm(msg, function (flag) { });
-
         }
     });
 }

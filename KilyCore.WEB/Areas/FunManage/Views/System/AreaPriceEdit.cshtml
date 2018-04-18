@@ -1,0 +1,121 @@
+﻿
+@{
+    ViewData["Title"] = "编辑价目";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.CheckRole();
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var Guid = controller.GetParam("Id");
+                options.GetAreaPriceDetail(Guid);
+            },
+            //获取详细
+            GetAreaPriceDetail: function (data) {
+                if (data != null && data != undefined && data != "")
+                {
+                    controller.ajax({
+                        url: "Function/GetAreaPriceDetail",
+                        data: { Id: data },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            debugger;
+                            controller.SetCtrlValue("#Edit",result.data);
+                        }
+                    });
+                }
+            },
+            //验证角色
+            CheckRole: function () {
+                if (SysUserInfo.AccountType == 10 || SysUserInfo.AccountType == 20)
+                {
+                    $("#Price").attr("name", "ProvincePrice");
+                    $("#select").attr("name", "ProvinceId");
+                    options.LoadAddressList(SysUserInfo.AccountType);
+                }
+                if (SysUserInfo.AccountType == 30)
+                {
+                    $("#Price").attr("name", "CityPrice");
+                    $("#select").attr("name", "CityId");
+                    options.LoadAddressList(SysUserInfo.AccountType);
+                }
+                if (SysUserInfo.AccountType == 40)
+                {
+                    $("#Price").attr("name", "AreaPrice");
+                    $("#select").attr("name", "AreaId");
+                    options.LoadAddressList(SysUserInfo.AccountType);
+                }
+                if (SysUserInfo.AccountType == 50)
+                {
+                    $("#Price").attr("name", "TownPrice");
+                    $("#select").attr("name", "Town");
+                    options.LoadAddressList(SysUserInfo.AccountType);
+                }
+            },
+            //加载地区列表
+            LoadAddressList: function (AccountType)
+            {
+                controller.ajax({
+                    url: "Function/GetAddressList",
+                    data: { Id: AccountType },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.ProjectName + '</option>'
+                        });
+                        $("#select").html(html);
+                    }
+                });
+             },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="Function/EditPrice" id="Edit">
+            <input type="hidden" name="Id" id="Id"/>
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">价目名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ProjectName" id="ProjectName" />
+                    </td>
+                    <th><label class="control-label">单价</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required IsNumber" name="" id="Price" data-msg-required="请输入数字" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">选择区域</label></th>
+                    <td class="has-warning" colspan="3">
+                        <select type="select" class="form-control" name="" id="select">
+                            <option>==请选择==</option>
+                        </select>
+                    </td>
+            </table>
+        </form>
+    </div>
+</div>
