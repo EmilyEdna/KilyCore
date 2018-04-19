@@ -1,4 +1,5 @@
-﻿using KilyCore.DataEntity.RequestMapper.Function;
+﻿using KilyCore.DataEntity.AttributeMapper;
+using KilyCore.DataEntity.RequestMapper.Function;
 using KilyCore.DataEntity.ResponseMapper.Function;
 using KilyCore.EntityFrameWork.Model.Function;
 using KilyCore.EntityFrameWork.Model.System;
@@ -127,37 +128,7 @@ namespace KilyCore.Service.ServiceCore
             FunctionAreaPrice AreaPrice = Param.MapToEntity<FunctionAreaPrice>();
             if (Param.Id != Guid.Empty)
             {
-                FunctionAreaPrice Entity = Kily.Set<FunctionAreaPrice>().Where(t => t.Id == Param.Id).FirstOrDefault();
-                IList<String> Fields = new List<String>();
-                if (UserInfo().AccountType == AccountEnum.Admin || UserInfo().AccountType == AccountEnum.Country)
-                {
-                    Entity.ProvinceId = Param.ProvinceId;
-                    Entity.ProvincePrice = Param.ProvincePrice;
-                    Fields.Add("ProvinceId");
-                    Fields.Add("ProvincePrice");
-                }
-                if (UserInfo().AccountType == AccountEnum.Province)
-                {
-                    Entity.CityId = Param.CityId;
-                    Entity.CityPrice = Param.CityPrice;
-                    Fields.Add("CityId");
-                    Fields.Add("CityPrice");
-                }
-                if (UserInfo().AccountType == AccountEnum.City)
-                {
-                    Entity.AreaId = Param.AreaId;
-                    Entity.AreaPrice = Param.AreaPrice;
-                    Fields.Add("AreaId");
-                    Fields.Add("AreaPrice");
-                }
-                if (UserInfo().AccountType == AccountEnum.Area)
-                {
-                    Entity.TownId = Param.TownId;
-                    Entity.TownPrice = Param.TownPrice;
-                    Fields.Add("TownId");
-                    Fields.Add("TownPrice");
-                }
-                if (UpdateField<FunctionAreaPrice>(Entity, null, Fields))
+                if (Update<FunctionAreaPrice, RequestAreaPrice>(AreaPrice, Param, PropertyCollection<RequestAreaPrice, MapperAttribute>(Param, Updates.Ignore)))
                     return ServiceMessage.UPDATESUCCESS;
                 else
                     return ServiceMessage.UPDATEFAIL;

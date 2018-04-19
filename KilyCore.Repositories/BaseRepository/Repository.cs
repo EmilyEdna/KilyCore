@@ -7,6 +7,7 @@ using KilyCore.EntityFrameWork;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -74,31 +75,38 @@ namespace KilyCore.Repositories.BaseRepository
         /// <param name="entity"></param>
         /// <param name="dto"></param>
         /// <returns></returns>
-        public virtual bool Update<TEntity, DEntity>(TEntity entity, DEntity dto) where TEntity : class, new() where DEntity : class, new()
+        public virtual bool Update<TEntity, DEntity>(TEntity entity, DEntity dto, PropertyDescriptorCollection collection = null) where TEntity : class, new() where DEntity : class, new()
         {
             try
             {
-                List<PropertyInfo> DtoProps = dto.GetType().GetProperties().ToList();
-                List<PropertyInfo> EntityProps = entity.GetType().GetProperties().ToList();
-                List<PropertyInfo> EntityProp = EntityProps.Where(t => t.Name.Contains("Update")).ToList();
-                EntityProp.Where(t => t.Name.Equals("UpdateTime")).FirstOrDefault().SetValue(entity, DateTime.Now);
-                EntityProp.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(entity, UserInfo().Id.ToString());
-                foreach (var Prop in EntityProp)
+                if (collection != null)
                 {
-                    Kily.Entry<TEntity>(entity).Property(Prop.Name).IsModified = true;//更新的时间和更新人
-                }
-                foreach (var Prop in DtoProps)
-                {
-                    if (!Prop.Name.ToUpper().Equals("Id".ToUpper()))//Id不更新
+                    List<PropertyInfo> DtoProps = dto.GetType().GetProperties().ToList();
+                    List<PropertyInfo> EntityProps = entity.GetType().GetProperties().ToList();
+                    List<PropertyInfo> EntityProp = EntityProps.Where(t => t.Name.Contains("Update")).ToList();
+                    EntityProp.Where(t => t.Name.Equals("UpdateTime")).FirstOrDefault().SetValue(entity, DateTime.Now);
+                    EntityProp.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(entity, UserInfo().Id.ToString());
+                    foreach (var Prop in EntityProp)
                     {
-                        //判断实体中是否存在DTO中的字段
-                        if (EntityProps.Select(t => t.Name.ToUpper()).Contains(Prop.Name.ToUpper()))
-                            //需要更新的字段
-                            Kily.Entry<TEntity>(entity).Property(Prop.Name).IsModified = true;
+                        Kily.Entry<TEntity>(entity).Property(Prop.Name).IsModified = true;//更新的时间和更新人
                     }
+                    foreach (var Prop in DtoProps)
+                    {
+                        if (!Prop.Name.ToUpper().Equals("Id".ToUpper()))//Id不更新
+                        {
+                            //判断实体中是否存在DTO中的字段
+                            if (EntityProps.Select(t => t.Name.ToUpper()).Contains(Prop.Name.ToUpper()))
+                                //需要更新的字段
+                                Kily.Entry<TEntity>(entity).Property(Prop.Name).IsModified = true;
+                        }
+                    }
+                    this.SaveChages();
+                    return true;
                 }
-                this.SaveChages();
-                return true;
+                else
+                {
+                    return false;
+                }
             }
             catch (Exception ex)
             {
@@ -118,7 +126,7 @@ namespace KilyCore.Repositories.BaseRepository
         {
             try
             {
-                if (fields != null&&string.IsNullOrEmpty(field))
+                if (fields != null && string.IsNullOrEmpty(field))
                 {
                     List<PropertyInfo> EntityProps = entity.GetType().GetProperties().Where(t => t.Name.Contains("Update")).ToList();
                     EntityProps.Where(t => t.Name.Equals("UpdateTime")).FirstOrDefault().SetValue(entity, DateTime.Now);
@@ -225,6 +233,32 @@ namespace KilyCore.Repositories.BaseRepository
         public ResponseAdmin UserInfo()
         {
             return Cache.GetCache<ResponseAdmin>(Configer.ClientIP);
+        }
+        /// <summary>
+        /// 返回动态属性集合
+        /// </summary>
+        /// <typeparam name="DEntity">数据传输对象</typeparam>
+        /// <typeparam name="TAttribute">特性标签</typeparam>
+        /// <param name="entity"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public PropertyDescriptorCollection PropertyCollection<DEntity, TAttribute>(DEntity entity, object value) where DEntity : class, new() where TAttribute : Attribute
+        {
+            PropertyDescriptorCollection Props = TypeDescriptor.GetProperties(typeof(DEntity));
+            PropertyInfo Prop = typeof(TAttribute).GetProperties().Where(t => t.CanWrite == true).FirstOrDefault();
+            typeof(DEntity).GetProperties().ToList().ForEach(t =>
+            {
+                var Attr = t.GetCustomAttribute(typeof(TAttribute));
+                if (Attr != null)
+                {
+                    var data = t.GetValue(entity, null);
+                    if (!string.IsNullOrEmpty((string)data))
+                    {
+                        Prop.SetValue(Props[t.Name].Attributes[(typeof(TAttribute))], value);
+                    }
+                }
+            });
+            return Props;
         }
     }
 }
