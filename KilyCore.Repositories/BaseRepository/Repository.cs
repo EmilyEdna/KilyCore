@@ -114,7 +114,7 @@ namespace KilyCore.Repositories.BaseRepository
         /// <param name="field">单个字段</param>
         /// <param name="fields">多个字段</param>
         /// <returns></returns>
-        public virtual bool UpdateField<TEntity>(TEntity entity, string field, List<string> fields = null) where TEntity : class, new()
+        public virtual bool UpdateField<TEntity>(TEntity entity, string field, IList<String> fields = null) where TEntity : class, new()
         {
             try
             {
