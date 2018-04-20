@@ -32,17 +32,17 @@ namespace KilyCore.Extension.Token
         /// <returns></returns>
         public static CookieInfo Verification()
         {
-            CookieInfo Storage = (CookieInfo)Configer.HttpContext.Items["Storage"];
-            if (Storage != null)
-            {
-                return Storage;
-            }
             if (String.IsNullOrEmpty(Configer.HttpContext.Request.Headers["Token"].ToList().FirstOrDefault()))
                 return null;
             String Token = RSACryptionExtension.RSADecrypt(Configer.HttpContext.Request.Headers["Token"].ToString());
-            CookieInfo cookie = CacheFactory.Cache().GetCache<CookieInfo>(Token);
-            Configer.HttpContext.Items["Storage"] = cookie;
-            return cookie;
+            return CacheFactory.Cache().GetCache<CookieInfo>(Token);
+        }
+        public static string LoginOut()
+        {
+            String Token = RSACryptionExtension.RSADecrypt(Configer.HttpContext.Request.Headers["Token"].ToString());
+            CacheFactory.Cache().RemoveCache(Token);
+            CacheFactory.Cache().RemoveCache(Configer.ClientIP);
+            return "退出成功!";
         }
         /// <summary>
         /// 验证超时

@@ -28,15 +28,49 @@
             //元素
             InitDom: function () {
                 //获取树
-                GetMenu();
+                options.GetMenu();
+                //安全退出
+                options.SignOut();
                 //用户信息
                 $("body").GetUserInfo();
                 //显示登录
                 $(".text-muted").prepend(UserInfo.TrueName);
                 $(".font-bold").prepend(UserInfo.Account);
             },
+            //获取树
+            GetMenu: function () {
+                controller.ajax({
+                    url: "System/GetSystemMenu",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    crossDomain: true,
+                    success: function (result) {
+                        $('#side-menu').SetTree(result.data);
+                    }
+                });
+            },
+            //安全退出
+            SignOut: function () {
+                $(".LoginOut").click(function () {
+                    controller.ajax({
+                        url: "System/LoginOut",
+                        data: {},
+                        type: "post",
+                        success: function (result) {
+                            controller.Confirm("您已经成功安全退出系统！", function (index) {
+                                controller.SetHref("Login");
+                            })
+                        }
+                    });
+                    controller.DeleteCookie();
+                });
+            },
             //事件
-            InitEvents: function () {},
+            InitEvents: function () { },
             //行为
             action: {}
         };
@@ -44,23 +78,6 @@
         $(document).ready(function () {
             options.Init();
         });
-        //获取菜单
-        function GetMenu() { 
-            controller.ajax({
-                url: "System/GetSystemMenu",
-                data: {},
-                type: "post",
-                async: false,
-                xhrFields: {
-                    withCredentials: true
-                },
-                crossDomain: true,
-                success: function (result) {
-                    $('#side-menu').SetTree(result.data);
-                }
-            });
-        }
-
     </script>
 </head>
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
@@ -74,7 +91,7 @@
                 <ul class="nav" id="side-menu">
                     <li class="nav-header">
                         <div class="dropdown profile-element">
-                            <span><img alt="image" class="img-circle" src="~/Content/HPlus/img/profile_small.jpg"/></span>
+                            <span><img alt="image" class="img-circle" src="~/Content/HPlus/img/profile_small.jpg" /></span>
                             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                 <span class="clear">
                                     <span class="block m-t-xs"><strong class="font-bold"></strong></span>
@@ -96,7 +113,7 @@
                                 </li>
                                 <li class="divider"></li>
                                 <li>
-                                    <a href="login.html">安全退出</a>
+                                    <a class="LoginOut">安全退出</a>
                                 </li>
                             </ul>
                         </div>
@@ -222,10 +239,10 @@
                         </li>
                     </ul>
                 </div>
-                <a href="#" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
+                <a href="#" class="roll-nav roll-right J_tabExit LoginOut"><i class="fa fa-sign-out"></i> 退出</a>
             </div>
             <div class="row J_mainContent" id="content-main">
-                <iframe class="J_iframe" name="iframe0" width="100%" height="100%"  src="~/home/Index"  frameborder="0" seamless></iframe>
+                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="~/home/Index" frameborder="0" seamless></iframe>
             </div>
             <div class="footer">
                 <div class="pull-right">
@@ -359,7 +376,7 @@
         </div>
         <!--右侧边栏结束-->
     </div>
-    
+
     <script src="~/Content/BootStrap/Script/bootstrap.js"></script>
     <script src="~/Content/MetisMenu/Script/metisMenu.js"></script>
     <script src="~/Content/SlimScroll/slimscroll.js"></script>

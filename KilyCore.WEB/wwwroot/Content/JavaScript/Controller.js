@@ -34,7 +34,7 @@ controller.ajax = function (option) {
         },
         error: function (xhr, msg) {
             if (xhr.status == 401)
-                controller.Confirm("您还未登录系统，请先登录", function (flag) { window.location.href = "Login" });
+                controller.Confirm("您还未登录系统，请先登录", function (flag) { controller.SetHref("Login") });
             else if (xhr.status == 404)
                 controller.Confirm("页面未找到!", function (flag) { });
             else if (xhr.status == 500)
@@ -66,8 +66,8 @@ controller.SetCookie = function (option) {
 }
 //删除Cookie
 controller.DeleteCookie = function () {
-    $.cookie("Token", null);
-    $.cookie("ApiKey", null);
+    $.removeCookie('Token', { path: '/' });
+    $.removeCookie('ApiKey', { path: '/' });
 }
 //获取Cookie
 controller.GetCookie = function () {

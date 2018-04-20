@@ -127,7 +127,7 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(SystemService.GetAuthorRole(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
-        #region 登录用
+        #region 用户登录退出
         /// <summary>
         /// 登录
         /// </summary>
@@ -161,11 +161,20 @@ namespace KilyCore.API.Controllers
         /// <returns></returns>
         [HttpGet("GetCode")]
         [AllowAnonymous]
-        public string GetCode()
+        public ObjectResultEx GetCode()
         {
             String Code = ValidateCode.CreateValidateCode();
             HttpContext.Session.SetSession("ValidateCode", Code);
-            return Code;
+            return ObjectResultEx.Instance(Code, 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 安全退出
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("LoginOut")]
+        public ObjectResultEx LoginOut()
+        {
+            return ObjectResultEx.Instance(VerificationExtension.LoginOut(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 区域树
