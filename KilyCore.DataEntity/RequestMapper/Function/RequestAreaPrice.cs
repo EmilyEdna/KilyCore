@@ -1,5 +1,4 @@
-﻿using KilyCore.DataEntity.AttributeMapper;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -16,6 +15,6 @@ namespace KilyCore.DataEntity.RequestMapper.Function
         public Guid? ProvinceId { get; set; }
         public Guid? CityId { get; set; }
         public Guid? AreaId { get; set; }
-        public Guid? TwonId { get; set; }
+        public Guid? TownId { get; set; }
     }
 }
