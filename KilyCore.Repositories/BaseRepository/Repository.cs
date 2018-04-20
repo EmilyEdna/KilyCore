@@ -75,38 +75,31 @@ namespace KilyCore.Repositories.BaseRepository
         /// <param name="entity"></param>
         /// <param name="dto"></param>
         /// <returns></returns>
-        public virtual bool Update<TEntity, DEntity>(TEntity entity, DEntity dto, PropertyDescriptorCollection collection = null) where TEntity : class, new() where DEntity : class, new()
+        public virtual bool Update<TEntity, DEntity>(TEntity entity, DEntity dto) where TEntity : class, new() where DEntity : class, new()
         {
             try
             {
-                if (collection != null)
+                List<PropertyInfo> DtoProps = dto.GetType().GetProperties().ToList();
+                List<PropertyInfo> EntityProps = entity.GetType().GetProperties().ToList();
+                List<PropertyInfo> EntityProp = EntityProps.Where(t => t.Name.Contains("Update")).ToList();
+                EntityProp.Where(t => t.Name.Equals("UpdateTime")).FirstOrDefault().SetValue(entity, DateTime.Now);
+                EntityProp.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(entity, UserInfo().Id.ToString());
+                foreach (var Prop in EntityProp)
                 {
-                    List<PropertyInfo> DtoProps = dto.GetType().GetProperties().ToList();
-                    List<PropertyInfo> EntityProps = entity.GetType().GetProperties().ToList();
-                    List<PropertyInfo> EntityProp = EntityProps.Where(t => t.Name.Contains("Update")).ToList();
-                    EntityProp.Where(t => t.Name.Equals("UpdateTime")).FirstOrDefault().SetValue(entity, DateTime.Now);
-                    EntityProp.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(entity, UserInfo().Id.ToString());
-                    foreach (var Prop in EntityProp)
-                    {
-                        Kily.Entry<TEntity>(entity).Property(Prop.Name).IsModified = true;//更新的时间和更新人
-                    }
-                    foreach (var Prop in DtoProps)
-                    {
-                        if (!Prop.Name.ToUpper().Equals("Id".ToUpper()))//Id不更新
-                        {
-                            //判断实体中是否存在DTO中的字段
-                            if (EntityProps.Select(t => t.Name.ToUpper()).Contains(Prop.Name.ToUpper()))
-                                //需要更新的字段
-                                Kily.Entry<TEntity>(entity).Property(Prop.Name).IsModified = true;
-                        }
-                    }
-                    this.SaveChages();
-                    return true;
+                    Kily.Entry<TEntity>(entity).Property(Prop.Name).IsModified = true;//更新的时间和更新人
                 }
-                else
+                foreach (var Prop in DtoProps)
                 {
-                    return false;
+                    if (!Prop.Name.ToUpper().Equals("Id".ToUpper()))//Id不更新
+                    {
+                        //判断实体中是否存在DTO中的字段
+                        if (EntityProps.Select(t => t.Name.ToUpper()).Contains(Prop.Name.ToUpper()))
+                            //需要更新的字段
+                            Kily.Entry<TEntity>(entity).Property(Prop.Name).IsModified = true;
+                    }
                 }
+                this.SaveChages();
+                return true;
             }
             catch (Exception ex)
             {
