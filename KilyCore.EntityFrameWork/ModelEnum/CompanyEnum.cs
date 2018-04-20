@@ -11,24 +11,29 @@ namespace KilyCore.EntityFrameWork.ModelEnum
     public enum CompanyEnum
     {
         /// <summary>
-        /// 种养(值/殖)企业
+        /// 种植企业
         /// </summary>
-        [Description("种养(值/殖)企业")]
+        [Description("种植企业")]
         Plant = 10,
+        /// <summary>
+        /// 养殖企业
+        /// </summary>
+        [Description("养殖企业")]
+        Culture =20,
         /// <summary>
         /// 生产企业
         /// </summary>
         [Description("生产企业")]
-        Production = 20,
+        Production = 30,
         /// <summary>
         /// 流通企业
         /// </summary>
         [Description("流通企业")]
-        Circulation = 30,
+        Circulation = 40,
         /// <summary>
         /// 其他企业
         /// </summary>
         [Description("其他企业")]
-        Other=40
+        Other=50
     }
 }

@@ -122,7 +122,7 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(FinanceService.WatchCertificate(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
-        #region 餐饮合同
+        #region 合同
         /// <summary>
         /// 餐饮合同分页列表
         /// </summary>
@@ -132,6 +132,16 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetContractPage(PageParamList<RequestContract> pageParam)
         {
             return ObjectResultEx.Instance(FinanceService.GetContractPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 入住合同分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetStayContractPage")]
+        public ObjectResultEx GetStayContractPage(PageParamList<RequestStayContract> pageParam)
+        {
+            return ObjectResultEx.Instance(FinanceService.GetStayContractPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 餐饮缴费

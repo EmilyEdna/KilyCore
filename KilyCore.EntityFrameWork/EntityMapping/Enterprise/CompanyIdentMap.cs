@@ -33,6 +33,14 @@ namespace KilyCore.EntityFrameWork.EntityMapping.Enterprise
             builder.HasKey(t => t.Id);
         }
     }
+    public class CompanyCultureIdentAttachMap : IEntityTypeConfiguration<CompanyCultureIdentAttach>
+    {
+        public void Configure(EntityTypeBuilder<CompanyCultureIdentAttach> builder)
+        {
+            builder.ToTable(typeof(CompanyCultureIdentAttach).Name);
+            builder.HasKey(t => t.Id);
+        }
+    }
     public class CompanyProductionIdentAttachMap : IEntityTypeConfiguration<CompanyProductionIdentAttach>
     {
         public void Configure(EntityTypeBuilder<CompanyProductionIdentAttach> builder)

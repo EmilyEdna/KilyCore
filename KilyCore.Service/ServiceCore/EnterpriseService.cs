@@ -405,7 +405,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<CompanyIdent> queryable = Kily.Set<CompanyIdent>().Where(t => t.Id == Param.Id);
             ResponseEnterpriseIdent data = null;
-            //种养企业
+            //种植企业
             if (Param.CompanyType == CompanyEnum.Plant)
             {
                 IQueryable<CompanyPlantIdentAttach> Plant = Kily.Set<CompanyPlantIdentAttach>();
@@ -413,6 +413,39 @@ namespace KilyCore.Service.ServiceCore
                 {
                     Id = t.x.Id,
                     IdentStartTime=t.x.IdentStartTime,
+                    IdentEndTime = t.x.IdentEndTime,
+                    IdentNo = t.x.IdentNo,
+                    CompanyName = t.x.CompanyName,
+                    CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.x.CompanyType),
+                    IdentStarName = AttrExtension.GetSingleDescription<IdentEnum, DescriptionAttribute>(t.x.IdentStar),
+                    Representative = t.x.Representative,
+                    LinkPhone = t.x.LinkPhone,
+                    IdentYear = t.x.IdentYear,
+                    CommunityCode = t.x.CommunityCode,
+                    RepresentativeCard = t.x.RepresentativeCard,
+                    SendPerson = t.x.SendPerson,
+                    SendCard = t.x.SendCard,
+                    Remark = t.x.Remark,
+                    ImgCard = t.y.FirstOrDefault().ImgCard,
+                    ImgApply = t.y.FirstOrDefault().ImgApply,
+                    ImgResearch = t.y.FirstOrDefault().ImgResearch,
+                    ImgAgreement = t.y.FirstOrDefault().ImgAgreement,
+                    ImgOther = t.y.FirstOrDefault().ImgOther,
+                    ImgQualified_X = t.y.FirstOrDefault().ImgQualified,
+                    ImgWater_X = t.y.FirstOrDefault().ImgWater,
+                    ImgSoil_X = t.y.FirstOrDefault().ImgSoil,
+                    ImgMetal_X = t.y.FirstOrDefault().ImgMetal,
+                    AuditInfo = o.MapToList<SystemAudit, ResponseAudit>()
+                }).AsNoTracking().FirstOrDefault();
+            }
+            //养殖企业
+            if (Param.CompanyType == CompanyEnum.Culture)
+            {
+                IQueryable<CompanyCultureIdentAttach> Plant = Kily.Set<CompanyCultureIdentAttach>();
+                data = queryable.GroupJoin(Plant, x => x.Id, y => y.IdentId, (x, y) => new { x, y }).GroupJoin(Kily.Set<SystemAudit>(), t => t.x.Id, o => o.TableId, (t, o) => new ResponseEnterpriseIdent()
+                {
+                    Id = t.x.Id,
+                    IdentStartTime = t.x.IdentStartTime,
                     IdentEndTime = t.x.IdentEndTime,
                     IdentNo = t.x.IdentNo,
                     CompanyName = t.x.CompanyName,
