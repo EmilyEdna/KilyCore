@@ -1,5 +1,4 @@
-﻿using KilyCore.DataEntity.AttributeMapper;
-using KilyCore.DataEntity.RequestMapper.Function;
+﻿using KilyCore.DataEntity.RequestMapper.Function;
 using KilyCore.DataEntity.ResponseMapper.Function;
 using KilyCore.EntityFrameWork.Model.Function;
 using KilyCore.EntityFrameWork.Model.System;
@@ -110,7 +109,11 @@ namespace KilyCore.Service.ServiceCore
                     ProvincePrice = t.ProvincePrice,
                     CityPrice = t.CityPrice,
                     AreaPrice = t.AreaPrice,
-                    TownPrice = t.TownPrice
+                    TownPrice = t.TownPrice,
+                    ProvinceId = t.ProvinceId,
+                    CityId = t.CityId,
+                    AreaId = t.AreaId,
+                    TownId = t.TownId
                 }).FirstOrDefault();
             return data;
         }

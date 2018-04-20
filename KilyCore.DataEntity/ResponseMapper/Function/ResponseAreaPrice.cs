@@ -12,5 +12,9 @@ namespace KilyCore.DataEntity.ResponseMapper.Function
         public decimal? CityPrice { get; set; }
         public decimal? AreaPrice { get; set; }
         public decimal? TownPrice { get; set; }
+        public  Guid? ProvinceId { get; set; }
+        public  Guid? CityId { get; set; }
+        public  Guid? AreaId { get; set; }
+        public  Guid? TownId { get; set; }
     }
 }
