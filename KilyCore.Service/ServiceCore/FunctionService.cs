@@ -110,11 +110,7 @@ namespace KilyCore.Service.ServiceCore
                     ProvincePrice = t.ProvincePrice,
                     CityPrice = t.CityPrice,
                     AreaPrice = t.AreaPrice,
-                    TownPrice = t.TownPrice,
-                    ProvinceId = t.ProvinceId,
-                    CityId = t.CityId,
-                    AreaId = t.AreaId,
-                    TownId = t.TownId
+                    TownPrice = t.TownPrice
                 }).FirstOrDefault();
             return data;
         }
