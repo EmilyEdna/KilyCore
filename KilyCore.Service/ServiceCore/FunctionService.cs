@@ -53,7 +53,7 @@ namespace KilyCore.Service.ServiceCore
                     Id = t.Id,
                     ProjectName = t.ProjectName,
                     ProvincePrice = t.ProvincePrice,
-                    CityPrice = t.CityPrice
+                    CityPrice=t.CityPrice
                 });
             }
             if (UserInfo().AccountType == AccountEnum.City)
@@ -65,7 +65,7 @@ namespace KilyCore.Service.ServiceCore
                     ProjectName = t.ProjectName,
                     ProvincePrice = t.ProvincePrice,
                     CityPrice = t.CityPrice,
-                    AreaPrice = t.AreaPrice
+                    AreaPrice=t.AreaPrice
                 });
             }
             if (UserInfo().AccountType == AccountEnum.Area)
@@ -77,7 +77,7 @@ namespace KilyCore.Service.ServiceCore
                     ProjectName = t.ProjectName,
                     CityPrice = t.CityPrice,
                     AreaPrice = t.AreaPrice,
-                    TownPrice = t.TownPrice
+                   TownPrice=t.TownPrice
                 });
             }
             if (UserInfo().AccountType == AccountEnum.Village)
@@ -110,11 +110,7 @@ namespace KilyCore.Service.ServiceCore
                     ProvincePrice = t.ProvincePrice,
                     CityPrice = t.CityPrice,
                     AreaPrice = t.AreaPrice,
-                    TownPrice = t.TownPrice,
-                    ProvinceId = t.ProvinceId,
-                    CityId = t.CityId,
-                    AreaId = t.AreaId,
-                    TownId = t.TownId
+                    TownPrice = t.TownPrice
                 }).FirstOrDefault();
             return data;
         }
@@ -128,7 +124,37 @@ namespace KilyCore.Service.ServiceCore
             FunctionAreaPrice AreaPrice = Param.MapToEntity<FunctionAreaPrice>();
             if (Param.Id != Guid.Empty)
             {
-                if (Update<FunctionAreaPrice, RequestAreaPrice>(AreaPrice, Param, PropertyCollection<RequestAreaPrice, MapperAttribute>(Param, Updates.Ignore)))
+                FunctionAreaPrice Entity = Kily.Set<FunctionAreaPrice>().Where(t => t.Id == Param.Id).FirstOrDefault();
+                IList<String> Fields = new List<String>();
+                if (UserInfo().AccountType == AccountEnum.Admin || UserInfo().AccountType == AccountEnum.Country)
+                {
+                    Entity.ProvinceId = Param.ProvinceId;
+                    Entity.ProvincePrice = Param.ProvincePrice;
+                    Fields.Add("ProvinceId");
+                    Fields.Add("ProvincePrice");
+                }
+                if (UserInfo().AccountType == AccountEnum.Province)
+                {
+                    Entity.CityId = Param.CityId;
+                    Entity.CityPrice = Param.CityPrice;
+                    Fields.Add("CityId");
+                    Fields.Add("CityPrice");
+                }
+                if (UserInfo().AccountType == AccountEnum.City)
+                {
+                    Entity.AreaId = Param.AreaId;
+                    Entity.AreaPrice = Param.AreaPrice;
+                    Fields.Add("AreaId");
+                    Fields.Add("AreaPrice");
+                }
+                if (UserInfo().AccountType == AccountEnum.Area)
+                {
+                    Entity.TownId = Param.TownId;
+                    Entity.TownPrice = Param.TownPrice;
+                    Fields.Add("TownId");
+                    Fields.Add("TownPrice");
+                }
+                if (UpdateField<FunctionAreaPrice>(Entity, null, Fields))
                     return ServiceMessage.UPDATESUCCESS;
                 else
                     return ServiceMessage.UPDATEFAIL;
@@ -180,13 +206,13 @@ namespace KilyCore.Service.ServiceCore
                     ProjectName = t.Name
                 }).ToList();
             if (AccountType == 40)
-                queryable = Kily.Set<SystemArea>().Where(t => t.CityCode == CityCode).Select(t => new ResponseAreaPrice()
+                queryable = Kily.Set<SystemArea>().Where(t=>t.CityCode==CityCode).Select(t => new ResponseAreaPrice()
                 {
                     Id = t.Id,
                     ProjectName = t.Name
                 }).ToList();
             if (AccountType == 50)
-                queryable = Kily.Set<SystemTown>().Where(t => t.AreaCode == AreaCode).Select(t => new ResponseAreaPrice()
+                queryable = Kily.Set<SystemTown>().Where(t=>t.AreaCode==AreaCode).Select(t => new ResponseAreaPrice()
                 {
                     Id = t.Id,
                     ProjectName = t.Name

@@ -29,6 +29,7 @@
                         type: "post",
                         async: false,
                         success: function (result) {
+                            debugger;
                             controller.SetCtrlValue("#Edit",result.data);
                         }
                     });
@@ -102,7 +103,7 @@
                     <td class="has-warning">
                         <input type="text" class="form-control" name="ProjectName" id="ProjectName" />
                     </td>
-                    <th><label class="control-label">单价(元)</label></th>
+                    <th><label class="control-label">单价</label></th>
                     <td class="has-warning">
                         <input type="text" class="form-control required IsNumber" name="" id="Price" data-msg-required="请输入数字" />
                     </td>
