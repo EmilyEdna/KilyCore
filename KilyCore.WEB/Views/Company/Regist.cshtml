@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>企业注册</title>
+    <link href="~/Content/BootStrap/Css/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/FontAwesome/Css/font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/HPlus/Css/Hplus.css" rel="stylesheet" />
+    <link href="~/Content/ICheck/ICheck.css" rel="stylesheet" />
+
+    <script src="~/Content/JavaScript/jquery.min.js"></script>
+    <script src="~/Content/BootStrap/Script/bootstrap.js"></script>
+    <script src="~/Content/ICheck/ICheck.js"></script>
+    <script src="~/Content/Layer/layer.js"></script>
+    <script src="~/Content/JavaScript/jquery.cookie.js"></script>
+    <script src="~/Content/JavaScript/jquery.extension.js"></script>
+    <script src="~/Content/JavaScript/Controller.js"></script>
+    <script>
+        if (window.top !== window.self) {
+            window.top.location = window.location;
+        }
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            InitDom: function () {
+                $(".i-checks").iCheck({ checkboxClass: "icheckbox_square-green", radioClass: "iradio_square-green", });
+            },
+            InitEvents: function () {
+                //注册事件
+                $("#Regist").on('click', function () {
+                    var data = $("#Edit").SerializeJson();
+                    if (data.CompanyName == "") {
+                        controller.Tips("请输入公司名称", "#CompanyName", { tips: [2, '#FF0000'] });
+                        return;
+                    }
+                    if (data.CompanyAccount == "") {
+                        controller.Tips("请输入公司账号", "#CompanyAccount", { tips: [2, '#FF0000'] });
+                        return;
+                    }
+                    if (data.CompanyType == 0) {
+                        controller.Tips("请选择公司类型", "#CompanyType", { tips: [2, '#FF0000'] });
+                        return;
+                    }
+                    if (data.PassWord == "") {
+                        controller.Tips("请输入公司密码", "#PassWord_One", { tips: [2, '#FF0000'] });
+                        return;
+                    }
+                    if (!$(".icheckbox_square-green").hasClass("checked")) {
+                        controller.Tips("请勾选相关协议", "#checkInfo", { tips: [3, '#FF0000'] });
+                        return;
+                    }
+                    if (data.PassWord === $("#PassWord_Two").val()) {
+                        controller.ajax({
+                            url: "Enterprise/RegistCompanyAccount",
+                            data: { Parameter: data },
+                            type: "post",
+                            success: function (result) {
+                                if (result.flag == 1)
+                                    controller.SetHref("Login");
+                            }
+                        });
+                    }
+                    else { controller.Tips("两次输入的密码不同", "#PassWord_Two", { tips: [2, '#FF0000'] }); }
+                });
+            },
+        };
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+</head>
+<body class="gray-bg">
+    <div class="middle-box text-center loginscreen animated fadeInDown">
+        <div>
+            <div>
+                <h1 class="logo-name">企</h1>
+            </div>
+            <h3>欢迎注册 集团企业</h3>
+            <p>创建一个集团企业新账户</p>
+            <form class="m-t" role="form" id="Edit">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="请输入公司名称" name="CompanyName" id="CompanyName">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="请输入登录账号" name="CompanyAccount" id="CompanyAccount">
+                </div>
+                <div class="form-group">
+                    <select type="select" class="form-control" name="CompanyType" id="CompanyType">
+                        <option value="0">请选择公司类型</option>
+                        <option value="10">种植企业</option>
+                        <option value="20">养殖企业</option>
+                        <option value="30">生产企业</option>
+                        <option value="40">流通企业</option>
+                        <option value="50">其他企业</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="请输入密码" name="PassWord" id="PassWord_One">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" placeholder="请再次输入密码" id="PassWord_Two">
+                </div>
+                <div class="form-group text-left">
+                    <div class="checkbox i-checks">
+                        <label class="no-padding">
+                            <input type="checkbox" id="checkInfo">
+                            <i></i> <a href="#">我同意注册协议</a>
+                        </label>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-primary block full-width m-b" id="Regist">注 册</button>
+                <p class="text-muted text-center">
+                    <small>已经有账户了？</small>
+                    <a href="/Company/Login">点此登录</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

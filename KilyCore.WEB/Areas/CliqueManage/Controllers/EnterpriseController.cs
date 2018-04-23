@@ -29,6 +29,9 @@ namespace KilyCore.WEB.Areas.CliqueManage.Controllers
         {
             return View();
         }
+        public IActionResult WatchRole() {
+            return View();
+        }
         #endregion
 
         #region 资料审核

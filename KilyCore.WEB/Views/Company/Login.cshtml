@@ -41,7 +41,7 @@
         function UserLogin() {
             $('#loading').on('click', function () {
                 controller.ajax({
-                    url: "System/Login",
+                    url: "Enterprise/Login",
                     type: 'post',
                     xhrFields: {
                         withCredentials: true
@@ -51,7 +51,7 @@
                     success: function (result) {
                         if (result.flag != -1) {
                             controller.SetCookie(result.data);
-                            controller.SetHref("Admin");
+                            controller.SetHref("Home");
                         }
                         else {
                             $('.btn-info').click();

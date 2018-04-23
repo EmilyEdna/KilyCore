@@ -21,10 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Home\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\Content\Uploader\js\upload.js" />
   </ItemGroup>
 

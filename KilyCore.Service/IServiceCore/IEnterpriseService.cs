@@ -26,6 +26,7 @@ namespace KilyCore.Service.IServiceCore
 
         #region 集团角色
         PagedResult<ResponseEnterpriseRoleAuthor> GetCompanyRoleAuthorPage(PageParamList<RequestEnterpriseRoleAuthor> pageParam);
+        PagedResult<ResponseEnterpriseRoleAuthor> WatchRolePage(PageParamList<RequestEnterpriseRoleAuthor> pageParam);
         String EditEnterpriseRoleAuthor(RequestEnterpriseRoleAuthor Param);
         PagedResult<ResponseEnterpriseRoleAuthor> GetRoleAuthorPage(PageParamList<RequestEnterpriseRoleAuthor> pageParam);
         String RemoveEnterpriseRoleAuthor(Guid Id);
@@ -44,6 +45,11 @@ namespace KilyCore.Service.IServiceCore
         ResponseEnterpriseIdent GetCompanyIdentDetail(RequestEnterpriseIdent Param);
         String AuditIdent(RequestAudit Param);
         String AuditPayment(RequestPayment param);
+        #endregion
+
+        #region 登陆注册
+        String RegistCompanyAccount(RequestEnterpriseInfo Param);
+        ResponseEnterpriseInfo EnterpriseLogin(RequestValidate LoginValidate);
         #endregion
     }
 }

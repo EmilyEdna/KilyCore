@@ -1,4 +1,5 @@
-﻿using KilyCore.DataEntity.RequestMapper.Enterprise;
+﻿using KilyCore.Configure;
+using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.System;
@@ -180,6 +181,24 @@ namespace KilyCore.Service.ServiceCore
                 EnterpriseRoleName = x.FirstOrDefault().EnterpriseRoleName,
                 CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
                 AuthorMenuPath = x.FirstOrDefault().AuthorMenuPath
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 角色分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseRoleAuthor> WatchRolePage(PageParamList<RequestEnterpriseRoleAuthor> pageParam)
+        {
+            IQueryable<EnterpriseRoleAuthor> queryable = Kily.Set<EnterpriseRoleAuthor>();
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.EnterpriseRoleName))
+                queryable = queryable.Where(t => t.EnterpriseRoleName.Contains(pageParam.QueryParam.EnterpriseRoleName));
+            var data = queryable.Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseRoleAuthor()
+            {
+                EnterpriseRoleName = t.EnterpriseRoleName,
+                AuthorMenuPath = t.AuthorMenuPath
+
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -412,7 +431,7 @@ namespace KilyCore.Service.ServiceCore
                 data = queryable.GroupJoin(Plant, x => x.Id, y => y.IdentId, (x, y) => new { x, y }).GroupJoin(Kily.Set<SystemAudit>(), t => t.x.Id, o => o.TableId, (t, o) => new ResponseEnterpriseIdent()
                 {
                     Id = t.x.Id,
-                    IdentStartTime=t.x.IdentStartTime,
+                    IdentStartTime = t.x.IdentStartTime,
                     IdentEndTime = t.x.IdentEndTime,
                     IdentNo = t.x.IdentNo,
                     CompanyName = t.x.CompanyName,
@@ -600,6 +619,66 @@ namespace KilyCore.Service.ServiceCore
                 return ServiceMessage.INSERTSUCCESS;
             else
                 return ServiceMessage.INSERTFAIL;
+        }
+        #endregion
+
+        #region 登录注册
+        /// <summary>
+        /// 集团客服注册账号
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string RegistCompanyAccount(RequestEnterpriseInfo Param)
+        {
+            Param.AuditType = AuditEnum.WaitAduit;
+            EnterpriseRoleAuthor Author = Kily.Set<EnterpriseRoleAuthor>().Where(t => t.IsDelete == false).Where(t => t.EnterpriseRoleName.Contains("基本")).OrderBy(t => t.CreateTime).FirstOrDefault();
+            Param.EnterpriseRoleId = Author.Id;
+            CompanyInfo Info = Param.MapToEntity<CompanyInfo>();
+            if (Insert<CompanyInfo>(Info))
+                return ServiceMessage.INSERTSUCCESS;
+            else
+                return ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 企业登录
+        /// </summary>
+        /// <param name="LoginValidate"></param>
+        /// <returns></returns>
+        public ResponseEnterpriseInfo EnterpriseLogin(RequestValidate LoginValidate)
+        {
+            IQueryable<CompanyInfo> queryable = Kily.Set<CompanyInfo>()
+                .Where(t => t.CompanyAccount.Equals(LoginValidate.Account))
+                .Where(t => t.PassWord.Equals(LoginValidate.PassWord))
+                .Where(t => t.IsDelete == false);
+            ResponseEnterpriseInfo Info = queryable.Select(t => new ResponseEnterpriseInfo()
+            {
+                Id = t.Id,
+                CompanyAccount = t.CompanyAccount,
+                CommunityCode = t.CommunityCode,
+                CompanyAddress = t.CompanyAddress,
+                CompanyName = t.CompanyName,
+                CompanyPhone = t.CompanyPhone,
+                CompanyType = t.CompanyType,
+                CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
+                AuditType = t.AuditType,
+                AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
+                EnterpriseRoleId=t.EnterpriseRoleId,
+                TypePath=t.TypePath,
+                Certification=t.Certification,
+                HonorCertification=t.HonorCertification,
+                Discription=t.Discription,
+                NetAddress=t.NetAddress,
+                ProductionAddress=t.ProductionAddress,
+                SellerAddress=t.SellerAddress,
+                VideoAddress=t.VideoAddress
+            }).FirstOrDefault();
+            if (null != Info)
+            {
+                Cache.WriteCache<ResponseEnterpriseInfo>(Info, Configer.ClientIP, 2);
+                return Info;
+            }
+            else
+                return null;
         }
         #endregion
     }

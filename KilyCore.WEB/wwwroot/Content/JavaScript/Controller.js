@@ -170,6 +170,14 @@ controller.Tab = function (option) {
         tab: option //json数组
     });
 }
+//吸附卡
+controller.Tips = function (title, element, option, flag) {
+    if (!flag)
+        layer.tips(title, element, option);
+    else
+        top.layer.tips(title, element, option);
+
+}
 //图片框
 controller.Photos = function (option) {
     //option格式

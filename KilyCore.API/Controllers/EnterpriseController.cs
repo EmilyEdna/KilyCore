@@ -1,8 +1,12 @@
 ﻿using System;
+using KilyCore.Configure;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.Extension.ResultExtension;
+using KilyCore.Extension.SessionExtension;
+using KilyCore.Extension.Token;
 using KilyCore.Service.QueryExtend;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KilyCore.API.Controllers
@@ -82,6 +86,15 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetCompanyRoleAuthorPage(PageParamList<RequestEnterpriseRoleAuthor> pageParam)
         {
             return ObjectResultEx.Instance(EnterpriseService.GetCompanyRoleAuthorPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 角色分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("WatchRolePage")]
+        public ObjectResultEx WatchRolePage(PageParamList<RequestEnterpriseRoleAuthor> pageParam) {
+            return ObjectResultEx.Instance(EnterpriseService.WatchRolePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 编辑集团角色菜单
@@ -206,6 +219,46 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx AuditPayment(RequestPayment Param)
         {
             return ObjectResultEx.Instance(EnterpriseService.AuditPayment(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region 登录注册
+        /// <summary>
+        /// 企业注册
+        /// </summary>
+        /// <param name="Parameter"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpPost("RegistCompanyAccount")]
+        public ObjectResultEx RegistCompanyAccount(SimlpeParam<RequestEnterpriseInfo> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseService.RegistCompanyAccount(Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 集团登录
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("Login")]
+        [AllowAnonymous]
+        public ObjectResultEx Login(RequestValidate LoginValidate)
+        {
+            try
+            {
+                string Code = HttpContext.Session.GetSession<string>("ValidateCode").Trim();
+                var info = EnterpriseService.EnterpriseLogin(LoginValidate);
+                if (info != null && Code.Equals(LoginValidate.ValidateCode.Trim()))
+                {
+                    CookieInfo cookie = new CookieInfo();
+                    VerificationExtension.WriteToken(cookie);
+                    return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, info }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
+                }
+                else
+                    return ObjectResultEx.Instance(null, -1, "登录失败", HttpCode.NoAuth);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         #endregion
     }

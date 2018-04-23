@@ -6,17 +6,21 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KilyCore.WEB.Controllers
 {
-    public class HomeController : Controller
+    public class AdminController : Controller
     {
         public IActionResult Index()
         {
             return View();
         }
-        public IActionResult Admin()
+        public IActionResult Home()
         {
             return View();
         }
         public IActionResult Login()
+        {
+            return View();
+        }
+        public IActionResult Regist()
         {
             return View();
         }

@@ -57,7 +57,7 @@ namespace KilyCore.Repositories.BaseRepository
                 entity.GetType().GetProperty("IsDelete").SetValue(entity, false);
                 entity.GetType().GetProperty("Id").SetValue(entity, Guid.NewGuid());
                 props.Where(t => t.Name.Equals("CreateTime")).FirstOrDefault().SetValue(entity, DateTime.Now);
-                props.Where(t => t.Name.Equals("CreateUser")).FirstOrDefault().SetValue(entity, UserInfo().Id.ToString());
+                props.Where(t => t.Name.Equals("CreateUser")).FirstOrDefault().SetValue(entity, UserInfo()==null?null:UserInfo().Id.ToString());
                 Kily.Entry<TEntity>(entity).State = EntityState.Added;
                 this.SaveChages();
                 return true;

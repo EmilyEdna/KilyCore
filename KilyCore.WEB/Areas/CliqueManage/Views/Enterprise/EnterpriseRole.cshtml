@@ -22,6 +22,10 @@
                 //设置表单
                 this.$table = controller.Table("#tableList", { url: "Enterprise/GetCompanyRoleAuthorPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Role" });
                 //设置权限菜单
+                options.SetRoleMenu();
+            },
+             //设置权限菜单
+            SetRoleMenu: function () { 
                 controller.ajax({
                     url: "Enterprise/GetEnterpriseTree",
                     type: "post",
@@ -34,9 +38,23 @@
             },
             //事件
             InitEvents: function () {
+                //提交保存
                 $("#save").click(function () {
                     controller.Validate("#Edit", $("#Edit").SerializeOver());
                     $("#Edit").submit();
+                });
+                //查看角色
+                $("#watch").click(function () { 
+                    controller.OpenWindow({
+                        title: "查看角色",
+                        type: 2,
+                        height: "600px",
+                        width: "1000px",
+                        url: "CliqueManage/Enterprise/WatchRole",
+                        callBack: function (result) {
+                            result.popup.close();
+                        }
+                    });
                 });
             },
             //行为
@@ -92,6 +110,7 @@
                 <div class="row">
                     <form id="Role">
                         <div class="col-sm-8 m-b-xs">
+                            <button type="button" class="btn btn-sm btn-white" id="watch"><i class="fa fa-plus"></i>查看角色</button>
                         </div>
                         <div class="col-sm-4">
                             <div class="input-group">
