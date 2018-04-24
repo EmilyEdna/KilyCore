@@ -32,15 +32,15 @@
                 //安全退出
                 options.SignOut();
                 //用户信息
-                $("body").GetUserInfo();
+                $("body").GetCompanyInfo();
                 //显示登录
-                $(".text-muted").prepend(UserInfo.TrueName);
-                $(".font-bold").prepend(UserInfo.Account);
+                $(".text-muted").prepend(CompanyUser.CompanyName);
+                $(".font-bold").prepend(CompanyUser.CompanyAccount);
             },
             //获取树
             GetMenu: function () {
                 controller.ajax({
-                    url: "System/GetSystemMenu",
+                    url: "Enterprise/GetEnterpriseMenu",
                     data: {},
                     type: "post",
                     async: false,
@@ -56,8 +56,9 @@
             //安全退出
             SignOut: function () {
                 $(".LoginOut").click(function () {
+                    controller.ClearLocal();
                     controller.ajax({
-                        url: "System/LoginOut",
+                        url: "Enterprise/LoginOut",
                         data: {},
                         type: "post",
                         success: function (result) {
@@ -242,7 +243,7 @@
                 <a href="#" class="roll-nav roll-right J_tabExit LoginOut"><i class="fa fa-sign-out"></i> 退出</a>
             </div>
             <div class="row J_mainContent" id="content-main">
-                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="~/home/Index" frameborder="0" seamless></iframe>
+                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="~/Company/Index" frameborder="0" seamless></iframe>
             </div>
             <div class="footer">
                 <div class="pull-right">

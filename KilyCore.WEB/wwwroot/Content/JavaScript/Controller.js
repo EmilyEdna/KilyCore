@@ -62,7 +62,10 @@ controller.SetCookie = function (option) {
         expires: new Date().setTime(controller.SetRequestTime() + (120 * 120 * 1000)),
         path: '/'
     }) //2小时过期
-    localStorage.UserInfo = JSON.stringify(obj.user);//保存用户信息
+    if (obj.SysAdmin != undefined)
+        localStorage.UserInfo = JSON.stringify(obj.SysAdmin);//保存用户信息
+    else if (obj.ComAdmin != undefined)
+        localStorage.CompanyUser = JSON.stringify(obj.ComAdmin);//保存企业用户信息
 }
 //删除Cookie
 controller.DeleteCookie = function () {
@@ -79,6 +82,10 @@ controller.GetCookie = function () {
 //设置请求时间
 controller.SetRequestTime = function () {
     return dt = new Date().getTime();
+}
+//清空本地存储
+controller.ClearLocal = function () {
+    localStorage.clear();
 }
 //获取URL参数
 controller.GetParam = function (option) {
@@ -419,112 +426,7 @@ controller.Validate = function (element, data) {
         }
     });
 }
-//TreeView旧控件
-controller.SetTreeVeiw = function (element, option, document) {
-    var defaultOption = {
-        levels: 5,
-        data: undefined,                 //数据源
-        showCheckbox: true,        //是否显示复选框
-        highlightSelected: false,    //是否高亮选中
-        emptyIcon: '',
-        multiSelect: true,    //多选
-        onNodeChecked: NodeChecked,
-        onNodeUnchecked: NodeUnchecked
-    };
-    var setting = $.extend(defaultOption, option);
-    return $(element).treeview({
-        levels: setting.levels,
-        data: setting.data,                 //数据源
-        showCheckbox: setting.showCheckbox,        //是否显示复选框
-        highlightSelected: setting.highlightSelected,    //是否高亮选中
-        emptyIcon: setting.emptyIcon,
-        multiSelect: setting.multiSelect,    //多选
-        onNodeChecked: setting.onNodeChecked,
-        onNodeUnchecked: setting.onNodeUnchecked
-    });
-    //选中状态
-    var nodeCheckedSilent = false;
-    function NodeChecked(event, node) {
-        CheckStatus();
-        if (nodeCheckedSilent) {
-            return;
-        }
-        nodeCheckedSilent = true;
-        CheckAllParent(node);
-        CheckAllSon(node);
-        nodeCheckedSilent = false;
-    }
-    function CheckAllParent(node) {
-        $(element).treeview('checkNode', node.nodeId, { silent: true });
-        var parent = $(element).treeview('getParent', node.nodeId);//返回选中的数组
-        if (!(('nodeId') in parent))
-            return;
-        else
-            CheckAllParent(parent);
-    }
-    function CheckAllSon(node) {
-        $(element).treeview('checkNode', node.nodeId, { silent: true });
-        if (node.nodes != null && node.nodes.length > 0)
-            $.each(node.nodes, function (i, data) {
-                CheckAllSon(data);
-            });
-    }
-    //取消选中
-    var nodeUncheckedSilent = false;
-    function NodeUnchecked(event, node) {
-        CheckStatus();
-        if (nodeUncheckedSilent)
-            return;
-        nodeUncheckedSilent = true;
-        UnCheckAllParent(node);
-        UnCheckAllSon(node);
-        nodeUncheckedSilent = false;
-    }
-    function UnCheckAllParent(node) {
-        $(element).treeview('uncheckNode', node.nodeId, { silent: true });
-        var siblings = $(element).treeview('getSiblings', node.nodeId);
-        var parentNode = $(element).treeview('getParent', node.nodeId);
-        if (!("nodeId" in parentNode)) {
-            return;
-        }
-        var isAllUnchecked = true;  //是否全部没选中  
-        for (var i in siblings) {
-            if (siblings[i].state.checked) {
-                isAllUnchecked = false;
-                break;
-            }
-        }
-        if (isAllUnchecked) {
-            UnCheckAllParent(parentNode);
-        }
-    }
-    function UnCheckAllSon(node) {
-        $(element).treeview('uncheckNode', node.nodeId, { silent: true });
-        if (node.nodes != null && node.nodes.length > 0) {
-            for (var i in node.nodes) {
-                UnCheckAllSon(node.nodes[i]);
-            }
-        }
-    }
-    //处理选中
-    function CheckStatus() {
-        var CheckList = $(element).treeview("getChecked", [{ silent: true }]);
-        var html = '';
-        $.each(CheckList, function (i, data) {
-            html += '<p class="text text-info" data-value=' + data.nId + '><i class="fa fa-check-circle" aria-hidden="true"></i>' + data.text + '</p>';
-        });
-        $(document).html(html);
-        SetCheckList(CheckList);
-    }
-    function SetCheckList(CheckList) {
-        var html = '';
-        $.each(CheckList, function (i, data) {
-            html += data.nId + ',';
-        });
-        localStorage.Checked = html;
-    }
-}
-//TreeView新控件
+//TreeView控件
 controller.TreeCtrl = function (element, option, document) {
     var defaultOption = {
         levels: 5,

@@ -2,6 +2,7 @@
 using KilyCore.Cache.MongoCache;
 using KilyCore.Cache.RedisCache;
 using KilyCore.Configure;
+using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.EntityFrameWork;
 using Microsoft.EntityFrameworkCore;
@@ -34,7 +35,10 @@ namespace KilyCore.Repositories.BaseRepository
                 List<PropertyInfo> props = Entity.GetType().GetProperties().Where(t => t.Name.Contains("Delete")).ToList();
                 props.Where(t => t.Name.Equals("IsDelete")).FirstOrDefault().SetValue(Entity, true);
                 props.Where(t => t.Name.Equals("DeleteTime")).FirstOrDefault().SetValue(Entity, DateTime.Now);
-                props.Where(t => t.Name.Equals("DeleteUser")).FirstOrDefault().SetValue(Entity, UserInfo().Id.ToString());
+                if (UserInfo() != null)
+                    props.Where(t => t.Name.Equals("DeleteUser")).FirstOrDefault().SetValue(Entity, UserInfo().Id.ToString());
+                else if (CompanyInfo() != null)
+                    props.Where(t => t.Name.Equals("DeleteUser")).FirstOrDefault().SetValue(Entity, CompanyInfo().Id.ToString());
                 Kily.Entry<TEntity>(Entity).State = EntityState.Modified;
                 this.SaveChages();
                 return true;
@@ -49,16 +53,19 @@ namespace KilyCore.Repositories.BaseRepository
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public virtual bool Insert<TEntity>(TEntity entity) where TEntity : class, new()
+        public virtual bool Insert<TEntity>(TEntity Entity) where TEntity : class, new()
         {
             try
             {
-                List<PropertyInfo> props = entity.GetType().GetProperties().Where(t => t.Name.Contains("Create")).ToList();
-                entity.GetType().GetProperty("IsDelete").SetValue(entity, false);
-                entity.GetType().GetProperty("Id").SetValue(entity, Guid.NewGuid());
-                props.Where(t => t.Name.Equals("CreateTime")).FirstOrDefault().SetValue(entity, DateTime.Now);
-                props.Where(t => t.Name.Equals("CreateUser")).FirstOrDefault().SetValue(entity, UserInfo()==null?null:UserInfo().Id.ToString());
-                Kily.Entry<TEntity>(entity).State = EntityState.Added;
+                List<PropertyInfo> props = Entity.GetType().GetProperties().Where(t => t.Name.Contains("Create")).ToList();
+                Entity.GetType().GetProperty("IsDelete").SetValue(Entity, false);
+                Entity.GetType().GetProperty("Id").SetValue(Entity, Guid.NewGuid());
+                props.Where(t => t.Name.Equals("CreateTime")).FirstOrDefault().SetValue(Entity, DateTime.Now);
+                if (UserInfo() != null)
+                    props.Where(t => t.Name.Equals("CreateUser")).FirstOrDefault().SetValue(Entity, UserInfo().Id.ToString());
+                else if (CompanyInfo() != null)
+                    props.Where(t => t.Name.Equals("CreateUser")).FirstOrDefault().SetValue(Entity, CompanyInfo().Id.ToString());
+                Kily.Entry<TEntity>(Entity).State = EntityState.Added;
                 this.SaveChages();
                 return true;
             }
@@ -75,18 +82,21 @@ namespace KilyCore.Repositories.BaseRepository
         /// <param name="entity"></param>
         /// <param name="dto"></param>
         /// <returns></returns>
-        public virtual bool Update<TEntity, DEntity>(TEntity entity, DEntity dto) where TEntity : class, new() where DEntity : class, new()
+        public virtual bool Update<TEntity, DEntity>(TEntity Entity, DEntity dto) where TEntity : class, new() where DEntity : class, new()
         {
             try
             {
                 List<PropertyInfo> DtoProps = dto.GetType().GetProperties().ToList();
-                List<PropertyInfo> EntityProps = entity.GetType().GetProperties().ToList();
+                List<PropertyInfo> EntityProps = Entity.GetType().GetProperties().ToList();
                 List<PropertyInfo> EntityProp = EntityProps.Where(t => t.Name.Contains("Update")).ToList();
-                EntityProp.Where(t => t.Name.Equals("UpdateTime")).FirstOrDefault().SetValue(entity, DateTime.Now);
-                EntityProp.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(entity, UserInfo().Id.ToString());
+                EntityProp.Where(t => t.Name.Equals("UpdateTime")).FirstOrDefault().SetValue(Entity, DateTime.Now);
+                if (UserInfo() != null)
+                    EntityProp.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, UserInfo().Id.ToString());
+                else if (CompanyInfo() != null)
+                    EntityProp.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, CompanyInfo().Id.ToString());
                 foreach (var Prop in EntityProp)
                 {
-                    Kily.Entry<TEntity>(entity).Property(Prop.Name).IsModified = true;//更新的时间和更新人
+                    Kily.Entry<TEntity>(Entity).Property(Prop.Name).IsModified = true;//更新的时间和更新人
                 }
                 foreach (var Prop in DtoProps)
                 {
@@ -95,7 +105,7 @@ namespace KilyCore.Repositories.BaseRepository
                         //判断实体中是否存在DTO中的字段
                         if (EntityProps.Select(t => t.Name.ToUpper()).Contains(Prop.Name.ToUpper()))
                             //需要更新的字段
-                            Kily.Entry<TEntity>(entity).Property(Prop.Name).IsModified = true;
+                            Kily.Entry<TEntity>(Entity).Property(Prop.Name).IsModified = true;
                     }
                 }
                 this.SaveChages();
@@ -115,36 +125,42 @@ namespace KilyCore.Repositories.BaseRepository
         /// <param name="field">单个字段</param>
         /// <param name="fields">多个字段</param>
         /// <returns></returns>
-        public virtual bool UpdateField<TEntity>(TEntity entity, string field, IList<string> fields = null) where TEntity : class, new()
+        public virtual bool UpdateField<TEntity>(TEntity Entity, string Field, IList<string> Fields = null) where TEntity : class, new()
         {
             try
             {
-                if (fields != null && string.IsNullOrEmpty(field))
+                if (Fields != null && string.IsNullOrEmpty(Field))
                 {
-                    List<PropertyInfo> EntityProps = entity.GetType().GetProperties().Where(t => t.Name.Contains("Update")).ToList();
-                    EntityProps.Where(t => t.Name.Equals("UpdateTime")).FirstOrDefault().SetValue(entity, DateTime.Now);
-                    EntityProps.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(entity, UserInfo().Id.ToString());
+                    List<PropertyInfo> EntityProps = Entity.GetType().GetProperties().Where(t => t.Name.Contains("Update")).ToList();
+                    EntityProps.Where(t => t.Name.Equals("UpdateTime")).FirstOrDefault().SetValue(Entity, DateTime.Now);
+                    if (UserInfo() != null)
+                        EntityProps.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, UserInfo().Id.ToString());
+                    else if (CompanyInfo() != null)
+                        EntityProps.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, CompanyInfo().Id.ToString());
                     foreach (var Prop in EntityProps)
                     {
-                        Kily.Entry<TEntity>(entity).Property(Prop.Name).IsModified = true;//更新的时间和更新人
+                        Kily.Entry<TEntity>(Entity).Property(Prop.Name).IsModified = true;//更新的时间和更新人
                     }
-                    foreach (var Prop in fields)
+                    foreach (var Prop in Fields)
                     {
-                        Kily.Entry<TEntity>(entity).Property(Prop).IsModified = true;
+                        Kily.Entry<TEntity>(Entity).Property(Prop).IsModified = true;
                     }
                     this.SaveChages();
                     return true;
                 }
                 else
                 {
-                    List<PropertyInfo> EntityProps = entity.GetType().GetProperties().Where(t => t.Name.Contains("Update")).ToList();
-                    EntityProps.Where(t => t.Name.Equals("UpdateTime")).FirstOrDefault().SetValue(entity, DateTime.Now);
-                    EntityProps.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(entity, UserInfo().Id.ToString());
+                    List<PropertyInfo> EntityProps = Entity.GetType().GetProperties().Where(t => t.Name.Contains("Update")).ToList();
+                    EntityProps.Where(t => t.Name.Equals("UpdateTime")).FirstOrDefault().SetValue(Entity, DateTime.Now);
+                    if (UserInfo() != null)
+                        EntityProps.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, UserInfo().Id.ToString());
+                    else if (CompanyInfo() != null)
+                        EntityProps.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, CompanyInfo().Id.ToString());
                     foreach (var Prop in EntityProps)
                     {
-                        Kily.Entry<TEntity>(entity).Property(Prop.Name).IsModified = true;//更新的时间和更新人
+                        Kily.Entry<TEntity>(Entity).Property(Prop.Name).IsModified = true;//更新的时间和更新人
                     }
-                    Kily.Entry<TEntity>(entity).Property(field).IsModified = true;
+                    Kily.Entry<TEntity>(Entity).Property(Field).IsModified = true;
                     this.SaveChages();
                     return true;
                 }
@@ -226,6 +242,14 @@ namespace KilyCore.Repositories.BaseRepository
         public ResponseAdmin UserInfo()
         {
             return Cache.GetCache<ResponseAdmin>(Configer.ClientIP);
+        }
+        /// <summary>
+        /// 重缓存中获取登录的公司信息
+        /// </summary>
+        /// <returns></returns>
+        public ResponseEnterpriseInfo CompanyInfo()
+        {
+            return Cache.GetCache<ResponseEnterpriseInfo>(Configer.ClientIP);
         }
         /// <summary>
         /// 返回动态属性集合

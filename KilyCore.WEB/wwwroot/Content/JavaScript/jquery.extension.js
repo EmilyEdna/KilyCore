@@ -38,6 +38,10 @@ $.fn.SerializeJson = function () {
 $.fn.GetUserInfo = function () {
     UserInfo = JSON.parse(localStorage.UserInfo);
 }
+//获取企业用户信息
+$.fn.GetCompanyInfo = function () {
+    CompanyUser = JSON.parse(localStorage.CompanyUser);
+}
 //只针对角色页面使用
 $.fn.SerializeOver = function () {
     var serializeObj = {};

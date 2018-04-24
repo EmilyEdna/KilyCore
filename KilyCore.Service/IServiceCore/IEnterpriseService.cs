@@ -47,7 +47,7 @@ namespace KilyCore.Service.IServiceCore
         String AuditPayment(RequestPayment param);
         #endregion
 
-        #region 登陆注册
+        #region 登录注册
         String RegistCompanyAccount(RequestEnterpriseInfo Param);
         ResponseEnterpriseInfo EnterpriseLogin(RequestValidate LoginValidate);
         #endregion

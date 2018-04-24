@@ -140,12 +140,12 @@ namespace KilyCore.API.Controllers
             try
             {
                 string Code = HttpContext.Session.GetSession<string>("ValidateCode").Trim();
-                ResponseAdmin user = SystemService.SystemLogin(LoginValidate);
-                if (user != null && Code.Equals(LoginValidate.ValidateCode.Trim()))
+                ResponseAdmin SysAdmin = SystemService.SystemLogin(LoginValidate);
+                if (SysAdmin != null && Code.Equals(LoginValidate.ValidateCode.Trim()))
                 {
                     CookieInfo cookie = new CookieInfo();
                     VerificationExtension.WriteToken(cookie);
-                    return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, user }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
+                    return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, SysAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
                 }
                 else
                     return ObjectResultEx.Instance(null, -1, "登录失败", HttpCode.NoAuth);

@@ -222,7 +222,7 @@ namespace KilyCore.API.Controllers
         }
         #endregion
 
-        #region 登录注册
+        #region 登录注册退出
         /// <summary>
         /// 企业注册
         /// </summary>
@@ -245,12 +245,12 @@ namespace KilyCore.API.Controllers
             try
             {
                 string Code = HttpContext.Session.GetSession<string>("ValidateCode").Trim();
-                var info = EnterpriseService.EnterpriseLogin(LoginValidate);
-                if (info != null && Code.Equals(LoginValidate.ValidateCode.Trim()))
+                var ComAdmin = EnterpriseService.EnterpriseLogin(LoginValidate);
+                if (ComAdmin != null && Code.Equals(LoginValidate.ValidateCode.Trim()))
                 {
                     CookieInfo cookie = new CookieInfo();
                     VerificationExtension.WriteToken(cookie);
-                    return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, info }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
+                    return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ComAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
                 }
                 else
                     return ObjectResultEx.Instance(null, -1, "登录失败", HttpCode.NoAuth);
@@ -259,6 +259,15 @@ namespace KilyCore.API.Controllers
             {
                 throw ex;
             }
+        }
+        /// <summary>
+        /// 安全退出
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("LoginOut")]
+        public ObjectResultEx LoginOut()
+        {
+            return ObjectResultEx.Instance(VerificationExtension.LoginOut(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }
