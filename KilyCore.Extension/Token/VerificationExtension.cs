@@ -39,7 +39,7 @@ namespace KilyCore.Extension.Token
                 return null;
             String Token = RSACryptionExtension.RSADecrypt(Configer.HttpContext.Request.Headers["Token"].ToString());
             CookieInfo Cookie = CacheFactory.Cache().GetCache<CookieInfo>(Token);
-            SystemInfoKey.PrivateKey = Cookie.SysKey;
+            SystemInfoKey.PrivateKey = Cookie==null?null:Cookie.SysKey;
             return Cookie;
         }
         /// <summary>

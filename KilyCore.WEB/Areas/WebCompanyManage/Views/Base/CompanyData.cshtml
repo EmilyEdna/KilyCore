@@ -3,6 +3,261 @@
     ViewData["Title"] = "企业资料";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
-
-<h2>CompanyData</h2>
-
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+            },
+            //设置文件值
+            SetFileValue: function (data,elememt) {
+                var files = $(elememt).val();
+                if (files != null && files != "" && files != undefined) {
+                    files += "," + data;
+                    $(elememt).val(files);
+                } else {
+                    $(elememt).val(data);
+                }
+            },
+            //事件
+            InitEvents: function () {
+                //文件上传-执照
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-1",
+                    maxNum: 1,
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#Certification");
+                    }
+                });
+                //文件上传-证书
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-2",
+                    maxNum: 3,
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data,"#HonorCertification");
+                    }
+                });
+            },
+            //行为
+            action: {
+            }//行为结束
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+@section css{
+    <style>
+        .ibox-content {
+            border-top-style: none;
+        }
+    </style>
+}
+<div class="tabs-container" style="margin-top:10px;">
+    <form method="post" class="form-horizontal" action="System/EditRole" id="Edit">
+        <input type="hidden" name="Id" />
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a data-toggle="tab" href="#tab-1" aria-expanded="true"> 资料页一</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-2" aria-expanded="false"> 资料页二</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-3" aria-expanded="false"> 资料页三</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="tab-1" class="tab-pane active">
+                <div class="panel-body">
+                    <!--名称-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">企业名称</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="CompanyName">
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--类型-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">企业类型</label>
+                        <div class="col-sm-4">
+                            <select name="CompanyType" class="form-control" type="select">
+                                <option value="10">种植企业</option>
+                                <option value="20">养殖企业</option>
+                                <option value="30">生产企业</option>
+                                <option value="40">流通企业</option>
+                                <option value="50">其他企业</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--账号-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">企业账号</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="CompanyAccount">
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--地址-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">企业地址</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="CompanyAddress">
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--工商号-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">工商代码</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="CommunityCode">
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--电话-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">企业电话</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="CompanyPhone">
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--网站-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">企业网站</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="NetAddress">
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-2" class="tab-pane">
+                <div class="panel-body">
+                    <!--区域-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">所属地域</label>
+                        <div class="col-sm-2">
+                            <select type="select" name="Province" id="province" class="form-control">
+                                <option>===请选择===</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <select type="select" name="City" id="city" class="form-control">
+                                <option>===请选择===</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <select type="select" name="Area" id="area" class="form-control">
+                                <option>===请选择===</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <select type="select" name="Town" id="town" class="form-control">
+                                <option>===请选择===</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--销售-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">销售地址</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="SellerAddress">
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--生产-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">生产地址</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="ProductionAddress">
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--视频-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">视频地址</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="VideoAddress">
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--介绍-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">企业介绍</label>
+                        <div class="col-sm-6">
+                            <textarea class="form-control" name="Discription" rows="4" maxlength="300"></textarea>
+                        </div>
+                        <div class="col-sm-4"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-3" class="tab-pane">
+                <div class="panel-body">
+                    <!--执照-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">营业执照</label>
+                        <div class="col-sm-8">
+                            <div class="image-box clear">
+                                <section class="upload-section">
+                                    <div class="upload-btn"></div>
+                                    <input type="file" name="Files" id="upload-input-1" value="" accept="image/*" multiple="multiple" />
+                                </section>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input  type="hidden" id="Certification" name="Certification"/>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--证书-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">荣誉证书</label>
+                        <div class="col-sm-8">
+                            <div class="image-box clear">
+                                <section class="upload-section">
+                                    <div class="upload-btn"></div>
+                                    <input type="file" name="Files" id="upload-input-2" value="" accept="image/*" multiple="multiple" />
+                                </section>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="hidden" id="HonorCertification" name="HonorCertification" />
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--结束-->
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <button class="btn btn-primary" type="button" id="save">保存内容</button>
+                            <button class="btn btn-white" type="button">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

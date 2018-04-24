@@ -112,6 +112,25 @@
 	opacity: 0;
 }
 
+.upload-section #upload-input-1 {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 100;
+}
+
+.upload-section #upload-input-2 {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 100;
+}
 
 /*上传域样式*/
 .upload-section #upload-input{
