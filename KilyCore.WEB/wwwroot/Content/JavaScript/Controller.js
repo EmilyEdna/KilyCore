@@ -31,6 +31,7 @@ controller.ajax = function (option) {
         beforeSend: function (xhr) {
             xhr.setRequestHeader("Token", controller.GetCookie().Token == undefined ? "" : controller.GetCookie().Token);
             xhr.setRequestHeader("ApiKey", controller.GetCookie().ApiKey == undefined ? "" : controller.GetCookie().ApiKey);
+            xhr.setRequestHeader("SysKey", controller.GetCookie().SysKey == undefined ? "" : controller.GetCookie().SysKey);
         },
         error: function (xhr, msg) {
             if (xhr.status == 401)
@@ -53,12 +54,16 @@ controller.SetCookie = function (option) {
     var flag = controller.JsonObject(option);
     if (!flag) var obj = JSON.parse(option);
     else var obj = option;
-    if (!(obj.hasOwnProperty("RSAToKen") && obj.hasOwnProperty("RSAApiKey"))) return controller.Msg("不包含指定列");
+    if (!(obj.hasOwnProperty("RSAToKen") && obj.hasOwnProperty("RSAApiKey") && obj.hasOwnProperty("RSASysKey"))) return controller.Msg("不包含指定列");
     $.cookie("Token", obj.RSAToKen, {
         expires: new Date().setTime(controller.SetRequestTime() + (120 * 120 * 1000)),
         path: '/'
     }) //2小时过期
     $.cookie("ApiKey", obj.RSAApiKey, {
+        expires: new Date().setTime(controller.SetRequestTime() + (120 * 120 * 1000)),
+        path: '/'
+    }) //2小时过期
+    $.cookie("SysKey", obj.RSASysKey, {
         expires: new Date().setTime(controller.SetRequestTime() + (120 * 120 * 1000)),
         path: '/'
     }) //2小时过期
@@ -71,12 +76,14 @@ controller.SetCookie = function (option) {
 controller.DeleteCookie = function () {
     $.removeCookie('Token', { path: '/' });
     $.removeCookie('ApiKey', { path: '/' });
+    $.removeCookie('SysKey', { path: '/' });
 }
 //获取Cookie
 controller.GetCookie = function () {
     return {
         Token: $.cookie("Token"),
-        ApiKey: $.cookie("ApiKey")
+        ApiKey: $.cookie("ApiKey"),
+        SysKey: $.cookie("SysKey")
     }
 }
 //设置请求时间

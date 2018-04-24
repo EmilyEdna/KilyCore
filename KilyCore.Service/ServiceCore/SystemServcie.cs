@@ -465,13 +465,7 @@ namespace KilyCore.Service.ServiceCore
                AccountType = t.AccountType,
                RoleAuthorType = t.RoleAuthorType
            }).FirstOrDefault();
-            if (null != Admin)
-            {
-                Cache.WriteCache<ResponseAdmin>(Admin, Configer.ClientIP, 2);
-                return Admin;
-            }
-            else
-                return null;
+            return Admin ?? null;
         }
         #endregion
 

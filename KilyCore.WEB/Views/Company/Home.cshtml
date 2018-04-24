@@ -30,10 +30,8 @@
                 //安全退出
                 options.SignOut();
                 //用户信息
-                if ($("body").GetCompanyInfo()) {
+                if ($("body").GetCompanyInfo())
                     $(".LoginOut").click();
-                    controller.Confirm("您还未登录系统，请先登录", function (flag) { controller.SetHref("Login") });
-                }
                 else
                     //获取树
                     options.GetMenu();
@@ -59,13 +57,15 @@
             },
             //安全退出
             SignOut: function () {
-                $(".LoginOut").on('click',function () {
+                $(".LoginOut").on('click', function () {
                     controller.ClearLocal();
                     controller.ajax({
                         url: "Enterprise/LoginOut",
                         data: {},
                         type: "post",
+                        async: false,
                         success: function (result) {
+                            
                             controller.Confirm("您已经成功安全退出系统！", function (index) {
                                 controller.SetHref("Login");
                             })
@@ -115,10 +115,6 @@
                                 </li>
                                 <li>
                                     <a class="J_menuItem" href="mailbox.html">信箱</a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <a class="LoginOut">安全退出</a>
                                 </li>
                             </ul>
                         </div>

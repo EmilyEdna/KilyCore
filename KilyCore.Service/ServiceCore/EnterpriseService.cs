@@ -672,13 +672,7 @@ namespace KilyCore.Service.ServiceCore
                 SellerAddress = t.SellerAddress,
                 VideoAddress = t.VideoAddress
             }).FirstOrDefault();
-            if (null != Info)
-            {
-                Cache.WriteCache<ResponseEnterpriseInfo>(Info, Configer.ClientIP, 2);
-                return Info;
-            }
-            else
-                return null;
+            return Info ?? null;
         }
         #endregion
 

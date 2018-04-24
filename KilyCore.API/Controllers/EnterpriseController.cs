@@ -249,8 +249,8 @@ namespace KilyCore.API.Controllers
                 if (ComAdmin != null && Code.Equals(LoginValidate.ValidateCode.Trim()))
                 {
                     CookieInfo cookie = new CookieInfo();
-                    VerificationExtension.WriteToken(cookie);
-                    return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ComAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
+                    VerificationExtension.WriteToken(cookie,ComAdmin);
+                    return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey,ResponseCookieInfo.RSASysKey, ComAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
                 }
                 else
                     return ObjectResultEx.Instance(null, -1, "登录失败", HttpCode.NoAuth);

@@ -38,10 +38,11 @@ namespace KilyCore.Extension.FilterGroup
             var request = context.HttpContext.Request;
             if (context.Filters.Any(t => (t as AllowAnonymousFilter) != null))
                 return;
-            if (request.Headers.ContainsKey("ApiKey"))
+            if (request.Headers.ContainsKey("ApiKey") && request.Headers.ContainsKey("SysKey"))
             {
                 String ApiKey = RSACryptionExtension.RSADecrypt(request.Headers["ApiKey"].FirstOrDefault());
-                if (ApiKey.Equals(Configer.ApiKey + DateTime.Now.ToShortDateString()))
+                String SysKey = RSACryptionExtension.RSADecrypt(request.Headers["SysKey"].FirstOrDefault());
+                if (ApiKey.Equals(Configer.ApiKey + DateTime.Now.ToShortDateString()) && SystemInfoKey.PrivateKey.Equals(SysKey))
                     return;
             }
             context.Result = new UnauthorizedResult();

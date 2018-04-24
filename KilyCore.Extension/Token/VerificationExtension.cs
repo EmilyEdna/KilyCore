@@ -17,14 +17,17 @@ namespace KilyCore.Extension.Token
         /// 写入cookie
         /// </summary>
         /// <param name="Cookie"></param>
-        public static void WriteToken(CookieInfo Cookie)
+        public static void WriteToken<T>(CookieInfo Cookie, T DTOInfo) where T : class, new()
         {
             Cookie.Token = Guid.NewGuid().ToString();
+            Cookie.SysKey = Guid.NewGuid().ToString();
             Cookie.ApiKey = RSACryptionExtension.RSAEncrypt(Configer.ApiKey + DateTime.Now.ToShortDateString());
             CacheFactory.Cache().WriteCache(Cookie, Cookie.Token, 2);
+            CacheFactory.Cache().WriteCache<T>(DTOInfo, Cookie.SysKey, 2);
             //将加密后的Token和Key回传给客服端
             ResponseCookieInfo.RSAToKen = RSACryptionExtension.RSAEncrypt(Cookie.Token);
             ResponseCookieInfo.RSAApiKey = Cookie.ApiKey;
+            ResponseCookieInfo.RSASysKey = RSACryptionExtension.RSAEncrypt(Cookie.SysKey);
         }
         /// <summary>
         /// 验证登录
@@ -35,13 +38,18 @@ namespace KilyCore.Extension.Token
             if (String.IsNullOrEmpty(Configer.HttpContext.Request.Headers["Token"].ToList().FirstOrDefault()))
                 return null;
             String Token = RSACryptionExtension.RSADecrypt(Configer.HttpContext.Request.Headers["Token"].ToString());
-            return CacheFactory.Cache().GetCache<CookieInfo>(Token);
+            CookieInfo Cookie = CacheFactory.Cache().GetCache<CookieInfo>(Token);
+            SystemInfoKey.PrivateKey = Cookie.SysKey;
+            return Cookie;
         }
         public static string LoginOut()
         {
-            String Token = RSACryptionExtension.RSADecrypt(Configer.HttpContext.Request.Headers["Token"].ToString());
+            String HeadToken = Configer.HttpContext.Request.Headers["Token"].ToString();
+            String HeadSysKey = Configer.HttpContext.Request.Headers["SysKey"].ToString();
+            String Token = RSACryptionExtension.RSADecrypt(HeadToken);
+            String SysKey = RSACryptionExtension.RSADecrypt(HeadSysKey);
             CacheFactory.Cache().RemoveCache(Token);
-            CacheFactory.Cache().RemoveCache(Configer.ClientIP);
+            CacheFactory.Cache().RemoveCache(SysKey);
             return "退出成功!";
         }
         /// <summary>
