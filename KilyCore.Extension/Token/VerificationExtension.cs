@@ -42,6 +42,10 @@ namespace KilyCore.Extension.Token
             SystemInfoKey.PrivateKey = Cookie.SysKey;
             return Cookie;
         }
+        /// <summary>
+        /// 退出登录
+        /// </summary>
+        /// <returns></returns>
         public static string LoginOut()
         {
             String HeadToken = Configer.HttpContext.Request.Headers["Token"].ToString();
