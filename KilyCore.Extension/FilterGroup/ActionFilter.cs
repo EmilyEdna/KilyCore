@@ -19,8 +19,6 @@ namespace KilyCore.Extension.FilterGroup
         /// <param name="context"></param>
         public void OnActionExecuted(ActionExecutedContext context)
         {
-            //客服端IP
-            Configer.ClientIP = context.HttpContext.Connection.RemoteIpAddress.ToString();
             //HttpContext httpContext = context.HttpContext;
             //var  headerOrginUrl = httpContext.Request.Headers.GetCommaSeparatedValues("Origin");
             //httpContext.Response.Headers.SetCommaSeparatedValues("Access-Control-Allow-Origin", headerOrginUrl);

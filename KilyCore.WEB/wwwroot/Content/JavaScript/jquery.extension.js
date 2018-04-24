@@ -1,4 +1,5 @@
 ﻿var UserInfo = UserInfo || {};
+var CompanyUser = CompanyUser || {};
 //设置菜单
 $.fn.SetTree = function (data) {
     var html = '';
@@ -36,11 +37,21 @@ $.fn.SerializeJson = function () {
 };
 //获取用户信息
 $.fn.GetUserInfo = function () {
-    UserInfo = JSON.parse(localStorage.UserInfo);
+    if (localStorage.UserInfo != undefined) {
+        UserInfo = JSON.parse(localStorage.UserInfo);
+        return false;
+    }
+    else
+        return true;
 }
 //获取企业用户信息
 $.fn.GetCompanyInfo = function () {
-    CompanyUser = JSON.parse(localStorage.CompanyUser);
+    if (localStorage.CompanyUser != undefined) {
+        CompanyUser = JSON.parse(localStorage.CompanyUser);
+        return false;
+    }
+    else
+        return true;
 }
 //只针对角色页面使用
 $.fn.SerializeOver = function () {

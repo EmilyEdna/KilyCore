@@ -270,5 +270,20 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(VerificationExtension.LoginOut(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+
+        #region 集团企业后台系统
+        #region 获取全局集团菜单
+        /// <summary>
+        /// 获取导航菜单
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetEnterpriseMenu")]
+        public ObjectResultEx GetEnterpriseMenu()
+        {
+            return ObjectResultEx.Instance(EnterpriseService.GetEnterpriseMenu(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #endregion
     }
 }

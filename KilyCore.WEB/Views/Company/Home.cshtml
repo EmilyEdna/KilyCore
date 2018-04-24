@@ -27,12 +27,16 @@
             },
             //元素
             InitDom: function () {
-                //获取树
-                options.GetMenu();
                 //安全退出
                 options.SignOut();
                 //用户信息
-                $("body").GetCompanyInfo();
+                if ($("body").GetCompanyInfo()) {
+                    $(".LoginOut").click();
+                    controller.Confirm("您还未登录系统，请先登录", function (flag) { controller.SetHref("Login") });
+                }
+                else
+                    //获取树
+                    options.GetMenu();
                 //显示登录
                 $(".text-muted").prepend(CompanyUser.CompanyName);
                 $(".font-bold").prepend(CompanyUser.CompanyAccount);
@@ -55,7 +59,7 @@
             },
             //安全退出
             SignOut: function () {
-                $(".LoginOut").click(function () {
+                $(".LoginOut").on('click',function () {
                     controller.ClearLocal();
                     controller.ajax({
                         url: "Enterprise/LoginOut",

@@ -662,15 +662,15 @@ namespace KilyCore.Service.ServiceCore
                 CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
                 AuditType = t.AuditType,
                 AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
-                EnterpriseRoleId=t.EnterpriseRoleId,
-                TypePath=t.TypePath,
-                Certification=t.Certification,
-                HonorCertification=t.HonorCertification,
-                Discription=t.Discription,
-                NetAddress=t.NetAddress,
-                ProductionAddress=t.ProductionAddress,
-                SellerAddress=t.SellerAddress,
-                VideoAddress=t.VideoAddress
+                EnterpriseRoleId = t.EnterpriseRoleId,
+                TypePath = t.TypePath,
+                Certification = t.Certification,
+                HonorCertification = t.HonorCertification,
+                Discription = t.Discription,
+                NetAddress = t.NetAddress,
+                ProductionAddress = t.ProductionAddress,
+                SellerAddress = t.SellerAddress,
+                VideoAddress = t.VideoAddress
             }).FirstOrDefault();
             if (null != Info)
             {
@@ -680,6 +680,50 @@ namespace KilyCore.Service.ServiceCore
             else
                 return null;
         }
+        #endregion
+
+        #region 集团企业后台系统
+        #region 获取全局集团菜单
+        /// <summary>
+        /// 获取导航菜单
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseEnterpriseMenu> GetEnterpriseMenu()
+        {
+            IQueryable<EnterpriseMenu> queryable = Kily.Set<EnterpriseMenu>().Where(t => t.Level == MenuEnum.LevelOne)
+                   .Where(t => t.IsDelete == false).AsNoTracking().AsQueryable().OrderBy(t => t.CreateTime);
+            EnterpriseRoleAuthor Author = Kily.Set<EnterpriseRoleAuthor>().Where(t => t.IsDelete == false)
+                .Where(t => t.Id == CompanyInfo().EnterpriseRoleId).AsNoTracking().FirstOrDefault();
+            queryable = queryable.Where(t => Author.AuthorMenuPath.Contains(t.Id.ToString())).AsNoTracking();
+            var data = queryable.Select(t => new ResponseEnterpriseMenu()
+            {
+                Id = t.Id,
+                MenuId = t.MenuId,
+                ParentId = t.ParentId,
+                MenuAddress = t.MenuAddress,
+                MenuName = t.MenuName,
+                HasChildrenNode = t.HasChildrenNode,
+                MenuIcon = t.MenuIcon,
+                MenuChildren = Kily.Set<EnterpriseMenu>()
+                    .Where(x => x.ParentId == t.MenuId)
+                    .Where(x => x.Level != MenuEnum.LevelOne)
+                    .Where(x => x.IsDelete == false)
+                    .Where(x => Author.AuthorMenuPath.Contains(x.Id.ToString()))
+                    .Select(x => new ResponseEnterpriseMenu()
+                    {
+                        Id = x.Id,
+                        MenuId = x.MenuId,
+                        ParentId = x.ParentId,
+                        MenuAddress = x.MenuAddress,
+                        MenuName = x.MenuName,
+                        HasChildrenNode = x.HasChildrenNode,
+                        MenuIcon = x.MenuIcon
+                    }).ToList()
+            }).ToList();
+            return data;
+        }
+        #endregion
+
         #endregion
     }
 }

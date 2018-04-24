@@ -14,8 +14,8 @@
     <link href="~/Content/HPlus/Css/Hplus.css" rel="stylesheet" />
 
     <script src="~/Content/JavaScript/jquery.min.js"></script>
-    <script src="~/Content/JavaScript/Controller.js"></script>
     <script src="~/Content/JavaScript/jquery.cookie.js"></script>
+    <script src="~/Content/JavaScript/Controller.js"></script>
     <script src="~/Content/JavaScript/jquery.extension.js"></script>
 
     <script>
@@ -27,12 +27,17 @@
             },
             //元素
             InitDom: function () {
-                //获取树
-                options.GetMenu();
                 //安全退出
                 options.SignOut();
                 //用户信息
-                $("body").GetUserInfo();
+                if ($("body").GetUserInfo())
+                {
+                    $(".LoginOut").click();
+                    controller.Confirm("您还未登录系统，请先登录", function (flag) { controller.SetHref("Login") });
+                }
+                else
+                    //获取树
+                    options.GetMenu();
                 //显示登录
                 $(".text-muted").prepend(UserInfo.TrueName);
                 $(".font-bold").prepend(UserInfo.Account);
@@ -55,7 +60,7 @@
             },
             //安全退出
             SignOut: function () {
-                $(".LoginOut").click(function () {
+                $(".LoginOut").on('click',function () {
                     controller.ClearLocal();
                     controller.ajax({
                         url: "System/LoginOut",

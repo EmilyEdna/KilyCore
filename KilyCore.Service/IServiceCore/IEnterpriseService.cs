@@ -51,5 +51,12 @@ namespace KilyCore.Service.IServiceCore
         String RegistCompanyAccount(RequestEnterpriseInfo Param);
         ResponseEnterpriseInfo EnterpriseLogin(RequestValidate LoginValidate);
         #endregion
+
+        #region 集团企业后台系统
+        #region 获取全局集团菜单
+        IList<ResponseEnterpriseMenu> GetEnterpriseMenu();
+        #endregion
+
+        #endregion
     }
 }

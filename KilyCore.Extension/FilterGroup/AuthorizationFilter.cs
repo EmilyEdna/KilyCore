@@ -22,6 +22,8 @@ namespace KilyCore.Extension.FilterGroup
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             Configer.HttpContext = context.HttpContext;
+            //客服端IP
+            Configer.ClientIP = context.HttpContext.Connection.RemoteIpAddress.ToString();
             if (context.Filters.Any(t => (t as AllowAnonymousFilter) != null))
                 return;
             //验证用户是否登录
