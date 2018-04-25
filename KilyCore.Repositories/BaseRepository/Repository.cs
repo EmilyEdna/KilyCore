@@ -247,9 +247,9 @@ namespace KilyCore.Repositories.BaseRepository
         /// 重缓存中获取登录的公司信息
         /// </summary>
         /// <returns></returns>
-        public ResponseEnterpriseInfo CompanyInfo()
+        public ResponseEnterprise CompanyInfo()
         {
-            return Cache.GetCache<ResponseEnterpriseInfo>(SystemInfoKey.PrivateKey);
+            return Cache.GetCache<ResponseEnterprise>(SystemInfoKey.PrivateKey);
         }
         /// <summary>
         /// 返回动态属性集合

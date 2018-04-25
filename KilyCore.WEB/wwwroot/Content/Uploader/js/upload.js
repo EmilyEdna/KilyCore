@@ -16,15 +16,15 @@
             hidenInputName: '', // 上传成功后追加的隐藏input名，注意不要带[]，会自动带[]，不写默认和上传按钮的name相同
             maxSize: 2, //设置允许上传图片的最大尺寸，单位M
             success: $.noop, //上传成功时的回调函数
-            error: $.noop //上传失败时的回调函数
-
+            error: $.noop, //上传失败时的回调函数
+            element: undefined //上传图片区域元素
         };
 
         var thisObj = $(this);
         var config  = $.extend(defaults, options);
 
-        var uploadBox = $(".upload-box");
-        var imageBox  = $(".image-box");
+        var uploadBox = $(config.element).parent(".upload-box");
+        var imageBox = $(config.element);
         var inputName = thisObj.attr('name');
 
         // 设置是否在上传中全局变量
@@ -43,7 +43,7 @@
             }
 
             // 获取最新的section数量
-            var imageNum  = $('.image-section').length;
+            var imageNum = imageBox.find('.image-section').length;
 
             var postUrl   = config.url;
             var maxNum    = config.maxNum;
@@ -110,8 +110,8 @@
         var ajaxUpload = function () {
 
             // 获取最新的
-            var imageSection = $('.image-section:first');
-            var imageShow    = $('.image-show:first');
+            var imageSection = imageBox.find('.image-section:first');
+            var imageShow = imageBox.find('.image-show:first');
 
             var formData = new FormData();
 
@@ -183,7 +183,7 @@
 
             var deleteModal   = $("<aside class='delete-modal'><div class='modal-content'><p class='modal-tip'>您确定要删除作品图片吗？</p><p class='modal-btn'> <span class='confirm-btn'>确定</span><span class='cancel-btn'>取消</span></p></div></aside>");
             // 创建删除模态框
-            deleteModal.appendTo('.image-box');
+            deleteModal.appendTo(config.element);
 
             // 显示弹框
             imageBox.delegate(".image-delete","click",function(){
@@ -217,7 +217,6 @@
             if(!hidenInputName){
                 hidenInputName = inputName;
             }
-
             var imageSection = $("<section class='image-section image-loading'></section>");
             var imageShade   = $("<div class='image-shade'></div>");
             var imageShow    = $("<img class='image-show image-opcity' />");
@@ -242,14 +241,12 @@
         };
 
         var createImageZoom = function () {
-
             var zoomShade   = $("<div id='zoom-shade'></div>");
             var zoomBox = $("<div id='zoom-box'></div>");
             var zoomContent = $("<div id='zoom-content'><img src=''></div>");
 
             uploadBox.append(zoomShade);
-            uploadBox.append(zoomBox);
-
+            zoomBox.appendTo(zoomShade);
             zoomContent.appendTo(zoomBox);
 
             // 显示弹框

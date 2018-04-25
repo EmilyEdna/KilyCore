@@ -48,8 +48,8 @@ namespace KilyCore.Service.IServiceCore
         #endregion
 
         #region 登录注册
-        String RegistCompanyAccount(RequestEnterpriseInfo Param);
-        ResponseEnterpriseInfo EnterpriseLogin(RequestValidate LoginValidate);
+        String RegistCompanyAccount(RequestEnterprise Param);
+        ResponseEnterprise EnterpriseLogin(RequestValidate LoginValidate);
         #endregion
 
         #region 集团企业后台系统

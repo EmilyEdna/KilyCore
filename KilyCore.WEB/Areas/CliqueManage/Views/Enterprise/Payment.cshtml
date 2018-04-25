@@ -45,7 +45,8 @@
                 controller.Upload({
                     url: "File/UploadImg",
                     element: "#upload-input",
-                    maxNum:1,
+                    maxNum: 1,
+                    node:'.image-box',
                     success: function (result) {
                         controller.Alter(result.msg);
                         options.SetFileValue(result.data);
@@ -107,11 +108,13 @@
             <div class="m-t-sm">
                 <div class="input-group line-width">
                     <span class="label label-warning">上传缴费凭证</span>
-                    <div class="image-box clear">
-                        <section class="upload-section">
-                            <div class="upload-btn"></div>
-                            <input type="file" name="Files" id="upload-input" value="" accept="image/*" multiple="multiple" />
-                        </section>
+                    <div class="upload-box">
+                        <div class="image-box clear">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" id="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
                     </div>
                 </div>
             </div>

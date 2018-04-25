@@ -301,6 +301,7 @@ namespace KilyCore.Service.ServiceCore
                 CompanyName = t.CompanyName,
                 CompanyAccount = t.CompanyAccount,
                 CompanyPhone = t.CompanyPhone,
+                VersionName=AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.Version),
                 CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
                 AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
                 TableName = t.GetType().Name,
@@ -628,7 +629,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public string RegistCompanyAccount(RequestEnterpriseInfo Param)
+        public string RegistCompanyAccount(RequestEnterprise Param)
         {
             Param.AuditType = AuditEnum.WaitAduit;
             EnterpriseRoleAuthor Author = Kily.Set<EnterpriseRoleAuthor>().Where(t => t.IsDelete == false).Where(t => t.EnterpriseRoleName.Contains("基本")).OrderBy(t => t.CreateTime).FirstOrDefault();
@@ -644,13 +645,13 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="LoginValidate"></param>
         /// <returns></returns>
-        public ResponseEnterpriseInfo EnterpriseLogin(RequestValidate LoginValidate)
+        public ResponseEnterprise EnterpriseLogin(RequestValidate LoginValidate)
         {
             IQueryable<CompanyInfo> queryable = Kily.Set<CompanyInfo>()
                 .Where(t => t.CompanyAccount.Equals(LoginValidate.Account))
                 .Where(t => t.PassWord.Equals(LoginValidate.PassWord))
                 .Where(t => t.IsDelete == false);
-            ResponseEnterpriseInfo Info = queryable.Select(t => new ResponseEnterpriseInfo()
+            ResponseEnterprise Info = queryable.Select(t => new ResponseEnterprise()
             {
                 Id = t.Id,
                 CompanyAccount = t.CompanyAccount,
@@ -665,7 +666,7 @@ namespace KilyCore.Service.ServiceCore
                 EnterpriseRoleId = t.EnterpriseRoleId,
                 TypePath = t.TypePath,
                 Certification = t.Certification,
-                HonorCertification = t.HonorCertification,
+                Honor = t.HonorCertification,
                 Discription = t.Discription,
                 NetAddress = t.NetAddress,
                 ProductionAddress = t.ProductionAddress,

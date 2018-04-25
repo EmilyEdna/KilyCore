@@ -13,8 +13,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string CompanyName { get; set; }
         public CompanyEnum CompanyType { get; set; }
         public string CompanyAccount { get; set; }
+        public SystemVersionEnum Version { get; set; }
         public string PassWord { get; set; }
         #region 辅助字段
+        public string VersionName { get; set; }
         public string CompanyTypeName { get; set; }
         public string Province
         {
@@ -75,5 +77,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string AuditTypeName { get; set; }
         public string Honor { get; set; }
         public AuditEnum AuditType { get; set; }
+        public Guid? EnterpriseRoleId { get; set; }
     }
 }

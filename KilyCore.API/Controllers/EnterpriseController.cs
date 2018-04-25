@@ -230,7 +230,7 @@ namespace KilyCore.API.Controllers
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("RegistCompanyAccount")]
-        public ObjectResultEx RegistCompanyAccount(SimlpeParam<RequestEnterpriseInfo> Param)
+        public ObjectResultEx RegistCompanyAccount(SimlpeParam<RequestEnterprise> Param)
         {
             return ObjectResultEx.Instance(EnterpriseService.RegistCompanyAccount(Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }

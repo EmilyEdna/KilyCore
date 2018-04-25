@@ -544,20 +544,23 @@ controller.Upload = function (option) {
         data: null,
         maxNum: 3,
         element: undefined,
-        maxSize:2,
+        maxSize: 2,
+        node: undefined,
         success: null
     }
     var options = $.extend(defaultOption, option)
-    return $(options.element).ajaxImageUpload({
-        url: WebUrl+options.url,
+    var defaults = {
+        url: WebUrl + options.url,
         data: options.data,
         maxNum: options.maxNum,
         maxSize: options.maxSize,
+        element: options.node,
         success: function (result) {
             options.success(result);
         },
         error: function (errer) {
             controller.Msg(errer);
         }
-    });
+    };
+    return $(options.element).ajaxImageUpload(defaults);
 }
