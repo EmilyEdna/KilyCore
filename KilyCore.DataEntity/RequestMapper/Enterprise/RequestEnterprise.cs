@@ -12,6 +12,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public string CompanyType { get; set; }
         public string CompanyAccount { get; set; }
         public string PassWord { get; set; }
+        public SystemVersionEnum Version { get; set; }
         #region 辅助字段
         public string Province { get; set; }
         public string City { get; set; }
@@ -37,6 +38,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public string VideoAddress { get; set; }
         public string Discription { get; set; }
         public string Certification { get; set; }
+        public string HonorCertification { get; set; }
         public AuditEnum AuditType { get; set; }
         public Guid? EnterpriseRoleId { get; set; }
     }

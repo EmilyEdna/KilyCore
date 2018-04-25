@@ -93,7 +93,8 @@ namespace KilyCore.API.Controllers
         /// <param name="pageParam"></param>
         /// <returns></returns>
         [HttpPost("WatchRolePage")]
-        public ObjectResultEx WatchRolePage(PageParamList<RequestEnterpriseRoleAuthor> pageParam) {
+        public ObjectResultEx WatchRolePage(PageParamList<RequestEnterpriseRoleAuthor> pageParam)
+        {
             return ObjectResultEx.Instance(EnterpriseService.WatchRolePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -249,8 +250,8 @@ namespace KilyCore.API.Controllers
                 if (ComAdmin != null && Code.Equals(LoginValidate.ValidateCode.Trim()))
                 {
                     CookieInfo cookie = new CookieInfo();
-                    VerificationExtension.WriteToken(cookie,ComAdmin);
-                    return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey,ResponseCookieInfo.RSASysKey, ComAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
+                    VerificationExtension.WriteToken(cookie, ComAdmin);
+                    return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ResponseCookieInfo.RSASysKey, ComAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
                 }
                 else
                     return ObjectResultEx.Instance(null, -1, "登录失败", HttpCode.NoAuth);
@@ -283,7 +284,27 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseService.GetEnterpriseMenu(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
-
+        #region  企业信息
+        /// <summary>
+        /// 获取公司信息
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetEnterpriseInfo")]
+        public ObjectResultEx GetEnterpriseInfo(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseService.GetEnterpriseInfo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑企业
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditEnterprise")]
+        public ObjectResultEx EditEnterprise(RequestEnterprise Param) {
+            return ObjectResultEx.Instance(EnterpriseService.EditEnterprise(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
         #endregion
     }
 }

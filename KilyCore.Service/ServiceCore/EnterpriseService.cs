@@ -1,10 +1,12 @@
 ﻿using KilyCore.Configure;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
+using KilyCore.DataEntity.RequestMapper.Finance;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.EntityFrameWork.Model.Company;
 using KilyCore.EntityFrameWork.Model.Enterprise;
+using KilyCore.EntityFrameWork.Model.Finance;
 using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AttributeExtension;
@@ -301,7 +303,7 @@ namespace KilyCore.Service.ServiceCore
                 CompanyName = t.CompanyName,
                 CompanyAccount = t.CompanyAccount,
                 CompanyPhone = t.CompanyPhone,
-                VersionName=AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.Version),
+                VersionName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.Version),
                 CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
                 AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
                 TableName = t.GetType().Name,
@@ -660,6 +662,8 @@ namespace KilyCore.Service.ServiceCore
                 CompanyName = t.CompanyName,
                 CompanyPhone = t.CompanyPhone,
                 CompanyType = t.CompanyType,
+                Version = t.Version,
+                VersionName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.Version),
                 CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
                 AuditType = t.AuditType,
                 AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
@@ -719,6 +723,67 @@ namespace KilyCore.Service.ServiceCore
         }
         #endregion
 
+        #region 企业资料
+        /// <summary>
+        /// 获取企业资料
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseEnterprise GetEnterpriseInfo(Guid Id)
+        {
+            var data = Kily.Set<CompanyInfo>().Where(t => t.Id == Id).Select(t => new ResponseEnterprise()
+            {
+                Id = t.Id,
+                CompanyAccount = t.CompanyAccount,
+                CommunityCode = t.CommunityCode,
+                CompanyAddress = t.CompanyAddress,
+                CompanyName = t.CompanyName,
+                CompanyPhone = t.CompanyPhone,
+                CompanyType = t.CompanyType,
+                Version = t.Version,
+                PassWord=t.PassWord,
+                TypePath = t.TypePath,
+                Certification = t.Certification,
+                Honor = t.HonorCertification,
+                Discription = t.Discription,
+                NetAddress = t.NetAddress,
+                ProductionAddress = t.ProductionAddress,
+                SellerAddress = t.SellerAddress,
+                VideoAddress = t.VideoAddress
+            }).FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 更新企业资料
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditEnterprise(RequestEnterprise Param)
+        {
+            Param.AuditType = AuditEnum.WaitAduit;
+           CompanyInfo data =  Kily.Set<CompanyInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
+            Param.EnterpriseRoleId = data.EnterpriseRoleId;
+            CompanyInfo Info = Param.MapToEntity<CompanyInfo>();
+            if (data.Version != Param.Version)
+                CreateCertification(Param);
+            if (Update<CompanyInfo, RequestEnterprise>(Info, Param))
+                return ServiceMessage.UPDATESUCCESS;
+            else
+                return ServiceMessage.UPDATEFAIL;
+        }
+        #endregion
+
+        #region 创建入住合同
+        public void CreateCertification(RequestEnterprise Param)
+        {
+            RequestStayContract contract = new RequestStayContract();
+            contract.StayCompanyId = Param.Id;
+            contract.StayCompanyName = Param.CompanyName;
+            contract.StayCompanyContract = null;
+            StayContract data = contract.MapToEntity<StayContract>();
+            Insert<StayContract>(data);
+        }
+        #endregion
         #endregion
     }
 }

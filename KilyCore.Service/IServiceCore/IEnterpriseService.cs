@@ -56,7 +56,10 @@ namespace KilyCore.Service.IServiceCore
         #region 获取全局集团菜单
         IList<ResponseEnterpriseMenu> GetEnterpriseMenu();
         #endregion
-
+        #region 企业信息
+        ResponseEnterprise GetEnterpriseInfo(Guid Id);
+        String EditEnterprise(RequestEnterprise param);
+        #endregion
         #endregion
     }
 }
