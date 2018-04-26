@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+using KilyCore.WEB.Util;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,32 +21,27 @@ namespace KilyCore.WEB.Controllers
         /// <param name="Files"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult UploadImg(int Size,IFormFile Files)
+        public JsonResult UploadImg(int Size, IFormFile Files)
         {
-            string[] FileType = { ".jpg", ".png", ".jpeg", ".bmp", ".gif", ".ico" };
-            //文件后缀
-            var FileExtension = Path.GetExtension(Files.FileName);
-            if(FileExtension==null)
-                return new JsonResult(new { data = "", flag = -1, msg = "文件没有后缀名！", HttpCode = 50 });
-            if (!FileType.Contains(FileExtension))
-                return new JsonResult(new { data = "", flag = -1, msg = "文件类型不正确！", HttpCode = 50 });
-            long bytes = Files.Length;
-            if(Size!=0)
-                if(bytes>1024*1024*Size)
-                    return new JsonResult(new { data = "", flag = -1, msg = $"请限制图片大小在{Size}M以内！", HttpCode = 50 });
-            if (bytes > 1024 * 1024 * 2) //2M
-                return new JsonResult(new { data = "", flag = -1, msg = "请限制图片大小在2M以内！", HttpCode = 50 });
-            var webRootPath = Environment.WebRootPath;
-            string RootPath = $"/Upload/Images/{DateTime.Now.ToString("yyyyMMdd")}/";
-            string SavePath = webRootPath + RootPath;
-            if (!Directory.Exists(SavePath))
-                Directory.CreateDirectory(SavePath);
-            using (FileStream fs = System.IO.File.Create(SavePath + Files.FileName))
-            {
-                Files.CopyTo(fs);
-                fs.Flush();
-            }
-            return new JsonResult(new { data = RootPath+ Files.FileName, flag = 1, msg = "上传成功！", HttpCode = 10 });
+            var WebRootPath = Environment.WebRootPath;
+            Object data = FileUtil.UploadFile(Size, Files, WebRootPath);
+            return new JsonResult(data);
+        }
+        /// <summary>
+        /// 下载PDF合同文件
+        /// </summary>
+        /// <param name="CompanyName"></param>
+        /// <param name="Version"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public FileResult CreatePDF(string CompanyName,string Version)
+        {
+            var WebRootPath = Environment.WebRootPath;
+            var result = FileUtil.CreatePDFBytes(CompanyName, Version, WebRootPath);
+            var bytes = FileUtil.SavePDF(result);
+            FileResult PDF = new FileContentResult(bytes, "application/pdf");
+            PDF.FileDownloadName = "入住合同.pdf";
+            return PDF;
         }
     }
 }

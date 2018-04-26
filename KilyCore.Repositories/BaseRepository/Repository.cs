@@ -241,7 +241,10 @@ namespace KilyCore.Repositories.BaseRepository
         /// <returns></returns>
         public ResponseAdmin UserInfo()
         {
-            return Cache.GetCache<ResponseAdmin>(SystemInfoKey.PrivateKey);
+            if (SystemInfoKey.PrivateKey == null)
+                return null;
+            else
+                return Cache.GetCache<ResponseAdmin>(SystemInfoKey.PrivateKey);
         }
         /// <summary>
         /// 重缓存中获取登录的公司信息
@@ -249,7 +252,10 @@ namespace KilyCore.Repositories.BaseRepository
         /// <returns></returns>
         public ResponseEnterprise CompanyInfo()
         {
-            return Cache.GetCache<ResponseEnterprise>(SystemInfoKey.PrivateKey);
+            if (SystemInfoKey.PrivateKey == null)
+                return null;
+            else
+                return Cache.GetCache<ResponseEnterprise>(SystemInfoKey.PrivateKey);
         }
         /// <summary>
         /// 返回动态属性集合
