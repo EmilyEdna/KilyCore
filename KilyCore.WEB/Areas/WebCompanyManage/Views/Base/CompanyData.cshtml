@@ -17,7 +17,7 @@
             },
             //元素
             InitDom: function () {
-                 //获取企业信息
+                //获取企业信息
                 options.GetCompanyInfo();
             },
             //获取企业信息
@@ -27,8 +27,7 @@
                     data: { Id: CompanyInfo.Id },
                     type: "post",
                     async: false,
-                    success: function (result)
-                    {
+                    success: function (result) {
                         controller.SetCtrlValue("#Edit", result.data);
                         options.SetCity();
                         controller.SetCtrlValue("#Edit", result.data);
@@ -216,9 +215,25 @@
                         options.SetFileValue(result.data, "#HonorCertification");
                     }
                 });
-                $("#save").click(function () {
+                //提交表单
+                $("#save").on('click',function () {
                     controller.Validate("#Edit", $("#Edit").SerializeJson());
+                    var flag = $("#CompanyName").val();
+                    debugger;
+                    if (flag == "")
+                    {
+                        controller.Alter("请先下载合同!");
+                        return;
+                    }
                     $("#Edit").submit();
+                });
+                //生成PDF合同
+                $("#sure").on('click', function () {
+                    $("#CompanyName").val(CompanyInfo.CompanyName);
+                    $("#ver").val($("#Version").val());
+                    $("#PDF").submit();
+                });
+                $("#up").on('click', function () {
                 });
             },
             //行为
@@ -239,6 +254,10 @@
     </style>
 }
 <div class="tabs-container" style="margin-top:10px;">
+    <form id="PDF" method="post" action="/File/CreatePDF">
+        <input type="hidden" name="CompanyName" id="CompanyName"/>
+        <input type="hidden" name="Version" id="ver"/>
+    </form>
     <form method="post" class="form-horizontal" action="Enterprise/EditEnterprise" id="Edit">
         <input type="hidden" name="Id" />
         <ul class="nav nav-tabs">
@@ -259,7 +278,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">企业名称</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control required" name="CompanyName" data-msg-required="请输入企业名称" >
+                            <input type="text" class="form-control required" name="CompanyName" data-msg-required="请输入企业名称">
                         </div>
                         <div class="col-sm-6"></div>
                     </div>
@@ -413,7 +432,7 @@
                             </div>
                         </div>
                         <div class="col-sm-2">
-                            <input type="hidden" id="Certification" name="Certification" class="required"  data-msg-required="请输上传营业执照"/>
+                            <input type="hidden" id="Certification" name="Certification" class="required" data-msg-required="请输上传营业执照" />
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
@@ -437,21 +456,25 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">版本选择</label>
                         <div class="col-sm-4">
-                            <select name="Version" class="form-control" type="select">
-                                <option value="10">体验版</option>
-                                <option value="20">基础班</option>
-                                <option value="30">升级版</option>
-                                <option value="40">旗舰版</option>
-                            </select>
+                            <div class="input-group">
+                                <select name="Version" class="form-control" type="select" id="Version">
+                                    <option value="10">体验版</option>
+                                    <option value="20">基础班</option>
+                                    <option value="30">升级版</option>
+                                    <option value="40">旗舰版</option>
+                                </select>
+                                <span class="input-group-addon btn btn-default" id="sure">确定</span>
+                            </div>
                         </div>
                         <div class="col-sm-6"></div>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <!--合同-->
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">合同附录</label>
+                        <label class="col-sm-2 control-label">附录</label>
                         <div class="col-sm-4">
-                            <a href="#">《用户合同》</a>
+                            <div class="btn btn-default" id="up">上传合同</div>
+                            <a href="~/Download/中食药监管信息查询平台功能版块价格表.docx" download="中食药监管信息查询平台功能版块价格表.docx">《中食药监管信息查询平台功能版块价格表》</a>
                         </div>
                         <div class="col-sm-6"></div>
                     </div>
