@@ -57,5 +57,11 @@ namespace KilyCore.WEB.Areas.MoneyManage.Controllers
             return View();
         }
         #endregion
+        #region 入住合同
+        public IActionResult StayContract()
+        {
+            return View();
+        }
+        #endregion
     }
 }

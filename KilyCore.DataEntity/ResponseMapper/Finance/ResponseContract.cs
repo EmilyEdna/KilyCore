@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace KilyCore.DataEntity.ResponseMapper.Finance
@@ -18,6 +19,14 @@ namespace KilyCore.DataEntity.ResponseMapper.Finance
         public Guid Id { get; set; }
         public Guid? StayCompanyId { get; set; }
         public string StayCompanyName { get; set; }
+        public List<string> Contract
+        {
+            get
+            {
+                return StayCompanyContract.Split(",").ToList();
+            }
+        }
         public string StayCompanyContract { get; set; }
+        public string PayContract { get; set; }
     }
 }

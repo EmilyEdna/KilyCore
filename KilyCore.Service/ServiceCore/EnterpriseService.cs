@@ -741,7 +741,7 @@ namespace KilyCore.Service.ServiceCore
                 CompanyPhone = t.CompanyPhone,
                 CompanyType = t.CompanyType,
                 Version = t.Version,
-                PassWord=t.PassWord,
+                PassWord = t.PassWord,
                 TypePath = t.TypePath,
                 Certification = t.Certification,
                 Honor = t.HonorCertification,
@@ -761,11 +761,9 @@ namespace KilyCore.Service.ServiceCore
         public string EditEnterprise(RequestEnterprise Param)
         {
             Param.AuditType = AuditEnum.WaitAduit;
-           CompanyInfo data =  Kily.Set<CompanyInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
+            CompanyInfo data = Kily.Set<CompanyInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
             Param.EnterpriseRoleId = data.EnterpriseRoleId;
             CompanyInfo Info = Param.MapToEntity<CompanyInfo>();
-            if (data.Version != Param.Version)
-                CreateCertification(Param);
             if (Update<CompanyInfo, RequestEnterprise>(Info, Param))
                 return ServiceMessage.UPDATESUCCESS;
             else
@@ -773,15 +771,19 @@ namespace KilyCore.Service.ServiceCore
         }
         #endregion
 
-        #region 创建入住合同
-        public void CreateCertification(RequestEnterprise Param)
+        #region 保存合同和缴费凭证
+        /// <summary>
+        /// 保存合同和缴费凭证
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveContract(RequestStayContract Param)
         {
-            RequestStayContract contract = new RequestStayContract();
-            contract.StayCompanyId = Param.Id;
-            contract.StayCompanyName = Param.CompanyName;
-            contract.StayCompanyContract = null;
-            StayContract data = contract.MapToEntity<StayContract>();
-            Insert<StayContract>(data);
+            StayContract contract = Param.MapToEntity<StayContract>();
+            if (Insert<StayContract>(contract))
+                return ServiceMessage.INSERTSUCCESS;
+            else
+                return ServiceMessage.INSERTFAIL;
         }
         #endregion
         #endregion

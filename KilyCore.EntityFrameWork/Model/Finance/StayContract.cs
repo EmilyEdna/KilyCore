@@ -22,6 +22,10 @@ namespace KilyCore.EntityFrameWork.Model.Finance
         /// 入住合同
         /// </summary>
         public virtual string StayCompanyContract { get; set; }
+        /// <summary>
+        /// 入住缴费合同
+        /// </summary>
+        public virtual string PayContract { get; set; }
 
     }
 }

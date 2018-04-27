@@ -233,7 +233,19 @@
                     $("#ver").val($("#Version").val());
                     $("#PDF").submit();
                 });
-                $("#up").on('click', function () {
+                //上传合同
+                $("#pay").on('click', function () {
+                    controller.OpenWindow({
+                        title: "上传合同和缴费凭证",
+                        type: 2,
+                        height: "600px",
+                        width: "800px",
+                        url: "WebCompanyManage/Base/UploadFile?Id=" + CompanyInfo.Id + "&Name=" + CompanyInfo.CompanyName,
+                        callBack: function (result) {
+                            result.$("#Edit").submit();
+                            result.popClose();
+                        }
+                    });
                 });
             },
             //行为
@@ -258,7 +270,7 @@
         <input type="hidden" name="CompanyName" id="CompanyName"/>
         <input type="hidden" name="Version" id="ver"/>
     </form>
-    <form method="post" class="form-horizontal" action="Enterprise/EditEnterprise" id="Edit">
+    <form method="post" class="form-horizontal" action="/Enterprise/EditEnterprise" id="Edit">
         <input type="hidden" name="Id" />
         <ul class="nav nav-tabs">
             <li class="active">
@@ -472,11 +484,11 @@
                     <!--合同-->
                     <div class="form-group">
                         <label class="col-sm-2 control-label">附录</label>
-                        <div class="col-sm-4">
-                            <div class="btn btn-default" id="up">上传合同</div>
+                        <div class="col-sm-8">
+                            <div class="btn btn-default" id="pay">上传合同和凭证</div>
                             <a href="~/Download/中食药监管信息查询平台功能版块价格表.docx" download="中食药监管信息查询平台功能版块价格表.docx">《中食药监管信息查询平台功能版块价格表》</a>
                         </div>
-                        <div class="col-sm-6"></div>
+                        <div class="col-sm-2"></div>
                     </div>
                     <!--结束-->
                     <div class="form-group">

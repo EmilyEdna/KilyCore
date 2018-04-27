@@ -334,7 +334,8 @@ namespace KilyCore.Service.ServiceCore
                     Id = t.Id,
                     StayCompanyId = t.StayCompanyId,
                     StayCompanyName = t.StayCompanyName,
-                    StayCompanyContract = t.StayCompanyContract
+                    StayCompanyContract = t.StayCompanyContract,
+                    PayContract=t.PayContract
                 }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }

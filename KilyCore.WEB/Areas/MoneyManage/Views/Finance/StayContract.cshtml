@@ -30,7 +30,11 @@
             action: {
                 TableFormatter: function (val, row, index) {
                     var action = [];
-                    action.push('<a class="btn btn-sm btn-primary" download="' + row.Contract + '" href="' + row.Contract + '"><i class="fa fa-download"></i>下载合同</a>');
+                    $.each(row.Contract, function (i, obj)
+                    {
+                        action.push('<a class="btn btn-sm btn-primary" download="' + obj + '" href="' + obj + '"><i class="fa fa-download"></i>下载合同第' + (i+1) +'页</a>');
+                    });
+                    action.push('<a class="btn btn-sm btn-primary" download="' + row.PayContract + '" href="' + row.PayContract + '"><i class="fa fa-download"></i>下载缴费凭证</a>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
@@ -74,7 +78,7 @@
                         <thead>
                             <tr>
                                 <th data-field="StayCompanyName" data-halign="center" data-align="center" data-valign="middle">商家名称</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents">操作</th>
                             </tr>
                         </thead>
                     </table>

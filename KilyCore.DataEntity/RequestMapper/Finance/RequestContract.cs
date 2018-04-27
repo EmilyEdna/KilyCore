@@ -16,5 +16,6 @@ namespace KilyCore.DataEntity.RequestMapper.Finance
         public Guid? StayCompanyId { get; set; }
         public string StayCompanyName { get; set; }
         public string StayCompanyContract { get; set; }
+        public string PayContract { get; set; }
     }
 }

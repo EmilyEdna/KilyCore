@@ -1,6 +1,7 @@
 ﻿using System;
 using KilyCore.Configure;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
+using KilyCore.DataEntity.RequestMapper.Finance;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.Extension.ResultExtension;
 using KilyCore.Extension.SessionExtension;
@@ -303,6 +304,18 @@ namespace KilyCore.API.Controllers
         [HttpPost("EditEnterprise")]
         public ObjectResultEx EditEnterprise(RequestEnterprise Param) {
             return ObjectResultEx.Instance(EnterpriseService.EditEnterprise(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #region 保存合同和缴费凭证
+        /// <summary>
+        /// 保存合同和缴费凭证
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("SaveContract")]
+        public ObjectResultEx SaveContract(RequestStayContract Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseService.SaveContract(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #endregion

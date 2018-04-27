@@ -1,0 +1,104 @@
+﻿
+@{
+    ViewData["Title"] = "文件上传";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var Name = controller.GetParam("Name");
+                var Id = controller.GetParam("Id");
+                $("#StayCompanyName").val(Name);
+                $("#StayCompanyId").val(Id);
+            },
+            //设置文件值
+            SetFileValue: function (data, elememt) {
+                var files = $(elememt).val();
+                if (files != null && files != "" && files != undefined) {
+                    files += "," + data;
+                    $(elememt).val(files);
+                } else {
+                    $(elememt).val(data);
+                }
+            },
+            //事件
+            InitEvents: function () {
+                //文件上传
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-1",
+                    node: '#Img1',
+                    maxNum: 5,
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#StayCompanyContract");
+                    }
+                });
+                //文件上传
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-2",
+                    node: '#Img2',
+                    maxNum: 1,
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#PayContract");
+                    }
+                });
+                //验证
+                controller.Validate("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="Enterprise/SaveContract" id="Edit">
+            <input id="StayCompanyContract" name="StayCompanyContract" type="hidden" />
+            <input id="PayContract" name="PayContract" type="hidden" />
+            <input id="StayCompanyId" name="StayCompanyId" type="hidden" />
+            <input id="StayCompanyName" name="StayCompanyName" type="hidden" />
+            <div class="m-t-sm">
+                <span class="label label-warning">上传合同</span>
+                <div class="input-group line-width">
+                    <div class="upload-box">
+                        <div class="image-box clear" id="Img1">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" id="upload-input-1" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="m-t-sm">
+                <span class="label label-warning">上传缴费凭证</span>
+                <div class="input-group line-width">
+                    <div class="upload-box">
+                        <div class="image-box clear" id="Img2">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" id="upload-input-2" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -13,5 +13,9 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        public IActionResult UploadFile()
+        {
+            return View();
+        }
     }
 }

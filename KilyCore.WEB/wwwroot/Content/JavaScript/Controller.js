@@ -419,10 +419,11 @@ controller.Validate = function (element, data) {
         submitHandler: function (form) {
             var action = $(form).attr("action");
             var method = $(form).attr("method");
+            var datas = data != undefined ? data : $(element).SerializeJson();
             controller.ajax({
                 url: action,
                 type: method,
-                data: data,
+                data: datas,
                 success: function (result) {
                     if (result.flag == 1) {
                         $(form).find("input").val("");
