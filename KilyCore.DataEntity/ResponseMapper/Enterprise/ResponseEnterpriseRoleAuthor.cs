@@ -23,4 +23,19 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
             }
         }
     }
+    public class ResponseRoleAuthorWeb {
+        public string AuthorName { get; set; }
+        public Guid Id { get; set; }
+        public string AuthorMenuPath { get; set; }
+        public string AuthorMenuCount
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(AuthorMenuPath))
+                    return AuthorMenuPath.Split(',').Length.ToString();
+                else
+                    return null;
+            }
+        }
+    }
 }

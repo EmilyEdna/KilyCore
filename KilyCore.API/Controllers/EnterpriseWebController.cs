@@ -24,6 +24,15 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetEnterpriseMenu(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 获取权限菜单树
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetEnterpriseWebTree")]
+        public ObjectResultEx GetEnterpriseWebTree()
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetEnterpriseWebTree(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region  企业信息
         /// <summary>
@@ -99,6 +108,37 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx RemoveUser(SimlpeParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveUser(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #region 集团账户
+        /// <summary>
+        /// 新增账户
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("EditRoleAuthor")]
+        public ObjectResultEx EditRoleAuthor(RequestRoleAuthorWeb Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditRoleAuthor(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 账户分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetRoleAuthorPage")]
+        public ObjectResultEx GetRoleAuthorPage(PageParamList<RequestRoleAuthorWeb> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetRoleAuthorPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除账户
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveRole")]
+        public ObjectResultEx RemoveRole(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveRole(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

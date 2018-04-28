@@ -2,6 +2,7 @@
 using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.Finance;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
+using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.Service.QueryExtend;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace KilyCore.Service.IServiceCore
     {
         #region 获取全局集团菜单
         IList<ResponseEnterpriseMenu> GetEnterpriseMenu();
+        IList<ResponseParentTree> GetEnterpriseWebTree();
         #endregion
         #region 企业信息
         ResponseEnterprise GetEnterpriseInfo(Guid Id);
@@ -29,6 +31,11 @@ namespace KilyCore.Service.IServiceCore
         String EditUser(RequestEnterpriseUser Param);
         String RemoveUser(Guid Id);
         ResponseEnterpriseUser GetUserDetail(Guid Id);
+        #endregion
+        #region 集团账户
+        String EditRoleAuthor(RequestRoleAuthorWeb Param);
+        PagedResult<ResponseRoleAuthorWeb> GetRoleAuthorPage(PageParamList<RequestRoleAuthorWeb> pageParam);
+        String RemoveRole(Guid Id);
         #endregion
     }
 }

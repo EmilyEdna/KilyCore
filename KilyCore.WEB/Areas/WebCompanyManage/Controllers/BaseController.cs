@@ -37,5 +37,13 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 集团账户
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult GroupAccount()
+        {
+            return View();
+        }
     }
 }

@@ -15,4 +15,12 @@ namespace KilyCore.EntityFrameWork.EntityMapping.Enterprise
             builder.HasKey(t => t.Id);
         }
     }
+    public class EnterpriseRoleAuthorWebMap : IEntityTypeConfiguration<EnterpriseRoleAuthorWeb>
+    {
+        public void Configure(EntityTypeBuilder<EnterpriseRoleAuthorWeb> builder)
+        {
+            builder.ToTable(typeof(EnterpriseRoleAuthorWeb).Name);
+            builder.HasKey(t => t.Id);
+        }
+    }
 }

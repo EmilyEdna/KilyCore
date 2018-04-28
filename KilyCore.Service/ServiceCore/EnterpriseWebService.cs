@@ -1,6 +1,7 @@
 ﻿using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.Finance;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
+using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.EntityFrameWork.Model.Enterprise;
 using KilyCore.EntityFrameWork.Model.Finance;
 using KilyCore.EntityFrameWork.ModelEnum;
@@ -59,6 +60,45 @@ namespace KilyCore.Service.ServiceCore
                         MenuIcon = x.MenuIcon
                     }).ToList()
             }).ToList();
+            return data;
+        }
+        /// <summary>
+        /// 获取权限菜单树
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseParentTree> GetEnterpriseWebTree()
+        {
+            IQueryable<EnterpriseRoleAuthor> queryables = Kily.Set<EnterpriseRoleAuthor>().Where(t => t.IsDelete == false);
+            if (CompanyInfo() != null)
+                queryables = queryables.Where(t => t.Id == CompanyInfo().EnterpriseRoleId).AsNoTracking();
+            else
+                queryables = queryables.Where(t => t.Id == CompanyUser().RoleAuthorType).AsNoTracking();
+            EnterpriseRoleAuthor Author = queryables.FirstOrDefault();
+            IQueryable<ResponseParentTree> queryable = Kily.Set<EnterpriseMenu>().Where(t => t.IsDelete == false)
+                 .Where(t => t.Level == MenuEnum.LevelOne)
+                 .Where(t => Author.AuthorMenuPath.Contains(t.Id.ToString()))
+                 .AsNoTracking().Select(t => new ResponseParentTree()
+                 {
+                     Id = t.Id,
+                     Text = t.MenuName,
+                     Color = "black",
+                     BackClolor = "white",
+                     SelectedIcon = "fa fa-refresh fa-spin",
+                     Nodes = Kily.Set<EnterpriseMenu>().Where(x => x.IsDelete == false)
+                     .Where(x => x.Level != MenuEnum.LevelOne)
+                     .Where(x => x.ParentId == t.MenuId)
+                     .Where(x => Author.AuthorMenuPath.Contains(x.Id.ToString()))
+                     .AsNoTracking()
+                     .Select(x => new ResponseChildTree()
+                     {
+                         Id = x.Id,
+                         Text = x.MenuName,
+                         Color = "black",
+                         BackClolor = "white",
+                         SelectedIcon = "fa fa-refresh fa-spin",
+                     }).AsQueryable()
+                 }).AsQueryable();
+            var data = queryable.ToList();
             return data;
         }
         #endregion
@@ -204,6 +244,52 @@ namespace KilyCore.Service.ServiceCore
         public string RemoveUser(Guid Id)
         {
             if (Delete(ExpressionExtension.GetExpression<EnterpriseUser>("Id", Id, ExpressionEnum.Equals)))
+                return ServiceMessage.REMOVESUCCESS;
+            else
+                return ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+
+        #region 集团账户
+        /// <summary>
+        /// 新增账户
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditRoleAuthor(RequestRoleAuthorWeb Param)
+        {
+            EnterpriseRoleAuthorWeb Author = Param.MapToEntity<EnterpriseRoleAuthorWeb>();
+            if (Insert<EnterpriseRoleAuthorWeb>(Author))
+                return ServiceMessage.INSERTSUCCESS;
+            else
+                return ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 账户分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRoleAuthorWeb> GetRoleAuthorPage(PageParamList<RequestRoleAuthorWeb> pageParam)
+        {
+            IQueryable<EnterpriseRoleAuthorWeb> queryable = Kily.Set<EnterpriseRoleAuthorWeb>().Where(t => t.IsDelete == false);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.AuthorName))
+                queryable = queryable.Where(t => t.AuthorName.Contains(pageParam.QueryParam.AuthorName));
+            var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseRoleAuthorWeb()
+            {
+                Id = t.Id,
+                AuthorName = t.AuthorName,
+                AuthorMenuPath = t.AuthorMenuPath
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 删除账户
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveRole(Guid Id)
+        {
+            if (Remove<EnterpriseRoleAuthorWeb>(t => t.Id == Id))
                 return ServiceMessage.REMOVESUCCESS;
             else
                 return ServiceMessage.REMOVEFAIL;

@@ -22,4 +22,19 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
             }
         }
     }
+    public class RequestRoleAuthorWeb
+    {
+        public string AuthorName { get; set; }
+        public List<string> AuthorPath { get; set; }
+        public string AuthorMenuPath
+        {
+            get
+            {
+                if (AuthorPath != null)
+                    return string.Join(',', AuthorPath);
+                else
+                    return null;
+            }
+        }
+    }
 }
