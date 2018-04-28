@@ -3,12 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace KilyCore.EntityFrameWork.Model.Company
+namespace KilyCore.EntityFrameWork.Model.Enterprise
 {
     /// <summary>
-    /// 生产企业认证附加表
+    /// 流通企业认证附加表
     /// </summary>
-    public class CompanyProductionIdentAttach:BaseEntity
+    public class EnterpriseCirculationIdentAttach:BaseEntity
     {
         /// <summary>
         /// 企业认证表主键
@@ -31,17 +31,21 @@ namespace KilyCore.EntityFrameWork.Model.Company
         /// </summary>
         public virtual string ImgAgreement { get; set; }
         /// <summary>
-        /// 药品GMP检测
+        /// 药品GSP检测
         /// </summary>
         public virtual string ImgDrugs { get; set; }
         /// <summary>
-        /// 生产检测
+        /// 流通检测
         /// </summary>
-        public virtual string ImgProduction { get; set; }
+        public virtual string ImgCirculation { get; set; }
         /// <summary>
         /// 卫生检测
         /// </summary>
         public virtual string ImgHygiene { get; set; }
+        /// <summary>
+        /// 进出口许可证
+        /// </summary>
+        public virtual string ImgImportExport { get; set; }
         /// <summary>
         /// 其他认证
         /// </summary>

@@ -5,8 +5,8 @@ using KilyCore.DataEntity.ResponseMapper.Dining;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.Finance;
 using KilyCore.DataEntity.ResponseMapper.System;
-using KilyCore.EntityFrameWork.Model.Company;
 using KilyCore.EntityFrameWork.Model.Dining;
+using KilyCore.EntityFrameWork.Model.Enterprise;
 using KilyCore.EntityFrameWork.Model.Finance;
 using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
@@ -120,7 +120,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseEnterpriseIdent> IdentEnterprisePay(PageParamList<RequestEnterpriseIdent> pageParam)
         {
-            IQueryable<CompanyIdent> queryable = Kily.Set<CompanyIdent>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseIdent> queryable = Kily.Set<EnterpriseIdent>().Where(t => t.IsDelete == false);
             queryable = queryable.Where(t => t.AuditType >= AuditEnum.AuditSuccess);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.CompanyName))
                 queryable = queryable.Where(t => t.CompanyName.Contains(pageParam.QueryParam.CompanyName));
@@ -147,12 +147,12 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string AuditIndetEnterprisePay(Guid Key, bool Param)
         {
-            CompanyIdent Ident = Kily.Set<CompanyIdent>().Where(t => t.Id == Key).FirstOrDefault();
+            EnterpriseIdent Ident = Kily.Set<EnterpriseIdent>().Where(t => t.Id == Key).FirstOrDefault();
             if (Param)
                 Ident.AuditType = AuditEnum.FinanceSuccess;
             else
                 Ident.AuditType = AuditEnum.FinanceFail; ;
-            if (UpdateField<CompanyIdent>(Ident, "AuditType"))
+            if (UpdateField<EnterpriseIdent>(Ident, "AuditType"))
                 return ServiceMessage.HANDLESUCCESS;
             else
                 return ServiceMessage.HANDLEFAIL;
@@ -325,7 +325,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseStayContract> GetStayContractPage(PageParamList<RequestStayContract> pageParam)
         {
-            IQueryable<StayContract> queryable = Kily.Set<StayContract>().Where(t => t.IsDelete == false);
+            IQueryable<SystemStayContract> queryable = Kily.Set<SystemStayContract>().Where(t => t.IsDelete == false);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.StayCompanyName))
                 queryable = queryable.Where(t => t.StayCompanyName.Contains(pageParam.QueryParam.StayCompanyName));
             var data = queryable.OrderByDescending(t => t.CreateTime).AsNoTracking()

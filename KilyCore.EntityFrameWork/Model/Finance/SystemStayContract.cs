@@ -8,7 +8,7 @@ namespace KilyCore.EntityFrameWork.Model.Finance
     /// <summary>
     /// 入住合同
     /// </summary>
-    public class StayContract : BaseEntity
+    public class SystemStayContract : BaseEntity
     {
         /// <summary>
         /// 入住企业的Id

@@ -40,6 +40,10 @@
             },
             //事件
             InitEvents: function () {
+                $("#EnterpriseRoleId").on('change', function () {
+                    var Name = $(this).find("option:selected").text();
+                    $("#EnterpriseRoleName").val(Name);
+                });
                 $("#save").on('click', function () {
                     controller.ajax({
                         url: $("#Send").attr("action"),
@@ -133,6 +137,7 @@
             <div class="panel-body">
                 <form class="orm-horizontal" method="post" action="Enterprise/DistributionRole" id="Send">
                     <input type="hidden" id="CompanyId" name="Id" />
+                    <input  type="hidden" id="EnterpriseRoleName" name="EnterpriseRoleName"/>
                     <table class="table table-hover table-bordered">
                         <tr>
                             <th><label class="control-label">公司名称</label></th>

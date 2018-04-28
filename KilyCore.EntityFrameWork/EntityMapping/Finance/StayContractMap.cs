@@ -7,11 +7,11 @@ using System.Text;
 
 namespace KilyCore.EntityFrameWork.EntityMapping.Finance
 {
-    public class StayContractMap : IEntityTypeConfiguration<StayContract>
+    public class StayContractMap : IEntityTypeConfiguration<SystemStayContract>
     {
-        public void Configure(EntityTypeBuilder<StayContract> builder)
+        public void Configure(EntityTypeBuilder<SystemStayContract> builder)
         {
-            builder.ToTable(typeof(StayContract).Name);
+            builder.ToTable(typeof(SystemStayContract).Name);
             builder.HasKey(t => t.Id);
         }
     }

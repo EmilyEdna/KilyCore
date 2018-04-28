@@ -4,12 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace KilyCore.EntityFrameWork.Model.Company
+namespace KilyCore.EntityFrameWork.Model.Enterprise
 {
     /// <summary>
     /// 企业认证表
     /// </summary>
-    public class CompanyIdent:BaseEntity
+    public class EnterpriseIdent:BaseEntity
     {
         /// <summary>
         /// 公司信息表主键

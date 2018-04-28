@@ -1,10 +1,8 @@
-﻿using KilyCore.Configure;
-using KilyCore.DataEntity.RequestMapper.Enterprise;
+﻿using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.Finance;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.System;
-using KilyCore.EntityFrameWork.Model.Company;
 using KilyCore.EntityFrameWork.Model.Enterprise;
 using KilyCore.EntityFrameWork.Model.Finance;
 using KilyCore.EntityFrameWork.Model.System;
@@ -20,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 
 namespace KilyCore.Service.ServiceCore
 {
@@ -172,7 +169,7 @@ namespace KilyCore.Service.ServiceCore
         public PagedResult<ResponseEnterpriseRoleAuthor> GetCompanyRoleAuthorPage(PageParamList<RequestEnterpriseRoleAuthor> pageParam)
         {
             IQueryable<EnterpriseRoleAuthor> queryable = Kily.Set<EnterpriseRoleAuthor>();
-            IQueryable<CompanyInfo> queryables = Kily.Set<CompanyInfo>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseInfo> queryables = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.CompanyName))
                 queryables = queryables.Where(t => t.CompanyName.Contains(pageParam.QueryParam.CompanyName));
             var data = queryables.OrderBy(t => t.CreateTime).GroupJoin(queryable, t => t.EnterpriseRoleId, x => x.Id, (t, x) => new ResponseEnterpriseRoleAuthor()
@@ -267,9 +264,19 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string DistributionRole(RequestEnterpriseRoleAuthor Param)
         {
-            CompanyInfo info = Kily.Set<CompanyInfo>().Where(t => t.IsDelete == false).Where(t => t.Id == Param.Id).FirstOrDefault();
+            EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).Where(t => t.Id == Param.Id).FirstOrDefault();
+            if (Param.EnterpriseRoleName.Contains("基本"))
+                info.Version = SystemVersionEnum.Normal;
+            if (Param.EnterpriseRoleName.Contains("体验"))
+                info.Version = SystemVersionEnum.Test;
+            if (Param.EnterpriseRoleName.Contains("基础"))
+                info.Version = SystemVersionEnum.Base;
+            if (Param.EnterpriseRoleName.Contains("升级"))
+                info.Version = SystemVersionEnum.Level;
+            if (Param.EnterpriseRoleName.Contains("旗舰"))
+                info.Version = SystemVersionEnum.Enterprise;
             info.EnterpriseRoleId = Param.EnterpriseRoleId;
-            if (UpdateField<CompanyInfo>(info, "EnterpriseRoleId"))
+            if (UpdateField<EnterpriseInfo>(info, "EnterpriseRoleId"))
                 return ServiceMessage.HANDLESUCCESS;
             else
                 return ServiceMessage.HANDLEFAIL;
@@ -284,7 +291,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseEnterprise> GetCompanyPage(PageParamList<RequestEnterprise> pageParam)
         {
-            IQueryable<CompanyInfo> queryable = Kily.Set<CompanyInfo>().Where(t => t.IsDelete == false).AsQueryable().AsNoTracking();
+            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).AsQueryable().AsNoTracking();
             if (!string.IsNullOrEmpty(pageParam.QueryParam.CompanyName))
                 queryable = queryable.Where(t => t.CompanyName.Contains(pageParam.QueryParam.CompanyName));
             if (!string.IsNullOrEmpty(pageParam.QueryParam.AreaTree))
@@ -318,7 +325,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public ResponseEnterprise GetCompanyDetail(Guid Id)
         {
-            var data = Kily.Set<CompanyInfo>().Where(t => t.IsDelete == false)
+            var data = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false)
                  .Where(t => t.Id == Id)
                  .AsNoTracking().Select(t => new ResponseEnterprise()
                  {
@@ -363,9 +370,9 @@ namespace KilyCore.Service.ServiceCore
             SystemAudit Audit = Param.MapToEntity<SystemAudit>();
             if (Insert<SystemAudit>(Audit))
             {
-                CompanyInfo Company = Kily.Set<CompanyInfo>().Where(t => t.IsDelete == false).Where(t => t.Id == Param.TableId).FirstOrDefault();
+                EnterpriseInfo Company = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).Where(t => t.Id == Param.TableId).FirstOrDefault();
                 Company.AuditType = Param.AuditType;
-                if (UpdateField<CompanyInfo>(Company, "AuditType"))
+                if (UpdateField<EnterpriseInfo>(Company, "AuditType"))
                     return ServiceMessage.HANDLESUCCESS;
                 else
                     return ServiceMessage.HANDLEFAIL;
@@ -383,8 +390,8 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseEnterpriseIdent> GetCompanyIdentPage(PageParamList<RequestEnterpriseIdent> pageParam)
         {
-            IQueryable<CompanyIdent> queryable = Kily.Set<CompanyIdent>().Where(t => t.IsDelete == false);
-            IQueryable<CompanyInfo> queryables = Kily.Set<CompanyInfo>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseIdent> queryable = Kily.Set<EnterpriseIdent>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseInfo> queryables = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
             if (pageParam.QueryParam.CompanyType.HasValue)
                 queryable = queryable.Where(t => t.CompanyType == pageParam.QueryParam.CompanyType);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.CompanyName))
@@ -425,12 +432,12 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public ResponseEnterpriseIdent GetCompanyIdentDetail(RequestEnterpriseIdent Param)
         {
-            IQueryable<CompanyIdent> queryable = Kily.Set<CompanyIdent>().Where(t => t.Id == Param.Id);
+            IQueryable<EnterpriseIdent> queryable = Kily.Set<EnterpriseIdent>().Where(t => t.Id == Param.Id);
             ResponseEnterpriseIdent data = null;
             //种植企业
             if (Param.CompanyType == CompanyEnum.Plant)
             {
-                IQueryable<CompanyPlantIdentAttach> Plant = Kily.Set<CompanyPlantIdentAttach>();
+                IQueryable<EnterprisePlantIdentAttach> Plant = Kily.Set<EnterprisePlantIdentAttach>();
                 data = queryable.GroupJoin(Plant, x => x.Id, y => y.IdentId, (x, y) => new { x, y }).GroupJoin(Kily.Set<SystemAudit>(), t => t.x.Id, o => o.TableId, (t, o) => new ResponseEnterpriseIdent()
                 {
                     Id = t.x.Id,
@@ -463,7 +470,7 @@ namespace KilyCore.Service.ServiceCore
             //养殖企业
             if (Param.CompanyType == CompanyEnum.Culture)
             {
-                IQueryable<CompanyCultureIdentAttach> Plant = Kily.Set<CompanyCultureIdentAttach>();
+                IQueryable<EnterpriseCultureIdentAttach> Plant = Kily.Set<EnterpriseCultureIdentAttach>();
                 data = queryable.GroupJoin(Plant, x => x.Id, y => y.IdentId, (x, y) => new { x, y }).GroupJoin(Kily.Set<SystemAudit>(), t => t.x.Id, o => o.TableId, (t, o) => new ResponseEnterpriseIdent()
                 {
                     Id = t.x.Id,
@@ -496,7 +503,7 @@ namespace KilyCore.Service.ServiceCore
             //生产企业
             if (Param.CompanyType == CompanyEnum.Production)
             {
-                IQueryable<CompanyProductionIdentAttach> Production = Kily.Set<CompanyProductionIdentAttach>();
+                IQueryable<EnterpriseProductionIdentAttach> Production = Kily.Set<EnterpriseProductionIdentAttach>();
                 data = queryable.GroupJoin(Production, x => x.Id, y => y.IdentId, (x, y) => new { x, y }).GroupJoin(Kily.Set<SystemAudit>(), t => t.x.Id, o => o.TableId, (t, o) => new ResponseEnterpriseIdent()
                 {
                     Id = t.x.Id,
@@ -528,7 +535,7 @@ namespace KilyCore.Service.ServiceCore
             //流通企业
             if (Param.CompanyType == CompanyEnum.Circulation)
             {
-                IQueryable<CompanyCirculationIdentAttach> Circulation = Kily.Set<CompanyCirculationIdentAttach>();
+                IQueryable<EnterpriseCirculationIdentAttach> Circulation = Kily.Set<EnterpriseCirculationIdentAttach>();
                 data = queryable.GroupJoin(Circulation, x => x.Id, y => y.IdentId, (x, y) => new { x, y }).GroupJoin(Kily.Set<SystemAudit>(), t => t.x.Id, o => o.TableId, (t, o) => new ResponseEnterpriseIdent()
                 {
                     Id = t.x.Id,
@@ -561,7 +568,7 @@ namespace KilyCore.Service.ServiceCore
             //其他企业
             if (Param.CompanyType == CompanyEnum.Other)
             {
-                IQueryable<CompanyOtherIdentAttach> Other = Kily.Set<CompanyOtherIdentAttach>();
+                IQueryable<EnterpriseOtherIdentAttach> Other = Kily.Set<EnterpriseOtherIdentAttach>();
                 data = queryable.GroupJoin(Other, x => x.Id, y => y.IdentId, (x, y) => new { x, y }).GroupJoin(Kily.Set<SystemAudit>(), t => t.x.Id, o => o.TableId, (t, o) => new ResponseEnterpriseIdent()
                 {
                     Id = t.x.Id,
@@ -600,9 +607,9 @@ namespace KilyCore.Service.ServiceCore
             SystemAudit Audit = Param.MapToEntity<SystemAudit>();
             if (Insert<SystemAudit>(Audit))
             {
-                CompanyIdent Ident = Kily.Set<CompanyIdent>().Where(t => t.IsDelete == false).Where(t => t.Id == Param.TableId).FirstOrDefault();
+                EnterpriseIdent Ident = Kily.Set<EnterpriseIdent>().Where(t => t.IsDelete == false).Where(t => t.Id == Param.TableId).FirstOrDefault();
                 Ident.AuditType = Param.AuditType;
-                if (UpdateField<CompanyIdent>(Ident, "AuditType"))
+                if (UpdateField<EnterpriseIdent>(Ident, "AuditType"))
                     return ServiceMessage.HANDLESUCCESS;
                 else
                     return ServiceMessage.HANDLEFAIL;
@@ -636,8 +643,8 @@ namespace KilyCore.Service.ServiceCore
             Param.AuditType = AuditEnum.WaitAduit;
             EnterpriseRoleAuthor Author = Kily.Set<EnterpriseRoleAuthor>().Where(t => t.IsDelete == false).Where(t => t.EnterpriseRoleName.Contains("基本")).OrderBy(t => t.CreateTime).FirstOrDefault();
             Param.EnterpriseRoleId = Author.Id;
-            CompanyInfo Info = Param.MapToEntity<CompanyInfo>();
-            if (Insert<CompanyInfo>(Info))
+            EnterpriseInfo Info = Param.MapToEntity<EnterpriseInfo>();
+            if (Insert<EnterpriseInfo>(Info))
                 return ServiceMessage.INSERTSUCCESS;
             else
                 return ServiceMessage.INSERTFAIL;
@@ -647,9 +654,10 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="LoginValidate"></param>
         /// <returns></returns>
-        public ResponseEnterprise EnterpriseLogin(RequestValidate LoginValidate)
+        public Object EnterpriseLogin(RequestValidate LoginValidate)
         {
-            IQueryable<CompanyInfo> queryable = Kily.Set<CompanyInfo>()
+            #region 公司账号登录
+            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>()
                 .Where(t => t.CompanyAccount.Equals(LoginValidate.Account))
                 .Where(t => t.PassWord.Equals(LoginValidate.PassWord))
                 .Where(t => t.IsDelete == false);
@@ -677,7 +685,33 @@ namespace KilyCore.Service.ServiceCore
                 SellerAddress = t.SellerAddress,
                 VideoAddress = t.VideoAddress
             }).FirstOrDefault();
-            return Info ?? null;
+            #endregion
+            #region 公司子账号登录
+            IQueryable<EnterpriseUser> queryables = Kily.Set<EnterpriseUser>()
+                .Where(t => t.Account.Equals(LoginValidate.Account))
+                .Where(t => t.PassWord.Equals(LoginValidate.PassWord))
+                .Where(t => t.IsDelete == false);
+            ResponseEnterpriseUser User = queryables.Select(t => new ResponseEnterpriseUser()
+            {
+                Id = t.CompanyId,
+                UserId = t.Id,
+                IdCard = t.IdCard,
+                CompanyName = t.CompanyName,
+                CompanyType = t.CompanyType,
+                CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
+                Version = t.Version,
+                VersionName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.Version),
+                Account = t.Account,
+                Phone = t.Phone,
+                RoleAuthorType = t.RoleAuthorType,
+                TrueName = t.TrueName,
+            }).FirstOrDefault();
+            #endregion
+            if (Info != null)
+                return Info;
+            else if (User != null)
+                return User;
+            else return null;
         }
         #endregion
 
@@ -689,10 +723,13 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public IList<ResponseEnterpriseMenu> GetEnterpriseMenu()
         {
-            IQueryable<EnterpriseMenu> queryable = Kily.Set<EnterpriseMenu>().Where(t => t.Level == MenuEnum.LevelOne)
-                   .Where(t => t.IsDelete == false).AsNoTracking().AsQueryable().OrderBy(t => t.CreateTime);
-            EnterpriseRoleAuthor Author = Kily.Set<EnterpriseRoleAuthor>().Where(t => t.IsDelete == false)
-                .Where(t => t.Id == CompanyInfo().EnterpriseRoleId).AsNoTracking().FirstOrDefault();
+            IQueryable<EnterpriseMenu> queryable = Kily.Set<EnterpriseMenu>().Where(t => t.Level == MenuEnum.LevelOne).Where(t => t.IsDelete == false).AsNoTracking().AsQueryable().OrderBy(t => t.CreateTime);
+            IQueryable<EnterpriseRoleAuthor> queryables = Kily.Set<EnterpriseRoleAuthor>().Where(t => t.IsDelete == false);
+            if (CompanyInfo() != null)
+                queryables = queryables.Where(t => t.Id == CompanyInfo().EnterpriseRoleId).AsNoTracking();
+            else
+                queryables = queryables.Where(t => t.Id == CompanyUser().RoleAuthorType).AsNoTracking();
+            EnterpriseRoleAuthor Author = queryables.FirstOrDefault();
             queryable = queryable.Where(t => Author.AuthorMenuPath.Contains(t.Id.ToString())).AsNoTracking();
             var data = queryable.Select(t => new ResponseEnterpriseMenu()
             {
@@ -731,7 +768,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public ResponseEnterprise GetEnterpriseInfo(Guid Id)
         {
-            var data = Kily.Set<CompanyInfo>().Where(t => t.Id == Id).Select(t => new ResponseEnterprise()
+            var data = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Id).Select(t => new ResponseEnterprise()
             {
                 Id = t.Id,
                 CompanyAccount = t.CompanyAccount,
@@ -761,10 +798,10 @@ namespace KilyCore.Service.ServiceCore
         public string EditEnterprise(RequestEnterprise Param)
         {
             Param.AuditType = AuditEnum.WaitAduit;
-            CompanyInfo data = Kily.Set<CompanyInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
+            EnterpriseInfo data = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
             Param.EnterpriseRoleId = data.EnterpriseRoleId;
-            CompanyInfo Info = Param.MapToEntity<CompanyInfo>();
-            if (Update<CompanyInfo, RequestEnterprise>(Info, Param))
+            EnterpriseInfo Info = Param.MapToEntity<EnterpriseInfo>();
+            if (Update<EnterpriseInfo, RequestEnterprise>(Info, Param))
                 return ServiceMessage.UPDATESUCCESS;
             else
                 return ServiceMessage.UPDATEFAIL;
@@ -779,13 +816,38 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string SaveContract(RequestStayContract Param)
         {
-            StayContract contract = Param.MapToEntity<StayContract>();
-            if (Insert<StayContract>(contract))
+            SystemStayContract contract = Param.MapToEntity<SystemStayContract>();
+            if (Insert<SystemStayContract>(contract))
                 return ServiceMessage.INSERTSUCCESS;
             else
                 return ServiceMessage.INSERTFAIL;
         }
         #endregion
+
+        #region 人员管理
+        /// <summary>
+        /// 获取人员管理分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseUser> GetUserPage(PageParamList<RequestEnterpriseUser> pageParam)
+        {
+            IQueryable<EnterpriseUser> queryable = Kily.Set<EnterpriseUser>().Where(t => t.IsDelete == false);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.TrueName))
+                queryable = queryable.Where(t => t.TrueName.Contains(pageParam.QueryParam.TrueName));
+            var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseUser()
+            {
+                UserId = t.Id,
+                Id = t.CompanyId,
+                TrueName=t.TrueName,
+                Phone=t.Phone,
+                Account=t.Account,
+                IdCard=t.IdCard
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        #endregion
+
         #endregion
     }
 }

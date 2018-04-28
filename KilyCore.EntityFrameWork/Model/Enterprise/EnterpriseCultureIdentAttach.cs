@@ -3,12 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace KilyCore.EntityFrameWork.Model.Company
+namespace KilyCore.EntityFrameWork.Model.Enterprise
 {
     /// <summary>
     /// 养殖企业认证附加表
     /// </summary>
-    public class CompanyCultureIdentAttach : BaseEntity
+    public class EnterpriseCultureIdentAttach : BaseEntity
     {
         /// <summary>
         /// 企业认证表主键

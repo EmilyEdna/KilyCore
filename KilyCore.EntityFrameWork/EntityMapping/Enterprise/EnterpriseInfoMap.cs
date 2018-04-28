@@ -1,4 +1,4 @@
-﻿using KilyCore.EntityFrameWork.Model.Company;
+﻿using KilyCore.EntityFrameWork.Model.Enterprise;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -7,11 +7,11 @@ using System.Text;
 
 namespace KilyCore.EntityFrameWork.EntityMapping.Enterprise
 {
-    public class CompnayInfoMap : IEntityTypeConfiguration<CompanyInfo>
+    public class EnterpriseInfoMap : IEntityTypeConfiguration<EnterpriseInfo>
     {
-        public void Configure(EntityTypeBuilder<CompanyInfo> builder)
+        public void Configure(EntityTypeBuilder<EnterpriseInfo> builder)
         {
-            builder.ToTable(typeof(CompanyInfo).Name);
+            builder.ToTable(typeof(EnterpriseInfo).Name);
             builder.HasKey(t => t.Id);
             builder.Property(t => t.CompanyAccount).IsRequired();
             builder.Property(t => t.PassWord).IsRequired();

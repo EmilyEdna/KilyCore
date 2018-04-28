@@ -4,12 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace KilyCore.EntityFrameWork.Model.Company
+namespace KilyCore.EntityFrameWork.Model.Enterprise
 {
     /// <summary>
     /// 企业信息表
     /// </summary>
-    public class CompanyInfo :BaseEntity
+    public class EnterpriseInfo :BaseEntity
     {
         /// <summary>
         /// 企业名称

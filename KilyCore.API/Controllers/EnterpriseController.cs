@@ -318,6 +318,18 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseService.SaveContract(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 人员管理
+        /// <summary>
+        /// 获取人员管理分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetUserPage")]
+        public ObjectResultEx GetUserPage(PageParamList<RequestEnterpriseUser> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseService.GetUserPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
         #endregion
     }
 }

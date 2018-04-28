@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace KilyCore.EntityFrameWork.Model.Company
+namespace KilyCore.EntityFrameWork.Model.Enterprise
 {
-    public class CompanyOtherIdentAttach:BaseEntity
+    public class EnterpriseOtherIdentAttach:BaseEntity
     {
         /// <summary>
         /// 企业认证表主键

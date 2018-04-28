@@ -50,7 +50,7 @@ namespace KilyCore.Service.IServiceCore
 
         #region 登录注册
         String RegistCompanyAccount(RequestEnterprise Param);
-        ResponseEnterprise EnterpriseLogin(RequestValidate LoginValidate);
+        Object EnterpriseLogin(RequestValidate LoginValidate);
         #endregion
 
         #region 集团企业后台系统
@@ -63,6 +63,9 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 保存合同和缴费凭证
         String SaveContract(RequestStayContract Param);
+        #endregion
+        #region 人员管理
+        PagedResult<ResponseEnterpriseUser> GetUserPage(PageParamList<RequestEnterpriseUser> pageParam);
         #endregion
         #endregion
     }
