@@ -140,8 +140,8 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.TrueName.Contains(pageParam.QueryParam.TrueName));
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseUser()
             {
-                UserId = t.Id,
-                Id = t.CompanyId,
+                Id = t.Id,
+                CompanyId = t.CompanyId,
                 TrueName = t.TrueName,
                 Phone = t.Phone,
                 Account = t.Account,
@@ -184,7 +184,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 TrueName = t.TrueName,
-                UserId = t.CompanyId,
+                CompanyId = t.CompanyId,
                 CompanyType = t.CompanyType,
                 CompanyName = t.CompanyName,
                 Version = t.Version,

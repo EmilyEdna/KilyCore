@@ -12,9 +12,9 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// </summary>
         public Guid Id { get; set; }
         /// <summary>
-        /// 用户Id
+        /// 公司用户Id
         /// </summary>
-        public Guid UserId { get; set; }
+        public Guid CompanyId { get; set; }
         /// <summary>
         /// 企业Id
         /// </summary>

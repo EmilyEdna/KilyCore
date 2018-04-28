@@ -1,10 +1,8 @@
 ﻿using KilyCore.DataEntity.RequestMapper.Enterprise;
-using KilyCore.DataEntity.RequestMapper.Finance;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.EntityFrameWork.Model.Enterprise;
-using KilyCore.EntityFrameWork.Model.Finance;
 using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AttributeExtension;
@@ -694,7 +692,7 @@ namespace KilyCore.Service.ServiceCore
             ResponseEnterpriseUser User = queryables.Select(t => new ResponseEnterpriseUser()
             {
                 Id = t.CompanyId,
-                UserId = t.Id,
+                CompanyId = t.Id,
                 IdCard = t.IdCard,
                 CompanyName = t.CompanyName,
                 CompanyType = t.CompanyType,

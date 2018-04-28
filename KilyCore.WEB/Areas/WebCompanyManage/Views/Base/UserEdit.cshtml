@@ -9,12 +9,36 @@
         //配置
         var options = {
             Init: function () {
+                this.InitEnterpriseRole();
                 this.InitDom();
                 this.InitEvents();
             },
             //元素
             InitDom: function () {
-
+                var Guid = controller.GetParam("Id");
+                if (Guid != null && Guid != undefined && Guid != "")
+                    options.GetEnterpriseUserDetail(Guid);
+                else
+                {
+                    $("#CompanyId").val(CompanyInfo.Id);
+                    $("#Version").val(CompanyInfo.Version);
+                    $("#CompanyName").val(CompanyInfo.CompanyName);
+                    $("#CompanyType").val(CompanyInfo.CompanyType);
+                }
+            },
+            //获取详情
+            GetEnterpriseUserDetail: function (Guid) {
+                controller.ajax({
+                    url: "EnterpriseWeb/GetUserDetail",
+                    data: { Id: Guid },
+                    type: "post",
+                    success: function (result) {
+                        controller.SetCtrlValue("#Edit",result.data)
+                     }
+                });
+            },
+            //获取集团账户
+            InitEnterpriseRole: function () {
             },
             //事件
             InitEvents: function () {
@@ -32,49 +56,43 @@
 }
 <div class="ibox float-e-margins">
     <div class="ibox-content">
-        <form class="orm-horizontal" method="post" action="Enterprise/EditUser" id="Edit">
-            <input type="hidden" name="JobType" value="20" />
+        <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditUser" id="Edit">
+            <input type="hidden" name="Id" />
+            <input type="hidden" name="CompanyId"  id="CompanyId"/>
+            <input type="hidden" name="Version"  id="Version"/>
+            <input type="hidden" name="CompanyName"  id="CompanyName"/>
+            <input type="hidden" name="CompanyType"  id="CompanyType"/>
             <table class="table table-hover table-bordered">
                 <tr>
-                    <th><label class="control-label">任务组别</label></th>
+                    <th><label class="control-label">用户账户</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control required" name="JobGroup" data-msg-required="请输入任务组别" />
+                        <input type="text" class="form-control required" name="Account" data-msg-required="请输入用户账户" />
                     </td>
-                    <th><label class="control-label">任务名称</label></th>
+                    <th><label class="control-label">账户密码</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control required" name="JobName" data-msg-required="请输入任务名称" />
+                        <input type="password" class="form-control required" name="PassWord" data-msg-required="请输入账户密码" />
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">开始时间</label></th>
+                    <th><label class="control-label">人员姓名</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control required" name="StartTime" id="StartTime" data-msg-required="请输入任务开始时间" />
+                        <input type="text" class="form-control required" name="TrueName" data-msg-required="请输入用户账户" />
                     </td>
-                    <th><label class="control-label">结束时间</label></th>
+                    <th><label class="control-label">身份证号</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="EndTime" id="EndTime" />
+                        <input type="text" class="form-control required IsIDCard" name="IdCard" data-msg-required="请输入身份证号" />
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">执行次数</label></th>
+                    <th><label class="control-label">联系电话</label></th>
                     <td class="has-warning">
-                        <input type="number" class="form-control" name="RunTimes" min="0" />
+                        <input type="text" class="form-control required IsPhone" name="Phone" data-msg-required="请输入联系电话" />
                     </td>
-                    <th><label class="control-label">执行周期</label></th>
+                    <th><label class="control-label">集团账户</label></th>
                     <td class="has-warning">
-                        <input type="number" class="form-control required" name="IntervalSecond" placeholder="请输入数字(单位:秒)" min="0" data-msg-required="请输入执行任务间隔时间" />
-                    </td>
-                </tr>
-                <tr>
-                    <th><label class="control-label">时间表达式</label></th>
-                    <td class="has-warning" colspan="3">
-                        <input type="text" class="form-control" name="Cron" />
-                    </td>
-                </tr>
-                <tr>
-                    <th><label class="control-label">任务描述</label></th>
-                    <td class="has-warning" colspan="3">
-                        <textarea class="form-control required" rows="5" maxlength="200" name="JobDetail" data-msg-required="请输入任务描述"></textarea>
+                        <select type="select" class="form-control" name="RoleAuthorType">
+                            <option>===请选择===</option>
+                        </select>
                     </td>
                 </tr>
             </table>
