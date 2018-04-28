@@ -23,7 +23,7 @@
             //获取企业信息
             GetCompanyInfo: function () {
                 controller.ajax({
-                    url: "Enterprise/GetEnterpriseInfo",
+                    url: "EnterpriseWeb/GetEnterpriseInfo",
                     data: { Id: CompanyInfo.Id },
                     type: "post",
                     async: false,
@@ -270,7 +270,7 @@
         <input type="hidden" name="CompanyName" id="CompanyName"/>
         <input type="hidden" name="Version" id="ver"/>
     </form>
-    <form method="post" class="form-horizontal" action="/Enterprise/EditEnterprise" id="Edit">
+    <form method="post" class="form-horizontal" action="EnterpriseWeb/EditEnterprise" id="Edit">
         <input type="hidden" name="Id" />
         <ul class="nav nav-tabs">
             <li class="active">

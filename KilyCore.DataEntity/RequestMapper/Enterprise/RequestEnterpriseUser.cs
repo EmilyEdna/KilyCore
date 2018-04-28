@@ -8,6 +8,10 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
     public class RequestEnterpriseUser
     {
         /// <summary>
+        /// 主键
+        /// </summary>
+        public Guid Id { get; set; }
+        /// <summary>
         /// 企业Id
         /// </summary>
         public  Guid CompanyId { get; set; }
