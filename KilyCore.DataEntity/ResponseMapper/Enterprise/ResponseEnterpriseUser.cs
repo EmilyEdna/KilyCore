@@ -16,7 +16,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// </summary>
         public Guid CompanyId { get; set; }
         /// <summary>
-        /// 企业Id
+        /// 企业名称
         /// </summary>
         public string CompanyName { get; set; }
         /// <summary>

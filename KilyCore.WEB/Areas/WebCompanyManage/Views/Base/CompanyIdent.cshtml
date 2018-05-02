@@ -1,0 +1,670 @@
+﻿@{
+    ViewData["Title"] = "企业认证";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+    <style>
+        .ibox-content {
+            border-top-style: none;
+        }
+    </style>
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#IdentNo").val("V" + controller.FormatDate("YYYYMMDDHHmmss"));
+                controller.LayDate({ elem: "#IdentStartTime", value: controller.FormatDate("YYYY-MM-DD HH:mm:ss") });
+                options.CheckType();
+            },
+            //判断公司类型
+            CheckType: function () {
+                if (CompanyInfo.CompanyType == 10)
+                    $("#one1").css("display", "block");
+                if (CompanyInfo.CompanyType == 20)
+                    $("#one2").css("display", "block");
+                if (CompanyInfo.CompanyType == 30)
+                    $("#one3").css("display", "block");
+                if (CompanyInfo.CompanyType == 40)
+                    $("#one4").css("display", "block");
+            },
+            //设置文件值
+            SetFileValue: function (data, elememt) {
+                var files = $(elememt).val();
+                if (files != null && files != "" && files != undefined) {
+                    files += "," + data;
+                    $(elememt).val(files);
+                } else {
+                    $(elememt).val(data);
+                }
+            },
+            //事件
+            InitEvents: function () {
+                //文件上传-代表
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-1",
+                    maxNum: 1,
+                    node: '#Img1',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#ImgCard");
+                    }
+                });
+                //文件上传-报送
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-2",
+                    maxNum: 1,
+                    node: '#Img2',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#SendCard");
+                    }
+                });
+                //文件上传-调查
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-3",
+                    maxNum: 1,
+                    node: '#Img1',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#ImgResearch");
+                    }
+                });
+                //文件上传-协议
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-2",
+                    maxNum: 1,
+                    node: '#Img2',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#ImgAgreement");
+                    }
+                });
+                options.PlantAndSave();
+                options.Ltong();
+                options.Product();
+            },
+            //种养企业
+            PlantAndSave: function () {
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-1-1",
+                    maxNum: 1,
+                    node: '#Img1-1',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#ImgQualified");
+                    }
+                });
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-1-2",
+                    maxNum: 1,
+                    node: '#Img1-2',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#ImgWater");
+                    }
+                });
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-1-3",
+                    maxNum: 1,
+                    node: '#Img1-3',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#ImgSoil");
+                    }
+                });
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-1-4",
+                    maxNum: 1,
+                    node: '#Img1-4',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#ImgMetal");
+                    }
+                });
+            },
+            //流通企业
+            Ltong: function () {
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-2-1",
+                    maxNum: 1,
+                    node: '#Img2-1',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#ImgDrugs");
+                    }
+                });
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-2-2",
+                    maxNum: 1,
+                    node: '#Img2-2',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#ImgCirculation");
+                    }
+                });
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-2-3",
+                    maxNum: 1,
+                    node: '#Img2-3',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#ImgHygiene");
+                    }
+                });
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-2-4",
+                    maxNum: 1,
+                    node: '#Img2-4',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#ImgImportExport");
+                    }
+                });
+            },
+            //生产企业
+            Product: function () {
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-3-1",
+                    maxNum: 1,
+                    node: '#Img3-1',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#ImgDrugs");
+                    }
+                });
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-3-2",
+                    maxNum: 1,
+                    node: '#Img3-2',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#ImgProduction");
+                    }
+                });
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-3-3",
+                    maxNum: 1,
+                    node: '#Img3-3',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#ImgHygiene");
+                    }
+                });
+            },
+            //行为
+            action: {
+            }//行为结束
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="tabs-container" style="margin-top:10px;">
+    <form method="post" class="form-horizontal" action="EnterpriseWeb/EditEnterprise" id="Edit">
+        <input type="hidden" name="CompanyId" />
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a data-toggle="tab" href="#tab-1" aria-expanded="true">资料页一</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-2" aria-expanded="false">资料页二</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-3" aria-expanded="false">资料页三</a>
+            </li>
+            <li style="display:none" id="one1">
+                <a data-toggle="tab" href="#tab-4" aria-expanded="false">种植企业</a>
+            </li>
+            <li style="display:none" id="one2">
+                <a data-toggle="tab" href="#tab-4" aria-expanded="false">养殖企业</a>
+            </li>
+            <li style="display:none" id="one3">
+                <a data-toggle="tab" href="#tab-5" aria-expanded="false">流通企业</a>
+            </li>
+            <li style="display:none" id="one4">
+                <a data-toggle="tab" href="#tab-6" aria-expanded="false">生产企业</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-7" aria-expanded="false">确认认证</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="tab-1" class="tab-pane active">
+                <div class="panel-body">
+                    <!--认证编号-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">认证编号</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="IdentNo" id="IdentNo" readonly>
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--开始时间-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">认证开始时间</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control required" name="IdentStartTime" id="IdentStartTime" data-msg-required="请输入认证开始时间">
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--工商号-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">工商代码</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control required" name="CommunityCode" data-msg-required="请输入工商代码">
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--认证年限-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">认证年限</label>
+                        <div class="col-sm-4">
+                            <select type="select" class="form-control">
+                                <option value="1">一年</option>
+                                <option value="2">两年</option>
+                                <option value="3">三年</option>
+                                <option value="4">四年</option>
+                                <option value="5">五年</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--认证星级-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">认证星级</label>
+                        <div class="col-sm-4">
+                            <select type="select" class="form-control">
+                                <option value="10">一星</option>
+                                <option value="20">两星</option>
+                                <option value="30">三星</option>
+                                <option value="40">四星</option>
+                                <option value="50">五星</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--法人代表-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">法人代表</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control required" name="Representative" data-msg-required="请输入法人代表">
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--报送人-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">报送人</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control required" name="SendPerson" data-msg-required="请输入报送人">
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-2" class="tab-pane">
+                <div class="panel-body">
+                    <!--联系电话-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">联系电话</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control required IsPhone" name="LinkPhone" data-msg-required="请输入联系电话">
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--代表人身份证-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">法人代表身份证号</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control required" name="RepresentativeCard" data-msg-required="请输入法人代表身份证号">
+                        </div>
+                        <div class="col-sm-6">
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--报送人身份证-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">报送人身份证号</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control required" name="SendCard" data-msg-required="请输入报送人身份证号">
+                        </div>
+                        <div class="col-sm-6">
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--备注-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">备注</label>
+                        <div class="col-sm-6">
+                            <textarea class="form-control" name="Remark" rows="4" maxlength="300"></textarea>
+                        </div>
+                        <div class="col-sm-4"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-3" class="tab-pane">
+                <div class="panel-body">
+                    <!--代表人身份证-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">法人身份证</label>
+                        <div class="col-sm-8">
+                            <div class="upload-box">
+                                <div class="image-box clear" id="Img1">
+                                    <section class="upload-section">
+                                        <div class="upload-btn"></div>
+                                        <input type="file" name="Files" id="upload-input-1" value="" accept="image/*" multiple="multiple" />
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="hidden" id="ImgCard" name="ImgCard" />
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--申请表-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">申请表</label>
+                        <div class="col-sm-8">
+                            <div class="upload-box">
+                                <div class="image-box clear" id="Img2">
+                                    <section class="upload-section">
+                                        <div class="upload-btn"></div>
+                                        <input type="file" name="Files" id="upload-input-2" value="" accept="image/*" multiple="multiple" />
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="hidden" id="ImgApply" name="ImgApply" />
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--代表人身份证-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">法人身份证</label>
+                        <div class="col-sm-8">
+                            <div class="upload-box">
+                                <div class="image-box clear" id="Img3">
+                                    <section class="upload-section">
+                                        <div class="upload-btn"></div>
+                                        <input type="file" name="Files" id="upload-input-3" value="" accept="image/*" multiple="multiple" />
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="hidden" id="ImgResearch" name="ImgResearch" />
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--认证协议-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">认证协议</label>
+                        <div class="col-sm-8">
+                            <div class="upload-box">
+                                <div class="image-box clear" id="Img4">
+                                    <section class="upload-section">
+                                        <div class="upload-btn"></div>
+                                        <input type="file" name="Files" id="upload-input-4" value="" accept="image/*" multiple="multiple" />
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="hidden" id="ImgAgreement" name="ImgAgreement" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-4" class="tab-pane">
+                <div class="panel-body">
+                    <!--合格证-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">合格证</label>
+                        <div class="col-sm-8">
+                            <div class="upload-box">
+                                <div class="image-box clear" id="Img1-1">
+                                    <section class="upload-section">
+                                        <div class="upload-btn"></div>
+                                        <input type="file" name="Files" id="upload-input-1-1" value="" accept="image/*" multiple="multiple" />
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="hidden" id="ImgQualified" name="ImgQualified" />
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--水质检测-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">水质检测</label>
+                        <div class="col-sm-8">
+                            <div class="upload-box">
+                                <div class="image-box clear" id="Img1-2">
+                                    <section class="upload-section">
+                                        <div class="upload-btn"></div>
+                                        <input type="file" name="Files" id="upload-input-1-2" value="" accept="image/*" multiple="multiple" />
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="hidden" id="ImgWater" name="ImgWater" />
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--土壤检测-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">土壤检测</label>
+                        <div class="col-sm-8">
+                            <div class="upload-box">
+                                <div class="image-box clear" id="Img1-3">
+                                    <section class="upload-section">
+                                        <div class="upload-btn"></div>
+                                        <input type="file" name="Files" id="upload-input-1-3" value="" accept="image/*" multiple="multiple" />
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="hidden" id="ImgSoil" name="ImgSoil" />
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--金属检测-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">金属检测</label>
+                        <div class="col-sm-8">
+                            <div class="upload-box">
+                                <div class="image-box clear" id="Img1-4">
+                                    <section class="upload-section">
+                                        <div class="upload-btn"></div>
+                                        <input type="file" name="Files" id="upload-input-1-4" value="" accept="image/*" multiple="multiple" />
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="hidden" id="ImgMetal" name="ImgMetal" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-5" class="tab-pane">
+                <div class="panel-body">
+                    <!--药品GSP检测-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">药品GSP检测</label>
+                        <div class="col-sm-8">
+                            <div class="upload-box">
+                                <div class="image-box clear" id="Img2-1">
+                                    <section class="upload-section">
+                                        <div class="upload-btn"></div>
+                                        <input type="file" name="Files" id="upload-input-2-1" value="" accept="image/*" multiple="multiple" />
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="hidden" id="ImgDrugs" name="ImgDrugs" />
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--流通检测-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">流通检测</label>
+                        <div class="col-sm-8">
+                            <div class="upload-box">
+                                <div class="image-box clear" id="Img2-2">
+                                    <section class="upload-section">
+                                        <div class="upload-btn"></div>
+                                        <input type="file" name="Files" id="upload-input-2-2" value="" accept="image/*" multiple="multiple" />
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="hidden" id="ImgCirculation" name="ImgCirculation" />
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--卫生检测-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">卫生检测</label>
+                        <div class="col-sm-8">
+                            <div class="upload-box">
+                                <div class="image-box clear" id="Img2-3">
+                                    <section class="upload-section">
+                                        <div class="upload-btn"></div>
+                                        <input type="file" name="Files" id="upload-input-2-3" value="" accept="image/*" multiple="multiple" />
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="hidden" id="ImgHygiene" name="ImgHygiene" />
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--进出口许可证-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">进出口许可证</label>
+                        <div class="col-sm-8">
+                            <div class="upload-box">
+                                <div class="image-box clear" id="Img2-4">
+                                    <section class="upload-section">
+                                        <div class="upload-btn"></div>
+                                        <input type="file" name="Files" id="upload-input-2-4" value="" accept="image/*" multiple="multiple" />
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="hidden" id="ImgImportExport" name="ImgImportExport" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-6" class="tab-pane">
+                <div class="panel-body">
+                    <!--药品GMP检测-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">药品GMP检测</label>
+                        <div class="col-sm-8">
+                            <div class="upload-box">
+                                <div class="image-box clear" id="Img3-1">
+                                    <section class="upload-section">
+                                        <div class="upload-btn"></div>
+                                        <input type="file" name="Files" id="upload-input-3-1" value="" accept="image/*" multiple="multiple" />
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="hidden" id="ImgDrugs" name="ImgDrugs" />
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--生产检测-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">生产检测</label>
+                        <div class="col-sm-8">
+                            <div class="upload-box">
+                                <div class="image-box clear" id="Img3-2">
+                                    <section class="upload-section">
+                                        <div class="upload-btn"></div>
+                                        <input type="file" name="Files" id="upload-input-3-2" value="" accept="image/*" multiple="multiple" />
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="hidden" id="ImgProduction" name="ImgProduction" />
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--卫生检测-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">卫生检测</label>
+                        <div class="col-sm-8">
+                            <div class="upload-box">
+                                <div class="image-box clear" id="Img3-3">
+                                    <section class="upload-section">
+                                        <div class="upload-btn"></div>
+                                        <input type="file" name="Files" id="upload-input-3-3" value="" accept="image/*" multiple="multiple" />
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="hidden" id="ImgHygiene" name="ImgHygiene" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-7" class="tab-pane">
+                <div class="panel-body">
+                    <!--结束-->
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <button class="btn btn-primary" type="button" id="save">保存内容</button>
+                            <button class="btn btn-white" type="button">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

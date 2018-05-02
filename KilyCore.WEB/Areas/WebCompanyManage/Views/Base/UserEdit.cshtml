@@ -39,6 +39,19 @@
             },
             //获取集团账户
             InitEnterpriseRole: function () {
+                controller.ajax({
+                    url: "EnterpriseWeb/GetRoleAuthorList",
+                    data: {},
+                    type: "post",
+                    success: function (result)
+                    { 
+                        var html = '<option>===请选择===</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.AuthorName + '</option>'
+                        });
+                        $("#RoleAuthorType").html(html);
+                    }
+                });
             },
             //事件
             InitEvents: function () {
@@ -90,7 +103,7 @@
                     </td>
                     <th><label class="control-label">集团账户</label></th>
                     <td class="has-warning">
-                        <select type="select" class="form-control" name="RoleAuthorType">
+                        <select type="select" class="form-control" name="RoleAuthorType" id="RoleAuthorType">
                             <option>===请选择===</option>
                         </select>
                     </td>

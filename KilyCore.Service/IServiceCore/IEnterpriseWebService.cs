@@ -31,6 +31,7 @@ namespace KilyCore.Service.IServiceCore
         String EditUser(RequestEnterpriseUser Param);
         String RemoveUser(Guid Id);
         ResponseEnterpriseUser GetUserDetail(Guid Id);
+        IList<ResponseRoleAuthorWeb> GetRoleAuthorList();
         #endregion
         #region 集团账户
         String EditRoleAuthor(RequestRoleAuthorWeb Param);

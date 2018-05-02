@@ -17,6 +17,10 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 文件上传
+        /// </summary>
+        /// <returns></returns>
         public IActionResult UploadFile()
         {
             return View();
@@ -42,6 +46,14 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         /// </summary>
         /// <returns></returns>
         public IActionResult GroupAccount()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 企业认证
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult CompanyIdent()
         {
             return View();
         }

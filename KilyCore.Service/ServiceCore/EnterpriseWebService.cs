@@ -248,6 +248,19 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.REMOVEFAIL;
         }
+        /// <summary>
+        /// 集团账户权限列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseRoleAuthorWeb> GetRoleAuthorList()
+        {
+            var data = Kily.Set<EnterpriseRoleAuthorWeb>().OrderByDescending(t => t.CreateTime).Select(t => new ResponseRoleAuthorWeb()
+            {
+                Id=t.Id,
+                AuthorName=t.AuthorName
+            }).ToList();
+            return data;
+        }
         #endregion
 
         #region 集团账户
@@ -294,6 +307,9 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.REMOVEFAIL;
         }
+        #endregion
+
+        #region 
         #endregion
     }
 }

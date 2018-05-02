@@ -29,20 +29,23 @@ namespace KilyCore.WEB.Util
                 return new { data = "", flag = -1, msg = "文件类型不正确！", HttpCode = 50 };
             long bytes = Files.Length;
             if (Size != 0)
+            {
                 if (bytes > 1024 * 1024 * Size)
                     return new { data = "", flag = -1, msg = $"请限制图片大小在{Size}M以内！", HttpCode = 50 };
-            if (bytes > 1024 * 1024 * 2) //2M
+            }
+            else if (bytes > 1024 * 1024 * 2) //2M
                 return new { data = "", flag = -1, msg = "请限制图片大小在2M以内！", HttpCode = 50 };
             string RootPath = $"/Upload/Images/{DateTime.Now.ToString("yyyyMMdd")}/";
             string SavePath = WebRootPath + RootPath;
             if (!Directory.Exists(SavePath))
                 Directory.CreateDirectory(SavePath);
-            using (FileStream fs = File.Create(SavePath + Files.FileName))
+            string FullFileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + FileExtension;
+            using (FileStream fs = File.Create(SavePath + FullFileName))
             {
                 Files.CopyTo(fs);
                 fs.Flush();
             }
-            return new { data = RootPath + Files.FileName, flag = 1, msg = "上传成功！", HttpCode = 10 };
+            return new { data = RootPath + FullFileName, flag = 1, msg = "上传成功！", HttpCode = 10 };
         }
         /// <summary>
         /// 创建PDF文件流

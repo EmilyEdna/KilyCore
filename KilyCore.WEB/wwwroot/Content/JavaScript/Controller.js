@@ -533,7 +533,8 @@ controller.LayDate = function (option) {
         type: 'datetime',
         format: 'yyyy-MM-dd HH:mm:ss',
         showBottom: true,
-        calendar: true
+        calendar: true,
+        value: null
     };
     Setting = $.extend(defaultOption, option);
     laydate.render(Setting);
@@ -564,4 +565,8 @@ controller.Upload = function (option) {
         }
     };
     return $(options.element).ajaxImageUpload(defaults);
+}
+//格式化日期
+controller.FormatDate = function (option) {
+    return moment().format(option);
 }

@@ -109,6 +109,15 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveUser(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 集团账户权限列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetRoleAuthorList")]
+        public ObjectResultEx GetRoleAuthorList()
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetRoleAuthorList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 集团账户
         /// <summary>

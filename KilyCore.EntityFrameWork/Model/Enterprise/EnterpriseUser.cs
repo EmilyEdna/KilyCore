@@ -16,7 +16,7 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual Guid CompanyId { get; set; }
         /// <summary>
-        /// 企业Id
+        /// 企业名称
         /// </summary>
         public virtual string CompanyName { get; set; }
         /// <summary>
