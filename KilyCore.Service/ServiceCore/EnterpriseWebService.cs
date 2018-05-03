@@ -317,7 +317,52 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string EditEnterpriseIdent(RequestEnterpriseIdent param)
         {
-            throw new NotImplementedException();
+            param.Id = Guid.NewGuid();
+            param.IdentId = param.Id;
+            param.AuditType = AuditEnum.WaitAduit;
+            param.IdentEndTime = param.IdentStartTime.AddYears(param.IdentYear);
+            if (CompanyInfo() != null)
+            {
+                param.CompanyId = CompanyInfo().Id;
+                param.CompanyName = CompanyInfo().CompanyName;
+                param.CompanyType = CompanyInfo().CompanyType;
+            }
+            else
+            {
+                param.CompanyId = CompanyUser().Id;
+                param.CompanyName = CompanyUser().CompanyName;
+                param.CompanyType = CompanyUser().CompanyType;
+            }
+            EnterpriseIdent Ident = param.MapToEntity<EnterpriseIdent>();
+            if (CompanyInfo().CompanyType == CompanyEnum.Plant)
+            {
+                EnterprisePlantIdentAttach Plant = param.MapToEntity<EnterprisePlantIdentAttach>();
+                Insert<EnterprisePlantIdentAttach>(Plant);
+            }
+            if (CompanyInfo().CompanyType == CompanyEnum.Culture)
+            {
+                EnterpriseCultureIdentAttach Culture = param.MapToEntity<EnterpriseCultureIdentAttach>();
+                Insert<EnterpriseCultureIdentAttach>(Culture);
+            }
+            if (CompanyInfo().CompanyType == CompanyEnum.Production)
+            {
+                EnterpriseProductionIdentAttach Production = param.MapToEntity<EnterpriseProductionIdentAttach>();
+                Insert<EnterpriseProductionIdentAttach>(Production);
+            }
+            if (CompanyInfo().CompanyType == CompanyEnum.Circulation)
+            {
+                EnterpriseCirculationIdentAttach Circulation = param.MapToEntity<EnterpriseCirculationIdentAttach>();
+                Insert<EnterpriseCirculationIdentAttach>(Circulation);
+            }
+            if (CompanyInfo().CompanyType == CompanyEnum.Other)
+            {
+                EnterpriseOtherIdentAttach Other = param.MapToEntity<EnterpriseOtherIdentAttach>();
+                Insert<EnterpriseOtherIdentAttach>(Other);
+            }
+            if (Insert<EnterpriseIdent>(Ident, false))
+                return ServiceMessage.INSERTSUCCESS;
+            else
+                return ServiceMessage.INSERTFAIL;
         }
         #endregion
     }

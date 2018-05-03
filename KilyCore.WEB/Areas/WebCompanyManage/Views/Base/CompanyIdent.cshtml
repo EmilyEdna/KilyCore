@@ -46,6 +46,17 @@
             },
             //事件
             InitEvents: function () {
+                options.Comom();
+                options.PlantAndSave();
+                options.Ltong();
+                options.Product();
+                $("#save").click(function () {
+                    controller.Validate("#Edit", $("#Edit").SerializeJson());
+                    $("#Edit").submit();
+                });
+            },
+            //通用上传
+            Comom: function () { 
                 //文件上传-代表
                 controller.Upload({
                     url: "File/UploadImg",
@@ -73,7 +84,7 @@
                     url: "File/UploadImg",
                     element: "#upload-input-3",
                     maxNum: 1,
-                    node: '#Img1',
+                    node: '#Img3',
                     success: function (result) {
                         controller.Alter(result.msg);
                         options.SetFileValue(result.data, "#ImgResearch");
@@ -82,21 +93,26 @@
                 //文件上传-协议
                 controller.Upload({
                     url: "File/UploadImg",
-                    element: "#upload-input-2",
+                    element: "#upload-input-4",
                     maxNum: 1,
-                    node: '#Img2',
+                    node: '#Img4',
                     success: function (result) {
                         controller.Alter(result.msg);
                         options.SetFileValue(result.data, "#ImgAgreement");
                     }
                 });
-                options.PlantAndSave();
-                options.Ltong();
-                options.Product();
-                $("#save").click(function () {
-                    controller.Validate("#Edit", $("#Edit").SerializeJson());
-                    $("#Edit").submit();
+                //文件上传-其他
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-5",
+                    maxNum: 1,
+                    node: '#Img5',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#ImgAgreement");
+                    }
                 });
+
             },
             //种养企业
             PlantAndSave: function () {
@@ -447,6 +463,24 @@
                         </div>
                         <div class="col-sm-2">
                             <input type="hidden" id="ImgAgreement" name="ImgAgreement" />
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--其他认证-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">其他证书</label>
+                        <div class="col-sm-8">
+                            <div class="upload-box">
+                                <div class="image-box clear" id="Img5">
+                                    <section class="upload-section">
+                                        <div class="upload-btn"></div>
+                                        <input type="file" name="Files" id="upload-input-5" value="" accept="image/*" multiple="multiple" />
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="hidden" id="ImgOther" name="ImgOther" />
                         </div>
                     </div>
                 </div>
