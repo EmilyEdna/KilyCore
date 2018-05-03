@@ -150,5 +150,16 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveRole(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 企业认证
+        /// <summary>
+        /// 企业认证
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("EditEnterpriseIdent")]
+        public ObjectResultEx EditEnterpriseIdent(RequestEnterpriseIdent Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditEnterpriseIdent(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }

@@ -38,5 +38,8 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseRoleAuthorWeb> GetRoleAuthorPage(PageParamList<RequestRoleAuthorWeb> pageParam);
         String RemoveRole(Guid Id);
         #endregion
+        #region 企业认证
+        String EditEnterpriseIdent(RequestEnterpriseIdent param);
+        #endregion
     }
 }

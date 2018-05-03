@@ -256,8 +256,8 @@ namespace KilyCore.Service.ServiceCore
         {
             var data = Kily.Set<EnterpriseRoleAuthorWeb>().OrderByDescending(t => t.CreateTime).Select(t => new ResponseRoleAuthorWeb()
             {
-                Id=t.Id,
-                AuthorName=t.AuthorName
+                Id = t.Id,
+                AuthorName = t.AuthorName
             }).ToList();
             return data;
         }
@@ -309,7 +309,16 @@ namespace KilyCore.Service.ServiceCore
         }
         #endregion
 
-        #region 
+        #region  企业认证
+        /// <summary>
+        /// 企业认证
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public string EditEnterpriseIdent(RequestEnterpriseIdent param)
+        {
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

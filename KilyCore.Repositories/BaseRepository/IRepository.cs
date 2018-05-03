@@ -9,7 +9,7 @@ namespace KilyCore.Repositories.BaseRepository
 {
     public interface IRepository
     {
-        bool Insert<TEntity>(TEntity Entity) where TEntity : class, new();
+        bool Insert<TEntity>(TEntity Entity,bool PrimaryKey=true) where TEntity : class, new();
         bool Update<TEntity, DEntity>(TEntity Entity, DEntity dto) where TEntity : class, new() where DEntity : class, new();
         bool UpdateField<TEntity>(TEntity Entity, string Field, IList<string> Fields = null) where TEntity : class, new();
         bool Delete<TEntity>(Expression<Func<TEntity, bool>> exp) where TEntity : class, new();

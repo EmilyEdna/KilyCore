@@ -10,7 +10,7 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// <summary>
         /// 企业认证表主键
         /// </summary>
-        public Guid IdentId { get; set; }
+        public virtual Guid IdentId { get; set; }
         /// <summary>
         /// 法人身份证
         /// </summary>

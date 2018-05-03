@@ -55,13 +55,14 @@ namespace KilyCore.Repositories.BaseRepository
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public virtual bool Insert<TEntity>(TEntity Entity) where TEntity : class, new()
+        public virtual bool Insert<TEntity>(TEntity Entity, bool PrimaryKey = true) where TEntity : class, new()
         {
             try
             {
                 List<PropertyInfo> props = Entity.GetType().GetProperties().Where(t => t.Name.Contains("Create")).ToList();
                 Entity.GetType().GetProperty("IsDelete").SetValue(Entity, false);
-                Entity.GetType().GetProperty("Id").SetValue(Entity, Guid.NewGuid());
+                if (PrimaryKey)
+                    Entity.GetType().GetProperty("Id").SetValue(Entity, Guid.NewGuid());
                 props.Where(t => t.Name.Equals("CreateTime")).FirstOrDefault().SetValue(Entity, DateTime.Now);
                 if (UserInfo() != null)
                     props.Where(t => t.Name.Equals("CreateUser")).FirstOrDefault().SetValue(Entity, UserInfo().Id.ToString());

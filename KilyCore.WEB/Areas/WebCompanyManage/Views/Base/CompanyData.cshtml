@@ -219,7 +219,6 @@
                 $("#save").on('click',function () {
                     controller.Validate("#Edit", $("#Edit").SerializeJson());
                     var flag = $("#CompanyName").val();
-                    debugger;
                     if (flag == "")
                     {
                         controller.Alter("请先下载合同!");
