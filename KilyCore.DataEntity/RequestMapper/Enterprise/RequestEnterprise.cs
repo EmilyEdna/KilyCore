@@ -9,7 +9,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
     {
         public Guid Id { get; set; }
         public string CompanyName { get; set; }
-        public string CompanyType { get; set; }
+        public CompanyEnum CompanyType { get; set; }
         public string CompanyAccount { get; set; }
         public string PassWord { get; set; }
         public SystemVersionEnum Version { get; set; }

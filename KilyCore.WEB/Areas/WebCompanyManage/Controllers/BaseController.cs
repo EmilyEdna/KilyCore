@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
 {
+    /// <summary>
+    /// 基础管理
+    /// </summary>
     [Area("WebCompanyManage")]
     public class BaseController : Controller
     {
