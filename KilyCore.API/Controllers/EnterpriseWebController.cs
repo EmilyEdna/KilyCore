@@ -34,6 +34,7 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.GetEnterpriseWebTree(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 基础管理
         #region  企业信息
         /// <summary>
         /// 获取公司信息
@@ -160,6 +161,41 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseWebService.EditEnterpriseIdent(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        #endregion
+        #endregion
+        #region 成长档案
+        #region 施养管理
+        /// <summary>
+        /// 施养管理分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetPlantingPage")]
+        public ObjectResultEx GetPlantingPage(PageParamList<RequestEnterprisePlanting> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetPlantingPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 新增施养记录
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditPlanting")]
+        public ObjectResultEx EditPlanting(RequestEnterprisePlanting Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditPlanting(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除记录
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("RemovePlanting")]
+        public ObjectResultEx RemovePlanting(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemovePlanting(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
         #endregion
     }
 }

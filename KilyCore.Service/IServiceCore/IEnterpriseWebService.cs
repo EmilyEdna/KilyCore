@@ -19,6 +19,7 @@ namespace KilyCore.Service.IServiceCore
         IList<ResponseEnterpriseMenu> GetEnterpriseMenu();
         IList<ResponseParentTree> GetEnterpriseWebTree();
         #endregion
+        #region 基础管理
         #region 企业信息
         ResponseEnterprise GetEnterpriseInfo(Guid Id);
         String EditEnterprise(RequestEnterprise param);
@@ -40,6 +41,14 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 企业认证
         String EditEnterpriseIdent(RequestEnterpriseIdent param);
+        #endregion
+        #endregion
+        #region 成长档案
+        #region 施养管理
+        PagedResult<ResponseEnterprisePlanting> GetPlantingPage(PageParamList<RequestEnterprisePlanting> pageParam);
+        String EditPlanting(RequestEnterprisePlanting Param);
+        String RemovePlanting(Guid Id);
+        #endregion
         #endregion
     }
 }

@@ -103,6 +103,7 @@ namespace KilyCore.Service.ServiceCore
         }
         #endregion
 
+        #region 基础管理
         #region 企业资料
         /// <summary>
         /// 获取企业资料
@@ -364,6 +365,64 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.INSERTFAIL;
         }
+        #endregion
+        #endregion
+
+        #region 成长档案
+        #region 施养管理
+        /// <summary>
+        /// 施养管理分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterprisePlanting> GetPlantingPage(PageParamList<RequestEnterprisePlanting> pageParam)
+        {
+            IQueryable<EnterprisePlanting> queryable = Kily.Set<EnterprisePlanting>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.FeedName))
+                queryable = queryable.Where(t => t.FeedName.Contains(pageParam.QueryParam.FeedName));
+            var data = queryable.Select(t => new ResponseEnterprisePlanting()
+            {
+                Id = t.Id,
+                CompanyId = t.CompanyId,
+                FeedName = t.FeedName,
+                Brand = t.Brand,
+                CheckReport = t.CheckReport,
+                Supplier = t.Supplier,
+                PlantTime = t.PlantTime
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 新增施养记录
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditPlanting(RequestEnterprisePlanting Param)
+        {
+            if (CompanyInfo() != null)
+                Param.CompanyId = CompanyInfo().Id;
+            else
+                Param.CompanyId = CompanyUser().Id;
+            EnterprisePlanting planting = Param.MapToEntity<EnterprisePlanting>();
+            if (Insert<EnterprisePlanting>(planting))
+                return ServiceMessage.INSERTSUCCESS;
+            else
+                return ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 删除记录
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemovePlanting(Guid Id)
+        {
+            if (Delete<EnterprisePlanting>(t => t.Id == Id))
+                return ServiceMessage.REMOVESUCCESS;
+            else
+                return ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+
         #endregion
     }
 }

@@ -20,5 +20,13 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 新增施养记录
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult PlantingEdit()
+        {
+            return View();
+        }
     }
 }
