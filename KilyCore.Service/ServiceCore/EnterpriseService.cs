@@ -413,6 +413,7 @@ namespace KilyCore.Service.ServiceCore
                     IdentStarName = AttrExtension.GetSingleDescription<IdentEnum, DescriptionAttribute>(x.IdentStar),
                     Representative = x.Representative,
                     LinkPhone = x.LinkPhone,
+                    AuditType=x.AuditType,
                     AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(x.AuditType),
                     CompanyType = x.CompanyType,
                     CommunityCode = x.CommunityCode,

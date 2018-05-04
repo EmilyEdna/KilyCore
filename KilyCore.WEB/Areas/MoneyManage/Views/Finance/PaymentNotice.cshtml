@@ -28,7 +28,6 @@
                     type: "post",
                     data: { Id: Guid, Parameter: TableName },
                     success: function (result) {
-                        debugger;
                         controller.SetCtrlValue("#Edit", result.data);
                     }
                 });
@@ -83,7 +82,7 @@
                 <div class="col-sm-6 col-md-6">
                     <div class="input-group line-width">
                         <span class="label label-warning">缴费金额</span>
-                        <input type="text" class="form-control" name="Paymony" readonly />
+                        <input type="text" class="form-control" name="Paymoney" readonly />
                     </div>
                 </div>
             </div>

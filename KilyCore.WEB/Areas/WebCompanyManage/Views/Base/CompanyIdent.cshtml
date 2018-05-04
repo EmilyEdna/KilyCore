@@ -56,7 +56,7 @@
                 });
             },
             //通用上传
-            Comom: function () { 
+            Comom: function () {
                 //文件上传-代表
                 controller.Upload({
                     url: "File/UploadImg",
@@ -269,7 +269,7 @@
                 <a data-toggle="tab" href="#tab-6" aria-expanded="false">生产企业</a>
             </li>
             <li>
-                <a data-toggle="tab" href="#tab-7" aria-expanded="false">确认认证</a>
+                <a id="save">保存内容</a>
             </li>
         </ul>
         <div class="tab-content">
@@ -306,7 +306,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">认证年限</label>
                         <div class="col-sm-4">
-                            <select type="select" class="form-control">
+                            <select type="select" class="form-control" name="IdentYear">
                                 <option value="1">一年</option>
                                 <option value="2">两年</option>
                                 <option value="3">三年</option>
@@ -321,7 +321,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">认证星级</label>
                         <div class="col-sm-4">
-                            <select type="select" class="form-control">
+                            <select type="select" class="form-control" name="IdentStar">
                                 <option value="10">一星</option>
                                 <option value="20">两星</option>
                                 <option value="30">三星</option>
@@ -402,7 +402,7 @@
                                 <div class="image-box clear" id="Img1">
                                     <section class="upload-section">
                                         <div class="upload-btn"></div>
-                                        <input type="file" name="Files" id="upload-input-1" value="" accept="image/*" multiple="multiple" />
+                                        <input type="file" name="Files" id="upload-input-1" class="upload-input" value="" accept="image/*" multiple="multiple" />
                                     </section>
                                 </div>
                             </div>
@@ -420,7 +420,7 @@
                                 <div class="image-box clear" id="Img2">
                                     <section class="upload-section">
                                         <div class="upload-btn"></div>
-                                        <input type="file" name="Files" id="upload-input-2" value="" accept="image/*" multiple="multiple" />
+                                        <input type="file" name="Files" id="upload-input-2" class="upload-input" value="" accept="image/*" multiple="multiple" />
                                     </section>
                                 </div>
                             </div>
@@ -430,15 +430,15 @@
                         </div>
                     </div>
                     <div class="hr-line-dashed"></div>
-                    <!--代表人身份证-->
+                    <!--调查表-->
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">法人身份证</label>
+                        <label class="col-sm-2 control-label">调查表</label>
                         <div class="col-sm-8">
                             <div class="upload-box">
                                 <div class="image-box clear" id="Img3">
                                     <section class="upload-section">
                                         <div class="upload-btn"></div>
-                                        <input type="file" name="Files" id="upload-input-3" value="" accept="image/*" multiple="multiple" />
+                                        <input type="file" name="Files" id="upload-input-3" class="upload-input" value="" accept="image/*" multiple="multiple" />
                                     </section>
                                 </div>
                             </div>
@@ -456,7 +456,7 @@
                                 <div class="image-box clear" id="Img4">
                                     <section class="upload-section">
                                         <div class="upload-btn"></div>
-                                        <input type="file" name="Files" id="upload-input-4" value="" accept="image/*" multiple="multiple" />
+                                        <input type="file" name="Files" id="upload-input-4" class="upload-input" value="" accept="image/*" multiple="multiple" />
                                     </section>
                                 </div>
                             </div>
@@ -474,7 +474,7 @@
                                 <div class="image-box clear" id="Img5">
                                     <section class="upload-section">
                                         <div class="upload-btn"></div>
-                                        <input type="file" name="Files" id="upload-input-5" value="" accept="image/*" multiple="multiple" />
+                                        <input type="file" name="Files" id="upload-input-5" class="upload-input" value="" accept="image/*" multiple="multiple" />
                                     </section>
                                 </div>
                             </div>
@@ -495,7 +495,7 @@
                                 <div class="image-box clear" id="Img1-1">
                                     <section class="upload-section">
                                         <div class="upload-btn"></div>
-                                        <input type="file" name="Files" id="upload-input-1-1" value="" accept="image/*" multiple="multiple" />
+                                        <input type="file" name="Files" id="upload-input-1-1" class="upload-input" value="" accept="image/*" multiple="multiple" />
                                     </section>
                                 </div>
                             </div>
@@ -513,7 +513,7 @@
                                 <div class="image-box clear" id="Img1-2">
                                     <section class="upload-section">
                                         <div class="upload-btn"></div>
-                                        <input type="file" name="Files" id="upload-input-1-2" value="" accept="image/*" multiple="multiple" />
+                                        <input type="file" name="Files" id="upload-input-1-2" class="upload-input" value="" accept="image/*" multiple="multiple" />
                                     </section>
                                 </div>
                             </div>
@@ -531,7 +531,7 @@
                                 <div class="image-box clear" id="Img1-3">
                                     <section class="upload-section">
                                         <div class="upload-btn"></div>
-                                        <input type="file" name="Files" id="upload-input-1-3" value="" accept="image/*" multiple="multiple" />
+                                        <input type="file" name="Files" id="upload-input-1-3" class="upload-input" value="" accept="image/*" multiple="multiple" />
                                     </section>
                                 </div>
                             </div>
@@ -549,7 +549,7 @@
                                 <div class="image-box clear" id="Img1-4">
                                     <section class="upload-section">
                                         <div class="upload-btn"></div>
-                                        <input type="file" name="Files" id="upload-input-1-4" value="" accept="image/*" multiple="multiple" />
+                                        <input type="file" name="Files" id="upload-input-1-4" class="upload-input" value="" accept="image/*" multiple="multiple" />
                                     </section>
                                 </div>
                             </div>
@@ -570,7 +570,7 @@
                                 <div class="image-box clear" id="Img2-1">
                                     <section class="upload-section">
                                         <div class="upload-btn"></div>
-                                        <input type="file" name="Files" id="upload-input-2-1" value="" accept="image/*" multiple="multiple" />
+                                        <input type="file" name="Files" id="upload-input-2-1" value="" class="upload-input" accept="image/*" multiple="multiple" />
                                     </section>
                                 </div>
                             </div>
@@ -588,7 +588,7 @@
                                 <div class="image-box clear" id="Img2-2">
                                     <section class="upload-section">
                                         <div class="upload-btn"></div>
-                                        <input type="file" name="Files" id="upload-input-2-2" value="" accept="image/*" multiple="multiple" />
+                                        <input type="file" name="Files" id="upload-input-2-2" value="" class="upload-input" accept="image/*" multiple="multiple" />
                                     </section>
                                 </div>
                             </div>
@@ -606,7 +606,7 @@
                                 <div class="image-box clear" id="Img2-3">
                                     <section class="upload-section">
                                         <div class="upload-btn"></div>
-                                        <input type="file" name="Files" id="upload-input-2-3" value="" accept="image/*" multiple="multiple" />
+                                        <input type="file" name="Files" id="upload-input-2-3" value="" class="upload-input" accept="image/*" multiple="multiple" />
                                     </section>
                                 </div>
                             </div>
@@ -624,7 +624,7 @@
                                 <div class="image-box clear" id="Img2-4">
                                     <section class="upload-section">
                                         <div class="upload-btn"></div>
-                                        <input type="file" name="Files" id="upload-input-2-4" value="" accept="image/*" multiple="multiple" />
+                                        <input type="file" name="Files" id="upload-input-2-4" value="" class="upload-input" accept="image/*" multiple="multiple" />
                                     </section>
                                 </div>
                             </div>
@@ -645,7 +645,7 @@
                                 <div class="image-box clear" id="Img3-1">
                                     <section class="upload-section">
                                         <div class="upload-btn"></div>
-                                        <input type="file" name="Files" id="upload-input-3-1" value="" accept="image/*" multiple="multiple" />
+                                        <input type="file" name="Files" id="upload-input-3-1" class="upload-input" value="" accept="image/*" multiple="multiple" />
                                     </section>
                                 </div>
                             </div>
@@ -663,7 +663,7 @@
                                 <div class="image-box clear" id="Img3-2">
                                     <section class="upload-section">
                                         <div class="upload-btn"></div>
-                                        <input type="file" name="Files" id="upload-input-3-2" value="" accept="image/*" multiple="multiple" />
+                                        <input type="file" name="Files" id="upload-input-3-2" class="upload-input" value="" accept="image/*" multiple="multiple" />
                                     </section>
                                 </div>
                             </div>
@@ -681,24 +681,13 @@
                                 <div class="image-box clear" id="Img3-3">
                                     <section class="upload-section">
                                         <div class="upload-btn"></div>
-                                        <input type="file" name="Files" id="upload-input-3-3" value="" accept="image/*" multiple="multiple" />
+                                        <input type="file" name="Files" id="upload-input-3-3" class="upload-input" value="" accept="image/*" multiple="multiple" />
                                     </section>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-2">
                             <input type="hidden" id="ImgHygiene" name="ImgHygiene" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="tab-7" class="tab-pane">
-                <div class="panel-body">
-                    <!--结束-->
-                    <div class="form-group">
-                        <div class="col-sm-4 col-sm-offset-2">
-                            <button class="btn btn-primary" type="button" id="save">保存内容</button>
-                            <button class="btn btn-white" type="button">取消</button>
                         </div>
                     </div>
                 </div>

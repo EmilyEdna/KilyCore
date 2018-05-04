@@ -44,7 +44,7 @@
                 //文件上传
                 controller.Upload({
                     url: "File/UploadImg",
-                    element: "#upload-input",
+                    element: ".upload-input",
                     maxNum:1,
                     success: function (result) {
                         controller.Alter(result.msg);
@@ -110,7 +110,7 @@
                     <div class="image-box clear">
                         <section class="upload-section">
                             <div class="upload-btn"></div>
-                            <input type="file" name="Files" id="upload-input" value="" accept="image/*" multiple="multiple" />
+                            <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
                         </section>
                     </div>
                 </div>
