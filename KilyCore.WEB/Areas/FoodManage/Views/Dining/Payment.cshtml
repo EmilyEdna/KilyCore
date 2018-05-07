@@ -28,13 +28,13 @@
                 controller.LayDate({ elem: "#PayTime" });
             },
             //设置文件值
-            SetFileValue: function (data) {
-                var files = $("#File").val();
+            SetFileValue: function (data, elememt) {
+                var files = $(elememt).val();
                 if (files != null && files != "" && files != undefined) {
                     files += "," + data;
-                    $("#File").val(files);
+                    $(elememt).val(files);
                 } else {
-                    $("#File").val(data);
+                    $(elememt).val(data);
                 }
             },
             //事件
@@ -48,7 +48,7 @@
                     maxNum:1,
                     success: function (result) {
                         controller.Alter(result.msg);
-                        options.SetFileValue(result.data);
+                        options.SetFileValue(result.data,"#File");
                     }
                 });
             },

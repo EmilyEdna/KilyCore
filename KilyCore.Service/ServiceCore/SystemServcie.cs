@@ -839,5 +839,156 @@ namespace KilyCore.Service.ServiceCore
             }
         }
         #endregion
+
+        #region 人员归档
+        /// <summary>
+        /// 人员分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponsePreson> GetPresonPage(PageParamList<RequestPreson> pageParam)
+        {
+            IQueryable<SystemPreson> queryable = Kily.Set<SystemPreson>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.WorkNum))
+                queryable = queryable.Where(t => t.WorkNum.Contains(pageParam.QueryParam.WorkNum));
+            if (UserInfo().AccountType == AccountEnum.Province)
+                queryable = queryable.Where(t => t.WorkNum.Contains("省"));
+            if (UserInfo().AccountType == AccountEnum.City)
+                queryable = queryable.Where(t => t.WorkNum.Contains("市"));
+            if (UserInfo().AccountType == AccountEnum.Area)
+                queryable = queryable.Where(t => t.WorkNum.Contains("区"));
+            if (UserInfo().AccountType == AccountEnum.Village)
+                queryable = queryable.Where(t => t.WorkNum.Contains("镇"));
+            var data = queryable.Select(t => new ResponsePreson()
+            {
+                Id = t.Id,
+                TrueName = t.TrueName,
+                Address = t.Address,
+                IdCard = t.IdCard,
+                LinkPhone = t.LinkPhone,
+                WorkNum = t.Type + t.WorkNum
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 获取人员详情
+        /// </summary>
+        public ResponsePreson GetPresonDetail(Guid Id)
+        {
+            var data = Kily.Set<SystemPreson>().Where(t => t.Id == Id).Select(t => new ResponsePreson()
+            {
+                Id = t.Id,
+                TrueName = t.TrueName,
+                Address = t.Address,
+                IdCard = t.IdCard,
+                LinkPhone = t.LinkPhone,
+                WorkNum=t.WorkNum,
+                HeadImage=t.HeadImage
+            }).FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 编辑人员
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string PresonEdit(RequestPreson Param)
+        {
+            SystemPreson Preson = Param.MapToEntity<SystemPreson>();
+            if (Preson.Id != Guid.Empty)
+            {
+                if (Update<SystemPreson, RequestPreson>(Preson, Param))
+                    return ServiceMessage.UPDATESUCCESS;
+                else
+                    return ServiceMessage.UPDATEFAIL;
+            }
+            else
+            {
+                if (UserInfo().AccountType == AccountEnum.Admin)
+                {
+                    int Num = Kily.Set<SystemPreson>().Where(t => t.Type.Contains("全国运营")).Count()+1;
+                    if (Num > 100)
+                        Preson.WorkNum = "全国运营" + Num;
+                    if (Num > 10)
+                        Preson.WorkNum = "全国运营0"+ Num;
+                    if (Num < 10)
+                        Preson.WorkNum = "全国运营00"+ Num;
+                    Preson.Type = "全国运营";
+                }
+                if (UserInfo().AccountType == AccountEnum.Country)
+                {
+                    int Num = Kily.Set<SystemPreson>().Where(t => t.Type.Contains("全国运营")).Count()+1;
+                    if (Num > 100)
+                        Preson.WorkNum = "全国运营" + Num;
+                    if (Num > 10)
+                        Preson.WorkNum = "全国运营0" + Num;
+                    if (Num < 10)
+                        Preson.WorkNum = "全国运营00"+ Num;
+                    Preson.Type = "全国运营";
+                }
+                if (UserInfo().AccountType == AccountEnum.Province)
+                {
+                    int Num = Kily.Set<SystemPreson>().Where(t => t.Type.Contains("省级运营")).Count()+1;
+                    if (Num > 100)
+                        Preson.WorkNum = "省级运营" + Num;
+                    if (Num > 10)
+                        Preson.WorkNum = "省级运营0"+ Num;
+                    if (Num < 10)
+                        Preson.WorkNum = "省级运营00"+ Num;
+                    Preson.Type = "省级运营";
+                }
+                if (UserInfo().AccountType == AccountEnum.City)
+                {
+                    int Num = Kily.Set<SystemPreson>().Where(t => t.Type.Contains("市级运营")).Count()+1;
+                    if (Num > 100)
+                        Preson.WorkNum = "市级运营" + Num;
+                    if (Num > 10)
+                        Preson.WorkNum = "市级运营0"+ Num;
+                    if (Num < 10)
+                        Preson.WorkNum = "市级运营00"+ Num;
+                    Preson.Type = "市级运营";
+                }
+                if (UserInfo().AccountType == AccountEnum.Area)
+                {
+                    int Num = Kily.Set<SystemPreson>().Where(t => t.Type.Contains("区域运营")).Count()+1;
+                    if (Num > 100)
+                        Preson.WorkNum = "区域运营" + Num;
+                    if (Num > 10)
+                        Preson.WorkNum = "区域运营0"+ Num;
+                    if (Num < 10)
+                        Preson.WorkNum = "区域运营00"+ Num;
+                    Preson.Type = "区域运营";
+                }
+                if (UserInfo().AccountType == AccountEnum.Village)
+                {
+                    int Num = Kily.Set<SystemPreson>().Where(t => t.Type.Contains("乡镇运营")).Count()+1;
+                    if (Num > 100)
+                        Preson.WorkNum = "乡镇运营" + Num;
+                    if (Num > 10)
+                        Preson.WorkNum = "乡镇运营0"+ Num;
+                    if (Num < 10)
+                        Preson.WorkNum = "乡镇运营00"+ Num;
+                    Preson.Type = "乡镇运营";
+                }
+                if (Insert<SystemPreson>(Preson))
+                    return ServiceMessage.INSERTSUCCESS;
+                else
+                    return ServiceMessage.INSERTFAIL;
+            }
+
+        }
+        /// <summary>
+        /// 删除人员
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemovePreson(Guid Id)
+        {
+            if (Delete<SystemPreson>(t => t.Id == Id))
+                return ServiceMessage.REMOVESUCCESS;
+            else
+                return ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
     }
 }

@@ -53,5 +53,15 @@ namespace KilyCore.WEB.Areas.SysManage.Controllers
             return View();
         }
         #endregion
+        #region 人员
+        public IActionResult PresonCount()
+        {
+            return View();
+        }
+        public IActionResult PresonEdit()
+        {
+            return View();
+        }
+        #endregion
     }
 }

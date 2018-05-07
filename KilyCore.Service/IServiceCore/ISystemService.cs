@@ -60,5 +60,11 @@ namespace KilyCore.Service.IServiceCore
         String PauseAppointJob(RequestQuartz Param);
         String RemoveJob(RequestQuartz Param);
         #endregion
+        #region 人员归档
+        PagedResult<ResponsePreson> GetPresonPage(PageParamList<RequestPreson> pageParam);
+        String PresonEdit(RequestPreson Param);
+        String RemovePreson(Guid Id);
+        ResponsePreson GetPresonDetail(Guid Id);
+        #endregion
     }
 }

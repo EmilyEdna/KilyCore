@@ -360,5 +360,47 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(SystemService.RemoveJob(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 人员归档
+        /// <summary>
+        /// 人员分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetPresonPage")]
+        public ObjectResultEx GetPresonPage(PageParamList<RequestPreson> pageParam)
+        {
+            return ObjectResultEx.Instance(SystemService.GetPresonPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑人员
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("PresonEdit")]
+        public ObjectResultEx PresonEdit(RequestPreson Param)
+        {
+            return ObjectResultEx.Instance(SystemService.PresonEdit(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除人员
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("RemovePreson")]
+        public ObjectResultEx RemovePreson(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(SystemService.RemovePreson(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取详情
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetPresonDetail")]
+        public ObjectResultEx GetPresonDetail(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(SystemService.GetPresonDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }
