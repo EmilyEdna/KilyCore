@@ -54,6 +54,14 @@ namespace KilyCore.Service.IServiceCore
         String EditDrug(RequestEnterpriseDrug Param);
         String RemoveDrug(Guid Id);
         #endregion
+        #region 环境检测
+        PagedResult<ResponseEnterpriseEnvironment> GetEnvPage(PageParamList<RequestEnterpriseEnvironment> pageParam);
+        PagedResult<ResponseEnterpriseEnvironmentAttach> GetEnvAttachPage(PageParamList<RequestEnterpriseEnvironmentAttach> pageParam);
+        String EditEnv(RequestEnterpriseEnvironment Param);
+        String EditEnvAttach(RequestEnterpriseEnvironmentAttach Param);
+        String RemoveEnv(Guid Id);
+        String RemoveEnvAttach(Guid Id);
+        #endregion
         #endregion
     }
 }

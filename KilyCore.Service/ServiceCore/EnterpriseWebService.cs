@@ -476,6 +476,105 @@ namespace KilyCore.Service.ServiceCore
                 return ServiceMessage.REMOVEFAIL;
         }
         #endregion
+
+        #region 环境检测
+        /// <summary>
+        /// 环境检测分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseEnvironment> GetEnvPage(PageParamList<RequestEnterpriseEnvironment> pageParam)
+        {
+            IQueryable<EnterpriseEnvironment> queryable = Kily.Set<EnterpriseEnvironment>().Where(t => t.IsDelete == false);
+            if (pageParam.QueryParam.RecordTime.HasValue)
+                queryable = queryable.Where(t => t.RecordTime <= pageParam.QueryParam.RecordTime);
+            var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseEnvironment()
+            {
+                Id = t.Id,
+                CompanyId = t.CompanyId,
+                AirEnv = t.AirEnv,
+                AirHdy = t.AirHdy,
+                SoilEnv = t.SoilEnv,
+                SoilHdy = t.SoilHdy,
+                Light = t.Light,
+                RecordTime = t.RecordTime
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 新增环境检测
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditEnv(RequestEnterpriseEnvironment Param)
+        {
+            if (CompanyInfo() != null)
+                Param.CompanyId = CompanyInfo().Id;
+            else
+                Param.CompanyId = CompanyUser().Id;
+            EnterpriseEnvironment Env = Param.MapToEntity<EnterpriseEnvironment>();
+            if (Insert<EnterpriseEnvironment>(Env))
+                return ServiceMessage.INSERTSUCCESS;
+            else
+                return ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 删除环境检测
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveEnv(Guid Id)
+        {
+            if (Delete<EnterpriseEnvironment>(t => t.Id == Id))
+                return ServiceMessage.REMOVESUCCESS;
+            else
+                return ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 环境检测附加表分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseEnvironmentAttach> GetEnvAttachPage(PageParamList<RequestEnterpriseEnvironmentAttach> pageParam)
+        {
+            var data = Kily.Set<EnterpriseEnvironmentAttach>().Where(t => t.IsDelete == false)
+                .Where(t => t.EnvId == pageParam.QueryParam.EnvId)
+                .Select(t => new ResponseEnterpriseEnvironmentAttach()
+                {
+                    Id = t.Id,
+                    AirReport = t.AirReport,
+                    MetalReport = t.MetalReport,
+                    RecordTime = t.RecordTime,
+                    SoilReport = t.SoilReport,
+                    WaterReport = t.WaterReport
+                }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 新增环境附加信息
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditEnvAttach(RequestEnterpriseEnvironmentAttach Param)
+        {
+            EnterpriseEnvironmentAttach Attach = Param.MapToEntity<EnterpriseEnvironmentAttach>();
+            if (Insert<EnterpriseEnvironmentAttach>(Attach))
+                return ServiceMessage.INSERTSUCCESS;
+            else
+                return ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 删除环境检测
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveEnvAttach(Guid Id) {
+            if(Delete<EnterpriseEnvironmentAttach>(t => t.Id == Id))
+                return ServiceMessage.REMOVESUCCESS;
+            else
+                return ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
         #endregion
     }
 }
