@@ -423,6 +423,59 @@ namespace KilyCore.Service.ServiceCore
         }
         #endregion
 
+        #region 农药疫情
+        /// <summary>
+        /// 农药疫情分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseDrug> GetDrugPage(PageParamList<RequestEnterpriseDrug> pageParam)
+        {
+            IQueryable<EnterpriseDrug> queryable = Kily.Set<EnterpriseDrug>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.DrugName))
+                queryable = queryable.Where(t => t.DrugName.Contains(pageParam.QueryParam.DrugName));
+            var data = queryable.Select(t => new ResponseEnterpriseDrug()
+            {
+                Id = t.Id,
+                CompanyId = t.CompanyId,
+                DrugName = t.DrugName,
+                Brand = t.Brand,
+                CheckReport = t.CheckReport,
+                Supplier = t.Supplier,
+                PlantTime = t.PlantTime
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 新增农药疫情
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditDrug(RequestEnterpriseDrug Param)
+        {
+            if (CompanyInfo() != null)
+                Param.CompanyId = CompanyInfo().Id;
+            else
+                Param.CompanyId = CompanyUser().Id;
+            EnterpriseDrug planting = Param.MapToEntity<EnterpriseDrug>();
+            if (Insert<EnterpriseDrug>(planting))
+                return ServiceMessage.INSERTSUCCESS;
+            else
+                return ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 删除记录
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveDrug(Guid Id)
+        {
+            if (Delete<EnterpriseDrug>(t => t.Id == Id))
+                return ServiceMessage.REMOVESUCCESS;
+            else
+                return ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
         #endregion
     }
 }

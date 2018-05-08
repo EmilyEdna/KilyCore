@@ -49,6 +49,11 @@ namespace KilyCore.Service.IServiceCore
         String EditPlanting(RequestEnterprisePlanting Param);
         String RemovePlanting(Guid Id);
         #endregion
+        #region 农药疫情
+        PagedResult<ResponseEnterpriseDrug> GetDrugPage(PageParamList<RequestEnterpriseDrug> pageParam);
+        String EditDrug(RequestEnterpriseDrug Param);
+        String RemoveDrug(Guid Id);
+        #endregion
         #endregion
     }
 }

@@ -28,5 +28,21 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 农药疫情
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Drug()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 新增农药疫情记录
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult DrugEdit()
+        {
+            return View();
+        }
     }
 }

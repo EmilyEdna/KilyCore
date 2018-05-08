@@ -196,6 +196,38 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.RemovePlanting(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 农药疫情
+        /// <summary>
+        /// 农药疫情分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetDrugPage")]
+        public ObjectResultEx GetDrugPage(PageParamList<RequestEnterpriseDrug> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetDrugPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 新增农药疫情
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditDrug")]
+        public ObjectResultEx EditDrug(RequestEnterpriseDrug Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditDrug(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除记录
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveDrug")]
+        public ObjectResultEx RemoveDrug(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveDrug(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
         #endregion
     }
 }
