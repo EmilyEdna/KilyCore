@@ -229,6 +229,60 @@ namespace KilyCore.API.Controllers
         }
         #endregion
         #region 环境检测
+        /// <summary>
+        /// 获取环境检测主表分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetEnvPage")]
+        public ObjectResultEx GetEnvPage(PageParamList<RequestEnterpriseEnvironment> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetEnvPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取环境检测从表分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        [HttpPost("GetEnvAttachPage")]
+        public ObjectResultEx GetEnvAttachPage(PageParamList<RequestEnterpriseEnvironmentAttach> pageParam) {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetEnvAttachPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑主表信息
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditEnv")]
+        public ObjectResultEx EditEnv(RequestEnterpriseEnvironment Param) {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditEnv(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑从表信息
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditEnvAttach")]
+        public ObjectResultEx EditEnvAttach(RequestEnterpriseEnvironmentAttach Param) {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditEnvAttach(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除主表信息
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveEnv")]
+        public ObjectResultEx RemoveEnv(SimlpeParam<Guid> Param) {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveEnv(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除从表信息
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveEnvAttach")]
+        public ObjectResultEx RemoveEnvAttach(SimlpeParam<Guid> Param) {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveEnvAttach(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #endregion
     }

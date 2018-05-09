@@ -44,5 +44,29 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 环境检测
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Ambient()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 新增环境检测
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult AmbientEdit()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 环境报告
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult AmbientAttach()
+        {
+            return View();
+        }
     }
 }
