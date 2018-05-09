@@ -3,3 +3,106 @@
     ViewData["Title"] = "环境报告";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                options.Guid = controller.GetParam("Id");
+                //恢复高度
+                $(window).resize(function (e) {
+                    window.setTimeout(function () {
+                        options.$table.bootstrapTable("resetView", { height: $(window).height() - 150 });
+                    }, 200);
+                    e.stopPropagation();
+                });
+                //设置表单
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetEnvAttachPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { EnvId: options.Guid} });
+            },
+            //事件
+            InitEvents: function () {
+                $("#add").on('click', function () {
+                    controller.OpenWindow({
+                        title: "新增报告",
+                        type: 2,
+                        height: "650px",
+                        width: "1000px",
+                        url: "WebCompanyManage/Develop/AmbientAttachEdit?Id=" + options.Guid,
+                        callBack: function (result) {
+                            result.$("#Edit").submit();
+                        }
+                    })
+                });
+            },
+            //行为
+            action: {
+                TableFormatter: function (val, row, index) {
+                    var action = [];
+                    action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
+                    return action.join("&nbsp;")
+                },
+                TableEvents: {
+                    "click .del": function (event, val, row, index) {
+                        controller.Confirm("确认删除？", function (bool) {
+                            if (bool) {
+                                controller.ajax({
+                                    url: "EnterpriseWeb/RemoveEnvAttach",
+                                    data: { Id: row.Id },
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }//表单事件结束
+            }//行为结束
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+@section css{
+
+}
+
+<div class="container-fluid">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>环境报告</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                        <div class="col-sm-12 m-b-xs">
+                            <div class="input-group">
+                                <button type="button" class="btn btn-sm btn-white" id="add"><i class="fa fa-plus"></i>新增</button>
+                            </div>
+                        </div>
+                </div>
+                <div class="table-responsive">
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="AirReport" data-halign="center" data-align="center" data-valign="middle">大气报告</th>
+                                <th data-field="MetalReport" data-halign="center" data-align="center" data-valign="middle">金属报告</th>
+                                <th data-field="SoilReport" data-halign="center" data-align="center" data-valign="middle">土壤报告</th>
+                                <th data-field="WaterReport" data-halign="center" data-align="center" data-valign="middle">水质报告</th>
+                                <th data-field="RecordTime" data-halign="center" data-align="center" data-valign="middle">报告时间</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
