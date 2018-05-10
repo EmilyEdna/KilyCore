@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <UserSecretsId>2fe99d7b-0bd9-400b-b284-359c460581ab</UserSecretsId>
+    <Authors>刘泽华</Authors>
   </PropertyGroup>
 
   <ItemGroup>

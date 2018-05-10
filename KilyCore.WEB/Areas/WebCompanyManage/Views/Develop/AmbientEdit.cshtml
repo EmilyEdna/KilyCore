@@ -30,7 +30,7 @@
                         $.each(result.data, function (i, data) {
                             html += '<option value="' + data.BacthNo + '">' + data.GrowName + '</option>'
                         });
-                        $("#BacthNo").val(html);
+                        $("#BacthNo").html(html);
                     }
                 });
 
@@ -85,7 +85,7 @@
                 </tr>
                 <tr>
                     <th><label class="control-label">育苗批次</label></th>
-                    <td class="has-warning">
+                    <td class="has-warning" colspan="3">
                         <input type="text" class="form-control" name="BacthNo" list="BacthNo" />
                         <datalist id="BacthNo"></datalist>
                     </td>

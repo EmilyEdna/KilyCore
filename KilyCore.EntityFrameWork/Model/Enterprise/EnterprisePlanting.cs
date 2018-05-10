@@ -8,16 +8,12 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
     /// <summary>
     /// 施养管理表
     /// </summary>
-    public class EnterprisePlanting:BaseEntity
+    public class EnterprisePlanting: EnterpriseBase
     {
         /// <summary>
         /// 批次号段
         /// </summary>
         public virtual string BacthNo { get; set; }
-        /// <summary>
-        /// 所属企业Id
-        /// </summary>
-        public virtual Guid CompanyId { get; set; }
         /// <summary>
         /// 饲料名称
         /// </summary>

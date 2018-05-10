@@ -4,6 +4,8 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyName>KilyCore.API</AssemblyName>
     <RootNamespace>KilyCore.API</RootNamespace>
+    <Authors>刘泽华</Authors>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>

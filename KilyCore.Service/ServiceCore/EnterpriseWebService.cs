@@ -477,8 +477,8 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseGrowInfo()
             {
-               BacthNo=t.BacthNo,
-               GrowName=t.GrowName
+                BacthNo = t.BacthNo,
+                GrowName = t.GrowName
             }).ToList();
             return data;
         }
@@ -502,6 +502,7 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.Select(t => new ResponseEnterprisePlanting()
             {
                 Id = t.Id,
+                BacthNo = t.BacthNo,
                 CompanyId = t.CompanyId,
                 FeedName = t.FeedName,
                 Brand = t.Brand,
@@ -560,6 +561,7 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.Select(t => new ResponseEnterpriseDrug()
             {
                 Id = t.Id,
+                BacthNo = t.BacthNo,
                 CompanyId = t.CompanyId,
                 DrugName = t.DrugName,
                 Brand = t.Brand,
@@ -618,6 +620,7 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseEnvironment()
             {
                 Id = t.Id,
+                BacthNo = t.BacthNo,
                 CompanyId = t.CompanyId,
                 AirEnv = t.AirEnv,
                 AirHdy = t.AirHdy,
@@ -706,6 +709,88 @@ namespace KilyCore.Service.ServiceCore
                 return ServiceMessage.REMOVEFAIL;
         }
         #endregion
+
+        #region 成长日记
+        /// <summary>
+        /// 日记分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseNote> GetNotePage(PageParamList<RequestEnterpriseNote> pageParam)
+        {
+            IQueryable<EnterpriseNote> queryable = Kily.Set<EnterpriseNote>().Where(t => t.IsDelete == false).AsNoTracking();
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.NoteName))
+                queryable = queryable.Where(t => t.NoteName.Contains(pageParam.QueryParam.NoteName));
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseNote()
+            {
+                Id = t.Id,
+                CompanyId = t.CompanyId,
+                BacthNo = t.BacthNo,
+                NoteName = t.NoteName,
+                ResultTime = t.ResultTime,
+                SowingTime = t.SowingTime
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑日记
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditNote(RequestEnterpriseNote Param)
+        {
+            EnterpriseNote Note = Param.MapToEntity<EnterpriseNote>();
+            if (Param.Id != Guid.Empty)
+            {
+                if (Update<EnterpriseNote, RequestEnterpriseNote>(Note, Param))
+                    return ServiceMessage.UPDATESUCCESS;
+                else
+                    return ServiceMessage.UPDATEFAIL;
+            }
+            else
+            {
+                if (Insert<EnterpriseNote>(Note))
+                    return ServiceMessage.INSERTSUCCESS;
+                else
+                    return ServiceMessage.INSERTFAIL;
+            }
+        }
+        /// <summary>
+        /// 删除日记
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveNote(Guid Id)
+        {
+            if (Remove<EnterpriseNote>(t => t.Id == Id))
+                return ServiceMessage.REMOVESUCCESS;
+            else
+                return ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 获取日记详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseEnterpriseNote GetNoteDetail(Guid Id)
+        {
+            var data = Kily.Set<EnterpriseNote>().Where(t => t.Id == Id).AsNoTracking().Select(t => new ResponseEnterpriseNote()
+            {
+                Id = t.Id,
+                CompanyId = t.CompanyId,
+                BacthNo = t.BacthNo,
+                NoteName = t.NoteName,
+                ResultTime = t.ResultTime,
+                SowingTime = t.SowingTime
+            }).FirstOrDefault();
+            return data;
+        }
+        #endregion
         #endregion
     }
 }
+

@@ -69,6 +69,12 @@ namespace KilyCore.Service.IServiceCore
         String RemoveEnv(Guid Id);
         String RemoveEnvAttach(Guid Id);
         #endregion
+        #region 成长日记
+        PagedResult<ResponseEnterpriseNote> GetNotePage(PageParamList<RequestEnterpriseNote> pageParam);
+        String EditNote(RequestEnterpriseNote Param);
+        String RemoveNote(Guid Id);
+        ResponseEnterpriseNote GetNoteDetail(Guid Id);
+        #endregion
         #endregion
     }
 }

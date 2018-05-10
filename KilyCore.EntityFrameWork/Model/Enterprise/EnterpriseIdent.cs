@@ -9,12 +9,8 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
     /// <summary>
     /// 企业认证表
     /// </summary>
-    public class EnterpriseIdent:BaseEntity
+    public class EnterpriseIdent: EnterpriseBase
     {
-        /// <summary>
-        /// 公司信息表主键
-        /// </summary>
-        public virtual Guid CompanyId { get; set; }
         /// <summary>
         /// 认证编号
         /// </summary>

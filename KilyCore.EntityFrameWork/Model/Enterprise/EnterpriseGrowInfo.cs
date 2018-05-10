@@ -8,12 +8,8 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
     /// <summary>
     /// 育苗信息表
     /// </summary>
-    public class EnterpriseGrowInfo : BaseEntity
+    public class EnterpriseGrowInfo : EnterpriseBase
     {
-        /// <summary>
-        /// 企业的Id
-        /// </summary>
-        public virtual Guid CompanyId { get; set; }
         /// <summary>
         /// 批次号
         /// </summary>

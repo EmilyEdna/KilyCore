@@ -9,12 +9,8 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
     /// <summary>
     /// 集团用户表
     /// </summary>
-   public class EnterpriseUser:BaseEntity
+   public class EnterpriseUser: EnterpriseBase
     {
-        /// <summary>
-        /// 企业Id
-        /// </summary>
-        public virtual Guid CompanyId { get; set; }
         /// <summary>
         /// 企业名称
         /// </summary>
