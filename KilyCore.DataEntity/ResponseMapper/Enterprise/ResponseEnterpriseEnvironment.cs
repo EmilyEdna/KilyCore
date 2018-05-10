@@ -35,6 +35,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// 光照
         /// </summary>
         public string Light { get; set; }
+        public string BacthNo { get; set; }
     }
     public class ResponseEnterpriseEnvironmentAttach
     {

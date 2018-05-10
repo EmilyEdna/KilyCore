@@ -11,6 +11,10 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
     public class EnterpriseEnvironment : BaseEntity
     {
         /// <summary>
+        /// 批次号段
+        /// </summary>
+        public virtual string BacthNo { get; set; }
+        /// <summary>
         /// 所属企业Id
         /// </summary>
         public virtual Guid CompanyId { get; set; }

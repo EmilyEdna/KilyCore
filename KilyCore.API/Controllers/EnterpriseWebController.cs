@@ -164,6 +164,58 @@ namespace KilyCore.API.Controllers
         #endregion
         #endregion
         #region 成长档案
+        #region 育苗信息
+        /// <summary>
+        /// 育苗分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetGrowInfoPage")]
+        public ObjectResultEx GetGrowInfoPage(PageParamList<RequestEnterpriseGrowInfo> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetGrowInfoPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取育苗详情
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetGrowDetail")]
+        public ObjectResultEx GetGrowDetail(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetGrowDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑育苗信息
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditGrow")]
+        public ObjectResultEx EditGrow(RequestEnterpriseGrowInfo Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditGrow(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除育苗信息
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveGrow")]
+        public ObjectResultEx RemoveGrow(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveGrow(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取批次列表
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetGrowList")]
+        public ObjectResultEx GetGrowList()
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetGrowList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
         #region 施养管理
         /// <summary>
         /// 施养管理分页列表

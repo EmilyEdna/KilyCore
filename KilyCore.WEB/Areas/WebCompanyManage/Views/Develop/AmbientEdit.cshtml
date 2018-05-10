@@ -16,6 +16,24 @@
             //元素
             InitDom: function () {
                 controller.LayDate({ elem: "#RecordTime", value: controller.FormatDate("YYYY-MM-DD HH:mm:ss") });
+                options.BindBacth();
+            },
+            //绑定批次
+            BindBacth: function () {
+                controller.ajax({
+                    url: "EnterpriseWeb/GetGrowList",
+                    async: false,
+                    data: {},
+                    type: 'post',
+                    success: function (result) {
+                        var html = '';
+                        $.each(result.data, function (i, data) {
+                            html += '<option value="' + data.BacthNo + '">' + data.GrowName + '</option>'
+                        });
+                        $("#BacthNo").val(html);
+                    }
+                });
+
             },
             //事件
             InitEvents: function () {
@@ -38,21 +56,21 @@
                 <tr>
                     <th><label class="control-label">空气温度</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="AirEnv"/>
+                        <input type="text" class="form-control" name="AirEnv" />
                     </td>
                     <th><label class="control-label">土壤温度</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="SoilEnv"/>
+                        <input type="text" class="form-control" name="SoilEnv" />
                     </td>
                 </tr>
                 <tr>
                     <th><label class="control-label">空气湿度</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="AirHdy"/>
+                        <input type="text" class="form-control" name="AirHdy" />
                     </td>
                     <th><label class="control-label">土壤湿度</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="SoilHdy"/>
+                        <input type="text" class="form-control" name="SoilHdy" />
                     </td>
                 </tr>
                 <tr>
@@ -62,7 +80,14 @@
                     </td>
                     <th><label class="control-label">采集时间</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="RecordTime"  id="RecordTime"/>
+                        <input type="text" class="form-control" name="RecordTime" id="RecordTime" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">育苗批次</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="BacthNo" list="BacthNo" />
+                        <datalist id="BacthNo"></datalist>
                     </td>
                 </tr>
             </table>

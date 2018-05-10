@@ -7,14 +7,6 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace KilyCore.EntityFrameWork.EntityMapping.Enterprise
 {
-    public class EnterpriseUserRoleAuthorMap : IEntityTypeConfiguration<EnterpriseUserRoleAuthor>
-    {
-        public void Configure(EntityTypeBuilder<EnterpriseUserRoleAuthor> builder)
-        {
-            builder.ToTable(typeof(EnterpriseUserRoleAuthor).Name);
-            builder.HasKey(t => t.Id);
-        }
-    }
     public class EnterpriseRoleAuthorWebMap : IEntityTypeConfiguration<EnterpriseRoleAuthorWeb>
     {
         public void Configure(EntityTypeBuilder<EnterpriseRoleAuthorWeb> builder)

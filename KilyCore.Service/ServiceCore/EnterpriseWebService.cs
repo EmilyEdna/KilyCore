@@ -179,6 +179,10 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseUser> queryable = Kily.Set<EnterpriseUser>().Where(t => t.IsDelete == false);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.TrueName))
                 queryable = queryable.Where(t => t.TrueName.Contains(pageParam.QueryParam.TrueName));
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseUser()
             {
                 Id = t.Id,
@@ -255,7 +259,12 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public IList<ResponseRoleAuthorWeb> GetRoleAuthorList()
         {
-            var data = Kily.Set<EnterpriseRoleAuthorWeb>().OrderByDescending(t => t.CreateTime).Select(t => new ResponseRoleAuthorWeb()
+            IQueryable<EnterpriseRoleAuthorWeb> queryable = Kily.Set<EnterpriseRoleAuthorWeb>().OrderByDescending(t => t.CreateTime);
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CreateUser == CompanyInfo().Id.ToString());
+            else
+                queryable = queryable.Where(t => t.CreateUser == CompanyUser().Id.ToString());
+            var data = queryable.Select(t => new ResponseRoleAuthorWeb()
             {
                 Id = t.Id,
                 AuthorName = t.AuthorName
@@ -288,6 +297,10 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseRoleAuthorWeb> queryable = Kily.Set<EnterpriseRoleAuthorWeb>().Where(t => t.IsDelete == false);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.AuthorName))
                 queryable = queryable.Where(t => t.AuthorName.Contains(pageParam.QueryParam.AuthorName));
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CreateUser == CompanyInfo().Id.ToString());
+            else
+                queryable = queryable.Where(t => t.CreateUser == CompanyUser().Id.ToString());
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseRoleAuthorWeb()
             {
                 Id = t.Id,
@@ -369,6 +382,108 @@ namespace KilyCore.Service.ServiceCore
         #endregion
 
         #region 成长档案
+        #region 育苗信息
+        /// <summary>
+        /// 育苗分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseGrowInfo> GetGrowInfoPage(PageParamList<RequestEnterpriseGrowInfo> pageParam)
+        {
+            IQueryable<EnterpriseGrowInfo> queryable = Kily.Set<EnterpriseGrowInfo>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime).AsNoTracking();
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.GrowName))
+                queryable = queryable.Where(t => t.GrowName.Contains(pageParam.QueryParam.GrowName));
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.Select(t => new ResponseEnterpriseGrowInfo()
+            {
+                Id = t.Id,
+                CompanyId = t.CompanyId,
+                BacthNo = t.BacthNo,
+                GrowName = t.GrowName,
+                BuyNum = t.BuyNum,
+                BuyTime = t.BuyTime,
+                Unit = t.Unit
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 获取育苗详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseEnterpriseGrowInfo GetGrowDetail(Guid Id)
+        {
+            var data = Kily.Set<EnterpriseGrowInfo>().Where(t => t.Id == Id).Select(t => new ResponseEnterpriseGrowInfo()
+            {
+                Id = t.Id,
+                CompanyId = t.CompanyId,
+                BacthNo = t.BacthNo,
+                GrowName = t.GrowName,
+                BuyNum = t.BuyNum,
+                BuyTime = t.BuyTime,
+                Unit = t.Unit,
+                Remark = t.Remark
+            }).AsNoTracking().FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 编辑育苗信息
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditGrow(RequestEnterpriseGrowInfo Param)
+        {
+            EnterpriseGrowInfo GrowInfo = Param.MapToEntity<EnterpriseGrowInfo>();
+            if (Param.Id != Guid.Empty)
+            {
+                if (Update<EnterpriseGrowInfo, RequestEnterpriseGrowInfo>(GrowInfo, Param))
+                    return ServiceMessage.UPDATESUCCESS;
+                else
+                    return ServiceMessage.UPDATEFAIL;
+            }
+            else
+            {
+                if (Insert<EnterpriseGrowInfo>(GrowInfo))
+                    return ServiceMessage.INSERTSUCCESS;
+                else
+                    return ServiceMessage.INSERTFAIL;
+            }
+        }
+        /// <summary>
+        /// 删除育苗信息
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveGrow(Guid Id)
+        {
+            if (Delete<EnterpriseGrowInfo>(ExpressionExtension.GetExpression<EnterpriseGrowInfo>("Id", Id, ExpressionEnum.Equals)))
+                return ServiceMessage.REMOVESUCCESS;
+            else
+                return ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 获取批次列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseEnterpriseGrowInfo> GetGrowList()
+        {
+            IQueryable<EnterpriseGrowInfo> queryable = Kily.Set<EnterpriseGrowInfo>().Where(t => t.IsDelete == false).AsNoTracking();
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.Select(t => new ResponseEnterpriseGrowInfo()
+            {
+               BacthNo=t.BacthNo,
+               GrowName=t.GrowName
+            }).ToList();
+            return data;
+        }
+        #endregion
+
         #region 施养管理
         /// <summary>
         /// 施养管理分页列表
@@ -380,6 +495,10 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterprisePlanting> queryable = Kily.Set<EnterprisePlanting>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.FeedName))
                 queryable = queryable.Where(t => t.FeedName.Contains(pageParam.QueryParam.FeedName));
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterprisePlanting()
             {
                 Id = t.Id,
@@ -434,6 +553,10 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseDrug> queryable = Kily.Set<EnterpriseDrug>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.DrugName))
                 queryable = queryable.Where(t => t.DrugName.Contains(pageParam.QueryParam.DrugName));
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseDrug()
             {
                 Id = t.Id,
@@ -488,6 +611,10 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseEnvironment> queryable = Kily.Set<EnterpriseEnvironment>().Where(t => t.IsDelete == false);
             if (pageParam.QueryParam.RecordTime.HasValue)
                 queryable = queryable.Where(t => t.RecordTime <= pageParam.QueryParam.RecordTime);
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseEnvironment()
             {
                 Id = t.Id,
@@ -537,17 +664,20 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseEnterpriseEnvironmentAttach> GetEnvAttachPage(PageParamList<RequestEnterpriseEnvironmentAttach> pageParam)
         {
-            var data = Kily.Set<EnterpriseEnvironmentAttach>().Where(t => t.IsDelete == false)
-                .Where(t => t.EnvId == pageParam.QueryParam.EnvId)
-                .Select(t => new ResponseEnterpriseEnvironmentAttach()
-                {
-                    Id = t.Id,
-                    AirReport = t.AirReport,
-                    MetalReport = t.MetalReport,
-                    RecordTime = t.RecordTime,
-                    SoilReport = t.SoilReport,
-                    WaterReport = t.WaterReport
-                }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            IQueryable<EnterpriseEnvironmentAttach> queryable = Kily.Set<EnterpriseEnvironmentAttach>().Where(t => t.IsDelete == false).Where(t => t.EnvId == pageParam.QueryParam.EnvId).AsNoTracking();
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CreateUser == CompanyInfo().Id.ToString());
+            else
+                queryable = queryable.Where(t => t.CreateUser == CompanyUser().Id.ToString());
+            var data = queryable.Select(t => new ResponseEnterpriseEnvironmentAttach()
+            {
+                Id = t.Id,
+                AirReport = t.AirReport,
+                MetalReport = t.MetalReport,
+                RecordTime = t.RecordTime,
+                SoilReport = t.SoilReport,
+                WaterReport = t.WaterReport
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
         /// <summary>
@@ -568,8 +698,9 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public string RemoveEnvAttach(Guid Id) {
-            if(Delete<EnterpriseEnvironmentAttach>(t => t.Id == Id))
+        public string RemoveEnvAttach(Guid Id)
+        {
+            if (Delete<EnterpriseEnvironmentAttach>(t => t.Id == Id))
                 return ServiceMessage.REMOVESUCCESS;
             else
                 return ServiceMessage.REMOVEFAIL;

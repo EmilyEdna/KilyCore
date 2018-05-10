@@ -44,6 +44,13 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #endregion
         #region 成长档案
+        #region 育苗信息
+        PagedResult<ResponseEnterpriseGrowInfo> GetGrowInfoPage(PageParamList<RequestEnterpriseGrowInfo> pageParam);
+        ResponseEnterpriseGrowInfo GetGrowDetail(Guid Id);
+        String EditGrow(RequestEnterpriseGrowInfo Param);
+        String RemoveGrow(Guid Id);
+        IList<ResponseEnterpriseGrowInfo> GetGrowList();
+        #endregion
         #region 施养管理
         PagedResult<ResponseEnterprisePlanting> GetPlantingPage(PageParamList<RequestEnterprisePlanting> pageParam);
         String EditPlanting(RequestEnterprisePlanting Param);

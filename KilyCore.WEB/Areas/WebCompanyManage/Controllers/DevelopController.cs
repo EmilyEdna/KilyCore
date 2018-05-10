@@ -76,5 +76,21 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 育苗信息
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Grow()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 编辑育苗
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult GrowEdit()
+        {
+            return View();
+        }
     }
 }
