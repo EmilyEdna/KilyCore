@@ -66,5 +66,8 @@ namespace KilyCore.Service.IServiceCore
         String RemovePreson(Guid Id);
         ResponsePreson GetPresonDetail(Guid Id);
         #endregion
+        #region 入住合同
+        PagedResult<ResponseStayContract> GetStayContractPage(PageParamList<RequestStayContract> pageParam);
+        #endregion
     }
 }

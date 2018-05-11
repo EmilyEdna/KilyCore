@@ -56,22 +56,6 @@
                     type: "post",
                     async: false,
                     success: function (result) {
-                        var html = '<option>===请选择===</option>';
-                        $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '" data-id="' + obj.ProvinceId + '">' + obj.ProvinceName + '</option>';
-                        });
-                        $("#province").html(html);
-                    }
-                });
-            },
-            //获取省份
-            GetProvince: function () {
-                controller.ajax({
-                    url: "System/GetProvince",
-                    data: {},
-                    type: "post",
-                    async: false,
-                    success: function (result) {
                         var html = '<option>=请选择=</option>';
                         $.each(result.data, function (i, obj) {
                             html += '<option value="' + obj.Id + '" data-id="' + obj.ProvinceId + '">' + obj.ProvinceName + '</option>';
@@ -239,7 +223,7 @@
                         type: 2,
                         height: "600px",
                         width: "800px",
-                        url: "WebCompanyManage/Base/UploadFile?Id=" + CompanyInfo.Id + "&Name=" + CompanyInfo.CompanyName,
+                        url: "WebCompanyManage/Base/UploadFile?Id=" + CompanyInfo.Id + "&Name=" + CompanyInfo.CompanyName + "&ProvinceId=" + $("#province").find("option:selected").val(),
                         callBack: function (result) {
                             result.$("#Edit").submit();
                             result.popClose();
@@ -493,8 +477,8 @@
                     <!--结束-->
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-2">
-                            <button class="btn btn-primary" type="button" id="save">保存内容</button>
-                            <button class="btn btn-white" type="button">取消</button>
+                            <button class="btn btn-primary" type="button" id="save">提交申请</button>
+                            <button class="btn btn-white" type="button" id="cancel">取消</button>
                         </div>
                     </div>
                 </div>

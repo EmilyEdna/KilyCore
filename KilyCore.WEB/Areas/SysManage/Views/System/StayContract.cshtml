@@ -21,7 +21,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "Finance/GetStayContractPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#JoinPay" });
+                this.$table = controller.Table("#tableList", { url: "System/GetStayContractPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#JoinPay" });
             },
             //事件
             InitEvents: function () {
@@ -30,14 +30,27 @@
             action: {
                 TableFormatter: function (val, row, index) {
                     var action = [];
-                    $.each(row.Contract, function (i, obj)
-                    {
-                        action.push('<a class="btn btn-sm btn-primary" download="' + obj + '" href="' + obj + '"><i class="fa fa-download"></i>下载合同第' + (i+1) +'页</a>');
+                    $.each(row.Contract, function (i, obj) {
+                        action.push('<a class="btn btn-sm btn-primary" download="' + obj + '" href="' + obj + '"><i class="fa fa-download"></i>下载合同第' + (i + 1) + '页</a>');
                     });
                     action.push('<a class="btn btn-sm btn-primary" download="' + row.PayContract + '" href="' + row.PayContract + '"><i class="fa fa-download"></i>下载缴费凭证</a>');
+                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑凭证</button>');
+                    action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-pencil-square-o"></i>审核</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
+                    "click .edit": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "编辑凭证",
+                            type: 2,
+                            height: "500px",
+                            width: "600px",
+                            url: "SysManage/System/StayContractEdit?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
+                    }
                 }//表单事件结束
             }//行为结束
         };
@@ -78,6 +91,7 @@
                         <thead>
                             <tr>
                                 <th data-field="StayCompanyName" data-halign="center" data-align="center" data-valign="middle">商家名称</th>
+                                <th data-field="AuditTypeName" data-halign="center" data-align="center" data-valign="middle">审核状态</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents">操作</th>
                             </tr>
                         </thead>

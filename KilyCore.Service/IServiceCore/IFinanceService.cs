@@ -44,8 +44,5 @@ namespace KilyCore.Service.IServiceCore
         IList<ResponseAuthorRole> GetDiningRoles();
         String EditDiningRole(RequestDiningInfo Param);
         #endregion
-        #region 入住合同
-        PagedResult<ResponseStayContract> GetStayContractPage(PageParamList<RequestStayContract> pageParam);
-        #endregion
     }
 }

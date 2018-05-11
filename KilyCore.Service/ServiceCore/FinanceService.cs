@@ -316,30 +316,6 @@ namespace KilyCore.Service.ServiceCore
                 return ServiceMessage.UPDATEFAIL;
         }
         #endregion
-
-        #region 入住合同-财务
-        /// <summary>
-        /// 入住合同
-        /// </summary>
-        /// <param name="pageParam"></param>
-        /// <returns></returns>
-        public PagedResult<ResponseStayContract> GetStayContractPage(PageParamList<RequestStayContract> pageParam)
-        {
-            IQueryable<SystemStayContract> queryable = Kily.Set<SystemStayContract>().Where(t => t.IsDelete == false);
-            if (!string.IsNullOrEmpty(pageParam.QueryParam.StayCompanyName))
-                queryable = queryable.Where(t => t.StayCompanyName.Contains(pageParam.QueryParam.StayCompanyName));
-            var data = queryable.OrderByDescending(t => t.CreateTime).AsNoTracking()
-                .Select(t => new ResponseStayContract()
-                {
-                    Id = t.Id,
-                    StayCompanyId = t.StayCompanyId,
-                    StayCompanyName = t.StayCompanyName,
-                    StayCompanyContract = t.StayCompanyContract,
-                    PayContract=t.PayContract
-                }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
-            return data;
-        }
-        #endregion
     }
 }
 

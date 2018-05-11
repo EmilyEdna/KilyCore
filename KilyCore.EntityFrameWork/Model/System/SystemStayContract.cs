@@ -1,9 +1,10 @@
 ﻿using KilyCore.EntityFrameWork.Model.Base;
+using KilyCore.EntityFrameWork.ModelEnum;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace KilyCore.EntityFrameWork.Model.Finance
+namespace KilyCore.EntityFrameWork.Model.System
 {
     /// <summary>
     /// 入住合同
@@ -26,6 +27,10 @@ namespace KilyCore.EntityFrameWork.Model.Finance
         /// 入住缴费合同
         /// </summary>
         public virtual string PayContract { get; set; }
+        /// <summary>
+        /// 审核类型
+        /// </summary>
+        public virtual AuditEnum AuditType { get; set; }
 
     }
 }

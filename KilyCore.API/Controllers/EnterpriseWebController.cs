@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
-using KilyCore.DataEntity.RequestMapper.Finance;
+using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.Extension.ResultExtension;
 using KilyCore.Service.QueryExtend;
 using Microsoft.AspNetCore.Http;

@@ -402,5 +402,17 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(SystemService.GetPresonDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 入住合同
+        /// <summary>
+        /// 入住合同分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetStayContractPage")]
+        public ObjectResultEx GetStayContractPage(PageParamList<RequestStayContract> pageParam)
+        {
+            return ObjectResultEx.Instance(SystemService.GetStayContractPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }

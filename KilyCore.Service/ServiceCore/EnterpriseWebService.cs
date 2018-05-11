@@ -1,9 +1,9 @@
 ﻿using KilyCore.DataEntity.RequestMapper.Enterprise;
-using KilyCore.DataEntity.RequestMapper.Finance;
+using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.EntityFrameWork.Model.Enterprise;
-using KilyCore.EntityFrameWork.Model.Finance;
+using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AutoMapperExtension;
 using KilyCore.Repositories.BaseRepository;
@@ -160,6 +160,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string SaveContract(RequestStayContract Param)
         {
+            Param.AuditType = AuditEnum.WaitAduit;
             SystemStayContract contract = Param.MapToEntity<SystemStayContract>();
             if (Insert<SystemStayContract>(contract))
                 return ServiceMessage.INSERTSUCCESS;

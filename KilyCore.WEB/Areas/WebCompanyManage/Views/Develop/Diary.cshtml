@@ -29,8 +29,8 @@
                     controller.OpenWindow({
                         title: "新增日记",
                         type: 2,
-                        height: "400px",
-                        width: "600px",
+                        height: "500px",
+                        width: "650px",
                         url: "WebCompanyManage/Develop/DiaryEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
@@ -42,7 +42,7 @@
             action: {
                 TableFormatter: function (val, row, index) {
                     var action = [];
-                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>')
+                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
                     return action.join("&nbsp;")
                 },
@@ -65,8 +65,8 @@
                         controller.OpenWindow({
                             title: "编辑日记",
                             type: 2,
-                            height: "400px",
-                            width: "600px",
+                            height: "500px",
+                            width: "650px",
                             url: "WebCompanyManage/Develop/DiaryEdit?Id=" + row.Id,
                             callBack: function (result) {
                                 result.popClose();
