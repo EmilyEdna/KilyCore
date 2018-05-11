@@ -52,7 +52,7 @@
                         controller.Confirm("确认删除？", function (bool) {
                             if (bool) {
                                 controller.ajax({
-                                    url: "EnterpriseWeb/EditEnv",
+                                    url: "EnterpriseWeb/RemoveEnv",
                                     data: { Id: row.Id },
                                     type: 'post',
                                     success: function (result) {

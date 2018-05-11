@@ -92,5 +92,21 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 成长日记
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Diary()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 编辑日记
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult DiaryEdit()
+        {
+            return View();
+        }
     }
 }

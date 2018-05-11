@@ -43,7 +43,7 @@
             action: {
                 TableFormatter: function (val, row, index) {
                     var action = [];
-                    action.push('<button class="btn btn-sm btn-primary watch"><i class="fa fa-pencil-square-o"></i>编辑</button>')
+                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>')
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
                     return action.join("&nbsp;")
                 },
@@ -62,7 +62,7 @@
                             }
                         });
                     },
-                    "click .watch": function (event, val, row, index) {
+                    "click .edit": function (event, val, row, index) {
                         controller.OpenWindow({
                             title: "环境报告",
                             type: 2,
