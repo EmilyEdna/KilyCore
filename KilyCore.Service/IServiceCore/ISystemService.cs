@@ -68,6 +68,11 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 入住合同
         PagedResult<ResponseStayContract> GetStayContractPage(PageParamList<RequestStayContract> pageParam);
+        ResponseStayContract GetStayContractDetail(Guid Id);
+        String EditContract(RequestStayContract Param);
+        String AuditContract(RequestAudit Param);
+        PagedResult<ResponseAudit> GetContractRecord(PageParamList<RequestAudit> pageParam);
+        String RemoveRecord(Guid Id);
         #endregion
     }
 }

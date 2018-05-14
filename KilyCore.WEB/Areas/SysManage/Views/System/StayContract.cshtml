@@ -36,6 +36,7 @@
                     action.push('<a class="btn btn-sm btn-primary" download="' + row.PayContract + '" href="' + row.PayContract + '"><i class="fa fa-download"></i>下载缴费凭证</a>');
                     action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑凭证</button>');
                     action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-pencil-square-o"></i>审核</button>');
+                    action.push('<button class="btn btn-sm btn-primary watch"><i class="fa fa-eye"></i>审核记录</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
@@ -46,6 +47,30 @@
                             height: "500px",
                             width: "600px",
                             url: "SysManage/System/StayContractEdit?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
+                    },
+                    "click .audit": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "审核信息",
+                            type: 2,
+                            height: "500px",
+                            width: "600px",
+                            url: "SysManage/System/AuditStayContract?TableId=" + row.Id + "&TableName=" + row.TableName,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
+                    },
+                     "click .watch": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "审核信息",
+                            type: 2,
+                            height: "500px",
+                            width: "600px",
+                            url: "SysManage/System/AduitRecord?TableId=" + row.Id + "&TableName=" + row.TableName,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }
@@ -101,5 +126,3 @@
         </div>
     </div>
 </div>
-
-

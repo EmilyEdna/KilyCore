@@ -882,8 +882,8 @@ namespace KilyCore.Service.ServiceCore
                 Address = t.Address,
                 IdCard = t.IdCard,
                 LinkPhone = t.LinkPhone,
-                WorkNum=t.WorkNum,
-                HeadImage=t.HeadImage
+                WorkNum = t.WorkNum,
+                HeadImage = t.HeadImage
             }).FirstOrDefault();
             return data;
         }
@@ -906,68 +906,68 @@ namespace KilyCore.Service.ServiceCore
             {
                 if (UserInfo().AccountType == AccountEnum.Admin)
                 {
-                    int Num = Kily.Set<SystemPreson>().Where(t => t.Type.Contains("全国运营")).Count()+1;
-                    if (Num > 100)
-                        Preson.WorkNum = "全国运营" + Num;
-                    if (Num > 10)
-                        Preson.WorkNum = "全国运营0"+ Num;
-                    if (Num < 10)
-                        Preson.WorkNum = "全国运营00"+ Num;
-                    Preson.Type = "全国运营";
-                }
-                if (UserInfo().AccountType == AccountEnum.Country)
-                {
-                    int Num = Kily.Set<SystemPreson>().Where(t => t.Type.Contains("全国运营")).Count()+1;
+                    int Num = Kily.Set<SystemPreson>().Where(t => t.Type.Contains("全国运营")).Count() + 1;
                     if (Num > 100)
                         Preson.WorkNum = "全国运营" + Num;
                     if (Num > 10)
                         Preson.WorkNum = "全国运营0" + Num;
                     if (Num < 10)
-                        Preson.WorkNum = "全国运营00"+ Num;
+                        Preson.WorkNum = "全国运营00" + Num;
+                    Preson.Type = "全国运营";
+                }
+                if (UserInfo().AccountType == AccountEnum.Country)
+                {
+                    int Num = Kily.Set<SystemPreson>().Where(t => t.Type.Contains("全国运营")).Count() + 1;
+                    if (Num > 100)
+                        Preson.WorkNum = "全国运营" + Num;
+                    if (Num > 10)
+                        Preson.WorkNum = "全国运营0" + Num;
+                    if (Num < 10)
+                        Preson.WorkNum = "全国运营00" + Num;
                     Preson.Type = "全国运营";
                 }
                 if (UserInfo().AccountType == AccountEnum.Province)
                 {
-                    int Num = Kily.Set<SystemPreson>().Where(t => t.Type.Contains("省级运营")).Count()+1;
+                    int Num = Kily.Set<SystemPreson>().Where(t => t.Type.Contains("省级运营")).Count() + 1;
                     if (Num > 100)
                         Preson.WorkNum = "省级运营" + Num;
                     if (Num > 10)
-                        Preson.WorkNum = "省级运营0"+ Num;
+                        Preson.WorkNum = "省级运营0" + Num;
                     if (Num < 10)
-                        Preson.WorkNum = "省级运营00"+ Num;
+                        Preson.WorkNum = "省级运营00" + Num;
                     Preson.Type = "省级运营";
                 }
                 if (UserInfo().AccountType == AccountEnum.City)
                 {
-                    int Num = Kily.Set<SystemPreson>().Where(t => t.Type.Contains("市级运营")).Count()+1;
+                    int Num = Kily.Set<SystemPreson>().Where(t => t.Type.Contains("市级运营")).Count() + 1;
                     if (Num > 100)
                         Preson.WorkNum = "市级运营" + Num;
                     if (Num > 10)
-                        Preson.WorkNum = "市级运营0"+ Num;
+                        Preson.WorkNum = "市级运营0" + Num;
                     if (Num < 10)
-                        Preson.WorkNum = "市级运营00"+ Num;
+                        Preson.WorkNum = "市级运营00" + Num;
                     Preson.Type = "市级运营";
                 }
                 if (UserInfo().AccountType == AccountEnum.Area)
                 {
-                    int Num = Kily.Set<SystemPreson>().Where(t => t.Type.Contains("区域运营")).Count()+1;
+                    int Num = Kily.Set<SystemPreson>().Where(t => t.Type.Contains("区域运营")).Count() + 1;
                     if (Num > 100)
                         Preson.WorkNum = "区域运营" + Num;
                     if (Num > 10)
-                        Preson.WorkNum = "区域运营0"+ Num;
+                        Preson.WorkNum = "区域运营0" + Num;
                     if (Num < 10)
-                        Preson.WorkNum = "区域运营00"+ Num;
+                        Preson.WorkNum = "区域运营00" + Num;
                     Preson.Type = "区域运营";
                 }
                 if (UserInfo().AccountType == AccountEnum.Village)
                 {
-                    int Num = Kily.Set<SystemPreson>().Where(t => t.Type.Contains("乡镇运营")).Count()+1;
+                    int Num = Kily.Set<SystemPreson>().Where(t => t.Type.Contains("乡镇运营")).Count() + 1;
                     if (Num > 100)
                         Preson.WorkNum = "乡镇运营" + Num;
                     if (Num > 10)
-                        Preson.WorkNum = "乡镇运营0"+ Num;
+                        Preson.WorkNum = "乡镇运营0" + Num;
                     if (Num < 10)
-                        Preson.WorkNum = "乡镇运营00"+ Num;
+                        Preson.WorkNum = "乡镇运营00" + Num;
                     Preson.Type = "乡镇运营";
                 }
                 if (Insert<SystemPreson>(Preson))
@@ -1002,7 +1002,8 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<SystemStayContract> queryable = Kily.Set<SystemStayContract>().Where(t => t.IsDelete == false);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.StayCompanyName))
                 queryable = queryable.Where(t => t.StayCompanyName.Contains(pageParam.QueryParam.StayCompanyName));
-            var data = queryable.OrderByDescending(t => t.CreateTime).AsNoTracking()
+            //所属区域下的合同
+            var data = queryable.Where(t => UserInfo().TypePath.Contains(t.ProvinceId.ToString())).OrderByDescending(t => t.CreateTime).AsNoTracking()
                 .Select(t => new ResponseStayContract()
                 {
                     Id = t.Id,
@@ -1010,10 +1011,91 @@ namespace KilyCore.Service.ServiceCore
                     StayCompanyName = t.StayCompanyName,
                     StayCompanyContract = t.StayCompanyContract,
                     PayContract = t.PayContract,
-                    AuditType=t.AuditType,
-                    AuditTypeName=AttrExtension.GetSingleDescription<AuditEnum,DescriptionAttribute>(t.AuditType)
+                    AuditType = t.AuditType,
+                    AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
+                    TableName = t.GetType().Name
                 }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
+        }
+        /// <summary>
+        /// 获取入住合同详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseStayContract GetStayContractDetail(Guid Id)
+        {
+            var data = Kily.Set<SystemStayContract>().Where(t => t.Id == Id).AsNoTracking().Select(t => new ResponseStayContract()
+            {
+                Id = t.Id,
+                PayContract = t.PayContract
+            }).FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 编辑缴费凭证
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditContract(RequestStayContract Param)
+        {
+            SystemStayContract Contract = Kily.Set<SystemStayContract>().Where(t => t.Id == Param.Id).FirstOrDefault();
+            Contract.PayContract = Param.PayContract;
+            if (UpdateField<SystemStayContract>(Contract, "PayContract"))
+                return ServiceMessage.UPDATESUCCESS;
+            else
+                return ServiceMessage.UPDATEFAIL;
+        }
+        /// <summary>
+        /// 审核合同
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string AuditContract(RequestAudit Param)
+        {
+            Param.AuditName = UserInfo().TrueName;
+            SystemAudit Audit = Param.MapToEntity<SystemAudit>();
+            if (Insert<SystemAudit>(Audit))
+            {
+                SystemStayContract Contract = Kily.Set<SystemStayContract>().Where(t => t.IsDelete == false).Where(t => t.Id == Param.TableId).FirstOrDefault();
+                Contract.AuditType = Param.AuditType;
+                if (UpdateField<SystemStayContract>(Contract, "AuditType"))
+                    return ServiceMessage.HANDLESUCCESS;
+                else
+                    return ServiceMessage.HANDLEFAIL;
+            }
+            else
+                return ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 获取审核记录
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseAudit> GetContractRecord(PageParamList<RequestAudit> pageParam)
+        {
+            var data = Kily.Set<SystemAudit>().Where(t => t.IsDelete == false)
+                 .Where(t => t.TableId == pageParam.QueryParam.TableId && t.TableName.Contains(pageParam.QueryParam.TableName))
+                 .Select(t => new ResponseAudit()
+                 {
+                     Id=t.Id,
+                     AuditName=t.AuditName,
+                     AuditTypeName=AttrExtension.GetSingleDescription<AuditEnum,DescriptionAttribute>(t.AuditType),
+                     AuditSuggestion=t.AuditSuggestion,
+                     CreateTime=t.CreateTime
+                 }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 删除记录
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveRecord(Guid Id)
+        {
+            if (Delete<SystemAudit>(t => t.Id == Id))
+                return ServiceMessage.REMOVESUCCESS;
+            else
+                return ServiceMessage.REMOVEFAIL;
         }
         #endregion
     }

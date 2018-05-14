@@ -16,6 +16,10 @@ namespace KilyCore.EntityFrameWork.Model.System
         /// </summary>
         public virtual Guid? StayCompanyId { get; set; }
         /// <summary>
+        /// 省份Id
+        /// </summary>
+        public virtual Guid ProvinceId { get; set; }
+        /// <summary>
         /// 入住企业名称
         /// </summary>
         public virtual string StayCompanyName { get; set; }

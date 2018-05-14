@@ -413,6 +413,56 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetStayContractPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 获取入住合同详情
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetStayContractDetail")]
+        public ObjectResultEx GetStayContractDetail(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(SystemService.GetStayContractDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑缴费凭证
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("EditContract")]
+        public ObjectResultEx EditContract(RequestStayContract Param)
+        {
+            return ObjectResultEx.Instance(SystemService.EditContract(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 审核合同
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("AuditContract")]
+        public ObjectResultEx AuditContract(RequestAudit Param)
+        {
+            return ObjectResultEx.Instance(SystemService.AuditContract(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 取审核记录
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetContractRecord")]
+        public ObjectResultEx GetContractRecord(PageParamList<RequestAudit> pageParam)
+        {
+            return ObjectResultEx.Instance(SystemService.GetContractRecord(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除记录
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveRecord")]
+        public ObjectResultEx RemoveRecord(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(SystemService.RemoveRecord(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
     }
 }

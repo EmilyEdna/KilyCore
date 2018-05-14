@@ -22,6 +22,8 @@
                 $("#StayCompanyId").val(Id);
                 if (ProvinceId == null && ProvinceId == "" && ProvinceId == undefined) {
                     controller.Alter("请先选择区域"); return;
+                } else {
+                    $("#ProvinceId").val(ProvinceId);
                 }
             },
             //设置文件值
@@ -74,6 +76,7 @@
     <div class="ibox-content">
         <form class="orm-horizontal" method="post" action="EnterpriseWeb/SaveContract" id="Edit">
             <input id="StayCompanyContract" name="StayCompanyContract" type="hidden" />
+            <input id="ProvinceId" name="ProvinceId" type="hidden" />
             <input id="PayContract" name="PayContract" type="hidden" />
             <input id="StayCompanyId" name="StayCompanyId" type="hidden" />
             <input id="StayCompanyName" name="StayCompanyName" type="hidden" />

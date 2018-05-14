@@ -18,5 +18,6 @@ namespace KilyCore.DataEntity.ResponseMapper.System
         public string AuditName { get; set; }
         public string CreateUser { get; set; }
         public AuditEnum AuditType { get; set; }
+        public string AuditTypeName { get; set; }
     }
 }

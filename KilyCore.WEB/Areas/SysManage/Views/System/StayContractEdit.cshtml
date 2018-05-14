@@ -1,5 +1,104 @@
 ﻿
 @{
-    ViewData["Title"] = "StayContractEdit";
+    ViewData["Title"] = "编辑凭证";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var Guid = controller.GetParam("Id");
+                //获取详情
+                controller.ajax({
+                    url: "System/GetStayContractDetail",
+                    type: "post",
+                    async: false,
+                    data: { Id: Guid },
+                    success: function (result)
+                    {
+                        controller.SetCtrlValue("#Edit", result.data);
+                    }
+                });
+            },
+            //设置文件值
+            SetFileValue: function (data, elememt) {
+                var files = $(elememt).val();
+                if (files != null && files != "" && files != undefined) {
+                    files += "," + data;
+                    $(elememt).val(files);
+                } else {
+                    $(elememt).val(data);
+                }
+            },
+            //事件
+            InitEvents: function () {
+                //查看大图
+                $("#normal").click(function () {
+                    var option = {
+                        title: "缴费凭证",
+                        data: [{
+                            alt: "缴费凭证",
+                            src: $(this).attr("src")
+                        }]
+                    };
+                    controller.Photos(option);
+                });
+                //文件上传
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: ".upload-input",
+                    maxNum: 1,
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#PayContract");
+                    }
+                });
+                //验证
+                controller.Validate("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="System/EditContract" id="Edit">
+            <input id="Id" name="Id" type="hidden" />
+            <input id="PayContract" name="PayContract" type="hidden" />
+            <div class="m-t-sm">
+                <span class="label label-warning">原始凭证</span>
+                <div class="image-box clear">
+                    <section class="upload-section">
+                        <img class="upload-btn" id="normal" src="" type="image" name="PayContract" style="display:block;margin:auto" title="点击放大" />
+                    </section>
+                </div>
+            </div>
+            <div class="m-t-sm">
+                <span class="label label-warning">上传缴费凭证</span>
+                <div class="input-group line-width">
+                    <div class="upload-box">
+                        <div class="image-box clear">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
