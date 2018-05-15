@@ -20,8 +20,8 @@
                 var Id = controller.GetParam("Id");
                 $("#StayCompanyName").val(Name);
                 $("#StayCompanyId").val(Id);
-                if (ProvinceId == null && ProvinceId == "" && ProvinceId == undefined) {
-                    controller.Alter("请先选择区域"); return;
+                if (ProvinceId == "=请选择=") {
+                    controller.Confirm("请先选择区域", function (flag) { top.layer.closeAll(); });
                 } else {
                     $("#ProvinceId").val(ProvinceId);
                 }
