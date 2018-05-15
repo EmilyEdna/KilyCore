@@ -223,5 +223,63 @@ namespace KilyCore.Service.ServiceCore
             return queryable;
         }
         #endregion
+        #region 纹理二维码
+        /// <summary>
+        /// 纹理二维码分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseVeinTag> GetTagPage(PageParamList<RequestVeinTag> pageParam)
+        {
+            IQueryable<FunctionVeinTag> queryable = Kily.Set<FunctionVeinTag>().AsNoTracking().OrderByDescending(t => t.CreateTime);
+            if (UserInfo().AccountType != AccountEnum.Admin || UserInfo().AccountType != AccountEnum.Country)
+                return queryable.Where(t => t.AcceptUser.Contains(UserInfo().Id.ToString())).Select(t => new ResponseVeinTag()
+                {
+                    Id = t.Id,
+                    StarSerialNo = t.StarSerialNo,
+                    EndSerialNo = t.EndSerialNo,
+                    TotalNo = t.TotalNo,
+                    AcceptUserName = t.AcceptUserName,
+                    AllotType = t.AllotType,
+                    IsAcceptName = t.IsAccept ? "已签收" : "未签收"
+                }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return queryable.Select(t => new ResponseVeinTag()
+            {
+                Id = t.Id,
+                StarSerialNo = t.StarSerialNo,
+                EndSerialNo = t.EndSerialNo,
+                TotalNo = t.TotalNo,
+                AcceptUserName = t.AcceptUserName,
+                AllotType = t.AllotType,
+                IsAcceptName = t.IsAccept ? "已签收" : "未签收"
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+        }
+        /// <summary>
+        /// 录入分配标签
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string RecordAllotTag(RequestVeinTag Param)
+        {
+            Param.TotalNo = Param.StarSerialNo - Param.EndSerialNo;
+            FunctionVeinTag VeinTag = Param.MapToEntity<FunctionVeinTag>();
+            if (Insert<FunctionVeinTag>(VeinTag))
+                return ServiceMessage.INSERTSUCCESS;
+            else
+                return ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 删除二维码
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveTag(Guid Id)
+        {
+            if (Remove<FunctionVeinTag>(t => t.Id == Id))
+                return ServiceMessage.REMOVESUCCESS;
+            else
+                return ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
     }
 }

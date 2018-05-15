@@ -20,5 +20,10 @@ namespace KilyCore.Service.IServiceCore
         String RemovePrice(Guid Id);
         IList<ResponseAreaPrice> GetAddressList(int AccountType);
         #endregion
+        #region 纹理二维码
+        PagedResult<ResponseVeinTag> GetTagPage(PageParamList<RequestVeinTag> pageParam);
+        String RecordAllotTag(RequestVeinTag Param);
+        String RemoveTag(Guid Id);
+        #endregion
     }
 }

@@ -65,5 +65,37 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(FunctionService.GetAddressList(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 纹理二维码
+        /// <summary>
+        /// 纹理二维码分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetTagPage")]
+        public ObjectResultEx GetTagPage(PageParamList<RequestVeinTag> pageParam)
+        {
+            return ObjectResultEx.Instance(FunctionService.GetTagPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 录入分配标签
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("RecordAllotTag")]
+        public ObjectResultEx RecordAllotTag(RequestVeinTag Param)
+        {
+            return ObjectResultEx.Instance(FunctionService.RecordAllotTag(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除二维码
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveTag")]
+        public ObjectResultEx RemoveTag(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(FunctionService.RemoveTag(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }
