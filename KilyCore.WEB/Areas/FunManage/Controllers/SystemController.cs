@@ -31,5 +31,14 @@ namespace KilyCore.WEB.Areas.FunManage.Controllers
             return View();
         }
         #endregion
+        #region 纹理二维码
+        public IActionResult VeinTag()
+        {
+            return View();
+        }
+        public IActionResult RecordTag() {
+            return View();
+        }
+        #endregion
     }
 }
