@@ -25,18 +25,13 @@
                     success: function (result)
                     {
                         controller.SetCtrlValue("#Edit", result.data);
+                        $("#normal").attr("src",$("#PayContract").val());
                     }
                 });
             },
             //设置文件值
             SetFileValue: function (data, elememt) {
-                var files = $(elememt).val();
-                if (files != null && files != "" && files != undefined) {
-                    files += "," + data;
-                    $(elememt).val(files);
-                } else {
                     $(elememt).val(data);
-                }
             },
             //事件
             InitEvents: function () {
@@ -56,6 +51,7 @@
                     url: "File/UploadImg",
                     element: ".upload-input",
                     maxNum: 1,
+                    node:'#img1',
                     success: function (result) {
                         controller.Alter(result.msg);
                         options.SetFileValue(result.data, "#PayContract");
@@ -90,7 +86,7 @@
                 <span class="label label-warning">上传缴费凭证</span>
                 <div class="input-group line-width">
                     <div class="upload-box">
-                        <div class="image-box clear">
+                        <div class="image-box clear" id="img1">
                             <section class="upload-section">
                                 <div class="upload-btn"></div>
                                 <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />

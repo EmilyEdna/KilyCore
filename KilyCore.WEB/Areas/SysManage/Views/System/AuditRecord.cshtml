@@ -29,6 +29,7 @@
             //行为
             action: {
                 TableFormatter: function (val, row, index) {
+                    var action = [];
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
                     return action.join("&nbsp;")
                 },

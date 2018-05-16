@@ -16,7 +16,10 @@ namespace KilyCore.DataEntity.ResponseMapper.System
         {
             get
             {
-                return StayCompanyContract.Split(",").ToList();
+                if (StayCompanyContract != null)
+                    return StayCompanyContract.Split(",").ToList();
+                else
+                    return null;
             }
         }
         public string StayCompanyContract { get; set; }
