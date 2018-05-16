@@ -226,7 +226,6 @@
                         url: "WebCompanyManage/Base/UploadFile?Id=" + CompanyInfo.Id + "&Name=" + CompanyInfo.CompanyName + "&ProvinceId=" + $("#province").find("option:selected").val(),
                         callBack: function (result) {
                             result.$("#Edit").submit();
-                            result.popClose();
                         }
                     });
                 });
