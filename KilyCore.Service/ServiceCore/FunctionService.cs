@@ -232,8 +232,8 @@ namespace KilyCore.Service.ServiceCore
         public PagedResult<ResponseVeinTag> GetTagPage(PageParamList<RequestVeinTag> pageParam)
         {
             IQueryable<FunctionVeinTag> queryable = Kily.Set<FunctionVeinTag>().AsNoTracking().OrderByDescending(t => t.CreateTime);
-            if (UserInfo().AccountType != AccountEnum.Admin || UserInfo().AccountType != AccountEnum.Country)
-                return queryable.Where(t => t.AcceptUser.Contains(UserInfo().Id.ToString())).Select(t => new ResponseVeinTag()
+            if (UserInfo().AccountType == AccountEnum.Admin || UserInfo().AccountType == AccountEnum.Country)
+                return queryable.Select(t => new ResponseVeinTag()
                 {
                     Id = t.Id,
                     StarSerialNo = t.StarSerialNo,
@@ -243,7 +243,7 @@ namespace KilyCore.Service.ServiceCore
                     AllotType = t.AllotType,
                     IsAcceptName = t.IsAccept ? "已签收" : "未签收"
                 }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
-            return queryable.Select(t => new ResponseVeinTag()
+            return queryable.Where(t => t.AcceptUser.Contains(UserInfo().Id.ToString())).Select(t => new ResponseVeinTag()
             {
                 Id = t.Id,
                 StarSerialNo = t.StarSerialNo,
@@ -261,7 +261,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string RecordAllotTag(RequestVeinTag Param)
         {
-            Param.TotalNo = Param.StarSerialNo - Param.EndSerialNo;
+            Param.TotalNo = (int)(Param.EndSerialNo - Param.StarSerialNo);
             FunctionVeinTag VeinTag = Param.MapToEntity<FunctionVeinTag>();
             if (Insert<FunctionVeinTag>(VeinTag))
                 return ServiceMessage.INSERTSUCCESS;

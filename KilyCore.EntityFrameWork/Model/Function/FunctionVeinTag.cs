@@ -13,11 +13,11 @@ namespace KilyCore.EntityFrameWork.Model.Function
         /// <summary>
         /// 开始号段
         /// </summary>
-        public virtual int StarSerialNo { get; set; }
+        public virtual Int64 StarSerialNo { get; set; }
         /// <summary>
         /// 结束号段
         /// </summary>
-        public virtual int EndSerialNo { get; set; }
+        public virtual Int64 EndSerialNo { get; set; }
         /// <summary>
         /// 当前录入总个数
         /// </summary>

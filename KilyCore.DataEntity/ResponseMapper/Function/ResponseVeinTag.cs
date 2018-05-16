@@ -10,11 +10,11 @@ namespace KilyCore.DataEntity.ResponseMapper.Function
         /// <summary>
         /// 开始号段
         /// </summary>
-        public int StarSerialNo { get; set; }
+        public Int64 StarSerialNo { get; set; }
         /// <summary>
         /// 结束号段
         /// </summary>
-        public int EndSerialNo { get; set; }
+        public Int64 EndSerialNo { get; set; }
         /// <summary>
         /// 当前录入总个数
         /// </summary>
