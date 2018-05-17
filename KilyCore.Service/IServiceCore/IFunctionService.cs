@@ -24,6 +24,7 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseVeinTag> GetTagPage(PageParamList<RequestVeinTag> pageParam);
         String RecordAllotTag(RequestVeinTag Param);
         String RemoveTag(Guid Id);
+        IList<ResponseVienTagPreson> GetAcceptUser(int flag);
         #endregion
     }
 }

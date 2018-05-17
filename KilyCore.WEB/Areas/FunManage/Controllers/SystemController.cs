@@ -36,7 +36,12 @@ namespace KilyCore.WEB.Areas.FunManage.Controllers
         {
             return View();
         }
-        public IActionResult RecordTag() {
+        public IActionResult RecordTag()
+        {
+            return View();
+        }
+        public IActionResult AcceptTag()
+        {
             return View();
         }
         #endregion

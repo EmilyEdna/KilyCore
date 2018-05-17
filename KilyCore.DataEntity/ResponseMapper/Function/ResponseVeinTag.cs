@@ -61,4 +61,9 @@ namespace KilyCore.DataEntity.ResponseMapper.Function
         /// </summary>
         public string IsAcceptName { get; set; }
     }
+    public class ResponseVienTagPreson
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+    }
 }

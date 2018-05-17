@@ -1,5 +1,6 @@
 ﻿using KilyCore.DataEntity.RequestMapper.Function;
 using KilyCore.DataEntity.ResponseMapper.Function;
+using KilyCore.EntityFrameWork.Model.Enterprise;
 using KilyCore.EntityFrameWork.Model.Function;
 using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
@@ -279,6 +280,47 @@ namespace KilyCore.Service.ServiceCore
                 return ServiceMessage.REMOVESUCCESS;
             else
                 return ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 根据接收类型选取接受人
+        /// </summary>
+        /// <param name="flag"></param>
+        /// <returns></returns>
+        public  IList<ResponseVienTagPreson> GetAcceptUser(int flag)
+        {
+            if (flag == 1)
+            {
+                IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess).AsNoTracking();
+                if (UserInfo().AccountType == AccountEnum.Admin || UserInfo().AccountType == AccountEnum.Country)
+                    return queryable.Select(t => new ResponseVienTagPreson()
+                    {
+                        Id = t.Id,
+                        Name = t.CompanyName
+                    }).ToList();
+                else
+                    return queryable.Where(t => t.TypePath.Contains(UserInfo().Province)).Select(t => new ResponseVienTagPreson()
+                    {
+                        Id = t.Id,
+                        Name = t.CompanyName
+                    }).ToList();
+            }
+            else
+            {
+                IQueryable<SystemAdmin> queryable = Kily.Set<SystemAdmin>().Where(t => t.IsDelete == false).AsNoTracking();
+                if (UserInfo().AccountType == AccountEnum.Province)
+                    queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().Province));
+                if (UserInfo().AccountType == AccountEnum.City)
+                    queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().City));
+                if (UserInfo().AccountType == AccountEnum.Area)
+                    queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().Area));
+                if (UserInfo().AccountType == AccountEnum.Village)
+                    queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().Town));
+                return queryable.Select(t => new ResponseVienTagPreson()
+                {
+                    Id = t.Id,
+                    Name = t.TrueName
+                }).ToList();
+            }
         }
         #endregion
     }
