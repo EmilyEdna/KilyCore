@@ -286,7 +286,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="flag"></param>
         /// <returns></returns>
-        public  IList<ResponseVienTagPreson> GetAcceptUser(int flag)
+        public IList<ResponseVienTagPreson> GetAcceptUser(int flag)
         {
             if (flag == 1)
             {
@@ -308,7 +308,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 IQueryable<SystemAdmin> queryable = Kily.Set<SystemAdmin>().Where(t => t.IsDelete == false).AsNoTracking();
                 if (UserInfo().AccountType == AccountEnum.Province)
-                    queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().Province));
+                    queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().Province)).Where(t => t.AccountType != AccountEnum.Admin && t.AccountType != AccountEnum.Country);
                 if (UserInfo().AccountType == AccountEnum.City)
                     queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().City));
                 if (UserInfo().AccountType == AccountEnum.Area)
@@ -321,6 +321,20 @@ namespace KilyCore.Service.ServiceCore
                     Name = t.TrueName
                 }).ToList();
             }
+        }
+        /// <summary>
+        /// 签收
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string AcceptTag(Guid Id)
+        {
+            FunctionVeinTag VeinTag = Kily.Set<FunctionVeinTag>().Where(t => t.Id == Id).FirstOrDefault();
+            VeinTag.IsAccept = true;
+            if (UpdateField<FunctionVeinTag>(VeinTag, "IsAccept"))
+                return ServiceMessage.UPDATESUCCESS;
+            else
+                return ServiceMessage.UPDATEFAIL;
         }
         #endregion
     }

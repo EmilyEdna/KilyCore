@@ -866,7 +866,7 @@ namespace KilyCore.Service.ServiceCore
                 Address = t.Address,
                 IdCard = t.IdCard,
                 LinkPhone = t.LinkPhone,
-                WorkNum = t.Type + t.WorkNum
+                WorkNum = t.WorkNum
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }

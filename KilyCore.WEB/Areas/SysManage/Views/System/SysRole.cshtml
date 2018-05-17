@@ -123,54 +123,52 @@
             },
             //更具权限设置区域
             SetPathByAccountType: function () {
+                debugger;
                 if (SysUserInfo.AccountType >= 30) {
                     var Pid = $("#province").attr("disabled", true).find("option[value='" + SysUserInfo.Province + "']").attr("selected", true).data().id;
+                    controller.ajax({
+                        url: "System/GetCity",
+                        data: { Id: Pid },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            var html = '<option>===请选择===</option>';
+                            $.each(result.data, function (i, obj) {
+                                html += '<option value="' + obj.Id + '" data-id="' + obj.CityId + '">' + obj.CityName + '</option>';
+                            });
+                            $("#city").html(html);
+                        }
+                    });
                     if (SysUserInfo.AccountType >= 40) {
+                        var Cid = $("#city").attr("disabled", true).find("option[value='" + SysUserInfo.City + "']").attr("selected", true).data().id;
                         controller.ajax({
-                            url: "System/GetCity",
-                            data: { Id: Pid },
+                            url: "System/GetArea",
+                            data: { Id: Cid },
                             type: "post",
                             async: false,
                             success: function (result) {
                                 var html = '<option>===请选择===</option>';
                                 $.each(result.data, function (i, obj) {
-                                    html += '<option value="' + obj.Id + '" data-id="' + obj.CityId + '">' + obj.CityName + '</option>';
+                                    html += '<option value="' + obj.Id + '" data-id="' + obj.AreaId + '">' + obj.AreaName + '</option>';
                                 });
-                                $("#city").html(html);
+                                $("#area").html(html);
                             }
                         });
-                        var Cid = $("#city").attr("disabled", true).find("option[value='" + SysUserInfo.City + "']").attr("selected", true).data().id;
                         if (SysUserInfo.AccountType >= 50) {
+                            var Aid = $("#area").attr("disabled", true).find("option[value='" + SysUserInfo.Area + "']").attr("selected", true).data().id;
                             controller.ajax({
-                                url: "System/GetArea",
-                                data: { Id: Cid },
+                                url: "System/GetTown",
+                                data: { Id: Aid },
                                 type: "post",
                                 async: false,
                                 success: function (result) {
                                     var html = '<option>===请选择===</option>';
                                     $.each(result.data, function (i, obj) {
-                                        html += '<option value="' + obj.Id + '" data-id="' + obj.AreaId + '">' + obj.AreaName + '</option>';
+                                        html += '<option value="' + obj.Id + '" data-id="' + obj.TownId + '">' + obj.TownName + '</option>';
                                     });
-                                    $("#area").html(html);
+                                    $("#town").html(html);
                                 }
                             });
-                            var Aid = $("#area").attr("disabled", true).find("option[value='" + SysUserInfo.Area + "']").attr("selected", true).data().id;
-                            if (SysUserInfo.AccountType>=60)
-                            { 
-                                controller.ajax({
-                                    url: "System/GetTown",
-                                    data: { Id: Aid },
-                                    type: "post",
-                                    async: false,
-                                    success: function (result) {
-                                        var html = '<option>===请选择===</option>';
-                                        $.each(result.data, function (i, obj) {
-                                            html += '<option value="' + obj.Id + '" data-id="' + obj.TownId + '">' + obj.TownName + '</option>';
-                                        });
-                                        $("#town").html(html);
-                                    }
-                                });
-                            }
                         }
                     }
                 }

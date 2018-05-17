@@ -57,6 +57,7 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
+                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>签收</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
@@ -65,6 +66,20 @@
                             if (bool) {
                                 controller.ajax({
                                     url: "Function/RemoveTag",
+                                    data: { Id: row.Id },
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    "click .edit": function (event, val, row, index) {
+                        controller.Confirm("确认签收？", function (bool) {
+                            if (bool) {
+                                controller.ajax({
+                                    url: "Function/AcceptTag",
                                     data: { Id: row.Id },
                                     type: 'post',
                                     success: function (result) {

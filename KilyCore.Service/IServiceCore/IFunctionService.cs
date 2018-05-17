@@ -25,6 +25,7 @@ namespace KilyCore.Service.IServiceCore
         String RecordAllotTag(RequestVeinTag Param);
         String RemoveTag(Guid Id);
         IList<ResponseVienTagPreson> GetAcceptUser(int flag);
+        String AcceptTag(Guid Id);
         #endregion
     }
 }

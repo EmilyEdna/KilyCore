@@ -106,6 +106,16 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(FunctionService.GetAcceptUser(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 签收标签
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("AcceptTag")]
+        public ObjectResultEx AcceptTag(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(FunctionService.AcceptTag(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
     }
 }
