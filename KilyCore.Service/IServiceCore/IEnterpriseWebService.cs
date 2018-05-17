@@ -76,5 +76,10 @@ namespace KilyCore.Service.IServiceCore
         ResponseEnterpriseNote GetNoteDetail(Guid Id);
         #endregion
         #endregion
+        #region 物码管理
+        PagedResult<ResponseEnterpriseTag> GetTagPage(PageParamList<RequestEnterpriseTag> pageParam);
+        String CreateTag(RequestEnterpriseTag Param);
+        String RemoveTag(Guid Id);
+        #endregion
     }
 }

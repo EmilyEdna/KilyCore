@@ -296,7 +296,8 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="pageParam"></param>
         [HttpPost("GetEnvAttachPage")]
-        public ObjectResultEx GetEnvAttachPage(PageParamList<RequestEnterpriseEnvironmentAttach> pageParam) {
+        public ObjectResultEx GetEnvAttachPage(PageParamList<RequestEnterpriseEnvironmentAttach> pageParam)
+        {
             return ObjectResultEx.Instance(EnterpriseWebService.GetEnvAttachPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -305,7 +306,8 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("EditEnv")]
-        public ObjectResultEx EditEnv(RequestEnterpriseEnvironment Param) {
+        public ObjectResultEx EditEnv(RequestEnterpriseEnvironment Param)
+        {
             return ObjectResultEx.Instance(EnterpriseWebService.EditEnv(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -314,7 +316,8 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("EditEnvAttach")]
-        public ObjectResultEx EditEnvAttach(RequestEnterpriseEnvironmentAttach Param) {
+        public ObjectResultEx EditEnvAttach(RequestEnterpriseEnvironmentAttach Param)
+        {
             return ObjectResultEx.Instance(EnterpriseWebService.EditEnvAttach(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -323,7 +326,8 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveEnv")]
-        public ObjectResultEx RemoveEnv(SimlpeParam<Guid> Param) {
+        public ObjectResultEx RemoveEnv(SimlpeParam<Guid> Param)
+        {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveEnv(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -332,7 +336,8 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveEnvAttach")]
-        public ObjectResultEx RemoveEnvAttach(SimlpeParam<Guid> Param) {
+        public ObjectResultEx RemoveEnvAttach(SimlpeParam<Guid> Param)
+        {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveEnvAttach(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
@@ -353,7 +358,8 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("EditNote")]
-        public ObjectResultEx EditNote(RequestEnterpriseNote Param) {
+        public ObjectResultEx EditNote(RequestEnterpriseNote Param)
+        {
             return ObjectResultEx.Instance(EnterpriseWebService.EditNote(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -372,6 +378,38 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.GetNoteDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #endregion
+        #region 二维码管理
+        /// <summary>
+        /// 二维码分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetTagPage")]
+        public ObjectResultEx GetTagPage(PageParamList<RequestEnterpriseTag> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetTagPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 生成二维码
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("CreateTag")]
+        public ObjectResultEx CreateTag(RequestEnterpriseTag Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.CreateTag(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除二维码
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveTag")]
+        public ObjectResultEx RemoveTag(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveTag(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
     }
 }

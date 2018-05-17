@@ -144,6 +144,7 @@ namespace KilyCore.Service.ServiceCore
             Param.AuditType = AuditEnum.WaitAduit;
             EnterpriseInfo data = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
             Param.EnterpriseRoleId = data.EnterpriseRoleId;
+
             EnterpriseInfo Info = Param.MapToEntity<EnterpriseInfo>();
             if (Update<EnterpriseInfo, RequestEnterprise>(Info, Param))
                 return ServiceMessage.UPDATESUCCESS;
@@ -791,6 +792,55 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         #endregion
+        #endregion
+
+        #region 物码管理
+        /// <summary>
+        /// 二维码分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseTag> GetTagPage(PageParamList<RequestEnterpriseTag> pageParam)
+        {
+            IQueryable<EnterpriseTag> queryable = Kily.Set<EnterpriseTag>().Where(t => t.TagType == pageParam.QueryParam.TagType).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.BacthNo))
+                queryable = queryable.Where(t => t.BacthNo.Contains(pageParam.QueryParam.BacthNo));
+            var data = queryable.Select(t => new ResponseEnterpriseTag()
+            {
+                Id = t.Id,
+                BacthNo = t.BacthNo,
+                CompanyId = t.CompanyId,
+                EndSerialNo = t.EndSerialNo,
+                StarSerialNo = t.StarSerialNo,
+                TotalNo = t.TotalNo,
+                TagType = t.TagType
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 生成二维码
+        /// </summary>
+        /// <returns></returns>
+        public string CreateTag(RequestEnterpriseTag Param)
+        {
+            Param.TotalNo = (int)(Param.EndSerialNo - Param.StarSerialNo);
+            EnterpriseTag Tag = Param.MapToEntity<EnterpriseTag>();
+            if (Insert<EnterpriseTag>(Tag))
+                return ServiceMessage.INSERTSUCCESS;
+            else
+                return ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 删除二维码
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveTag(Guid Id){
+            if (Delete<EnterpriseTag>(t => t.Id == Id))
+                return ServiceMessage.REMOVESUCCESS;
+            else
+                return ServiceMessage.REMOVEFAIL;
+        }
         #endregion
     }
 }
