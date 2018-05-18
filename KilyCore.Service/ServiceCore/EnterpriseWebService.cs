@@ -5,6 +5,7 @@ using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.EntityFrameWork.Model.Enterprise;
 using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
+using KilyCore.Extension.AttributeExtension;
 using KilyCore.Extension.AutoMapperExtension;
 using KilyCore.Repositories.BaseRepository;
 using KilyCore.Service.ConstMessage;
@@ -13,6 +14,7 @@ using KilyCore.Service.QueryExtend;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
@@ -813,7 +815,8 @@ namespace KilyCore.Service.ServiceCore
                 EndSerialNo = t.EndSerialNo,
                 StarSerialNo = t.StarSerialNo,
                 TotalNo = t.TotalNo,
-                TagType = t.TagType
+                TagType = t.TagType,
+                TagTypeName=AttrExtension.GetSingleDescription<TagEnum, DescriptionAttribute>(t.TagType)
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }

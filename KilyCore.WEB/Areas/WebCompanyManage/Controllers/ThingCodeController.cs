@@ -24,7 +24,7 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         /// 一品一码
         /// </summary>
         /// <returns></returns>
-        public IActionResult ClassThing()
+        public IActionResult ClassCode()
         {
             return View();
         }
@@ -33,6 +33,14 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         /// </summary>
         /// <returns></returns>
         public IActionResult CompanyCode()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 编辑二维码
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult ThingCodeEdit()
         {
             return View();
         }

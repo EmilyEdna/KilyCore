@@ -18,5 +18,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public int TotalNo { get; set; }
 
         public TagEnum TagType { get; set; }
+        public string TagTypeName { get; set; }
     }
 }

@@ -7,6 +7,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
 {
     public class RequestEnterpriseTag
     {
+        public Guid CompanyId { get; set; }
         public string BacthNo { get; set; }
 
         public Int64 StarSerialNo { get; set; }
