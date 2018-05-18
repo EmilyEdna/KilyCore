@@ -20,4 +20,8 @@ namespace KilyCore.Configure
         public static string RSAApiKey { get; set; }
         public static string RSASysKey { get; set; }
     }
+    public class SystemFlag
+    {
+        public static int EnterpriseFlag { get; set; }
+    }
 }

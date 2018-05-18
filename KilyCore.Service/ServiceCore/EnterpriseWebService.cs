@@ -30,28 +30,26 @@ namespace KilyCore.Service.ServiceCore
         public IList<ResponseEnterpriseMenu> GetEnterpriseMenu()
         {
             IQueryable<EnterpriseMenu> queryable = Kily.Set<EnterpriseMenu>().Where(t => t.Level == MenuEnum.LevelOne).Where(t => t.IsDelete == false).AsNoTracking().AsQueryable().OrderBy(t => t.CreateTime);
-            IQueryable<EnterpriseRoleAuthor> queryables = Kily.Set<EnterpriseRoleAuthor>().Where(t => t.IsDelete == false);
             if (CompanyInfo() != null)
-                queryables = queryables.Where(t => t.Id == CompanyInfo().EnterpriseRoleId).AsNoTracking();
-            else
-                queryables = queryables.Where(t => t.Id == CompanyUser().RoleAuthorType).AsNoTracking();
-            EnterpriseRoleAuthor Author = queryables.FirstOrDefault();
-            queryable = queryable.Where(t => Author.AuthorMenuPath.Contains(t.Id.ToString())).AsNoTracking();
-            var data = queryable.Select(t => new ResponseEnterpriseMenu()
             {
-                Id = t.Id,
-                MenuId = t.MenuId,
-                ParentId = t.ParentId,
-                MenuAddress = t.MenuAddress,
-                MenuName = t.MenuName,
-                HasChildrenNode = t.HasChildrenNode,
-                MenuIcon = t.MenuIcon,
-                MenuChildren = Kily.Set<EnterpriseMenu>()
+                EnterpriseRoleAuthor Author = Kily.Set<EnterpriseRoleAuthor>().Where(t => t.IsDelete == false)
+                    .Where(t => t.Id == CompanyInfo().EnterpriseRoleId).AsNoTracking().FirstOrDefault();
+                queryable = queryable.Where(t => Author.AuthorMenuPath.Contains(t.Id.ToString())).AsNoTracking();
+                var data = queryable.OrderBy(t => t.CreateTime).Select(t => new ResponseEnterpriseMenu()
+                {
+                    Id = t.Id,
+                    MenuId = t.MenuId,
+                    ParentId = t.ParentId,
+                    MenuAddress = t.MenuAddress,
+                    MenuName = t.MenuName,
+                    HasChildrenNode = t.HasChildrenNode,
+                    MenuIcon = t.MenuIcon,
+                    MenuChildren = Kily.Set<EnterpriseMenu>()
                     .Where(x => x.ParentId == t.MenuId)
                     .Where(x => x.Level != MenuEnum.LevelOne)
                     .Where(x => x.IsDelete == false)
                     .Where(x => Author.AuthorMenuPath.Contains(x.Id.ToString()))
-                    .Select(x => new ResponseEnterpriseMenu()
+                    .OrderBy(x => x.CreateTime).Select(x => new ResponseEnterpriseMenu()
                     {
                         Id = x.Id,
                         MenuId = x.MenuId,
@@ -61,8 +59,41 @@ namespace KilyCore.Service.ServiceCore
                         HasChildrenNode = x.HasChildrenNode,
                         MenuIcon = x.MenuIcon
                     }).ToList()
-            }).ToList();
-            return data;
+                }).ToList();
+                return data;
+            }
+            else
+            {
+                EnterpriseRoleAuthorWeb AuthorWeb = Kily.Set<EnterpriseRoleAuthorWeb>().Where(t => t.IsDelete == false).
+                    Where(t => t.Id == CompanyUser().RoleAuthorType).AsNoTracking().FirstOrDefault();
+                queryable = queryable.Where(t => AuthorWeb.AuthorMenuPath.Contains(t.Id.ToString())).AsNoTracking();
+                var data = queryable.OrderBy(t => t.CreateTime).Select(t => new ResponseEnterpriseMenu()
+                {
+                    Id = t.Id,
+                    MenuId = t.MenuId,
+                    ParentId = t.ParentId,
+                    MenuAddress = t.MenuAddress,
+                    MenuName = t.MenuName,
+                    HasChildrenNode = t.HasChildrenNode,
+                    MenuIcon = t.MenuIcon,
+                    MenuChildren = Kily.Set<EnterpriseMenu>()
+                  .Where(x => x.ParentId == t.MenuId)
+                  .Where(x => x.Level != MenuEnum.LevelOne)
+                  .Where(x => x.IsDelete == false)
+                  .Where(x => AuthorWeb.AuthorMenuPath.Contains(x.Id.ToString()))
+                  .OrderBy(x => x.CreateTime).Select(x => new ResponseEnterpriseMenu()
+                  {
+                      Id = x.Id,
+                      MenuId = x.MenuId,
+                      ParentId = x.ParentId,
+                      MenuAddress = x.MenuAddress,
+                      MenuName = x.MenuName,
+                      HasChildrenNode = x.HasChildrenNode,
+                      MenuIcon = x.MenuIcon
+                  }).ToList()
+                }).ToList();
+                return data;
+            }
         }
         /// <summary>
         /// 获取权限菜单树
@@ -70,38 +101,71 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public IList<ResponseParentTree> GetEnterpriseWebTree()
         {
-            IQueryable<EnterpriseRoleAuthor> queryables = Kily.Set<EnterpriseRoleAuthor>().Where(t => t.IsDelete == false);
             if (CompanyInfo() != null)
+            {
+                IQueryable<EnterpriseRoleAuthor> queryables = Kily.Set<EnterpriseRoleAuthor>().Where(t => t.IsDelete == false);
                 queryables = queryables.Where(t => t.Id == CompanyInfo().EnterpriseRoleId).AsNoTracking();
-            else
-                queryables = queryables.Where(t => t.Id == CompanyUser().RoleAuthorType).AsNoTracking();
-            EnterpriseRoleAuthor Author = queryables.FirstOrDefault();
-            IQueryable<ResponseParentTree> queryable = Kily.Set<EnterpriseMenu>().Where(t => t.IsDelete == false)
-                 .Where(t => t.Level == MenuEnum.LevelOne)
-                 .Where(t => Author.AuthorMenuPath.Contains(t.Id.ToString()))
-                 .AsNoTracking().Select(t => new ResponseParentTree()
-                 {
-                     Id = t.Id,
-                     Text = t.MenuName,
-                     Color = "black",
-                     BackClolor = "white",
-                     SelectedIcon = "fa fa-refresh fa-spin",
-                     Nodes = Kily.Set<EnterpriseMenu>().Where(x => x.IsDelete == false)
-                     .Where(x => x.Level != MenuEnum.LevelOne)
-                     .Where(x => x.ParentId == t.MenuId)
-                     .Where(x => Author.AuthorMenuPath.Contains(x.Id.ToString()))
-                     .AsNoTracking()
-                     .Select(x => new ResponseChildTree()
+                EnterpriseRoleAuthor Author = queryables.FirstOrDefault();
+                IQueryable<ResponseParentTree> queryable = Kily.Set<EnterpriseMenu>().Where(t => t.IsDelete == false)
+                     .Where(t => t.Level == MenuEnum.LevelOne)
+                     .Where(t => Author.AuthorMenuPath.Contains(t.Id.ToString()))
+                     .AsNoTracking().Select(t => new ResponseParentTree()
                      {
-                         Id = x.Id,
-                         Text = x.MenuName,
+                         Id = t.Id,
+                         Text = t.MenuName,
                          Color = "black",
                          BackClolor = "white",
                          SelectedIcon = "fa fa-refresh fa-spin",
-                     }).AsQueryable()
-                 }).AsQueryable();
-            var data = queryable.ToList();
-            return data;
+                         Nodes = Kily.Set<EnterpriseMenu>().Where(x => x.IsDelete == false)
+                         .Where(x => x.Level != MenuEnum.LevelOne)
+                         .Where(x => x.ParentId == t.MenuId)
+                         .Where(x => Author.AuthorMenuPath.Contains(x.Id.ToString()))
+                         .AsNoTracking()
+                         .Select(x => new ResponseChildTree()
+                         {
+                             Id = x.Id,
+                             Text = x.MenuName,
+                             Color = "black",
+                             BackClolor = "white",
+                             SelectedIcon = "fa fa-refresh fa-spin",
+                         }).AsQueryable()
+                     }).AsQueryable();
+                var data = queryable.ToList();
+                return data;
+            }
+            else
+            {
+                IQueryable<EnterpriseRoleAuthorWeb> queryables = Kily.Set<EnterpriseRoleAuthorWeb>().Where(t => t.IsDelete == false);
+                queryables = queryables.Where(t => t.Id == CompanyUser().RoleAuthorType).AsNoTracking();
+                EnterpriseRoleAuthorWeb Author = queryables.FirstOrDefault();
+                IQueryable<ResponseParentTree> queryable = Kily.Set<EnterpriseMenu>().Where(t => t.IsDelete == false)
+                     .Where(t => t.Level == MenuEnum.LevelOne)
+                     .Where(t => Author.AuthorMenuPath.Contains(t.Id.ToString()))
+                     .AsNoTracking().Select(t => new ResponseParentTree()
+                     {
+                         Id = t.Id,
+                         Text = t.MenuName,
+                         Color = "black",
+                         BackClolor = "white",
+                         SelectedIcon = "fa fa-refresh fa-spin",
+                         Nodes = Kily.Set<EnterpriseMenu>().Where(x => x.IsDelete == false)
+                         .Where(x => x.Level != MenuEnum.LevelOne)
+                         .Where(x => x.ParentId == t.MenuId)
+                         .Where(x => Author.AuthorMenuPath.Contains(x.Id.ToString()))
+                         .AsNoTracking()
+                         .Select(x => new ResponseChildTree()
+                         {
+                             Id = x.Id,
+                             Text = x.MenuName,
+                             Color = "black",
+                             BackClolor = "white",
+                             SelectedIcon = "fa fa-refresh fa-spin",
+                         }).AsQueryable()
+                     }).AsQueryable();
+                var data = queryable.ToList();
+                return data;
+                
+            }
         }
         #endregion
 
@@ -816,7 +880,7 @@ namespace KilyCore.Service.ServiceCore
                 StarSerialNo = t.StarSerialNo,
                 TotalNo = t.TotalNo,
                 TagType = t.TagType,
-                TagTypeName=AttrExtension.GetSingleDescription<TagEnum, DescriptionAttribute>(t.TagType)
+                TagTypeName = AttrExtension.GetSingleDescription<TagEnum, DescriptionAttribute>(t.TagType)
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -838,7 +902,8 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public string RemoveTag(Guid Id){
+        public string RemoveTag(Guid Id)
+        {
             if (Delete<EnterpriseTag>(t => t.Id == Id))
                 return ServiceMessage.REMOVESUCCESS;
             else

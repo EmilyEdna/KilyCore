@@ -1,4 +1,5 @@
-﻿using KilyCore.DataEntity.RequestMapper.Enterprise;
+﻿using KilyCore.Configure;
+using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.System;
@@ -707,9 +708,15 @@ namespace KilyCore.Service.ServiceCore
             }).FirstOrDefault();
             #endregion
             if (Info != null)
+            {
+                SystemFlag.EnterpriseFlag = 1;
                 return Info;
+            }
             else if (User != null)
+            {
+                SystemFlag.EnterpriseFlag = 2;
                 return User;
+            }
             else return null;
         }
         #endregion

@@ -52,7 +52,7 @@ namespace KilyCore.Service.ServiceCore
                    .Where(t => t.IsDelete == false).AsNoTracking().AsQueryable().OrderBy(t => t.CreateTime);
             if (UserInfo().AccountType == AccountEnum.Admin)
             {
-                var data = queryable.Select(t => new ResponseMenu()
+                var data = queryable.OrderBy(t => t.CreateTime).Select(t => new ResponseMenu()
                 {
                     Id = t.Id,
                     MenuId = t.MenuId,
@@ -62,19 +62,20 @@ namespace KilyCore.Service.ServiceCore
                     HasChildrenNode = t.HasChildrenNode,
                     MenuIcon = t.MenuIcon,
                     MenuChildren = Kily.Set<SystemMenu>()
-                     .Where(x => x.ParentId == t.MenuId)
-                     .Where(x => x.Level != MenuEnum.LevelOne)
-                     .Where(x => x.IsDelete == false)
-                     .Select(x => new ResponseMenu()
-                     {
-                         Id = x.Id,
-                         MenuId = x.MenuId,
-                         ParentId = x.ParentId,
-                         MenuAddress = x.MenuAddress,
-                         MenuName = x.MenuName,
-                         HasChildrenNode = x.HasChildrenNode,
-                         MenuIcon = x.MenuIcon
-                     }).ToList()
+                       .Where(x => x.ParentId == t.MenuId)
+                       .Where(x => x.Level != MenuEnum.LevelOne)
+                       .Where(x => x.IsDelete == false)
+                       .OrderBy(x => x.CreateTime)
+                       .Select(x => new ResponseMenu()
+                       {
+                           Id = x.Id,
+                           MenuId = x.MenuId,
+                           ParentId = x.ParentId,
+                           MenuAddress = x.MenuAddress,
+                           MenuName = x.MenuName,
+                           HasChildrenNode = x.HasChildrenNode,
+                           MenuIcon = x.MenuIcon
+                       }).ToList()
                 }).ToList();
                 return data;
             }
@@ -83,7 +84,7 @@ namespace KilyCore.Service.ServiceCore
                 //取权限菜单
                 SystemRoleAuthor Author = Kily.Set<SystemRoleAuthor>().Where(t => t.Id == UserInfo().RoleAuthorType).AsNoTracking().FirstOrDefault();
                 queryable = queryable.Where(t => Author.AuthorMenuPath.Contains(t.Id.ToString())).AsNoTracking().AsQueryable();
-                var data = queryable.Select(t => new ResponseMenu()
+                var data = queryable.OrderBy(t => t.CreateTime).Select(t => new ResponseMenu()
                 {
                     Id = t.Id,
                     MenuId = t.MenuId,
@@ -97,6 +98,7 @@ namespace KilyCore.Service.ServiceCore
                     .Where(x => x.Level != MenuEnum.LevelOne)
                     .Where(x => x.IsDelete == false)
                     .Where(x => Author.AuthorMenuPath.Contains(x.Id.ToString()))
+                    .OrderBy(x => x.CreateTime)
                     .Select(x => new ResponseMenu()
                     {
                         Id = x.Id,
@@ -1077,11 +1079,11 @@ namespace KilyCore.Service.ServiceCore
                  .Where(t => t.TableId == pageParam.QueryParam.TableId && t.TableName.Contains(pageParam.QueryParam.TableName))
                  .Select(t => new ResponseAudit()
                  {
-                     Id=t.Id,
-                     AuditName=t.AuditName,
-                     AuditTypeName=AttrExtension.GetSingleDescription<AuditEnum,DescriptionAttribute>(t.AuditType),
-                     AuditSuggestion=t.AuditSuggestion,
-                     CreateTime=t.CreateTime
+                     Id = t.Id,
+                     AuditName = t.AuditName,
+                     AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
+                     AuditSuggestion = t.AuditSuggestion,
+                     CreateTime = t.CreateTime
                  }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }

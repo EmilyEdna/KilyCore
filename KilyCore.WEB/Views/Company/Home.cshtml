@@ -38,6 +38,7 @@
                 //显示登录
                 $(".text-muted").prepend(CompanyUser.CompanyName);
                 $(".font-bold").prepend(CompanyUser.CompanyAccount);
+
             },
             //获取树
             GetMenu: function () {
@@ -65,7 +66,6 @@
                         type: "post",
                         async: false,
                         success: function (result) {
-                            
                             controller.Confirm("您已经成功安全退出系统！", function (index) {
                                 controller.SetHref("Login");
                             })

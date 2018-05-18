@@ -59,5 +59,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// 集团账户类型
         /// </summary>
         public Guid? RoleAuthorType { get; set; }
+        public string CompanyAccount => Account;
     }
 }
