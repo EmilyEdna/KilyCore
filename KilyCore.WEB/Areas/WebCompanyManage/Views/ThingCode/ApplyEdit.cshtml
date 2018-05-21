@@ -1,0 +1,107 @@
+﻿
+@{
+    ViewData["Title"] = "新增申请";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#BacthNo").val("A" + controller.FormatDate("YYMMDDHHmmss"));
+                $("#CompanyId").val(CompanyInfo.Id);
+            },
+            //事件
+            InitEvents: function () {
+                var type = $("input:radio[name='Payment']:checked").val();
+                if (type == 1)
+                    $("#ApplyMoney").val("10000");
+                else 
+                        $("#ApplyNum").css("display", "block").attr("disabled", false);
+                $("#ApplyNum").change(function () {
+                    var num = Number($(this).val());
+                    if (CompanyInfo.Version == 40)
+                        $("#ApplyMoney").val(num * 0.001);
+                    else
+                        $("#ApplyMoney").val(num * 0.02)
+
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="EnterpriseWeb/CreateTag" id="Edit">
+            <input type="hidden" id="CompanyId" name="CompanyId" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">批次编号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="BacthNo" id="BacthNo" readonly />
+                    </td>
+                    <th><label class="control-label">标签类型</label></th>
+                    <td class="has-warning">
+                        <label class="radio-inline">
+                            <input type="radio" name="TagType" value="10" style="margin-top:3px" />
+                            <text title="一物一码">物码</text>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="TagType" value="20" style="margin-top:3px" />
+                            <text title="一品一码">品码</text>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="TagType" value="30" style="margin-top:3px" />
+                            <text title="一物企一码">企码</text>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">付款方式</label></th>
+                    <td class="has-warning">
+                        <label class="radio-inline">
+                            <input type="radio" name="Payment" value="1" style="margin-top:3px" />
+                            <text title="年缴费">年付费</text>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="Payment" value="2" style="margin-top:3px" />
+                            <text title="按需付费">按需付费</text>
+                        </label>
+                    </td>
+                    <th><label class="control-label">付款金额</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ApplyMoney" id="ApplyMoney" readonly />元
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">申请数量</label></th>
+                    <td class="has-warning">
+                        <label class="radio-inline">
+                            <input type="number" name="ApplyNum" class="form-control" id="ApplyNum" style="display:none" disabled  min="0"/>
+                        </label>
+  
+                    </td>
+                    <th><label class="control-label">付款金额</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ApplyMoney" id="ApplyMoney" readonly />元
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

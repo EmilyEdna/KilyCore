@@ -31,5 +31,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 二维码类型
         /// </summary>
         public virtual TagEnum TagType { get; set; }
+        /// <summary>
+        /// 是否使用的申请
+        /// </summary>
+        public virtual bool IsApplay { get; set; }
     }
 }

@@ -164,7 +164,7 @@ namespace KilyCore.Service.ServiceCore
                      }).AsQueryable();
                 var data = queryable.ToList();
                 return data;
-                
+
             }
         }
         #endregion
@@ -871,6 +871,10 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseTag> queryable = Kily.Set<EnterpriseTag>().Where(t => t.TagType == pageParam.QueryParam.TagType).OrderByDescending(t => t.CreateTime);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.BacthNo))
                 queryable = queryable.Where(t => t.BacthNo.Contains(pageParam.QueryParam.BacthNo));
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseTag()
             {
                 Id = t.Id,
@@ -890,12 +894,40 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string CreateTag(RequestEnterpriseTag Param)
         {
+            SystemVersionEnum Version = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Param.CompanyId).Select(t => t.Version).FirstOrDefault();
+            IQueryable<EnterpriseTag> ITag = Kily.Set<EnterpriseTag>().Where(t => t.CompanyId == Param.CompanyId);
+            EnterpriseTagApply Apply = Kily.Set<EnterpriseTagApply>().Where(t => t.CompanyId == Param.CompanyId && t.IsDelete == false).FirstOrDefault();
             Param.TotalNo = (int)(Param.EndSerialNo - Param.StarSerialNo);
             EnterpriseTag Tag = Param.MapToEntity<EnterpriseTag>();
-            if (Insert<EnterpriseTag>(Tag))
-                return ServiceMessage.INSERTSUCCESS;
+            if (Apply == null)
+            {
+                long Total = ITag.Where(t => t.IsApplay == false).Sum(t => t.TotalNo);
+                long Totals = (Total + Param.TotalNo);
+                Tag.IsApplay = false;
+                if (Version == SystemVersionEnum.Test)
+                    return ServiceMessage.TEST - Totals >= 0 ? (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL) : $"当前剩余标签数量:{ServiceMessage.TEST - Total},请升级版本或申请购买数量!";
+                else if (Version == SystemVersionEnum.Base)
+                    return ServiceMessage.BASE - Totals >= 0 ? (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL) : $"当前剩余标签数量:{ServiceMessage.BASE - Total},请升级版本或申请购买数量!";
+                else if (Version == SystemVersionEnum.Level)
+                    return ServiceMessage.LEVEL - Totals >= 0 ? (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL) : $"当前剩余标签数量:{ServiceMessage.LEVEL - Total},请升级版本或申请购买数量!";
+                else
+                    return ServiceMessage.ENTERPRISE - Totals >= 0 ? (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL) : $"当前剩产标签数量:{ServiceMessage.ENTERPRISE - Total},请升级版本或申请购买数量!";
+            }
             else
-                return ServiceMessage.INSERTFAIL;
+            {
+                long Total = ITag.Where(t => t.IsApplay == true).Sum(t => t.TotalNo);
+                long Totals = (Total + Param.TotalNo);
+                Tag.IsApplay = true;
+                if (Apply.Payment == 2)
+                {
+                    return Convert.ToInt64(Apply.ApplyNum) - Totals >= 0 ? (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL) : $"当前剩余标签数量:{Convert.ToInt64(Apply.ApplyNum) - Total},请升级版本或申请购买数量!";
+                }
+                else
+                {
+
+                    return (bool)Apply.IsPay?(Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL):"请先付款";
+                }
+            }
         }
         /// <summary>
         /// 删除二维码
@@ -909,7 +941,42 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.REMOVEFAIL;
         }
+        /// <summary>
+        /// 申请标签分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseApply> GetTagApplyPage(PageParamList<RequestEnterpriseApply> pageParam)
+        {
+            IQueryable<EnterpriseTagApply> queryable = Kily.Set<EnterpriseTagApply>().Where(t => t.IsDelete == false);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.BacthNo))
+                queryable = queryable.Where(t => t.BacthNo.Contains(pageParam.QueryParam.BacthNo));
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.OrderByDescending(t => t.CreateTime).AsNoTracking().Select(t => new ResponseEnterpriseApply()
+            {
+                BacthNo=t.BacthNo,
+                TagTypeName=AttrExtension.GetSingleDescription<TagEnum,DescriptionAttribute>(t.TagType),
+                ApplyNum=t.ApplyNum,
+                ApplyMoney=t.ApplyMoney,
+                Payment=t.Payment,
+                IsPay=t.IsPay
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 删除申请标签
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveApplyTag(Guid Id) {
+            if (Delete<EnterpriseTagApply>(t => t.Id == t.Id))
+                return ServiceMessage.REMOVESUCCESS;
+            else
+                return ServiceMessage.REMOVEFAIL;
+        }
         #endregion
     }
 }
-

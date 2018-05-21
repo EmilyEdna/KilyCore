@@ -44,5 +44,21 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 申请标签
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult ApplyCode()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 新增申请
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult ApplyEdit()
+        {
+            return View();
+        }
     }
 }

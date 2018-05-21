@@ -32,6 +32,7 @@
                     url: "EnterpriseWeb/GetUserDetail",
                     data: { Id: Guid },
                     type: "post",
+                    async: false,
                     success: function (result) {
                         controller.SetCtrlValue("#Edit",result.data)
                      }
@@ -43,6 +44,7 @@
                     url: "EnterpriseWeb/GetRoleAuthorList",
                     data: {},
                     type: "post",
+                    async: false,
                     success: function (result)
                     { 
                         var html = '<option>===请选择===</option>';
