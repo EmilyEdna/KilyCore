@@ -1004,8 +1004,10 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<SystemStayContract> queryable = Kily.Set<SystemStayContract>().Where(t => t.IsDelete == false);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.StayCompanyName))
                 queryable = queryable.Where(t => t.StayCompanyName.Contains(pageParam.QueryParam.StayCompanyName));
+            if (UserInfo().AccountType != AccountEnum.Admin && UserInfo().AccountType != AccountEnum.Country)
+                queryable = queryable.Where(t => UserInfo().TypePath.Contains(t.ProvinceId.ToString()));
             //所属区域下的合同
-            var data = queryable.Where(t => UserInfo().TypePath.Contains(t.ProvinceId.ToString())).OrderByDescending(t => t.CreateTime).AsNoTracking()
+            var data = queryable.OrderByDescending(t => t.CreateTime).AsNoTracking()
                 .Select(t => new ResponseStayContract()
                 {
                     Id = t.Id,
