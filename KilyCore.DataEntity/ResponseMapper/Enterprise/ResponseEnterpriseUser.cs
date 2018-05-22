@@ -59,6 +59,36 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// 集团账户类型
         /// </summary>
         public Guid? RoleAuthorType { get; set; }
+        public string TypePath { get; set; }
+        public string Province
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(TypePath) ? (TypePath.Split(',').Length >= 1 ? TypePath.Split(',')[0] : null) : null;
+            }
+        }
+        public string City
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(TypePath) ? (TypePath.Split(',').Length >= 2 ? TypePath.Split(',')[1] : null) : null;
+            }
+        }
+        public string Area
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(TypePath) ? (TypePath.Split(',').Length >= 3 ? TypePath.Split(',')[2] : null) : null;
+            }
+        }
+        public string Town
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(TypePath) ? (TypePath.Split(',').Length >= 4 ? (TypePath.Split(',')[3]) : null) : null;
+            }
+        }
         public string CompanyAccount => Account;
+        public string TableName { get; set; }
     }
 }

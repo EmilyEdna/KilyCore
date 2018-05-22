@@ -47,5 +47,13 @@ namespace KilyCore.EntityFrameWork.Model.System
         /// 角色权限类型
         /// </summary>
         public virtual Guid RoleAuthorType { get; set; }
+        /// <summary>
+        /// 银行账户
+        /// </summary>
+        public virtual string BankCard { get; set; }
+        /// <summary>
+        /// 开户行
+        /// </summary>
+        public virtual string BankName { get; set; }
     }
 }

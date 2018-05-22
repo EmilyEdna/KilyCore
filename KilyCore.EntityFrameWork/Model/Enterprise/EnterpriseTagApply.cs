@@ -38,6 +38,6 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// <summary>
         /// 支付凭证
         /// </summary>
-        public virtual string PaytTcket { get; set; }
+        public virtual string PaytTicket { get; set; }
     }
 }

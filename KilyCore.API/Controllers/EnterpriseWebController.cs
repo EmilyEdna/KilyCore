@@ -430,6 +430,16 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveApplyTag(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 申请标签
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("ApplyEdit")]
+        public ObjectResultEx ApplyEdit(RequestEnterpriseApply Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.ApplyEdit(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
     }
 }

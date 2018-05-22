@@ -21,7 +21,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetTagApplayPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit"});
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetTagApplyPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit"});
             },
             //事件
             InitEvents: function () {
@@ -29,8 +29,8 @@
                     controller.OpenWindow({
                         title: "新增记录",
                         type: 2,
-                        height: "400px",
-                        width: "600px",
+                        height: "600px",
+                        width: "800px",
                         url: "WebCompanyManage/ThingCode/ApplyEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();

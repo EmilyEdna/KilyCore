@@ -270,6 +270,10 @@ namespace KilyCore.Service.ServiceCore
         public string EditUser(RequestEnterpriseUser Param)
         {
             EnterpriseUser User = Param.MapToObj<RequestEnterpriseUser, EnterpriseUser>();
+            if (CompanyInfo() != null)
+                User.TypePath = CompanyInfo().TypePath;
+            else
+                User.TypePath = CompanyUser().TypePath;
             if (Param.Id != Guid.Empty)
             {
                 if (Update<EnterpriseUser, RequestEnterpriseUser>(User, Param))
@@ -925,7 +929,7 @@ namespace KilyCore.Service.ServiceCore
                 else
                 {
 
-                    return (bool)Apply.IsPay?(Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL):"请先付款";
+                    return (bool)Apply.IsPay ? (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL) : "请先付款";
                 }
             }
         }
@@ -957,12 +961,12 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.OrderByDescending(t => t.CreateTime).AsNoTracking().Select(t => new ResponseEnterpriseApply()
             {
-                BacthNo=t.BacthNo,
-                TagTypeName=AttrExtension.GetSingleDescription<TagEnum,DescriptionAttribute>(t.TagType),
-                ApplyNum=t.ApplyNum,
-                ApplyMoney=t.ApplyMoney,
-                Payment=t.Payment,
-                IsPay=t.IsPay
+                BacthNo = t.BacthNo,
+                TagTypeName = AttrExtension.GetSingleDescription<TagEnum, DescriptionAttribute>(t.TagType),
+                ApplyNum = t.ApplyNum,
+                ApplyMoney = t.ApplyMoney,
+                Payment = t.Payment,
+                IsPay = t.IsPay
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -971,11 +975,43 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public string RemoveApplyTag(Guid Id) {
+        public string RemoveApplyTag(Guid Id)
+        {
             if (Delete<EnterpriseTagApply>(t => t.Id == t.Id))
                 return ServiceMessage.REMOVESUCCESS;
             else
                 return ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 申请标签
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string ApplyEdit(RequestEnterpriseApply Param)
+        {
+            EnterpriseTagApply TagApply = Param.MapToEntity<EnterpriseTagApply>();
+            if (TagApply.Payment == 1)
+            {
+                if (string.IsNullOrEmpty(TagApply.PaytTicket))
+                    return "请先付款";
+                else
+                    return Insert<EnterpriseTagApply>(TagApply) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            }
+            else
+            {
+                IList<EnterpriseTagApply> Apply = Kily.Set<EnterpriseTagApply>().Where(t => t.CompanyId == TagApply.CompanyId).ToList();
+                if (Apply.Count == 0)
+                {
+                    return Convert.ToInt32(Param.ApplyNum) > 10000 ? "申请失败" : (Insert<EnterpriseTagApply>(TagApply) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL);
+                }
+                else
+                {
+                    if (Apply.Where(t => t.IsPay == false).ToList().Count > 0)
+                        return "请先完成以前款项";
+                    else
+                        return Convert.ToInt32(Param.ApplyNum) > 100000 ? "申请失败" : (Insert<EnterpriseTagApply>(TagApply) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL);
+                }
+            }
         }
         #endregion
     }

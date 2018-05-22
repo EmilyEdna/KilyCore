@@ -82,6 +82,7 @@ namespace KilyCore.Service.IServiceCore
         String RemoveTag(Guid Id);
         String RemoveApplyTag(Guid Id);
         PagedResult<ResponseEnterpriseApply> GetTagApplyPage(PageParamList<RequestEnterpriseApply> pageParam);
+        String ApplyEdit(RequestEnterpriseApply Param);
         #endregion
     }
 }

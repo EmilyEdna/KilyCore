@@ -14,5 +14,6 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public decimal? ApplyMoney { get; set; }
         public int Payment { get; set; }
         public bool? IsPay { get; set; }
+        public string PaytTicket { get; set; }
     }
 }

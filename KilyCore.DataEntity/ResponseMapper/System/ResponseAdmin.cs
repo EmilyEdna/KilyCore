@@ -12,6 +12,9 @@ namespace KilyCore.DataEntity.ResponseMapper.System
         public string IdCard { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
+        public string BankCard { get; set; }
+        public string BankName { get; set; }
+        public string TableName { get; set; }
         /// <summary>
         /// 所属区域
         /// </summary>

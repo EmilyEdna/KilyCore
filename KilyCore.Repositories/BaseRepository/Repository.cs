@@ -252,14 +252,8 @@ namespace KilyCore.Repositories.BaseRepository
         /// <returns></returns>
         public ResponseAdmin UserInfo()
         {
-            if (SystemInfoKey.PrivateKey == null)
-                return null;
             ResponseAdmin Data = Cache.GetCache<ResponseAdmin>(SystemInfoKey.PrivateKey);
-            if (Data == null)
-                return null;
-            if (Data.Account == null)
-                return null;
-            return Data;
+            return Data == null ? null : (Data.TableName.Equals(typeof(ResponseEnterprise).Name) ? Data : null);
         }
         /// <summary>
         /// 重缓存中获取登录的公司信息
@@ -267,13 +261,8 @@ namespace KilyCore.Repositories.BaseRepository
         /// <returns></returns>
         public ResponseEnterprise CompanyInfo()
         {
-            if (SystemFlag.EnterpriseFlag == 1)
-            {
-                ResponseEnterprise Data = Cache.GetCache<ResponseEnterprise>(SystemInfoKey.PrivateKey);
-                return Data;
-            }
-            else
-                return null;
+            ResponseEnterprise Data = Cache.GetCache<ResponseEnterprise>(SystemInfoKey.PrivateKey);
+            return Data.TableName.Equals(typeof(ResponseEnterprise).Name) ? Data : null;
         }
         /// <summary>
         /// 重缓存中获取登录的公司子用户信息
@@ -281,13 +270,8 @@ namespace KilyCore.Repositories.BaseRepository
         /// <returns></returns>
         public ResponseEnterpriseUser CompanyUser()
         {
-            if (SystemFlag.EnterpriseFlag == 2)
-            {
-                ResponseEnterpriseUser Data = Cache.GetCache<ResponseEnterpriseUser>(SystemInfoKey.PrivateKey);
-                return Data;
-            }
-            else
-                return null;
+            ResponseEnterpriseUser Data = Cache.GetCache<ResponseEnterpriseUser>(SystemInfoKey.PrivateKey);
+            return Data.TableName.Equals(typeof(ResponseEnterpriseUser).Name) ? Data : null;
         }
         /// <summary>
         /// 返回动态属性集合

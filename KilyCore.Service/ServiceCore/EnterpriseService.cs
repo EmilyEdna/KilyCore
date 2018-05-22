@@ -683,7 +683,8 @@ namespace KilyCore.Service.ServiceCore
                 NetAddress = t.NetAddress,
                 ProductionAddress = t.ProductionAddress,
                 SellerAddress = t.SellerAddress,
-                VideoAddress = t.VideoAddress
+                VideoAddress = t.VideoAddress,
+                TableName=typeof(ResponseEnterprise).Name
             }).FirstOrDefault();
             #endregion
             #region 公司子账号登录
@@ -705,18 +706,13 @@ namespace KilyCore.Service.ServiceCore
                 Phone = t.Phone,
                 RoleAuthorType = t.RoleAuthorType,
                 TrueName = t.TrueName,
+                TableName = typeof(ResponseEnterpriseUser).Name
             }).FirstOrDefault();
             #endregion
             if (Info != null)
-            {
-                SystemFlag.EnterpriseFlag = 1;
                 return Info;
-            }
             else if (User != null)
-            {
-                SystemFlag.EnterpriseFlag = 2;
                 return User;
-            }
             else return null;
         }
         #endregion

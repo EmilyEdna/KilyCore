@@ -47,5 +47,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 集团账户类型
         /// </summary>
         public virtual Guid? RoleAuthorType { get; set; }
+        /// <summary>
+        /// 所属区域
+        /// </summary>
+        public virtual string TypePath { get; set; }
     }
 }

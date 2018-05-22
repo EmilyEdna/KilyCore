@@ -14,6 +14,8 @@ namespace KilyCore.DataEntity.RequestMapper.System
         public string IdCard { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
+        public string BankCard { get; set; }
+        public string BankName { get; set; }
         public string TypePath
         {
             get

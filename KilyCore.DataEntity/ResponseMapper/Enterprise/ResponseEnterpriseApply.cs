@@ -15,6 +15,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string TagTypeName { get; set; }
         public decimal? ApplyMoney { get; set; }
         public int Payment { get; set; }
+        public string PaytTicket { get; set; }
         public string PaymentType { get => Payment == 1 ? "年付费" : "按需付费"; }
         public bool? IsPay { get; set; }
         public string PayType { get => IsPay.HasValue ? ((bool)IsPay ? "已付款" : "未付款") : null; }

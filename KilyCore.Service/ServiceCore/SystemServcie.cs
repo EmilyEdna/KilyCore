@@ -308,10 +308,41 @@ namespace KilyCore.Service.ServiceCore
                      PassWord = t.PassWord,
                      Phone = t.Phone,
                      Email = t.Email,
+                     BankCard = t.BankCard,
+                     BankName = t.BankName,
                      IdCard = t.IdCard,
                      RoleAuthorType = t.RoleAuthorType,
                      TypePath = t.TypePath
                  }).FirstOrDefault();
+        }
+        /// <summary>
+        /// 获取银行账户信息
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseAdmin> GetBankInfo()
+        {
+            IQueryable<SystemAdmin> queryable = Kily.Set<SystemAdmin>().Where(t => t.IsDelete == false);
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.TypePath.Contains(CompanyInfo().Province)
+                || t.TypePath.Contains(CompanyInfo().City)
+                || t.TypePath.Contains(CompanyInfo().Area)
+                || t.TypePath.Contains(CompanyInfo().Town)
+                || t.AccountType == AccountEnum.Country
+                || t.AccountType == AccountEnum.Admin);
+            else
+                queryable = queryable.Where(t => t.TypePath.Contains(CompanyUser().Province)
+                || t.TypePath.Contains(CompanyUser().City)
+                || t.TypePath.Contains(CompanyUser().Area)
+                || t.TypePath.Contains(CompanyUser().Town)
+                || t.AccountType == AccountEnum.Country
+                || t.AccountType == AccountEnum.Admin);
+            var data = queryable.Select(t => new ResponseAdmin()
+            {
+                TrueName=t.TrueName,
+                BankCard=t.BankCard,
+                BankName=t.BankName
+            }).ToList();
+            return data;
         }
         #endregion
 
@@ -465,7 +496,8 @@ namespace KilyCore.Service.ServiceCore
                Phone = t.Phone,
                Email = t.Email,
                AccountType = t.AccountType,
-               RoleAuthorType = t.RoleAuthorType
+               RoleAuthorType = t.RoleAuthorType,
+               TableName=typeof(ResponseAdmin).Name,
            }).FirstOrDefault();
             return Admin ?? null;
         }

@@ -148,7 +148,7 @@ namespace KilyCore.API.Controllers
                     return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ResponseCookieInfo.RSASysKey, SysAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
                 }
                 else
-                    return ObjectResultEx.Instance(null, -1, "登录失败", HttpCode.NoAuth);
+                    return ObjectResultEx.Instance(null, -1, "登录失败或账户冻结", HttpCode.NoAuth);
             }
             catch (Exception ex)
             {
@@ -248,6 +248,16 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetAdminDetail(SimlpeParam<Guid> Param)
         {
             return ObjectResultEx.Instance(SystemService.GetAdminDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取银行卡信息
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetBankInfo")]
+        public ObjectResultEx GetBankInfo()
+        {
+            return ObjectResultEx.Instance(SystemService.GetBankInfo(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 省市区乡
