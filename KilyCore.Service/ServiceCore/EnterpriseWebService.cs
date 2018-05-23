@@ -920,8 +920,8 @@ namespace KilyCore.Service.ServiceCore
             EnterpriseTag Tag = Param.MapToEntity<EnterpriseTag>();
             if (Tag.TagType == TagEnum.OneEnterprise)
                 return queryables.Where(t => t.TagType == TagEnum.OneEnterprise).ToList().Count > 1 ?
-                    "企业只能拥有一个企业二维码!" : 
-                    (Tag.TotalNo > 1 ? "一个企业只能创建一个企业二维码!" : 
+                    "企业只能拥有一个企业二维码!" :
+                    (Tag.TotalNo > 1 ? "一个企业只能创建一个企业二维码!" :
                     (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL));
             else
             {
@@ -983,13 +983,14 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.OrderByDescending(t => t.CreateTime).AsNoTracking().Select(t => new ResponseEnterpriseApply()
             {
+                Id=t.Id,
                 BacthNo = t.BacthNo,
                 TagTypeName = AttrExtension.GetSingleDescription<TagEnum, DescriptionAttribute>(t.TagType),
                 ApplyNum = t.ApplyNum,
                 ApplyMoney = t.ApplyMoney,
                 Payment = t.Payment,
                 IsPay = t.IsPay,
-                AuditTypeName=AttrExtension.GetSingleDescription<AuditEnum,DescriptionAttribute>(t.AuditType)
+                AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType)
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -1006,35 +1007,62 @@ namespace KilyCore.Service.ServiceCore
                 return ServiceMessage.REMOVEFAIL;
         }
         /// <summary>
+        /// 获取缴费详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseEnterpriseApply GetPaymentDetail(Guid Id)
+        {
+            var data = Kily.Set<EnterpriseTagApply>().Where(t => t.Id == Id).Select(t => new ResponseEnterpriseApply()
+            {
+                Id = t.Id,
+                BacthNo = t.BacthNo,
+                ApplyMoney = t.ApplyMoney
+            }).FirstOrDefault();
+            return data;
+        }
+        /// <summary>
         /// 申请标签
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
         public string ApplyEdit(RequestEnterpriseApply Param)
         {
-            Param.AuditType = AuditEnum.WaitAduit;
             EnterpriseTagApply TagApply = Param.MapToEntity<EnterpriseTagApply>();
-            if (TagApply.Payment == 1)
+            if (Param.Id == Guid.Empty)
             {
-                if (string.IsNullOrEmpty(TagApply.PaytTicket))
-                    return "请先付款";
+                TagApply.AuditType = AuditEnum.WaitAduit;
+                if (TagApply.Payment == 1)
+                {
+                    if (string.IsNullOrEmpty(TagApply.PaytTicket))
+                        return "请先付款";
+                    else
+                        return Insert<EnterpriseTagApply>(TagApply) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+                }
                 else
-                    return Insert<EnterpriseTagApply>(TagApply) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+                {
+                    IList<EnterpriseTagApply> Apply = Kily.Set<EnterpriseTagApply>().Where(t => t.CompanyId == TagApply.CompanyId).ToList();
+                    if (Apply.Count == 0)
+                    {
+                        return Convert.ToInt32(Param.ApplyNum) > 10000 ? "申请失败" : (Insert<EnterpriseTagApply>(TagApply) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL);
+                    }
+                    else
+                    {
+                        if (Apply.Where(t => t.IsPay == false).ToList().Count > 0)
+                            return "请先完成以前款项";
+                        else
+                            return Convert.ToInt32(Param.ApplyNum) > 100000 ? "申请失败" : (Insert<EnterpriseTagApply>(TagApply) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL);
+                    }
+                }
             }
             else
             {
-                IList<EnterpriseTagApply> Apply = Kily.Set<EnterpriseTagApply>().Where(t => t.CompanyId == TagApply.CompanyId).ToList();
-                if (Apply.Count == 0)
-                {
-                    return Convert.ToInt32(Param.ApplyNum) > 10000 ? "申请失败" : (Insert<EnterpriseTagApply>(TagApply) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL);
-                }
-                else
-                {
-                    if (Apply.Where(t => t.IsPay == false).ToList().Count > 0)
-                        return "请先完成以前款项";
-                    else
-                        return Convert.ToInt32(Param.ApplyNum) > 100000 ? "申请失败" : (Insert<EnterpriseTagApply>(TagApply) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL);
-                }
+                if (string.IsNullOrEmpty(Param.PaytTicket))
+                    return "请上传缴费凭证";
+                IList<String> Fieds = new List<String>();
+                Fieds.Add("IsPay");
+                Fieds.Add("PaytTicket");
+                return UpdateField<EnterpriseTagApply>(TagApply, null, Fieds) ? ServiceMessage.UPDATESUCCESS:ServiceMessage.UPDATEFAIL;
             }
         }
         #endregion

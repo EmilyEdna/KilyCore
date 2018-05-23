@@ -29,7 +29,8 @@ namespace KilyCore.WEB.Areas.CliqueManage.Controllers
         {
             return View();
         }
-        public IActionResult WatchRole() {
+        public IActionResult WatchRole()
+        {
             return View();
         }
         #endregion
@@ -63,6 +64,13 @@ namespace KilyCore.WEB.Areas.CliqueManage.Controllers
             return View();
         }
         public IActionResult Payment()
+        {
+            return View();
+        }
+        #endregion
+
+        #region 物码审核
+        public IActionResult AuditCode()
         {
             return View();
         }

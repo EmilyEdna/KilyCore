@@ -60,5 +60,12 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 支付
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Payment() {
+            return View();
+        }
     }
 }

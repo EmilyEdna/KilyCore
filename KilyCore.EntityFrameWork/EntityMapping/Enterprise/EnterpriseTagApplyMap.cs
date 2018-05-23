@@ -13,7 +13,7 @@ namespace KilyCore.EntityFrameWork.EntityMapping.Enterprise
         {
             builder.ToTable(typeof(EnterpriseTagApply).Name);
             builder.HasKey(t => t.Id);
-            builder.Property(t => t.ApplyMoney).HasColumnType("decimal(18,2)");
+            builder.Property(t => t.ApplyMoney).HasColumnType("decimal(18,3)");
         }
     }
 }

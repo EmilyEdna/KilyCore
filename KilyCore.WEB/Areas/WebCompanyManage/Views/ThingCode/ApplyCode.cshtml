@@ -21,7 +21,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetTagApplyPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit"});
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetTagApplyPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
             },
             //事件
             InitEvents: function () {
@@ -43,7 +43,8 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
-                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>付款</button>');
+                    if (!row.IsPay)
+                        action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>付款</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
@@ -60,6 +61,18 @@
                                 });
                             }
                         });
+                    },
+                    "click .edit": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "缴费付款",
+                            type: 2,
+                            height: "600px",
+                            width: "800px",
+                            url: "WebCompanyManage/ThingCode/Payment?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
                     },
                 }//表单事件结束
             }//行为结束
@@ -109,7 +122,7 @@
                                 <th data-field="PaymentType" data-halign="center" data-align="center" data-valign="middle">付款方式</th>
                                 <th data-field="ApplyNum" data-halign="center" data-align="center" data-valign="middle">申请数量</th>
                                 <th data-field="ApplyNum" data-halign="center" data-align="center" data-valign="middle">申请数量</th>
-                                <th data-field="IsPay" data-halign="center" data-align="center" data-valign="middle">是否付款</th>
+                                <th data-field="PayType" data-halign="center" data-align="center" data-valign="middle">是否付款</th>
                                 <th data-field="AuditTypeName" data-halign="center" data-align="center" data-valign="middle">审核类型</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
