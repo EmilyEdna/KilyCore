@@ -45,34 +45,30 @@
             <input type="hidden" id="CompanyId" name="CompanyId" />
             <table class="table table-hover table-bordered">
                 <tr>
-                    <th><label class="control-label">批次编号</label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control" name="BacthNo" id="BacthNo" readonly />
-                    </td>
                     <th><label class="control-label">标签类型</label></th>
-                    <td class="has-warning">
+                    <td class="has-warning" colspan="3">
                         <label class="radio-inline">
                             <input type="radio" name="TagType" value="10" style="margin-top:3px" />
-                            <text title="一物一码">物码</text>
+                            <text title="一物一码">一物一码</text>
                         </label>
                         <label class="radio-inline">
                             <input type="radio" name="TagType" value="20" style="margin-top:3px" />
-                            <text title="一品一码">品码</text>
+                            <text title="一品一码">一品一码</text>
                         </label>
                         <label class="radio-inline">
                             <input type="radio" name="TagType" value="30" style="margin-top:3px" />
-                            <text title="一物企一码">企码</text>
+                            <text title="一企一码">一企一码</text>
                         </label>
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">开始号段</label></th>
+                    <th><label class="control-label">批次编号</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control required" name="StarSerialNo" data-msg-required="请输入开始号段(仅限数字)" maxlength="11" />
+                        <input type="text" class="form-control" name="BacthNo" id="BacthNo" readonly />
                     </td>
-                    <th><label class="control-label">结束号段</label></th>
+                    <th><label class="control-label">申请个数</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control required" name="EndSerialNo" data-msg-required="请输入结束号段(仅限数字)" maxlength="11" />
+                        <input type="text" class="form-control required" name="TotalNo" data-msg-required="请输入申请数量(仅限数字)" />
                     </td>
                 </tr>
             </table>

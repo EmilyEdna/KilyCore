@@ -39,5 +39,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 支付凭证
         /// </summary>
         public virtual string PaytTicket { get; set; }
+        /// <summary>
+        /// 审核类型
+        /// </summary>
+        public AuditEnum AuditType { get; set; }
     }
 }

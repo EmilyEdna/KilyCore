@@ -898,38 +898,60 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string CreateTag(RequestEnterpriseTag Param)
         {
-            SystemVersionEnum Version = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Param.CompanyId).Select(t => t.Version).FirstOrDefault();
-            IQueryable<EnterpriseTag> ITag = Kily.Set<EnterpriseTag>().Where(t => t.CompanyId == Param.CompanyId);
-            EnterpriseTagApply Apply = Kily.Set<EnterpriseTagApply>().Where(t => t.CompanyId == Param.CompanyId && t.IsDelete == false).FirstOrDefault();
-            Param.TotalNo = (int)(Param.EndSerialNo - Param.StarSerialNo);
+            //取省份code
+            IQueryable<SystemProvince> queryable = Kily.Set<SystemProvince>();
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => CompanyInfo().TypePath.Contains(t.Id.ToString()));
+            else
+                queryable = queryable.Where(t => CompanyUser().TypePath.Contains(t.Id.ToString()));
+            SystemProvince Province = queryable.FirstOrDefault();
+            //取申请表
+            EnterpriseTagApply Apply = Kily.Set<EnterpriseTagApply>().Where(t => t.AuditType == AuditEnum.FinanceSuccess)
+                .Where(t => t.CompanyId == Param.CompanyId && t.IsDelete == false).FirstOrDefault();
+            //懒加载主表信息
+            IQueryable<EnterpriseTag> queryables = Kily.Set<EnterpriseTag>()
+                .Where(t => t.CompanyId == Param.CompanyId).OrderByDescending(t => t.CreateTime);
+            List<EnterpriseTag> TagList = queryables.ToList();
+            if (TagList.Count == 0)
+                Param.StarSerialNo = Convert.ToInt64(Province.Code + "100000000000");
+            else
+                Param.StarSerialNo = TagList.FirstOrDefault().EndSerialNo + 1;
+            Param.EndSerialNo = Param.StarSerialNo + Param.TotalNo;
             EnterpriseTag Tag = Param.MapToEntity<EnterpriseTag>();
-            if (Apply == null)
-            {
-                long Total = ITag.Where(t => t.IsApplay == false).Sum(t => t.TotalNo);
-                long Totals = (Total + Param.TotalNo);
-                Tag.IsApplay = false;
-                if (Version == SystemVersionEnum.Test)
-                    return ServiceMessage.TEST - Totals >= 0 ? (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL) : $"当前剩余标签数量:{ServiceMessage.TEST - Total},请升级版本或申请购买数量!";
-                else if (Version == SystemVersionEnum.Base)
-                    return ServiceMessage.BASE - Totals >= 0 ? (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL) : $"当前剩余标签数量:{ServiceMessage.BASE - Total},请升级版本或申请购买数量!";
-                else if (Version == SystemVersionEnum.Level)
-                    return ServiceMessage.LEVEL - Totals >= 0 ? (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL) : $"当前剩余标签数量:{ServiceMessage.LEVEL - Total},请升级版本或申请购买数量!";
-                else
-                    return ServiceMessage.ENTERPRISE - Totals >= 0 ? (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL) : $"当前剩产标签数量:{ServiceMessage.ENTERPRISE - Total},请升级版本或申请购买数量!";
-            }
+            if (Tag.TagType == TagEnum.OneEnterprise)
+                return queryables.Where(t => t.TagType == TagEnum.OneEnterprise).ToList().Count > 1 ?
+                    "企业只能拥有一个企业二维码!" : 
+                    (Tag.TotalNo > 1 ? "一个企业只能创建一个企业二维码!" : 
+                    (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL));
             else
             {
-                long Total = ITag.Where(t => t.IsApplay == true).Sum(t => t.TotalNo);
-                long Totals = (Total + Param.TotalNo);
-                Tag.IsApplay = true;
-                if (Apply.Payment == 2)
+                if (Apply == null)
                 {
-                    return Convert.ToInt64(Apply.ApplyNum) - Totals >= 0 ? (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL) : $"当前剩余标签数量:{Convert.ToInt64(Apply.ApplyNum) - Total},请升级版本或申请购买数量!";
+                    long Total = queryables.Where(t => t.IsApplay == false).Sum(t => t.TotalNo);
+                    long Totals = (Total + Param.TotalNo);
+                    Tag.IsApplay = false;
+                    if ((CompanyInfo() != null ? CompanyInfo().Version : CompanyUser().Version) == SystemVersionEnum.Test)
+                        return ServiceMessage.TEST - Totals >= 0 ? (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL) : $"当前剩余标签数量:{ServiceMessage.TEST - Total},请升级版本或申请购买数量!";
+                    else if ((CompanyInfo() != null ? CompanyInfo().Version : CompanyUser().Version) == SystemVersionEnum.Base)
+                        return ServiceMessage.BASE - Totals >= 0 ? (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL) : $"当前剩余标签数量:{ServiceMessage.BASE - Total},请升级版本或申请购买数量!";
+                    else if ((CompanyInfo() != null ? CompanyInfo().Version : CompanyUser().Version) == SystemVersionEnum.Level)
+                        return ServiceMessage.LEVEL - Totals >= 0 ? (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL) : $"当前剩余标签数量:{ServiceMessage.LEVEL - Total},请升级版本或申请购买数量!";
+                    else
+                        return ServiceMessage.ENTERPRISE - Totals >= 0 ? (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL) : $"当前剩产标签数量:{ServiceMessage.ENTERPRISE - Total},请升级版本或申请购买数量!";
                 }
                 else
                 {
-
-                    return (bool)Apply.IsPay ? (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL) : "请先付款";
+                    long Total = queryables.Where(t => t.IsApplay == true).Sum(t => t.TotalNo);
+                    long Totals = (Total + Param.TotalNo);
+                    Tag.IsApplay = true;
+                    if (Apply.Payment == 2)
+                    {
+                        return Convert.ToInt64(Apply.ApplyNum) - Totals >= 0 ? (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL) : $"当前剩余标签数量:{Convert.ToInt64(Apply.ApplyNum) - Total},请升级版本或申请购买数量!";
+                    }
+                    else
+                    {
+                        return (bool)Apply.IsPay ? (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL) : "请先付款";
+                    }
                 }
             }
         }
@@ -966,7 +988,8 @@ namespace KilyCore.Service.ServiceCore
                 ApplyNum = t.ApplyNum,
                 ApplyMoney = t.ApplyMoney,
                 Payment = t.Payment,
-                IsPay = t.IsPay
+                IsPay = t.IsPay,
+                AuditTypeName=AttrExtension.GetSingleDescription<AuditEnum,DescriptionAttribute>(t.AuditType)
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -989,6 +1012,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string ApplyEdit(RequestEnterpriseApply Param)
         {
+            Param.AuditType = AuditEnum.WaitAduit;
             EnterpriseTagApply TagApply = Param.MapToEntity<EnterpriseTagApply>();
             if (TagApply.Payment == 1)
             {
