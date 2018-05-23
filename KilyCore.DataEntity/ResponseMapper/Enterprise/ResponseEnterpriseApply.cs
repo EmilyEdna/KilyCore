@@ -21,5 +21,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string PayType { get => IsPay.HasValue ? ((bool)IsPay ? "已付款" : "未付款") : "未付款"; }
         public AuditEnum AuditType { get; set; }
         public string AuditTypeName { get; set; }
+        public string TableName { get; set; }
     }
 }

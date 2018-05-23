@@ -3,3 +3,102 @@
     ViewData["Title"] = "物码审核";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                //恢复高度
+                $(window).resize(function (e) {
+                    window.setTimeout(function () {
+                        options.$table.bootstrapTable("resetView", { height: $(window).height() - 150 });
+                    }, 200);
+                    e.stopPropagation();
+                });
+                //设置表单
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetTagApplyPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
+            },
+            //事件
+            InitEvents: function () {
+            },
+            //行为
+            action: {
+                TableFormatter: function (val, row, index) {
+                    var action = [];
+                    action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-pencil-square-o"></i>审核</button>');
+                    action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-eye"></i>审核详情</button>');
+                    return action.join("&nbsp;")
+                },
+                TableEvents: {
+                    "click .audit": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "认证审核",
+                            type: 1,
+                            height: "260px",
+                            width: "400px",
+                            url: "CliqueManage/Enterprise/AuditCodeTag?Id=" + row.Id + "&TableName=" + row.TableName,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        });
+                    }
+                }//表单事件结束
+            }//行为结束
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+@section css{
+
+}
+
+<div class="container-fluid">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>物码审核</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <form id="Menu">
+                        <div class="col-sm-8 m-b-xs">
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" placeholder="批次编号" class="input-sm form-control" name="BatchNo">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
+                                    <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive">
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="BacthNo" data-halign="center" data-align="center" data-valign="middle">批次编号</th>
+                                <th data-field="ApplyMoney" data-halign="center" data-align="center" data-valign="middle">支付金额</th>
+                                <th data-field="PaymentType" data-halign="center" data-align="center" data-valign="middle">付款方式</th>
+                                <th data-field="ApplyNum" data-halign="center" data-align="center" data-valign="middle">申请数量</th>
+                                <th data-field="ApplyNum" data-halign="center" data-align="center" data-valign="middle">申请数量</th>
+                                <th data-field="PayType" data-halign="center" data-align="center" data-valign="middle">是否付款</th>
+                                <th data-field="AuditTypeName" data-halign="center" data-align="center" data-valign="middle">审核类型</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

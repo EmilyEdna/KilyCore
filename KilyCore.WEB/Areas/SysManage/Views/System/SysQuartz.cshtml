@@ -27,7 +27,7 @@
             InitEvents: function () {
                 $("#add").on('click', function () {
                     controller.OpenWindow({
-                        title: "新增菜单",
+                        title: "新增任务",
                         type: 2,
                         height: "550px",
                         width: "750px",
@@ -42,9 +42,9 @@
             action: {
                 TableFormatter: function (val, row, index) {
                     var action = [];
-                    action.push('<button class="btn btn-sm btn-primary run"><i class="fa fa-trash-o"></i>启动</button>');
-                    action.push('<button class="btn btn-sm btn-primary pause"><i class="fa fa-pencil-square-o"></i>暂停</button>');
-                    action.push('<button class="btn btn-sm btn-primary recover"><i class="fa fa-trash-o"></i>恢复</button>');
+                    action.push('<button class="btn btn-sm btn-primary run"><i class="fa fa-play-circle-o"></i>启动</button>');
+                    action.push('<button class="btn btn-sm btn-primary pause"><i class="fa fa-stop-circle-o"></i>暂停</button>');
+                    action.push('<button class="btn btn-sm btn-primary recover"><i class="fa fa-pause-circle-o"></i>恢复</button>');
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
                     return action.join("&nbsp;")
                 },
