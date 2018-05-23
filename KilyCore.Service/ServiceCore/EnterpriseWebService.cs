@@ -899,7 +899,7 @@ namespace KilyCore.Service.ServiceCore
         public string CreateTag(RequestEnterpriseTag Param)
         {
             //取省份code
-            IQueryable<SystemProvince> queryable = Kily.Set<SystemProvince>();
+            IQueryable<SystemProvince> queryable = Kily.Set<SystemProvince>().AsNoTracking();
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => CompanyInfo().TypePath.Contains(t.Id.ToString()));
             else

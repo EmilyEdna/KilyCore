@@ -42,7 +42,7 @@ controller.ajax = function (option) {
                 controller.Confirm("服务器发生错误", function (flag) { });
             else if (xhr.status == 502)
                 controller.Confirm("无效的网关", function (flag) { });
-            else if (xhr.status==0)
+            else if (xhr.status == 0)
                 controller.Confirm("服务器停止运行", function (flag) { });
             else
                 controller.Confirm(msg, function (flag) { });
@@ -387,15 +387,12 @@ controller.ValidateConfirm = function (element, option) {
                 data: data,
                 type: method,
                 success: function (data) {
-                    if (option.ajaxSuccess)
-                        option.ajaxSuccess(data);
-                    else {
-                        if (window.source)
-                            window.source.options.$table.refresh();
-                        if (window.popClose)
+                    window.source.options.$table.refresh();
+                    controller.Confirm(data.data, function (flag) {
+                        if (flag) {
                             window.popClose();
-                    }
-
+                        }
+                    });
                 },
                 fail: option.ajaxFail
             });

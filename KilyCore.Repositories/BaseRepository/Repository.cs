@@ -253,7 +253,7 @@ namespace KilyCore.Repositories.BaseRepository
         public ResponseAdmin UserInfo()
         {
             ResponseAdmin Data = Cache.GetCache<ResponseAdmin>(SystemInfoKey.PrivateKey);
-            return Data == null ? null : (Data.TableName.Equals(typeof(ResponseEnterprise).Name) ? Data : null);
+            return Data == null ? null : (Data.TableName.Equals(typeof(ResponseAdmin).Name) ? Data : null);
         }
         /// <summary>
         /// 重缓存中获取登录的公司信息
