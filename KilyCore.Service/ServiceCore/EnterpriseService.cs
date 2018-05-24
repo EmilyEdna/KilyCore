@@ -746,6 +746,7 @@ namespace KilyCore.Service.ServiceCore
                 ApplyMoney = t.ApplyMoney,
                 Payment = t.Payment,
                 IsPay = t.IsPay,
+                PaytTicket=t.PaytTicket,
                 AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
                 TableName = t.GetType().Name
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);

@@ -337,5 +337,66 @@ namespace KilyCore.Service.ServiceCore
                 return ServiceMessage.UPDATEFAIL;
         }
         #endregion
+        #region 系统字典
+        /// <summary>
+        /// 获取系统字典分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseDictionary> GetSysDicPage(PageParamList<RequestDictionary> pageParam)
+        {
+            IQueryable<FunctionDictionary> queryable = Kily.Set<FunctionDictionary>().OrderByDescending(t => t.CreateTime).AsNoTracking();
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.DicName))
+                queryable = queryable.Where(t => t.DicName.Contains(pageParam.QueryParam.DicName));
+            var data = queryable.Select(t => new ResponseDictionary()
+            {
+                Id = t.Id,
+                DicName = t.DicName,
+                DicValue = t.DicValue,
+                IsEnable=t.IsEnable
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 获取字典详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseDictionary GetDicDetail(Guid Id)
+        {
+            var data = Kily.Set<FunctionDictionary>().Where(t => t.Id == Id).Select(t => new ResponseDictionary()
+            {
+                Id = t.Id,
+                DicName = t.DicName,
+                DicValue = t.DicValue,
+                DicDescript = t.DicDescript
+            }).FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 编辑系统字典
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string DicEdit(RequestDictionary Param)
+        {
+            FunctionDictionary Dic = Param.MapToEntity<FunctionDictionary>();
+            if (Param.Id == Guid.Empty)
+                return Insert<FunctionDictionary>(Dic) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+                return Update<FunctionDictionary, RequestDictionary>(Dic, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        /// <summary>
+        /// 启用禁用字典
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string EnableDic(Guid Id,bool Param)
+        {
+            FunctionDictionary dictionary = Kily.Set<FunctionDictionary>().Where(t => t.Id == Id).FirstOrDefault();
+            dictionary.IsEnable = Param;
+            return UpdateField(dictionary, "IsEnable") ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
+        }
+        #endregion
     }
 }

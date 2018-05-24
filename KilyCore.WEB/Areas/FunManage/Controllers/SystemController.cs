@@ -45,5 +45,11 @@ namespace KilyCore.WEB.Areas.FunManage.Controllers
             return View();
         }
         #endregion
+        #region 系统字典
+        public IActionResult Dictionary()
+        {
+            return View();
+        }
+        #endregion
     }
 }

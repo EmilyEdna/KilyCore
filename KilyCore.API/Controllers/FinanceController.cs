@@ -2,6 +2,7 @@
 using KilyCore.DataEntity.RequestMapper.Dining;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.Finance;
+using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.Extension.ResultExtension;
 using KilyCore.Service.QueryExtend;
 using Microsoft.AspNetCore.Mvc;
@@ -163,6 +164,28 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx EditDiningRole(RequestDiningInfo Param)
         {
             return ObjectResultEx.Instance(FinanceService.EditDiningRole(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #region 物码缴费
+        /// <summary>
+        /// 物码缴费分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetTagAuditPage")]
+        public ObjectResultEx GetTagAuditPage(PageParamList<RequestEnterpriseApply> pageParam)
+        {
+            return ObjectResultEx.Instance(FinanceService.GetTagAuditPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 审核物码缴费
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("AuditCode")]
+        public ObjectResultEx AuditCode(RequestAudit Param)
+        {
+            return ObjectResultEx.Instance(FinanceService.AuditCode(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

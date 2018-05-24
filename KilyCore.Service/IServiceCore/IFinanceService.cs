@@ -2,6 +2,7 @@
 using KilyCore.DataEntity.RequestMapper.Dining;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.Finance;
+using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Dining;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.Finance;
@@ -43,6 +44,10 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseDiningPay> GetDiningPayPage(PageParamList<RequestDiningPay> pageParam);
         IList<ResponseAuthorRole> GetDiningRoles();
         String EditDiningRole(RequestDiningInfo Param);
+        #endregion
+        #region 物码缴费
+        PagedResult<ResponseEnterpriseApply> GetTagAuditPage(PageParamList<RequestEnterpriseApply> pageParam);
+        String AuditCode(RequestAudit Param);
         #endregion
     }
 }

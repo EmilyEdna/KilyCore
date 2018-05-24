@@ -17,5 +17,6 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public bool? IsPay { get; set; }
         public string PaytTicket { get; set; }
         public AuditEnum AuditType { get; set; }
+        public string AreaTree { get; set; }
     }
 }

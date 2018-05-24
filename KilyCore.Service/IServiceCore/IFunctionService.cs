@@ -27,5 +27,11 @@ namespace KilyCore.Service.IServiceCore
         IList<ResponseVienTagPreson> GetAcceptUser(int flag);
         String AcceptTag(Guid Id);
         #endregion
+        #region 系统码表
+        PagedResult<ResponseDictionary> GetSysDicPage(PageParamList<RequestDictionary> pageParam);
+        ResponseDictionary GetDicDetail(Guid Id);
+        String DicEdit(RequestDictionary Param);
+        String EnableDic(Guid Id, bool Param);
+        #endregion
     }
 }

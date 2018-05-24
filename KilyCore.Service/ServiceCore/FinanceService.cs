@@ -1,6 +1,7 @@
 ﻿using KilyCore.DataEntity.RequestMapper.Dining;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.Finance;
+using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Dining;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.Finance;
@@ -316,6 +317,57 @@ namespace KilyCore.Service.ServiceCore
                 return ServiceMessage.UPDATEFAIL;
         }
         #endregion
+
+        #region 物码缴费-财务
+        /// <summary>
+        /// 物码缴费
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseApply> GetTagAuditPage(PageParamList<RequestEnterpriseApply> pageParam)
+        {
+            IQueryable<EnterpriseTagApply> queryable = Kily.Set<EnterpriseTagApply>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseInfo> queryables = Kily.Set<EnterpriseInfo>();
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.AreaTree))
+                queryables = queryables.Where(t => t.TypePath.Contains(pageParam.QueryParam.AreaTree));
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.BacthNo))
+                queryable = queryable.Where(t => t.BacthNo.Contains(pageParam.QueryParam.BacthNo));
+            var data = queryable.Join(queryables, t => t.CompanyId, y => y.Id, (t, y) => new ResponseEnterpriseApply()
+            {
+                Id = t.Id,
+                BacthNo = t.BacthNo,
+                TagTypeName = AttrExtension.GetSingleDescription<TagEnum, DescriptionAttribute>(t.TagType),
+                ApplyNum = t.ApplyNum,
+                ApplyMoney = t.ApplyMoney,
+                Payment = t.Payment,
+                IsPay = t.IsPay,
+                PaytTicket = t.PaytTicket,
+                AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
+                TableName = t.GetType().Name
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 审核标签
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string AuditCode(RequestAudit Param)
+        {
+            Param.AuditName = UserInfo().TrueName;
+            SystemAudit Audit = Param.MapToEntity<SystemAudit>();
+            if (Insert<SystemAudit>(Audit))
+            {
+                EnterpriseTagApply TagApply = Kily.Set<EnterpriseTagApply>().Where(t => t.IsDelete == false).Where(t => t.Id == Param.TableId).FirstOrDefault();
+                TagApply.AuditType = Param.AuditType;
+                if (UpdateField<EnterpriseTagApply>(TagApply, "AuditType"))
+                    return ServiceMessage.HANDLESUCCESS;
+                else
+                    return ServiceMessage.HANDLEFAIL;
+            }
+            else
+                return ServiceMessage.INSERTFAIL;
+        }
+        #endregion
     }
 }
-

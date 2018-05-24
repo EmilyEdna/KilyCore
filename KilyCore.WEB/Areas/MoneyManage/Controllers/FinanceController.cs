@@ -57,5 +57,15 @@ namespace KilyCore.WEB.Areas.MoneyManage.Controllers
             return View();
         }
         #endregion
+        #region 物码缴费
+        public IActionResult GoodsPay()
+        {
+            return View();
+        }
+        public IActionResult GoodsPayAudit()
+        {
+            return View();
+        }
+        #endregion
     }
 }

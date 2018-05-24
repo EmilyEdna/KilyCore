@@ -117,5 +117,48 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(FunctionService.AcceptTag(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 系统码表
+        /// <summary>
+        /// 系统码表分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetSysDicPage")]
+        public ObjectResultEx GetSysDicPage(PageParamList<RequestDictionary> pageParam)
+        {
+            return ObjectResultEx.Instance(FunctionService.GetSysDicPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 码表详情
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetDicDetail")]
+        public ObjectResultEx GetDicDetail(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(FunctionService.GetDicDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑码表
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("DicEdit")]
+        public ObjectResultEx DicEdit(RequestDictionary Param)
+        {
+            return ObjectResultEx.Instance(FunctionService.DicEdit(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 是否启用
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <param name="Value"></param>
+        /// <returns></returns>
+        [HttpPost("EnableDic")]
+        public ObjectResultEx EnableDic(SimlpeParam<Guid> Param, SimlpeParam<bool> Value)
+        {
+            return ObjectResultEx.Instance(FunctionService.EnableDic(Param.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }
