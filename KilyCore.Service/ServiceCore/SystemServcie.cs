@@ -327,13 +327,13 @@ namespace KilyCore.Service.ServiceCore
                 || t.TypePath.Contains(CompanyInfo().City)
                 || t.TypePath.Contains(CompanyInfo().Area)
                 || t.TypePath.Contains(CompanyInfo().Town)
-                || t.AccountType == AccountEnum.Country);
+                || t.AccountType == AccountEnum.Country).AsNoTracking();
             else
                 queryable = queryable.Where(t => t.TypePath.Contains(CompanyUser().Province)
                 || t.TypePath.Contains(CompanyUser().City)
                 || t.TypePath.Contains(CompanyUser().Area)
                 || t.TypePath.Contains(CompanyUser().Town)
-                || t.AccountType == AccountEnum.Country);
+                || t.AccountType == AccountEnum.Country).AsNoTracking();
             var data = queryable.Select(t => new ResponseAdmin()
             {
                 TrueName=t.TrueName,

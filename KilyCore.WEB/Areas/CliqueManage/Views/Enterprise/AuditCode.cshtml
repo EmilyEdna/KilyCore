@@ -21,7 +21,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetTagApplyPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
+                this.$table = controller.Table("#tableList", { url: "Enterprise/GetTagAuditPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
             },
             //事件
             InitEvents: function () {
@@ -31,7 +31,7 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-pencil-square-o"></i>审核</button>');
-                    action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-eye"></i>审核详情</button>');
+                    action.push('<button class="btn btn-sm btn-primary watch"><i class="fa fa-eye"></i>审核详情</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
@@ -46,7 +46,20 @@
                                 result.$("#Edit").submit();
                             }
                         });
+                    },
+                    "click .watch": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "审核详情",
+                            type: 1,
+                            height: "400px",
+                            width: "600px",
+                            url: "CliqueManage/Enterprise/AuditCodeDetail?Id=" + row.Id + "&TableName=" + row.TableName,
+                            callBack: function (result) {
+                                result.popClose();
+                            }
+                        });
                     }
+
                 }//表单事件结束
             }//行为结束
         };
@@ -89,7 +102,6 @@
                                 <th data-field="BacthNo" data-halign="center" data-align="center" data-valign="middle">批次编号</th>
                                 <th data-field="ApplyMoney" data-halign="center" data-align="center" data-valign="middle">支付金额</th>
                                 <th data-field="PaymentType" data-halign="center" data-align="center" data-valign="middle">付款方式</th>
-                                <th data-field="ApplyNum" data-halign="center" data-align="center" data-valign="middle">申请数量</th>
                                 <th data-field="ApplyNum" data-halign="center" data-align="center" data-valign="middle">申请数量</th>
                                 <th data-field="PayType" data-halign="center" data-align="center" data-valign="middle">是否付款</th>
                                 <th data-field="AuditTypeName" data-halign="center" data-align="center" data-valign="middle">审核类型</th>

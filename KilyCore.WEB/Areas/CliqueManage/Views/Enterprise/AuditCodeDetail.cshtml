@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewData["Title"] = "二维码审核详情";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+    <style>
+        th {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        td {
+            text-align: center;
+            vertical-align: middle;
+        }
+    </style>
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                this.Guid = controller.GetParam("Id");
+                this.TableName = controller.GetParam("TableName");
+                options.GetCompanyIdentDetail(this.Guid, this.TableName);
+            },
+            //事件
+            InitEvents: function () {
+            },
+            //获取详情
+            GetCompanyIdentDetail: function (Guid, TableName) {
+                controller.ajax({
+                    url: 'Enterprise/GetTagAuditDetail',
+                    data: { TableId: Guid, TableName: TableName },
+                    type: "post",
+                    success: function (result) {
+                        options.BindAuditInfo(result.data);
+                    }
+                });
+            },
+            //绑定审核信息
+            BindAuditInfo: function (data) {
+                var html = '';
+                $.each(data, function (i, obj) {
+                    html += '<tr><td class="text-warning">' + obj.AuditName + '</td>';
+                    html += '<td class="text-warning">' + obj.CreateTime + '</td>';
+                    debugger;
+                    if (obj.AuditSuggestion.length < 8)
+                        html += '<td class="text-warning">' + obj.AuditSuggestion + '</td>';
+                    else
+                        html += '<td class="text-warning"><lable title="' + obj.AuditSuggestion + '">' + obj.AuditSuggestion.substring(0, 8) + '..</lable></td>';
+                    html += '<td class="text-warning">'+obj.AuditTypeName+'</td></tr>';
+                })
+                $("#AuditInfo").html(html);
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" id="Edit">
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>
+                            <span class="text-navy fa fa-user">审核人</span>
+                        </th>
+                        <th>
+                            <span class="text-navy fa fa-calendar">审核时间</span>
+                        </th>
+                        <th>
+                            <span class="text-navy fa fa-commenting">审核意见</span>
+                        </th>
+                        <th>
+                            <span class="text-navy fa fa-question">审核状态</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="AuditInfo"></tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="4" class="text-danger">
+                            没有更多记录...
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+        </form>
+    </div>
+</div>

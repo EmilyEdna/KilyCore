@@ -414,7 +414,7 @@ namespace KilyCore.Service.ServiceCore
                     IdentStarName = AttrExtension.GetSingleDescription<IdentEnum, DescriptionAttribute>(x.IdentStar),
                     Representative = x.Representative,
                     LinkPhone = x.LinkPhone,
-                    AuditType=x.AuditType,
+                    AuditType = x.AuditType,
                     AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(x.AuditType),
                     CompanyType = x.CompanyType,
                     CommunityCode = x.CommunityCode,
@@ -684,7 +684,7 @@ namespace KilyCore.Service.ServiceCore
                 ProductionAddress = t.ProductionAddress,
                 SellerAddress = t.SellerAddress,
                 VideoAddress = t.VideoAddress,
-                TableName=typeof(ResponseEnterprise).Name
+                TableName = typeof(ResponseEnterprise).Name
             }).FirstOrDefault();
             #endregion
             #region 公司子账号登录
@@ -718,6 +718,77 @@ namespace KilyCore.Service.ServiceCore
         #endregion
 
         #region 标签管理
+        /// <summary>
+        /// 二维码审核的标签分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseApply> GetTagAuditPage(PageParamList<RequestEnterpriseApply> pageParam)
+        {
+            IQueryable<EnterpriseTagApply> queryable = Kily.Set<EnterpriseTagApply>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseInfo> queryables = Kily.Set<EnterpriseInfo>();
+            if (UserInfo().AccountType == AccountEnum.Province)
+                queryables = queryables.Where(t => t.TypePath.Contains(UserInfo().Province));
+            if (UserInfo().AccountType == AccountEnum.City)
+                queryables = queryables.Where(t => t.TypePath.Contains(UserInfo().City));
+            if (UserInfo().AccountType == AccountEnum.Area)
+                queryables = queryables.Where(t => t.TypePath.Contains(UserInfo().Area));
+            if (UserInfo().AccountType == AccountEnum.Village)
+                queryables = queryables.Where(t => t.TypePath.Contains(UserInfo().Town));
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.BacthNo))
+                queryable = queryable.Where(t => t.BacthNo.Contains(pageParam.QueryParam.BacthNo));
+            var data = queryable.Join(queryables, t => t.CompanyId, y => y.Id, (t, y) => new ResponseEnterpriseApply()
+            {
+                Id = t.Id,
+                BacthNo = t.BacthNo,
+                TagTypeName = AttrExtension.GetSingleDescription<TagEnum, DescriptionAttribute>(t.TagType),
+                ApplyNum = t.ApplyNum,
+                ApplyMoney = t.ApplyMoney,
+                Payment = t.Payment,
+                IsPay = t.IsPay,
+                AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
+                TableName = t.GetType().Name
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 审核标签
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string AuditCode(RequestAudit Param)
+        {
+            Param.AuditName = UserInfo().TrueName;
+            SystemAudit Audit = Param.MapToEntity<SystemAudit>();
+            if (Insert<SystemAudit>(Audit))
+            {
+                EnterpriseTagApply TagApply = Kily.Set<EnterpriseTagApply>().Where(t => t.IsDelete == false).Where(t => t.Id == Param.TableId).FirstOrDefault();
+                TagApply.AuditType = Param.AuditType;
+                if (UpdateField<EnterpriseTagApply>(TagApply, "AuditType"))
+                    return ServiceMessage.HANDLESUCCESS;
+                else
+                    return ServiceMessage.HANDLEFAIL;
+            }
+            else
+                return ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 获取审核详情
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public IList<ResponseAudit> GetTagAuditDetail(RequestAudit Param)
+        {
+            var data = Kily.Set<SystemAudit>().Where(t => t.TableName.Contains(Param.TableName))
+                .Where(t => t.TableId == Param.TableId).Select(t => new ResponseAudit()
+                {
+                    AuditName = t.AuditName,
+                    CreateTime = t.CreateTime,
+                    AuditSuggestion = t.AuditSuggestion,
+                    AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType)
+                }).AsNoTracking().ToList();
+            return data;
+        }
         #endregion
     }
 }

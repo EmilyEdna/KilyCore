@@ -52,5 +52,11 @@ namespace KilyCore.Service.IServiceCore
         String RegistCompanyAccount(RequestEnterprise Param);
         Object EnterpriseLogin(RequestValidate LoginValidate);
         #endregion
+
+        #region 标签管理
+        PagedResult<ResponseEnterpriseApply> GetTagAuditPage(PageParamList<RequestEnterpriseApply> pageParam);
+        String AuditCode(RequestAudit Param);
+        IList<ResponseAudit> GetTagAuditDetail(RequestAudit Param);
+        #endregion
     }
 }

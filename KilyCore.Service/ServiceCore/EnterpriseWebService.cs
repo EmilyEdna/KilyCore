@@ -990,8 +990,7 @@ namespace KilyCore.Service.ServiceCore
                 ApplyMoney = t.ApplyMoney,
                 Payment = t.Payment,
                 IsPay = t.IsPay,
-                AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
-                TableName=t.GetType().Name
+                AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType)
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
