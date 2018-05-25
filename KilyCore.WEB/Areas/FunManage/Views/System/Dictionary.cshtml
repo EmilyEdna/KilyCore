@@ -22,8 +22,6 @@
                 });
                 //设置表单
                 this.$table = controller.Table("#tableList", { url: "Function/GetSysDicPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
-                if (SysUserInfo.AccountType != 20 && SysUserInfo.AccountType != 10)
-                    $("#add").css({ display: "none" });
             },
             //事件
             InitEvents: function () {
@@ -44,43 +42,12 @@
             action: {
                 TableFormatter: function (val, row, index) {
                     var action = [];
-                    if (!row.IsEnable)
-                        action.push('<button class="btn btn-sm btn-primary stop"><i class="fa fa-trash-o"></i>禁用</button>');
-                    else
-                        action.push('<button class="btn btn-sm btn-primary run"><i class="fa fa-trash-o"></i>启用</button>');
-                    if (SysUserInfo.AccountType != 20 && SysUserInfo.AccountType != 10)
-                        action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
+                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
+                    action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
+                    action.push('<button class="btn btn-sm btn-primary accept"><i class="fa fa-share-square"></i>分配</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
-                    "click .stop": function (event, val, row, index) {
-                        controller.Confirm("确认禁用？", function (bool) {
-                            if (bool) {
-                                controller.ajax({
-                                    url: "Function/EnableDic",
-                                    data: { Id: row.Id, Parameter: false },
-                                    type: 'post',
-                                    success: function (result) {
-                                        options.$table.refresh();
-                                    }
-                                });
-                            }
-                        });
-                    },
-                    "click .run": function (event, val, row, index) {
-                        controller.Confirm("确认启用？", function (bool) {
-                            if (bool) {
-                                controller.ajax({
-                                    url: "Function/EnableDic",
-                                    data: { Id: row.Id, Parameter: true },
-                                    type: 'post',
-                                    success: function (result) {
-                                        options.$table.refresh();
-                                    }
-                                });
-                            }
-                        });
-                    },
                     "click .edit": function (event, val, row, index) {
                         controller.OpenWindow({
                             title: "编辑码表",
@@ -92,6 +59,32 @@
                                 result.$("#Edit").submit();
                             }
                         })
+                    },
+                    "click .accept": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "分配码表",
+                            type: 2,
+                            height: "200px",
+                            width: "300px",
+                            url: "FunManage/System/AcceptDic?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
+                    },
+                    "click .del": function (event, val, row, index) {
+                        controller.Confirm("确认删除？", function (bool) {
+                            if (bool) {
+                                controller.ajax({
+                                    url: "Function/RemoveDic",
+                                    data: { Param: row },
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
                     }
                 }//表单事件结束
             }//行为结束
@@ -137,7 +130,6 @@
                             <tr>
                                 <th data-field="DicName" data-halign="center" data-align="center" data-valign="middle">字典名称</th>
                                 <th data-field="DicValue" data-halign="center" data-align="center" data-valign="middle">字典值</th>
-                                <th data-field="States" data-halign="center" data-align="center" data-valign="middle">状态</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>

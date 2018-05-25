@@ -22,10 +22,5 @@ namespace KilyCore.EntityFrameWork.Model.Function
         /// 码表介绍
         /// </summary>
         public virtual string DicDescript { get; set; }
-        /// <summary>
-        /// 是否启用
-        /// </summary>
-        public virtual bool IsEnable { get; set; }
-}
     }
 }

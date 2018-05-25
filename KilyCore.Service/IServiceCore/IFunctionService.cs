@@ -31,7 +31,12 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseDictionary> GetSysDicPage(PageParamList<RequestDictionary> pageParam);
         ResponseDictionary GetDicDetail(Guid Id);
         String DicEdit(RequestDictionary Param);
-        String EnableDic(Guid Id, bool Param);
+        String RemoveDic(Guid Id);
+        #endregion
+        #region 区域码表
+        PagedResult<ResponseAreaDictionary> GetAreaDicPage(PageParamList<RequestAreaDictionary> pageParam);
+        String RecordAreaDic(RequestAreaDictionary Param);
+        String IsEnable(Guid Id, bool Param);
         #endregion
     }
 }

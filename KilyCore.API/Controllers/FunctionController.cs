@@ -149,15 +149,48 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(FunctionService.DicEdit(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
-        /// 是否启用
+        /// 删除字典
         /// </summary>
         /// <param name="Param"></param>
         /// <param name="Value"></param>
         /// <returns></returns>
-        [HttpPost("EnableDic")]
-        public ObjectResultEx EnableDic(SimlpeParam<Guid> Param, SimlpeParam<bool> Value)
+        [HttpPost("RemoveDic")]
+        public ObjectResultEx RemoveDic(SimlpeParam<Guid> Param)
         {
-            return ObjectResultEx.Instance(FunctionService.EnableDic(Param.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(FunctionService.RemoveDic(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #region 区域码表
+        /// <summary>
+        /// 区域码表分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetAreaDicPage")]
+        public ObjectResultEx GetAreaDicPage(PageParamList<RequestAreaDictionary> pageParam)
+        {
+            return ObjectResultEx.Instance(FunctionService.GetAreaDicPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 分配区域码表
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("RecordAreaDic")]
+        public ObjectResultEx RecordAreaDic(RequestAreaDictionary Param)
+        {
+            return ObjectResultEx.Instance(FunctionService.RecordAreaDic(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 启用字典
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <param name="Value"></param>
+        /// <returns></returns>
+        [HttpPost("IsEnable")]
+        public ObjectResultEx IsEnable(SimlpeParam<Guid> Key,SimlpeParam<bool> Value)
+        {
+            return ObjectResultEx.Instance(FunctionService.IsEnable(Key.Id,Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

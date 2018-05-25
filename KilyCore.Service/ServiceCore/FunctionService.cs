@@ -352,8 +352,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 DicName = t.DicName,
-                DicValue = t.DicValue,
-                IsEnable=t.IsEnable
+                DicValue = t.DicValue
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -387,15 +386,55 @@ namespace KilyCore.Service.ServiceCore
                 return Update<FunctionDictionary, RequestDictionary>(Dic, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         /// <summary>
-        /// 启用禁用字典
+        /// 删除字典
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public string EnableDic(Guid Id,bool Param)
+        public string RemoveDic(Guid Id)
         {
-            FunctionDictionary dictionary = Kily.Set<FunctionDictionary>().Where(t => t.Id == Id).FirstOrDefault();
-            dictionary.IsEnable = Param;
-            return UpdateField(dictionary, "IsEnable") ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
+            return Remove<FunctionDictionary>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+        #region 区域码表
+        /// <summary>
+        /// 区域码表分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseAreaDictionary> GetAreaDicPage(PageParamList<RequestAreaDictionary> pageParam)
+        {
+            var data = Kily.Set<FunctionAreaDictionary>()
+                .Where(t => UserInfo().TypePath.Contains(t.ProvinceId.ToString()))
+                .Join(Kily.Set<FunctionDictionary>(), t => t.DictionaryId, x => x.Id, (t, x) => new ResponseAreaDictionary()
+                {
+                    DicName=x.DicName,
+                    DicValue=x.DicValue,
+                    Id=t.Id,
+                    IsEnable=t.IsDelete
+                }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 分配区域码表
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string RecordAreaDic(RequestAreaDictionary Param)
+        {
+            FunctionAreaDictionary dictionary = Param.MapToEntity<FunctionAreaDictionary>();
+            return Insert<FunctionAreaDictionary>(dictionary) ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
+        }
+        /// <summary>
+        /// 启用或禁用
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string IsEnable(Guid Id, bool Param)
+        {
+            FunctionAreaDictionary dictionary = Kily.Set<FunctionAreaDictionary>().Where(t => t.Id == Id).FirstOrDefault();
+            dictionary.IsDelete = Param;
+            return UpdateField<FunctionAreaDictionary>(dictionary, "IsDelete") ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
         }
         #endregion
     }

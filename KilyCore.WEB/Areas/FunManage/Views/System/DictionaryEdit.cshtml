@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewData["Title"] = "编辑码表";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.CheckRole();
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var Guid = controller.GetParam("Id");
+                options.GetDicDetail(Guid);
+            },
+            //获取详细
+            GetDicDetail: function (data) {
+                if (data != null && data != undefined && data != "")
+                {
+                    controller.ajax({
+                        url: "Function/GetDicDetail",
+                        data: { Id: data },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit",result.data);
+                        }
+                    });
+                }
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="Function/DicEdit" id="Edit">
+            <input type="hidden" name="Id"/>
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">码表名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="DicName" />
+                    </td>
+                    <th><label class="control-label">码表值</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="DicValue"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">详情描述</label></th>
+                    <td class="has-warning" colspan="3">
+                       <textarea class="form-control" name="DicDescript" maxlength="300" rows="5"></textarea>
+                    </td>
+            </table>
+        </form>
+    </div>
+</div>
