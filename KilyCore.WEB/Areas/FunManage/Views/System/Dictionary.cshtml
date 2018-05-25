@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "Dictionary";
+    ViewData["Title"] = "系统字典";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
@@ -77,7 +77,7 @@
                             if (bool) {
                                 controller.ajax({
                                     url: "Function/RemoveDic",
-                                    data: { Param: row },
+                                    data: { Id: row.id },
                                     type: 'post',
                                     success: function (result) {
                                         options.$table.refresh();

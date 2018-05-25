@@ -56,6 +56,10 @@ namespace KilyCore.WEB.Areas.FunManage.Controllers
         {
             return View();
         }
+        public IActionResult AreaDictionary()
+        {
+            return View();
+        }
         #endregion
     }
 }

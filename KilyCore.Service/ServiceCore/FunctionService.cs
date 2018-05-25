@@ -403,15 +403,16 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseAreaDictionary> GetAreaDicPage(PageParamList<RequestAreaDictionary> pageParam)
         {
-            var data = Kily.Set<FunctionAreaDictionary>()
-                .Where(t => UserInfo().TypePath.Contains(t.ProvinceId.ToString()))
-                .Join(Kily.Set<FunctionDictionary>(), t => t.DictionaryId, x => x.Id, (t, x) => new ResponseAreaDictionary()
-                {
-                    DicName=x.DicName,
-                    DicValue=x.DicValue,
-                    Id=t.Id,
-                    IsEnable=t.IsDelete
-                }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            IQueryable<FunctionAreaDictionary> queryable = Kily.Set<FunctionAreaDictionary>().AsNoTracking();
+            if (UserInfo().AccountType != AccountEnum.Admin && UserInfo().AccountType != AccountEnum.Country)
+                queryable = queryable.Where(t => UserInfo().TypePath.Contains(t.ProvinceId.ToString()));
+            var data = queryable.Join(Kily.Set<FunctionDictionary>(), t => t.DictionaryId, x => x.Id, (t, x) => new ResponseAreaDictionary()
+            {
+                DicName = x.DicName,
+                DicValue = x.DicValue,
+                Id = t.Id,
+                IsEnable = t.IsDelete
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
         /// <summary>
