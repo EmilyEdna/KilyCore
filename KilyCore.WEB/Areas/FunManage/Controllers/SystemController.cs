@@ -50,6 +50,10 @@ namespace KilyCore.WEB.Areas.FunManage.Controllers
         {
             return View();
         }
+        public IActionResult DictionaryEdit()
+        {
+            return View();
+        }
         #endregion
         #region 区域字典
         public IActionResult AcceptDic()

@@ -56,7 +56,7 @@
                     type: "post",
                     async: false,
                     success: function (result) {
-                        var html = '<option>=请选择=</option>';
+                        var html = '<option value="undefined">=请选择=</option>';
                         $.each(result.data, function (i, obj) {
                             html += '<option value="' + obj.Id + '" data-id="' + obj.ProvinceId + '">' + obj.ProvinceName + '</option>';
                         });
@@ -175,6 +175,27 @@
                     }
                 });
             },
+            //加载版本信息
+            LoadVersion: function () {
+                var select = $("#province").find("option:selected").val();
+                if (select == "undefined") {
+                    controller.Alter("请先选择所在区域!");
+                    return;
+                }
+                controller.ajax({
+                    url: "Function/GetAreaVersion",
+                    data: { Id: select },
+                    type: 'post',
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>===请选择===</option>'
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.DicValue + '" data-value="' + obj.DicDescript + '">' + obj.DicName + '</option>';
+                        });
+                        $("#Version").html(html);
+                    }
+                });
+            },
             //事件
             InitEvents: function () {
                 //文件上传-执照
@@ -200,11 +221,10 @@
                     }
                 });
                 //提交表单
-                $("#save").on('click',function () {
+                $("#save").on('click', function () {
                     controller.Validate("#Edit", $("#Edit").SerializeJson());
                     var flag = $("#CompanyName").val();
-                    if (flag == "")
-                    {
+                    if (flag == "") {
                         controller.Alter("请先下载合同!");
                         return;
                     }
@@ -212,8 +232,18 @@
                 });
                 //生成PDF合同
                 $("#sure").on('click', function () {
+                    this.LoadVersion();
+                    if ($("#VersionName").val() == undefined) {
+                        controller.Alter("请选择版本");
+                        return;
+                    }
                     $("#CompanyName").val(CompanyInfo.CompanyName);
-                    $("#ver").val($("#Version").val());
+                    var value = $("#Version").find("option:selected").val();
+                    var datavalue = $("#Version").find("option:selected").data().value;
+                    var text = $("#Version").find("option:selected").text();
+                    $("#VersionName").val(text);
+                    $("#VersionValue").val(value);
+                    $("#VersionDes").val(datavalue);
                     $("#PDF").submit();
                 });
                 //上传合同
@@ -249,8 +279,10 @@
 }
 <div class="tabs-container" style="margin-top:10px;">
     <form id="PDF" method="post" action="/File/CreatePDF">
-        <input type="hidden" name="CompanyName" id="CompanyName"/>
-        <input type="hidden" name="Version" id="ver"/>
+        <input type="hidden" name="CompanyName" id="CompanyName" />
+        <input type="hidden" name="VersionName" id="VersionName" />
+        <input type="hidden" name="VersionValue" id="VersionValue" />
+        <input type="hidden" name="VersionDes" id="VersionDes" />
     </form>
     <form method="post" class="form-horizontal" action="EnterpriseWeb/EditEnterprise" id="Edit">
         <input type="hidden" name="Id" />
@@ -345,7 +377,7 @@
                         <label class="col-sm-2 control-label">所属地域</label>
                         <div class="col-sm-2">
                             <select type="select" name="Province" id="province" class="form-control">
-                                <option>===请选择===</option>
+                                <option value="undefined">===请选择===</option>
                             </select>
                         </div>
                         <div class="col-sm-2">
@@ -453,10 +485,7 @@
                         <div class="col-sm-4">
                             <div class="input-group">
                                 <select name="Version" class="form-control" type="select" id="Version">
-                                    <option value="10">体验版</option>
-                                    <option value="20">基础班</option>
-                                    <option value="30">升级版</option>
-                                    <option value="40">旗舰版</option>
+                                    <option>===请选择===</option>
                                 </select>
                                 <span class="input-group-addon btn btn-default" id="sure">确定</span>
                             </div>

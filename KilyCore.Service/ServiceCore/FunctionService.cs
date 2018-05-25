@@ -437,6 +437,22 @@ namespace KilyCore.Service.ServiceCore
             dictionary.IsDelete = Param;
             return UpdateField<FunctionAreaDictionary>(dictionary, "IsDelete") ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
         }
+        /// <summary>
+        /// 获取版本码表
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public IList<ResponseAreaDictionary> GetAreaVersion(Guid Id)
+        {
+            var data = Kily.Set<FunctionAreaDictionary>().Where(t => t.ProvinceId == Id)
+                  .Join(Kily.Set<FunctionDictionary>().Where(t => t.DicName.Contains("版")), t => t.DictionaryId, x => x.Id, (t, x) => new ResponseAreaDictionary()
+                  {
+                      DicName = x.DicName,
+                      DicValue = x.DicValue,
+                      DicDescript=x.DicDescript
+                  }).ToList();
+            return data;
+        }
         #endregion
     }
 }

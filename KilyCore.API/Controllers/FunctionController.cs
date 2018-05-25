@@ -188,9 +188,19 @@ namespace KilyCore.API.Controllers
         /// <param name="Value"></param>
         /// <returns></returns>
         [HttpPost("IsEnable")]
-        public ObjectResultEx IsEnable(SimlpeParam<Guid> Key,SimlpeParam<bool> Value)
+        public ObjectResultEx IsEnable(SimlpeParam<Guid> Key, SimlpeParam<bool> Value)
         {
-            return ObjectResultEx.Instance(FunctionService.IsEnable(Key.Id,Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(FunctionService.IsEnable(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 区域版本
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetAreaVersion")]
+        public ObjectResultEx GetAreaVersion(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(FunctionService.GetAreaVersion(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }
