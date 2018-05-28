@@ -10,5 +10,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Function
         public string DicName { get; set; }
         public string DicValue { get; set; }
         public string DicDescript { get; set; }
+        public string AttachInfo { get; set; }
     }
 }

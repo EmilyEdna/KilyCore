@@ -1,4 +1,5 @@
 ﻿using System;
+using KilyCore.WEB.Model;
 using KilyCore.WEB.Util;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -34,19 +35,10 @@ namespace KilyCore.WEB.Controllers
         /// <param name="Version"></param>
         /// <returns></returns>
         [HttpPost]
-        public FileResult CreatePDF(string CompanyName, string Version)
+        public FileResult CreatePDF(Contract Param)
         {
             var WebRootPath = Environment.WebRootPath;
-            string VersionName = string.Empty;
-            if (Version == "10")
-                VersionName = "体验版";
-            if (Version == "20")
-                VersionName = "基础版";
-            if (Version == "30")
-                VersionName = "升级版";
-            if (Version == "40")
-                VersionName = "旗舰版";
-            var result = FileUtil.CreatePDFBytes(CompanyName, VersionName, WebRootPath);
+            var result = FileUtil.CreatePDFBytes(Param, WebRootPath);
             var bytes = FileUtil.SavePDF(result);
             FileResult PDF = new FileContentResult(bytes, "application/pdf");
             PDF.FileDownloadName = "入住合同.pdf";

@@ -368,7 +368,8 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 DicName = t.DicName,
                 DicValue = t.DicValue,
-                DicDescript = t.DicDescript
+                DicDescript = t.DicDescript,
+                AttachInfo=t.AttachInfo
             }).FirstOrDefault();
             return data;
         }
@@ -444,12 +445,14 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public IList<ResponseAreaDictionary> GetAreaVersion(Guid Id)
         {
-            var data = Kily.Set<FunctionAreaDictionary>().Where(t => t.ProvinceId == Id)
+            var data = Kily.Set<FunctionAreaDictionary>().Where(t => t.ProvinceId == Id).Where(t=>t.IsDelete==false)
                   .Join(Kily.Set<FunctionDictionary>().Where(t => t.DicName.Contains("版")), t => t.DictionaryId, x => x.Id, (t, x) => new ResponseAreaDictionary()
                   {
                       DicName = x.DicName,
                       DicValue = x.DicValue,
-                      DicDescript=x.DicDescript
+                      DicDescript=x.DicDescript,
+                      IsEnable=t.IsDelete,
+                      AttachInfo=x.AttachInfo
                   }).ToList();
             return data;
         }

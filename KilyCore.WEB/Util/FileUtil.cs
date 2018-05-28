@@ -1,5 +1,6 @@
 ﻿using iTextSharp.text;
 using iTextSharp.text.pdf;
+using KilyCore.WEB.Model;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -54,19 +55,13 @@ namespace KilyCore.WEB.Util
         /// <param name="Version"></param>
         /// <param name="WebRootPath"></param>
         /// <returns></returns>
-        public static IList<byte[]> CreatePDFBytes(string CompanyName, string Version, string WebRootPath)
+        public static IList<byte[]> CreatePDFBytes(Contract Params, string WebRootPath)
         {
             IDictionary<Object, Object> Map = new Dictionary<Object, Object>();
             IList<byte[]> Lbyte = new List<byte[]>();
-            Map.Add("No", $"YCKJ{DateTime.Now.ToString("yyyyMMdd")}");
-            Map.Add("CompanyName", CompanyName);
-            Map.Add("StartYear", DateTime.Now.Year);
-            Map.Add("StartMonth", DateTime.Now.Month);
-            Map.Add("StartDay", DateTime.Now.Day);
-            Map.Add("EndYear", DateTime.Now.AddYears(1).Year);
-            Map.Add("EndMonth", DateTime.Now.Month);
-            Map.Add("EndDay", DateTime.Now.Day);
-            Map.Add("Version", Version);
+            Params.GetType().GetProperties().ToList().ForEach(t => {
+                Map.Add(t.Name, t.GetValue(Params, null));
+            });
             var TemplatePath = WebRootPath + @"\Template\";
             //创建中文字体
             BaseFont baseFont = BaseFont.CreateFont($"{TemplatePath}SIMSUNB.ttc,0", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);

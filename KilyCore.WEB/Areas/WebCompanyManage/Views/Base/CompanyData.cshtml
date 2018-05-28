@@ -14,6 +14,7 @@
                 this.GetTownByArea();
                 this.InitDom();
                 this.InitEvents();
+                this.LoadVersion();
             },
             //元素
             InitDom: function () {
@@ -190,7 +191,7 @@
                     success: function (result) {
                         var html = '<option>===请选择===</option>'
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.DicValue + '" data-value="' + obj.DicDescript + '">' + obj.DicName + '</option>';
+                            html += '<option value="' + obj.DicValue + '" data-value="' + obj.DicDescript + '" data-price="' + obj.AttachInfo+'">' + obj.DicName + '</option>';
                         });
                         $("#Version").html(html);
                     }
@@ -232,18 +233,31 @@
                 });
                 //生成PDF合同
                 $("#sure").on('click', function () {
-                    this.LoadVersion();
-                    if ($("#VersionName").val() == undefined) {
+                    var datavalue = $("#Version").find("option:selected").data().value;
+                    var price = $("#Version").find("option:selected").data().price;
+                    var text = $("#Version").find("option:selected").text();
+                    var CompanyAddress = $("#CompanyAddress").val();
+                    var CommunityCode = $("#CommunityCode").val();
+
+                    $("#VersionName").val(text);
+                    if ($("#VersionName").val() == "===请选择===") {
                         controller.Alter("请选择版本");
                         return;
                     }
+                    $("#Address").val(CompanyAddress)
+                    if ($("#Address").val() == "") { 
+                        controller.Alter("请输入公司地址");
+                        return;
+                    }
+                    $("#Code").val(CommunityCode);
+                    if ($("#Code").val() == "") {
+                        controller.Alter("请输入工商代码");
+                        return;
+                    }
                     $("#CompanyName").val(CompanyInfo.CompanyName);
-                    var value = $("#Version").find("option:selected").val();
-                    var datavalue = $("#Version").find("option:selected").data().value;
-                    var text = $("#Version").find("option:selected").text();
-                    $("#VersionName").val(text);
-                    $("#VersionValue").val(value);
-                    $("#VersionDes").val(datavalue);
+                    $("#CompanyTypeName").val(CompanyInfo.CompanyTypeName);
+                    $("#Content").val(datavalue);
+                    $("#Price").val(price);
                     $("#PDF").submit();
                 });
                 //上传合同
@@ -281,8 +295,11 @@
     <form id="PDF" method="post" action="/File/CreatePDF">
         <input type="hidden" name="CompanyName" id="CompanyName" />
         <input type="hidden" name="VersionName" id="VersionName" />
-        <input type="hidden" name="VersionValue" id="VersionValue" />
-        <input type="hidden" name="VersionDes" id="VersionDes" />
+        <input type="hidden" name="Address" id="Address" />
+        <input type="hidden" name="Code" id="Code" />
+        <input type="hidden" name="CompanyTypeName" id="CompanyTypeName" />
+        <input type="hidden" name="Price" id="Price" />
+        <input type="hidden" name="Content" id="Content" />
     </form>
     <form method="post" class="form-horizontal" action="EnterpriseWeb/EditEnterprise" id="Edit">
         <input type="hidden" name="Id" />
@@ -337,7 +354,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">企业地址</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control required" name="CompanyAddress" data-msg-required="请输入企业地址">
+                            <input type="text" class="form-control required" name="CompanyAddress" data-msg-required="请输入企业地址" id="CompanyAddress">
                         </div>
                         <div class="col-sm-6"></div>
                     </div>
@@ -346,7 +363,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">工商代码</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control required" name="CommunityCode" data-msg-required="请输入工商代码">
+                            <input type="text" class="form-control required" name="CommunityCode" data-msg-required="请输入工商代码" id="CommunityCode">
                         </div>
                         <div class="col-sm-6"></div>
                     </div>

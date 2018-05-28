@@ -22,5 +22,9 @@ namespace KilyCore.EntityFrameWork.Model.Function
         /// 码表介绍
         /// </summary>
         public virtual string DicDescript { get; set; }
+        /// <summary>
+        /// 附加信息
+        /// </summary>
+        public virtual string AttachInfo { get; set; }
     }
 }
