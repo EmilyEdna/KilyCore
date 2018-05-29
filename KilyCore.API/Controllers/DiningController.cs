@@ -8,6 +8,10 @@ using KilyCore.Extension.ResultExtension;
 using KilyCore.Service.QueryExtend;
 using Microsoft.AspNetCore.Mvc;
 
+/// <summary>
+/// 作者：刘泽华
+/// 时间：2018年5月29日11点13分
+/// </summary>
 namespace KilyCore.API.Controllers
 {
     [Route("api/[controller]")]

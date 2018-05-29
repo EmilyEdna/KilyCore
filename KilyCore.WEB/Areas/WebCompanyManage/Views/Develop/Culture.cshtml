@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "水肥管理";
+    ViewData["Title"] = "喂养管理";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
@@ -31,7 +31,7 @@
                         type: 2,
                         height: "600px",
                         width: "800px",
-                        url: "WebCompanyManage/Develop/PlantingEdit",
+                        url: "WebCompanyManage/Develop/CultureEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
                         }
@@ -78,7 +78,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>水肥管理</h5>
+                <h5>喂养管理</h5>
             </div>
             <div class="ibox-content">
                 <div class="row">
@@ -103,7 +103,7 @@
                         <thead>
                             <tr>
                                 <th data-field="BacthNo" data-halign="center" data-align="center" data-valign="middle">育苗批次</th>
-                                <th data-field="FeedName" data-halign="center" data-align="center" data-valign="middle">肥料名称</th>
+                                <th data-field="FeedName" data-halign="center" data-align="center" data-valign="middle">饲料名称</th>
                                 <th data-field="Brand" data-halign="center" data-align="center" data-valign="middle">品牌名称</th>
                                 <th data-field="Supplier" data-halign="center" data-align="center" data-valign="middle">供应商</th>
                                 <th data-field="PlantTime" data-halign="center" data-align="center" data-valign="middle">施养时间</th>

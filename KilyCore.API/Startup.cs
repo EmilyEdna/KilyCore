@@ -15,7 +15,10 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using NLog.Extensions.Logging;
 using NLog.Web;
-
+/// <summary>
+/// 作者：刘泽华
+/// 时间：2018年5月29日11点13分
+/// </summary>
 namespace KilyCore.API
 {
     public class Startup

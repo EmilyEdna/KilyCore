@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-
+/// <summary>
+/// 作者：刘泽华
+/// 时间：2018年5月29日11点29分
+/// </summary>
 namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
 {
     /// <summary>
@@ -13,7 +16,7 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
     public class DevelopController : Controller
     {
         /// <summary>
-        /// 施养管理
+        /// 水肥管理
         /// </summary>
         /// <returns></returns>
         public IActionResult Planting()
@@ -25,6 +28,21 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         /// </summary>
         /// <returns></returns>
         public IActionResult PlantingEdit()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 喂养管理
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Culture() {
+            return View();
+        }
+        /// <summary>
+        /// 新增喂养记录
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult CultureEdit()
         {
             return View();
         }

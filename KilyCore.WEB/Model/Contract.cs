@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+/// <summary>
+/// 作者：刘泽华
+/// 时间：2018年5月29日12点01分
+/// </summary>
 namespace KilyCore.WEB.Model
 {
     public class Contract

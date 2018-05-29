@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 using KilyCore.Configure;
 using System.Linq;
 using System.Collections.Generic;
-
+/// <summary>
+/// 作者：刘泽华
+/// 时间：2018年5月29日11点51分
+/// </summary>
 namespace KilyCore.Quartz
 {
     /// <summary>

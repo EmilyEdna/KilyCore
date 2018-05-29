@@ -5,7 +5,10 @@ using System.Threading.Tasks;
 using KilyCore.Extension.ApplicationService.DependencyIdentity;
 using KilyCore.Service.IServiceCore;
 using Microsoft.AspNetCore.Mvc;
-
+/// <summary>
+/// 作者：刘泽华
+/// 时间：2018年5月29日11点13分
+/// </summary>
 namespace KilyCore.API
 {
     public class BaseController : Controller

@@ -5,7 +5,10 @@ using System.Data;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-
+/// <summary>
+/// 作者：刘泽华
+/// 时间：2018年5月29日12点01分
+/// </summary>
 namespace KilyCore.Service.QueryExtend
 {
     /// <summary>
