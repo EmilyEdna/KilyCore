@@ -16,7 +16,6 @@ namespace KilyCore.EntityFrameWork.EntityMapping.Enterprise
         {
             builder.ToTable(typeof(EnterpriseNote).Name);
             builder.HasKey(t => t.Id);
-            builder.Property(t => t.SowingTime).HasColumnType(typeof(DateTime).Name);
             builder.Property(t=>t.ResultTime).HasColumnType(typeof(DateTime).Name);
         }
     }

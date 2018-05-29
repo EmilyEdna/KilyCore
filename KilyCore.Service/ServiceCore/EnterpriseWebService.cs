@@ -479,7 +479,7 @@ namespace KilyCore.Service.ServiceCore
                 BacthNo = t.BacthNo,
                 GrowName = t.GrowName,
                 BuyNum = t.BuyNum,
-                BuyTime = t.BuyTime,
+                PlantTime = t.PlantTime,
                 Unit = t.Unit
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -498,7 +498,7 @@ namespace KilyCore.Service.ServiceCore
                 BacthNo = t.BacthNo,
                 GrowName = t.GrowName,
                 BuyNum = t.BuyNum,
-                BuyTime = t.BuyTime,
+                PlantTime = t.PlantTime,
                 Unit = t.Unit,
                 Remark = t.Remark
             }).AsNoTracking().FirstOrDefault();
@@ -807,7 +807,6 @@ namespace KilyCore.Service.ServiceCore
                 BacthNo = t.BacthNo,
                 NoteName = t.NoteName,
                 ResultTime = t.ResultTime,
-                SowingTime = t.SowingTime
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -859,8 +858,7 @@ namespace KilyCore.Service.ServiceCore
                 CompanyId = t.CompanyId,
                 BacthNo = t.BacthNo,
                 NoteName = t.NoteName,
-                ResultTime = t.ResultTime,
-                SowingTime = t.SowingTime
+                ResultTime = t.ResultTime
             }).FirstOrDefault();
             return data;
         }
@@ -901,6 +899,8 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string CreateTag(RequestEnterpriseTag Param)
         {
+            if ((int)Param.TagType == 0)
+                return "请选择类型!";
             //取省份code
             IQueryable<SystemProvince> queryable = Kily.Set<SystemProvince>().AsNoTracking();
             if (CompanyInfo() != null)
@@ -922,7 +922,7 @@ namespace KilyCore.Service.ServiceCore
             Param.EndSerialNo = Param.StarSerialNo + Param.TotalNo;
             EnterpriseTag Tag = Param.MapToEntity<EnterpriseTag>();
             if (Tag.TagType == TagEnum.OneEnterprise)
-                return queryables.Where(t => t.TagType == TagEnum.OneEnterprise).ToList().Count > 1 ?
+                return queryables.Where(t => t.TagType == TagEnum.OneEnterprise).ToList().Count >= 1 ?
                     "企业只能拥有一个企业二维码!" :
                     (Tag.TotalNo > 1 ? "一个企业只能创建一个企业二维码!" :
                     (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL));

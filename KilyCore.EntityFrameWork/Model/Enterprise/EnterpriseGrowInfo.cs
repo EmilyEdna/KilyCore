@@ -24,7 +24,7 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// <summary>
         /// 采购时间
         /// </summary>
-        public virtual DateTime BuyTime { get; set; }
+        public virtual DateTime PlantTime { get; set; }
         /// <summary>
         /// 采购数量
         /// </summary>
@@ -37,5 +37,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 备注
         /// </summary>
         public virtual  string Remark { get; set; }
+        /// <summary>
+        /// 证件
+        /// </summary>
+        public virtual string Paper { get; set; }
     }
 }

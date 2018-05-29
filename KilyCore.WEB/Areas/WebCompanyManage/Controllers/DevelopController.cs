@@ -35,7 +35,8 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         /// 喂养管理
         /// </summary>
         /// <returns></returns>
-        public IActionResult Culture() {
+        public IActionResult Culture()
+        {
             return View();
         }
         /// <summary>
@@ -59,6 +60,22 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         /// </summary>
         /// <returns></returns>
         public IActionResult DrugEdit()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 疫苗管理
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Vaccine()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 新增疫苗信息
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult VaccineEdit()
         {
             return View();
         }

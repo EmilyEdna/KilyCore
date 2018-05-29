@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "编辑育苗";
+    ViewData["Title"] = "新增记录";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section css{
@@ -15,11 +15,25 @@
             },
             //元素
             InitDom: function () {
-                var Guid = controller.GetParam("Id");
-                $("#CompanyId").val(CompanyInfo.Id);
-                $("#BacthNo").val("N" + controller.FormatDate("YYYYMMDDHHmmss"));
-                controller.LayDate({ elem: "#PlantTime", value: controller.FormatDate("YYYY-MM-DD HH:mm:ss") });
-                options.GetDetail(Guid);
+                controller.LayDate({ elem: "#PlantTime" });
+                options.BindBacth();
+            },
+            //绑定批次
+            BindBacth: function () {
+                controller.ajax({
+                    url: "EnterpriseWeb/GetGrowList",
+                    async: false,
+                    data: {},
+                    type: 'post',
+                    success: function (result) { 
+                        var html = '';
+                        $.each(result.data, function (i, data) {
+                            html += '<option value="' + data.BacthNo + '">' + data.GrowName+'</option>'
+                        });
+                        $("#BacthNo").html(html);
+                    }
+                });
+
             },
             //设置文件值
             SetFileValue: function (data, elememt) {
@@ -31,29 +45,17 @@
                     $(elememt).val(data);
                 }
             },
-            //取得详情
-            GetDetail: function (Guid) {
-                if (Guid != null && Guid != undefined && Guid != "")
-                    controller.ajax({
-                        url: "EnterpriseWeb/GetGrowDetail",
-                        type: "post",
-                        data: { Id: Guid },
-                        success: function (result) {
-                            controller.SetCtrlValue("#Edit", result.data);
-                        }
-                    });
-            },
             //事件
             InitEvents: function () {
                 //文件上传
                 controller.Upload({
                     url: "File/UploadImg",
                     element: ".upload-input",
-                    maxNum: 5,
+                    maxNum: 1,
                     node: '.image-box',
                     success: function (result) {
                         controller.Alter(result.msg);
-                        options.SetFileValue(result.data, "#Paper");
+                        options.SetFileValue(result.data,"#CheckReport");
                     }
                 });
                 //验证
@@ -70,39 +72,39 @@
 }
 <div class="ibox float-e-margins">
     <div class="ibox-content">
-        <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditGrow" id="Edit">
-            <input type="hidden" name="Id" />
-            <input type="hidden" name="CompanyId" id="CompanyId" />
-            <input  type="hidden" name="Paper" id="Paper"/>
+        <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditDrug" id="Edit">
+            <input type="hidden" class="form-control" name="CheckReport" id="CheckReport" />
             <table class="table table-hover table-bordered">
                 <tr>
-                    <th><label class="control-label">批次编号</label></th>
+                    <th><label class="control-label">疫苗名称</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="BacthNo" readonly id="BacthNo" />
+                        <input type="text" class="form-control required" name="DrugName" data-msg-required="请输入疫苗名称" />
                     </td>
-                    <th><label class="control-label">育苗名称</label></th>
+                    <th><label class="control-label">品牌名称</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control required" name="GrowName" data-msg-required="请输入育苗名称" />
-                    </td>
-                </tr>
-                <tr>
-                    <th><label class="control-label">采购数量</label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control" name="BuyNum" />
-                    </td>
-                    <th><label class="control-label">计量单位</label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control" name="Unit" />
+                        <input type="text" class="form-control required" name="Brand" data-msg-required="请输入品牌名称" />
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">播种时间</label></th>
-                    <td class="has-warning" colspan="3">
+                    <th><label class="control-label">施药时间</label></th>
+                    <td class="has-warning">
                         <input type="text" class="form-control" name="PlantTime" id="PlantTime" />
                     </td>
+                    <th><label class="control-label">供应商</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="Supplier" data-msg-required="请输入供应商" />
+                    </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">证件</label></th>
+                    <th><label class="control-label">育苗批次</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" class="form-control" name="BacthNo" list="BacthNo"/>
+                        <datalist id="BacthNo">
+                        </datalist>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">检测报告</label></th>
                     <td class="has-warning" colspan="3">
                         <div class="image-box clear">
                             <section class="upload-section">
@@ -110,12 +112,6 @@
                                 <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
                             </section>
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th><label class="control-label">备注</label></th>
-                    <td class="has-warning" colspan="3">
-                        <textarea class="form-control" rows="5" maxlength="200"></textarea>
                     </td>
                 </tr>
             </table>
