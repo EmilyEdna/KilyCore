@@ -185,7 +185,7 @@
                 }
                 controller.ajax({
                     url: "Function/GetAreaVersion",
-                    data: { Id: select },
+                    data: { Id: select, Parameter: CompanyInfo.CompanyType },
                     type: 'post',
                     async: false,
                     success: function (result) {

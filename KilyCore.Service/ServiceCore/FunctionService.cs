@@ -443,10 +443,21 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public IList<ResponseAreaDictionary> GetAreaVersion(Guid Id)
+        public IList<ResponseAreaDictionary> GetAreaVersion(Guid Id,int Param)
         {
+            IQueryable<FunctionDictionary> queryable = Kily.Set<FunctionDictionary>().Where(t => t.DicName.Contains("版"));
+            if ((CompanyEnum)Param==CompanyEnum.Plant)
+                queryable= queryable.Where(t => t.DicName.Contains("种植"));
+            if ((CompanyEnum)Param == CompanyEnum.Culture)
+                queryable = queryable.Where(t => t.DicName.Contains("养殖"));
+            if ((CompanyEnum)Param == CompanyEnum.Production)
+                queryable = queryable.Where(t => t.DicName.Contains("生产"));
+            if ((CompanyEnum)Param == CompanyEnum.Circulation)
+                queryable = queryable.Where(t => t.DicName.Contains("流通"));
+            if ((CompanyEnum)Param == CompanyEnum.Other)
+                queryable = queryable.Where(t => t.DicName.Contains("其他"));
             var data = Kily.Set<FunctionAreaDictionary>().Where(t => t.ProvinceId == Id).Where(t=>t.IsDelete==false)
-                  .Join(Kily.Set<FunctionDictionary>().Where(t => t.DicName.Contains("版")), t => t.DictionaryId, x => x.Id, (t, x) => new ResponseAreaDictionary()
+                  .Join(queryable, t => t.DictionaryId, x => x.Id, (t, x) => new ResponseAreaDictionary()
                   {
                       DicName = x.DicName,
                       DicValue = x.DicValue,

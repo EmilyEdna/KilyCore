@@ -59,7 +59,8 @@ namespace KilyCore.WEB.Util
         {
             IDictionary<Object, Object> Map = new Dictionary<Object, Object>();
             IList<byte[]> Lbyte = new List<byte[]>();
-            Params.GetType().GetProperties().ToList().ForEach(t => {
+            Params.GetType().GetProperties().ToList().ForEach(t =>
+            {
                 Map.Add(t.Name, t.GetValue(Params, null));
             });
             var TemplatePath = WebRootPath + @"\Template\";
@@ -101,15 +102,15 @@ namespace KilyCore.WEB.Util
             //这里用的是smartCopy，整篇文档只会导入一份字体。属于可接受范围内
             PdfSmartCopy copy = new PdfSmartCopy(document, memory);
             document.Open();
-            foreach (byte[] bytes in Lbyte)
+            PdfReader reader = new PdfReader(Lbyte.FirstOrDefault());
+            document.NewPage();
+            for (int i = 1; i <= reader.NumberOfPages; i++)
             {
-                PdfReader reader = new PdfReader(bytes);
                 //for循环新增文档页数，并copy pdf数据
-                document.NewPage();
-                PdfImportedPage imported = copy.GetImportedPage(reader, 1);
+                PdfImportedPage imported = copy.GetImportedPage(reader, i);
                 copy.AddPage(imported);
-                reader.Close();
             }
+            reader.Close();
             copy.Close();
             document.Close();
             return memory.ToArray();
