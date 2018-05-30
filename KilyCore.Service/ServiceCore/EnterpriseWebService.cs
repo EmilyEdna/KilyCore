@@ -457,6 +457,49 @@ namespace KilyCore.Service.ServiceCore
         #endregion
 
         #region 成长档案
+        #region 成长流程
+        /// <summary>
+        /// 成长流程分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseAgeUp> GetAgeUpPage(PageParamList<RequestEnterpriseAgeUp> pageParam)
+        {
+            IQueryable<EnterpriseAgeUp> queryable = Kily.Set<EnterpriseAgeUp>().Where(t => t.IsDelete == false);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.LvName))
+                queryable = queryable.Where(t => t.LvName.Contains(pageParam.QueryParam.LvName));
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.BacthNo))
+                queryable = queryable.Where(t => t.BacthNo.Contains(pageParam.QueryParam.BacthNo));
+            var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseAgeUp()
+            {
+                Id=t.Id,
+                BacthNo = t.BacthNo,
+                LvName = t.LvName,
+                LvImg = t.LvImg
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑成长流程
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditAgeUp(RequestEnterpriseAgeUp Param)
+        {
+            EnterpriseAgeUp AgeUp = Param.MapToEntity<EnterpriseAgeUp>();
+            return Insert<EnterpriseAgeUp>(AgeUp) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 删除流程
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveAgeUp(Guid Id)
+        {
+            return Delete<EnterpriseAgeUp>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+
         #region 育苗信息
         /// <summary>
         /// 育苗分页列表
@@ -986,7 +1029,7 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.OrderByDescending(t => t.CreateTime).AsNoTracking().Select(t => new ResponseEnterpriseApply()
             {
-                Id=t.Id,
+                Id = t.Id,
                 BacthNo = t.BacthNo,
                 TagTypeName = AttrExtension.GetSingleDescription<TagEnum, DescriptionAttribute>(t.TagType),
                 ApplyNum = t.ApplyNum,
@@ -1065,7 +1108,7 @@ namespace KilyCore.Service.ServiceCore
                 IList<String> Fieds = new List<String>();
                 Fieds.Add("IsPay");
                 Fieds.Add("PaytTicket");
-                return UpdateField<EnterpriseTagApply>(TagApply, null, Fieds) ? ServiceMessage.UPDATESUCCESS:ServiceMessage.UPDATEFAIL;
+                return UpdateField<EnterpriseTagApply>(TagApply, null, Fieds) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
             }
         }
         #endregion

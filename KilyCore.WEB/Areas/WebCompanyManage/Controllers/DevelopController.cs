@@ -143,5 +143,21 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 成长流程
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult AgeUp()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 编辑成长流程
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult AgeUpEdit()
+        {
+            return View();
+        }
     }
 }

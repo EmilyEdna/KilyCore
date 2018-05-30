@@ -381,6 +381,38 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.GetNoteDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 成长流程
+        /// <summary>
+        /// 成长流程分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetAgeUpPage")]
+        public ObjectResultEx GetAgeUpPage(PageParamList<RequestEnterpriseAgeUp> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetAgeUpPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑成长流程
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditAgeUp")]
+        public ObjectResultEx EditAgeUp(RequestEnterpriseAgeUp Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditAgeUp(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除流程
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveAgeUp")]
+        public ObjectResultEx RemoveAgeUp(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveAgeUp(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
         #endregion
         #region 二维码管理
         /// <summary>

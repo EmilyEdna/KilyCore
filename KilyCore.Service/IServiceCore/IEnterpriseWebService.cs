@@ -78,6 +78,11 @@ namespace KilyCore.Service.IServiceCore
         String RemoveNote(Guid Id);
         ResponseEnterpriseNote GetNoteDetail(Guid Id);
         #endregion
+        #region 成长流程
+        PagedResult<ResponseEnterpriseAgeUp> GetAgeUpPage(PageParamList<RequestEnterpriseAgeUp> pageParam);
+        String EditAgeUp(RequestEnterpriseAgeUp Param);
+        String RemoveAgeUp(Guid Id);
+        #endregion
         #endregion
         #region 物码管理
         PagedResult<ResponseEnterpriseTag> GetTagPage(PageParamList<RequestEnterpriseTag> pageParam);
