@@ -12,7 +12,7 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
     /// <summary>
     /// 厂商表
     /// </summary>
-    public class EnterpriseSeller : BaseEntity
+    public class EnterpriseSeller : EnterpriseBase
     {
         /// <summary>
         /// 编号

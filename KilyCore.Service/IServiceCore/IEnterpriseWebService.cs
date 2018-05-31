@@ -93,5 +93,10 @@ namespace KilyCore.Service.IServiceCore
         String ApplyEdit(RequestEnterpriseApply Param);
         ResponseEnterpriseApply GetPaymentDetail(Guid Id);
         #endregion
+        #region 厂商管理
+        PagedResult<ResponseEnterpriseSeller> GetSellerPage(PageParamList<RequestEnterpriseSeller> pageParam);
+        String RemoveSeller(Guid Id);
+        String EditSeller(RequestEnterpriseSeller Param);
+        #endregion
     }
 }
