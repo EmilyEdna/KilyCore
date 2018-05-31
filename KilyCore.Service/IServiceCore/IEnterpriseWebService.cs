@@ -97,6 +97,7 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseEnterpriseSeller> GetSellerPage(PageParamList<RequestEnterpriseSeller> pageParam);
         String RemoveSeller(Guid Id);
         String EditSeller(RequestEnterpriseSeller Param);
+        ResponseEnterpriseSeller GetSellerDetail(Guid Id);
         #endregion
     }
 }

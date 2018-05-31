@@ -23,7 +23,7 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual int? SupplierType { get; set; }
         /// <summary>
-        /// 供应商名称
+        /// 厂商名称
         /// </summary>
         public virtual string SupplierName { get; set; }
         /// <summary>

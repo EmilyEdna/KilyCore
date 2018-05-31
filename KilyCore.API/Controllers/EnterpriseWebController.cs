@@ -509,7 +509,6 @@ namespace KilyCore.API.Controllers
         }
         /// <summary>
         /// 编辑厂商
-        /// 
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
@@ -517,6 +516,16 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx EditSeller(RequestEnterpriseSeller Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.EditSeller(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 厂商详情
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetSellerDetail")]
+        public ObjectResultEx GetSellerDetail(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetSellerDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

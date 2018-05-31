@@ -1126,6 +1126,8 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.SupplierName.Contains(pageParam.QueryParam.SupplierName));
             var data = queryable.OrderByDescending(t => t.CreateTime).AsNoTracking().Select(t => new ResponseEnterpriseSeller()
             {
+                Id = t.Id,
+                CompanyId = t.CompanyId,
                 No = t.No,
                 SupplierType = t.SupplierType,
                 SupplierName = t.SupplierName,
@@ -1164,8 +1166,34 @@ namespace KilyCore.Service.ServiceCore
             }
             else
             {
-                return Insert<EnterpriseSeller>(seller) ? ServiceMessage.INSERTSUCCESS:ServiceMessage.INSERTFAIL;
+                return Insert<EnterpriseSeller>(seller) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
             }
+        }
+        /// <summary>
+        /// 厂商详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseEnterpriseSeller GetSellerDetail(Guid Id)
+        {
+            var data = Kily.Set<EnterpriseSeller>().Where(t => t.Id == Id).AsNoTracking().Select(t => new ResponseEnterpriseSeller()
+            {
+                Id = t.Id,
+                CompanyId = t.CompanyId,
+                No = t.No,
+                SupplierType = t.SupplierType,
+                SupplierName = t.SupplierName,
+                DutyMan = t.DutyMan,
+                LinkPhone = t.LinkPhone,
+                Address = t.Address,
+                Code = t.Code,
+                RunCard = t.RunCard,
+                OkayCard = t.OkayCard,
+                IdCard = t.IdCard,
+                ProductCard = t.ProductCard,
+                SellerType = t.SellerType
+            }).FirstOrDefault();
+            return data;
         }
         #endregion
     }

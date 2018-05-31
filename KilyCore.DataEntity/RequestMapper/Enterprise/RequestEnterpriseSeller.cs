@@ -32,7 +32,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// </summary>
         public int? SupplierType { get; set; }
         /// <summary>
-        /// 供应商名称
+        /// 厂商名称
         /// </summary>
         public string SupplierName { get; set; }
         /// <summary>
