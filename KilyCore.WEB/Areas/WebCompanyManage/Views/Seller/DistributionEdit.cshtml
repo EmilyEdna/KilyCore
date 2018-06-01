@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "编辑厂商";
+    ViewData["Title"] = "编辑分销商";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section css{
@@ -48,7 +48,7 @@
             //是否企业
             ShowCard: function () {
                 $("input:radio[name='SupplierType']").click(function () {
-                    if ($(this).val() == 1) 
+                    if ($(this).val() == 1)
                         $("#last").css("display", "none");
                     else
                         $("#last").css({ display: "block", display:"table-row" });
@@ -108,7 +108,7 @@
             <input type="hidden" id="RunCard" name="RunCard" />
             <input type="hidden" id="IdCard" name="IdCard" />
             <input type="hidden" id="OkayCard" name="OkayCard" />
-            <input type="hidden" name="SellerType" value="10" />
+            <input type="hidden" name="SellerType" value="20" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">商户类型</label></th>

@@ -25,5 +25,13 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        public IActionResult Distribution()
+        {
+            return View();
+        }
+        public IActionResult DistributionEdit()
+        {
+            return View();
+        }
     }
 }
