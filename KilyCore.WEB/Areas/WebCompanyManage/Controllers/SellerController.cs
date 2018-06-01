@@ -13,6 +13,10 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        public IActionResult SupplierEdit()
+        {
+            return View();
+        }
         public IActionResult Production()
         {
             return View();

@@ -16,7 +16,7 @@
             //元素
             InitDom: function () {
                 var Guid = controller.GetParam("Id");
-                $("#No").val("P" + controller.FormatDate("YYMMDDHHmmss"));
+                $("#No").val("S" + controller.FormatDate("YYMMDDHHmmss"));
                 $("#CompanyId").val(CompanyInfo.Id);
                 this.GetDetail(Guid);
             },
@@ -34,8 +34,27 @@
                     });
                 }
             },
+            //设置文件值
+            SetFileValue: function (data, elememt) {
+                var files = $(elememt).val();
+                if (files != null && files != "" && files != undefined) {
+                    files += "," + data;
+                    $(elememt).val(files);
+                } else {
+                    $(elememt).val(data);
+                }
+            },
+            //是否企业
+            ShowCard: function () {
+                $("input:radio[name='SupplierType']").click(function () {
+                    if ($(this).val() == 1) 
+                        $("#last").css("display", "none");
+                    else
+                        $("#last").css("display", "block");
+                });
+            },
             //事件
-            InitEvents: function () {  
+            InitEvents: function () {
                 //文件上传
                 controller.Upload({
                     url: "File/UploadImg",
@@ -55,7 +74,18 @@
                     node: '#card2',
                     success: function (result) {
                         controller.Alter(result.msg);
-                        $("#ProductCard").val(result.data);
+                        $("#OkayCard").val(result.data);
+                    }
+                });
+                //文件上传
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#img3",
+                    maxNum: 2,
+                    node: '#card3',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        this.SetFileValue(result.data, "#IdCard");
                     }
                 });
                 //验证
@@ -74,10 +104,24 @@
     <div class="ibox-content">
         <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditSeller" id="Edit">
             <input type="hidden" id="CompanyId" name="CompanyId" />
-            <input type="hidden" name="SellerType"  value="30"/>
             <input type="hidden" id="RunCard" name="RunCard" />
-            <input type="hidden" id="ProductCard" name="ProductCard" />
+            <input type="hidden" id="IdCard" name="IdCard" />
+            <input type="hidden" id="OkayCard" name="OkayCard" />
+            <input type="hidden" name="SellerType" value="10" />
             <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">商户类型</label></th>
+                    <td class="has-warning" colspan="3">
+                        <label class="radio-inline">
+                            <input type="radio" name="SupplierType" value="1" style="margin-top:3px" checked />
+                            <text title="企业">企业</text>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="SupplierType" value="2" style="margin-top:3px" />
+                            <text title="个人">个人</text>
+                        </label>
+                    </td>
+                </tr>
                 <tr>
                     <th><label class="control-label">编号</label></th>
                     <td class="has-warning">
@@ -120,12 +164,23 @@
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">生产许可证</label></th>
+                    <th><label class="control-label">经营许可</label></th>
                     <td class="has-warning" colspan="3">
                         <div class="image-box clear" id="card2">
                             <section class="upload-section">
                                 <div class="upload-btn"></div>
                                 <input type="file" id="img2" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                    </td>
+                </tr>
+                <tr style="display:none" id="last">
+                    <th><label class="control-label">身份证</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear" id="card3">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" id="img3" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
                             </section>
                         </div>
                     </td>
