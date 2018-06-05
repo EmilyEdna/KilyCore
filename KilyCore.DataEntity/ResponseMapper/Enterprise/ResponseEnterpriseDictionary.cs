@@ -21,6 +21,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
     public class ResponseEnterpriseDictionary
     {
         public Guid Id { get; set; }
+        public Guid CompanyId { get; set; }
         public string DicType { get; set; }
         public string DicName { get; set; }
         public string DicValue { get; set; }

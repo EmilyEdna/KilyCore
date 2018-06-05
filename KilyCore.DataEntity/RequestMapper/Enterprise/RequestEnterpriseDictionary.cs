@@ -21,6 +21,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
     public class RequestEnterpriseDictionary
     {
         public Guid Id { get; set; }
+        public Guid CompanyId { get; set; }
         public string DicType { get; set; }
         public string DicName { get; set; }
         public string DicValue { get; set; }
