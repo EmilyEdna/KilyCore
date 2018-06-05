@@ -45,6 +45,12 @@ namespace KilyCore.Service.IServiceCore
         #region 企业认证
         String EditEnterpriseIdent(RequestEnterpriseIdent param);
         #endregion
+        #region 企业字典
+        PagedResult<ResponseEnterpriseDictionary> GetDicPage(PageParamList<RequestEnterpriseDictionary> pageParam);
+        String RemoveDic(Guid Id);
+        ResponseEnterpriseDictionary GetDicDetail(Guid Id);
+        String EditDic(RequestEnterpriseDictionary Param);
+        #endregion
         #endregion
         #region 成长档案
         #region 育苗信息

@@ -454,6 +454,74 @@ namespace KilyCore.Service.ServiceCore
                 return ServiceMessage.INSERTFAIL;
         }
         #endregion
+
+        #region 企业字典
+        /// <summary>
+        /// 字典分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseDictionary> GetDicPage(PageParamList<RequestEnterpriseDictionary> pageParam)
+        {
+            IQueryable<EnterpriseDictionary> queryable = Kily.Set<EnterpriseDictionary>().OrderByDescending(t => t.CreateTime);
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.AsNoTracking().Select(t => new ResponseEnterpriseDictionary()
+            {
+                Id = t.Id,
+                DicType = t.DicType,
+                DicName = t.DicName,
+                DicValue = t.DicValue
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 删除码表
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveDic(Guid Id)
+        {
+            return Remove<EnterpriseDictionary>(ExpressionExtension.GetExpression<EnterpriseDictionary>("Id", Id, ExpressionEnum.Equals)) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 字典详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseEnterpriseDictionary GetDicDetail(Guid Id)
+        {
+            var data = Kily.Set<EnterpriseDictionary>().AsNoTracking().Select(t => new ResponseEnterpriseDictionary()
+            {
+                Id = t.Id,
+                CompanyId = t.CompanyId,
+                DicType = t.DicType,
+                DicName = t.DicName,
+                DicValue = t.DicValue,
+                Remark = t.Remark
+            }).FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 编辑字典
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditDic(RequestEnterpriseDictionary Param)
+        {
+            EnterpriseDictionary dictionary = Param.MapToEntity<EnterpriseDictionary>();
+            if (Param.Id != Guid.Empty)
+            {
+                return Update<EnterpriseDictionary, RequestEnterpriseDictionary>(dictionary, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            }
+            else
+            {
+                return Insert<EnterpriseDictionary>(dictionary) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            }
+        }
+        #endregion
         #endregion
 
         #region 成长档案

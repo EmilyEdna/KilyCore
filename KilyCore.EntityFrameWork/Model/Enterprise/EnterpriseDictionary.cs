@@ -22,7 +22,7 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
     /// <summary>
     /// 企业字典表
     /// </summary>
-    public class EnterpriseDictionary:BaseEntity
+    public class EnterpriseDictionary:EnterpriseBase
     {
         /// <summary>
         /// 字典类型
