@@ -17,5 +17,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public DateTime PlantTime { get; set; }
         public string CheckReport { get; set; }
         public string BacthNo { get; set; }
+        public int IsType { get; set; }
     }
 }

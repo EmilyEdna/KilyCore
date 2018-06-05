@@ -610,7 +610,10 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseEnterprisePlanting> GetPlantingPage(PageParamList<RequestEnterprisePlanting> pageParam)
         {
-            IQueryable<EnterprisePlanting> queryable = Kily.Set<EnterprisePlanting>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<EnterprisePlanting> queryable = Kily.Set<EnterprisePlanting>()
+                .Where(t => t.IsDelete == false)
+                .OrderByDescending(t => t.CreateTime)
+                .Where(t => t.IsType == pageParam.QueryParam.IsType);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.FeedName))
                 queryable = queryable.Where(t => t.FeedName.Contains(pageParam.QueryParam.FeedName));
             if (CompanyInfo() != null)
@@ -669,7 +672,10 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseEnterpriseDrug> GetDrugPage(PageParamList<RequestEnterpriseDrug> pageParam)
         {
-            IQueryable<EnterpriseDrug> queryable = Kily.Set<EnterpriseDrug>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<EnterpriseDrug> queryable = Kily.Set<EnterpriseDrug>()
+                .Where(t => t.IsDelete == false)
+                .OrderByDescending(t => t.CreateTime)
+                .Where(t => t.IsType == pageParam.QueryParam.IsType);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.DrugName))
                 queryable = queryable.Where(t => t.DrugName.Contains(pageParam.QueryParam.DrugName));
             if (CompanyInfo() != null)

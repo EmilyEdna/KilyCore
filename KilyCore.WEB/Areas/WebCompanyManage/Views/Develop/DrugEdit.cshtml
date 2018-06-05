@@ -74,6 +74,7 @@
     <div class="ibox-content">
         <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditDrug" id="Edit">
             <input type="hidden" class="form-control" name="CheckReport" id="CheckReport" />
+            <input type="hidden" class="form-control" name="IsType" value="1" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">药品名称</label></th>
@@ -98,9 +99,8 @@
                 <tr>
                     <th><label class="control-label">育苗批次</label></th>
                     <td class="has-warning" colspan="3">
-                        <input type="text" class="form-control" name="BacthNo" list="BacthNo"/>
-                        <datalist id="BacthNo">
-                        </datalist>
+                        <input type="text" class="form-control" name="BacthNo" list="BacthNo" />
+                        <datalist id="BacthNo"></datalist>
                     </td>
                 </tr>
                 <tr>

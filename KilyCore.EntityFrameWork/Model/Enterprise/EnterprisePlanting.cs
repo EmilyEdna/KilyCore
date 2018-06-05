@@ -37,5 +37,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 检测报告
         /// </summary>
         public virtual string CheckReport { get; set; }
+        /// <summary>
+        ///  1表示水肥管理2表示喂养管理
+        /// </summary>
+        public virtual int IsType { get; set; }
     }
 }

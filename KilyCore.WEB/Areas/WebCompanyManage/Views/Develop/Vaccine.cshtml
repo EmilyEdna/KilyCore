@@ -21,7 +21,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetDrugPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetDrugPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { IsType: 2 } });
             },
             //事件
             InitEvents: function () {
