@@ -50,6 +50,7 @@ namespace KilyCore.Service.IServiceCore
         String RemoveDic(Guid Id);
         ResponseEnterpriseDictionary GetDicDetail(Guid Id);
         String EditDic(RequestEnterpriseDictionary Param);
+        IList<ResponseEnterpriseDictionary> GetDictionaryList();
         #endregion
         #endregion
         #region 成长档案
@@ -104,6 +105,11 @@ namespace KilyCore.Service.IServiceCore
         String RemoveSeller(Guid Id);
         String EditSeller(RequestEnterpriseSeller Param);
         ResponseEnterpriseSeller GetSellerDetail(Guid Id);
+        #endregion
+        #region 原料管理
+        PagedResult<ResponseEnterpriseMaterial> GetMaterialPage(PageParamList<RequestEnterpriseMaterial> pageParam);
+        String EditMaterial(RequestEnterpriseMaterial Param);
+        String Remove(Guid Id);
         #endregion
     }
 }

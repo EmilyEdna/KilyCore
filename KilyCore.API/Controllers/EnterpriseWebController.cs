@@ -206,6 +206,15 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseWebService.EditDic(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 取分类
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetDictionaryList")]
+        public ObjectResultEx GetDictionaryList()
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetDictionaryList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #endregion
         #region 成长档案
@@ -568,6 +577,38 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetSellerDetail(SimlpeParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetSellerDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #region 原料管理
+        /// <summary>
+        /// 原料分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetMaterialPage")]
+        public ObjectResultEx GetMaterialPage(PageParamList<RequestEnterpriseMaterial> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetMaterialPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑原料
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditMaterial")]
+        public ObjectResultEx EditMaterial(RequestEnterpriseMaterial Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditMaterial(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除原料
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("Remove")]
+        public ObjectResultEx Remove(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.Remove(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

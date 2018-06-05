@@ -60,5 +60,21 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 企业字典
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult ComDictionary()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 编辑字典
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult DicEdit()
+        {
+            return View();
+        }
     }
 }

@@ -235,7 +235,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseVeinTag> GetTagPage(PageParamList<RequestVeinTag> pageParam)
         {
-            IQueryable<FunctionVeinTag> queryable = Kily.Set<FunctionVeinTag>().AsNoTracking().OrderByDescending(t => t.CreateTime);
+            IQueryable<FunctionVeinTag> queryable = Kily.Set<FunctionVeinTag>().AsNoTracking().OrderByDescending(t => t.CreateTime).Where(t=>t.IsDelete==false);
             if (UserInfo().AccountType == AccountEnum.Admin || UserInfo().AccountType == AccountEnum.Country)
                 return queryable.Select(t => new ResponseVeinTag()
                 {
@@ -279,7 +279,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string RemoveTag(Guid Id)
         {
-            if (Remove<FunctionVeinTag>(t => t.Id == Id))
+            if (Delete<FunctionVeinTag>(t => t.Id == Id))
                 return ServiceMessage.REMOVESUCCESS;
             else
                 return ServiceMessage.REMOVEFAIL;
@@ -348,7 +348,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseDictionary> GetSysDicPage(PageParamList<RequestDictionary> pageParam)
         {
-            IQueryable<FunctionDictionary> queryable = Kily.Set<FunctionDictionary>().OrderByDescending(t => t.CreateTime).AsNoTracking();
+            IQueryable<FunctionDictionary> queryable = Kily.Set<FunctionDictionary>().Where(t=>t.IsDelete==false).OrderByDescending(t => t.CreateTime).AsNoTracking();
             if (!string.IsNullOrEmpty(pageParam.QueryParam.DicName))
                 queryable = queryable.Where(t => t.DicName.Contains(pageParam.QueryParam.DicName));
             var data = queryable.Select(t => new ResponseDictionary()

@@ -391,7 +391,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string RemoveRole(Guid Id)
         {
-            if (Remove<EnterpriseRoleAuthorWeb>(t => t.Id == Id))
+            if (Delete<EnterpriseRoleAuthorWeb>(t => t.Id == Id))
                 return ServiceMessage.REMOVESUCCESS;
             else
                 return ServiceMessage.REMOVEFAIL;
@@ -463,7 +463,11 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseEnterpriseDictionary> GetDicPage(PageParamList<RequestEnterpriseDictionary> pageParam)
         {
-            IQueryable<EnterpriseDictionary> queryable = Kily.Set<EnterpriseDictionary>().OrderByDescending(t => t.CreateTime);
+            IQueryable<EnterpriseDictionary> queryable = Kily.Set<EnterpriseDictionary>().Where(t=>t.IsDelete==false).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.DicType))
+                queryable = queryable.Where(t => t.DicType.Contains(pageParam.QueryParam.DicType));
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.DicName))
+                queryable = queryable.Where(t => t.DicType.Contains(pageParam.QueryParam.DicName));
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
             else
@@ -484,7 +488,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string RemoveDic(Guid Id)
         {
-            return Remove<EnterpriseDictionary>(ExpressionExtension.GetExpression<EnterpriseDictionary>("Id", Id, ExpressionEnum.Equals)) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+            return Delete<EnterpriseDictionary>(ExpressionExtension.GetExpression<EnterpriseDictionary>("Id", Id, ExpressionEnum.Equals)) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         /// <summary>
         /// 字典详情
@@ -520,6 +524,18 @@ namespace KilyCore.Service.ServiceCore
             {
                 return Insert<EnterpriseDictionary>(dictionary) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
             }
+        }
+        /// <summary>
+        /// 获取分类
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseEnterpriseDictionary> GetDictionaryList()
+        {
+            var data = Kily.Set<EnterpriseDictionary>().Select(t => new ResponseEnterpriseDictionary()
+            {
+                DicType = t.DicType
+            }).Distinct().ToList();
+            return data;
         }
         #endregion
         #endregion
@@ -957,7 +973,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string RemoveNote(Guid Id)
         {
-            if (Remove<EnterpriseNote>(t => t.Id == Id))
+            if (Delete<EnterpriseNote>(t => t.Id == Id))
                 return ServiceMessage.REMOVESUCCESS;
             else
                 return ServiceMessage.REMOVEFAIL;
@@ -990,7 +1006,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseEnterpriseTag> GetTagPage(PageParamList<RequestEnterpriseTag> pageParam)
         {
-            IQueryable<EnterpriseTag> queryable = Kily.Set<EnterpriseTag>().Where(t => t.TagType == pageParam.QueryParam.TagType).OrderByDescending(t => t.CreateTime);
+            IQueryable<EnterpriseTag> queryable = Kily.Set<EnterpriseTag>().Where(t=>t.IsDelete==false).Where(t => t.TagType == pageParam.QueryParam.TagType).OrderByDescending(t => t.CreateTime);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.BacthNo))
                 queryable = queryable.Where(t => t.BacthNo.Contains(pageParam.QueryParam.BacthNo));
             if (CompanyInfo() != null)
@@ -1198,6 +1214,10 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseSeller> queryable = Kily.Set<EnterpriseSeller>().Where(t => t.IsDelete == false).Where(t => t.SellerType == pageParam.QueryParam.SellerType);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.SupplierName))
                 queryable = queryable.Where(t => t.SupplierName.Contains(pageParam.QueryParam.SupplierName));
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CreateUser == CompanyInfo().Id.ToString());
+            else
+                queryable = queryable.Where(t => t.CreateUser == CompanyUser().Id.ToString());
             var data = queryable.OrderByDescending(t => t.CreateTime).AsNoTracking().Select(t => new ResponseEnterpriseSeller()
             {
                 Id = t.Id,
@@ -1224,7 +1244,7 @@ namespace KilyCore.Service.ServiceCore
         /// <param name="Id"></param>
         public string RemoveSeller(Guid Id)
         {
-            return Remove<EnterpriseSeller>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+            return Delete<EnterpriseSeller>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         /// <summary>
         /// 编辑厂商
@@ -1268,6 +1288,57 @@ namespace KilyCore.Service.ServiceCore
                 SellerType = t.SellerType
             }).FirstOrDefault();
             return data;
+        }
+        #endregion
+
+        #region 原料管理
+        /// <summary>
+        /// 原辅料分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseMaterial> GetMaterialPage(PageParamList<RequestEnterpriseMaterial> pageParam)
+        {
+            IQueryable<EnterpriseMaterial> queryable = Kily.Set<EnterpriseMaterial>().Where(t=>t.IsDelete==false).OrderByDescending(t => t.CreateTime).AsNoTracking();
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.MaterName))
+                queryable = queryable.Where(t => t.MaterName.Contains(pageParam.QueryParam.MaterName));
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CreateUser == CompanyInfo().Id.ToString());
+            else
+                queryable = queryable.Where(t => t.CreateUser == CompanyUser().Id.ToString());
+            var data = queryable.Select(t => new ResponseEnterpriseMaterial()
+            {
+                Id = t.Id,
+                CompanyId = t.CompanyId,
+                BacthNo = t.BacthNo,
+                MaterName = t.MaterName,
+                Spec = t.Spec,
+                Standard = t.Standard,
+                Supplier = t.Supplier,
+                Unit = t.Unit,
+                Address = t.Address,
+                ExpiredDay = t.ExpiredDay
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑原料
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditMaterial(RequestEnterpriseMaterial Param)
+        {
+            EnterpriseMaterial material = Param.MapToEntity<EnterpriseMaterial>();
+            return Insert<EnterpriseMaterial>(material) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 删除原料
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string Remove(Guid Id)
+        {
+            return Delete(ExpressionExtension.GetExpression<EnterpriseMaterial>("Id", Id, ExpressionEnum.Equals)) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         #endregion
     }

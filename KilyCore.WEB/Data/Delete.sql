@@ -1,23 +1,27 @@
-﻿USE [Kily]
+﻿USE [Kily];
 GO
 --删除所有约束
-DECLARE c1 cursor for
-    select 'alter table ['+ object_name(parent_obj) + '] drop constraint ['+name+']; '
-    from sysobjects
-    where xtype = 'F'
-open c1
-declare @c1 varchar(8000)
-fetch next from c1 into @c1
-while(@@fetch_status=0)
-    begin
-        exec(@c1)
-        fetch next from c1 into @c1
-    end
-close c1
-deallocate c1
+DECLARE c1 CURSOR FOR
+SELECT 'alter table [' + OBJECT_NAME(parent_obj) + '] drop constraint [' + name + ']; '
+FROM sysobjects
+WHERE xtype = 'F';
+OPEN c1;
+DECLARE @c1 VARCHAR(8000);
+FETCH NEXT FROM c1
+INTO @c1;
+WHILE (@@fetch_status = 0)
+BEGIN
+    EXEC (@c1);
+    FETCH NEXT FROM c1
+    INTO @c1;
+END;
+CLOSE c1;
+DEALLOCATE c1;
 --删除数据库所有表
-declare @tname varchar(8000)
-set @tname=''
-select @tname=@tname + Name + ',' from sysobjects where xtype='U'
-select @tname='drop table ' + left(@tname,len(@tname)-1)
-exec(@tname)
+DECLARE @tname VARCHAR(8000);
+SET @tname = '';
+SELECT @tname = @tname + name + ','
+FROM sysobjects
+WHERE xtype = 'U';
+SELECT @tname = 'drop table ' + LEFT(@tname, LEN(@tname) - 1);
+EXEC (@tname);
