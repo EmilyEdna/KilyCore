@@ -17,6 +17,37 @@ namespace KilyCore.API.Controllers
     [Route("api/[controller]")]
     public class EnterpriseWebController : BaseController
     {
+        #region 下拉关联列表
+        /// <summary>
+        /// 下拉厂商
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetSellerList")]
+        public ObjectResultEx GetSellerList(SimlpeParam<int> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetSellerList(Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 下拉字典类型
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetDictionaryList")]
+        public ObjectResultEx GetDictionaryList()
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetDictionaryList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 下拉字典值
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetDictionaryList")]
+        public ObjectResultEx GetDictionaryList(SimlpeParam<String> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetDictionaryList(Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
         #region 获取全局集团菜单
         /// <summary>
         /// 获取导航菜单
@@ -205,15 +236,6 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx EditDic(RequestEnterpriseDictionary Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.EditDic(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }
-        /// <summary>
-        /// 取分类
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost("GetDictionaryList")]
-        public ObjectResultEx GetDictionaryList()
-        {
-            return ObjectResultEx.Instance(EnterpriseWebService.GetDictionaryList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #endregion
@@ -608,7 +630,7 @@ namespace KilyCore.API.Controllers
         [HttpPost("Remove")]
         public ObjectResultEx Remove(SimlpeParam<Guid> Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.Remove(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveMaterial(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

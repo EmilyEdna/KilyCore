@@ -18,6 +18,11 @@ namespace KilyCore.Service.IServiceCore
     /// </summary>
     public interface IEnterpriseWebService : IService
     {
+        #region 下拉关联列表
+         IList<ResponseEnterpriseSeller> GetSellerList(int Type);
+        IList<String> GetDictionaryList();
+        IList<ResponseEnterpriseDictionary> GetDictionaryList(string Type);
+        #endregion
         #region 获取全局集团菜单
         IList<ResponseEnterpriseMenu> GetEnterpriseMenu();
         IList<ResponseParentTree> GetEnterpriseWebTree();
@@ -50,7 +55,6 @@ namespace KilyCore.Service.IServiceCore
         String RemoveDic(Guid Id);
         ResponseEnterpriseDictionary GetDicDetail(Guid Id);
         String EditDic(RequestEnterpriseDictionary Param);
-        IList<ResponseEnterpriseDictionary> GetDictionaryList();
         #endregion
         #endregion
         #region 成长档案
@@ -109,7 +113,7 @@ namespace KilyCore.Service.IServiceCore
         #region 原料管理
         PagedResult<ResponseEnterpriseMaterial> GetMaterialPage(PageParamList<RequestEnterpriseMaterial> pageParam);
         String EditMaterial(RequestEnterpriseMaterial Param);
-        String Remove(Guid Id);
+        String RemoveMaterial(Guid Id);
         #endregion
     }
 }

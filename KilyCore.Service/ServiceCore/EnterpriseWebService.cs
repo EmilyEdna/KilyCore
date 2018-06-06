@@ -25,6 +25,58 @@ namespace KilyCore.Service.ServiceCore
 {
     public class EnterpriseWebService : Repository, IEnterpriseWebService
     {
+
+        #region 下拉关联列表
+        /// <summary>
+        /// 厂商列表
+        /// </summary>
+        /// <param name="Type"></param>
+        /// <returns></returns>
+        public IList<ResponseEnterpriseSeller> GetSellerList(int Type)
+        {
+            IQueryable<EnterpriseSeller> queryable = Kily.Set<EnterpriseSeller>().Where(t => t.IsDelete == false).AsNoTracking();
+            if ((SellerEnum)Type == SellerEnum.Supplier)
+                queryable = queryable.Where(t => t.SellerType == SellerEnum.Supplier);
+            if ((SellerEnum)Type == SellerEnum.Sale)
+                queryable = queryable.Where(t => t.SellerType == SellerEnum.Sale);
+            if ((SellerEnum)Type == SellerEnum.Production)
+                queryable = queryable.Where(t => t.SellerType == SellerEnum.Production);
+            var data = queryable.Select(t => new ResponseEnterpriseSeller()
+            {
+                Id = t.Id,
+                SupplierName = t.SupplierName
+            }).ToList();
+            return data;
+        }
+        /// <summary>
+        /// 下拉字典类型
+        /// </summary>
+        /// <returns></returns>
+        public IList<String> GetDictionaryList()
+        {
+            var data = Kily.Set<EnterpriseDictionary>()
+                .Where(t => t.IsDelete == false)
+                .Select(t => t.DicType).Distinct().ToList();
+            return data;
+        }
+        /// <summary>
+        /// 下拉字典值
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseEnterpriseDictionary> GetDictionaryList(string Type)
+        {
+            var data = Kily.Set<EnterpriseDictionary>().Where(t => t.IsDelete == false)
+                 .Where(t => t.DicType == Type).Select(t => new ResponseEnterpriseDictionary()
+                 {
+                     Id = t.Id,
+                     DicName = t.DicName,
+                     DicValue = t.DicValue,
+                     Remark = t.Remark
+                 }).ToList();
+            return data;
+        }
+        #endregion
+
         #region 获取全局集团菜单
         /// <summary>
         /// 获取导航菜单
@@ -463,7 +515,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseEnterpriseDictionary> GetDicPage(PageParamList<RequestEnterpriseDictionary> pageParam)
         {
-            IQueryable<EnterpriseDictionary> queryable = Kily.Set<EnterpriseDictionary>().Where(t=>t.IsDelete==false).OrderByDescending(t => t.CreateTime);
+            IQueryable<EnterpriseDictionary> queryable = Kily.Set<EnterpriseDictionary>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.DicType))
                 queryable = queryable.Where(t => t.DicType.Contains(pageParam.QueryParam.DicType));
             if (!string.IsNullOrEmpty(pageParam.QueryParam.DicName))
@@ -524,18 +576,6 @@ namespace KilyCore.Service.ServiceCore
             {
                 return Insert<EnterpriseDictionary>(dictionary) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
             }
-        }
-        /// <summary>
-        /// 获取分类
-        /// </summary>
-        /// <returns></returns>
-        public IList<ResponseEnterpriseDictionary> GetDictionaryList()
-        {
-            var data = Kily.Set<EnterpriseDictionary>().Select(t => new ResponseEnterpriseDictionary()
-            {
-                DicType = t.DicType
-            }).Distinct().ToList();
-            return data;
         }
         #endregion
         #endregion
@@ -1006,7 +1046,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseEnterpriseTag> GetTagPage(PageParamList<RequestEnterpriseTag> pageParam)
         {
-            IQueryable<EnterpriseTag> queryable = Kily.Set<EnterpriseTag>().Where(t=>t.IsDelete==false).Where(t => t.TagType == pageParam.QueryParam.TagType).OrderByDescending(t => t.CreateTime);
+            IQueryable<EnterpriseTag> queryable = Kily.Set<EnterpriseTag>().Where(t => t.IsDelete == false).Where(t => t.TagType == pageParam.QueryParam.TagType).OrderByDescending(t => t.CreateTime);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.BacthNo))
                 queryable = queryable.Where(t => t.BacthNo.Contains(pageParam.QueryParam.BacthNo));
             if (CompanyInfo() != null)
@@ -1299,7 +1339,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseEnterpriseMaterial> GetMaterialPage(PageParamList<RequestEnterpriseMaterial> pageParam)
         {
-            IQueryable<EnterpriseMaterial> queryable = Kily.Set<EnterpriseMaterial>().Where(t=>t.IsDelete==false).OrderByDescending(t => t.CreateTime).AsNoTracking();
+            IQueryable<EnterpriseMaterial> queryable = Kily.Set<EnterpriseMaterial>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime).AsNoTracking();
             if (!string.IsNullOrEmpty(pageParam.QueryParam.MaterName))
                 queryable = queryable.Where(t => t.MaterName.Contains(pageParam.QueryParam.MaterName));
             if (CompanyInfo() != null)
@@ -1336,7 +1376,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public string Remove(Guid Id)
+        public string RemoveMaterial(Guid Id)
         {
             return Delete(ExpressionExtension.GetExpression<EnterpriseMaterial>("Id", Id, ExpressionEnum.Equals)) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }

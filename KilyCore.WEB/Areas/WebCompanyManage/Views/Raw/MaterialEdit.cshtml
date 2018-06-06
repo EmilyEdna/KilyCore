@@ -1,0 +1,99 @@
+﻿
+@{
+    ViewData["Title"] = "编辑原料";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+                this.ShowCard();
+            },
+            //元素
+            InitDom: function () {
+                var Guid = controller.GetParam("Id");
+                $("#No").val("Y" + controller.FormatDate("YYMMDDHHmmss"));
+                $("#CompanyId").val(CompanyInfo.Id);
+            },
+            //事件
+            InitEvents: function () {
+                //厂商
+                controller.ajax({
+                    url: "EnterpriseWeb/GetSellerList",
+                    data: { Parameter: 10 },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html ='<option>==请选择==</option>'
+                        $.each(result.data, function (i, obj) {
+                            html += '<option>' + obj.SupplierName + '</option>';
+                        });
+                        $("#Supplier").html(html);
+                    }
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditMaterial" id="Edit">
+            <input type="hidden" id="CompanyId" name="CompanyId" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">编号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="BacthNo" id="No" readonly />
+                    </td>
+                    <th><label class="control-label">原料名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="MaterName" data-msg-required="请输入原料名称" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">规格</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Spec" />
+                    </td>
+                    <th><label class="control-label">保质期</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ExpiredDay" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">产地</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Address" />
+                    </td>
+                    <th><label class="control-label">供应商</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="Supplier" id="Supplier"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">计量单位</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="Unit" id="Unit"></select>
+                    </td>
+                    <th><label class="control-label">执行标准</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="Spec" id="Spec"></select>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
