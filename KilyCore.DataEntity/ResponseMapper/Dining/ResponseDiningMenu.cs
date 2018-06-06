@@ -40,6 +40,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Dining
         /// <summary>
         /// 子菜单
         /// </summary>
-        public List<ResponseDiningMenu> MenuChildren { get; set; }
+        public IList<ResponseDiningMenu> MenuChildren { get; set; }
     }
 }

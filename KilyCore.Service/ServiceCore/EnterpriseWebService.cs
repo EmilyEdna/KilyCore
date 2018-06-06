@@ -52,28 +52,25 @@ namespace KilyCore.Service.ServiceCore
         /// 下拉字典类型
         /// </summary>
         /// <returns></returns>
-        public IList<String> GetDictionaryList()
+        public IList<ResponseEnterpriseDictionary> GetDictionaryList()
         {
             var data = Kily.Set<EnterpriseDictionary>()
-                .Where(t => t.IsDelete == false)
-                .Select(t => t.DicType).Distinct().ToList();
+                .Where(t => t.IsDelete == false).GroupBy(t=>t.DicType)
+                .Select(t => new ResponseEnterpriseDictionary()
+                {
+                    DicType=t.Key.ToString(),
+                    DictionaryList = Kily.Set<EnterpriseDictionary>()
+                   .Where(x => x.IsDelete == false)
+                   .Where(x => x.DicType == t.Key.ToString()).Select(x => new ResponseEnterpriseDictionary()
+                   {
+                       Id = x.Id,
+                       DicName = x.DicName,
+                       DicValue = x.DicValue,
+                       Remark = x.Remark
+                   }).ToList()
+                }).AsNoTracking().ToList();
             return data;
-        }
-        /// <summary>
-        /// 下拉字典值
-        /// </summary>
-        /// <returns></returns>
-        public IList<ResponseEnterpriseDictionary> GetDictionaryList(string Type)
-        {
-            var data = Kily.Set<EnterpriseDictionary>().Where(t => t.IsDelete == false)
-                 .Where(t => t.DicType == Type).Select(t => new ResponseEnterpriseDictionary()
-                 {
-                     Id = t.Id,
-                     DicName = t.DicName,
-                     DicValue = t.DicValue,
-                     Remark = t.Remark
-                 }).ToList();
-            return data;
+
         }
         #endregion
 
@@ -1357,7 +1354,9 @@ namespace KilyCore.Service.ServiceCore
                 Supplier = t.Supplier,
                 Unit = t.Unit,
                 Address = t.Address,
-                ExpiredDay = t.ExpiredDay
+                ExpiredDay = t.ExpiredDay,
+                PackageType=t.PackageType,
+                MaterNum=t.MaterNum
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }

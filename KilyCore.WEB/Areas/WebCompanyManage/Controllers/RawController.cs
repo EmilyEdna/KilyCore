@@ -17,7 +17,7 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         /// 原料清单
         /// </summary>
         /// <returns></returns>
-        public IActionResult BaseList()
+        public IActionResult MaterialList()
         {
             return View();
         }

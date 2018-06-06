@@ -20,8 +20,7 @@ namespace KilyCore.Service.IServiceCore
     {
         #region 下拉关联列表
          IList<ResponseEnterpriseSeller> GetSellerList(int Type);
-        IList<String> GetDictionaryList();
-        IList<ResponseEnterpriseDictionary> GetDictionaryList(string Type);
+        IList<ResponseEnterpriseDictionary> GetDictionaryList();
         #endregion
         #region 获取全局集团菜单
         IList<ResponseEnterpriseMenu> GetEnterpriseMenu();

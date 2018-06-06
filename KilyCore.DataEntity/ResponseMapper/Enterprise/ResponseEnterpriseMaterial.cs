@@ -30,5 +30,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public  string Standard { get; set; }
         public  string Supplier { get; set; }
         public  string Address { get; set; }
+        public int MaterNum { get; set; }
+        public string PackageType { get; set; }
     }
 }

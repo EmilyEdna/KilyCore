@@ -37,16 +37,6 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetDictionaryList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        /// <summary>
-        /// 下拉字典值
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        [HttpPost("GetDictionaryList")]
-        public ObjectResultEx GetDictionaryList(SimlpeParam<String> Param)
-        {
-            return ObjectResultEx.Instance(EnterpriseWebService.GetDictionaryList(Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }
         #endregion
         #region 获取全局集团菜单
         /// <summary>

@@ -21,7 +21,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetMaterialPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit"});
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetMaterialPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
             },
             //事件
             InitEvents: function () {
@@ -109,7 +109,7 @@
                                 <th data-field="Supplier" data-halign="center" data-align="center" data-valign="middle">供应商</th>
                                 <th data-field="Address" data-halign="center" data-align="center" data-valign="middle">产地</th>
                                 <th data-field="Unit" data-halign="center" data-align="center" data-valign="middle">计量单位</th>
-                                <th data-field="ExpiredDay" data-halign="center" data-align="center" data-valign="middle">保质期</th>
+                                <th data-field="ExpiredDay" data-halign="center" data-align="center" data-valign="middle">保质期/天</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>

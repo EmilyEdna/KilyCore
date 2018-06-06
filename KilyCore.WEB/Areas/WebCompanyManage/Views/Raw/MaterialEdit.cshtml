@@ -12,13 +12,27 @@
             Init: function () {
                 this.InitDom();
                 this.InitEvents();
-                this.ShowCard();
+                this.GetSelect();
             },
             //元素
             InitDom: function () {
                 var Guid = controller.GetParam("Id");
                 $("#No").val("Y" + controller.FormatDate("YYMMDDHHmmss"));
                 $("#CompanyId").val(CompanyInfo.Id);
+            },
+            GetSelect: function () {
+                //初始化下拉
+                controller.Select({
+                    document:'.selectpicker',
+                    arrelemnt: ['#Unit','#Standard'],
+                    url: 'EnterpriseWeb/GetDictionaryList',
+                });
+                $("#Unit").on('changed.bs.select', function () {
+                    $('input[name="Unit"]').val($(this).val());
+                });
+                $("#Standard").on('changed.bs.select', function () {
+                    $('input[name="Standard"]').val($(this).val());
+                });
             },
             //事件
             InitEvents: function () {
@@ -64,6 +78,16 @@
                     </td>
                 </tr>
                 <tr>
+                    <th><label class="control-label">采购数量</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="MaterNum" data-msg-required="请输入采购数量" />
+                    </td>
+                    <th><label class="control-label">包装类型</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="PackageType" />
+                    </td>
+                </tr>
+                <tr>
                     <th><label class="control-label">规格</label></th>
                     <td class="has-warning">
                         <input type="text" class="form-control" name="Spec" />
@@ -86,11 +110,11 @@
                 <tr>
                     <th><label class="control-label">计量单位</label></th>
                     <td class="has-warning">
-                        <select type="select" class="form-control" name="Unit" id="Unit"></select>
+                        <select type="select" class="selectpicker form-control" data-max-options="2" id="Unit" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
                     </td>
                     <th><label class="control-label">执行标准</label></th>
                     <td class="has-warning">
-                        <select type="select" class="form-control" name="Spec" id="Spec"></select>
+                        <select type="select" class="selectpicker form-control" data-max-options="2" id="Standard" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
                     </td>
                 </tr>
             </table>

@@ -567,3 +567,44 @@ controller.Upload = function (option) {
 controller.FormatDate = function (option) {
     return moment().format(option);
 }
+//下拉控件
+controller.Select = function (option) {
+    defaultOption = {
+        document: undefined,
+        arrelemnt: [],
+        url: undefined,
+        data: {},
+        type: 'post',
+        async: false
+    };
+    var options = $.extend(defaultOption, option);
+    controller.ajax({
+        url: options.url,
+        data: options.data,
+        async: options.async,
+        type: options.type,
+        success: function (result) {
+            InitHtml(result.data);
+            InitHidden();
+        }
+    });
+    function InitHtml(data) {
+        var html = '';
+        $.each(data, function (i, obj) {
+            html += '<optgroup label="' + obj.DicType + '">';
+            if (obj.DictionaryList != null) {
+                $.each(obj.DictionaryList, function (j, key) {
+                    html += '<option>' + key.DicValue + '</option>'
+                });
+            }
+            html += '</optgroup>';
+        });
+        $(options.document).html(html);
+    }
+    function InitHidden() {
+        $.each(options.arrelemnt, function (i, element) {
+            var doc = '<input type="hidden" name="' + element.substring(1, element.length) + '">';
+            $(doc).appendTo($(element).parent());
+        });
+    }
+}

@@ -20,7 +20,7 @@ using System.Text;
 namespace KilyCore.EntityFrameWork.Model.Enterprise
 {
     /// <summary>
-    /// 企业原辅料表
+    /// 原辅料表
     /// </summary>
     public class EnterpriseMaterial : EnterpriseBase
     {
@@ -56,5 +56,13 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 产地
         /// </summary>
         public virtual string Address { get; set; }
+        /// <summary>
+        /// 采购数量
+        /// </summary>
+        public virtual int MaterNum { get; set; }
+        /// <summary>
+        /// 包装类型
+        /// </summary>
+        public virtual string PackageType { get; set; }
     }
 }

@@ -26,5 +26,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string DicName { get; set; }
         public string DicValue { get; set; }
         public string Remark { get; set; }
+        public IList<ResponseEnterpriseDictionary> DictionaryList { get; set; }
     }
 }
