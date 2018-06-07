@@ -623,5 +623,67 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveMaterial(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 原料仓库
+        /// <summary>
+        /// 获取入库分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetStockPage")]
+        public ObjectResultEx GetStockPage(PageParamList<RequestEnterpriseMaterialStock> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetStockPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取入库分页
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetStockDetail")]
+        public ObjectResultEx GetStockDetail(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetStockDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除入库
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveStock")]
+        public ObjectResultEx RemoveStock(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveStock(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑入库
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditStock")]
+        public ObjectResultEx EditStock(RequestEnterpriseMaterialStock Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditStock(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 出库分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetOutStockPage")]
+        public ObjectResultEx GetOutStockPage(PageParamList<RequestEnterpriseMaterialStockAttach> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetOutStockPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除出库记录
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveStockAttach")]
+        public ObjectResultEx RemoveStockAttach(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveStockAttach(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }

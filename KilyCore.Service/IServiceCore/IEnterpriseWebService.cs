@@ -19,7 +19,7 @@ namespace KilyCore.Service.IServiceCore
     public interface IEnterpriseWebService : IService
     {
         #region 下拉关联列表
-         IList<ResponseEnterpriseSeller> GetSellerList(int Type);
+        IList<ResponseEnterpriseSeller> GetSellerList(int Type);
         IList<ResponseEnterpriseDictionary> GetDictionaryList();
         #endregion
         #region 获取全局集团菜单
@@ -110,9 +110,21 @@ namespace KilyCore.Service.IServiceCore
         ResponseEnterpriseSeller GetSellerDetail(Guid Id);
         #endregion
         #region 原料管理
+        #region 原料
         PagedResult<ResponseEnterpriseMaterial> GetMaterialPage(PageParamList<RequestEnterpriseMaterial> pageParam);
         String EditMaterial(RequestEnterpriseMaterial Param);
         String RemoveMaterial(Guid Id);
+        #endregion
+        #region 入库
+        PagedResult<ResponseEnterpriseMaterialStock> GetStockPage(PageParamList<RequestEnterpriseMaterialStock> pageParam);
+        ResponseEnterpriseMaterialStock GetStockDetail(Guid Id);
+        String EditStock(RequestEnterpriseMaterialStock Param);
+        String RemoveStock(Guid Id);
+        #endregion
+        #region 出库
+        PagedResult<ResponseEnterpriseMaterialStockAttach> GetOutStockPage(PageParamList<RequestEnterpriseMaterialStockAttach> pageParam);
+        String RemoveStockAttach(Guid Id);
+        #endregion
         #endregion
     }
 }

@@ -5,13 +5,13 @@ using System.Text;
 
 #region << 版 本 注 释 >>
 /*----------------------------------------------------------------
-* 类 名 称 ：EnterpriseMaterialStock
+* 类 名 称 ：EnterpriseMaterialStockAttach
 * 类 描 述 ：
 * 命名空间 ：KilyCore.EntityFrameWork.Model.Enterprise
 * 机器名称 ：DESKTOP-QPIVQ28 
 * CLR 版本 ：4.0.30319.42000
 * 作    者 ：刘泽华
-* 创建时间 ：2018/6/6 17:22:32
+* 创建时间 ：2018/6/7 10:39:36
 *******************************************************************
 * Copyright @ 刘泽华 2018. All rights reserved.
 *******************************************************************
@@ -20,45 +20,29 @@ using System.Text;
 namespace KilyCore.EntityFrameWork.Model.Enterprise
 {
     /// <summary>
-    /// 原料仓库表
+    /// 原料出库表
     /// </summary>
-    public class EnterpriseMaterialStock : EnterpriseBase
+    public class EnterpriseMaterialStockAttach: EnterpriseBase
     {
-        /// <summary>
-        /// 入库批次号
-        /// </summary>
-        public virtual string SerializNo { get; set; }
         /// <summary>
         /// 原料批次号
         /// </summary>
         public virtual string BacthNo { get; set; }
         /// <summary>
-        /// 入库数量
+        /// 出库批次号
         /// </summary>
-        public virtual string SetStockNum { get; set; }
+        public virtual string SerializNo { get; set; }
         /// <summary>
-        /// 入库时间
+        /// 出库数量
         /// </summary>
-        public virtual DateTime? SetStockTime { get; set; }
+        public virtual string OutStockNum { get; set; }
         /// <summary>
-        /// 生产时间
+        /// 出库时间
         /// </summary>
-        public virtual DateTime? ProductTime { get; set; }
+        public virtual DateTime? OutStockTime { get; set; }
         /// <summary>
-        /// 质检单位
+        /// 出库负责人
         /// </summary>
-        public virtual string CheckUnit { get; set; }
-        /// <summary>
-        /// 质检人员
-        /// </summary>
-        public virtual string CheckUser { get; set; }
-        /// <summary>
-        /// 质检报告
-        /// </summary>
-        public virtual string CheckResult { get; set; }
-        /// <summary>
-        /// 入库负责人
-        /// </summary>
-        public virtual string SetStockUser { get; set; }
+        public virtual string OutStockUser { get; set; }
     }
 }
