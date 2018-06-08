@@ -29,5 +29,27 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 原料仓库
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Stock()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 入库
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult StockIn() {
+            return View();
+        }
+        /// <summary>
+        /// 出库
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult StockOut() {
+            return View();
+        }
     }
 }

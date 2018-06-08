@@ -25,9 +25,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
     public class EnterpriseMaterialStockAttach: EnterpriseBase
     {
         /// <summary>
-        /// 原料批次号
+        /// 入库表Id
         /// </summary>
-        public virtual string BacthNo { get; set; }
+        public virtual Guid MaterialStockId { get; set; }
         /// <summary>
         /// 出库批次号
         /// </summary>

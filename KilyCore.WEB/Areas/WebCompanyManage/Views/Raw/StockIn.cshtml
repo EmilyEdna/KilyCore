@@ -1,0 +1,164 @@
+﻿
+@{
+    ViewData["Title"] = "新增入库";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#SerializNo").val("R" + controller.FormatDate("YYMMDDHHmmss"));
+                controller.LayDate({ elem: "#SetStockTime" });
+                controller.LayDate({ elem: "#ProductTime" });
+                $("#CompanyId").val(CompanyInfo.Id);
+                var Guid = controller.GetParam("Id");
+                this.GetStockDetail(Guid);
+                this.GetList();
+            },
+            //获取详情
+            GetStockDetail: function (data) {
+                if (data != null && data != "" && data != undefined)
+                    controller.ajax({
+                        url: "EnterpriseWeb/GetStockDetail",
+                        data: { Id: data },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                        }
+                    });
+            },
+            //获取下拉原料
+            GetList: function () {
+                controller.ajax({
+                    url: "EnterpriseWeb/GetMaterialList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.BacthNo + '">' + obj.MaterName + '</option>';
+                        });
+                        $("#BacthNo").html(html);
+                    }
+                });
+                controller.ajax({
+                    url: "EnterpriseWeb/GetUserList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option>' + obj.TrueName + '</option>';
+                        });
+                        $("#SetStockUser").html(html);
+                    }
+                });
+            },
+            //设置文件值
+            SetFileValue: function (data, elememt) {
+                var files = $(elememt).val();
+                if (files != null && files != "" && files != undefined) {
+                    files += "," + data;
+                    $(elememt).val(files);
+                } else {
+                    $(elememt).val(data);
+                }
+            },
+            //事件
+            InitEvents: function () {
+                //文件上传
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: ".upload-input",
+                    maxNum: 3,
+                    node: '.image-box',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data,"#CheckResult");
+                    }
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditStock" id="Edit">
+            <input type="hidden" class="form-control" name="CheckResult" id="CheckResult" />
+            <input type="hidden" class="form-control" name="CompanyId" id="CompanyId" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">批次号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SerializNo" id="SerializNo" readonly />
+                    </td>
+                    <th><label class="control-label">原料批次</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="BacthNo" list="BacthNo"/>
+                        <datalist id="BacthNo"></datalist>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">入库时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SetStockTime" id="SetStockTime" />
+                    </td>
+                    <th><label class="control-label">生产时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ProductTime" id="ProductTime" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">入库数量</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SetStockNum" />
+                    </td>
+                    <th><label class="control-label">质检单位</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="CheckUnit" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">质检人员</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="CheckUser" />
+                    </td>
+                    <th><label class="control-label">负责人</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="SetStockUser" id="SetStockUser"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">质检报告</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

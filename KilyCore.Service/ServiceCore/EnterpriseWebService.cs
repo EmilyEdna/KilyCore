@@ -35,6 +35,10 @@ namespace KilyCore.Service.ServiceCore
         public IList<ResponseEnterpriseSeller> GetSellerList(int Type)
         {
             IQueryable<EnterpriseSeller> queryable = Kily.Set<EnterpriseSeller>().Where(t => t.IsDelete == false).AsNoTracking();
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             if ((SellerEnum)Type == SellerEnum.Supplier)
                 queryable = queryable.Where(t => t.SellerType == SellerEnum.Supplier);
             if ((SellerEnum)Type == SellerEnum.Sale)
@@ -54,8 +58,12 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public IList<ResponseEnterpriseDictionary> GetDictionaryList()
         {
-            var data = Kily.Set<EnterpriseDictionary>()
-                .Where(t => t.IsDelete == false).GroupBy(t => t.DicType)
+            IQueryable<EnterpriseDictionary> queryable = Kily.Set<EnterpriseDictionary>().Where(t => t.IsDelete == false);
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.GroupBy(t => t.DicType)
                 .Select(t => new ResponseEnterpriseDictionary()
                 {
                     DicType = t.Key.ToString(),
@@ -312,6 +320,19 @@ namespace KilyCore.Service.ServiceCore
                 Account = t.Account,
                 IdCard = t.IdCard
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        public IList<ResponseEnterpriseUser> GetUserList()
+        {
+            IQueryable<EnterpriseUser> queryable = Kily.Set<EnterpriseUser>().Where(t => t.IsDelete == false);
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CreateUser == CompanyInfo().Id.ToString());
+            else
+                queryable = queryable.Where(t => t.CreateUser == CompanyUser().Id.ToString());
+            var data = queryable.Select(t => new ResponseEnterpriseUser()
+            {
+                TrueName = t.TrueName,
+            }).ToList();
             return data;
         }
         /// <summary>
@@ -1380,6 +1401,24 @@ namespace KilyCore.Service.ServiceCore
         {
             return Delete(ExpressionExtension.GetExpression<EnterpriseMaterial>("Id", Id, ExpressionEnum.Equals)) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
+        /// <summary>
+        /// 获取原料列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseEnterpriseMaterial> GetMaterialList()
+        {
+            IQueryable<EnterpriseMaterial> queryable = Kily.Set<EnterpriseMaterial>().Where(t => t.IsDelete == false).AsNoTracking().OrderByDescending(t => t.CreateTime);
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.Select(t => new ResponseEnterpriseMaterial()
+            {
+                BacthNo = t.BacthNo,
+                MaterName = t.MaterName
+            }).ToList();
+            return data;
+        }
         #endregion
         #region 入库
         /// <summary>
@@ -1442,8 +1481,33 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string EditStock(RequestEnterpriseMaterialStock Param)
         {
-            EnterpriseMaterialStock stock = Param.MapToEntity<EnterpriseMaterialStock>();
-            return Insert<EnterpriseMaterialStock>(stock) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            if (Param.Id == Guid.Empty)
+            {
+                EnterpriseMaterialStock stock = Param.MapToEntity<EnterpriseMaterialStock>();
+                List<String> NumList = Kily.Set<EnterpriseMaterialStock>().Where(t => t.BacthNo == Param.BacthNo).Select(t => t.SetStockNum).ToList();
+                int MaterNum = Kily.Set<EnterpriseMaterial>().Where(t => t.BacthNo == Param.BacthNo).Select(t => t.MaterNum).FirstOrDefault();
+                long Sum = 0;
+                if (NumList.Count != 0)
+                {
+                    NumList.ForEach(t =>
+                     {
+                         Sum += Convert.ToInt64(t);
+                     });
+                    if (MaterNum - Sum >= 0)
+                        return Insert<EnterpriseMaterialStock>(stock) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+                    else
+                        return $"超出采购数量{MaterNum - Sum}";
+                }
+                else
+                {
+                    if (MaterNum - Convert.ToInt64(Param.SetStockNum) >= 0)
+                        return Insert<EnterpriseMaterialStock>(stock) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+                    else
+                        return $"超出采购数量{Convert.ToInt64(Param.SetStockNum) - MaterNum}";
+                }
+            }
+            else
+                return ServiceMessage.HANDLESUCCESS;
         }
         /// <summary>
         /// 删除入库
@@ -1463,26 +1527,28 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseEnterpriseMaterialStockAttach> GetOutStockPage(PageParamList<RequestEnterpriseMaterialStockAttach> pageParam)
         {
-            IQueryable<EnterpriseMaterialStockAttach> queryable = Kily.Set<EnterpriseMaterialStockAttach>().Where(t => t.IsDelete == false);
-            IQueryable<EnterpriseMaterial> queryables = Kily.Set<EnterpriseMaterial>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseMaterialStockAttach> StockAttach = Kily.Set<EnterpriseMaterialStockAttach>().Where(t => t.IsDelete == false).AsNoTracking();
+            IQueryable<EnterpriseMaterialStock> Stock = Kily.Set<EnterpriseMaterialStock>().Where(t => t.IsDelete == false).AsNoTracking();
+            IQueryable<EnterpriseMaterial> Material = Kily.Set<EnterpriseMaterial>().Where(t => t.IsDelete == false).AsNoTracking();
             if (!string.IsNullOrEmpty(pageParam.QueryParam.MaterName))
-                queryables = queryables.Where(t => t.MaterName.Contains(pageParam.QueryParam.MaterName));
+                Material = Material.Where(t => t.MaterName.Contains(pageParam.QueryParam.MaterName));
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CreateUser == CompanyInfo().Id.ToString());
+                StockAttach = StockAttach.Where(t => t.CreateUser == CompanyInfo().Id.ToString());
             else
-                queryable = queryable.Where(t => t.CreateUser == CompanyUser().Id.ToString());
-            var data = queryable.OrderByDescending(t => t.CreateTime)
-                .Join(queryables, t => t.BacthNo, x => x.BacthNo, (t, x) => new ResponseEnterpriseMaterialStockAttach()
-                {
-                    Id = t.Id,
-                    MaterName = x.MaterName,
-                    CompanyId = t.CompanyId,
-                    SerializNo = t.SerializNo,
-                    BacthNo = t.BacthNo,
-                    OutStockNum = t.OutStockNum,
-                    OutStockTime = t.OutStockTime,
-                    OutStockUser = t.OutStockUser
-                }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                StockAttach = StockAttach.Where(t => t.CreateUser == CompanyUser().Id.ToString());
+            var data = StockAttach.OrderByDescending(t => t.CreateTime)
+                 .Join(Stock, t => t.MaterialStockId, x => x.Id, (t, x) => new { t, x })
+                 .Join(Material, p => p.x.BacthNo, y => y.BacthNo, (p, y) => new ResponseEnterpriseMaterialStockAttach()
+                 {
+                     Id = p.t.Id,
+                     MaterName = y.MaterName,
+                     CompanyId = p.t.CompanyId,
+                     SerializNo = p.t.SerializNo,
+                     BacthNo = y.BacthNo,
+                     OutStockNum = p.t.OutStockNum,
+                     OutStockTime = p.t.OutStockTime,
+                     OutStockUser = p.t.OutStockUser
+                 }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
         /// <summary>
@@ -1493,6 +1559,25 @@ namespace KilyCore.Service.ServiceCore
         public string RemoveStockAttach(Guid Id)
         {
             return Remove<EnterpriseMaterialStockAttach>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 编辑出库
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditOutStock(RequestEnterpriseMaterialStockAttach Param)
+        {
+            EnterpriseMaterialStock Stock = Kily.Set<EnterpriseMaterialStock>().Where(t => t.Id == Param.MaterialStockId).FirstOrDefault();
+            EnterpriseMaterialStockAttach Attach = Param.MapToEntity<EnterpriseMaterialStockAttach>();
+            int Count = Convert.ToInt32(Stock.SetStockNum) - Convert.ToInt32(Attach.OutStockNum);
+            if (Count < 0)
+                return $"当前库存剩余{Stock.SetStockNum},实际出库为{Attach.OutStockNum}";
+            else
+            {
+                Stock.SetStockNum = Count.ToString();
+                UpdateField<EnterpriseMaterialStock>(Stock, "SetStockNum");
+                return Insert<EnterpriseMaterialStockAttach>(Attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            }
         }
         #endregion
         #endregion

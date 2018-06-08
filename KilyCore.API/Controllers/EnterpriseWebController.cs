@@ -143,6 +143,15 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetRoleAuthorList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 用户列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetUserList")]
+        public ObjectResultEx GetUserList()
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetUserList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 集团账户
         /// <summary>
@@ -622,6 +631,15 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveMaterial(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 获取下拉原料
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetMaterialList")]
+        public ObjectResultEx GetMaterialList()
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetMaterialList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 原料仓库
         /// <summary>
@@ -683,6 +701,16 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx RemoveStockAttach(SimlpeParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveStockAttach(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑出库
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditOutStock")]
+        public ObjectResultEx EditOutStock(RequestEnterpriseMaterialStockAttach Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditOutStock(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

@@ -40,6 +40,7 @@ namespace KilyCore.Service.IServiceCore
         String RemoveUser(Guid Id);
         ResponseEnterpriseUser GetUserDetail(Guid Id);
         IList<ResponseRoleAuthorWeb> GetRoleAuthorList();
+        IList<ResponseEnterpriseUser> GetUserList();
         #endregion
         #region 集团账户
         String EditRoleAuthor(RequestRoleAuthorWeb Param);
@@ -113,6 +114,7 @@ namespace KilyCore.Service.IServiceCore
         #region 原料
         PagedResult<ResponseEnterpriseMaterial> GetMaterialPage(PageParamList<RequestEnterpriseMaterial> pageParam);
         String EditMaterial(RequestEnterpriseMaterial Param);
+        IList<ResponseEnterpriseMaterial> GetMaterialList();
         String RemoveMaterial(Guid Id);
         #endregion
         #region 入库
@@ -124,6 +126,7 @@ namespace KilyCore.Service.IServiceCore
         #region 出库
         PagedResult<ResponseEnterpriseMaterialStockAttach> GetOutStockPage(PageParamList<RequestEnterpriseMaterialStockAttach> pageParam);
         String RemoveStockAttach(Guid Id);
+        String EditOutStock(RequestEnterpriseMaterialStockAttach Param);
         #endregion
         #endregion
     }
