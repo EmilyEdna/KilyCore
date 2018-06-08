@@ -129,5 +129,18 @@ namespace KilyCore.Service.IServiceCore
         String EditOutStock(RequestEnterpriseMaterialStockAttach Param);
         #endregion
         #endregion
+        #region 生产管理
+        #region 设备管理
+        PagedResult<ResponseEnterpriseDevice> GetDevicePage(PageParamList<RequestEnterpriseDevice> pageParam);
+        PagedResult<ResponseEnterpriseDeviceClean> GetDeviceCleanPage(PageParamList<RequestEnterpriseDeviceClean> pageParam);
+        PagedResult<ResponseEnterpriseDeviceFix> GetDeviceFixPage(PageParamList<RequestEnterpriseDeviceFix> pageParam);
+        String EditDevice(RequestEnterpriseDevice Param);
+        String EidtDeviceClean(RequestEnterpriseDeviceClean Param);
+        String EidtDeviceFix(RequestEnterpriseDeviceFix Param);
+        String RemoveDevice(Guid Id);
+        String RemoveDeviceClean(Guid Id);
+        String RemoveDeviceFix(Guid Id);
+        #endregion
+        #endregion
     }
 }

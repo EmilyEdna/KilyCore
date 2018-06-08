@@ -1444,6 +1444,7 @@ namespace KilyCore.Service.ServiceCore
                     CompanyId = t.CompanyId,
                     SerializNo = t.SerializNo,
                     BacthNo = t.BacthNo,
+                    StockType = t.StockType,
                     SetStockNum = t.SetStockNum,
                     SetStockTime = t.SetStockTime,
                     SetStockUser = t.SetStockUser
@@ -1545,6 +1546,7 @@ namespace KilyCore.Service.ServiceCore
                      CompanyId = p.t.CompanyId,
                      SerializNo = p.t.SerializNo,
                      BacthNo = y.BacthNo,
+                     StockType = p.t.StockType,
                      OutStockNum = p.t.OutStockNum,
                      OutStockTime = p.t.OutStockTime,
                      OutStockUser = p.t.OutStockUser
@@ -1578,6 +1580,158 @@ namespace KilyCore.Service.ServiceCore
                 UpdateField<EnterpriseMaterialStock>(Stock, "SetStockNum");
                 return Insert<EnterpriseMaterialStockAttach>(Attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
             }
+        }
+        #endregion
+        #endregion
+
+        #region 生产管理
+        #region 设备管理
+        /// <summary>
+        /// 设备分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseDevice> GetDevicePage(PageParamList<RequestEnterpriseDevice> pageParam)
+        {
+            IQueryable<EnterpriseDevice> queryable = Kily.Set<EnterpriseDevice>().Where(t => t.IsDelete == false).AsNoTracking();
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.DeviceName))
+                queryable = queryable.Where(t => t.DeviceName.Contains(pageParam.QueryParam.DeviceName));
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CreateUser == CompanyInfo().Id.ToString());
+            else
+                queryable = queryable.Where(t => t.CreateUser == CompanyUser().Id.ToString());
+            var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseDevice
+            {
+                Id = t.Id,
+                CompanyId = t.CompanyId,
+                DeviceName = t.DeviceName,
+                ProductTime = t.ProductTime,
+                ModelName = t.ModelName,
+                SupplierName = t.SupplierName,
+                Manager = t.Manager,
+                Life = t.Life
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑设备
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditDevice(RequestEnterpriseDevice Param)
+        {
+            EnterpriseDevice device = Param.MapToEntity<EnterpriseDevice>();
+            return Insert<EnterpriseDevice>(device) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 删除设备
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveDevice(Guid Id)
+        {
+            return Delete<EnterpriseDevice>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 设备清洗分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseDeviceClean> GetDeviceCleanPage(PageParamList<RequestEnterpriseDeviceClean> pageParam)
+        {
+            IQueryable<EnterpriseDeviceClean> queryable = Kily.Set<EnterpriseDeviceClean>().Where(t => t.IsDelete == false).Where(t => t.DeviceId == pageParam.QueryParam.DeviceId);
+            var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseDeviceClean()
+            {
+                Id = t.Id,
+                CleanTime = t.CleanTime,
+                Manager = t.Manager,
+                Ways = t.Ways
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 删除清洗记录
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveDeviceClean(Guid Id)
+        {
+            return Delete<EnterpriseDeviceClean>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 编辑设备清洗
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EidtDeviceClean(RequestEnterpriseDeviceClean Param)
+        {
+            EnterpriseDeviceClean Clean = Param.MapToObj<RequestEnterpriseDeviceClean, EnterpriseDeviceClean>();
+            return Insert<EnterpriseDeviceClean>(Clean) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 设备维护分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseDeviceFix> GetDeviceFixPage(PageParamList<RequestEnterpriseDeviceFix> pageParam)
+        {
+            IQueryable<EnterpriseDeviceFix> queryable = Kily.Set<EnterpriseDeviceFix>().Where(t => t.IsDelete == false).Where(t => t.DeviceId == pageParam.QueryParam.DeviceId);
+            var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseDeviceFix()
+            {
+                Id = t.Id,
+                FixTime = t.FixTime,
+                Manager = t.Manager,
+                Reason = t.Reason
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 删除维护记录
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveDeviceFix(Guid Id)
+        {
+            return Delete<EnterpriseDeviceFix>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 编辑设备维护
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EidtDeviceFix(RequestEnterpriseDeviceFix Param)
+        {
+            EnterpriseDeviceFix Fix = Param.MapToObj<RequestEnterpriseDeviceFix, EnterpriseDeviceFix>();
+            return Insert<EnterpriseDeviceFix>(Fix) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        #endregion
+        #region 产品系列
+        #endregion
+        #region 指标把控
+        /// <summary>
+        /// 指标分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseTarget> GetTargetPage(PageParamList<RequestEnterpriseTarget> pageParam)
+        {
+          IQueryable<EnterpriseTarget> queryable =  Kily.Set<EnterpriseTarget>().Where(t => t.IsDelete == false);
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.TargetName))
+                queryable = queryable.Where(t => t.TargetName.Contains(pageParam.QueryParam.TargetName));
+            var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseTarget()
+            {
+                Id=t.Id,
+                CompanyId=t.CompanyId,
+                TargetName=t.TargetName,
+                TargetValue=t.TargetValue,
+                Standard=t.Standard,
+                TargetUnit=t.TargetUnit
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
         }
         #endregion
         #endregion

@@ -113,7 +113,7 @@
                     </td>
                     <th><label class="control-label">原料批次</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="BacthNo" list="BacthNo"/>
+                        <input type="text" class="form-control" name="BacthNo" list="BacthNo" />
                         <datalist id="BacthNo"></datalist>
                     </td>
                 </tr>
@@ -145,6 +145,15 @@
                     <th><label class="control-label">负责人</label></th>
                     <td class="has-warning">
                         <select type="select" class="form-control" name="SetStockUser" id="SetStockUser"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">入库类型</label></th>
+                    <td class="has-warning" colspan="3">
+                        <select class="form-control" name="StockType" type="select">
+                            <option value="原料入库">原料入库</option>
+                            <option value="其他入库">其他入库</option>
+                        </select>
                     </td>
                 </tr>
                 <tr>

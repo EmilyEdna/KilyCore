@@ -713,5 +713,99 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.EditOutStock(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 生产管理
+        #region 设备管理
+        /// <summary>
+        /// 设备分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetDevicePage")]
+        public ObjectResultEx GetDevicePage(PageParamList<RequestEnterpriseDevice> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetDevicePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 设备清洗分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetDeviceCleanPage")]
+        public ObjectResultEx GetDeviceCleanPage(PageParamList<RequestEnterpriseDeviceClean> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetDeviceCleanPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 设备维护分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetDeviceFixPage")]
+        public ObjectResultEx GetDeviceFixPage(PageParamList<RequestEnterpriseDeviceFix> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetDeviceFixPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑设备
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditDevice")]
+        public ObjectResultEx EditDevice(RequestEnterpriseDevice Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditDevice(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑设备清洗
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EidtDeviceClean")]
+        public ObjectResultEx EidtDeviceClean(RequestEnterpriseDeviceClean Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EidtDeviceClean(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑设备维护
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EidtDeviceFix")]
+        public ObjectResultEx EidtDeviceFix(RequestEnterpriseDeviceFix Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EidtDeviceFix(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除设备
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveDevice")]
+        public ObjectResultEx RemoveDevice(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveDevice(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除清洗记录
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveDeviceClean")]
+        public ObjectResultEx RemoveDeviceClean(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveDeviceClean(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除维护记录
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveDeviceFix")]
+        public ObjectResultEx RemoveDeviceFix(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveDeviceFix(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #endregion
     }
 }

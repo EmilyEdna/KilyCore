@@ -32,6 +32,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string CheckUser { get; set; }
         public string CheckResult { get; set; }
         public string SetStockUser { get; set; }
+        public string StockType { get; set; }
     }
     public class ResponseEnterpriseMaterialStockAttach {
         public Guid Id { get; set; }
@@ -43,5 +44,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public DateTime? OutStockTime { get; set; }
         public string OutStockUser { get; set; }
         public string MaterName { get; set; }
+        public string StockType { get; set; }
     }
 }

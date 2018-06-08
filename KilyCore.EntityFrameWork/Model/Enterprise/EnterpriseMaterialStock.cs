@@ -60,5 +60,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 入库负责人
         /// </summary>
         public virtual string SetStockUser { get; set; }
+        /// <summary>
+        /// 仓库类型
+        /// </summary>
+        public virtual string StockType { get; set; }
     }
 }
