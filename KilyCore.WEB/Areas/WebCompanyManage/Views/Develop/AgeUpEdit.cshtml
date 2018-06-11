@@ -15,10 +15,10 @@
             },
             //元素
             InitDom: function () {
-                options.BindBacth();
+                options.BindBatch();
             },
             //绑定批次
-            BindBacth: function () {
+            BindBatch: function () {
                 controller.ajax({
                     url: "EnterpriseWeb/GetGrowList",
                     async: false,
@@ -27,9 +27,9 @@
                     success: function (result) {
                         var html = '';
                         $.each(result.data, function (i, data) {
-                            html += '<option value="' + data.BacthNo + '">' + data.GrowName + '</option>'
+                            html += '<option value="' + data.BatchNo + '">' + data.GrowName + '</option>'
                         });
-                        $("#BacthNo").html(html);
+                        $("#BatchNo").html(html);
                     }
                 });
 
@@ -81,8 +81,8 @@
                     </td>
                     <th><label class="control-label">育苗批次</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="BacthNo" list="BacthNo" />
-                        <datalist id="BacthNo"></datalist>
+                        <input type="text" class="form-control" name="BatchNo" list="BatchNo" />
+                        <datalist id="BatchNo"></datalist>
                     </td>
                 </tr>
                 <tr>

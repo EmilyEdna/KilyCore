@@ -610,12 +610,12 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseAgeUp> queryable = Kily.Set<EnterpriseAgeUp>().Where(t => t.IsDelete == false);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.LvName))
                 queryable = queryable.Where(t => t.LvName.Contains(pageParam.QueryParam.LvName));
-            if (!string.IsNullOrEmpty(pageParam.QueryParam.BacthNo))
-                queryable = queryable.Where(t => t.BacthNo.Contains(pageParam.QueryParam.BacthNo));
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.BatchNo))
+                queryable = queryable.Where(t => t.BatchNo.Contains(pageParam.QueryParam.BatchNo));
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseAgeUp()
             {
                 Id = t.Id,
-                BacthNo = t.BacthNo,
+                BatchNo = t.BatchNo,
                 LvName = t.LvName,
                 LvImg = t.LvImg
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -661,7 +661,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 CompanyId = t.CompanyId,
-                BacthNo = t.BacthNo,
+                BatchNo = t.BatchNo,
                 GrowName = t.GrowName,
                 BuyNum = t.BuyNum,
                 PlantTime = t.PlantTime,
@@ -680,7 +680,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 CompanyId = t.CompanyId,
-                BacthNo = t.BacthNo,
+                BatchNo = t.BatchNo,
                 GrowName = t.GrowName,
                 BuyNum = t.BuyNum,
                 PlantTime = t.PlantTime,
@@ -737,7 +737,7 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseGrowInfo()
             {
-                BacthNo = t.BacthNo,
+                BatchNo = t.BatchNo,
                 GrowName = t.GrowName
             }).ToList();
             return data;
@@ -765,7 +765,7 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.Select(t => new ResponseEnterprisePlanting()
             {
                 Id = t.Id,
-                BacthNo = t.BacthNo,
+                BatchNo = t.BatchNo,
                 CompanyId = t.CompanyId,
                 FeedName = t.FeedName,
                 Brand = t.Brand,
@@ -827,7 +827,7 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.Select(t => new ResponseEnterpriseDrug()
             {
                 Id = t.Id,
-                BacthNo = t.BacthNo,
+                BatchNo = t.BatchNo,
                 CompanyId = t.CompanyId,
                 DrugName = t.DrugName,
                 Brand = t.Brand,
@@ -886,7 +886,7 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseEnvironment()
             {
                 Id = t.Id,
-                BacthNo = t.BacthNo,
+                BatchNo = t.BatchNo,
                 CompanyId = t.CompanyId,
                 AirEnv = t.AirEnv,
                 AirHdy = t.AirHdy,
@@ -995,7 +995,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 CompanyId = t.CompanyId,
-                BacthNo = t.BacthNo,
+                BatchNo = t.BatchNo,
                 NoteName = t.NoteName,
                 ResultTime = t.ResultTime,
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -1047,7 +1047,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 CompanyId = t.CompanyId,
-                BacthNo = t.BacthNo,
+                BatchNo = t.BatchNo,
                 NoteName = t.NoteName,
                 ResultTime = t.ResultTime
             }).FirstOrDefault();
@@ -1065,8 +1065,8 @@ namespace KilyCore.Service.ServiceCore
         public PagedResult<ResponseEnterpriseTag> GetTagPage(PageParamList<RequestEnterpriseTag> pageParam)
         {
             IQueryable<EnterpriseTag> queryable = Kily.Set<EnterpriseTag>().Where(t => t.IsDelete == false).Where(t => t.TagType == pageParam.QueryParam.TagType).OrderByDescending(t => t.CreateTime);
-            if (!string.IsNullOrEmpty(pageParam.QueryParam.BacthNo))
-                queryable = queryable.Where(t => t.BacthNo.Contains(pageParam.QueryParam.BacthNo));
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.BatchNo))
+                queryable = queryable.Where(t => t.BatchNo.Contains(pageParam.QueryParam.BatchNo));
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
             else
@@ -1074,7 +1074,7 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.Select(t => new ResponseEnterpriseTag()
             {
                 Id = t.Id,
-                BacthNo = t.BacthNo,
+                BatchNo = t.BatchNo,
                 CompanyId = t.CompanyId,
                 EndSerialNo = t.EndSerialNo,
                 StarSerialNo = t.StarSerialNo,
@@ -1169,8 +1169,8 @@ namespace KilyCore.Service.ServiceCore
         public PagedResult<ResponseEnterpriseApply> GetTagApplyPage(PageParamList<RequestEnterpriseApply> pageParam)
         {
             IQueryable<EnterpriseTagApply> queryable = Kily.Set<EnterpriseTagApply>().Where(t => t.IsDelete == false);
-            if (!string.IsNullOrEmpty(pageParam.QueryParam.BacthNo))
-                queryable = queryable.Where(t => t.BacthNo.Contains(pageParam.QueryParam.BacthNo));
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.BatchNo))
+                queryable = queryable.Where(t => t.BatchNo.Contains(pageParam.QueryParam.BatchNo));
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
             else
@@ -1178,7 +1178,7 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.OrderByDescending(t => t.CreateTime).AsNoTracking().Select(t => new ResponseEnterpriseApply()
             {
                 Id = t.Id,
-                BacthNo = t.BacthNo,
+                BatchNo = t.BatchNo,
                 TagTypeName = AttrExtension.GetSingleDescription<TagEnum, DescriptionAttribute>(t.TagType),
                 ApplyNum = t.ApplyNum,
                 ApplyMoney = t.ApplyMoney,
@@ -1210,7 +1210,7 @@ namespace KilyCore.Service.ServiceCore
             var data = Kily.Set<EnterpriseTagApply>().Where(t => t.Id == Id).Select(t => new ResponseEnterpriseApply()
             {
                 Id = t.Id,
-                BacthNo = t.BacthNo,
+                BatchNo = t.BatchNo,
                 ApplyMoney = t.ApplyMoney
             }).FirstOrDefault();
             return data;
@@ -1369,7 +1369,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 CompanyId = t.CompanyId,
-                BacthNo = t.BacthNo,
+                BatchNo = t.BatchNo,
                 MaterName = t.MaterName,
                 Spec = t.Spec,
                 Standard = t.Standard,
@@ -1414,7 +1414,7 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseMaterial()
             {
-                BacthNo = t.BacthNo,
+                BatchNo = t.BatchNo,
                 MaterName = t.MaterName
             }).ToList();
             return data;
@@ -1437,13 +1437,13 @@ namespace KilyCore.Service.ServiceCore
             else
                 queryable = queryable.Where(t => t.CreateUser == CompanyUser().Id.ToString());
             var data = queryable.OrderByDescending(t => t.CreateTime)
-                .Join(queryables, t => t.BacthNo, x => x.BacthNo, (t, x) => new ResponseEnterpriseMaterialStock()
+                .Join(queryables, t => t.BatchNo, x => x.BatchNo, (t, x) => new ResponseEnterpriseMaterialStock()
                 {
                     Id = t.Id,
                     MaterName = x.MaterName,
                     CompanyId = t.CompanyId,
                     SerializNo = t.SerializNo,
-                    BacthNo = t.BacthNo,
+                    BatchNo = t.BatchNo,
                     StockType = t.StockType,
                     SetStockNum = t.SetStockNum,
                     SetStockTime = t.SetStockTime,
@@ -1464,7 +1464,7 @@ namespace KilyCore.Service.ServiceCore
                     Id = t.Id,
                     CompanyId = t.CompanyId,
                     SerializNo = t.SerializNo,
-                    BacthNo = t.BacthNo,
+                    BatchNo = t.BatchNo,
                     SetStockNum = t.SetStockNum,
                     SetStockTime = t.SetStockTime,
                     SetStockUser = t.SetStockUser,
@@ -1485,8 +1485,8 @@ namespace KilyCore.Service.ServiceCore
             if (Param.Id == Guid.Empty)
             {
                 EnterpriseMaterialStock stock = Param.MapToEntity<EnterpriseMaterialStock>();
-                List<String> NumList = Kily.Set<EnterpriseMaterialStock>().Where(t => t.BacthNo == Param.BacthNo).Select(t => t.SetStockNum).ToList();
-                int MaterNum = Kily.Set<EnterpriseMaterial>().Where(t => t.BacthNo == Param.BacthNo).Select(t => t.MaterNum).FirstOrDefault();
+                List<String> NumList = Kily.Set<EnterpriseMaterialStock>().Where(t => t.BatchNo == Param.BatchNo).Select(t => t.SetStockNum).ToList();
+                int MaterNum = Kily.Set<EnterpriseMaterial>().Where(t => t.BatchNo == Param.BatchNo).Select(t => t.MaterNum).FirstOrDefault();
                 long Sum = 0;
                 if (NumList.Count != 0)
                 {
@@ -1539,13 +1539,13 @@ namespace KilyCore.Service.ServiceCore
                 StockAttach = StockAttach.Where(t => t.CreateUser == CompanyUser().Id.ToString());
             var data = StockAttach.OrderByDescending(t => t.CreateTime)
                  .Join(Stock, t => t.MaterialStockId, x => x.Id, (t, x) => new { t, x })
-                 .Join(Material, p => p.x.BacthNo, y => y.BacthNo, (p, y) => new ResponseEnterpriseMaterialStockAttach()
+                 .Join(Material, p => p.x.BatchNo, y => y.BatchNo, (p, y) => new ResponseEnterpriseMaterialStockAttach()
                  {
                      Id = p.t.Id,
                      MaterName = y.MaterName,
                      CompanyId = p.t.CompanyId,
                      SerializNo = p.t.SerializNo,
-                     BacthNo = y.BacthNo,
+                     BatchNo = y.BatchNo,
                      StockType = p.t.StockType,
                      OutStockNum = p.t.OutStockNum,
                      OutStockTime = p.t.OutStockTime,
@@ -1725,9 +1725,20 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 CompanyId = t.CompanyId,
                 SeriesName = t.SeriesName,
-                TargetName = t.TargetName
+                Standard=t.Standard,
+                TargetName=string.Join(',',Kily.Set<EnterpriseTarget>().Where(x=>t.TargetId.Contains(x.Id.ToString())).Select(x=>x.TargetName).ToArray())
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
+        }
+        /// <summary>
+        /// 编辑系列
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditSeries(RequestEnterpriseProductSeries Param)
+        {
+            EnterpriseProductSeries series =  Param.MapToEntity<EnterpriseProductSeries>();
+            return Insert<EnterpriseProductSeries>(series) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         /// <summary>
         /// 删除系列
@@ -1751,8 +1762,8 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseProductSeries()
             {
-                Id=t.Id,
-                SeriesName=t.SeriesName
+                Id = t.Id,
+                SeriesName = t.SeriesName
             }).ToList();
             return data;
         }
@@ -1782,6 +1793,16 @@ namespace KilyCore.Service.ServiceCore
                 TargetUnit = t.TargetUnit
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
+        }
+        /// <summary>
+        /// 编辑指标
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditTarget(RequestEnterpriseTarget Param)
+        {
+            EnterpriseTarget target = Param.MapToEntity<EnterpriseTarget>();
+            return Insert<EnterpriseTarget>(target) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         /// <summary>
         /// 删除指标

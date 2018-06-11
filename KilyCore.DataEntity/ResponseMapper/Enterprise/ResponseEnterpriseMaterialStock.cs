@@ -23,7 +23,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public Guid Id { get; set; }
         public Guid CompanyId { get; set; }
         public string SerializNo { get; set; }
-        public string BacthNo { get; set; }
+        public string BatchNo { get; set; }
         public string MaterName { get; set; }
         public string SetStockNum { get; set; }
         public DateTime? SetStockTime { get; set; }
@@ -37,7 +37,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
     public class ResponseEnterpriseMaterialStockAttach {
         public Guid Id { get; set; }
         public Guid CompanyId { get; set; }
-        public string BacthNo { get; set; }
+        public string BatchNo { get; set; }
         public Guid MaterialStockId { get; set; }
         public string SerializNo { get; set; }
         public string OutStockNum { get; set; }

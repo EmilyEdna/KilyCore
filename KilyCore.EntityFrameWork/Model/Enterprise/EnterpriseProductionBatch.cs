@@ -5,13 +5,13 @@ using System.Text;
 
 #region << 版 本 注 释 >>
 /*----------------------------------------------------------------
-* 类 名 称 ：EnterpriseTarget
+* 类 名 称 ：EnterpriseProductionBatch
 * 类 描 述 ：
 * 命名空间 ：KilyCore.EntityFrameWork.Model.Enterprise
 * 机器名称 ：DESKTOP-QPIVQ28 
 * CLR 版本 ：4.0.30319.42000
 * 作    者 ：刘泽华
-* 创建时间 ：2018/6/8 16:53:13
+* 创建时间 ：2018/6/11 11:28:55
 *******************************************************************
 * Copyright @ 刘泽华 2018. All rights reserved.
 *******************************************************************
@@ -20,43 +20,29 @@ using System.Text;
 namespace KilyCore.EntityFrameWork.Model.Enterprise
 {
     /// <summary>
-    /// 指标把控表
+    /// 生产批次表
     /// </summary>
-    public class EnterpriseTarget:EnterpriseBase
+    public class EnterpriseProductionBatch : EnterpriseBase
     {
         /// <summary>
-        /// 指标名称
+        /// 产品系列Id
         /// </summary>
-        public virtual string TargetName { get; set; }
+        public virtual string SeriesId { get; set; }
         /// <summary>
-        /// 指标限制值
+        /// 生产开始日期
         /// </summary>
-        public virtual string TargetValue { get; set; }
+        public virtual DateTime? StartTime { get; set; }
         /// <summary>
-        /// 指标单位
+        /// 设备名称
         /// </summary>
-        public virtual string TargetUnit { get; set; }
+        public virtual string DeviceName { get; set; }
         /// <summary>
-        /// 执行标准
+        /// 原辅料Id
         /// </summary>
-        public virtual string Standard { get; set; }
-    }
-    /// <summary>
-    /// 产品系列
-    /// </summary>
-    public class EnterpriseProductSeries : EnterpriseBase
-    {
+        public virtual string MaterId { get; set; }
         /// <summary>
-        /// 产品系列名称
+        /// 负责人
         /// </summary>
-        public virtual string SeriesName { get; set; }
-        /// <summary>
-        /// 执行标准
-        /// </summary>
-        public virtual string Standard { get; set; }
-        /// <summary>
-        /// 指标把控
-        /// </summary>
-        public virtual string TargetId { get; set; }
+        public virtual string Manager { get; set; }
     }
 }

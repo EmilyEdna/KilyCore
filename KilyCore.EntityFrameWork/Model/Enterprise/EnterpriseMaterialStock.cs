@@ -31,7 +31,7 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// <summary>
         /// 原料批次号
         /// </summary>
-        public virtual string BacthNo { get; set; }
+        public virtual string BatchNo { get; set; }
         /// <summary>
         /// 入库数量
         /// </summary>

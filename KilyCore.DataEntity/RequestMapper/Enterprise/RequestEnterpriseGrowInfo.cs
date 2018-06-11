@@ -11,7 +11,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
     {
         public Guid Id { get; set; }
         public Guid CompanyId { get; set; }
-        public string BacthNo { get; set; }
+        public string BatchNo { get; set; }
         public string GrowName { get; set; }
         public DateTime PlantTime { get; set; }
         public string BuyNum { get; set; }

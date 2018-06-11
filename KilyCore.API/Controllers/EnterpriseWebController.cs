@@ -836,6 +836,16 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetTargetList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 编辑指标
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditTarget")]
+        public ObjectResultEx EditTarget(RequestEnterpriseTarget Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditTarget(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 产品系列
         /// <summary>
@@ -866,6 +876,16 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetSeriesList()
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetSeriesList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑系列
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditSeries")]
+        public ObjectResultEx EditSeries(RequestEnterpriseProductSeries Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditSeries(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #endregion

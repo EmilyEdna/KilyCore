@@ -17,7 +17,7 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// <summary>
         /// 批次
         /// </summary>
-        public virtual string BacthNo { get; set; }
+        public virtual string BatchNo { get; set; }
         /// <summary>
         /// 开始号段
         /// </summary>

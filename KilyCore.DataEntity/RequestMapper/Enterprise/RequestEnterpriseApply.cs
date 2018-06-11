@@ -12,7 +12,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
     {
         public Guid Id { get; set; }
         public Guid CompanyId { get; set; }
-        public string BacthNo { get; set; }
+        public string BatchNo { get; set; }
         public string ApplyNum { get; set; }
         public TagEnum TagType { get; set; }
         public decimal? ApplyMoney { get; set; }

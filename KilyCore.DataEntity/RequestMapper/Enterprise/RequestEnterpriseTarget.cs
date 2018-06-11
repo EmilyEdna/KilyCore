@@ -32,7 +32,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public Guid Id { get; set; }
         public Guid CompanyId { get; set; }
         public string SeriesName { get; set; }
-        public string TargetName { get; set; }
+        public string TargetId { get; set; }
         public string Standard { get; set; }
     }
 }

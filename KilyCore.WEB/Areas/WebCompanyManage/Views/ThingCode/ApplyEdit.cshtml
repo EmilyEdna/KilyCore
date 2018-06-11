@@ -15,7 +15,7 @@
             },
             //元素
             InitDom: function () {
-                $("#BacthNo").val("A" + controller.FormatDate("YYMMDDHHmmss"));
+                $("#BatchNo").val("A" + controller.FormatDate("YYMMDDHHmmss"));
                 $("#CompanyId").val(CompanyInfo.Id);
                 //绑定银行信息
                 controller.ajax({
@@ -132,7 +132,7 @@
                 <tr>
                     <th><label class="control-label">批次编号</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="BacthNo" id="BacthNo" readonly />
+                        <input type="text" class="form-control" name="BatchNo" id="BatchNo" readonly />
                     </td>
                     <th><label class="control-label">付款方式</label></th>
                     <td class="has-warning">

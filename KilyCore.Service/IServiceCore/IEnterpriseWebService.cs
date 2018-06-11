@@ -144,11 +144,13 @@ namespace KilyCore.Service.IServiceCore
         #region 指标把控
         PagedResult<ResponseEnterpriseTarget> GetTargetPage(PageParamList<RequestEnterpriseTarget> pageParam);
         String RemoveTarget(Guid Id);
+        String EditTarget(RequestEnterpriseTarget Param);
         IList<ResponseEnterpriseTarget> GetTargetList();
         #endregion
         #region 产品系列
-         PagedResult<ResponseEnterpriseProductSeries> GetSeriesPage(PageParamList<RequestEnterpriseProductSeries> pageParam);
-         String RemoveSeries(Guid Id);
+        PagedResult<ResponseEnterpriseProductSeries> GetSeriesPage(PageParamList<RequestEnterpriseProductSeries> pageParam);
+        String RemoveSeries(Guid Id);
+        String EditSeries(RequestEnterpriseProductSeries Param);
         IList<ResponseEnterpriseProductSeries> GetSeriesList();
         #endregion
         #endregion

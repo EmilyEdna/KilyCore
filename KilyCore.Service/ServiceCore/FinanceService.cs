@@ -333,12 +333,12 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseInfo> queryables = Kily.Set<EnterpriseInfo>();
             if (!string.IsNullOrEmpty(pageParam.QueryParam.AreaTree))
                 queryables = queryables.Where(t => t.TypePath.Contains(pageParam.QueryParam.AreaTree));
-            if (!string.IsNullOrEmpty(pageParam.QueryParam.BacthNo))
-                queryable = queryable.Where(t => t.BacthNo.Contains(pageParam.QueryParam.BacthNo));
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.BatchNo))
+                queryable = queryable.Where(t => t.BatchNo.Contains(pageParam.QueryParam.BatchNo));
             var data = queryable.Join(queryables, t => t.CompanyId, y => y.Id, (t, y) => new ResponseEnterpriseApply()
             {
                 Id = t.Id,
-                BacthNo = t.BacthNo,
+                BatchNo = t.BatchNo,
                 TagTypeName = AttrExtension.GetSingleDescription<TagEnum, DescriptionAttribute>(t.TagType),
                 ApplyNum = t.ApplyNum,
                 ApplyMoney = t.ApplyMoney,

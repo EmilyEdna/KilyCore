@@ -22,10 +22,10 @@
                 });
                 //设置表单
                 this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetAgeUpPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
-                options.BindBacth();
+                options.BindBatch();
             },
             //绑定批次
-            BindBacth: function () {
+            BindBatch: function () {
                 controller.ajax({
                     url: "EnterpriseWeb/GetGrowList",
                     async: false,
@@ -34,9 +34,9 @@
                     success: function (result) {
                         var html = '';
                         $.each(result.data, function (i, data) {
-                            html += '<option value="' + data.BacthNo + '">' + data.GrowName + '</option>'
+                            html += '<option value="' + data.BatchNo + '">' + data.GrowName + '</option>'
                         });
-                        $("#BacthNo").html(html);
+                        $("#BatchNo").html(html);
                     }
                 });
             },
@@ -107,8 +107,8 @@
                             </div>
                             <div class="col-sm-2">
                                 <div class="input-group">
-                                    <input type="text" name="BacthNo" list="BacthNo" class="input-sm form-control" placeholder="请选择批次" />
-                                    <datalist id="BacthNo"></datalist>
+                                    <input type="text" name="BatchNo" list="BatchNo" class="input-sm form-control" placeholder="请选择批次" />
+                                    <datalist id="BatchNo"></datalist>
                                 </div>
                             </div>
                             <div class="col-sm-4">
@@ -126,7 +126,7 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="BacthNo" data-halign="center" data-align="center" data-valign="middle">育苗批次</th>
+                                <th data-field="BatchNo" data-halign="center" data-align="center" data-valign="middle">育苗批次</th>
                                 <th data-field="LvName" data-halign="center" data-align="center" data-valign="middle">阶段名称</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>

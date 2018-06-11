@@ -38,7 +38,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// 光照
         /// </summary>
         public string Light { get; set; }
-        public string BacthNo { get; set; }
+        public string BatchNo { get; set; }
     }
     public class RequestEnterpriseEnvironmentAttach
     {

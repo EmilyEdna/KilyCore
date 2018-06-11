@@ -17,11 +17,11 @@
             InitDom: function () {
                 var Flag = controller.GetParam("Flag");
                 if (Flag == 1)
-                    $("#BacthNo").val("N" + controller.FormatDate("YYMMDDHHmmss"));
+                    $("#BatchNo").val("N" + controller.FormatDate("YYMMDDHHmmss"));
                 else if (Flag == 2)
-                    $("#BacthNo").val("P" + controller.FormatDate("YYMMDDHHmmss"));
+                    $("#BatchNo").val("P" + controller.FormatDate("YYMMDDHHmmss"));
                 else
-                    $("#BacthNo").val("C" + controller.FormatDate("YYMMDDHHmmss"));
+                    $("#BatchNo").val("C" + controller.FormatDate("YYMMDDHHmmss"));
                 $("#CompanyId").val(CompanyInfo.Id);
 
             },
@@ -64,7 +64,7 @@
                 <tr>
                     <th><label class="control-label">批次编号</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="BacthNo" id="BacthNo" readonly />
+                        <input type="text" class="form-control" name="BatchNo" id="BatchNo" readonly />
                     </td>
                     <th><label class="control-label">申请个数</label></th>
                     <td class="has-warning">

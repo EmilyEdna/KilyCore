@@ -14,7 +14,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// <summary>
         /// 批次
         /// </summary>
-        public string BacthNo { get; set; }
+        public string BatchNo { get; set; }
         /// <summary>
         /// 阶段名称
         /// </summary>

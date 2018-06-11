@@ -46,9 +46,9 @@
                     success: function (result) {
                         var html = '';
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.BacthNo + '">' + obj.MaterName + '</option>';
+                            html += '<option value="' + obj.BatchNo + '">' + obj.MaterName + '</option>';
                         });
-                        $("#BacthNo").html(html);
+                        $("#BatchNo").html(html);
                     }
                 });
                 controller.ajax({
@@ -113,8 +113,8 @@
                     </td>
                     <th><label class="control-label">原料批次</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="BacthNo" list="BacthNo" />
-                        <datalist id="BacthNo"></datalist>
+                        <input type="text" class="form-control" name="BatchNo" list="BatchNo" />
+                        <datalist id="BatchNo"></datalist>
                     </td>
                 </tr>
                 <tr>
