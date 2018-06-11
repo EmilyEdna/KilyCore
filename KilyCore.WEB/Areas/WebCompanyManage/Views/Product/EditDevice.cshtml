@@ -1,0 +1,92 @@
+﻿
+@{
+    ViewData["Title"] = "编辑生产设备";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+
+            },
+            //获取生产厂商
+            InitEnterpriseRole: function () {
+                controller.ajax({
+                    url: "EnterpriseWeb/GetSellerPage",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>===请选择厂商===</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.AuthorName + '</option>'
+                        });
+                        $("#SupplierName").html(html);
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditDevice" id="Edit">
+            <input type="hidden" id="Id" name="Id" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">设备名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="DeviceName" id="DeviceName" />
+                    </td>
+                    <th><label class="control-label">设备型号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ModelName" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">生产日期</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ProductTime" />
+                    </td>
+                    <th><label class="control-label">使用寿命</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Life" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">生产商</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="SupplierName" id="SupplierName">
+                            <option>===请选择===</option>
+                        </select>
+                    </td>
+                    <th><label class="control-label">产地</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Code" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+
