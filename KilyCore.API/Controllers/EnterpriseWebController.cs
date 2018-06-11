@@ -746,6 +746,15 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.GetDeviceFixPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
+        /// 获取设备列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetDeviceList")]
+        public ObjectResultEx GetDeviceList()
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetDeviceList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 编辑设备
         /// </summary>
         /// <param name="Param"></param>
@@ -886,6 +895,67 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx EditSeries(RequestEnterpriseProductSeries Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.EditSeries(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #region 生产批次
+        /// <summary>
+        /// 生产批次分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetProBatchPage")]
+        public ObjectResultEx GetProBatchPage(PageParamList<RequestEnterpriseProductionBatch> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetProBatchPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 生产批次列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetProBatchList")]
+        public ObjectResultEx GetProBatchList()
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetProBatchList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除生产批次
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveProBatch")]
+        public ObjectResultEx RemoveProBatch(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveProBatch(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑生产批次
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditProBatch")]
+        public ObjectResultEx EditProBatch(RequestEnterpriseProductionBatch Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditProBatch(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 对比指标值
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetProBatchAttachList")]
+        public ObjectResultEx GetProBatchAttachList(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetProBatchAttachList(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑对比指标
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditProBatchAttach")]
+        public ObjectResultEx EditProBatchAttach(RequestEnterpriseProductionBatchAttach Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditProBatchAttach(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #endregion

@@ -1633,6 +1633,24 @@ namespace KilyCore.Service.ServiceCore
             return Delete<EnterpriseDevice>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         /// <summary>
+        /// 设备列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseEnterpriseDevice> GetDeviceList()
+        {
+            IQueryable<EnterpriseDevice> queryable = Kily.Set<EnterpriseDevice>().Where(t => t.IsDelete == false);
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CreateUser == CompanyInfo().Id.ToString());
+            else
+                queryable = queryable.Where(t => t.CreateUser == CompanyUser().Id.ToString());
+            var data = queryable.Select(t => new ResponseEnterpriseDevice()
+            {
+                Id = t.Id,
+                DeviceName = t.DeviceName
+            }).AsNoTracking().ToList();
+            return data;
+        }
+        /// <summary>
         /// 设备清洗分页
         /// </summary>
         /// <param name="pageParam"></param>
@@ -1725,8 +1743,8 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 CompanyId = t.CompanyId,
                 SeriesName = t.SeriesName,
-                Standard=t.Standard,
-                TargetName=string.Join(',',Kily.Set<EnterpriseTarget>().Where(x=>t.TargetId.Contains(x.Id.ToString())).Select(x=>x.TargetName).ToArray())
+                Standard = t.Standard,
+                TargetName = string.Join(",", Kily.Set<EnterpriseTarget>().Where(x => t.TargetId.Contains(x.Id.ToString())).Select(x => x.TargetName).ToArray())
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -1737,7 +1755,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string EditSeries(RequestEnterpriseProductSeries Param)
         {
-            EnterpriseProductSeries series =  Param.MapToEntity<EnterpriseProductSeries>();
+            EnterpriseProductSeries series = Param.MapToEntity<EnterpriseProductSeries>();
             return Insert<EnterpriseProductSeries>(series) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         /// <summary>
@@ -1830,6 +1848,128 @@ namespace KilyCore.Service.ServiceCore
                 TargetName = t.TargetName
             }).ToList();
             return data;
+        }
+        #endregion
+        #region 生产批次
+        /// <summary>
+        /// 生产批次分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseProductionBatch> GetProBatchPage(PageParamList<RequestEnterpriseProductionBatch> pageParam)
+        {
+            IQueryable<EnterpriseProductionBatch> queryable = Kily.Set<EnterpriseProductionBatch>().Where(t => t.IsDelete == false).AsNoTracking();
+            IQueryable<EnterpriseProductSeries> queryables = Kily.Set<EnterpriseProductSeries>().Where(t => t.IsDelete == false).AsNoTracking();
+            var Material = Kily.Set<EnterpriseMaterialStockAttach>().Where(t => t.IsDelete == false)
+                .Join(Kily.Set<EnterpriseMaterialStock>().Where(t => t.IsDelete == false), t => t.MaterialStockId, x => x.Id, (t, x) => new { t, x })
+                .Join(Kily.Set<EnterpriseMaterial>().Where(t => t.IsDelete == false), p => p.x.BatchNo, y => y.BatchNo, (p, y) => new
+                {
+                    y.Id,
+                    y.MaterName
+                }).AsNoTracking();
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.SeriesName))
+                queryables = queryables.Where(t => t.SeriesName.Contains(pageParam.QueryParam.SeriesName));
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.Join(queryables, t => t.SeriesId, x => x.Id, (t, x) => new ResponseEnterpriseProductionBatch()
+            {
+                DeviceName = t.DeviceName,
+                SeriesName = x.SeriesName,
+                Id = t.Id,
+                CompanyId = t.CompanyId,
+                Manager = t.Manager,
+                StartTime = t.StartTime,
+                BatchNo = t.BatchNo,
+                MaterialName = string.Join(",", Material.Where(o => t.MaterialId.Contains(o.Id.ToString())).Select(o => o.MaterName).ToArray())
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 生产批次列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseEnterpriseProductionBatch> GetProBatchList()
+        {
+            IQueryable<EnterpriseProductionBatch> queryable = Kily.Set<EnterpriseProductionBatch>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseProductSeries> queryables = Kily.Set<EnterpriseProductSeries>().Where(t => t.IsDelete == false);
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CreateUser == CompanyInfo().Id.ToString());
+            else
+                queryable = queryable.Where(t => t.CreateUser == CompanyUser().Id.ToString());
+            var data = queryable.Join(queryables, t => t.SeriesId, x => x.Id, (t, x) => new ResponseEnterpriseProductionBatch()
+            {
+                Id = t.Id,
+                SeriesName = x.SeriesName,
+                BatchNo = t.BatchNo
+            }).AsNoTracking().ToList();
+            return data;
+        }
+        /// <summary>
+        /// 删除生产批次
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveProBatch(Guid Id)
+        {
+            return Delete<EnterpriseProductionBatch>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 编辑生产批次
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditProBatch(RequestEnterpriseProductionBatch Param)
+        {
+            EnterpriseProductionBatch ProductionBatch = Param.MapToEntity<EnterpriseProductionBatch>();
+            return Insert(ProductionBatch) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 对比指标值
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public IList<ResponseEnterpriseProductionBatchAttach> GetProBatchAttachList(Guid Id)
+        {
+            IQueryable<EnterpriseProductionBatchAttach> queryable = Kily.Set<EnterpriseProductionBatchAttach>().Where(t => t.IsDelete == false && t.Id == Id);
+            if (queryable.FirstOrDefault() != null)
+            {
+                IQueryable<EnterpriseProductionBatch> queryables = Kily.Set<EnterpriseProductionBatch>().Where(t => t.IsDelete == false && t.Id == Id);
+                IQueryable<EnterpriseProductSeries> Series = Kily.Set<EnterpriseProductSeries>().Where(t => t.IsDelete == false);
+                IQueryable<EnterpriseTarget> Target = Kily.Set<EnterpriseTarget>().Where(t => t.IsDelete == false);
+                string TargetId = queryables.Join(Series, t => t.SeriesId, y => y.Id, (t, y) => new { t, y }).Select(t => t.y.TargetId).FirstOrDefault();
+                var data = Target.Where(t => TargetId.Contains(t.Id.ToString())).Select(t => new ResponseEnterpriseProductionBatchAttach()
+                {
+                    TargetName=t.TargetName,
+                    TargetUnit=t.TargetUnit,
+                    TargetValue=t.TargetValue
+                }).ToList();
+                return data;
+            }
+            else
+            {
+               var data = queryable.Select(t => new ResponseEnterpriseProductionBatchAttach()
+               {
+                   TargetName = t.TargetName,
+                   TargetUnit = t.TargetUnit,
+                   TargetValue = t.TargetValue,
+                   Id=t.Id,
+                   Result=t.Result,
+                   ResultTime=t.ResultTime,
+                   Manager=t.Manager
+               }).ToList();
+                return data;
+            }
+        }
+        /// <summary>
+        /// 编辑对比指标
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditProBatchAttach(RequestEnterpriseProductionBatchAttach Param) {
+            EnterpriseProductionBatchAttach Attach = Param.MapToEntity<EnterpriseProductionBatchAttach>();
+            return Insert(Attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         #endregion
         #endregion

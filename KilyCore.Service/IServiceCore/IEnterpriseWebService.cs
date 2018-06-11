@@ -134,6 +134,7 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseEnterpriseDevice> GetDevicePage(PageParamList<RequestEnterpriseDevice> pageParam);
         PagedResult<ResponseEnterpriseDeviceClean> GetDeviceCleanPage(PageParamList<RequestEnterpriseDeviceClean> pageParam);
         PagedResult<ResponseEnterpriseDeviceFix> GetDeviceFixPage(PageParamList<RequestEnterpriseDeviceFix> pageParam);
+        IList<ResponseEnterpriseDevice> GetDeviceList();
         String EditDevice(RequestEnterpriseDevice Param);
         String EidtDeviceClean(RequestEnterpriseDeviceClean Param);
         String EidtDeviceFix(RequestEnterpriseDeviceFix Param);
@@ -152,6 +153,14 @@ namespace KilyCore.Service.IServiceCore
         String RemoveSeries(Guid Id);
         String EditSeries(RequestEnterpriseProductSeries Param);
         IList<ResponseEnterpriseProductSeries> GetSeriesList();
+        #endregion
+        #region 生产批次
+        PagedResult<ResponseEnterpriseProductionBatch> GetProBatchPage(PageParamList<RequestEnterpriseProductionBatch> pageParam);
+        IList<ResponseEnterpriseProductionBatch> GetProBatchList();
+        String RemoveProBatch(Guid Id);
+        String EditProBatch(RequestEnterpriseProductionBatch Param);
+        IList<ResponseEnterpriseProductionBatchAttach> GetProBatchAttachList(Guid Id);
+        String EditProBatchAttach(RequestEnterpriseProductionBatchAttach Param);
         #endregion
         #endregion
     }

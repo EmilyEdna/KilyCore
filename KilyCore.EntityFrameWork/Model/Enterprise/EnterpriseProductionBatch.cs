@@ -25,9 +25,13 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
     public class EnterpriseProductionBatch : EnterpriseBase
     {
         /// <summary>
+        /// 批次号
+        /// </summary>
+        public virtual string BatchNo { get; set; }
+        /// <summary>
         /// 产品系列Id
         /// </summary>
-        public virtual string SeriesId { get; set; }
+        public virtual Guid SeriesId { get; set; }
         /// <summary>
         /// 生产开始日期
         /// </summary>
@@ -39,7 +43,42 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// <summary>
         /// 原辅料Id
         /// </summary>
-        public virtual string MaterId { get; set; }
+        public virtual string MaterialId { get; set; }
+        /// <summary>
+        /// 负责人
+        /// </summary>
+        public virtual string Manager { get; set; }
+    }
+    /// <summary>
+    /// 生产批次与指标对照表
+    /// </summary>
+    public class EnterpriseProductionBatchAttach : EnterpriseBase
+    {
+        
+        /// <summary>
+        /// 生产批次表Id
+        /// </summary>
+        public virtual Guid ProBatchId { get; set; }
+        /// <summary>
+        /// 指标名称
+        /// </summary>
+        public virtual string TargetName { get; set; }
+        /// <summary>
+        /// 指标限制值
+        /// </summary>
+        public virtual string TargetValue { get; set; }
+        /// <summary>
+        /// 指标单位
+        /// </summary>
+        public virtual string TargetUnit { get; set; }
+        /// <summary>
+        /// 记录结果
+        /// </summary>
+        public virtual string Result { get; set; }
+        /// <summary>
+        /// 记录时间
+        /// </summary>
+        public virtual string ResultTime { get; set; }
         /// <summary>
         /// 负责人
         /// </summary>
