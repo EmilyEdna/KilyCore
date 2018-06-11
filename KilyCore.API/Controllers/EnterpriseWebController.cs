@@ -806,6 +806,68 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveDeviceFix(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 指标把控
+        /// <summary>
+        /// 指标分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetTargetPage")]
+        public ObjectResultEx GetTargetPage(PageParamList<RequestEnterpriseTarget> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetTargetPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除指标
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveTarget")]
+        public ObjectResultEx RemoveTarget(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveTarget(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取指标列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetTargetList")]
+        public ObjectResultEx GetTargetList()
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetTargetList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #region 产品系列
+        /// <summary>
+        /// 产品系列分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetSeriesPage")]
+        public ObjectResultEx GetSeriesPage(PageParamList<RequestEnterpriseProductSeries> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetSeriesPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除系列
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveSeries")]
+        public ObjectResultEx RemoveSeries(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveSeries(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 系列列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetSeriesList")]
+        public ObjectResultEx GetSeriesList()
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetSeriesList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
         #endregion
     }
 }

@@ -27,4 +27,12 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public string TargetUnit { get; set; }
         public string Standard { get; set; }
     }
+    public class RequestEnterpriseProductSeries
+    {
+        public Guid Id { get; set; }
+        public Guid CompanyId { get; set; }
+        public string SeriesName { get; set; }
+        public string TargetName { get; set; }
+        public string Standard { get; set; }
+    }
 }

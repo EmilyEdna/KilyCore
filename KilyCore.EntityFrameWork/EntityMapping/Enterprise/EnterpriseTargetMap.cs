@@ -29,4 +29,11 @@ namespace KilyCore.EntityFrameWork.EntityMapping.Enterprise
             builder.HasKey(t => t.Id);
         }
     }
+    public class EnterpriseProductSeriesMap : IEntityTypeConfiguration<EnterpriseProductSeries> {
+        public void Configure(EntityTypeBuilder<EnterpriseProductSeries> builder)
+        {
+            builder.ToTable(typeof(EnterpriseProductSeries).Name);
+            builder.HasKey(t => t.Id);
+        }
+    }
 }

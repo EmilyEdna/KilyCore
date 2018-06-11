@@ -141,6 +141,16 @@ namespace KilyCore.Service.IServiceCore
         String RemoveDeviceClean(Guid Id);
         String RemoveDeviceFix(Guid Id);
         #endregion
+        #region 指标把控
+        PagedResult<ResponseEnterpriseTarget> GetTargetPage(PageParamList<RequestEnterpriseTarget> pageParam);
+        String RemoveTarget(Guid Id);
+        IList<ResponseEnterpriseTarget> GetTargetList();
+        #endregion
+        #region 产品系列
+         PagedResult<ResponseEnterpriseProductSeries> GetSeriesPage(PageParamList<RequestEnterpriseProductSeries> pageParam);
+         String RemoveSeries(Guid Id);
+        IList<ResponseEnterpriseProductSeries> GetSeriesList();
+        #endregion
         #endregion
     }
 }

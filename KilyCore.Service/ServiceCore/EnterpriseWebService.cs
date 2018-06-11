@@ -1706,6 +1706,56 @@ namespace KilyCore.Service.ServiceCore
         }
         #endregion
         #region 产品系列
+        /// <summary>
+        /// 产品系列分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseProductSeries> GetSeriesPage(PageParamList<RequestEnterpriseProductSeries> pageParam)
+        {
+            IQueryable<EnterpriseProductSeries> queryable = Kily.Set<EnterpriseProductSeries>().Where(t => t.IsDelete == false);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.SeriesName))
+                queryable = queryable.Where(t => t.SeriesName.Contains(pageParam.QueryParam.SeriesName));
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.Select(t => new ResponseEnterpriseProductSeries()
+            {
+                Id = t.Id,
+                CompanyId = t.CompanyId,
+                SeriesName = t.SeriesName,
+                TargetName = t.TargetName
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 删除系列
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveSeries(Guid Id)
+        {
+            return Delete<EnterpriseProductSeries>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 系列列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseEnterpriseProductSeries> GetSeriesList()
+        {
+            IQueryable<EnterpriseProductSeries> queryable = Kily.Set<EnterpriseProductSeries>().Where(t => t.IsDelete == false);
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.Select(t => new ResponseEnterpriseProductSeries()
+            {
+                Id=t.Id,
+                SeriesName=t.SeriesName
+            }).ToList();
+            return data;
+        }
         #endregion
         #region 指标把控
         /// <summary>
@@ -1715,7 +1765,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseEnterpriseTarget> GetTargetPage(PageParamList<RequestEnterpriseTarget> pageParam)
         {
-          IQueryable<EnterpriseTarget> queryable =  Kily.Set<EnterpriseTarget>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseTarget> queryable = Kily.Set<EnterpriseTarget>().Where(t => t.IsDelete == false);
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
             else
@@ -1724,13 +1774,40 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.TargetName.Contains(pageParam.QueryParam.TargetName));
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseTarget()
             {
-                Id=t.Id,
-                CompanyId=t.CompanyId,
-                TargetName=t.TargetName,
-                TargetValue=t.TargetValue,
-                Standard=t.Standard,
-                TargetUnit=t.TargetUnit
+                Id = t.Id,
+                CompanyId = t.CompanyId,
+                TargetName = t.TargetName,
+                TargetValue = t.TargetValue,
+                Standard = t.Standard,
+                TargetUnit = t.TargetUnit
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 删除指标
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveTarget(Guid Id)
+        {
+            return Delete<EnterpriseTarget>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 获取指标列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseEnterpriseTarget> GetTargetList()
+        {
+            IQueryable<EnterpriseTarget> queryable = Kily.Set<EnterpriseTarget>().Where(t => t.IsDelete == false).AsNoTracking();
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.Select(t => new ResponseEnterpriseTarget()
+            {
+                Id = t.Id,
+                TargetName = t.TargetName
+            }).ToList();
             return data;
         }
         #endregion

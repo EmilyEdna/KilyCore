@@ -41,4 +41,22 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual string Standard { get; set; }
     }
+    /// <summary>
+    /// 产品系列
+    /// </summary>
+    public class EnterpriseProductSeries : EnterpriseBase
+    {
+        /// <summary>
+        /// 产品系列名称
+        /// </summary>
+        public virtual string SeriesName { get; set; }
+        /// <summary>
+        /// 执行标准
+        /// </summary>
+        public virtual string Standard { get; set; }
+        /// <summary>
+        /// 指标把控
+        /// </summary>
+        public virtual string TargetName { get; set; }
+    }
 }
