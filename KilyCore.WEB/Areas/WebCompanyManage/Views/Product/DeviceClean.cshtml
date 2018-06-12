@@ -3,6 +3,148 @@
     ViewData["Title"] = "设备清洗";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
-
-<h2>DeviceClean</h2>
-
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#CompanyId").val(CompanyInfo.Id);
+                controller.LayDate({ elem: "#CleanTime" });
+                var Guid = controller.GetParam("Id");
+                //恢复高度
+                $(window).resize(function (e) {
+                    window.setTimeout(function () {
+                        options.$table.bootstrapTable("resetView", { height: $(window).height() - 150 });
+                    }, 200);
+                    e.stopPropagation();
+                });
+                //设置表单
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetDeviceCleanPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Role" });
+            },
+            //事件
+            InitEvents: function () {
+                //人员下拉
+                controller.ajax({
+                    url: "EnterpriseWeb/GetUserList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option>' + obj.TrueName + '</option>';
+                        });
+                        $("#Manager").html(html);
+                    }
+                });
+                $("#save").click(function () {
+                    controller.Validate("#Edit", $("#Edit").SerializeOver());
+                    $("#Edit").submit();
+                    $("#Edit").find("input").val("");
+                });
+                $("#cancel").click(function () {
+                    $("#Edit").find("input").val("");
+                });
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+@section css{
+    <style>
+        .ibox-content {
+            border-top-style: none;
+        }
+    </style>
+}
+<div class="tabs-container" style="margin-top:10px;">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a data-toggle="tab" href="#tab-1" aria-expanded="true">清洗记录</a>
+        </li>
+        <li>
+            <a data-toggle="tab" href="#tab-2" aria-expanded="false">新增清洗</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div id="tab-1" class="tab-pane active">
+            <div class="ibox-content">
+                <div class="row">
+                    <form id="Role">
+                        <div class="col-sm-9 m-b-xs">
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive m-t-sm">
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="Ways" data-halign="center" data-align="center" data-valign="middle">清洗方式</th>
+                                <th data-field="Manager" data-halign="center" data-align="center" data-valign="middle">负责人</th>
+                                <th data-field="CleanTime" data-halign="center" data-align="center" data-valign="middle">清洗时间</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="tab-2" class="tab-pane">
+            <div class="panel-body">
+                <form method="post" class="form-horizontal" action="EnterpriseWeb/EidtDeviceClean" id="Edit">
+                    <!--方式-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">请输入清洗方式</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="Ways">
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--时间-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">请输入清洗时间</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="CleanTime" id="CleanTime">
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--人员-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">请选择负责人</label>
+                        <div class="col-sm-4">
+                            <select type="select" name="Manager" id="Manager"  class="form-control"></select>
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+                    <!--结束-->
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <button class="btn btn-primary" type="button" id="save">保存内容</button>
+                            <button class="btn btn-white" type="button" id="cancel">取消</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
