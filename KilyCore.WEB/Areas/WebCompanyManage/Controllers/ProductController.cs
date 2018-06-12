@@ -25,7 +25,7 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         /// 编辑设备
         /// </summary>
         /// <returns></returns>
-        public IActionResult EditDevice()
+        public IActionResult DeviceEdit()
         {
             return View();
         }
@@ -42,6 +42,16 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         /// </summary>
         /// <returns></returns>
         public IActionResult DeviceClean()
+        {
+            return View();
+        }
+        #endregion
+        #region 指标把控
+        public IActionResult Control()
+        {
+            return View();
+        }
+        public IActionResult ControlEdit()
         {
             return View();
         }

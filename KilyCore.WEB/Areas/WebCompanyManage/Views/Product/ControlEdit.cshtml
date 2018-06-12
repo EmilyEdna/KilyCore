@@ -1,0 +1,77 @@
+﻿
+@{
+    ViewData["Title"] = "指标编辑";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+                this.GetSelect();
+            },
+            //元素
+            InitDom: function () {
+                $("#CompanyId").val(CompanyInfo.Id);
+            },
+            GetSelect: function () {
+                //初始化下拉
+                controller.Select({
+                    document:'.selectpicker',
+                    arrelemnt: ['#Unit','#Standard'],
+                    url: 'EnterpriseWeb/GetDictionaryList',
+                });
+                $("#TargetUnit").on('changed.bs.select', function () {
+                    $('input[name="TargetUnit"]').val($(this).val());
+                });
+                $("#Standard").on('changed.bs.select', function () {
+                    $('input[name="Standard"]').val($(this).val());
+                });
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditMaterial" id="Edit">
+            <input type="hidden" id="CompanyId" name="CompanyId" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">指标名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="TargetName"/>
+                    </td>
+                    <th><label class="control-label">指标限值</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="TargetValue"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">指标单位</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="selectpicker form-control" data-max-options="2" id="TargetUnit" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
+                    </td>
+                    <th><label class="control-label">执行标准</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="selectpicker form-control" data-max-options="2" id="Standard" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

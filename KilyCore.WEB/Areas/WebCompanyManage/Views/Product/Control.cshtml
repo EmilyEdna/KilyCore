@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "设备管理";
+    ViewData["Title"] = "指标把控";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
@@ -21,17 +21,17 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetDevicePage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit"});
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetTargetPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit"});
             },
             //事件
             InitEvents: function () {
                 $("#add").on('click', function () {
                     controller.OpenWindow({
-                        title: "新增设备",
+                        title: "新增关键点",
                         type: 2,
                         height: "400px",
                         width: "600px",
-                        url: "WebCompanyManage/Product/DeviceEdit",
+                        url: "WebCompanyManage/Product/ControlEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
                         }
@@ -43,40 +43,14 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
-                    action.push('<button class="btn btn-sm btn-primary clean"><i class="fa fa-plus"></i>清洗记录</button>');
-                    action.push('<button class="btn btn-sm btn-primary fix"><i class="fa fa-plus"></i>维护记录</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
-                    "click .fix": function (event, val, row, index) {
-                        controller.OpenWindow({
-                            title: "维护记录",
-                            type: 2,
-                            height: "800px",
-                            width: "1000px",
-                            url: "WebCompanyManage/Product/DeviceFix?Id=" + row.Id,
-                            callBack: function (result) {
-                                result.$("#Edit").submit();
-                            }
-                        })
-                    },
-                    "click .clean": function (event, val, row, index) {
-                        controller.OpenWindow({
-                            title: "清洗记录",
-                            type: 2,
-                            height: "800px",
-                            width: "1000px",
-                            url: "WebCompanyManage/Product/DeviceClean?Id=" + row.Id,
-                            callBack: function (result) {
-                                result.$("#Edit").submit();
-                            }
-                        })
-                    },
                     "click .del": function (event, val, row, index) {
                         controller.Confirm("确认删除？", function (bool) {
                             if (bool) {
                                 controller.ajax({
-                                    url: "EnterpriseWeb/RemoveDevice",
+                                    url: "EnterpriseWeb/RemoveTarget",
                                     data: { Id: row.Id },
                                     type: 'post',
                                     success: function (result) {
@@ -103,7 +77,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>设备管理</h5>
+                <h5>关键点控制</h5>
             </div>
             <div class="ibox-content">
                 <div class="row">
@@ -115,7 +89,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input type="text" placeholder="设备名称" class="input-sm form-control" name="DeviceName">
+                                <input type="text" placeholder="关键点名称" class="input-sm form-control" name="TargetName">
                                 <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
                                     <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
@@ -128,12 +102,10 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="DeviceName" data-halign="center" data-align="center" data-valign="middle">设备名称</th>
-                                <th data-field="ModelName" data-halign="center" data-align="center" data-valign="middle">型号</th>
-                                <th data-field="SupplierName" data-halign="center" data-align="center" data-valign="middle">生产商</th>
-                                <th data-field="ProductTime" data-halign="center" data-align="center" data-valign="middle">生产日期</th>
-                                <th data-field="Life" data-halign="center" data-align="center" data-valign="middle">使用寿命</th>
-                                <th data-field="Manager" data-halign="center" data-align="center" data-valign="middle">设备管理员</th>
+                                <th data-field="TargetName" data-halign="center" data-align="center" data-valign="middle">指标名称</th>
+                                <th data-field="TargetValue" data-halign="center" data-align="center" data-valign="middle">指标限值</th>
+                                <th data-field="TargetUnit" data-halign="center" data-align="center" data-valign="middle">指标单位</th>
+                                <th data-field="Standard" data-halign="center" data-align="center" data-valign="middle">执行标准</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>
