@@ -13,9 +13,12 @@
             },
             //元素
             InitDom: function () {
-                $("#CompanyId").val(CompanyInfo.Id);
+                
                 controller.LayDate({ elem: "#CleanTime" });
                 var Guid = controller.GetParam("Id");
+                $("#CompanyId").val(CompanyInfo.Id);
+                $("#DeviceId").val(Guid);
+                
                 //恢复高度
                 $(window).resize(function (e) {
                     window.setTimeout(function () {
@@ -24,7 +27,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetDeviceCleanPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Role", Param: { DeviceId: Guid} });
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetDeviceCleanPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Role", param: { DeviceId: Guid} });
             },
             //事件
             InitEvents: function () {
@@ -131,6 +134,8 @@
         <div id="tab-2" class="tab-pane">
             <div class="panel-body">
                 <form method="post" class="form-horizontal" action="EnterpriseWeb/EidtDeviceClean" id="Edit">
+                    <input id="DeviceId" name="DeviceId" type="hidden" />
+                    <input id="CompanyId" name="CompanyId" type="hidden" />
                     <!--方式-->
                     <div class="form-group">
                         <label class="col-sm-2 control-label">请输入清洗方式</label>
@@ -153,7 +158,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">请选择负责人</label>
                         <div class="col-sm-4">
-                            <select type="select" name="Manager" id="Manager"  class="form-control"></select>
+                            <select type="select" name="Manager" id="Manager" class="form-control"></select>
                         </div>
                         <div class="col-sm-6"></div>
                     </div>
