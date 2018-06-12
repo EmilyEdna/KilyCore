@@ -52,7 +52,29 @@
                 });
             },
             //行为
-            action: {}
+            action: {
+                TableFormatter: function (val, row, index) {
+                    var action = [];
+                    action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
+                    return action.join("&nbsp;")
+                },
+                TableEvents: {
+                    "click .del": function (event, val, row, index) {
+                        controller.Confirm("确认删除？", function (bool) {
+                            if (bool) {
+                                controller.ajax({
+                                    url: "EnterpriseWeb/RemoveDeviceClean",
+                                    data: { Id: row.Id },
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
+                    },
+                }//表单事件结束
+            }
         };
         //初始化
         $(document).ready(function () {
@@ -81,13 +103,12 @@
             <div class="ibox-content">
                 <div class="row">
                     <form id="Role">
-                        <div class="col-sm-9 m-b-xs">
+                        <div class="col-sm-10 m-b-xs">
                         </div>
-                        <div class="col-sm-3">
-                            <input type="text"  class="input-sm form-control" name="DeviceName" disabled>
+                        <div class="col-sm-2">
                             <div class="input-group">
                                 <span class="input-group-btn">
-                                    <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
+                                    <button type="button" id="btn-refresh" class="btn btn-sm btn-primary pull-right"><i class="fa fa-refresh"></i>刷新</button>
                                 </span>
                             </div>
                         </div>

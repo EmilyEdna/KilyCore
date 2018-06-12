@@ -31,7 +31,7 @@
                     success: function (result) {
                         var html = '<option>==请选择厂商==</option>';
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '">' + obj.SupplierName + '</option>';
+                            html += '<option>' + obj.SupplierName + '</option>';
                         });
                         $("#SupplierName").html(html);
                     }
