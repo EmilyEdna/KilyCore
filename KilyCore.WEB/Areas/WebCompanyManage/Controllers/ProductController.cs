@@ -12,11 +12,7 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
     [Area("WebCompanyManage")]
     public class ProductController : Controller
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
-        #region 生产管理
+        #region 设备管理
         /// <summary>
         /// 设备管理
         /// </summary>
@@ -30,6 +26,22 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         /// </summary>
         /// <returns></returns>
         public IActionResult EditDevice()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 维护
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult DeviceFix()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 清洗
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult DeviceClean()
         {
             return View();
         }

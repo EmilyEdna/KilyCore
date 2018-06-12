@@ -16,10 +16,13 @@
             },
             //元素
             InitDom: function () {
-
+                $("#CompanyId").val(CompanyInfo.Id);
+                controller.LayDate({ elem: "#ProductTime" });
+                $("#ProductTime")
+                this.GetSupplier();
             },
             //获取生产厂商
-            InitEnterpriseRole: function () {
+            GetSupplier: function () {
                 controller.ajax({
                     url: "EnterpriseWeb/GetSellerPage",
                     data: {},
@@ -51,7 +54,7 @@
 <div class="ibox float-e-margins">
     <div class="ibox-content">
         <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditDevice" id="Edit">
-            <input type="hidden" id="Id" name="Id" />
+            <input  type="hidden" id="CompanyId" name="CompanyId"/>
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">设备名称</label></th>
@@ -66,7 +69,7 @@
                 <tr>
                     <th><label class="control-label">生产日期</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="ProductTime" />
+                        <input type="text" class="form-control" name="ProductTime"  id="ProductTime"/>
                     </td>
                     <th><label class="control-label">使用寿命</label></th>
                     <td class="has-warning">

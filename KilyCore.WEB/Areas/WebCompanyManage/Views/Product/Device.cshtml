@@ -43,9 +43,8 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
-                    action.push('<button class="btn btn-sm btn-primary clean"><i class="fa fa-trash-o"></i>清洗记录</button>');
-                    action.push('<button class="btn btn-sm btn-primary fix"><i class="fa fa-trash-o"></i>维护记录</button>');
-                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
+                    action.push('<button class="btn btn-sm btn-primary clean"><i class="fa fa-plus"></i>清洗记录</button>');
+                    action.push('<button class="btn btn-sm btn-primary fix"><i class="fa fa-plus"></i>维护记录</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
@@ -53,9 +52,9 @@
                         controller.OpenWindow({
                             title: "维护记录",
                             type: 2,
-                            height: "600px",
-                            width: "800px",
-                            url: "WebCompanyManage/Product/EditDevice?Id=" + row.Id,
+                            height: "800px",
+                            width: "1000px",
+                            url: "WebCompanyManage/Product/DeviceFix?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }
@@ -65,9 +64,9 @@
                         controller.OpenWindow({
                             title: "清洗记录",
                             type: 2,
-                            height: "600px",
-                            width: "800px",
-                            url: "WebCompanyManage/Product/EditDevice?Id=" + row.Id,
+                            height: "800px",
+                            width: "1000px",
+                            url: "WebCompanyManage/Product/DeviceClean?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }
@@ -87,18 +86,6 @@
                             }
                         });
                     },
-                    "click .edit": function (event, val, row, index) {
-                        controller.OpenWindow({
-                            title: "编辑生产设备",
-                            type: 2,
-                            height: "600px",
-                            width: "800px",
-                            url: "WebCompanyManage/Product/EditDevice?Id=" + row.Id,
-                            callBack: function (result) {
-                                result.$("#Edit").submit();
-                            }
-                        })
-                    }
                 }//表单事件结束
             }//行为结束
         };
