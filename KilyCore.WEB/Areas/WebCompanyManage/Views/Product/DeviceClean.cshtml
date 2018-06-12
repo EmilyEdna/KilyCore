@@ -13,10 +13,12 @@
             },
             //元素
             InitDom: function () {
-                $("#CompanyId").val(CompanyInfo.Id);
+                
                 controller.LayDate({ elem: "#CleanTime" });
                 var Guid = controller.GetParam("Id");
-                $("#DeviceId").val(CompanyInfo.Id);
+                $("#CompanyId").val(CompanyInfo.Id);
+                $("#DeviceId").val(Guid);
+                
                 //恢复高度
                 $(window).resize(function (e) {
                     window.setTimeout(function () {
@@ -132,8 +134,6 @@
         <div id="tab-2" class="tab-pane">
             <div class="panel-body">
                 <form method="post" class="form-horizontal" action="EnterpriseWeb/EidtDeviceClean" id="Edit">
-                    <input type="hidden" name="DeviceId" id="DeviceId" />
-                    <input type="hidden" name="CompanyId" id="CompanyId" />
                     <!--方式-->
                     <div class="form-group">
                         <label class="col-sm-2 control-label">请输入清洗方式</label>
