@@ -13,12 +13,10 @@
             },
             //元素
             InitDom: function () {
-                
                 controller.LayDate({ elem: "#CleanTime" });
                 var Guid = controller.GetParam("Id");
                 $("#CompanyId").val(CompanyInfo.Id);
                 $("#DeviceId").val(Guid);
-                
                 //恢复高度
                 $(window).resize(function (e) {
                     window.setTimeout(function () {
