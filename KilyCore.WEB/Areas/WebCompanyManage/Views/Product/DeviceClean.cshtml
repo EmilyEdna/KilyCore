@@ -24,7 +24,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetDeviceCleanPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Role" });
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetDeviceCleanPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Role", Param: { DeviceId: Guid} });
             },
             //事件
             InitEvents: function () {
