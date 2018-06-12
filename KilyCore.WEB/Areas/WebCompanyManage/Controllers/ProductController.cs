@@ -56,5 +56,15 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
             return View();
         }
         #endregion
+        #region 产品系列
+        public IActionResult Series()
+        {
+            return View();
+        }
+        public IActionResult SeriesEdit()
+        {
+            return View();
+        }
+        #endregion
     }
 }

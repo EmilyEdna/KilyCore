@@ -22,7 +22,7 @@
                 //初始化下拉
                 controller.Select({
                     document:'.selectpicker',
-                    arrelemnt: ['#Unit','#Standard'],
+                    arrelemnt: ['#TargetUnit','#Standard'],
                     url: 'EnterpriseWeb/GetDictionaryList',
                 });
                 $("#TargetUnit").on('changed.bs.select', function () {
@@ -48,7 +48,7 @@
 }
 <div class="ibox float-e-margins">
     <div class="ibox-content">
-        <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditMaterial" id="Edit">
+        <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditTarget" id="Edit">
             <input type="hidden" id="CompanyId" name="CompanyId" />
             <table class="table table-hover table-bordered">
                 <tr>
