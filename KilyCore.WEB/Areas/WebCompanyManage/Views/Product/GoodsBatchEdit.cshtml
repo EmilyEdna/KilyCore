@@ -1,0 +1,137 @@
+﻿
+@{
+    ViewData["Title"] = "编辑产品批次";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+                this.GetSelect();
+            },
+            //元素
+            InitDom: function () {
+                $("#BatchNo").val('SC' + controller.FormatDate("YYYYMMDDHHmmss"));
+                $("#CompanyId").val(CompanyInfo.Id);
+                controller.LayDate({ elem: "#StartTime" });
+            },
+            GetSelect: function () {
+                //设备下拉
+                controller.ajax({
+                    url: "EnterpriseWeb/GetDeviceList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html ='<option>==情选择==</option>'
+                        $.each(result.data, function (i, obj) {
+                            html += '<option>' + obj.DeviceName + '</option>';
+                        });
+                        $("#DeviceName").html(html);
+                    }
+                });
+                //人员下拉
+                controller.ajax({
+                    url: "EnterpriseWeb/GetUserList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option>' + obj.TrueName + '</option>';
+                        });
+                        $("#Manager").html(html);
+                    }
+                });
+                //系列下拉
+                controller.ajax({
+                    url: "EnterpriseWeb/GetSeriesList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.SeriesName + '</option>';
+                        });
+                        $("#SeriesId").html(html);
+                    }
+                });
+                //原料下拉
+                controller.ajax({
+                    url: "EnterpriseWeb/GetTargetList",
+                    data: {},
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        var html = '';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option>' + obj.MaterName + '</option>';
+                        });
+                        $("#MaterialName").html(html);
+                    }
+                });
+                $("#MaterialName").on('changed.bs.select', function () {
+                    $('input[name="MaterialName"]').val($(this).val());
+                });
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditProBatch" id="Edit">
+            <input type="hidden" id="CompanyId" name="CompanyId" />
+            <input type="hidden" name="MaterialName" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">生产批次</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="BatchNo" id="BatchNo" readonly />
+                    </td>
+                    <th><label class="control-label">生产日期</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="StartTime" id="StartTime" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">生产设备</label></th>
+                    <td class="has-warning">
+                        <select type="select" name="DeviceName" id="DeviceName" class="form-control"></select>
+                    </td>
+                    <th><label class="control-label">负责人</label></th>
+                    <td class="has-warning">
+                        <select type="select" name="Manager" id="Manager" class="form-control"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">产品系列</label></th>
+                    <td class="has-warning">
+                        <select type="select" name="SeriesId" id="SeriesId" class="form-control"></select>
+                    </td>
+                    <th><label class="control-label">原辅料</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="selectpicker form-control" id="MaterialName" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

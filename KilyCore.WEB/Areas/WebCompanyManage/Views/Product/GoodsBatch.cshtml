@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "产品系列";
+    ViewData["Title"] = "产品批次";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
@@ -21,7 +21,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetSeriesPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit"});
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetProBatchPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit"});
             },
             //事件
             InitEvents: function () {
@@ -31,7 +31,7 @@
                         type: 2,
                         height: "400px",
                         width: "600px",
-                        url: "WebCompanyManage/Product/SeriesEdit",
+                        url: "WebCompanyManage/Product/GoodsBatchEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
                         }
@@ -43,6 +43,7 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
+                    action.push('<button class="btn btn-sm btn-primary watch"><i class="fa fa-eye"></i>指标参考</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
@@ -50,7 +51,7 @@
                         controller.Confirm("确认删除？", function (bool) {
                             if (bool) {
                                 controller.ajax({
-                                    url: "EnterpriseWeb/RemoveSeries",
+                                    url: "EnterpriseWeb/RemoveProBatch",
                                     data: { Id: row.Id },
                                     type: 'post',
                                     success: function (result) {
@@ -59,6 +60,18 @@
                                 });
                             }
                         });
+                    },
+                    "click .watch": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "指标参考",
+                            type: 2,
+                            height: "600px",
+                            width: "800px",
+                            url: "WebCompanyManage/Product/ShowTarget?Id=" + row.Id + "&Manager=" + row.Manager,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
                     },
                 }//表单事件结束
             }//行为结束
@@ -77,7 +90,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>产品系列</h5>
+                <h5>产品批次</h5>
             </div>
             <div class="ibox-content">
                 <div class="row">
@@ -102,9 +115,12 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="SeriesName" data-halign="center" data-align="center" data-valign="middle">系列名称</th>
-                                <th data-field="TargetName" data-halign="center" data-align="center" data-valign="middle">指标名称</th>
-                                <th data-field="Standard" data-halign="center" data-align="center" data-valign="middle">执行标准</th>
+                                <th data-field="BatchNo" data-halign="center" data-align="center" data-valign="middle">批次号</th>
+                                <th data-field="DeviceName" data-halign="center" data-align="center" data-valign="middle">设备名称</th>
+                                <th data-field="SeriesName" data-halign="center" data-align="center" data-valign="middle">产品系列</th>
+                                <th data-field="Manager" data-halign="center" data-align="center" data-valign="middle">负责人</th>
+                                <th data-field="StartTime" data-halign="center" data-align="center" data-valign="middle">生产开始时间</th>
+                                <th data-field="MaterialName" data-halign="center" data-align="center" data-valign="middle">原辅料</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>

@@ -66,5 +66,11 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
             return View();
         }
         #endregion
+        #region 产品批次
+        public IActionResult GoodsBatch()
+        {
+            return View();
+        }
+        #endregion
     }
 }
