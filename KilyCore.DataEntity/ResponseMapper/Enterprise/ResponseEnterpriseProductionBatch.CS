@@ -33,6 +33,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
     {
         public Guid Id { get; set; }
         public Guid CompanyId { get; set; }
+        public Guid ProBatchId { get; set; }
         public string TargetName { get; set; }
         public string TargetValue { get; set; }
         public string TargetUnit { get; set; }

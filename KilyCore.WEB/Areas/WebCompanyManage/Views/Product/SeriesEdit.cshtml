@@ -42,7 +42,7 @@
                         $("#Target").html(html);
                     }
                 });
-                $("#Taget").on('changed.bs.select', function () {
+                $("#Target").on('changed.bs.select', function () {
                     $('input[name="TargetId"]').val($(this).val());
                 });
             },
@@ -69,7 +69,7 @@
                 <tr>
                     <th><label class="control-label">系列名称</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="TargetName" />
+                        <input type="text" class="form-control" name="SeriesName" />
                     </td>
                     <th><label class="control-label">执行标准</label></th>
                     <td class="has-warning">

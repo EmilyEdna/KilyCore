@@ -4,6 +4,17 @@
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section css{
+    <style>
+        th {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        td {
+            text-align: center;
+            vertical-align: middle;
+        }
+    </style>
 }
 @section script{
     <script>
@@ -28,23 +39,23 @@
                     data: { Id: Guid },
                     type: "post",
                     async: false,
-                    success: function (result) { 
+                    success: function (result) {
                         var html = '';
                         $.each(result.data, function (i, obj) {
                             html += '<tr>';
                             html += '<td class="text-warning">' + obj.TargetName + '</td>';
                             html += '<td class="text-warning">' + obj.TargetUnit + '</td>';
                             html += '<td class="text-warning">' + obj.TargetUnit + '</td>';
-                            if (obj.Result == undefined || obj.ResultTime == undefined) {
+                            if (obj.Result == null || obj.ResultTime == null) {
                                 html += '<td class="text-warning"><input type="text" class="form-control" name="Result"></td>';
                                 html += '<td class="text-warning"><input type="text" class="form-control" name="ResultTime" id="ResultTime"></td>';
-                                html += '<td class="text-warning">' + controller.GetParam("Manager")+'</td>';
-                            } else { 
-                                html += '<td class="text-warning">' + obj.Result+'</td>';
+                                html += '<td class="text-warning">' + controller.GetParam("Manager") + '</td>';
+                            } else {
+                                html += '<td class="text-warning">' + obj.Result + '</td>';
                                 html += '<td class="text-warning">' + obj.ResultTime + '</td>';
                                 html += '<td class="text-warning">' + controller.GetParam("Manager") + '</td>';
                             }
-                            html = '</tr>';
+                            html += '</tr>';
                         });
                         $("#content").html(html);
                         controller.LayDate({ elem: "#ResultTime" });
@@ -70,7 +81,7 @@
         <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditProBatchAttach" id="Edit">
             <input type="hidden" id="CompanyId" name="CompanyId" />
             <input type="hidden" id="ProBatchId" name="ProBatchId" />
-            <input  type="hidden" id="Manager" name="Manager"/>
+            <input type="hidden" id="Manager" name="Manager" />
             <table class="table table-hover table-bordered">
                 <thead>
                     <tr>

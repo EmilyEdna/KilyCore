@@ -712,6 +712,15 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseWebService.EditOutStock(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 获取出库原料列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetOutStockMaterialList")]
+        public ObjectResultEx GetOutStockMaterialList()
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetOutStockMaterialList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 生产管理
         #region 设备管理

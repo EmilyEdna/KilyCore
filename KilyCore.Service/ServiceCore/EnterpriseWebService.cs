@@ -1407,17 +1407,15 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public IList<ResponseEnterpriseMaterial> GetMaterialList()
         {
-            IQueryable<EnterpriseMaterialStockAttach> Attach = Kily.Set<EnterpriseMaterialStockAttach>().Where(t => t.IsDelete == false);
-            IQueryable<EnterpriseMaterialStock> Stock = Kily.Set<EnterpriseMaterialStock>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseMaterial> queryable = Kily.Set<EnterpriseMaterial>().Where(t => t.IsDelete == false).AsNoTracking().OrderByDescending(t => t.CreateTime);
             if (CompanyInfo() != null)
-                Attach = Attach.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
             else
-                Attach = Attach.Where(t => t.CompanyId == CompanyUser().Id);
-            var data = Attach.Join(Stock, t => t.MaterialStockId, y => y.Id, (t, y) => new { t, y }).Join(queryable, o => o.y.BatchNo, p => p.BatchNo, (o, p) => new ResponseEnterpriseMaterial()
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.Select(t => new ResponseEnterpriseMaterial()
             {
-                BatchNo = p.BatchNo,
-                MaterName = p.MaterName
+                BatchNo = t.BatchNo,
+                MaterName = t.MaterName
             }).ToList();
             return data;
         }
@@ -1583,7 +1581,27 @@ namespace KilyCore.Service.ServiceCore
                 return Insert<EnterpriseMaterialStockAttach>(Attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
             }
         }
-        #endregion  
+        /// <summary>
+        /// 获取出库原料列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseEnterpriseMaterial> GetOutStockMaterialList()
+        {
+            IQueryable<EnterpriseMaterialStockAttach> Attach = Kily.Set<EnterpriseMaterialStockAttach>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseMaterialStock> Stock = Kily.Set<EnterpriseMaterialStock>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseMaterial> queryable = Kily.Set<EnterpriseMaterial>().Where(t => t.IsDelete == false).AsNoTracking().OrderByDescending(t => t.CreateTime);
+            if (CompanyInfo() != null)
+                Attach = Attach.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                Attach = Attach.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = Attach.Join(Stock, t => t.MaterialStockId, y => y.Id, (t, y) => new { t, y }).Join(queryable, o => o.y.BatchNo, p => p.BatchNo, (o, p) => new ResponseEnterpriseMaterial()
+            {
+                BatchNo = p.BatchNo,
+                MaterName = p.MaterName
+            }).ToList();
+            return data;
+        }
+        #endregion
         #endregion
 
         #region 生产管理
@@ -1862,13 +1880,6 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseProductionBatch> queryable = Kily.Set<EnterpriseProductionBatch>().Where(t => t.IsDelete == false).AsNoTracking();
             IQueryable<EnterpriseProductSeries> queryables = Kily.Set<EnterpriseProductSeries>().Where(t => t.IsDelete == false).AsNoTracking();
-            var Material = Kily.Set<EnterpriseMaterialStockAttach>().Where(t => t.IsDelete == false)
-                .Join(Kily.Set<EnterpriseMaterialStock>().Where(t => t.IsDelete == false), t => t.MaterialStockId, x => x.Id, (t, x) => new { t, x })
-                .Join(Kily.Set<EnterpriseMaterial>().Where(t => t.IsDelete == false), p => p.x.BatchNo, y => y.BatchNo, (p, y) => new
-                {
-                    y.Id,
-                    y.MaterName
-                }).AsNoTracking();
             if (!string.IsNullOrEmpty(pageParam.QueryParam.SeriesName))
                 queryables = queryables.Where(t => t.SeriesName.Contains(pageParam.QueryParam.SeriesName));
             if (CompanyInfo() != null)
@@ -1884,7 +1895,6 @@ namespace KilyCore.Service.ServiceCore
                 Manager = t.Manager,
                 StartTime = t.StartTime,
                 BatchNo = t.BatchNo,
-                MaterialName = string.Join(",", Material.Where(o => t.MaterialId.Contains(o.Id.ToString())).Select(o => o.MaterName).ToArray())
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -1934,8 +1944,9 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public IList<ResponseEnterpriseProductionBatchAttach> GetProBatchAttachList(Guid Id)
         {
-            IQueryable<EnterpriseProductionBatchAttach> queryable = Kily.Set<EnterpriseProductionBatchAttach>().Where(t => t.IsDelete == false && t.Id == Id);
-            if (queryable.FirstOrDefault() == null)
+            IQueryable<EnterpriseProductionBatchAttach> queryable = Kily.Set<EnterpriseProductionBatchAttach>().Where(t => t.IsDelete == false && t.ProBatchId == Id);
+            var entity = queryable.FirstOrDefault();
+            if (entity == null)
             {
                 IQueryable<EnterpriseProductionBatch> queryables = Kily.Set<EnterpriseProductionBatch>().Where(t => t.IsDelete == false && t.Id == Id);
                 IQueryable<EnterpriseProductSeries> Series = Kily.Set<EnterpriseProductSeries>().Where(t => t.IsDelete == false);

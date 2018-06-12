@@ -65,7 +65,7 @@
                 });
                 //原料下拉
                 controller.ajax({
-                    url: "EnterpriseWeb/GetTargetList",
+                    url: "EnterpriseWeb/GetOutStockMaterialList",
                     data: {},
                     async: false,
                     type: "post",
@@ -78,7 +78,7 @@
                     }
                 });
                 $("#MaterialName").on('changed.bs.select', function () {
-                    $('input[name="MaterialName"]').val($(this).val());
+                    $('input[name="MaterialId"]').val($(this).val());
                 });
             },
             //事件
@@ -99,7 +99,7 @@
     <div class="ibox-content">
         <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditProBatch" id="Edit">
             <input type="hidden" id="CompanyId" name="CompanyId" />
-            <input type="hidden" name="MaterialName" />
+            <input type="hidden" name="MaterialId" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">生产批次</label></th>
