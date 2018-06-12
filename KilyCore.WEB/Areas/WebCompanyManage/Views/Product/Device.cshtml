@@ -21,7 +21,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetDevicePage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { SellerType: 10 } });
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetDevicePage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit"});
             },
             //事件
             InitEvents: function () {
@@ -29,8 +29,8 @@
                     controller.OpenWindow({
                         title: "新增设备",
                         type: 2,
-                        height: "480px",
-                        width: "800px",
+                        height: "400px",
+                        width: "600px",
                         url: "WebCompanyManage/Product/EditDevice",
                         callBack: function (result) {
                             result.$("#Edit").submit();

@@ -24,14 +24,14 @@
             //获取生产厂商
             GetSupplier: function () {
                 controller.ajax({
-                    url: "EnterpriseWeb/GetSellerPage",
-                    data: {},
+                    url: "EnterpriseWeb/GetSellerList",
+                    data: { Parameter:30},
                     type: "post",
                     async: false,
                     success: function (result) {
-                        var html = '<option>===请选择厂商===</option>';
+                        var html = '<option>==请选择厂商==</option>';
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '">' + obj.AuthorName + '</option>'
+                            html += '<option value="' + obj.Id + '">' + obj.SupplierName + '</option>';
                         });
                         $("#SupplierName").html(html);
                     }
@@ -80,7 +80,6 @@
                     <th><label class="control-label">生产商</label></th>
                     <td class="has-warning">
                         <select type="select" class="form-control" name="SupplierName" id="SupplierName">
-                            <option>===请选择===</option>
                         </select>
                     </td>
                     <th><label class="control-label">产地</label></th>
