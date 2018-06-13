@@ -38,5 +38,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 是否使用的申请
         /// </summary>
         public virtual bool IsApplay { get; set; }
+        /// <summary>
+        /// 使用数量
+        /// </summary>
+        public virtual int? UseNum { get; set; }
     }
 }

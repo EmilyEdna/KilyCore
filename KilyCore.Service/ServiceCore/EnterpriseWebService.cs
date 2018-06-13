@@ -25,7 +25,6 @@ namespace KilyCore.Service.ServiceCore
 {
     public class EnterpriseWebService : Repository, IEnterpriseWebService
     {
-
         #region 下拉关联列表
         /// <summary>
         /// 厂商列表
@@ -1080,6 +1079,7 @@ namespace KilyCore.Service.ServiceCore
                 StarSerialNo = t.StarSerialNo,
                 TotalNo = t.TotalNo,
                 TagType = t.TagType,
+                UseNum=t.UseNum,
                 TagTypeName = AttrExtension.GetSingleDescription<TagEnum, DescriptionAttribute>(t.TagType)
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;

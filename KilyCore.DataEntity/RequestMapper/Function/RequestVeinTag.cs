@@ -46,5 +46,6 @@ namespace KilyCore.DataEntity.RequestMapper.Function
         /// 是否签收
         /// </summary>
         public bool IsAccept { get; set; }
+        public string BatchNo { get; set; }
     }
 }

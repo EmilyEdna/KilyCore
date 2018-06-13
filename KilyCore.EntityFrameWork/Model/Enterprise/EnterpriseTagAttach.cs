@@ -17,14 +17,22 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// <summary>
         /// 产品表Id
         /// </summary>
-        public virtual Guid ProductId { get; set; }
+        public virtual Guid GoodsId { get; set; }
         /// <summary>
         /// 编号
         /// </summary>
-        public virtual string No { get; set; }
+        public virtual string TagBatchNo { get; set; }
         /// <summary>
-        /// 是否使用
+        /// 开始号段
         /// </summary>
-        public virtual bool IsUse { get; set; }
+        public virtual Int64 StarSerialNo { get; set; }
+        /// <summary>
+        /// 结束号段
+        /// </summary>
+        public virtual Int64 EndSerialNo { get; set; }
+        /// <summary>
+        /// 使用数量
+        /// </summary>
+        public virtual int UseNum{ get; set; }
     }
 }

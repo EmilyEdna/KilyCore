@@ -14,6 +14,10 @@ namespace KilyCore.EntityFrameWork.Model.Function
     public class FunctionVeinTag : BaseEntity
     {
         /// <summary>
+        /// 批次号
+        /// </summary>
+        public virtual string BatchNo { get; set; }
+        /// <summary>
         /// 开始号段
         /// </summary>
         public virtual Int64 StarSerialNo { get; set; }
@@ -49,5 +53,9 @@ namespace KilyCore.EntityFrameWork.Model.Function
         /// 是否签收
         /// </summary>
         public virtual bool IsAccept { get; set; }
+        /// <summary>
+        /// 使用数量
+        /// </summary>
+        public virtual int? UseNum { get; set; }
     }
 }

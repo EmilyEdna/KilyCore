@@ -15,6 +15,7 @@
             },
             //元素
             InitDom: function () {
+                $("input[name='BatchNo']").val("V" + controller.FormatDate("YYMMDDHHmmss"));
             },
             //事件
             InitEvents: function () {
@@ -35,6 +36,12 @@
         <form class="orm-horizontal" method="post" action="Function/RecordAllotTag" id="Edit">
             <input type="hidden" name="IsAccept" value="true" />
             <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">批次</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" class="form-control" name="BatchNo" />
+                    </td>
+                </tr>
                 <tr>
                     <th><label class="control-label">开始号段</label></th>
                     <td class="has-warning">

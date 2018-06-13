@@ -63,6 +63,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Function
         /// 是否签收
         /// </summary>
         public string IsAcceptName { get; set; }
+        public string BatchNo { get; set; }
     }
     public class ResponseVienTagPreson
     {

@@ -240,6 +240,7 @@ namespace KilyCore.Service.ServiceCore
                 return queryable.Select(t => new ResponseVeinTag()
                 {
                     Id = t.Id,
+                    BatchNo=t.BatchNo,
                     StarSerialNo = t.StarSerialNo,
                     EndSerialNo = t.EndSerialNo,
                     TotalNo = t.TotalNo,
@@ -250,6 +251,7 @@ namespace KilyCore.Service.ServiceCore
             return queryable.Where(t => t.AcceptUser.Contains(UserInfo().Id.ToString())).Select(t => new ResponseVeinTag()
             {
                 Id = t.Id,
+                BatchNo = t.BatchNo,
                 StarSerialNo = t.StarSerialNo,
                 EndSerialNo = t.EndSerialNo,
                 TotalNo = t.TotalNo,
