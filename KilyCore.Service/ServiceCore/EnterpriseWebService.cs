@@ -1880,6 +1880,13 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseProductionBatch> queryable = Kily.Set<EnterpriseProductionBatch>().Where(t => t.IsDelete == false).AsNoTracking();
             IQueryable<EnterpriseProductSeries> queryables = Kily.Set<EnterpriseProductSeries>().Where(t => t.IsDelete == false).AsNoTracking();
+            var Material = Kily.Set<EnterpriseMaterialStockAttach>().Where(t => t.IsDelete == false)
+               .Join(Kily.Set<EnterpriseMaterialStock>().Where(t => t.IsDelete == false), t => t.MaterialStockId, x => x.Id, (t, x) => new { t, x })
+               .Join(Kily.Set<EnterpriseMaterial>().Where(t => t.IsDelete == false), p => p.x.BatchNo, y => y.BatchNo, (p, y) => new ResponseEnterpriseMaterial
+               {
+                   Id=y.Id,
+                   MaterName=y.MaterName,
+               }).AsNoTracking();
             if (!string.IsNullOrEmpty(pageParam.QueryParam.SeriesName))
                 queryables = queryables.Where(t => t.SeriesName.Contains(pageParam.QueryParam.SeriesName));
             if (CompanyInfo() != null)
@@ -1895,6 +1902,8 @@ namespace KilyCore.Service.ServiceCore
                 Manager = t.Manager,
                 StartTime = t.StartTime,
                 BatchNo = t.BatchNo,
+                MaterialId = t.MaterialId,
+                MaterialList= Material.ToList()
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }

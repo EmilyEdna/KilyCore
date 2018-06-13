@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 #region << 版 本 注 释 >>
@@ -25,9 +26,20 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string SeriesName { get; set; }
         public DateTime? StartTime { get; set; }
         public string DeviceName { get; set; }
-        public string MaterialName { get; set; }
+        public string MaterialId { get; set; }
         public string BatchNo { get; set; }
         public string Manager { get; set; }
+        public List<ResponseEnterpriseMaterial> MaterialList { get; set; }
+        public string MaterialName
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(MaterialId))
+                    return String.Join(",", MaterialList.Where(t => MaterialId.Contains(t.Id.ToString())).Select(t => t.MaterName).ToArray());
+                else
+                    return null;
+            }
+        }
     }
     public class ResponseEnterpriseProductionBatchAttach
     {
