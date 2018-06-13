@@ -39,7 +39,7 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// <summary>
         /// 保质期
         /// </summary>
-        public virtual string ExpiredDate { get; set; }
+        public virtual DateTime ExpiredDate { get; set; }
         /// <summary>
         /// 规格
         /// </summary>

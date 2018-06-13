@@ -1079,7 +1079,7 @@ namespace KilyCore.Service.ServiceCore
                 StarSerialNo = t.StarSerialNo,
                 TotalNo = t.TotalNo,
                 TagType = t.TagType,
-                UseNum=t.UseNum,
+                UseNum = t.UseNum,
                 TagTypeName = AttrExtension.GetSingleDescription<TagEnum, DescriptionAttribute>(t.TagType)
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -1758,7 +1758,7 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
-            var data = queryable.Select(t => new ResponseEnterpriseProductSeries()
+            var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseProductSeries()
             {
                 Id = t.Id,
                 CompanyId = t.CompanyId,
@@ -1884,8 +1884,8 @@ namespace KilyCore.Service.ServiceCore
                .Join(Kily.Set<EnterpriseMaterialStock>().Where(t => t.IsDelete == false), t => t.MaterialStockId, x => x.Id, (t, x) => new { t, x })
                .Join(Kily.Set<EnterpriseMaterial>().Where(t => t.IsDelete == false), p => p.x.BatchNo, y => y.BatchNo, (p, y) => new ResponseEnterpriseMaterial
                {
-                   Id=y.Id,
-                   MaterName=y.MaterName,
+                   Id = y.Id,
+                   MaterName = y.MaterName,
                }).AsNoTracking();
             if (!string.IsNullOrEmpty(pageParam.QueryParam.SeriesName))
                 queryables = queryables.Where(t => t.SeriesName.Contains(pageParam.QueryParam.SeriesName));
@@ -1893,7 +1893,7 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
-            var data = queryable.Join(queryables, t => t.SeriesId, x => x.Id, (t, x) => new ResponseEnterpriseProductionBatch()
+            var data = queryable.OrderByDescending(t => t.CreateTime).Join(queryables, t => t.SeriesId, x => x.Id, (t, x) => new ResponseEnterpriseProductionBatch()
             {
                 DeviceName = t.DeviceName,
                 SeriesName = x.SeriesName,
@@ -1903,7 +1903,7 @@ namespace KilyCore.Service.ServiceCore
                 StartTime = t.StartTime,
                 BatchNo = t.BatchNo,
                 MaterialId = t.MaterialId,
-                MaterialList= Material.ToList()
+                MaterialList = Material.ToList()
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -1993,6 +1993,147 @@ namespace KilyCore.Service.ServiceCore
         {
             EnterpriseProductionBatchAttach Attach = Param.MapToEntity<EnterpriseProductionBatchAttach>();
             return Insert(Attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        #endregion
+        #endregion
+
+        #region 产品管理
+        #region 产品列表
+        /// <summary>
+        /// 产品分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseGoods> GetGoodsPage(PageParamList<RequestEnterpriseGoods> pageParam)
+        {
+            IQueryable<EnterpriseGoods> queryable = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseProductSeries> queryables = Kily.Set<EnterpriseProductSeries>().Where(t => t.IsDelete == false);
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.ProductName))
+                queryable = queryable.Where(t => t.ProductName.Contains(pageParam.QueryParam.ProductName));
+            var data = queryable.OrderByDescending(t => t.CreateTime).Join(queryables, t => t.ProductSeriesId, x => x.Id, (t, x) => new ResponseEnterpriseGoods()
+            {
+                Id = t.Id,
+                CompanyId = t.CompanyId,
+                Spec = t.Spec,
+                ProductSeriesName = x.SeriesName,
+                ExpiredDate = t.ExpiredDate,
+                ProductName = t.ProductName,
+                ProductType = t.ProductType,
+                Unit = t.Unit
+            }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 删除产品
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveGoods(Guid Id)
+        {
+            return Delete<EnterpriseGoods>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 编辑产品
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditGoods(RequestEnterpriseGoods Param)
+        {
+            EnterpriseGoods Goods = Param.MapToEntity<EnterpriseGoods>();
+            if (Param.Id != Guid.Empty)
+                return Update<EnterpriseGoods, RequestEnterpriseGoods>(Goods, Param) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+                return Insert<EnterpriseGoods>(Goods) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 获取产品详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseEnterpriseGoods GetGoodsDetail(Guid Id)
+        {
+            IQueryable<EnterpriseGoods> queryable = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).Where(t => t.Id == Id);
+            IQueryable<EnterpriseProductSeries> queryables = Kily.Set<EnterpriseProductSeries>().Where(t => t.IsDelete == false);
+            var data = queryable.OrderByDescending(t => t.CreateTime).Join(queryables, t => t.ProductSeriesId, x => x.Id, (t, x) => new ResponseEnterpriseGoods()
+            {
+                Id = t.Id,
+                CompanyId = t.CompanyId,
+                Spec = t.Spec,
+                ProductSeriesName = x.SeriesName,
+                ExpiredDate = t.ExpiredDate,
+                ProductName = t.ProductName,
+                ProductType = t.ProductType,
+                Unit = t.Unit
+            }).AsNoTracking().FirstOrDefault();
+            return data;
+        }
+        #endregion
+        #region 产品仓库
+        /// <summary>
+        /// 产品入库分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseGoodsStock> GetGoodsStockPage(PageParamList<RequestEnterpriseGoodsStock> pageParam)
+        {
+            IQueryable<EnterpriseGoods> Goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseGoodsStock> Stock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseProductionBatch> Batch = Kily.Set<EnterpriseProductionBatch>().Where(t => t.IsDelete == false);
+            IQueryable<ResponseEnterpriseMaterial> Material = Kily.Set<EnterpriseMaterialStockAttach>().Where(t => t.IsDelete == false)
+                .Join(Kily.Set<EnterpriseMaterialStock>().Where(t => t.IsDelete == false), t => t.MaterialStockId, x => x.Id, (t, x) => new { x.BatchNo })
+                .Join(Kily.Set<EnterpriseMaterial>().Where(t => t.IsDelete == false), p => p.BatchNo, y => y.BatchNo, (p, y) => new ResponseEnterpriseMaterial
+                {
+                    Id = y.Id,
+                    MaterName = y.MaterName,
+                }).AsNoTracking();
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.GoodsName))
+                Goods = Goods.Where(t => t.ProductName.Contains(pageParam.QueryParam.GoodsName));
+            if (CompanyInfo() != null)
+                Stock = Stock.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                Stock = Stock.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = Stock.OrderByDescending(t => t.CreateTime)
+                .Join(Goods, t => t.GoodsId, x => x.Id, (t, x) => new { t, x })
+                .Join(Batch, p => p.t.BatchId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
+                {
+                    Id = p.t.Id,
+                    CompanyId = p.t.CompanyId,
+                    GoodsName = p.x.ProductName,
+                    GoodsBatchNo = p.t.GoodsBatchNo,
+                    StockType = p.t.StockType,
+                    InStockNum = p.t.InStockNum,
+                    ProBatch = o.BatchNo,
+                    MaterialId = o.MaterialId,
+                    MaterialList = Material.ToList()
+                }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 删除仓库中产品
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveGoodsStock(Guid Id)
+        {
+            return Delete<EnterpriseGoodsStock>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 编辑产品仓库
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditGoodsStock(RequestEnterpriseGoodsStock Param)
+        {
+            EnterpriseGoodsStock Stock = Param.MapToEntity<EnterpriseGoodsStock>();
+            return Insert<EnterpriseGoodsStock>(Stock) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        public string BindTarget(RequestEnterpriseTagAttach Param)
+        {
+
         }
         #endregion
         #endregion
