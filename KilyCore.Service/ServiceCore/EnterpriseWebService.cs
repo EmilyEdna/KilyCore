@@ -1278,14 +1278,14 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseVeinTag()
             {
-                Id=t.Id,
+                Id = t.Id,
                 BatchNo = t.BatchNo,
                 StarSerialNo = t.StarSerialNo,
                 EndSerialNo = t.EndSerialNo,
                 TotalNo = t.TotalNo,
                 AcceptUserName = t.AcceptUserName,
                 AllotType = t.AllotType,
-                AllotNum = t.AllotNum,
+                AllotNum = t.UseNum,
                 IsAcceptName = t.IsAccept ? "已签收" : "未签收"
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -1312,7 +1312,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string RemoveVeinTarget(Guid Id)
         {
-            return Delete<EnterpriseVeinTag>(t => t.Id==Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+            return Delete<EnterpriseVeinTag>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         #endregion
 
@@ -2189,19 +2189,28 @@ namespace KilyCore.Service.ServiceCore
         }
         public string BindTarget(RequestEnterpriseTagAttach Param)
         {
-            //EnterpriseTagAttach TagAttach = Param.MapToEntity<EnterpriseTagAttach>();
-            //if (TagAttach.TagType.Equals("1"))
-            //{
-            //    Kily.Set<FunctionVeinTag>().Where(t => t.IsDelete == false).
-            //    UpdateField<FunctionVeinTag>
-            //}
-            //else if (Param.TagType.Equals("2"))
-            //{
+            EnterpriseTagAttach TagAttach = Param.MapToEntity<EnterpriseTagAttach>();
+            int Count = (int)(Param.EndSerialNo - Param.StarSerialNo);
+            if (string.IsNullOrEmpty(Param.TagBatchNo))
+                return "请选择正确批次";
+            if (TagAttach.TagType != "1" && TagAttach.TagType != "2")
+                return ServiceMessage.HANDLEFAIL;
+            if (TagAttach.TagType.Equals("1"))
+            {
+                EnterpriseVeinTag data = Kily.Set<EnterpriseVeinTag>().Where(t => t.IsDelete == false).Where(t => t.BatchNo == Param.TagBatchNo).FirstOrDefault();
+                Kily.Set<EnterpriseTagAttach>().Where(t => t.IsDelete == false).Where(t => t.TagBatchNo == Param.TagBatchNo).FirstOrDefault();
+                if (data.IsAccept)
+                    return "请先签收";
+                data.UseNum += Count;
+                if (data.UseNum - data.TotalNo < 0)
+                    return "纹理二维码数量不足";
+                UpdateField<EnterpriseVeinTag>(data, "UseNum");
+                Insert<EnterpriseTagAttach>(TagAttach)
+            }
+            else 
+            {
 
-            //}
-            //else
-            return ServiceMessage.HANDLEFAIL;
-
+            }
         }
         #endregion
         #endregion

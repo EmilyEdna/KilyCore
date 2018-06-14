@@ -297,14 +297,15 @@ namespace KilyCore.Service.ServiceCore
             var Master = Kily.Set<FunctionVeinTag>().Where(t => t.IsDelete == false).Where(t => t.BatchNo == Param.BatchNo).FirstOrDefault();
             //查询字表当权限等级为全国以下
             var Customer = Kily.Set<FunctionVeinTagAttach>().Where(t => t.IsDelete == false).Where(t => t.SingleBatchNo == Param.BatchNo).FirstOrDefault();
-            if (Customer.IsAccept)
-                return "请先签收";
+            if (Customer != null)
+                if (Customer.IsAccept)
+                    return "请先签收";
             //检测企业有没有分配记录
             var Sum = Kily.Set<EnterpriseVeinTag>().Where(t => t.IsDelete == false).Where(t => t.BatchNo == Param.BatchNo).AsNoTracking().Select(t => t.TotalNo).Sum();
             //检测运营商有没有分配记录
             var SumNo = Kily.Set<FunctionVeinTagAttach>().Where(t => t.IsDelete == false).Where(t => t.BatchNo == Param.BatchNo).AsNoTracking().Select(t => t.TotalNo).Sum();
             //检测运营商有没有在往下级分配记录
-            var SumAttach = Customer!=null?Kily.Set<FunctionVeinTagAttach>().Where(t => t.IsDelete == false).Where(t => t.BatchNo == Customer.SingleBatchNo).Select(t => t.TotalNo).Sum():0;
+            var SumAttach = Customer != null ? Kily.Set<FunctionVeinTagAttach>().Where(t => t.IsDelete == false).Where(t => t.BatchNo == Customer.SingleBatchNo).Select(t => t.TotalNo).Sum() : 0;
             //判断输入的开始号段是否已经被分配了
             long NewStarNo = (UserInfo().AccountType <= AccountEnum.Country) ? (Master.StarSerialNo + Sum + SumNo) : (Customer.StarSerialNo + Sum + SumAttach);
             if (Param.StarSerialNo - NewStarNo < 0)

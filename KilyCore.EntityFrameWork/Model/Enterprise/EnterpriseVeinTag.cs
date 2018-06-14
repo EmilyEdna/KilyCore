@@ -57,8 +57,8 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual bool IsAccept { get; set; }
         /// <summary>
-        /// 分配数量
+        /// 使用数量
         /// </summary>
-        public virtual int AllotNum { get; set; }
+        public virtual int UseNum { get; set; }
     }
 }
