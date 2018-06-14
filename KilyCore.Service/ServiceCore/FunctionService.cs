@@ -235,44 +235,102 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseVeinTag> GetTagPage(PageParamList<RequestVeinTag> pageParam)
         {
-            IQueryable<FunctionVeinTag> queryable = Kily.Set<FunctionVeinTag>().AsNoTracking().OrderByDescending(t => t.CreateTime).Where(t=>t.IsDelete==false);
-            if (UserInfo().AccountType == AccountEnum.Admin || UserInfo().AccountType == AccountEnum.Country)
-                return queryable.Select(t => new ResponseVeinTag()
+            IQueryable<FunctionVeinTag> queryable = Kily.Set<FunctionVeinTag>().AsNoTracking().OrderByDescending(t => t.CreateTime).Where(t => t.IsDelete == false);
+            IQueryable<FunctionVeinTagAttach> queryables = Kily.Set<FunctionVeinTagAttach>().AsNoTracking().OrderByDescending(t => t.CreateTime).Where(t => t.IsDelete == false);
+            if (UserInfo().AccountType <= AccountEnum.Country)
+            {
+                var data = queryable.Select(t => new ResponseVeinTag()
                 {
                     Id = t.Id,
-                    BatchNo=t.BatchNo,
+                    BatchNo = t.BatchNo,
                     StarSerialNo = t.StarSerialNo,
                     EndSerialNo = t.EndSerialNo,
                     TotalNo = t.TotalNo,
                     AcceptUserName = t.AcceptUserName,
                     AllotType = t.AllotType,
+                    AllotNum = t.AllotNum,
                     IsAcceptName = t.IsAccept ? "已签收" : "未签收"
                 }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
-            return queryable.Where(t => t.AcceptUser.Contains(UserInfo().Id.ToString())).Select(t => new ResponseVeinTag()
+                return data;
+            }
+            else
             {
-                Id = t.Id,
-                BatchNo = t.BatchNo,
-                StarSerialNo = t.StarSerialNo,
-                EndSerialNo = t.EndSerialNo,
-                TotalNo = t.TotalNo,
-                AcceptUserName = t.AcceptUserName,
-                AllotType = t.AllotType,
-                IsAcceptName = t.IsAccept ? "已签收" : "未签收"
-            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                var data = queryables.Where(t => t.AcceptUser.Contains(UserInfo().Id.ToString())).Select(t => new ResponseVeinTag()
+                {
+                    Id = t.Id,
+                    BatchNo = t.BatchNo,
+                    StarSerialNo = t.StarSerialNo,
+                    EndSerialNo = t.EndSerialNo,
+                    TotalNo = t.TotalNo,
+                    AcceptUserName = t.AcceptUserName,
+                    AllotType = t.AllotType,
+                    AllotNum = t.AllotNum,
+                    IsAcceptName = t.IsAccept ? "已签收" : "未签收"
+                }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                return data;
+            }
         }
         /// <summary>
-        /// 录入分配标签
+        /// 录入标签
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public string RecordAllotTag(RequestVeinTag Param)
+        public string RecordTag(RequestVeinTag Param)
         {
             Param.TotalNo = (int)(Param.EndSerialNo - Param.StarSerialNo);
             FunctionVeinTag VeinTag = Param.MapToEntity<FunctionVeinTag>();
-            if (Insert<FunctionVeinTag>(VeinTag))
-                return ServiceMessage.INSERTSUCCESS;
+            return Insert<FunctionVeinTag>(VeinTag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 分配标签
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string AllotTag(RequestVeinTag Param)
+        {
+            //计算个数
+            Param.TotalNo = (int)(Param.EndSerialNo - Param.StarSerialNo);
+            EnterpriseVeinTag Tag = Param.MapToEntity<EnterpriseVeinTag>();
+            Tag.CompanyId = Guid.Parse(Param.AcceptUser);
+            FunctionVeinTagAttach Attach = Param.MapToEntity<FunctionVeinTagAttach>();
+            //查询主表当权限等级为全国以上
+            var Master = Kily.Set<FunctionVeinTag>().Where(t => t.IsDelete == false).Where(t => t.BatchNo == Param.BatchNo).FirstOrDefault();
+            //查询字表当权限等级为全国以下
+            var Customer = Kily.Set<FunctionVeinTagAttach>().Where(t => t.IsDelete == false).Where(t => t.SingleBatchNo == Param.BatchNo).FirstOrDefault();
+            if (Customer.IsAccept)
+                return "请先签收";
+            //检测企业有没有分配记录
+            var Sum = Kily.Set<EnterpriseVeinTag>().Where(t => t.IsDelete == false).Where(t => t.BatchNo == Param.BatchNo).AsNoTracking().Select(t => t.TotalNo).Sum();
+            //检测运营商有没有分配记录
+            var SumNo = Kily.Set<FunctionVeinTagAttach>().Where(t => t.IsDelete == false).Where(t => t.BatchNo == Param.BatchNo).AsNoTracking().Select(t => t.TotalNo).Sum();
+            //检测运营商有没有在往下级分配记录
+            var SumAttach = Customer!=null?Kily.Set<FunctionVeinTagAttach>().Where(t => t.IsDelete == false).Where(t => t.BatchNo == Customer.SingleBatchNo).Select(t => t.TotalNo).Sum():0;
+            //判断输入的开始号段是否已经被分配了
+            long NewStarNo = (UserInfo().AccountType <= AccountEnum.Country) ? (Master.StarSerialNo + Sum + SumNo) : (Customer.StarSerialNo + Sum + SumAttach);
+            if (Param.StarSerialNo - NewStarNo < 0)
+                return $"当前起始号段已经被分配，新起始号段从{NewStarNo}开始";
+            if (UserInfo().AccountType <= AccountEnum.Country)
+            {
+                Master.AllotNum += Param.TotalNo;
+                if (Master.AllotNum > Master.TotalNo)
+                    return $"当前纹理二维码配额已用完";
+                UpdateField<FunctionVeinTag>(Master, "AllotNum");
+                if (Param.AllotType == 1)
+                    return Insert<EnterpriseVeinTag>(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+                else
+                    return Insert<FunctionVeinTagAttach>(Attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            }
             else
-                return ServiceMessage.INSERTFAIL;
+            {
+                Customer.AllotNum += Param.TotalNo;
+                if (Customer.AllotNum > Customer.TotalNo)
+                    return $"当前纹理二维码配额已用完";
+                UpdateField<FunctionVeinTagAttach>(Customer, "AllotNum");
+                if (Param.AllotType == 1)
+                    return Insert<EnterpriseVeinTag>(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+                else
+                    return Insert<FunctionVeinTagAttach>(Attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            }
         }
         /// <summary>
         /// 删除二维码
@@ -328,15 +386,34 @@ namespace KilyCore.Service.ServiceCore
             }
         }
         /// <summary>
+        /// 获取批次列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseVeinTag> GetTagBatchList()
+        {
+            IQueryable<FunctionVeinTag> queryable = Kily.Set<FunctionVeinTag>().AsNoTracking().OrderByDescending(t => t.CreateTime).Where(t => t.IsDelete == false);
+            IQueryable<FunctionVeinTagAttach> queryables = Kily.Set<FunctionVeinTagAttach>().AsNoTracking().OrderByDescending(t => t.CreateTime).Where(t => t.IsDelete == false);
+            if (UserInfo().AccountType == AccountEnum.Admin || UserInfo().AccountType == AccountEnum.Country)
+                return queryable.Select(t => new ResponseVeinTag()
+                {
+                    BatchNo = t.BatchNo,
+                }).ToList();
+            return queryables.Where(t => t.AcceptUser.Contains(UserInfo().Id.ToString())).Select(t => new ResponseVeinTag()
+            {
+                SingleBatchNo = t.SingleBatchNo,
+            }).ToList();
+        }
+        /// <summary>
         /// 签收
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
         public string AcceptTag(Guid Id)
         {
-            FunctionVeinTag VeinTag = Kily.Set<FunctionVeinTag>().Where(t => t.Id == Id).FirstOrDefault();
+            FunctionVeinTagAttach VeinTag = Kily.Set<FunctionVeinTagAttach>().Where(t => t.Id == Id).FirstOrDefault();
             VeinTag.IsAccept = true;
-            if (UpdateField<FunctionVeinTag>(VeinTag, "IsAccept"))
+            VeinTag.AcceptTime = DateTime.Now;
+            if (UpdateField<FunctionVeinTagAttach>(VeinTag, "IsAccept"))
                 return ServiceMessage.UPDATESUCCESS;
             else
                 return ServiceMessage.UPDATEFAIL;
@@ -350,7 +427,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseDictionary> GetSysDicPage(PageParamList<RequestDictionary> pageParam)
         {
-            IQueryable<FunctionDictionary> queryable = Kily.Set<FunctionDictionary>().Where(t=>t.IsDelete==false).OrderByDescending(t => t.CreateTime).AsNoTracking();
+            IQueryable<FunctionDictionary> queryable = Kily.Set<FunctionDictionary>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime).AsNoTracking();
             if (!string.IsNullOrEmpty(pageParam.QueryParam.DicName))
                 queryable = queryable.Where(t => t.DicName.Contains(pageParam.QueryParam.DicName));
             var data = queryable.Select(t => new ResponseDictionary()
@@ -374,7 +451,7 @@ namespace KilyCore.Service.ServiceCore
                 DicName = t.DicName,
                 DicValue = t.DicValue,
                 DicDescript = t.DicDescript,
-                AttachInfo=t.AttachInfo
+                AttachInfo = t.AttachInfo
             }).FirstOrDefault();
             return data;
         }
@@ -448,11 +525,11 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public IList<ResponseAreaDictionary> GetAreaVersion(Guid Id,int Param)
+        public IList<ResponseAreaDictionary> GetAreaVersion(Guid Id, int Param)
         {
             IQueryable<FunctionDictionary> queryable = Kily.Set<FunctionDictionary>().Where(t => t.DicName.Contains("版"));
-            if ((CompanyEnum)Param==CompanyEnum.Plant)
-                queryable= queryable.Where(t => t.DicName.Contains("种植"));
+            if ((CompanyEnum)Param == CompanyEnum.Plant)
+                queryable = queryable.Where(t => t.DicName.Contains("种植"));
             if ((CompanyEnum)Param == CompanyEnum.Culture)
                 queryable = queryable.Where(t => t.DicName.Contains("养殖"));
             if ((CompanyEnum)Param == CompanyEnum.Production)
@@ -461,14 +538,14 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.DicName.Contains("流通"));
             if ((CompanyEnum)Param == CompanyEnum.Other)
                 queryable = queryable.Where(t => t.DicName.Contains("其他"));
-            var data = Kily.Set<FunctionAreaDictionary>().Where(t => t.ProvinceId == Id).Where(t=>t.IsDelete==false)
+            var data = Kily.Set<FunctionAreaDictionary>().Where(t => t.ProvinceId == Id).Where(t => t.IsDelete == false)
                   .Join(queryable, t => t.DictionaryId, x => x.Id, (t, x) => new ResponseAreaDictionary()
                   {
                       DicName = x.DicName,
                       DicValue = x.DicValue,
-                      DicDescript=x.DicDescript,
-                      IsEnable=t.IsDelete,
-                      AttachInfo=x.AttachInfo
+                      DicDescript = x.DicDescript,
+                      IsEnable = t.IsDelete,
+                      AttachInfo = x.AttachInfo
                   }).ToList();
             return data;
         }

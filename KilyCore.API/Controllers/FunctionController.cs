@@ -80,14 +80,24 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(FunctionService.GetTagPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
-        /// 录入分配标签
+        /// 录入标签
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("RecordAllotTag")]
+        [HttpPost("RecordTag")]
         public ObjectResultEx RecordAllotTag(RequestVeinTag Param)
         {
-            return ObjectResultEx.Instance(FunctionService.RecordAllotTag(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(FunctionService.RecordTag(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 分配标签
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("AllotTag")]
+        public ObjectResultEx AllotTag(RequestVeinTag Param)
+        {
+            return ObjectResultEx.Instance(FunctionService.AllotTag(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 删除二维码
@@ -108,6 +118,15 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetAcceptUser(SimlpeParam<int> Param)
         {
             return ObjectResultEx.Instance(FunctionService.GetAcceptUser(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 纹理二维码批次号
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetTagBatchList")]
+        public ObjectResultEx GetTagBatchList()
+        {
+            return ObjectResultEx.Instance(FunctionService.GetTagBatchList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 签收标签
@@ -201,9 +220,9 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetAreaVersion")]
-        public ObjectResultEx GetAreaVersion(SimlpeParam<Guid> Key,SimlpeParam<int> Value)
+        public ObjectResultEx GetAreaVersion(SimlpeParam<Guid> Key, SimlpeParam<int> Value)
         {
-            return ObjectResultEx.Instance(FunctionService.GetAreaVersion(Key.Id,Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(FunctionService.GetAreaVersion(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

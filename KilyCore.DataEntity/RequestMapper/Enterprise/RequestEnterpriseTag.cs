@@ -25,29 +25,12 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
     {
         public Guid Id { get; set; }
         public Guid CompanyId { get; set; }
-        /// <summary>
-        /// 主表标签Id
-        /// </summary>
+        public string TagType { get; set; }
         public  Guid TagId { get; set; }
-        /// <summary>
-        /// 产品表Id
-        /// </summary>
         public  Guid GoodsId { get; set; }
-        /// <summary>
-        /// 编号
-        /// </summary>
         public  string TagBatchNo { get; set; }
-        /// <summary>
-        /// 开始号段
-        /// </summary>
         public  Int64 StarSerialNo { get; set; }
-        /// <summary>
-        /// 结束号段
-        /// </summary>
         public  Int64 EndSerialNo { get; set; }
-        /// <summary>
-        /// 使用数量
-        /// </summary>
         public  int UseNum { get; set; }
     }
 }

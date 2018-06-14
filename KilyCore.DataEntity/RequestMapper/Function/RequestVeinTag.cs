@@ -23,10 +23,6 @@ namespace KilyCore.DataEntity.RequestMapper.Function
         /// </summary>
         public int TotalNo { get; set; }
         /// <summary>
-        /// 使用个数
-        /// </summary>
-        public int UseNo { get; set; }
-        /// <summary>
         /// 接收人
         /// </summary>
         public string AcceptUser { get; set; }
@@ -47,5 +43,9 @@ namespace KilyCore.DataEntity.RequestMapper.Function
         /// </summary>
         public bool IsAccept { get; set; }
         public string BatchNo { get; set; }
+        /// <summary>
+        /// 自身批次号
+        /// </summary>
+        public string SingleBatchNo { get; set; }
     }
 }

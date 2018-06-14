@@ -25,9 +25,11 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 纹理二维码
         PagedResult<ResponseVeinTag> GetTagPage(PageParamList<RequestVeinTag> pageParam);
-        String RecordAllotTag(RequestVeinTag Param);
+        String RecordTag(RequestVeinTag Param);
+        String AllotTag(RequestVeinTag Param);
         String RemoveTag(Guid Id);
         IList<ResponseVienTagPreson> GetAcceptUser(int flag);
+        IList<ResponseVeinTag> GetTagBatchList();
         String AcceptTag(Guid Id);
         #endregion
         #region 系统码表

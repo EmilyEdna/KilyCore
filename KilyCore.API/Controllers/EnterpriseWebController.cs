@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
+using KilyCore.DataEntity.RequestMapper.Function;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.Extension.ResultExtension;
 using KilyCore.Service.QueryExtend;
@@ -556,6 +557,36 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetPaymentDetail(SimlpeParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetPaymentDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 纹理二维码分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetVeinTargetPage")]
+        public ObjectResultEx GetVeinTargetPage(PageParamList<RequestVeinTag> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetVeinTargetPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 纹理二维码签收
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("AcceptVeinTarget")]
+        public ObjectResultEx AcceptVeinTarget(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.AcceptVeinTarget(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 纹理二维码删除
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveVeinTarget")]
+        public ObjectResultEx RemoveVeinTarget(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveVeinTarget(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 厂商管理

@@ -1,8 +1,11 @@
 ﻿using KilyCore.DataEntity.RequestMapper.Enterprise;
+using KilyCore.DataEntity.RequestMapper.Function;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
+using KilyCore.DataEntity.ResponseMapper.Function;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.EntityFrameWork.Model.Enterprise;
+using KilyCore.EntityFrameWork.Model.Function;
 using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AttributeExtension;
@@ -1259,6 +1262,58 @@ namespace KilyCore.Service.ServiceCore
                 return UpdateField<EnterpriseTagApply>(TagApply, null, Fieds) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
             }
         }
+        /// <summary>
+        /// 纹理二维码分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseVeinTag> GetVeinTargetPage(PageParamList<RequestVeinTag> pageParam)
+        {
+            IQueryable<EnterpriseVeinTag> queryable = Kily.Set<EnterpriseVeinTag>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.BatchNo))
+                queryable = queryable.Where(t => t.BatchNo.Contains(pageParam.QueryParam.BatchNo));
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.Select(t => new ResponseVeinTag()
+            {
+                Id=t.Id,
+                BatchNo = t.BatchNo,
+                StarSerialNo = t.StarSerialNo,
+                EndSerialNo = t.EndSerialNo,
+                TotalNo = t.TotalNo,
+                AcceptUserName = t.AcceptUserName,
+                AllotType = t.AllotType,
+                AllotNum = t.AllotNum,
+                IsAcceptName = t.IsAccept ? "已签收" : "未签收"
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 签收
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string AcceptVeinTarget(Guid Id)
+        {
+            EnterpriseVeinTag VeinTag = Kily.Set<EnterpriseVeinTag>().Where(t => t.Id == Id).FirstOrDefault();
+            VeinTag.IsAccept = true;
+            VeinTag.AcceptTime = DateTime.Now;
+            if (UpdateField<EnterpriseVeinTag>(VeinTag, "IsAccept"))
+                return ServiceMessage.UPDATESUCCESS;
+            else
+                return ServiceMessage.UPDATEFAIL;
+        }
+        /// <summary>
+        /// 删除标签
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveVeinTarget(Guid Id)
+        {
+            return Delete<EnterpriseVeinTag>(t => t.Id==Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
         #endregion
 
         #region 厂商管理
@@ -2108,6 +2163,7 @@ namespace KilyCore.Service.ServiceCore
                     InStockNum = p.t.InStockNum,
                     ProBatch = o.BatchNo,
                     MaterialId = o.MaterialId,
+                    GoodsId = p.x.Id,
                     MaterialList = Material.ToList()
                 }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -2133,6 +2189,18 @@ namespace KilyCore.Service.ServiceCore
         }
         public string BindTarget(RequestEnterpriseTagAttach Param)
         {
+            //EnterpriseTagAttach TagAttach = Param.MapToEntity<EnterpriseTagAttach>();
+            //if (TagAttach.TagType.Equals("1"))
+            //{
+            //    Kily.Set<FunctionVeinTag>().Where(t => t.IsDelete == false).
+            //    UpdateField<FunctionVeinTag>
+            //}
+            //else if (Param.TagType.Equals("2"))
+            //{
+
+            //}
+            //else
+            return ServiceMessage.HANDLEFAIL;
 
         }
         #endregion

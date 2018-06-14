@@ -18,4 +18,13 @@ namespace KilyCore.EntityFrameWork.EntityMapping.Enterprise
             builder.HasKey(t => t.Id);
         }
     }
+    public class EnterpriseVeinTagMap : IEntityTypeConfiguration<EnterpriseVeinTag>
+    {
+        public void Configure(EntityTypeBuilder<EnterpriseVeinTag> builder)
+        {
+            builder.ToTable(typeof(EnterpriseVeinTag).Name);
+            builder.HasKey(t => t.Id);
+            builder.Property(t => t.AcceptTime).HasColumnType(typeof(DateTime).Name);
+        }
+    }
 }

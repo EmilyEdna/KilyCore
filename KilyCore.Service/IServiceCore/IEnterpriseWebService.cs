@@ -1,7 +1,9 @@
 ﻿using KilyCore.Configure;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
+using KilyCore.DataEntity.RequestMapper.Function;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
+using KilyCore.DataEntity.ResponseMapper.Function;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.Service.QueryExtend;
 using System;
@@ -103,6 +105,9 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseEnterpriseApply> GetTagApplyPage(PageParamList<RequestEnterpriseApply> pageParam);
         String ApplyEdit(RequestEnterpriseApply Param);
         ResponseEnterpriseApply GetPaymentDetail(Guid Id);
+        PagedResult<ResponseVeinTag> GetVeinTargetPage(PageParamList<RequestVeinTag> pageParam);
+        String AcceptVeinTarget(Guid Id);
+        String RemoveVeinTarget(Guid Id);
         #endregion
         #region 厂商管理
         PagedResult<ResponseEnterpriseSeller> GetSellerPage(PageParamList<RequestEnterpriseSeller> pageParam);

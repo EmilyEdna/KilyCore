@@ -15,19 +15,40 @@
             },
             //元素
             InitDom: function () {
+                options.BindBatch();
+                $("input[name='SingleBatchNo']").val("S" + controller.FormatDate("YYMMDDHHmmss"));
                 options.ChooseTypeGetUser($("input[type='radio']:checked").val());
                 $("input[type='radio']").on('click', function () {
                     options.ChooseTypeGetUser($(this).val());
                 })
             },
+            //绑定批次
+            BindBatch: function () {
+                controller.ajax({
+                    url: "Function/GetTagBatchList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = "<option>===请选择===</option>"
+                        $.each(result.data, function (i, obj) {
+                            if (obj.BatchNo != null)
+                                html += '<option>' + obj.BatchNo + '</option>';
+                            else
+                                html += '<option>' + obj.SingleBatchNo + '</option>';
+                        });
+                        $("#No").html(html);
+                    }
+                });
+            },
             //根据类型选择接受人
-            ChooseTypeGetUser: function (flag)
-            {
+            ChooseTypeGetUser: function (flag) {
                 controller.ajax({
                     url: 'Function/GetAcceptUser',
                     data: { Id: flag },
                     type: 'post',
-                    success: function (result) { 
+                    async: false,
+                    success: function (result) {
                         var html = '<option>==请选择==</option>'
                         $.each(result.data, function (i, obj) {
                             html += '<option value="' + obj.Id + '">' + obj.Name + '</option>'
@@ -61,10 +82,20 @@
 }
 <div class="ibox float-e-margins">
     <div class="ibox-content">
-        <form class="orm-horizontal" method="post" action="Function/RecordAllotTag" id="Edit">
+        <form class="orm-horizontal" method="post" action="Function/AllotTag" id="Edit">
             <input type="hidden" name="IsAccept" value="false" />
-            <input  type="hidden" name="AcceptUserName"  id="AcceptUserName"/>
+            <input type="hidden" name="AcceptUserName" id="AcceptUserName" />
             <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">编号批次</label></th>
+                    <td class="has-warning">
+                        <input type="text" name="SingleBatchNo" class="form-control" readonly />
+                    </td>
+                    <th><label class="control-label">号段批次</label></th>
+                    <td class="has-warning">
+                        <select type="select" name="BatchNo" id="No" class="form-control"></select>
+                    </td>
+                </tr>
                 <tr>
                     <th><label class="control-label">开始号段</label></th>
                     <td class="has-warning">

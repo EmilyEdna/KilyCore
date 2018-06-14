@@ -241,7 +241,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string RemoveEnterpriseRoleAuthor(Guid Id)
         {
-            if (Delete<EnterpriseRoleAuthor>(t => t.Id == Id))
+            if (Remove<EnterpriseRoleAuthor>(t => t.Id == Id))
                 return ServiceMessage.REMOVESUCCESS;
             else
                 return ServiceMessage.REMOVEFAIL;

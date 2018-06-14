@@ -19,4 +19,13 @@ namespace KilyCore.EntityFrameWork.EntityMapping.Function
             builder.Property(t => t.AcceptTime).HasColumnType(typeof(DateTime).Name);
         }
     }
+    public class FunctionVeinTagAttachMap : IEntityTypeConfiguration<FunctionVeinTagAttach>
+    {
+        public void Configure(EntityTypeBuilder<FunctionVeinTagAttach> builder)
+        {
+            builder.ToTable(typeof(FunctionVeinTagAttach).Name);
+            builder.HasKey(t => t.Id);
+            builder.Property(t => t.AcceptTime).HasColumnType(typeof(DateTime).Name);
+        }
+    }
 }

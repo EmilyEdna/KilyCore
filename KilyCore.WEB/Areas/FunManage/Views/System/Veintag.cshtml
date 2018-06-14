@@ -22,7 +22,7 @@
                 });
                 //设置表单
                 this.$table = controller.Table("#tableList", { url: "Function/GetTagPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Tag" });
-                if (SysUserInfo.AccountType != 20 && SysUserInfo.AccountType != 10)
+                if (SysUserInfo.AccountType > 20)
                     $("#add").css({ display: "none" });
             },
             //事件
@@ -57,7 +57,8 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
-                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>签收</button>');
+                    if (SysUserInfo.AccountType > 20)
+                        action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>签收</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
@@ -137,6 +138,7 @@
                                 <th data-field="TotalNo" data-halign="center" data-align="center" data-valign="middle">区间总数</th>
                                 <th data-field="AcceptUserName" data-halign="center" data-align="center" data-valign="middle">接收人(公司)</th>
                                 <th data-field="AllotTypeName" data-halign="center" data-align="center" data-valign="middle">分配类型</th>
+                                <th data-field="AllotNum" data-halign="center" data-align="center" data-valign="middle">分配数量</th>
                                 <th data-field="IsAcceptName" data-halign="center" data-align="center" data-valign="middle">是否签收</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>

@@ -31,8 +31,8 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual Int64 EndSerialNo { get; set; }
         /// <summary>
-        /// 使用数量
+        /// 标签类型 1:表示纹理二维码。2:表示普通二维码。
         /// </summary>
-        public virtual int UseNum{ get; set; }
+        public virtual string TagType { get; set; }
     }
 }

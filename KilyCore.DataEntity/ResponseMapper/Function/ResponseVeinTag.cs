@@ -23,18 +23,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Function
         /// </summary>
         public int TotalNo { get; set; }
         /// <summary>
-        /// 使用个数
-        /// </summary>
-        public int UseNo { get; set; }
-        /// <summary>
-        /// 剩余个数
-        /// </summary>
-        public int LostNo { get; set; }
-        /// <summary>
-        /// 接收人
-        /// </summary>
-        public string AcceptUser { get; set; }
-        /// <summary>
         /// 接收人姓名获取公司名称
         /// </summary>
         public string AcceptUserName { get; set; }
@@ -64,6 +52,11 @@ namespace KilyCore.DataEntity.ResponseMapper.Function
         /// </summary>
         public string IsAcceptName { get; set; }
         public string BatchNo { get; set; }
+        /// <summary>
+        /// 自身批次号
+        /// </summary>
+        public string SingleBatchNo { get; set; }
+        public int AllotNum { get; set; }
     }
     public class ResponseVienTagPreson
     {
