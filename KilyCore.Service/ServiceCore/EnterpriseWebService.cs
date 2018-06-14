@@ -2205,9 +2205,9 @@ namespace KilyCore.Service.ServiceCore
                 if (data.UseNum - data.TotalNo < 0)
                     return "纹理二维码数量不足";
                 UpdateField<EnterpriseVeinTag>(data, "UseNum");
-                Insert<EnterpriseTagAttach>(TagAttach)
+                Insert<EnterpriseTagAttach>(TagAttach);
             }
-            else 
+            else
             {
 
             }
