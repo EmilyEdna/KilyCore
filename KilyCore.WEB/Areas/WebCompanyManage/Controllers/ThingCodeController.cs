@@ -67,5 +67,13 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         public IActionResult Payment() {
             return View();
         }
+        /// <summary>
+        /// 纹理标签
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult VeinTarget()
+        {
+            return View();
+        }
     }
 }
