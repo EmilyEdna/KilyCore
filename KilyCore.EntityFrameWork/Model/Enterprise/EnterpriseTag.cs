@@ -41,6 +41,6 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// <summary>
         /// 使用数量
         /// </summary>
-        public virtual int? UseNum { get; set; }
+        public virtual int UseNum { get; set; }
     }
 }

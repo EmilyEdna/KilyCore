@@ -2191,25 +2191,33 @@ namespace KilyCore.Service.ServiceCore
         {
             EnterpriseTagAttach TagAttach = Param.MapToEntity<EnterpriseTagAttach>();
             int Count = (int)(Param.EndSerialNo - Param.StarSerialNo);
+            TagAttach.UseNum = Count;
             if (string.IsNullOrEmpty(Param.TagBatchNo))
                 return "请选择正确批次";
-            if (TagAttach.TagType != "1" && TagAttach.TagType != "2")
+            if (TagAttach.TagType != "1" && TagAttach.TagType != "2" && TagAttach.TagType != "3")
                 return ServiceMessage.HANDLEFAIL;
             if (TagAttach.TagType.Equals("1"))
             {
                 EnterpriseVeinTag data = Kily.Set<EnterpriseVeinTag>().Where(t => t.IsDelete == false).Where(t => t.BatchNo == Param.TagBatchNo).FirstOrDefault();
-                Kily.Set<EnterpriseTagAttach>().Where(t => t.IsDelete == false).Where(t => t.TagBatchNo == Param.TagBatchNo).FirstOrDefault();
+                int SumCount = Kily.Set<EnterpriseTagAttach>().Where(t => t.IsDelete == false).Where(t => t.TagBatchNo == Param.TagBatchNo).Select(t => t.UseNum).Sum();
                 if (data.IsAccept)
                     return "请先签收";
                 data.UseNum += Count;
                 if (data.UseNum - data.TotalNo < 0)
                     return "纹理二维码数量不足";
+                if (Param.StarSerialNo - (data.StarSerialNo + SumCount) < 0)
+                    return $"号段不匹配！新的起始号段为{data.StarSerialNo + SumCount }";
                 UpdateField<EnterpriseVeinTag>(data, "UseNum");
-                Insert<EnterpriseTagAttach>(TagAttach)
+                return Insert<EnterpriseTagAttach>(TagAttach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
             }
-            else 
+            else if (TagAttach.TagType.Equals("2"))
             {
-
+                EnterpriseTag data = Kily.Set<EnterpriseTag>().Where(t => t.IsDelete == false).Where(t => t.BatchNo == Param.TagBatchNo).Where(t => t.TagType == TagEnum.OneThing).FirstOrDefault();
+                data.UseNum += Count;
+                data.TotalNo = data.TotalNo - Count;
+            }
+            else
+            {
             }
         }
         #endregion

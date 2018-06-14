@@ -8,6 +8,9 @@ using System.Text;
 /// </summary>
 namespace KilyCore.EntityFrameWork.Model.Enterprise
 {
+    /// <summary>
+    /// 二维码绑定表
+    /// </summary>
     public class EnterpriseTagAttach : EnterpriseBase
     {
         /// <summary>
@@ -23,6 +26,10 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual string TagBatchNo { get; set; }
         /// <summary>
+        /// 使用数量
+        /// </summary>
+        public virtual int UseNum { get; set; }
+        /// <summary>
         /// 开始号段
         /// </summary>
         public virtual Int64 StarSerialNo { get; set; }
@@ -31,7 +38,7 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual Int64 EndSerialNo { get; set; }
         /// <summary>
-        /// 标签类型 1:表示纹理二维码。2:表示普通二维码。
+        /// 标签类型 1:表示纹理二维码。2:表示一物一码。3:表示一品一码。
         /// </summary>
         public virtual string TagType { get; set; }
     }
