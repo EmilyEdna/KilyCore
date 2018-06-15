@@ -999,5 +999,121 @@ namespace KilyCore.API.Controllers
         }
         #endregion
         #endregion
+        #region 产品管理
+        #region 产品列表
+        /// <summary>
+        /// 产品分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetGoodsPage")]
+        public ObjectResultEx GetGoodsPage(PageParamList<RequestEnterpriseGoods> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetGoodsPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除产品
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveGoods")]
+        public ObjectResultEx RemoveGoods(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveGoods(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑产品
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditGoods")]
+        public ObjectResultEx EditGoods(RequestEnterpriseGoods Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditGoods(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取产品详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetGoodsDetail")]
+        public ObjectResultEx GetGoodsDetail(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetGoodsDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #region 产品仓库
+        /// <summary>
+        /// 产品入库分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetGoodsStockPage")]
+        public ObjectResultEx GetGoodsStockPage(PageParamList<RequestEnterpriseGoodsStock> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetGoodsStockPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除仓库中产品
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveGoodsStock")]
+        public ObjectResultEx RemoveGoodsStock(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveGoodsStock(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑产品仓库
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditGoodsStock")]
+        public ObjectResultEx EditGoodsStock(RequestEnterpriseGoodsStock Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditGoodsStock(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 绑定二维码
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("BindTarget")]
+        public ObjectResultEx BindTarget(RequestEnterpriseTagAttach Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.BindTarget(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 产品出库分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetGoodsStockAttachPage")]
+        public ObjectResultEx GetGoodsStockAttachPage(PageParamList<RequestEnterpriseGoodsStockAttach> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetGoodsStockAttachPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 出库编辑
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditStockAttach")]
+        public ObjectResultEx EditStockAttach(RequestEnterpriseGoodsStockAttach Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditStockAttach(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除出库
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveGoodsStockAttach")]
+        public ObjectResultEx RemoveGoodsStockAttach(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveGoodsStockAttach(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #endregion
     }
 }

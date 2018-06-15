@@ -35,7 +35,7 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// <summary>
         /// 出库数量
         /// </summary>
-        public virtual string OutStockNum { get; set; }
+        public virtual int OutStockNum { get; set; }
         /// <summary>
         /// 出库时间
         /// </summary>

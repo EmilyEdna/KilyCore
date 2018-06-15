@@ -35,7 +35,7 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// <summary>
         /// 入库数量
         /// </summary>
-        public virtual string SetStockNum { get; set; }
+        public virtual int SetStockNum { get; set; }
         /// <summary>
         /// 入库时间
         /// </summary>

@@ -169,5 +169,22 @@ namespace KilyCore.Service.IServiceCore
         String EditProBatchAttach(RequestEnterpriseProductionBatchAttach Param);
         #endregion
         #endregion
+        #region 产品管理
+        #region 产品列表
+        PagedResult<ResponseEnterpriseGoods> GetGoodsPage(PageParamList<RequestEnterpriseGoods> pageParam);
+        String RemoveGoods(Guid Id);
+        String EditGoods(RequestEnterpriseGoods Param);
+        ResponseEnterpriseGoods GetGoodsDetail(Guid Id);
+        #endregion
+        #region 产品仓库
+        PagedResult<ResponseEnterpriseGoodsStock> GetGoodsStockPage(PageParamList<RequestEnterpriseGoodsStock> pageParam);
+        String RemoveGoodsStock(Guid Id);
+        String EditGoodsStock(RequestEnterpriseGoodsStock Param);
+        String BindTarget(RequestEnterpriseTagAttach Param);
+        PagedResult<ResponseEnterpriseGoodsStockAttach> GetGoodsStockAttachPage(PageParamList<RequestEnterpriseGoodsStockAttach> pageParam);
+        String EditStockAttach(RequestEnterpriseGoodsStockAttach Param);
+        String RemoveGoodsStockAttach(Guid Id);
+        #endregion
+        #endregion
     }
 }

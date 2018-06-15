@@ -34,7 +34,7 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
-                    if (row.IsAcceptName =="未签收") 
+                    if (!row.IsAccept) 
                         action.push('<button class="btn btn-sm btn-primary accept"><i class="fa fa-inbox"></i>签收</button>');
                     return action.join("&nbsp;")
                 },

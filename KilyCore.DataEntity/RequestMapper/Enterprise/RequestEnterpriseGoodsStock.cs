@@ -26,7 +26,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public Guid GoodsId { get; set; }
         public string GoodsName { get; set; }
         public string StockType { get; set; }
-        public string InStockNum { get; set; }
+        public int InStockNum { get; set; }
         public Guid BatchId { get; set; }
         public string CheckUnit { get; set; }
         public string CheckUser { get; set; }
@@ -34,6 +34,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
     }
     public class RequestEnterpriseGoodsStockAttach
     {
+        public string GoodsName { get; set; }
         public Guid Id { get; set; }
         public Guid CompanyId { get; set; }
         public string OutStockType { get; set; }
@@ -41,5 +42,6 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public Guid StockId { get; set; }
         public string OutStockUser { get; set; }
         public string Seller { get; set; }
+        public int OutStockNum { get; set; }
     }
 }

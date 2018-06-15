@@ -39,7 +39,7 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// <summary>
         /// 入库数量
         /// </summary>
-        public virtual string InStockNum { get; set; }
+        public virtual int InStockNum { get; set; }
         /// <summary>
         /// 生产批次表Id
         /// </summary>

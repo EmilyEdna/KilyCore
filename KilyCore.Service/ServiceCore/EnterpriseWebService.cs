@@ -5,7 +5,6 @@ using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.Function;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.EntityFrameWork.Model.Enterprise;
-using KilyCore.EntityFrameWork.Model.Function;
 using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AttributeExtension;
@@ -1286,6 +1285,7 @@ namespace KilyCore.Service.ServiceCore
                 AcceptUserName = t.AcceptUserName,
                 AllotType = t.AllotType,
                 AllotNum = t.UseNum,
+                IsAccept = t.IsAccept,
                 IsAcceptName = t.IsAccept ? "已签收" : "未签收"
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -1540,14 +1540,14 @@ namespace KilyCore.Service.ServiceCore
             if (Param.Id == Guid.Empty)
             {
                 EnterpriseMaterialStock stock = Param.MapToEntity<EnterpriseMaterialStock>();
-                List<String> NumList = Kily.Set<EnterpriseMaterialStock>().Where(t => t.BatchNo == Param.BatchNo).Select(t => t.SetStockNum).ToList();
+                List<int> NumList = Kily.Set<EnterpriseMaterialStock>().Where(t => t.BatchNo == Param.BatchNo).Select(t => t.SetStockNum).ToList();
                 int MaterNum = Kily.Set<EnterpriseMaterial>().Where(t => t.BatchNo == Param.BatchNo).Select(t => t.MaterNum).FirstOrDefault();
                 long Sum = 0;
                 if (NumList.Count != 0)
                 {
                     NumList.ForEach(t =>
                      {
-                         Sum += Convert.ToInt64(t);
+                         Sum += t;
                      });
                     if (MaterNum - Sum >= 0)
                         return Insert<EnterpriseMaterialStock>(stock) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
@@ -1604,7 +1604,8 @@ namespace KilyCore.Service.ServiceCore
                      StockType = p.t.StockType,
                      OutStockNum = p.t.OutStockNum,
                      OutStockTime = p.t.OutStockTime,
-                     OutStockUser = p.t.OutStockUser
+                     OutStockUser = p.t.OutStockUser,
+                     StockEx=p.x.SetStockNum - p.t.OutStockNum,
                  }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -1631,7 +1632,7 @@ namespace KilyCore.Service.ServiceCore
                 return $"当前库存剩余{Stock.SetStockNum},实际出库为{Attach.OutStockNum}";
             else
             {
-                Stock.SetStockNum = Count.ToString();
+                Stock.SetStockNum = Count;
                 UpdateField<EnterpriseMaterialStock>(Stock, "SetStockNum");
                 return Insert<EnterpriseMaterialStockAttach>(Attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
             }
@@ -2187,6 +2188,11 @@ namespace KilyCore.Service.ServiceCore
             EnterpriseGoodsStock Stock = Param.MapToEntity<EnterpriseGoodsStock>();
             return Insert<EnterpriseGoodsStock>(Stock) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
+        /// <summary>
+        /// 绑定二维码
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
         public string BindTarget(RequestEnterpriseTagAttach Param)
         {
             EnterpriseTagAttach TagAttach = Param.MapToEntity<EnterpriseTagAttach>();
@@ -2210,15 +2216,78 @@ namespace KilyCore.Service.ServiceCore
                 UpdateField<EnterpriseVeinTag>(data, "UseNum");
                 return Insert<EnterpriseTagAttach>(TagAttach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
             }
-            else if (TagAttach.TagType.Equals("2"))
-            {
-                EnterpriseTag data = Kily.Set<EnterpriseTag>().Where(t => t.IsDelete == false).Where(t => t.BatchNo == Param.TagBatchNo).Where(t => t.TagType == TagEnum.OneThing).FirstOrDefault();
-                data.UseNum += Count;
-                data.TotalNo = data.TotalNo - Count;
-            }
             else
             {
+                IQueryable<EnterpriseTag> queryable = Kily.Set<EnterpriseTag>().Where(t => t.IsDelete == false).Where(t => t.BatchNo == Param.TagBatchNo);
+                EnterpriseTag data = null;
+                if (TagAttach.TagType.Equals("2"))
+                    data = queryable.Where(t => t.TagType == TagEnum.OneThing).FirstOrDefault();
+                if (TagAttach.TagType.Equals("3"))
+                    data = queryable.Where(t => t.TagType == TagEnum.OneBrand).FirstOrDefault();
+                int SumCount = Kily.Set<EnterpriseTagAttach>().Where(t => t.IsDelete == false).Where(t => t.TagBatchNo == Param.TagBatchNo).Select(t => t.UseNum).Sum();
+                data.UseNum += Count;
+                data.TotalNo = data.TotalNo - Count;
+                if (data.TotalNo < 0)
+                    return "当前批次号段不足！";
+                if (Param.StarSerialNo - (data.StarSerialNo + SumCount) < 0)
+                    return $"号段不匹配！新的起始号段为{data.StarSerialNo + SumCount }";
+                IList<string> fields = new List<string>
+                {
+                    "UseNum",
+                    "TotalNo"
+                };
+                UpdateField<EnterpriseTag>(data, null, fields);
+                return Insert<EnterpriseTagAttach>(TagAttach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
             }
+        }
+        /// <summary>
+        /// 产品出库分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseGoodsStockAttach> GetGoodsStockAttachPage(PageParamList<RequestEnterpriseGoodsStockAttach> pageParam)
+        {
+            IQueryable<EnterpriseGoodsStockAttach> queryable = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<EnterpriseGoodsStock> Stock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<EnterpriseGoods> Goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.GoodsName))
+                Goods = Goods.Where(t => t.ProductName.Contains(pageParam.QueryParam.GoodsName));
+            if (CompanyInfo() != null)
+                Stock = Stock.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                Stock = Stock.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.Join(Stock, t => t.StockId, x => x.Id, (t, x) => new { t, x })
+                .Join(Goods, o => o.x.GoodsId, p => p.Id, (o, p) => new ResponseEnterpriseGoodsStockAttach()
+                {
+                    Id=o.t.Id,
+                    GoodsBatchNo=o.t.GoodsBatchNo,
+                    OutStockUser=o.t.OutStockUser,
+                    OutStockType=o.t.OutStockType,
+                    StockBatch=o.x.GoodsBatchNo,
+                    Seller=o.t.Seller,
+                    GoodsName=p.ProductName,
+                    OutStockNum=o.t.OutStockNum,
+                    StockEx= o.x.InStockNum- o.t.OutStockNum
+                }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 出库编辑
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditStockAttach(RequestEnterpriseGoodsStockAttach Param) {
+            EnterpriseGoodsStockAttach Attach = Param.MapToEntity<EnterpriseGoodsStockAttach>();
+            return Insert<EnterpriseGoodsStockAttach>(Attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 删除出库
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveGoodsStockAttach(Guid Id)
+        {
+            return Delete(ExpressionExtension.GetExpression<EnterpriseGoodsStockAttach>("Id", Id, ExpressionEnum.Equals)) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         #endregion
         #endregion

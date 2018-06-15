@@ -41,6 +41,10 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual string OutStockUser { get; set; }
         /// <summary>
+        /// 出库数量
+        /// </summary>
+        public virtual int OutStockNum { get; set; }
+        /// <summary>
         /// 分销商
         /// </summary>
         public virtual string Seller { get; set; }

@@ -33,7 +33,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// </summary>
         public Guid GoodsId { get; set; }
         public string StockType { get; set; }
-        public string InStockNum { get; set; }
+        public int InStockNum { get; set; }
         /// <summary>
         /// 生产批次
         /// </summary>
@@ -58,6 +58,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
     {
         public Guid Id { get; set; }
         public Guid CompanyId { get; set; }
+        public string GoodsName { get; set; }
         public string OutStockType { get; set; }
         public string GoodsBatchNo { get; set; }
         /// <summary>
@@ -66,5 +67,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string StockBatch { get; set; }
         public string OutStockUser { get; set; }
         public string Seller { get; set; }
+        public int OutStockNum { get; set; }
+        /// <summary>
+        /// 库存
+        /// </summary>
+        public int StockEx { get; set; }
     }
 }

@@ -51,6 +51,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Function
         /// 是否签收
         /// </summary>
         public string IsAcceptName { get; set; }
+        public bool IsAccept { get; set; }
         public string BatchNo { get; set; }
         /// <summary>
         /// 自身批次号
