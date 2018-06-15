@@ -1,4 +1,10 @@
-﻿var UserInfo = UserInfo || {};
+﻿/*
+作者:Emily
+blog:http://www.cnblogs.com/edna-lzh/
+github:https://github.com/EmilyEdna
+email:847432003@qq.com
+*/
+var UserInfo = UserInfo || {};
 var CompanyUser = CompanyUser || {};
 //设置菜单
 $.fn.SetTree = function (data) {

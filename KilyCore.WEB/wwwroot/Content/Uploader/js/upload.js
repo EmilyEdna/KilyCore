@@ -1,8 +1,10 @@
-/**
- * author:gouguoyin
- * qq:245629560
- * doc:http://www.gouguoyin.cn/js/141.html
- */
+/*
+二次开发作者:Emily
+blog:http://www.cnblogs.com/edna-lzh/
+github:https://github.com/EmilyEdna
+email:847432003@qq.com
+源地址:http://www.gouguoyin.cn/js/141.html
+*/
 (function($){
     $.fn.ajaxImageUpload = function(options){
 

@@ -2118,6 +2118,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 CompanyId = t.CompanyId,
+                ProductSeriesId=t.ProductSeriesId,
                 Spec = t.Spec,
                 ProductSeriesName = x.SeriesName,
                 ExpiredDate = t.ExpiredDate,

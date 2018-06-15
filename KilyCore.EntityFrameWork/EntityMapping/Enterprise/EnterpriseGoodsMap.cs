@@ -27,7 +27,6 @@ namespace KilyCore.EntityFrameWork.EntityMapping.Enterprise
         {
             builder.ToTable(typeof(EnterpriseGoods).Name);
             builder.HasKey(t => t.Id);
-            builder.Property(t => t.ExpiredDate).HasColumnType(typeof(DateTime).Name);
         }
     }
     public class EnterpriseGoodsStockMap : IEntityTypeConfiguration<EnterpriseGoodsStock>

@@ -1,4 +1,10 @@
-﻿var controller = controller || {};
+﻿/*
+作者:Emily
+blog:http://www.cnblogs.com/edna-lzh/
+github:https://github.com/EmilyEdna
+email:847432003@qq.com
+*/
+var controller = controller || {};
 var host = "http://localhost:50039/api/";
 var WebUrl = "http://localhost:50070/";
 //ajax请求

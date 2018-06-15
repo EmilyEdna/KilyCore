@@ -1,4 +1,11 @@
-﻿//验证电话
+﻿/*
+作者:Emily
+blog:http://www.cnblogs.com/edna-lzh/
+github:https://github.com/EmilyEdna
+email:847432003@qq.com
+*/
+
+//验证电话
 jQuery.validator.addMethod('IsPhone', function (value, element) {
     var reg = /^1[3|4|5|7|8][0-9]{9}$/;
     var length = value.length;

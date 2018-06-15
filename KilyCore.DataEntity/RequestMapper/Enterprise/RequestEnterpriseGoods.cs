@@ -25,7 +25,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public string ProductType { get; set; }
         public string ProductName { get; set; }
         public Guid ProductSeriesId { get; set; }
-        public DateTime ExpiredDate { get; set; }
+        public string ExpiredDate { get; set; }
         public string Spec { get; set; }
         public string Unit { get; set; }
     }

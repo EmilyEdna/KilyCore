@@ -1,0 +1,123 @@
+﻿
+@{
+    ViewData["Title"] = "编辑产品";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var Guid = controller.GetParam("Id");
+                $("input[name='CompanyId']").val(CompanyInfo.Id);
+                options.GetSeries();
+                options.GetSelect();
+                options.GetDetail(Guid);
+            },
+            //获取字典下拉
+            GetSelect: function () {
+                //初始化下拉
+                controller.Select({
+                    document: '.selectpicker',
+                    arrelemnt: ['#Unit', '#Spec'],
+                    url: 'EnterpriseWeb/GetDictionaryList',
+                });
+                $("#Spec").on('changed.bs.select', function () {
+                    $('input[name="Spec"]').val($(this).val());
+                });
+                $("#Unit").on('changed.bs.select', function () {
+                    $('input[name="Unit"]').val($(this).val());
+                });
+            },
+            //获取产品系列
+            GetSeries: function () {
+                controller.ajax({
+                    url: "EnterpriseWeb/GetSeriesList",
+                    type: "post",
+                    data: {},
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.SeriesName + '</option>';
+                        });
+                        $("#ProductSeriesId").html(html);
+                    }
+                });
+            },
+            //获取详情
+            GetDetail: function (data) {
+                if (data != null && data != undefined && data != "")
+                    controller.ajax({
+                        url: "EnterpriseWeb/GetGoodsDetail",
+                        type: "post",
+                        data: { Id: data },
+                        async: false,
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                            $("#Unit").selectpicker('val', result.data.Unit);
+                            $("#Spec").selectpicker('val', result.data.Spec);
+                        }
+                    });
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditGoods" id="Edit">
+            <input type="hidden" name="Id" />
+            <input type="hidden" name="CompanyId" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">产品名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ProductName" />
+                    </td>
+                    <th><label class="control-label">产品类型</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ProductType" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">产品系列</label></th>
+                    <td class="has-warning">
+                        <select type="select" name="ProductSeriesId" class="form-control" id="ProductSeriesId"></select>
+                    </td>
+                    <th><label class="control-label">保质期</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ExpiredDate" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">单位</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="selectpicker form-control" data-max-options="2" id="Unit" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
+                    </td>
+                    <th><label class="control-label">规格</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="selectpicker form-control" data-max-options="2" id="Spec" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
