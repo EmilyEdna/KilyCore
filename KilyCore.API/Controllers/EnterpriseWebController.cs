@@ -1186,6 +1186,24 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveCheckGoods(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 原料质检列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetCheckMaterial")]
+        public ObjectResultEx GetCheckMaterial()
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetCheckMaterial(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 产品质检列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetCheckGoodsList")]
+        public ObjectResultEx GetCheckGoodsList()
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetCheckGoodsList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 过期不合格处理
         /// <summary>

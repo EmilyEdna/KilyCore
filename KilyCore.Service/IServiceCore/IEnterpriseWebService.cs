@@ -195,6 +195,8 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseEnterpriseCheckGoods> GetCheckGoodsPage(PageParamList<RequestEnterpriseCheckGoods> pageParam);
         String EditCheckGoods(RequestEnterpriseCheckGoods Param);
         String RemoveCheckGoods(Guid Id);
+        IList<ResponseEnterpriseCheckMaterial> GetCheckMaterial();
+        IList<ResponseEnterpriseCheckGoods> GetCheckGoodsList();
         #endregion
         #region 过期不合格处理
         PagedResult<ResponseEnterpriseInferiorExprired> GetInferiorExpriredPage(PageParamList<RequestEnterpriseInferiorExprired> pageParam);

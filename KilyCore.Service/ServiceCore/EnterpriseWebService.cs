@@ -2371,6 +2371,24 @@ namespace KilyCore.Service.ServiceCore
             return Delete<EnterpriseCheckMaterial>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         /// <summary>
+        /// 原料质检列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseEnterpriseCheckMaterial> GetCheckMaterial()
+        {
+            IQueryable<EnterpriseCheckMaterial> queryable = Kily.Set<EnterpriseCheckMaterial>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.Select(t => new ResponseEnterpriseCheckMaterial()
+            {
+                Id = t.Id,
+                CheckName = t.CheckName,
+            }).ToList();
+            return data;
+        }
+        /// <summary>
         /// 产品质检分页
         /// </summary>
         /// <param name="pageParam"></param>
@@ -2415,6 +2433,24 @@ namespace KilyCore.Service.ServiceCore
         public string RemoveCheckGoods(Guid Id)
         {
             return Delete<EnterpriseCheckGoods>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 产品质检列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseEnterpriseCheckGoods> GetCheckGoodsList()
+        {
+            IQueryable<EnterpriseCheckGoods> queryable = Kily.Set<EnterpriseCheckGoods>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.Select(t => new ResponseEnterpriseCheckGoods()
+            {
+                Id = t.Id,
+                CheckName = t.CheckName,
+            }).ToList();
+            return data;
         }
         #endregion
         #region 过期不合格处理

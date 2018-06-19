@@ -21,8 +21,8 @@
                 $("#CompanyId").val(CompanyInfo.Id);
                 this.GetList();
             },
-            //获取下拉原料
             GetList: function () {
+                //获取下拉原料
                 controller.ajax({
                     url: "EnterpriseWeb/GetMaterialList",
                     data: {},
@@ -48,6 +48,20 @@
                             html += '<option>' + obj.TrueName + '</option>';
                         });
                         $("#SetStockUser").html(html);
+                    }
+                });
+                //质检列表
+                controller.ajax({
+                    url: "EnterpriseWeb/GetCheckMaterial",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.CheckName + '</option>';
+                        });
+                        $("#CheckMaterialId").html(html);
                     }
                 });
             },
@@ -103,11 +117,15 @@
                 </tr>
                 <tr>
                     <th><label class="control-label">入库类型</label></th>
-                    <td class="has-warning" colspan="3">
+                    <td class="has-warning">
                         <select class="form-control" name="StockType" type="select">
                             <option value="原料入库">原料入库</option>
                             <option value="其他入库">其他入库</option>
                         </select>
+                    </td>
+                    <th><label class="control-label">原料质检</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="CheckMaterialId" id="CheckMaterialId"></select>
                     </td>
                 </tr>
             </table>
