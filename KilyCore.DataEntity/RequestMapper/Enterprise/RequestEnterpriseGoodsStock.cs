@@ -28,11 +28,9 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public string StockType { get; set; }
         public int InStockNum { get; set; }
         public Guid BatchId { get; set; }
-        public string CheckUnit { get; set; }
-        public string CheckUser { get; set; }
-        public string CheckResult { get; set; }
         public string Manager { get; set; }
         public DateTime ProductTime { get; set; }
+        public Guid CheckGoodsId { get; set; }
     }
     public class RequestEnterpriseGoodsStockAttach
     {

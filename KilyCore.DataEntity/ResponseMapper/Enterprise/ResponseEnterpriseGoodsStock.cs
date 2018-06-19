@@ -39,9 +39,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// </summary>
         public string ProBatch { get; set; }
         public DateTime  ProductTime { get; set; }
-        public string CheckUnit { get; set; }
-        public string CheckUser { get; set; }
-        public string CheckResult { get; set; }
         public string MaterialId { get; set; }
         public string MaterialName
         {
@@ -55,6 +52,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         }
         public List<ResponseEnterpriseMaterial> MaterialList { get; set; }
         public string Manager { get; set; }
+        public Guid CheckGoodsId { get; set; }
     }
     public class ResponseEnterpriseGoodsStockAttach
     {

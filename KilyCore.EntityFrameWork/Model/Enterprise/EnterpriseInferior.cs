@@ -5,13 +5,13 @@ using System.Text;
 
 #region << 版 本 注 释 >>
 /*----------------------------------------------------------------
-* 类 名 称 ：EnterpriseMaterialStock
+* 类 名 称 ：EnterpriseInferior
 * 类 描 述 ：
 * 命名空间 ：KilyCore.EntityFrameWork.Model.Enterprise
 * 机器名称 ：DESKTOP-QPIVQ28 
 * CLR 版本 ：4.0.30319.42000
 * 作    者 ：刘泽华
-* 创建时间 ：2018/6/6 17:22:32
+* 创建时间 ：2018/6/19 16:17:12
 *******************************************************************
 * Copyright @ 刘泽华 2018. All rights reserved.
 *******************************************************************
@@ -20,41 +20,45 @@ using System.Text;
 namespace KilyCore.EntityFrameWork.Model.Enterprise
 {
     /// <summary>
-    /// 原料仓库表
+    /// 不合格过期处理表
     /// </summary>
-    public class EnterpriseMaterialStock : EnterpriseBase
+    public class EnterpriseInferiorExprired:EnterpriseBase
     {
         /// <summary>
-        /// 入库批次号
+        /// 1：表示不合格处理类型。2：表示过期处理类型。
         /// </summary>
-        public virtual string SerializNo { get; set; }
+        public virtual int InferiorExprired { get; set; }
         /// <summary>
-        /// 原料批次号
+        /// 被处理的物品名称
         /// </summary>
-        public virtual string BatchNo { get; set; }
+        public virtual string InferName { get; set; }
         /// <summary>
-        /// 入库数量
+        /// 被处理的物品Id
         /// </summary>
-        public virtual int SetStockNum { get; set; }
+        public virtual Guid InferId { get; set; }
         /// <summary>
-        /// 入库时间
+        /// 被处理的物品类型
         /// </summary>
-        public virtual DateTime? SetStockTime { get; set; }
+        public virtual string InferType { get; set; }
         /// <summary>
-        /// 生产时间
+        /// 处理自定义名称
         /// </summary>
-        public virtual DateTime? ProductTime { get; set; }
+        public virtual string CustomName { get; set; }
         /// <summary>
-        /// 入库负责人
+        /// 处理人
         /// </summary>
-        public virtual string SetStockUser { get; set; }
+        public virtual string HandleUser { get; set; }
         /// <summary>
-        /// 仓库类型
+        /// 处理时间
         /// </summary>
-        public virtual string StockType { get; set; }
+        public virtual DateTime HandleTime { get; set; }
         /// <summary>
-        /// 原料质检表Id
+        /// 处理原因
         /// </summary>
-        public virtual Guid CheckMaterialId { get; set; }
+        public virtual string HandleReason { get; set; }
+        /// <summary>
+        /// 处理方式
+        /// </summary>
+        public virtual string HandleWays { get; set; }
     }
 }

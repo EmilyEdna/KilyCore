@@ -51,29 +51,8 @@
                     }
                 });
             },
-            //设置文件值
-            SetFileValue: function (data, elememt) {
-                var files = $(elememt).val();
-                if (files != null && files != "" && files != undefined) {
-                    files += "," + data;
-                    $(elememt).val(files);
-                } else {
-                    $(elememt).val(data);
-                }
-            },
             //事件
             InitEvents: function () {
-                //文件上传
-                controller.Upload({
-                    url: "File/UploadImg",
-                    element: ".upload-input",
-                    maxNum: 3,
-                    node: '.image-box',
-                    success: function (result) {
-                        controller.Alter(result.msg);
-                        options.SetFileValue(result.data,"#CheckResult");
-                    }
-                });
                 //验证
                 controller.ValidateConfirm("#Edit");
             },
@@ -89,7 +68,6 @@
 <div class="ibox float-e-margins">
     <div class="ibox-content">
         <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditStock" id="Edit">
-            <input type="hidden" class="form-control" name="CheckResult" id="CheckResult" />
             <input type="hidden" class="form-control" name="CompanyId" id="CompanyId" />
             <table class="table table-hover table-bordered">
                 <tr>
@@ -118,16 +96,6 @@
                     <td class="has-warning">
                         <input type="text" class="form-control" name="SetStockNum" />
                     </td>
-                    <th><label class="control-label">质检单位</label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control" name="CheckUnit" />
-                    </td>
-                </tr>
-                <tr>
-                    <th><label class="control-label">质检人员</label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control" name="CheckUser" />
-                    </td>
                     <th><label class="control-label">负责人</label></th>
                     <td class="has-warning">
                         <select type="select" class="form-control" name="SetStockUser" id="SetStockUser"></select>
@@ -140,17 +108,6 @@
                             <option value="原料入库">原料入库</option>
                             <option value="其他入库">其他入库</option>
                         </select>
-                    </td>
-                </tr>
-                <tr>
-                    <th><label class="control-label">质检报告</label></th>
-                    <td class="has-warning" colspan="3">
-                        <div class="image-box clear">
-                            <section class="upload-section">
-                                <div class="upload-btn"></div>
-                                <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
-                            </section>
-                        </div>
                     </td>
                 </tr>
             </table>

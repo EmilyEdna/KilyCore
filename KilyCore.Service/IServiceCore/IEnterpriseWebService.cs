@@ -187,5 +187,21 @@ namespace KilyCore.Service.IServiceCore
         String RemoveGoodsStockAttach(Guid Id);
         #endregion
         #endregion
+        #region 品质管理
+        #region 原料产品质检
+        PagedResult<ResponseEnterpriseCheckMaterial> GetCheckMaterialPage(PageParamList<RequestEnterpriseCheckMaterial> pageParam);
+        String EditCheckMaterial(RequestEnterpriseCheckMaterial Param);
+        String RemoveCheckMaterial(Guid Id);
+        PagedResult<ResponseEnterpriseCheckGoods> GetCheckGoodsPage(PageParamList<RequestEnterpriseCheckGoods> pageParam);
+        String EditCheckGoods(RequestEnterpriseCheckGoods Param);
+        String RemoveCheckGoods(Guid Id);
+        #endregion
+        #region 过期不合格处理
+        PagedResult<ResponseEnterpriseInferiorExprired> GetInferiorExpriredPage(PageParamList<RequestEnterpriseInferiorExprired> pageParam);
+        ResponseEnterpriseInferiorExprired GetInferiorExpriredDetail(Guid Id);
+        String RemoveInferiorExprired(Guid Id);
+        String EditInferiorExprired(RequestEnterpriseInferiorExprired Param);
+        #endregion
+        #endregion
     }
 }

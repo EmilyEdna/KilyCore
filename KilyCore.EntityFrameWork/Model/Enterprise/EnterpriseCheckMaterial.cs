@@ -5,13 +5,13 @@ using System.Text;
 
 #region << 版 本 注 释 >>
 /*----------------------------------------------------------------
-* 类 名 称 ：EnterpriseMaterialStock
+* 类 名 称 ：EnterpriseCheckMaterial
 * 类 描 述 ：
 * 命名空间 ：KilyCore.EntityFrameWork.Model.Enterprise
 * 机器名称 ：DESKTOP-QPIVQ28 
 * CLR 版本 ：4.0.30319.42000
 * 作    者 ：刘泽华
-* 创建时间 ：2018/6/6 17:22:32
+* 创建时间 ：2018/6/19 15:06:47
 *******************************************************************
 * Copyright @ 刘泽华 2018. All rights reserved.
 *******************************************************************
@@ -20,41 +20,33 @@ using System.Text;
 namespace KilyCore.EntityFrameWork.Model.Enterprise
 {
     /// <summary>
-    /// 原料仓库表
+    /// 原料质检表
     /// </summary>
-    public class EnterpriseMaterialStock : EnterpriseBase
+    public class EnterpriseCheckMaterial:EnterpriseBase
     {
         /// <summary>
-        /// 入库批次号
+        /// 检测自定义名称
         /// </summary>
-        public virtual string SerializNo { get; set; }
+        public virtual string CheckName { get; set; }
         /// <summary>
-        /// 原料批次号
+        /// 原料表Id
         /// </summary>
-        public virtual string BatchNo { get; set; }
+        public virtual Guid MaterId { get; set; }
         /// <summary>
-        /// 入库数量
+        /// 质检单位
         /// </summary>
-        public virtual int SetStockNum { get; set; }
+        public virtual string CheckUint { get; set; }
         /// <summary>
-        /// 入库时间
+        /// 质检人员
         /// </summary>
-        public virtual DateTime? SetStockTime { get; set; }
+        public virtual string CheckUser { get; set; }
         /// <summary>
-        /// 生产时间
+        /// 质检结果
         /// </summary>
-        public virtual DateTime? ProductTime { get; set; }
+        public virtual string CheckResult { get; set; }
         /// <summary>
-        /// 入库负责人
+        /// 质检报告
         /// </summary>
-        public virtual string SetStockUser { get; set; }
-        /// <summary>
-        /// 仓库类型
-        /// </summary>
-        public virtual string StockType { get; set; }
-        /// <summary>
-        /// 原料质检表Id
-        /// </summary>
-        public virtual Guid CheckMaterialId { get; set; }
+        public virtual string CheckReport { get; set; }
     }
 }

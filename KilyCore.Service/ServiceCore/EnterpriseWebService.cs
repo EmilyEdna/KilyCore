@@ -1319,7 +1319,8 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public Object GetTagList(int type) {
+        public Object GetTagList(int type)
+        {
             if (type == 1)
             {
                 IQueryable<EnterpriseVeinTag> queryable = Kily.Set<EnterpriseVeinTag>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
@@ -2192,7 +2193,7 @@ namespace KilyCore.Service.ServiceCore
                     ProBatch = o.BatchNo,
                     MaterialId = o.MaterialId,
                     GoodsId = p.x.Id,
-                    Manager=p.t.Manager,
+                    Manager = p.t.Manager,
                     MaterialList = Material.ToList()
                 }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -2319,6 +2320,179 @@ namespace KilyCore.Service.ServiceCore
             return Delete(ExpressionExtension.GetExpression<EnterpriseGoodsStockAttach>("Id", Id, ExpressionEnum.Equals)) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         #endregion
+        #endregion
+
+        #region 品质管理
+        #region 原料产品质检
+        /// <summary>
+        /// 原料质检分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseCheckMaterial> GetCheckMaterialPage(PageParamList<RequestEnterpriseCheckMaterial> pageParam)
+        {
+            IQueryable<EnterpriseCheckMaterial> queryable = Kily.Set<EnterpriseCheckMaterial>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<EnterpriseMaterial> queryables = Kily.Set<EnterpriseMaterial>().Where(t => t.IsDelete == false);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.CheckName))
+                queryable = queryable.Where(t => t.CheckName.Contains(pageParam.QueryParam.CheckName));
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.Join(queryables, t => t.MaterId, x => x.Id, (t, x) => new ResponseEnterpriseCheckMaterial()
+            {
+                Id = t.Id,
+                CheckName = t.CheckName,
+                MaterName = x.MaterName,
+                CheckResult = t.CheckResult,
+                CheckUint = t.CheckUint,
+                CheckUser = t.CheckUser,
+                CheckReport = t.CheckReport
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑原料质检
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditCheckMaterial(RequestEnterpriseCheckMaterial Param)
+        {
+            EnterpriseCheckMaterial material = Param.MapToEntity<EnterpriseCheckMaterial>();
+            return Insert(material) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 删除原料质检
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveCheckMaterial(Guid Id)
+        {
+            return Delete<EnterpriseCheckMaterial>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 产品质检分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseCheckGoods> GetCheckGoodsPage(PageParamList<RequestEnterpriseCheckGoods> pageParam)
+        {
+            IQueryable<EnterpriseCheckGoods> queryable = Kily.Set<EnterpriseCheckGoods>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<EnterpriseGoods> queryables = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.CheckName))
+                queryable = queryable.Where(t => t.CheckName.Contains(pageParam.QueryParam.CheckName));
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.Join(queryables, t => t.GoodsId, x => x.Id, (t, x) => new ResponseEnterpriseCheckGoods()
+            {
+                Id = t.Id,
+                CheckName = t.CheckName,
+                GoodsName = x.ProductName,
+                CheckResult = t.CheckResult,
+                CheckUint = t.CheckUint,
+                CheckUser = t.CheckUser,
+                CheckReport = t.CheckReport
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑产品质检
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditCheckGoods(RequestEnterpriseCheckGoods Param)
+        {
+            EnterpriseCheckGoods material = Param.MapToEntity<EnterpriseCheckGoods>();
+            return Insert(material) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 删除产品质检
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveCheckGoods(Guid Id)
+        {
+            return Delete<EnterpriseCheckGoods>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+        #region 过期不合格处理
+        /// <summary>
+        /// 获取分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseInferiorExprired> GetInferiorExpriredPage(PageParamList<RequestEnterpriseInferiorExprired> pageParam)
+        {
+            IQueryable<EnterpriseInferiorExprired> queryable = Kily.Set<EnterpriseInferiorExprired>().Where(t => t.IsDelete == false).Where(t => t.InferiorExprired == pageParam.QueryParam.InferiorExprired).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.CustomName))
+                queryable = queryable.Where(t => t.CustomName.Contains(pageParam.QueryParam.CustomName));
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.Select(t => new ResponseEnterpriseInferiorExprired()
+            {
+                Id = t.Id,
+                CustomName = t.CustomName,
+                InferName = t.InferName,
+                InferType = t.InferType,
+                HandleUser = t.HandleUser,
+                HandleWays = t.HandleWays,
+                HandleTime = t.HandleTime,
+                HandleReason = t.HandleReason
+            }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 获取详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseEnterpriseInferiorExprired GetInferiorExpriredDetail(Guid Id)
+        {
+            IQueryable<EnterpriseInferiorExprired> queryable = Kily.Set<EnterpriseInferiorExprired>().Where(t => t.Id == Id).AsNoTracking();
+            var data = queryable.Select(t => new ResponseEnterpriseInferiorExprired()
+            {
+                Id = t.Id,
+                CustomName = t.CustomName,
+                InferName = t.InferName,
+                InferType = t.InferType,
+                HandleUser = t.HandleUser,
+                HandleWays = t.HandleWays,
+                HandleTime = t.HandleTime,
+                HandleReason = t.HandleReason
+            }).FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 删除过期不合格处理
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveInferiorExprired(Guid Id)
+        {
+            return Delete<EnterpriseInferiorExprired>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 编辑过期不合格处理
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditInferiorExprired(RequestEnterpriseInferiorExprired Param)
+        {
+            EnterpriseInferiorExprired exprired = Param.MapToEntity<EnterpriseInferiorExprired>();
+            if (Param.Id == Guid.Empty)
+                return Insert(exprired) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+                return ServiceMessage.HANDLESUCCESS;
+        }
+        #endregion
+        #endregion
+
+        #region 物流管理
+
         #endregion
     }
 }

@@ -85,29 +85,8 @@
                         });
                 });
             },
-            //设置文件值
-            SetFileValue: function (data, elememt) {
-                var files = $(elememt).val();
-                if (files != null && files != "" && files != undefined) {
-                    files += "," + data;
-                    $(elememt).val(files);
-                } else {
-                    $(elememt).val(data);
-                }
-            },
             //事件
             InitEvents: function () {
-                //文件上传
-                controller.Upload({
-                    url: "File/UploadImg",
-                    element: ".upload-input",
-                    maxNum: 3,
-                    node: '.image-box',
-                    success: function (result) {
-                        controller.Alter(result.msg);
-                        options.SetFileValue(result.data, "#CheckResult");
-                    }
-                });
                 //验证
                 controller.ValidateConfirm("#Edit");
             },
@@ -151,16 +130,6 @@
                     <td class="has-warning">
                         <input type="text" class="form-control" name="InStockNum" />
                     </td>
-                    <th><label class="control-label">质检单位</label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control" name="CheckUnit" />
-                    </td>
-                </tr>
-                <tr>
-                    <th><label class="control-label">质检人员</label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control" name="CheckUser" />
-                    </td>
                     <th><label class="control-label">负责人</label></th>
                     <td class="has-warning">
                         <select type="select" class="form-control" name="Manager" id="Manager"></select>
@@ -177,17 +146,6 @@
                     <th><label class="control-label">绑定二维码</label></th>
                     <td class="has-warning">
                         <button id="bind" class="btn btn-info form-control" type="button">绑定二维码标签</button>
-                    </td>
-                </tr>
-                <tr>
-                    <th><label class="control-label">质检报告</label></th>
-                    <td class="has-warning" colspan="3">
-                        <div class="image-box clear">
-                            <section class="upload-section">
-                                <div class="upload-btn"></div>
-                                <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
-                            </section>
-                        </div>
                     </td>
                 </tr>
             </table>

@@ -45,18 +45,6 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual Guid BatchId { get; set; }
         /// <summary>
-        /// 质检单位
-        /// </summary>
-        public virtual string CheckUnit { get; set; }
-        /// <summary>
-        /// 质检员
-        /// </summary>
-        public virtual string CheckUser { get; set; }
-        /// <summary>
-        /// 质检报告
-        /// </summary>
-        public virtual string CheckResult { get; set; }
-        /// <summary>
         /// 负责人
         /// </summary>
         public virtual string Manager { get; set; }
@@ -64,5 +52,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 生产时间
         /// </summary>
         public virtual DateTime ProductTime { get; set; }
+        /// <summary>
+        /// 产品质检表Id
+        /// </summary>
+        public virtual Guid CheckGoodsId { get; set; }
     }
 }

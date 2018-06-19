@@ -1124,5 +1124,111 @@ namespace KilyCore.API.Controllers
         }
         #endregion
         #endregion
+        #region 品质管理
+        #region 原料产品质检
+        /// <summary>
+        /// 原料质检分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetCheckMaterialPage")]
+        public ObjectResultEx GetCheckMaterialPage(PageParamList<RequestEnterpriseCheckMaterial> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetCheckMaterialPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑原料质检
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditCheckMaterial")]
+        public ObjectResultEx EditCheckMaterial(RequestEnterpriseCheckMaterial Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditCheckMaterial(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除原料质检
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveCheckMaterial")]
+        public ObjectResultEx RemoveCheckMaterial(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveCheckMaterial(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 产品质检分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetCheckGoodsPage")]
+        public ObjectResultEx GetCheckGoodsPage(PageParamList<RequestEnterpriseCheckGoods> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetCheckGoodsPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑产品质检
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditCheckGoods")]
+        public ObjectResultEx EditCheckGoods(RequestEnterpriseCheckGoods Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditCheckGoods(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除产品质检
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveCheckGoods")]
+        public ObjectResultEx RemoveCheckGoods(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveCheckGoods(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #region 过期不合格处理
+        /// <summary>
+        /// 获取分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetInferiorExpriredPage")]
+        public ObjectResultEx GetInferiorExpriredPage(PageParamList<RequestEnterpriseInferiorExprired> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetInferiorExpriredPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetInferiorExpriredDetail")]
+        public ObjectResultEx GetInferiorExpriredDetail(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetInferiorExpriredDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除过期不合格处理
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveInferiorExprired")]
+        public ObjectResultEx RemoveInferiorExprired(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveInferiorExprired(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑过期不合格处理
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditInferiorExprired")]
+        public ObjectResultEx EditInferiorExprired(RequestEnterpriseInferiorExprired Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditInferiorExprired(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #endregion
     }
 }
