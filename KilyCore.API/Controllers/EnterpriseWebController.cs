@@ -588,6 +588,16 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveVeinTarget(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 获取标签批次
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetTagList")]
+        public ObjectResultEx GetTagList(SimlpeParam<int> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetTagList(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 厂商管理
         /// <summary>
@@ -682,16 +692,6 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetStockPage(PageParamList<RequestEnterpriseMaterialStock> pageParam)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetStockPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }
-        /// <summary>
-        /// 获取入库分页
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        [HttpPost("GetStockDetail")]
-        public ObjectResultEx GetStockDetail(SimlpeParam<Guid> Param)
-        {
-            return ObjectResultEx.Instance(EnterpriseWebService.GetStockDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 删除入库
@@ -1040,6 +1040,15 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetGoodsDetail(SimlpeParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetGoodsDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取产品下拉
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetGoodsList")]
+        public ObjectResultEx GetGoodsList()
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetGoodsList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 产品仓库

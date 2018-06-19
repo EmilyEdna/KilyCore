@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "新增入库";
+    ViewData["Title"] = "产品入库";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section css{
@@ -15,25 +15,40 @@
             },
             //元素
             InitDom: function () {
-                $("#SerializNo").val("R" + controller.FormatDate("YYMMDDHHmmss"));
-                controller.LayDate({ elem: "#SetStockTime" });
+                $("#GoodsBatchNo").val("R" + controller.FormatDate("YYMMDDHHmmss"));
                 controller.LayDate({ elem: "#ProductTime" });
                 $("#CompanyId").val(CompanyInfo.Id);
-                this.GetList();
+                options.GetGoodsList();
+                options.BindTarget();
             },
-            //获取下拉原料
-            GetList: function () {
+            //获取产品下拉
+            GetGoodsList: function () {
+                //产品下拉
                 controller.ajax({
-                    url: "EnterpriseWeb/GetMaterialList",
+                    url: "EnterpriseWeb/GetGoodsList",
                     data: {},
                     type: "post",
                     async: false,
                     success: function (result) {
-                        var html = '';
+                        var html = '<option value="0">===请选择===</option>';
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.BatchNo + '">' + obj.MaterName + '</option>';
+                            html += '<option value="' + obj.Id + '">' + obj.ProductName + '</option>';
                         });
-                        $("#BatchNo").html(html);
+                        $("#GoodsId").html(html);
+                    }
+                });
+                //产品批次下拉
+                controller.ajax({
+                    url: "EnterpriseWeb/GetProBatchList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option value="0">===请选择===</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.SeriesName + '</option>';
+                        });
+                        $("#BatchId").html(html);
                     }
                 });
                 //人员下拉
@@ -47,8 +62,27 @@
                         $.each(result.data, function (i, obj) {
                             html += '<option>' + obj.TrueName + '</option>';
                         });
-                        $("#SetStockUser").html(html);
+                        $("#Manager").html(html);
                     }
+                });
+            },
+            //绑定二维码
+            BindTarget: function () {
+                $("#bind").on('click', function () {
+                    var flag = $("#GoodsId").find("option:selected").val();
+                    if (flag == 0)
+                        controller.Msg("请先选择产品!");
+                    else
+                        controller.OpenWindow({
+                            title: "绑定二维码",
+                            type: 2,
+                            height: "400px",
+                            width: "600px",
+                            url: "WebCompanyManage/Goods/BindTarget?Id=" + flag,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        });
                 });
             },
             //设置文件值
@@ -71,7 +105,7 @@
                     node: '.image-box',
                     success: function (result) {
                         controller.Alter(result.msg);
-                        options.SetFileValue(result.data,"#CheckResult");
+                        options.SetFileValue(result.data, "#CheckResult");
                     }
                 });
                 //验证
@@ -95,18 +129,17 @@
                 <tr>
                     <th><label class="control-label">批次号</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="SerializNo" id="SerializNo" readonly />
+                        <input type="text" class="form-control" name="GoodsBatchNo" id="GoodsBatchNo" readonly />
                     </td>
-                    <th><label class="control-label">原料批次</label></th>
+                    <th><label class="control-label">产品名称</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="BatchNo" list="BatchNo" />
-                        <datalist id="BatchNo"></datalist>
+                        <select type="select" name="GoodsId" id="GoodsId" class="form-control"></select>
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">入库时间</label></th>
+                    <th><label class="control-label">产品系列</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="SetStockTime" id="SetStockTime" />
+                        <select type="select" name="BatchId" id="BatchId" class="form-control"></select>
                     </td>
                     <th><label class="control-label">生产时间</label></th>
                     <td class="has-warning">
@@ -116,7 +149,7 @@
                 <tr>
                     <th><label class="control-label">入库数量</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="SetStockNum" />
+                        <input type="text" class="form-control" name="InStockNum" />
                     </td>
                     <th><label class="control-label">质检单位</label></th>
                     <td class="has-warning">
@@ -130,16 +163,20 @@
                     </td>
                     <th><label class="control-label">负责人</label></th>
                     <td class="has-warning">
-                        <select type="select" class="form-control" name="SetStockUser" id="SetStockUser"></select>
+                        <select type="select" class="form-control" name="Manager" id="Manager"></select>
                     </td>
                 </tr>
                 <tr>
                     <th><label class="control-label">入库类型</label></th>
-                    <td class="has-warning" colspan="3">
+                    <td class="has-warning">
                         <select class="form-control" name="StockType" type="select">
-                            <option value="原料入库">原料入库</option>
+                            <option value="产品入库">产品入库</option>
                             <option value="其他入库">其他入库</option>
                         </select>
+                    </td>
+                    <th><label class="control-label">绑定二维码</label></th>
+                    <td class="has-warning">
+                        <button id="bind" class="btn btn-info form-control" type="button">绑定二维码标签</button>
                     </td>
                 </tr>
                 <tr>

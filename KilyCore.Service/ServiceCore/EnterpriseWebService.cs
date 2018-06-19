@@ -1314,6 +1314,43 @@ namespace KilyCore.Service.ServiceCore
         {
             return Delete<EnterpriseVeinTag>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
+        /// <summary>
+        /// 获取标签批次
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public Object GetTagList(int type) {
+            if (type == 1)
+            {
+                IQueryable<EnterpriseVeinTag> queryable = Kily.Set<EnterpriseVeinTag>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+                if (CompanyInfo() != null)
+                    queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                else
+                    queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+                return queryable.Select(t => new ResponseVeinTag()
+                {
+                    Id = t.Id,
+                    BatchNo = t.BatchNo,
+                }).AsNoTracking().ToList();
+            }
+            else
+            {
+                IQueryable<EnterpriseTag> queryable = Kily.Set<EnterpriseTag>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+                if (CompanyInfo() != null)
+                    queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                else
+                    queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+                if (type == 2)
+                    queryable = queryable.Where(t => t.TagType == TagEnum.OneThing);
+                if (type == 3)
+                    queryable = queryable.Where(t => t.TagType == TagEnum.OneBrand);
+                return queryable.Select(t => new ResponseEnterpriseTag()
+                {
+                    Id = t.Id,
+                    BatchNo = t.BatchNo,
+                }).AsNoTracking().ToList();
+            }
+        }
         #endregion
 
         #region 厂商管理
@@ -1507,63 +1544,34 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         /// <summary>
-        /// 获取入库分页
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public ResponseEnterpriseMaterialStock GetStockDetail(Guid Id)
-        {
-            var data = Kily.Set<EnterpriseMaterialStock>().Where(t => t.Id == Id)
-                .Select(t => new ResponseEnterpriseMaterialStock()
-                {
-                    Id = t.Id,
-                    CompanyId = t.CompanyId,
-                    SerializNo = t.SerializNo,
-                    BatchNo = t.BatchNo,
-                    SetStockNum = t.SetStockNum,
-                    SetStockTime = t.SetStockTime,
-                    SetStockUser = t.SetStockUser,
-                    ProductTime = t.ProductTime,
-                    CheckUnit = t.CheckUnit,
-                    CheckUser = t.CheckUser,
-                    CheckResult = t.CheckResult,
-                }).FirstOrDefault();
-            return data;
-        }
-        /// <summary>
         /// 编辑入库
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
         public string EditStock(RequestEnterpriseMaterialStock Param)
         {
-            if (Param.Id == Guid.Empty)
+            EnterpriseMaterialStock stock = Param.MapToEntity<EnterpriseMaterialStock>();
+            List<int> NumList = Kily.Set<EnterpriseMaterialStock>().Where(t => t.BatchNo == Param.BatchNo).Select(t => t.SetStockNum).ToList();
+            int MaterNum = Kily.Set<EnterpriseMaterial>().Where(t => t.BatchNo == Param.BatchNo).Select(t => t.MaterNum).FirstOrDefault();
+            long Sum = 0;
+            if (NumList.Count != 0)
             {
-                EnterpriseMaterialStock stock = Param.MapToEntity<EnterpriseMaterialStock>();
-                List<int> NumList = Kily.Set<EnterpriseMaterialStock>().Where(t => t.BatchNo == Param.BatchNo).Select(t => t.SetStockNum).ToList();
-                int MaterNum = Kily.Set<EnterpriseMaterial>().Where(t => t.BatchNo == Param.BatchNo).Select(t => t.MaterNum).FirstOrDefault();
-                long Sum = 0;
-                if (NumList.Count != 0)
-                {
-                    NumList.ForEach(t =>
-                     {
-                         Sum += t;
-                     });
-                    if (MaterNum - Sum >= 0)
-                        return Insert<EnterpriseMaterialStock>(stock) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
-                    else
-                        return $"超出采购数量{MaterNum - Sum}";
-                }
+                NumList.ForEach(t =>
+                 {
+                     Sum += t;
+                 });
+                if (MaterNum - Sum >= 0)
+                    return Insert<EnterpriseMaterialStock>(stock) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
                 else
-                {
-                    if (MaterNum - Convert.ToInt64(Param.SetStockNum) >= 0)
-                        return Insert<EnterpriseMaterialStock>(stock) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
-                    else
-                        return $"超出采购数量{Convert.ToInt64(Param.SetStockNum) - MaterNum}";
-                }
+                    return $"超出采购数量{MaterNum - Sum}";
             }
             else
-                return ServiceMessage.HANDLESUCCESS;
+            {
+                if (MaterNum - Param.SetStockNum >= 0)
+                    return Insert<EnterpriseMaterialStock>(stock) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+                else
+                    return $"超出采购数量{Param.SetStockNum - MaterNum}";
+            }
         }
         /// <summary>
         /// 删除入库
@@ -1605,7 +1613,7 @@ namespace KilyCore.Service.ServiceCore
                      OutStockNum = p.t.OutStockNum,
                      OutStockTime = p.t.OutStockTime,
                      OutStockUser = p.t.OutStockUser,
-                     StockEx=p.x.SetStockNum - p.t.OutStockNum,
+                     StockEx = p.x.SetStockNum - p.t.OutStockNum,
                  }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -2118,7 +2126,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 CompanyId = t.CompanyId,
-                ProductSeriesId=t.ProductSeriesId,
+                ProductSeriesId = t.ProductSeriesId,
                 Spec = t.Spec,
                 ProductSeriesName = x.SeriesName,
                 ExpiredDate = t.ExpiredDate,
@@ -2126,6 +2134,24 @@ namespace KilyCore.Service.ServiceCore
                 ProductType = t.ProductType,
                 Unit = t.Unit
             }).AsNoTracking().FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 产品下拉
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseEnterpriseGoods> GetGoodsList()
+        {
+            IQueryable<EnterpriseGoods> queryable = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.Select(t => new ResponseEnterpriseGoods()
+            {
+                Id = t.Id,
+                ProductName = t.ProductName
+            }).AsNoTracking().ToList();
             return data;
         }
         #endregion
@@ -2166,6 +2192,7 @@ namespace KilyCore.Service.ServiceCore
                     ProBatch = o.BatchNo,
                     MaterialId = o.MaterialId,
                     GoodsId = p.x.Id,
+                    Manager=p.t.Manager,
                     MaterialList = Material.ToList()
                 }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -2260,15 +2287,15 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.Join(Stock, t => t.StockId, x => x.Id, (t, x) => new { t, x })
                 .Join(Goods, o => o.x.GoodsId, p => p.Id, (o, p) => new ResponseEnterpriseGoodsStockAttach()
                 {
-                    Id=o.t.Id,
-                    GoodsBatchNo=o.t.GoodsBatchNo,
-                    OutStockUser=o.t.OutStockUser,
-                    OutStockType=o.t.OutStockType,
-                    StockBatch=o.x.GoodsBatchNo,
-                    Seller=o.t.Seller,
-                    GoodsName=p.ProductName,
-                    OutStockNum=o.t.OutStockNum,
-                    StockEx= o.x.InStockNum- o.t.OutStockNum
+                    Id = o.t.Id,
+                    GoodsBatchNo = o.t.GoodsBatchNo,
+                    OutStockUser = o.t.OutStockUser,
+                    OutStockType = o.t.OutStockType,
+                    StockBatch = o.x.GoodsBatchNo,
+                    Seller = o.t.Seller,
+                    GoodsName = p.ProductName,
+                    OutStockNum = o.t.OutStockNum,
+                    StockEx = o.x.InStockNum - o.t.OutStockNum
                 }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -2277,7 +2304,8 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public string EditStockAttach(RequestEnterpriseGoodsStockAttach Param) {
+        public string EditStockAttach(RequestEnterpriseGoodsStockAttach Param)
+        {
             EnterpriseGoodsStockAttach Attach = Param.MapToEntity<EnterpriseGoodsStockAttach>();
             return Insert<EnterpriseGoodsStockAttach>(Attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }

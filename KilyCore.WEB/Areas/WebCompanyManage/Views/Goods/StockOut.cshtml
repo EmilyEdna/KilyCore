@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "新增出库";
+    ViewData["Title"] = "产品出库";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section css{
@@ -15,10 +15,10 @@
             },
             //元素
             InitDom: function () {
-                $("#SerializNo").val("C" + controller.FormatDate("YYMMDDHHmmss"));
+                $("#GoodsBatchNo").val("C" + controller.FormatDate("YYMMDDHHmmss"));
                 controller.LayDate({ elem: "#OutStockTime" });
                 $("#CompanyId").val(CompanyInfo.Id);
-                $("#MaterialStockId").val(controller.GetParam("Id"));
+                $("#StockId").val(controller.GetParam("Id"));
                 this.GetList();
             },
             GetList: function () {
@@ -34,6 +34,20 @@
                             html += '<option>' + obj.TrueName + '</option>';
                         });
                         $("#OutStockUser").html(html);
+                    }
+                });
+                //厂商下拉
+                controller.ajax({
+                    url: "EnterpriseWeb/GetSellerList",
+                    data: { Parameter: 20 },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option>' + obj.SupplierName + '</option>';
+                        });
+                        $("#Seller").html(html);
                     }
                 });
             },
@@ -53,14 +67,14 @@
 }
 <div class="ibox float-e-margins">
     <div class="ibox-content">
-        <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditOutStock" id="Edit">
+        <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditStockAttach" id="Edit">
             <input type="hidden" class="form-control" name="CompanyId" id="CompanyId" />
-            <input type="hidden" class="form-control" name="MaterialStockId" id="MaterialStockId" />
+            <input type="hidden" class="form-control" name="StockId" id="StockId" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">批次号</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="SerializNo" id="SerializNo" readonly />
+                        <input type="text" class="form-control" name="GoodsBatchNo" id="GoodsBatchNo" readonly />
                     </td>
                     <th><label class="control-label">出库数量</label></th>
                     <td class="has-warning">
@@ -79,11 +93,15 @@
                 </tr>
                 <tr>
                     <th><label class="control-label">出库类型</label></th>
-                    <td class="has-warning" colspan="3">
-                        <select class="form-control" name="StockType" type="select">
-                            <option value="领用出库">领用出库</option>
+                    <td class="has-warning">
+                        <select class="form-control" name="OutStockType" type="select">
+                            <option value="产品出库">产品出库</option>
                             <option value="其他出库">其他出库</option>
                         </select>
+                    </td>
+                    <th><label class="control-label">分销商</label></th>
+                    <td class="has-warning">
+                        <select class="form-control" name="Seller" id="Seller" type="select"></select>
                     </td>
                 </tr>
             </table>

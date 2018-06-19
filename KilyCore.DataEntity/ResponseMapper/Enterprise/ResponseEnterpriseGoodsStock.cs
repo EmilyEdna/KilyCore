@@ -38,6 +38,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// 生产批次
         /// </summary>
         public string ProBatch { get; set; }
+        public DateTime  ProductTime { get; set; }
         public string CheckUnit { get; set; }
         public string CheckUser { get; set; }
         public string CheckResult { get; set; }
@@ -52,7 +53,8 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
                     return null;
             }
         }
-    public List<ResponseEnterpriseMaterial> MaterialList { get; set; }
+        public List<ResponseEnterpriseMaterial> MaterialList { get; set; }
+        public string Manager { get; set; }
     }
     public class ResponseEnterpriseGoodsStockAttach
     {
@@ -68,6 +70,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string OutStockUser { get; set; }
         public string Seller { get; set; }
         public int OutStockNum { get; set; }
+        public DateTime OutStockTime { get; set; }
         /// <summary>
         /// 库存
         /// </summary>

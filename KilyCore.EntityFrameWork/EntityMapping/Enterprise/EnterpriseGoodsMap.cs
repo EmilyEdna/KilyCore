@@ -35,6 +35,7 @@ namespace KilyCore.EntityFrameWork.EntityMapping.Enterprise
         {
             builder.ToTable(typeof(EnterpriseGoodsStock).Name);
             builder.HasKey(t => t.Id);
+            builder.Property(t => t.ProductTime).HasColumnType(typeof(DateTime).Name);
         }
     }
     public class EnterpriseGoodsStockAttachMap : IEntityTypeConfiguration<EnterpriseGoodsStockAttach>
@@ -43,6 +44,7 @@ namespace KilyCore.EntityFrameWork.EntityMapping.Enterprise
         {
             builder.ToTable(typeof(EnterpriseGoodsStockAttach).Name);
             builder.HasKey(t => t.Id);
+            builder.Property(t => t.OutStockTime).HasColumnType(typeof(DateTime).Name);
         }
     }
 }

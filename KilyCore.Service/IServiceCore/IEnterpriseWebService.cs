@@ -108,6 +108,7 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseVeinTag> GetVeinTargetPage(PageParamList<RequestVeinTag> pageParam);
         String AcceptVeinTarget(Guid Id);
         String RemoveVeinTarget(Guid Id);
+        Object GetTagList(int type);
         #endregion
         #region 厂商管理
         PagedResult<ResponseEnterpriseSeller> GetSellerPage(PageParamList<RequestEnterpriseSeller> pageParam);
@@ -124,7 +125,6 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 入库
         PagedResult<ResponseEnterpriseMaterialStock> GetStockPage(PageParamList<RequestEnterpriseMaterialStock> pageParam);
-        ResponseEnterpriseMaterialStock GetStockDetail(Guid Id);
         String EditStock(RequestEnterpriseMaterialStock Param);
         String RemoveStock(Guid Id);
         #endregion
@@ -175,6 +175,7 @@ namespace KilyCore.Service.IServiceCore
         String RemoveGoods(Guid Id);
         String EditGoods(RequestEnterpriseGoods Param);
         ResponseEnterpriseGoods GetGoodsDetail(Guid Id);
+        IList<ResponseEnterpriseGoods> GetGoodsList();
         #endregion
         #region 产品仓库
         PagedResult<ResponseEnterpriseGoodsStock> GetGoodsStockPage(PageParamList<RequestEnterpriseGoodsStock> pageParam);

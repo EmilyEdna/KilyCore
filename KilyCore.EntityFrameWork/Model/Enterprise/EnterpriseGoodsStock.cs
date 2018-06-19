@@ -56,5 +56,13 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 质检报告
         /// </summary>
         public virtual string CheckResult { get; set; }
+        /// <summary>
+        /// 负责人
+        /// </summary>
+        public virtual string Manager { get; set; }
+        /// <summary>
+        /// 生产时间
+        /// </summary>
+        public virtual DateTime ProductTime { get; set; }
     }
 }

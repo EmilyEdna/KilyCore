@@ -27,6 +27,17 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        public IActionResult StockOut()
+        {
+            return View();
+        }
+        public IActionResult StockIn()
+        {
+            return View();
+        }
+        public IActionResult BindTarget() {
+            return View();
+        }
         #endregion
     }
 }

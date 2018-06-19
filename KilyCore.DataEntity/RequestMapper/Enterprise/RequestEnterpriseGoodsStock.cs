@@ -31,6 +31,8 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public string CheckUnit { get; set; }
         public string CheckUser { get; set; }
         public string CheckResult { get; set; }
+        public string Manager { get; set; }
+        public DateTime ProductTime { get; set; }
     }
     public class RequestEnterpriseGoodsStockAttach
     {
@@ -43,5 +45,6 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public string OutStockUser { get; set; }
         public string Seller { get; set; }
         public int OutStockNum { get; set; }
+        public DateTime OutStockTime { get; set; }
     }
 }
