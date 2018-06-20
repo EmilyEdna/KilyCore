@@ -204,6 +204,12 @@ namespace KilyCore.Service.IServiceCore
         String RemoveInferiorExprired(Guid Id);
         String EditInferiorExprired(RequestEnterpriseInferiorExprired Param);
         #endregion
+        #region 召回处理
+        PagedResult<ResponseEnterpriseRecover> GetRecoverPage(PageParamList<RequestEnterpriseRecover> pageParam);
+        ResponseEnterpriseRecover GetRecoverDetail(Guid Id);
+        String EditRecover(RequestEnterpriseRecover Param);
+        String RemoveRecover(Guid Id);
+        #endregion
         #endregion
     }
 }

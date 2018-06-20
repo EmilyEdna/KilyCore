@@ -2525,6 +2525,80 @@ namespace KilyCore.Service.ServiceCore
                 return ServiceMessage.HANDLESUCCESS;
         }
         #endregion
+        #region 召回处理
+        /// <summary>
+        /// 召回分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseRecover> GetRecoverPage(PageParamList<RequestEnterpriseRecover> pageParam)
+        {
+           IQueryable<EnterpriseRecover> queryable =  Kily.Set<EnterpriseRecover>().Where(t => t.IsDelete == false);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.RecoverGoodsName))
+                queryable = queryable.Where(t => t.RecoverGoodsName.Contains(pageParam.QueryParam.RecoverGoodsName));
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseRecover()
+            {
+                Id=t.Id,
+                RecoverStarTime=t.RecoverStarTime,
+                RecoverEndTime=t.RecoverEndTime,
+                RecoverGoodsName=t.RecoverGoodsName,
+                RecoverReason=t.RecoverReason,
+                States=t.States,
+                RecoverNum=t.RecoverNum
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 获取详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseEnterpriseRecover GetRecoverDetail(Guid Id)
+        {
+            IQueryable<EnterpriseRecover> queryable = Kily.Set<EnterpriseRecover>().Where(t => t.IsDelete == false).Where(t=>t.Id==Id);
+            var data = queryable.Select(t => new ResponseEnterpriseRecover()
+            {
+                Id = t.Id,
+                CompanyId=t.CompanyId,
+                RecoverStarTime = t.RecoverStarTime,
+                RecoverEndTime = t.RecoverEndTime,
+                RecoverGoodsName = t.RecoverGoodsName,
+                RecoverReason = t.RecoverReason,
+                States = t.States,
+                RecoverNum = t.RecoverNum,
+                HandleTime=t.HandleTime,
+                HandleUser=t.HandleUser,
+                HandleWays=t.HandleWays
+            }).FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 编辑召回
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditRecover(RequestEnterpriseRecover Param)
+        {
+            EnterpriseRecover recover = Param.MapToEntity<EnterpriseRecover>();
+            if (recover.Id == Guid.Empty)
+                return Insert(recover) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+                return Update(recover, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        /// <summary>
+        /// 删除召回
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveRecover(Guid Id)
+        {
+            return Delete<EnterpriseRecover>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
         #endregion
 
         #region 物流管理

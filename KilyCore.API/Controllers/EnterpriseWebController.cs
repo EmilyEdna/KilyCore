@@ -1247,6 +1247,48 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.EditInferiorExprired(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 召回处理
+        /// <summary>
+        /// 召回分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetRecoverPage")]
+        public ObjectResultEx GetRecoverPage(PageParamList<RequestEnterpriseRecover> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetRecoverPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetRecoverDetail")]
+        public ObjectResultEx GetRecoverDetail(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetRecoverDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑召回
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditRecover")]
+        public ObjectResultEx EditRecover(RequestEnterpriseRecover Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditRecover(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除召回
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveRecover")]
+        public ObjectResultEx RemoveRecover(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveRecover(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
         #endregion
     }
 }
