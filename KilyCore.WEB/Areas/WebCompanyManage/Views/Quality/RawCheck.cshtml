@@ -1,0 +1,138 @@
+﻿
+@{
+    ViewData["Title"] = "原材料质检";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                //恢复高度
+                $(window).resize(function (e) {
+                    window.setTimeout(function () {
+                        options.$table.bootstrapTable("resetView", { height: $(window).height() - 150 });
+                    }, 200);
+                    e.stopPropagation();
+                });
+                //设置表单
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetCheckMaterialPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { SellerType: 30 }});
+            },
+            //事件
+            InitEvents: function () {
+                $("#add").on('click', function () {
+                    controller.OpenWindow({
+                        title: "新增质检",
+                        type: 2,
+                        height: "600px",
+                        width: "800px",
+                        url: "WebCompanyManage/Quality/RawCheckEdit",
+                        callBack: function (result) {
+                            result.$("#Edit").submit();
+                        }
+                    })
+                });
+            },
+            //行为
+            action: {
+                ImgFormatter: function (val, row, index) {
+                    var action = [];
+                    action.push('<img src="' + row.CheckReport+'" style="height:36px;"/>');
+                    return action.join("&nbsp;")
+                },
+                TableFormatter: function (val, row, index) {
+                    var action = [];
+                    action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
+                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
+                    return action.join("&nbsp;")
+                },
+                TableEvents: {
+                    "click .del": function (event, val, row, index) {
+                        controller.Confirm("确认删除？", function (bool) {
+                            if (bool) {
+                                controller.ajax({
+                                    url: "EnterpriseWeb/RemoveCheckMaterial",
+                                    data: { Id: row.Id },
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    "click .edit": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "编辑原材料质检",
+                            type: 2,
+                            height: "600px",
+                            width: "800px",
+                            url: "WebCompanyManage/Quality/RawCheckEdit?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
+                    }
+                }//表单事件结束
+            }//行为结束
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+@section css{
+
+}
+
+<div class="container-fluid">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>原材料质检列表</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <form id="Edit">
+                        <div class="col-sm-8 m-b-xs">
+                            <div class="input-group">
+                                <button type="button" class="btn btn-sm btn-white" id="add"><i class="fa fa-plus"></i>新增</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" placeholder="原材料名称" class="input-sm form-control" name="SupplierName">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
+                                    <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive">
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="No" data-halign="center" data-align="center" data-valign="middle">编号</th>
+                                <th data-field="CheckName" data-halign="center" data-align="center" data-valign="middle">报告名称</th>
+                                <th data-field="MaterName" data-halign="center" data-align="center" data-valign="middle">原材料名称</th>
+                                <th data-field="CheckResult" data-halign="center" data-align="center" data-valign="middle">质检结果</th>
+                                <th data-field="CheckUint" data-halign="center" data-align="center" data-valign="middle">质检单位</th>
+                                <th data-field="CheckUser" data-halign="center" data-align="center" data-valign="middle">质检人员</th>
+                                <th data-field="CheckReport" data-formatter="options.action.ImgFormatter" data-halign="center" data-align="center" data-valign="middle">质检报告</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
