@@ -1,0 +1,121 @@
+﻿
+@{
+    ViewData["Title"] = "编辑召回";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var Guid = controller.GetParam("Id");
+                $("#CompanyId").val(CompanyInfo.Id);
+                $("#States").val("待处理");
+                controller.LayDate({ elem: "#HandleTime" });
+                controller.LayDate({ elem: "#RecoverStarTime" });
+                controller.LayDate({ elem: "#RecoverEndTime" });
+                this.GetDetail(Guid);
+            },
+            //取详情
+            GetDetail: function (data) {
+                if (data != "" && data != null && data != undefined)
+                {
+                    controller.ajax({
+                        url: "EnterpriseWeb/GetRecoverDetail",
+                        data: { Id: data },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                            $("#States").val("已处理");
+                         }
+                    });
+                    $("tr")
+                }
+            },
+            //事件
+            InitEvents: function () {
+                //取人员
+                controller.ajax({
+                    url: "EnterpriseWeb/GetUserList",
+                    data: { Parameter: 30 },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>===请选择===</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.TrueName+'">' + obj.TrueName + '</option>';
+                        });
+                        $("#HandleUser").html(html);
+                    }
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditRecover" id="Edit">
+            <input type="hidden" name="Id" />
+            <input type="hidden" name="CompanyId" id="CompanyId" />
+            <input type="hidden" name="States"  id="States"/>
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">开始时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="RecoverStarTime" id="RecoverStarTime" data-msg-required="请输入产品召回开始时间" />
+                    </td>
+                    <th><label class="control-label">截至时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="RecoverEndTime" id="RecoverEndTime" data-msg-required="请输入产品召回截至时间" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">产品名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="RecoverGoodsName" />
+                    </td>
+                    <th><label class="control-label">召回原因</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="RecoverReason" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">召回数量</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="RecoverNum" />
+                    </td>
+                    <th><label class="control-label">处理时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="HandleTime"  id="HandleTime"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">处理方式</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="HandleWays" />
+                    </td>
+                    <th><label class="control-label">处理人</label></th>
+                    <td class="has-warning">
+                        <select type="select" name="HandleUser" class="form-control" id="HandleUser"></select>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

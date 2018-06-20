@@ -2568,7 +2568,6 @@ namespace KilyCore.Service.ServiceCore
                 RecoverEndTime = t.RecoverEndTime,
                 RecoverGoodsName = t.RecoverGoodsName,
                 RecoverReason = t.RecoverReason,
-                States = t.States,
                 RecoverNum = t.RecoverNum,
                 HandleTime=t.HandleTime,
                 HandleUser=t.HandleUser,

@@ -30,7 +30,7 @@
                     type: "post",
                     async: false,
                     success: function (result) {
-                        var html = '<option>==请选择厂商==</option>';
+                        var html = '<option>===请选择===</option>';
                         $.each(result.data, function (i, obj) {
                             html += '<option>' + obj.SupplierName + '</option>';
                         });
@@ -46,7 +46,7 @@
                     type: "post",
                     async: false,
                     success: function (result) {
-                        var html = '<option>==请选择管理员==</option>';
+                        var html = '<option>===请选择===</option>';
                         $.each(result.data, function (i, obj) {
                             html += '<option>' + obj.TrueName + '</option>';
                         });

@@ -25,6 +25,16 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
-        
+
+        #region 产品召回
+        public IActionResult Recover()
+        {
+            return View();
+        }
+        public IActionResult RecoverEdit()
+        {
+            return View();
+        }
+        #endregion
     }
 }

@@ -667,8 +667,8 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("Remove")]
-        public ObjectResultEx Remove(SimlpeParam<Guid> Param)
+        [HttpPost("RemoveMaterial")]
+        public ObjectResultEx RemoveMaterial(SimlpeParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveMaterial(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
