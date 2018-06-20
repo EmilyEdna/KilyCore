@@ -9,6 +9,7 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
     [Area("WebCompanyManage")]
     public class QualityController : Controller
     {
+        #region 原料质检
         /// <summary>
         /// 原料质检
         /// </summary>
@@ -25,6 +26,25 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        #endregion
+        #region 产品质检
+        /// <summary>
+        /// 产品质检
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult GoodsCheck()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 编辑产品质检
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult GoodsCheckEdit()
+        {
+            return View();
+        }
+        #endregion
 
         #region 产品召回
         public IActionResult Recover()
@@ -36,6 +56,7 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
             return View();
         }
         #endregion
+
         #region 过期处理
         public IActionResult Expired()
         {
@@ -46,6 +67,7 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
             return View();
         }
         #endregion
+
         #region 不合格处理
         public IActionResult Inferior()
         {

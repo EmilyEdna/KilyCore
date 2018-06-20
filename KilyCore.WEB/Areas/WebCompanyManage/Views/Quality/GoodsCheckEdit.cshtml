@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "编辑原材料质检";
+    ViewData["Title"] = "编辑产品质检";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section css{
@@ -18,21 +18,21 @@
             InitDom: function () {
                 var Guid = controller.GetParam("Id");
                 $("#CompanyId").val(CompanyInfo.Id);
-                this.GetRaws();
+                this.GetGoods();
             },
-            //获取原材料
-            GetRaws: function () {
+            //获取产品
+            GetGoods: function () {
                 controller.ajax({
-                    url: "EnterpriseWeb/GetMaterialList",
+                    url: "EnterpriseWeb/GetGoodsList",
                     data: { },
                     type: "post",
                     async: false,
                     success: function (result) {
-                        var html = '<option>==请选择原材料==</option>';
+                        var html = '<option>==请选择产品==</option>';
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '">' + obj.MaterName + '</option>';
+                            html += '<option value="' + obj.Id + '">' + obj.ProductName + '</option>';
                         });
-                        $("#MaterId").html(html);
+                        $("#GoodsId").html(html);
                     }
                 });
             },
@@ -74,7 +74,7 @@
 }
 <div class="ibox float-e-margins">
     <div class="ibox-content">
-        <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditCheckMaterial" id="Edit">
+        <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditCheckGoods" id="Edit">
             <input type="hidden" id="Id" name="Id" />
             <input type="hidden" id="CompanyId" name="CompanyId" />
             <input type="hidden" id="CheckReport" name="CheckReport" />
@@ -84,9 +84,9 @@
                     <td class="has-warning">
                         <input type="text" class="form-control" name="CheckName" id="CheckName" />
                     </td>
-                    <th><label class="control-label">原材料</label></th>
+                    <th><label class="control-label">产品名称</label></th>
                     <td class="has-warning">
-                        <select type="select" class="form-control" name="MaterId" id="MaterId"></select>
+                        <select type="select" class="form-control" name="GoodsId" id="GoodsId"></select>
                     </td>
                 </tr>
                 <tr>

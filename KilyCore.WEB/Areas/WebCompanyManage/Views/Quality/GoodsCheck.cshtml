@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "原材料质检";
+    ViewData["Title"] = "产品质检";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
@@ -21,7 +21,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetCheckMaterialPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit"});
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetCheckGoodsPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit"});
             },
             //事件
             InitEvents: function () {
@@ -31,7 +31,7 @@
                         type: 2,
                         height: "478px",
                         width: "800px",
-                        url: "WebCompanyManage/Quality/RawCheckEdit",
+                        url: "WebCompanyManage/Quality/GoodsCheckEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
                         }
@@ -42,7 +42,7 @@
             action: {
                 ImgFormatter: function (val, row, index) {
                     var action = [];
-                    action.push('<img class="photoimg" src="' + row.CheckReport+'" style="height:32px;width:48px;"/>');
+                    action.push('<img class="photoimg" src="' + row.CheckReport + '" style="height:32px;width:48px;"/>');
                     return action;
                 },
                 ImgEvents: {
@@ -68,7 +68,7 @@
                         controller.Confirm("确认删除？", function (bool) {
                             if (bool) {
                                 controller.ajax({
-                                    url: "EnterpriseWeb/RemoveCheckMaterial",
+                                    url: "EnterpriseWeb/RemoveCheckGoods",
                                     data: { Id: row.Id },
                                     type: 'post',
                                     success: function (result) {
@@ -80,11 +80,11 @@
                     },
                     "click .edit": function (event, val, row, index) {
                         controller.OpenWindow({
-                            title: "编辑原材料质检",
+                            title: "编辑产品质检",
                             type: 2,
                             height: "478px",
                             width: "800px",
-                            url: "WebCompanyManage/Quality/RawCheckEdit?Id=" + row.Id,
+                            url: "WebCompanyManage/Quality/GoodsCheckEdit?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }
@@ -107,7 +107,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>原材料质检列表</h5>
+                <h5>产品质检列表</h5>
             </div>
             <div class="ibox-content">
                 <div class="row">
@@ -133,7 +133,7 @@
                         <thead>
                             <tr>
                                 <th data-field="CheckName" data-halign="center" data-align="center" data-valign="middle">报告名称</th>
-                                <th data-field="MaterName" data-halign="center" data-align="center" data-valign="middle">原材料名称</th>
+                                <th data-field="GoodsName" data-halign="center" data-align="center" data-valign="middle">产品名称</th>
                                 <th data-field="CheckResult" data-halign="center" data-align="center" data-valign="middle">质检结果</th>
                                 <th data-field="CheckUint" data-halign="center" data-align="center" data-valign="middle">质检单位</th>
                                 <th data-field="CheckUser" data-halign="center" data-align="center" data-valign="middle">质检人</th>
