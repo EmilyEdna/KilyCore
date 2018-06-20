@@ -1507,6 +1507,7 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseMaterial()
             {
+                Id=t.Id,
                 BatchNo = t.BatchNo,
                 MaterName = t.MaterName
             }).ToList();
