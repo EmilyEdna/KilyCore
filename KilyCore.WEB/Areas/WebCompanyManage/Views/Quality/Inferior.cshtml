@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "产品召回";
+    ViewData["Title"] = "不合格处理";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 <script>
@@ -20,17 +20,17 @@
                 e.stopPropagation();
             });
             //设置表单
-            this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetRecoverPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
+            this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetInferiorExpriredPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { InferiorExprired:1} });
         },
         //事件
         InitEvents: function () {
             $("#add").on('click', function () {
                 controller.OpenWindow({
-                    title: "新增质检",
+                    title: "新增差品处理",
                     type: 2,
                     height: "400px",
                     width: "600px",
-                    url: "WebCompanyManage/Quality/RecoverEdit",
+                    url: "WebCompanyManage/Quality/InferiorEdit",
                     callBack: function (result) {
                         result.$("#Edit").submit();
                     }
@@ -41,7 +41,7 @@
         action: {
             TableFormatter: function (val, row, index) {
                 var action = [];
-                action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
+                action.push('<button class="btn btn-sm btn-primary watch"><i class="fa fa-eye"></i>详情</button>');
                 action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
                 return action.join("&nbsp;")
             },
@@ -50,7 +50,7 @@
                     controller.Confirm("确认删除？", function (bool) {
                         if (bool) {
                             controller.ajax({
-                                url: "EnterpriseWeb/RemoveRecover",
+                                url: "EnterpriseWeb/RemoveInferiorExprired",
                                 data: { Id: row.Id },
                                 type: 'post',
                                 success: function (result) {
@@ -60,13 +60,13 @@
                         }
                     });
                 },
-                "click .edit": function (event, val, row, index) {
+                "click .watch": function (event, val, row, index) {
                     controller.OpenWindow({
-                        title: "编辑产品召回",
+                        title: "查看详情",
                         type: 2,
                         height: "400px",
                         width: "600px",
-                        url: "WebCompanyManage/Quality/RecoverEdit?Id=" + row.Id,
+                        url: "WebCompanyManage/Quality/InferiorEdit?Id=" + row.Id,
                         callBack: function (result) {
                             result.$("#Edit").submit();
                         }
@@ -80,16 +80,14 @@
         options.Init();
     });
 </script>
-}
 @section css{
 
 }
-
 <div class="container-fluid">
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>产品召回</h5>
+                <h5>差品处理</h5>
             </div>
             <div class="ibox-content">
                 <div class="row">
@@ -101,7 +99,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input type="text" placeholder="产品名称" class="input-sm form-control" name="RecoverGoodsName">
+                                <input type="text" placeholder="名称" class="input-sm form-control" name="CustomName">
                                 <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
                                     <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
@@ -114,12 +112,12 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="RecoverStarTime" data-halign="center" data-align="center" data-valign="middle">召回开始时间</th>
-                                <th data-field="RecoverEndTime" data-halign="center" data-align="center" data-valign="middle">召回截至时间</th>
-                                <th data-field="RecoverGoodsName" data-halign="center" data-align="center" data-valign="middle">产品名称</th>
-                                <th data-field="RecoverReason" data-halign="center" data-align="center" data-valign="middle">召回原因</th>
-                                <th data-field="RecoverNum" data-halign="center" data-align="center" data-valign="middle">召回数量</th>
-                                <th data-field="States" data-halign="center" data-align="center" data-valign="middle">状态</th>
+                                <th data-field="CustomName" data-halign="center" data-align="center" data-valign="middle">处理名称</th>
+                                <th data-field="InferName" data-halign="center" data-align="center" data-valign="middle">产品名称</th>
+                                <th data-field="InferType" data-halign="center" data-align="center" data-valign="middle">类型</th>
+                                <th data-field="HandleUser" data-halign="center" data-align="center" data-valign="middle">处理人</th>
+                                <th data-field="HandleWays" data-halign="center" data-align="center" data-valign="middle">处理方式</th>
+                                <th data-field="HandleTime" data-halign="center" data-align="center" data-valign="middle">处理时间</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>

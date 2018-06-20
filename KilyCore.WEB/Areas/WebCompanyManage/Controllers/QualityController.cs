@@ -36,5 +36,25 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
             return View();
         }
         #endregion
+        #region 过期处理
+        public IActionResult Expired()
+        {
+            return View();
+        }
+        public IActionResult ExpiredEdit()
+        {
+            return View();
+        }
+        #endregion
+        #region 不合格处理
+        public IActionResult Inferior()
+        {
+            return View();
+        }
+        public IActionResult InferiorEdit()
+        {
+            return View();
+        }
+        #endregion
     }
 }
