@@ -553,7 +553,7 @@ controller.Upload = function (option) {
         node: undefined,
         success: null
     }
-    var options = $.extend(defaultOption, option)
+    var options = $.extend(defaultOption, option);
     var defaults = {
         url: WebUrl + options.url,
         data: options.data,
@@ -611,6 +611,43 @@ controller.Select = function (option) {
         $.each(options.arrelemnt, function (i, element) {
             var doc = '<input type="hidden" name="' + element.substring(1, element.length) + '">';
             $(doc).appendTo($(element).parent());
+        });
+    }
+}
+//富文本编辑器
+controller.Editor = function (element, option) {
+    defaultOption = {
+        height: Math.ceil($(window).height() / 2),
+        width: $(window).width(),
+        lang: 'zh-CN',
+        maximumImageFileSize: 2097152,
+        placeholder: "请输入内容!",
+        disableDragAndDrop: true,
+        callbacks: {
+            onImageUpload: function (Image) {
+                var formData = new FormData();
+                formData.append("Files", Image[0]);
+                SendImg(formData);
+            }
+        }
+    };
+    var options = $.extend(defaultOption, option);
+    $(element).summernote(options);
+    function SendImg(formData) {
+        $.ajax({
+            url: WebUrl + option.url,
+            type: "post",
+            data: formData,
+            cache: false,
+            async: option.async,
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            success: function (result) {
+                $(element).summernote('insertImage', result.data, function (files) {
+                    files.css({ width: "300px", height: "200px" });
+                });
+            }
         });
     }
 }

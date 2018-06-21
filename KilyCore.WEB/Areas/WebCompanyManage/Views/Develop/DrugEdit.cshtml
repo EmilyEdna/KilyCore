@@ -52,6 +52,7 @@
                     url: "File/UploadImg",
                     element: ".upload-input",
                     maxNum: 1,
+                    maxSize:10,
                     node: '.image-box',
                     success: function (result) {
                         controller.Alter(result.msg);

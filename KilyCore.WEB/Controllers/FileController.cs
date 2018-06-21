@@ -22,10 +22,10 @@ namespace KilyCore.WEB.Controllers
         /// <param name="Files"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult UploadImg(int Size, IFormFile Files)
+        public JsonResult UploadImg(IFormFile Files)
         {
             var WebRootPath = Environment.WebRootPath;
-            Object data = FileUtil.UploadFile(Size, Files, WebRootPath);
+            Object data = FileUtil.UploadFile(Files, WebRootPath);
             return new JsonResult(data);
         }
         /// <summary>

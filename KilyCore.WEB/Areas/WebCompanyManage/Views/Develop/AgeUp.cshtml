@@ -57,10 +57,26 @@
             },
             //行为
             action: {
+                ImgFormatter: function (val, row, index) {
+                    var action = [];
+                    action.push('<img class="photo" src="' + row.LvImg + '" style="width:48px;height:32px;"">')
+                    return action.join("&nbsp;");
+                },
+                ImgEvents: {
+                    "click .photo": function (event, val, row, index) {
+                        var option = {
+                            title: "阶段图片",
+                            data: [{
+                                alt: "阶段图片",
+                                src: $(this).attr("src")
+                            }]
+                        };
+                        controller.Photos(option);
+                    }
+                },
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
-                    action.push('<a class="btn btn-sm btn-primary" download="' + row.LvImg + '" href="' + row.LvImg + '"><i class="fa fa-download"></i>下载图片</a>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
@@ -128,6 +144,7 @@
                             <tr>
                                 <th data-field="BatchNo" data-halign="center" data-align="center" data-valign="middle">育苗批次</th>
                                 <th data-field="LvName" data-halign="center" data-align="center" data-valign="middle">阶段名称</th>
+                                <th data-formatter="options.action.ImgFormatter" data-events="options.action.ImgEvents" data-halign="center" data-align="center" data-valign="middle">阶段图片</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>

@@ -22,7 +22,7 @@ namespace KilyCore.WEB.Util
         /// <param name="Files"></param>
         /// <param name="WebRootPath"></param>
         /// <returns></returns>
-        public static Object UploadFile(int Size, IFormFile Files, string WebRootPath)
+        public static Object UploadFile(IFormFile Files, string WebRootPath)
         {
             string[] FileType = { ".jpg", ".png", ".jpeg", ".bmp", ".gif", ".ico" };
             //文件后缀
@@ -32,13 +32,6 @@ namespace KilyCore.WEB.Util
             if (!FileType.Contains(FileExtension))
                 return new { data = "", flag = -1, msg = "文件类型不正确！", HttpCode = 50 };
             long bytes = Files.Length;
-            if (Size != 0)
-            {
-                if (bytes > 1024 * 1024 * Size)
-                    return new { data = "", flag = -1, msg = $"请限制图片大小在{Size}M以内！", HttpCode = 50 };
-            }
-            else if (bytes > 1024 * 1024 * 2) //2M
-                return new { data = "", flag = -1, msg = "请限制图片大小在2M以内！", HttpCode = 50 };
             string RootPath = $"/Upload/Images/{DateTime.Now.ToString("yyyyMMdd")}/";
             string SavePath = WebRootPath + RootPath;
             if (!Directory.Exists(SavePath))

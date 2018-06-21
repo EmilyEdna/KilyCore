@@ -40,10 +40,26 @@
             },
             //行为
             action: {
+                ImgFormatter: function (val, row, index) {
+                    var action = [];
+                    action.push('<img class="photo" src="' + row.CheckReport + '" style="width:48px;height:32px;"">')
+                    return action.join("&nbsp;");
+                },
+                ImgEvents: {
+                    "click .photo": function (event, val, row, index) {
+                        var option = {
+                            title: "检测报告",
+                            data: [{
+                                alt: "检测报告",
+                                src: $(this).attr("src")
+                            }]
+                        };
+                        controller.Photos(option);
+                    }
+                },
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
-                    action.push('<a class="btn btn-sm btn-primary" download="' + row.CheckReport + '" href="' + row.CheckReport + '"><i class="fa fa-download"></i>下载报告</a>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
@@ -107,6 +123,7 @@
                                 <th data-field="Brand" data-halign="center" data-align="center" data-valign="middle">品牌名称</th>
                                 <th data-field="Supplier" data-halign="center" data-align="center" data-valign="middle">供应商</th>
                                 <th data-field="PlantTime" data-halign="center" data-align="center" data-valign="middle">施养时间</th>
+                                <th data-formatter="options.action.ImgFormatter" data-events="options.action.ImgEvents" data-halign="center" data-align="center" data-valign="middle">检测报告</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>

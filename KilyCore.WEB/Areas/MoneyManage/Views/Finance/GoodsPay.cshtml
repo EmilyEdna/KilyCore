@@ -28,10 +28,26 @@
             },
             //行为
             action: {
+                ImgFormatter: function (val, row, index) {
+                    var action = [];
+                    action.push('<img class="photo" src="' + row.PaytTicket + '" style="width:48px;height:32px;"">')
+                    return action.join("&nbsp;");
+                },
+                ImgEvents: {
+                    "click .photo": function (event, val, row, index) {
+                        var option = {
+                            title: "缴费凭证",
+                            data: [{
+                                alt: "缴费凭证",
+                                src: $(this).attr("src")
+                            }]
+                        };
+                        controller.Photos(option);
+                    }
+                },
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-pencil-square-o"></i>审核</button>');
-                    action.push('<a class="btn btn-sm btn-primary" download="' + row.PaytTicket + '" href="' + row.PaytTicket + '"><i class="fa fa-download"></i>下载缴费凭证</a>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
@@ -99,6 +115,8 @@
                                 <th data-field="ApplyNum" data-halign="center" data-align="center" data-valign="middle">申请数量</th>
                                 <th data-field="PayType" data-halign="center" data-align="center" data-valign="middle">是否付款</th>
                                 <th data-field="AuditTypeName" data-halign="center" data-align="center" data-valign="middle">审核类型</th>
+                                <th data-field="AuditTypeName" data-halign="center" data-align="center" data-valign="middle">审核类型</th>
+                                <th data-formatter="options.action.ImgFormatter" data-events="options.action.ImgEvents" data-halign="center" data-align="center" data-valign="middle">缴费凭证</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>

@@ -37,11 +37,27 @@
             },
             //行为
             action: {
+                ImgFormatter: function (val, row, index) {
+                    var action = [];
+                    action.push('<img class="photo" src="' + row.PayCertificate + '" style="width:48px;height:32px;"">')
+                    return action.join("&nbsp;");
+                },
+                ImgEvents: {
+                    "click .photo": function (event, val, row, index) {
+                        var option = {
+                            title: "缴费凭证",
+                            data: [{
+                                alt: "缴费凭证",
+                                src: $(this).attr("src")
+                            }]
+                        };
+                        controller.Photos(option);
+                    }
+                },
                 TableFormatter: function (val, row, index) {
                     var action = [];
-                    action.push('<a class="btn btn-sm btn-primary" download="' + row.PayCertificate + '" href="' + row.PayCertificate + '"><i class="fa fa-download"></i>下载凭证</a>');
-                    action.push('<button class="btn btn-sm btn-primary down"><i class="fa fa-edit"></i>更新功能</button>')
-                    return action.join("&nbsp;")
+                    action.push('<button class="btn btn-sm btn-primary down"><i class="fa fa-edit"></i>更新功能</button>');
+                    return action.join("&nbsp;");
                 },
                 TableEvents: {
                     "click .down": function (event, val, row, index) { 
@@ -108,6 +124,8 @@
                                 <th data-field="OrderMoneySum" data-halign="center" data-align="center" data-valign="middle">月订单总额</th>
                                 <th data-field="PayUser" data-halign="center" data-align="center" data-valign="middle">缴费人</th>
                                 <th data-field="LinkPhone" data-halign="center" data-align="center" data-valign="middle">联系电话</th>
+                                <th data-field="AuditTypeName" data-halign="center" data-align="center" data-valign="middle">审核类型</th>
+                                <th data-formatter="options.action.ImgFormatter" data-events="options.action.ImgEvents" data-halign="center" data-align="center" data-valign="middle">缴费凭证</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>
