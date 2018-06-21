@@ -1,5 +1,4 @@
-﻿using KilyCore.Configure;
-using KilyCore.DataEntity.RequestMapper.System;
+﻿using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
@@ -339,9 +338,9 @@ namespace KilyCore.Service.ServiceCore
                 || t.AccountType == AccountEnum.Country).AsNoTracking();
             var data = queryable.Select(t => new ResponseAdmin()
             {
-                TrueName=t.TrueName,
-                BankCard=t.BankCard,
-                BankName=t.BankName
+                TrueName = t.TrueName,
+                BankCard = t.BankCard,
+                BankName = t.BankName
             }).ToList();
             return data;
         }
@@ -498,7 +497,7 @@ namespace KilyCore.Service.ServiceCore
                Email = t.Email,
                AccountType = t.AccountType,
                RoleAuthorType = t.RoleAuthorType,
-               TableName=typeof(ResponseAdmin).Name,
+               TableName = typeof(ResponseAdmin).Name,
            }).FirstOrDefault();
             return Admin ?? null;
         }

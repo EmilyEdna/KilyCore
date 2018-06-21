@@ -65,7 +65,10 @@ namespace KilyCore.API
             });
             //添加Session
             services.AddSession();
-            return Engine.ServiceProvider(services);
+            IServiceProvider IocProviderService = Engine.ServiceProvider(services);
+            //持久化任务
+            IocProviderServices.Instance.IocProviderService.RestartQuartz();
+            return IocProviderService;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -108,7 +111,7 @@ namespace KilyCore.API
             Configer.ConnentionString = Configuration.GetConnectionString("ConnectionString");
             Configer.RedisConnectionString = Configuration["RedisConnectionString:ConnectionString"];
             Configer.MongoDBConnectionString = Configuration["MongoDBConnectionString:ConnectionString"];
-            Configer.MongoDBName= Configuration["MongoDBConnectionString:MongoDBName"];
+            Configer.MongoDBName = Configuration["MongoDBConnectionString:MongoDBName"];
             Configer.ApiKey = Configuration["Key:ApiKey"];
         }
     }
