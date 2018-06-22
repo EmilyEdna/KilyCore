@@ -5,13 +5,13 @@ using System.Text;
 
 #region << 版 本 注 释 >>
 /*----------------------------------------------------------------
-* 类 名 称 ：EnterpriseGoodsStockAttach
+* 类 名 称 ：EnterpriseLogistics
 * 类 描 述 ：
 * 命名空间 ：KilyCore.EntityFrameWork.Model.Enterprise
 * 机器名称 ：DESKTOP-QPIVQ28 
 * CLR 版本 ：4.0.30319.42000
 * 作    者 ：刘泽华
-* 创建时间 ：2018/6/13 14:30:11
+* 创建时间 ：2018/6/22 15:06:34
 *******************************************************************
 * Copyright @ 刘泽华 2018. All rights reserved.
 *******************************************************************
@@ -19,46 +19,39 @@ using System.Text;
 #endregion
 namespace KilyCore.EntityFrameWork.Model.Enterprise
 {
-    /// <summary>
-    /// 产品出库表
-    /// </summary>
-    public class EnterpriseGoodsStockAttach: EnterpriseBase
+    public class EnterpriseLogistics:EnterpriseBase
     {
         /// <summary>
-        /// 出库类型
+        /// 物流单号
         /// </summary>
-        public virtual string OutStockType { get; set; }
+        public virtual string WayBill { get; set; }
         /// <summary>
-        /// 出库批次号
+        /// 包装编号
         /// </summary>
-        public virtual string GoodsBatchNo { get; set; }
+        public virtual string PackageNo { get; set; }
         /// <summary>
-        /// 产品入库表Id
+        /// 产品名称
         /// </summary>
-        public virtual Guid StockId { get; set; }
+        public virtual string GoodsName { get; set; }
         /// <summary>
-        /// 出库负责人
+        /// 发货时间
         /// </summary>
-        public virtual string OutStockUser { get; set; }
+        public virtual DateTime? SendTime { get; set; }
         /// <summary>
-        /// 出库数量
+        /// 收货人
         /// </summary>
-        public virtual int OutStockNum { get; set; }
+        public virtual string Manager { get; set; }
         /// <summary>
-        /// 分销商
+        /// 电话
         /// </summary>
-        public virtual string Seller { get; set; }
+        public virtual string LinkPhone { get; set; }
         /// <summary>
-        /// 出库时间
+        /// 地址
         /// </summary>
-        public virtual DateTime OutStockTime { get; set; }
+        public virtual string Address { get; set; }
         /// <summary>
-        /// 二维码开始号段
+        /// 是否收货
         /// </summary>
-        public virtual Int64 CodeStarSerialNo { get; set; }
-        /// <summary>
-        /// 二维码结束号段
-        /// </summary>
-        public virtual Int64 CodeEndSerialNo { get; set; }
+        public virtual bool Flag { get; set; }
     }
 }

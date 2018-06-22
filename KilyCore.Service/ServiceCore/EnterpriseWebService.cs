@@ -2298,8 +2298,8 @@ namespace KilyCore.Service.ServiceCore
                     GoodsName = p.ProductName,
                     OutStockNum = o.t.OutStockNum,
                     StockEx = o.x.InStockNum - o.t.OutStockNum,
-                    CodeEndSerialNo=o.t.CodeSerialNo+o.t.OutStockNum,
-                    CodeStarSerialNo= o.t.CodeSerialNo
+                    CodeEndSerialNo = o.t.CodeEndSerialNo,
+                    CodeStarSerialNo = o.t.CodeStarSerialNo
                 }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -2310,7 +2310,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string EditStockAttach(RequestEnterpriseGoodsStockAttach Param)
         {
-            Param.CodeSerialNo += Param.OutStockNum;
+            Param.CodeEndSerialNo = Param.CodeStarSerialNo + Param.OutStockNum;
             EnterpriseGoodsStockAttach Attach = Param.MapToEntity<EnterpriseGoodsStockAttach>();
             return Insert<EnterpriseGoodsStockAttach>(Attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
@@ -2320,14 +2320,14 @@ namespace KilyCore.Service.ServiceCore
         /// <param name="Id"></param>
         public long GetCodeSerialNo(Guid Id)
         {
-            List<EnterpriseGoodsStockAttach> StockAttach = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.StockId == Id).Where(t => t.IsDelete == false).ToList();
+            List<EnterpriseGoodsStockAttach> StockAttach = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.StockId == Id).Where(t => t.IsDelete == false).AsNoTracking().ToList();
             if (StockAttach.Count != 0)
             {
-                return StockAttach.OrderByDescending(t => t.CreateTime).Select(t => t.CodeSerialNo).FirstOrDefault()+1;
+                return StockAttach.OrderByDescending(t => t.CreateTime).Select(t => t.CodeEndSerialNo).FirstOrDefault() + 1;
             }
             else
             {
-                Guid GoodsId = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false).Where(t => t.Id == Id).Select(t => t.GoodsId).FirstOrDefault();
+                Guid GoodsId = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false).Where(t => t.Id == Id).AsNoTracking().Select(t => t.GoodsId).FirstOrDefault();
                 return Kily.Set<EnterpriseTagAttach>().Where(t => t.GoodsId == GoodsId && t.IsDelete == false).Select(t => t.StarSerialNo).FirstOrDefault();
             }
         }
@@ -2339,6 +2339,22 @@ namespace KilyCore.Service.ServiceCore
         public string RemoveGoodsStockAttach(Guid Id)
         {
             return Delete(ExpressionExtension.GetExpression<EnterpriseGoodsStockAttach>("Id", Id, ExpressionEnum.Equals)) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 获取出库批次编号
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseEnterpriseGoodsStockAttach> GetStockOutNoList()
+        {
+            IQueryable<EnterpriseGoodsStockAttach> queryable = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false).AsNoTracking();
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            return queryable.Select(t => new ResponseEnterpriseGoodsStockAttach()
+            {
+                GoodsBatchNo = t.GoodsBatchNo
+            }).ToList();
         }
         #endregion
         #endregion
@@ -2622,7 +2638,101 @@ namespace KilyCore.Service.ServiceCore
         #endregion
 
         #region 物流管理
-
+        /// <summary>
+        /// 打包分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseGoodsPackage> GetPackagePage(PageParamList<RequestEnterpriseGoodsPackage> pageParam)
+        {
+            IQueryable<EnterpriseGoodsPackage> Package = Kily.Set<EnterpriseGoodsPackage>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<EnterpriseGoodsStockAttach> Attach = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseGoodsStock> Stock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseGoods> Goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.ProductName))
+                Goods = Goods.Where(t => t.ProductName.Contains(pageParam.QueryParam.ProductName));
+            if (CompanyInfo() != null)
+                Package = Package.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                Package = Package.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = Package.Join(Attach, q => q.ProductOutStockNo, w => w.GoodsBatchNo, (q, w) => new { q, w.StockId })
+                  .Join(Stock, e => e.StockId, r => r.Id, (e, r) => new { e, r.GoodsId })
+                  .Join(Goods, t => t.GoodsId, y => y.Id, (t, y) => new ResponseEnterpriseGoodsPackage()
+                  {
+                      Id = t.e.q.Id,
+                      PackageNo = t.e.q.PackageNo,
+                      ProductName = y.ProductName,
+                      ProductOutStockNo = t.e.q.ProductOutStockNo,
+                      PackageTime = t.e.q.PackageTime,
+                      PackageNum = t.e.q.PackageNum,
+                      CodeStarSerialNo = t.e.q.CodeStarSerialNo,
+                      CodeEndSerialNo = t.e.q.CodeEndSerialNo,
+                      Manager = t.e.q.Manager
+                  }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑打包
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditGoodsPackage(RequestEnterpriseGoodsPackage Param)
+        {
+            Param.CodeEndSerialNo = Param.CodeStarSerialNo + Param.PackageNum;
+            EnterpriseGoodsPackage package = Param.MapToEntity<EnterpriseGoodsPackage>();
+            if (Param.Id == Guid.Empty)
+                return Insert(package) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+                return Update(package, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        /// <summary>
+        /// 打包详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseEnterpriseGoodsPackage GetGoodsPackageDetail(Guid Id)
+        {
+            IQueryable<EnterpriseGoodsPackage> Package = Kily.Set<EnterpriseGoodsPackage>().Where(t => t.Id == Id).AsNoTracking();
+            var data = Package.Select(t => new ResponseEnterpriseGoodsPackage()
+            {
+                Id = t.Id,
+                PackageNo = t.PackageNo,
+                ProductOutStockNo = t.ProductOutStockNo,
+                PackageTime = t.PackageTime,
+                PackageNum = t.PackageNum,
+                CodeStarSerialNo = t.CodeStarSerialNo,
+                CodeEndSerialNo = t.CodeEndSerialNo,
+                Manager = t.Manager
+            }).FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 删除打包
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveGoodsPackge(Guid Id)
+        {
+            return Delete<EnterpriseGoodsPackage>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 获取二维码
+        /// </summary>
+        /// <param name="StockOutNo"></param>
+        /// <returns></returns>
+        public long GetPackageCode(string StockOutNo)
+        {
+            List<EnterpriseGoodsPackage> Package = Kily.Set<EnterpriseGoodsPackage>().Where(t => t.IsDelete == false).Where(t => t.ProductOutStockNo.Equals(StockOutNo)).AsNoTracking().ToList();
+            if (Package.Count != 0)
+            {
+                return Package.OrderByDescending(t => t.CreateTime).Select(t => t.CodeEndSerialNo).FirstOrDefault();
+            }
+            else
+            {
+                return Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false).Where(t => t.GoodsBatchNo.Equals(StockOutNo)).Select(t => t.CodeStarSerialNo).FirstOrDefault();
+            }
+        }
         #endregion
+
     }
 }

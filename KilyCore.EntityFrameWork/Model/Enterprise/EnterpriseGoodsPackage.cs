@@ -5,13 +5,13 @@ using System.Text;
 
 #region << 版 本 注 释 >>
 /*----------------------------------------------------------------
-* 类 名 称 ：EnterpriseGoodsStockAttach
+* 类 名 称 ：GoodsPackage
 * 类 描 述 ：
 * 命名空间 ：KilyCore.EntityFrameWork.Model.Enterprise
 * 机器名称 ：DESKTOP-QPIVQ28 
 * CLR 版本 ：4.0.30319.42000
 * 作    者 ：刘泽华
-* 创建时间 ：2018/6/13 14:30:11
+* 创建时间 ：2018/6/22 14:46:37
 *******************************************************************
 * Copyright @ 刘泽华 2018. All rights reserved.
 *******************************************************************
@@ -19,39 +19,24 @@ using System.Text;
 #endregion
 namespace KilyCore.EntityFrameWork.Model.Enterprise
 {
-    /// <summary>
-    /// 产品出库表
-    /// </summary>
-    public class EnterpriseGoodsStockAttach: EnterpriseBase
+    public class EnterpriseGoodsPackage:EnterpriseBase
     {
         /// <summary>
-        /// 出库类型
+        /// 包装编号
         /// </summary>
-        public virtual string OutStockType { get; set; }
+        public virtual string PackageNo { get; set; }
         /// <summary>
-        /// 出库批次号
+        /// 产品出库表编号
         /// </summary>
-        public virtual string GoodsBatchNo { get; set; }
+        public virtual string ProductOutStockNo { get; set; }
         /// <summary>
-        /// 产品入库表Id
+        /// 打包时间
         /// </summary>
-        public virtual Guid StockId { get; set; }
+        public virtual DateTime? PackageTime { get; set; }
         /// <summary>
-        /// 出库负责人
+        /// 打包数量
         /// </summary>
-        public virtual string OutStockUser { get; set; }
-        /// <summary>
-        /// 出库数量
-        /// </summary>
-        public virtual int OutStockNum { get; set; }
-        /// <summary>
-        /// 分销商
-        /// </summary>
-        public virtual string Seller { get; set; }
-        /// <summary>
-        /// 出库时间
-        /// </summary>
-        public virtual DateTime OutStockTime { get; set; }
+        public virtual int PackageNum { get; set; }
         /// <summary>
         /// 二维码开始号段
         /// </summary>
@@ -60,5 +45,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 二维码结束号段
         /// </summary>
         public virtual Int64 CodeEndSerialNo { get; set; }
+        /// <summary>
+        /// 负责人
+        /// </summary>
+        public virtual string Manager { get; set; }
     }
 }

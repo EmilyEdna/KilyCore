@@ -1127,9 +1127,19 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
+        [HttpPost("GetCodeSerialNo")]
         public ObjectResultEx GetCodeSerialNo(SimlpeParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetCodeSerialNo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取出库批次编号
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetStockOutNoList")]
+        public ObjectResultEx GetStockOutNoList()
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetStockOutNoList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #endregion

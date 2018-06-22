@@ -186,6 +186,7 @@ namespace KilyCore.Service.IServiceCore
         String EditStockAttach(RequestEnterpriseGoodsStockAttach Param);
         String RemoveGoodsStockAttach(Guid Id);
         long GetCodeSerialNo(Guid Id);
+        IList<ResponseEnterpriseGoodsStockAttach> GetStockOutNoList();
         #endregion
         #endregion
         #region 品质管理
