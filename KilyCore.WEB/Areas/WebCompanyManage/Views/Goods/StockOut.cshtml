@@ -18,10 +18,11 @@
                 $("#GoodsBatchNo").val("C" + controller.FormatDate("YYMMDDHHmmss"));
                 controller.LayDate({ elem: "#OutStockTime" });
                 $("#CompanyId").val(CompanyInfo.Id);
-                $("#StockId").val(controller.GetParam("Id"));
-                this.GetList();
+                var Guid = controller.GetParam("Id");
+                $("#StockId").val(Guid);
+                this.GetList(Guid);
             },
-            GetList: function () {
+            GetList: function (data) {
                 //负责人下拉
                 controller.ajax({
                     url: "EnterpriseWeb/GetUserList",
@@ -48,6 +49,16 @@
                             html += '<option>' + obj.SupplierName + '</option>';
                         });
                         $("#Seller").html(html);
+                    }
+                });
+                //获取追溯号段
+                controller.ajax({
+                    url: "EnterpriseWeb/GetCodeSerialNo",
+                    data: {Id:data},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        $("input[name='CodeSerialNo']").val(result.data);
                     }
                 });
             },
@@ -102,6 +113,12 @@
                     <th><label class="control-label">分销商</label></th>
                     <td class="has-warning">
                         <select class="form-control" name="Seller" id="Seller" type="select"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">追溯开始号段</label></th>
+                    <td class="has-warning">
+                        <input type="text"  class="form-control" name="CodeSerialNo" readonly/>
                     </td>
                 </tr>
             </table>

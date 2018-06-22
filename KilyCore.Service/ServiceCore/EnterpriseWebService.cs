@@ -1507,7 +1507,7 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseMaterial()
             {
-                Id=t.Id,
+                Id = t.Id,
                 BatchNo = t.BatchNo,
                 MaterName = t.MaterName
             }).ToList();
@@ -2297,7 +2297,9 @@ namespace KilyCore.Service.ServiceCore
                     Seller = o.t.Seller,
                     GoodsName = p.ProductName,
                     OutStockNum = o.t.OutStockNum,
-                    StockEx = o.x.InStockNum - o.t.OutStockNum
+                    StockEx = o.x.InStockNum - o.t.OutStockNum,
+                    CodeEndSerialNo=o.t.CodeSerialNo+o.t.OutStockNum,
+                    CodeStarSerialNo= o.t.CodeSerialNo
                 }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -2308,8 +2310,26 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string EditStockAttach(RequestEnterpriseGoodsStockAttach Param)
         {
+            Param.CodeSerialNo += Param.OutStockNum;
             EnterpriseGoodsStockAttach Attach = Param.MapToEntity<EnterpriseGoodsStockAttach>();
             return Insert<EnterpriseGoodsStockAttach>(Attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 获取二维码号段
+        /// </summary>
+        /// <param name="Id"></param>
+        public long GetCodeSerialNo(Guid Id)
+        {
+            List<EnterpriseGoodsStockAttach> StockAttach = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.StockId == Id).Where(t => t.IsDelete == false).ToList();
+            if (StockAttach.Count != 0)
+            {
+                return StockAttach.OrderByDescending(t => t.CreateTime).Select(t => t.CodeSerialNo).FirstOrDefault()+1;
+            }
+            else
+            {
+                Guid GoodsId = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false).Where(t => t.Id == Id).Select(t => t.GoodsId).FirstOrDefault();
+                return Kily.Set<EnterpriseTagAttach>().Where(t => t.GoodsId == GoodsId && t.IsDelete == false).Select(t => t.StarSerialNo).FirstOrDefault();
+            }
         }
         /// <summary>
         /// 删除出库
@@ -2534,7 +2554,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseEnterpriseRecover> GetRecoverPage(PageParamList<RequestEnterpriseRecover> pageParam)
         {
-           IQueryable<EnterpriseRecover> queryable =  Kily.Set<EnterpriseRecover>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseRecover> queryable = Kily.Set<EnterpriseRecover>().Where(t => t.IsDelete == false);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.RecoverGoodsName))
                 queryable = queryable.Where(t => t.RecoverGoodsName.Contains(pageParam.QueryParam.RecoverGoodsName));
             if (CompanyInfo() != null)
@@ -2543,13 +2563,13 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseRecover()
             {
-                Id=t.Id,
-                RecoverStarTime=t.RecoverStarTime,
-                RecoverEndTime=t.RecoverEndTime,
-                RecoverGoodsName=t.RecoverGoodsName,
-                RecoverReason=t.RecoverReason,
-                States=t.States,
-                RecoverNum=t.RecoverNum
+                Id = t.Id,
+                RecoverStarTime = t.RecoverStarTime,
+                RecoverEndTime = t.RecoverEndTime,
+                RecoverGoodsName = t.RecoverGoodsName,
+                RecoverReason = t.RecoverReason,
+                States = t.States,
+                RecoverNum = t.RecoverNum
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -2560,19 +2580,19 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public ResponseEnterpriseRecover GetRecoverDetail(Guid Id)
         {
-            IQueryable<EnterpriseRecover> queryable = Kily.Set<EnterpriseRecover>().Where(t => t.IsDelete == false).Where(t=>t.Id==Id);
+            IQueryable<EnterpriseRecover> queryable = Kily.Set<EnterpriseRecover>().Where(t => t.IsDelete == false).Where(t => t.Id == Id);
             var data = queryable.Select(t => new ResponseEnterpriseRecover()
             {
                 Id = t.Id,
-                CompanyId=t.CompanyId,
+                CompanyId = t.CompanyId,
                 RecoverStarTime = t.RecoverStarTime,
                 RecoverEndTime = t.RecoverEndTime,
                 RecoverGoodsName = t.RecoverGoodsName,
                 RecoverReason = t.RecoverReason,
                 RecoverNum = t.RecoverNum,
-                HandleTime=t.HandleTime,
-                HandleUser=t.HandleUser,
-                HandleWays=t.HandleWays
+                HandleTime = t.HandleTime,
+                HandleUser = t.HandleUser,
+                HandleWays = t.HandleWays
             }).FirstOrDefault();
             return data;
         }

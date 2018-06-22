@@ -60,6 +60,8 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public Guid CompanyId { get; set; }
         public string GoodsName { get; set; }
         public string OutStockType { get; set; }
+        public Int64 CodeStarSerialNo { get; set; }
+        public Int64 CodeEndSerialNo { get; set; }
         public string GoodsBatchNo { get; set; }
         /// <summary>
         /// 入库批次

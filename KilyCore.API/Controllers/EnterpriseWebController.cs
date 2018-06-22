@@ -1122,6 +1122,15 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveGoodsStockAttach(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 获取二维码号段
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public ObjectResultEx GetCodeSerialNo(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetCodeSerialNo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #endregion
         #region 品质管理

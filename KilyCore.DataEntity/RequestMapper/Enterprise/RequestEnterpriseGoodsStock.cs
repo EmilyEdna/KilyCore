@@ -44,5 +44,6 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public string Seller { get; set; }
         public int OutStockNum { get; set; }
         public DateTime OutStockTime { get; set; }
+        public Int64 CodeSerialNo { get; set; }
     }
 }

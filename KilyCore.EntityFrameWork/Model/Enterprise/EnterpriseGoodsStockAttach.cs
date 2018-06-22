@@ -52,5 +52,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 出库时间
         /// </summary>
         public virtual DateTime OutStockTime { get; set; }
+        /// <summary>
+        /// 二维码号段
+        /// </summary>
+        public virtual Int64 CodeSerialNo { get; set; }
     }
 }

@@ -185,6 +185,7 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseEnterpriseGoodsStockAttach> GetGoodsStockAttachPage(PageParamList<RequestEnterpriseGoodsStockAttach> pageParam);
         String EditStockAttach(RequestEnterpriseGoodsStockAttach Param);
         String RemoveGoodsStockAttach(Guid Id);
+        long GetCodeSerialNo(Guid Id);
         #endregion
         #endregion
         #region 品质管理
