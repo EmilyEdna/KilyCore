@@ -13,6 +13,7 @@ controller.ajax = function (option) {
         url: undefined,
         type: "GET",
         data: undefined,
+        timeout: 600000,
         dataType: "json",
         crossDomain: undefined,
         xhrFields: undefined,
@@ -25,6 +26,7 @@ controller.ajax = function (option) {
     return $.ajax({
         url: host + options.url,
         data: options.data,
+        timeout: options.timeout,
         dataType: options.dataType,
         type: options.type,
         async: options.async,
@@ -650,4 +652,73 @@ controller.Editor = function (element, option) {
             }
         });
     }
+}
+//自动完成
+controller.AutoInput = function (element, option) {
+    //controller.AutoInput("#GainId", {
+    //    url: "EnterpriseWeb/GetSellerInEnterprise",
+    //    effectiveFields: ["SupplierName"],
+    //    effectiveFieldsAlias: { SupplierName: "收货人" },
+    //    idField: "Id",
+    //    keyField: "SupplierName",
+    //    processData: function (result) {
+    //        var data = { value: [] };
+    //        $.each(result.data, function (i, obj) {
+    //            data.value.push({
+    //                Id: obj.Id,
+    //                SupplierName: obj.SupplierName
+    //            });
+    //        });
+    //        return data;
+    //    }
+    //});
+    var defaultsOption = $.extend({
+        url: undefined,
+        idField:"",
+        keyField: "",
+        effectiveFields: [], //需要显示的字段
+        effectiveFieldsAlias: {}, //字典绑定数据格式化
+        processData: null
+    }, option);
+    var options = {
+        url: host + defaultsOption.url,
+        effectiveFields: defaultsOption.effectiveFields, //需要显示的字段
+        effectiveFieldsAlias: defaultsOption.effectiveFieldsAlias, //字典绑定数据格式化
+        showHeader: false, //显示头
+        allowNoKeyword: false, //无输入差查询数据
+        getDataMethod: "data", //获取数据方式
+        ignorecase: true, //忽略大小写
+        autoDropup: true, //自动展开
+        idField: defaultsOption.idField,
+        keyField: defaultsOption.keyField,
+        fnAdjustAjaxParam: function (keyword, opt) {
+            //调整参数
+            var ajaxOption = {
+                type: 'post',
+                async: false,
+                data: {},
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Token", controller.GetCookie().Token == undefined ? "" : controller.GetCookie().Token);
+                    xhr.setRequestHeader("ApiKey", controller.GetCookie().ApiKey == undefined ? "" : controller.GetCookie().ApiKey);
+                    xhr.setRequestHeader("SysKey", controller.GetCookie().SysKey == undefined ? "" : controller.GetCookie().SysKey);
+                },
+            };
+            ajaxOption.data.Parameter = $(element).val();
+            ajaxOption.data.timespan = controller.SetRequestTime();
+            return ajaxOption;
+        },
+        processData: function (result) {
+            return defaultsOption.processData(result);
+        }
+    }
+    $(element).on('change', function () {
+        var html = '<ul class="dropdown-menu dropdown-menu-right" ></ul>';
+        var ul = $(this).parent().find("ul")
+        if (ul.length == 0)
+            $(this).parent().append(html);
+        $(this).InitAuto(options).on('onSetSelectValue', function (event, keyword) {
+            $(element).val(keyword.key);
+            $('input[name="' + element + '"]').val(keyword.id);
+        });
+    });
 }

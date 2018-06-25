@@ -38,6 +38,16 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetDictionaryList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 获取入住企业的经销商
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetSellerInEnterprise")]
+        public ObjectResultEx GetSellerInEnterprise(SimlpeParam<String> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetSellerInEnterprise(Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 获取全局集团菜单
         /// <summary>

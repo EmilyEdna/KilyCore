@@ -81,6 +81,22 @@ namespace KilyCore.Service.ServiceCore
             return data;
 
         }
+        /// <summary>
+        /// 获取入住企业的经销商
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public IList<ResponseEnterpriseSeller> GetSellerInEnterprise(string Param)
+        {
+            IQueryable<EnterpriseSeller> Seller = Kily.Set<EnterpriseSeller>().Where(t => t.IsDelete == false).Where(t => t.SellerType == SellerEnum.Sale);
+            IQueryable<EnterpriseInfo> Info = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
+            var data = Seller.GroupJoin(Info, t => t.SupplierName, x => x.CompanyName, (t, x) => new ResponseEnterpriseSeller()
+            {
+                Id=x.FirstOrDefault().Id,
+                SupplierName=t.SupplierName
+            }).ToList();
+            return data;
+        }
         #endregion
 
         #region 获取全局集团菜单
@@ -2751,17 +2767,17 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseLogistics()
             {
-                Id=t.Id,
-                CompanyId=t.CompanyId,
-                GainId=t.GainId,
-                GoodsName=t.GoodsName,
-                PackageNo=t.PackageNo,
-                LinkPhone=t.LinkPhone,
-                Address=t.Address,
-                WayBill=t.WayBill,
-                GainUser=t.GainUser,
-                SendTime=t.SendTime,
-                Flag=t.Flag
+                Id = t.Id,
+                CompanyId = t.CompanyId,
+                GainId = t.GainId,
+                GoodsName = t.GoodsName,
+                PackageNo = t.PackageNo,
+                LinkPhone = t.LinkPhone,
+                Address = t.Address,
+                WayBill = t.WayBill,
+                GainUser = t.GainUser,
+                SendTime = t.SendTime,
+                Flag = t.Flag
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
