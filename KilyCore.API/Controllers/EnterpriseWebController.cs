@@ -1309,5 +1309,101 @@ namespace KilyCore.API.Controllers
         }
         #endregion
         #endregion
+        #region 物流管理
+        #region 打包管理
+        /// <summary>
+        /// 打包分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetPackagePage")]
+        public ObjectResultEx GetPackagePage(PageParamList<RequestEnterpriseGoodsPackage> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetPackagePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑打包
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditGoodsPackage")]
+        public ObjectResultEx EditGoodsPackage(RequestEnterpriseGoodsPackage Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditGoodsPackage(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 打包详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetGoodsPackageDetail")]
+        public ObjectResultEx GetGoodsPackageDetail(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetGoodsPackageDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除打包
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveGoodsPackge")]
+        public ObjectResultEx RemoveGoodsPackge(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveGoodsPackge(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取二维码
+        /// </summary>
+        /// <param name="StockOutNo"></param>
+        /// <returns></returns>
+        [HttpPost("GetPackageCode")]
+        public ObjectResultEx GetPackageCode(SimlpeParam<String> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetPackageCode(Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #region 发货收货
+        /// <summary>
+        /// 发货收货分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetLogisticsPage")]
+        public ObjectResultEx GetLogisticsPage(PageParamList<RequestEnterpriseLogistics> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetLogisticsPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑发货
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditLogistics")]
+        public ObjectResultEx EditLogistics(RequestEnterpriseLogistics Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditLogistics(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除发货
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveLogistics")]
+        public ObjectResultEx RemoveLogistics(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveLogistics(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 确认收货
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("CheckLogistics")]
+        public ObjectResultEx CheckLogistics(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.CheckLogistics(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #endregion
     }
 }

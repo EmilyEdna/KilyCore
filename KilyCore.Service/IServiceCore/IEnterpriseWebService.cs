@@ -213,5 +213,20 @@ namespace KilyCore.Service.IServiceCore
         String RemoveRecover(Guid Id);
         #endregion
         #endregion
+        #region 物流管理
+        #region 打包管理
+        PagedResult<ResponseEnterpriseGoodsPackage> GetPackagePage(PageParamList<RequestEnterpriseGoodsPackage> pageParam);
+        String EditGoodsPackage(RequestEnterpriseGoodsPackage Param);
+        ResponseEnterpriseGoodsPackage GetGoodsPackageDetail(Guid Id);
+        String RemoveGoodsPackge(Guid Id);
+        long GetPackageCode(String StockOutNo);
+        #endregion
+        #region 发货收货
+        PagedResult<ResponseEnterpriseLogistics> GetLogisticsPage(PageParamList<RequestEnterpriseLogistics> pageParam);
+        String EditLogistics(RequestEnterpriseLogistics Param);
+        String RemoveLogistics(Guid Id);
+        String CheckLogistics(Guid Id);
+        #endregion
+        #endregion
     }
 }

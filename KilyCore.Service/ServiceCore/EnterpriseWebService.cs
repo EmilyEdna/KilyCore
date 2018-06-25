@@ -2638,6 +2638,7 @@ namespace KilyCore.Service.ServiceCore
         #endregion
 
         #region 物流管理
+        #region 打包管理
         /// <summary>
         /// 打包分页
         /// </summary>
@@ -2733,6 +2734,66 @@ namespace KilyCore.Service.ServiceCore
             }
         }
         #endregion
-
+        #region 发货收货
+        /// <summary>
+        /// 发货收货分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseLogistics> GetLogisticsPage(PageParamList<RequestEnterpriseLogistics> pageParam)
+        {
+            IQueryable<EnterpriseLogistics> queryable = Kily.Set<EnterpriseLogistics>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.GoodsName))
+                queryable = queryable.Where(t => t.GoodsName.Contains(pageParam.QueryParam.GoodsName));
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.Select(t => new ResponseEnterpriseLogistics()
+            {
+                Id=t.Id,
+                GoodsName=t.GoodsName,
+                PackageNo=t.PackageNo,
+                LinkPhone=t.LinkPhone,
+                Address=t.Address,
+                WayBill=t.WayBill,
+                Manager=t.Manager,
+                SendTime=t.SendTime,
+                Flag=t.Flag
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑发货
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditLogistics(RequestEnterpriseLogistics Param)
+        {
+            EnterpriseLogistics logistics = Param.MapToEntity<EnterpriseLogistics>();
+            return Insert<EnterpriseLogistics>(logistics) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 删除发货
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveLogistics(Guid Id)
+        {
+            return Delete<EnterpriseLogistics>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 确认收货
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string CheckLogistics(Guid Id)
+        {
+            EnterpriseLogistics logistics = Kily.Set<EnterpriseLogistics>().Where(t => t.Id == Id).FirstOrDefault();
+            logistics.Flag = true;
+            return UpdateField(logistics, "Flag") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        #endregion
+        #endregion
     }
 }
