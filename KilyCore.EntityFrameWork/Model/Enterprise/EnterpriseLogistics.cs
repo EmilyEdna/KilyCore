@@ -38,9 +38,13 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual DateTime? SendTime { get; set; }
         /// <summary>
+        /// 收货人公司Id
+        /// </summary>
+        public virtual Guid GainId { get; set; }
+        /// <summary>
         /// 收货人
         /// </summary>
-        public virtual string Manager { get; set; }
+        public virtual string GainUser { get; set; }
         /// <summary>
         /// 电话
         /// </summary>

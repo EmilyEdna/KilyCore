@@ -39,9 +39,13 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// </summary>
         public DateTime? SendTime { get; set; }
         /// <summary>
+        /// 收货人公司Id
+        /// </summary>
+        public Guid GainId { get; set; }
+        /// <summary>
         /// 收货人
         /// </summary>
-        public string Manager { get; set; }
+        public string GainUser { get; set; }
         /// <summary>
         /// 电话
         /// </summary>

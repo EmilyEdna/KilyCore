@@ -2752,12 +2752,14 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.Select(t => new ResponseEnterpriseLogistics()
             {
                 Id=t.Id,
+                CompanyId=t.CompanyId,
+                GainId=t.GainId,
                 GoodsName=t.GoodsName,
                 PackageNo=t.PackageNo,
                 LinkPhone=t.LinkPhone,
                 Address=t.Address,
                 WayBill=t.WayBill,
-                Manager=t.Manager,
+                GainUser=t.GainUser,
                 SendTime=t.SendTime,
                 Flag=t.Flag
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);

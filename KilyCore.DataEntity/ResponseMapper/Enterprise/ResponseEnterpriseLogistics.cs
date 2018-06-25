@@ -21,6 +21,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
     public class ResponseEnterpriseLogistics
     {
         public Guid Id { get; set; }
+        public Guid CompanyId { get; set; }
         /// <summary>
         /// 物流单号
         /// </summary>
@@ -38,9 +39,13 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// </summary>
         public DateTime? SendTime { get; set; }
         /// <summary>
+        /// 收货人公司Id
+        /// </summary>
+        public  Guid GainId { get; set; }
+        /// <summary>
         /// 收货人
         /// </summary>
-        public string Manager { get; set; }
+        public string GainUser { get; set; }
         /// <summary>
         /// 电话
         /// </summary>
