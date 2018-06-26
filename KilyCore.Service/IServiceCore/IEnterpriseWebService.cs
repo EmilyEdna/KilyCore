@@ -31,6 +31,7 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 基础管理
         #region 企业信息
+        PagedResult<ResponseEnterprise> GetInfoPage(PageParamList<RequestEnterprise> pageParam);
         ResponseEnterprise GetEnterpriseInfo(Guid Id);
         String EditEnterprise(RequestEnterprise param);
         #endregion

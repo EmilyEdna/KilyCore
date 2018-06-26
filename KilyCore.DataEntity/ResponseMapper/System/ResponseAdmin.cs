@@ -18,6 +18,8 @@ namespace KilyCore.DataEntity.ResponseMapper.System
         public string BankCard { get; set; }
         public string BankName { get; set; }
         public string TableName { get; set; }
+        public bool OpenNet { get; set; }
+        public string Chapter { get; set; }
         /// <summary>
         /// 所属区域
         /// </summary>

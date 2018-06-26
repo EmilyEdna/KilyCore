@@ -82,6 +82,16 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.GetEnterpriseInfo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
+        /// 企业资料分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetInfoPage")]
+        public ObjectResultEx GetInfoPage(PageParamList<RequestEnterprise> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetInfoPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 编辑企业
         /// </summary>
         /// <param name="Param"></param>

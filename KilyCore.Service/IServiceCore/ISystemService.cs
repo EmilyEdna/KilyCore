@@ -54,6 +54,7 @@ namespace KilyCore.Service.IServiceCore
         String RemoveAdmin(Guid Id);
         ResponseAdmin GetAdminDetail(Guid Id);
         IList<ResponseAdmin> GetBankInfo();
+        String CG(Guid Id, bool Param);
         #endregion
         #region 任务调度
         String AddJob(RequestQuartz Param);

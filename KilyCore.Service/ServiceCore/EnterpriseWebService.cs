@@ -92,8 +92,8 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseInfo> Info = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
             var data = Seller.GroupJoin(Info, t => t.SupplierName, x => x.CompanyName, (t, x) => new ResponseEnterpriseSeller()
             {
-                Id=x.FirstOrDefault().Id,
-                SupplierName=t.SupplierName
+                Id = x.FirstOrDefault().Id,
+                SupplierName = t.SupplierName
             }).ToList();
             return data;
         }
@@ -249,6 +249,24 @@ namespace KilyCore.Service.ServiceCore
         #region 基础管理
         #region 企业资料
         /// <summary>
+        /// 企业资料分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterprise> GetInfoPage(PageParamList<RequestEnterprise> pageParam)
+        {
+            var data = Kily.Set<EnterpriseInfo>().Where(t => t.Id == pageParam.QueryParam.Id).Select(t => new ResponseEnterprise()
+            {
+                Id=t.Id,
+                CompanyName=t.CompanyName,
+                CompanyAccount = t.CompanyAccount,
+                CommunityCode = t.CommunityCode,
+                Certification = t.Certification,
+                CompanyAddress = t.CompanyAddress
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
         /// 获取企业资料
         /// </summary>
         /// <param name="Id"></param>
@@ -272,8 +290,7 @@ namespace KilyCore.Service.ServiceCore
                 Discription = t.Discription,
                 NetAddress = t.NetAddress,
                 ProductionAddress = t.ProductionAddress,
-                SellerAddress = t.SellerAddress,
-                VideoAddress = t.VideoAddress
+                SellerAddress = t.SellerAddress
             }).FirstOrDefault();
             return data;
         }

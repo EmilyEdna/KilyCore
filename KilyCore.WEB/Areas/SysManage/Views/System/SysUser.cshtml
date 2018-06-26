@@ -41,6 +41,8 @@
             action: {
                 TableFormatter: function (val, row, index) {
                     var action = [];
+                    action.push('<button class="btn btn-sm btn-primary open"><i class="fa fa-cog"></i>开启网签</button>');
+                    action.push('<button class="btn btn-sm btn-primary close"><i class="fa fa-cog"></i>关闭网签</button>');
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
                     action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
                     return action.join("&nbsp;")
@@ -71,7 +73,35 @@
                                 result.$("#Edit").submit();
                             }
                         })
-                    }
+                    },
+                    "click .open": function (event, val, row, index) {
+                        controller.Confirm("确认开启？", function (bool) {
+                            if (bool) {
+                                controller.ajax({
+                                    url: "System/CG",
+                                    data: { Id: row.Id, Parameter: true },
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    "click .close": function (event, val, row, index) {
+                        controller.Confirm("确认开启？", function (bool) {
+                            if (bool) {
+                                controller.ajax({
+                                    url: "System/CG",
+                                    data: { Id: row.Id, Parameter: false },
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
+                    },
                 }//表单事件结束
             }//行为结束
         };

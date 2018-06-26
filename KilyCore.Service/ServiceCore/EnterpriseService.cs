@@ -342,7 +342,6 @@ namespace KilyCore.Service.ServiceCore
                      ProductionAddress = t.ProductionAddress,
                      CompanyPhone = t.CompanyPhone,
                      NetAddress = t.NetAddress,
-                     VideoAddress = t.VideoAddress,
                      Discription = t.Discription,
                      Certification = t.Certification,
                      Honor = t.HonorCertification,
@@ -686,7 +685,6 @@ namespace KilyCore.Service.ServiceCore
                 NetAddress = t.NetAddress,
                 ProductionAddress = t.ProductionAddress,
                 SellerAddress = t.SellerAddress,
-                VideoAddress = t.VideoAddress,
                 TableName = typeof(ResponseEnterprise).Name
             }).FirstOrDefault();
             #endregion

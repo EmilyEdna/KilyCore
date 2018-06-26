@@ -1,8 +1,8 @@
-﻿@{
-    ViewData["Title"] = "用户编辑";
+﻿
+@{
+    ViewData["Title"] = "编辑企业";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
-
 @section css{
 }
 @section script{
@@ -12,16 +12,32 @@
             Init: function () {
                 this.InitDom();
                 this.InitEvents();
-                this.GetProvince();
-                this.GetCityByProvince();
-                this.GetAreaByCity();
-                this.GetTownByArea();
-                this.GetAuthor();
-                this.GetDetail();
             },
             //元素
             InitDom: function () {
-                options.Guid = controller.GetParam("Id");
+                options.GetProvince();
+                options.GetCityByProvince();
+                options.GetAreaByCity();
+                options.GetTownByArea();
+                options.GetCompanyInfo();
+            },
+            //获取企业信息
+            GetCompanyInfo: function () {
+                controller.ajax({
+                    url: "EnterpriseWeb/GetEnterpriseInfo",
+                    data: { Id: CompanyInfo.Id },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        controller.SetCtrlValue("#Edit", result.data);
+                        options.SetCity();
+                        controller.SetCtrlValue("#Edit", result.data);
+                        options.SetArea();
+                        controller.SetCtrlValue("#Edit", result.data);
+                        options.SetTown();
+                        controller.SetCtrlValue("#Edit", result.data);
+                    }
+                });
             },
             //获取省份
             GetProvince: function () {
@@ -31,7 +47,7 @@
                     type: "post",
                     async: false,
                     success: function (result) {
-                        var html = '<option>=请选择=</option>';
+                        var html = '<option value="undefined">=请选择=</option>';
                         $.each(result.data, function (i, obj) {
                             html += '<option value="' + obj.Id + '" data-id="' + obj.ProvinceId + '">' + obj.ProvinceName + '</option>';
                         });
@@ -59,7 +75,7 @@
             },
             //选中城市后获取区域
             GetAreaByCity: function () {
-                $("#province").change(function () { 
+                $("#province").change(function () {
                     var html = '<option>=请选择=</option>';
                     $("#area").html(html);
                     $("#town").html(html);
@@ -80,12 +96,12 @@
                     });
                 });
             },
-           //选中区域后获取乡镇
-            GetTownByArea: function () { 
+            //选中区域后获取乡镇
+            GetTownByArea: function () {
                 $("#city").change(function () {
                     var html = '<option>=请选择=</option>';
                     $("#town").html(html);
-                }); 
+                });
                 $("#area").change(function () {
                     controller.ajax({
                         url: "System/GetTown",
@@ -101,42 +117,6 @@
                         }
                     });
                 });
-            },
-            //获取权限
-            GetAuthor: function () {
-                controller.ajax({
-                    url: "System/GetAuthorRole",
-                    data: {},
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        var html = '<option>===请选择===</option>';
-                        $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '">' + obj.AuthorName + '</option>';
-                        });
-                        $("#roleAuthorType").html(html);
-                    }
-                });
-            },
-            //获取详情
-            GetDetail: function () {
-                if (options.Guid != null && options.Guid != undefined && options.Guid != "") {
-                    controller.ajax({
-                        url: 'System/GetAdminDetail',
-                        type: 'post',
-                        data: { Id: options.Guid },
-                        async: false,
-                        success: function (result) {
-                            controller.SetCtrlValue("#Edit", result.data);
-                            options.SetCity();
-                            controller.SetCtrlValue("#Edit", result.data);
-                            options.SetArea();
-                            controller.SetCtrlValue("#Edit", result.data);
-                            options.SetTown();
-                            controller.SetCtrlValue("#Edit", result.data);
-                        }
-                    });
-                }
             },
             //取得详情后获取城市
             SetCity: function () {
@@ -171,7 +151,7 @@
                 });
             },
             //取得详情后获取乡镇
-            SetTown: function () { 
+            SetTown: function () {
                 controller.ajax({
                     url: "System/GetTown",
                     data: { Id: $("#area").find("option:selected").data().id },
@@ -188,20 +168,30 @@
             },
             //事件
             InitEvents: function () {
-                //验证
-                controller.ValidateConfirm("#Edit");
-                //文件上传
+                //文件上传-执照
                 controller.Upload({
                     url: "File/UploadImg",
-                    element: ".upload-input",
+                    element: "#upload-input-1",
                     maxNum: 1,
-                    maxSize: 10,
-                    node: '.image-box',
+                    node: '#Img1',
                     success: function (result) {
                         controller.Alter(result.msg);
-                        $("#Chapter").val(result.data);
+                        $("#Certification").val(result.data);
                     }
                 });
+                //文件上传-证书
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-2",
+                    maxNum: 3,
+                    node: '#Img2',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        $("#HonorCertification").val(result.data);
+                    }
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
             },
             //行为
             action: {}
@@ -214,49 +204,73 @@
 }
 <div class="ibox float-e-margins">
     <div class="ibox-content">
-        <form class="orm-horizontal" method="post" action="System/EditAdmin" id="Edit">
-            <input type="hidden" name="Id" />
-            <input type="hidden" name="OpenNet" value="false" />
-            <input type="hidden" name="Chapter" id="Chapter" />
+        <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditEnterprise" id="Edit">
+            <input type="hidden" name="Id"/>
             <table class="table table-hover table-bordered">
                 <tr>
-                    <th><label class="control-label">用户账号</label></th>
+                    <th><label class="control-label">企业名称</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control required" name="Account" data-msg-required="请输入用户账号" />
+                        <input type="text" class="form-control required" name="CompanyName" data-msg-required="请输入企业名称">
                     </td>
-                    <th><label class="control-label">用户密码</label></th>
+                    <th><label class="control-label">企业类型</label></th>
                     <td class="has-warning">
-                        <input type="password" class="form-control required PassWordSave" name="PassWord" data-msg-required="请输入用户密码" />
-                    </td>
-                </tr>
-                <tr>
-                    <th><label class="control-label">真实姓名</label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control required" name="TrueName" data-msg-required="请输入真实姓名" />
-                    </td>
-                    <th><label class="control-label">联系电话</label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control required IsPhone" maxlength="11" name="Phone" data-msg-required="请输入联系电话" />
+                        <select name="CompanyType" class="form-control" type="select">
+                            <option value="10">种植企业</option>
+                            <option value="20">养殖企业</option>
+                            <option value="30">生产企业</option>
+                            <option value="40">流通企业</option>
+                            <option value="50">其他企业</option>
+                        </select>
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">银行卡号</label></th>
+                    <th><label class="control-label">企业账号</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control required" name="BankCard" data-msg-required="请输入银行卡号" />
+                        <input type="text" class="form-control required" name="CompanyAccount" data-msg-required="请输入企业账号">
                     </td>
-                    <th><label class="control-label">开户行</label></th>
+                    <th><label class="control-label">企业地址</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control required" name="BankName" data-msg-required="请输入开户行" />
+                        <input type="text" class="form-control required" name="CompanyAddress" data-msg-required="请输入企业地址">
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">用户邮箱</label></th>
+                    <th><label class="control-label">工商代码</label></th>
                     <td class="has-warning">
-                        <input type="email" class="form-control required IsEmail" name="Email" data-msg-required="请输入用户邮箱" />
+                        <input type="text" class="form-control required" name="CommunityCode" data-msg-required="请输入工商代码">
                     </td>
-                    <th><label class="control-label">身份证号</label></th>
+                    <th><label class="control-label">企业电话</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control required IsIDCard" name="IdCard" data-msg-required="请输入身份证号" />
+                        <input type="text" class="form-control required" name="CompanyPhone" data-msg-required="请输入企业电话" placeholder="格式：028-12345678或者13012345678">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">企业网站</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="NetAddress">
+                    </td>
+                    <th><label class="control-label">企业密码</label></th>
+                    <td class="has-warning">
+                        <input type="password" class="form-control required" name="PassWord" data-msg-required="请输入企业密码">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">销售地址</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SellerAddress">
+                    </td>
+                    <th><label class="control-label">生产地址</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ProductionAddress">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">销售地址</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SellerAddress">
+                    </td>
+                    <th><label class="control-label">生产地址</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ProductionAddress">
                     </td>
                 </tr>
                 <tr>
@@ -265,22 +279,22 @@
                         <table>
                             <tr>
                                 <td class="has-warning">
-                                    <select type="select" class="form-control" name="Province" id="province" style="width:116px">
+                                    <select type="select" class="form-control" name="Province" id="province" style="width:183px">
                                         <option>=请选择=</option>
                                     </select>
                                 </td>
                                 <td class="has-warning">
-                                    <select type="select" class="form-control" name="City" id="city" style="width:116px">
+                                    <select type="select" class="form-control" name="City" id="city" style="width:183px">
                                         <option>=请选择=</option>
                                     </select>
                                 </td>
                                 <td class="has-warning">
-                                    <select type="select" class="form-control" name="Area" id="area" style="width:116px">
+                                    <select type="select" class="form-control" name="Area" id="area" style="width:183px">
                                         <option>=请选择=</option>
                                     </select>
                                 </td>
                                 <td class="has-warning">
-                                    <select type="select" class="form-control" name="Town" id="town" style="width:116px">
+                                    <select type="select" class="form-control" name="Town" id="town" style="width:183px">
                                         <option>=请选择=</option>
                                     </select>
                                 </td>
@@ -289,27 +303,36 @@
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">账户权限</label></th>
+                    <th><label class="control-label">企业介绍</label></th>
                     <td class="has-warning" colspan="3">
-                        <select type="select" class="form-control" name="RoleAuthorType" id="roleAuthorType">
-                            <option>===请选择===</option>
-                        </select>
+                        <textarea class="form-control" name="Discription" rows="4" maxlength="300"></textarea>
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">电子公章</label></th>
+                    <th><label class="control-label">荣誉证书</label></th>
                     <td class="has-warning" colspan="3">
-                        <div class="image-box clear">
+                        <div class="image-box clear" id="Img2">
                             <section class="upload-section">
                                 <div class="upload-btn"></div>
-                                <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                                <input type="file" name="Files" id="upload-input-2" class="upload-input" value="" accept="image/*" multiple="multiple" />
                             </section>
                         </div>
+                        <input type="hidden" id="HonorCertification" name="HonorCertification" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">检测报告</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear" id="Img1">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" id="upload-input-1" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                        <input type="hidden" id="Certification" name="Certification" class="required" data-msg-required="请输上传营业执照" />
                     </td>
                 </tr>
             </table>
         </form>
     </div>
 </div>
-
-

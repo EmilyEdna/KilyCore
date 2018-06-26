@@ -59,10 +59,6 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual string NetAddress { get; set; }
         /// <summary>
-        /// 视频地址
-        /// </summary>
-        public virtual string VideoAddress { get; set; }
-        /// <summary>
         /// 企业介绍
         /// </summary>
         public virtual string Discription { get; set; }

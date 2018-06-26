@@ -21,10 +21,18 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
             return View();
         }
         /// <summary>
-        /// 文件上传
+        /// 企业资料
         /// </summary>
         /// <returns></returns>
-        public IActionResult UploadFile()
+        public IActionResult CompanyDataEdit()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 缴费
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Payment()
         {
             return View();
         }

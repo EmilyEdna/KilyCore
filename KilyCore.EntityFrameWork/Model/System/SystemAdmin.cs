@@ -58,5 +58,13 @@ namespace KilyCore.EntityFrameWork.Model.System
         /// 开户行
         /// </summary>
         public virtual string BankName { get; set; }
+        /// <summary>
+        /// 开启网签
+        /// </summary>
+        public virtual bool OpenNet { get; set; }
+        /// <summary>
+        /// 电子章
+        /// </summary>
+        public virtual string Chapter { get; set; }
     }
 }

@@ -314,8 +314,26 @@ namespace KilyCore.Service.ServiceCore
                      BankName = t.BankName,
                      IdCard = t.IdCard,
                      RoleAuthorType = t.RoleAuthorType,
-                     TypePath = t.TypePath
+                     TypePath = t.TypePath,
+                     OpenNet = t.OpenNet,
+                     Chapter = t.Chapter
                  }).FirstOrDefault();
+        }
+        /// <summary>
+        /// 回收或开启网签
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string CG(Guid Id, bool Param)
+        {
+            SystemAdmin Admin = Kily.Set<SystemAdmin>().Where(t => t.Id == Id).FirstOrDefault();
+            Admin.OpenNet = Param;
+            if (UserInfo().AccountType > AccountEnum.Country)
+                if (Param)
+                    if (UserInfo().AccountType == Admin.AccountType)
+                        return "只可为下级开启，不可为自己开启，如要开启请联系上级。";
+            return UpdateField(Admin, "OpenNet") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         /// <summary>
         /// 获取银行账户信息

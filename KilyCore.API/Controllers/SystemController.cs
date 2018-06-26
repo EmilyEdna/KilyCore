@@ -262,6 +262,17 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetBankInfo(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 回收或开启网签
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("CG")]
+        public ObjectResultEx CG(SimlpeParam<Guid> key, SimlpeParam<bool> Param)
+        {
+            return ObjectResultEx.Instance(SystemService.CG(key.Id,Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 省市区乡
         /// <summary>
