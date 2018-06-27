@@ -526,7 +526,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public IList<ResponseAreaDictionary> GetAreaVersion(Guid Id, int Param)
+        public IList<ResponseAreaDictionary> GetAreaVersion(string TypePath, int Param)
         {
             IQueryable<FunctionDictionary> queryable = Kily.Set<FunctionDictionary>().Where(t => t.DicName.Contains("版"));
             if ((CompanyEnum)Param == CompanyEnum.Plant)
@@ -539,7 +539,7 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.DicName.Contains("流通"));
             if ((CompanyEnum)Param == CompanyEnum.Other)
                 queryable = queryable.Where(t => t.DicName.Contains("其他"));
-            var data = Kily.Set<FunctionAreaDictionary>().Where(t => t.ProvinceId == Id).Where(t => t.IsDelete == false)
+            var data = Kily.Set<FunctionAreaDictionary>().Where(t => TypePath.Contains(t.ProvinceId.ToString())).Where(t => t.IsDelete == false)
                   .Join(queryable, t => t.DictionaryId, x => x.Id, (t, x) => new ResponseAreaDictionary()
                   {
                       DicName = x.DicName,

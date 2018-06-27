@@ -42,7 +42,7 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseAreaDictionary> GetAreaDicPage(PageParamList<RequestAreaDictionary> pageParam);
         String RecordAreaDic(RequestAreaDictionary Param);
         String IsEnable(Guid Id, bool Param);
-        IList<ResponseAreaDictionary> GetAreaVersion(Guid Id,int Param);
+        IList<ResponseAreaDictionary> GetAreaVersion(String TypePath, int Param);
         #endregion
     }
 }

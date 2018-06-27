@@ -336,6 +336,26 @@ namespace KilyCore.Service.ServiceCore
             return UpdateField(Admin, "OpenNet") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         /// <summary>
+        /// 获取可以签到合同的代理商
+        /// </summary>
+        /// <param name="mm"></param>
+        /// <returns></returns>
+        public IList<ResponseAdmin> GetAuthorAdmin(string TypePath)
+        {
+            var TypePathList = TypePath.Split(',');
+            var data = Kily.Set<SystemAdmin>().Where(t => t.IsDelete == false).Where(t =>
+            t.TypePath.Contains(TypePathList[0])
+            || t.TypePath.Contains(TypePathList[1])
+            || t.TypePath.Contains(TypePathList[2]))
+            .Where(t => t.OpenNet == true).Where(t=>t.AccountType>AccountEnum.Country).AsNoTracking().Select(t => new ResponseAdmin()
+            {
+                Id = t.Id,
+                TrueName = t.TrueName,
+                Chapter = t.Chapter
+            }).ToList();
+            return data;
+        }
+        /// <summary>
         /// 获取银行账户信息
         /// </summary>
         /// <returns></returns>
@@ -1052,52 +1072,45 @@ namespace KilyCore.Service.ServiceCore
         public PagedResult<ResponseStayContract> GetStayContractPage(PageParamList<RequestStayContract> pageParam)
         {
             IQueryable<SystemStayContract> queryable = Kily.Set<SystemStayContract>().Where(t => t.IsDelete == false);
-            if (!string.IsNullOrEmpty(pageParam.QueryParam.StayCompanyName))
-                queryable = queryable.Where(t => t.StayCompanyName.Contains(pageParam.QueryParam.StayCompanyName));
-            if (UserInfo().AccountType != AccountEnum.Admin && UserInfo().AccountType != AccountEnum.Country)
-                queryable = queryable.Where(t => UserInfo().TypePath.Contains(t.ProvinceId.ToString()));
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.CompanyName))
+                queryable = queryable.Where(t => t.CompanyName.Contains(pageParam.QueryParam.CompanyName));
+            if (UserInfo().AccountType == AccountEnum.Province)
+                queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().Province));
+            if (UserInfo().AccountType == AccountEnum.City)
+                queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().City));
+            if (UserInfo().AccountType == AccountEnum.Area)
+                queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().Area));
             //所属区域下的合同
-            var data = queryable.OrderByDescending(t => t.CreateTime).AsNoTracking()
-                .Select(t => new ResponseStayContract()
-                {
-                    Id = t.Id,
-                    StayCompanyId = t.StayCompanyId,
-                    StayCompanyName = t.StayCompanyName,
-                    StayCompanyContract = t.StayCompanyContract,
-                    PayContract = t.PayContract,
-                    AuditType = t.AuditType,
-                    AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
-                    TableName = t.GetType().Name
-                }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            var data = queryable.OrderByDescending(t => t.CreateTime).AsNoTracking().Select(t => new ResponseStayContract()
+            {
+                Id = t.Id,
+                CompanyName = t.CompanyName,
+                PayTicket = t.PayTicket,
+                StayTime = t.CreateTime,
+                EndTime = t.EndTime,
+                AuditType = t.AuditType,
+                AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
+                TableName = t.GetType().Name,
+                ContractType = t.ContractType,
+                IsPay = t.IsPay,
+                TryOut = t.TryOut,
+                VersionTypeName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.VersionType),
+                PayTypeName = AttrExtension.GetSingleDescription<PayEnum, DescriptionAttribute>(t.PayType)
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
         /// <summary>
-        /// 获取入住合同详情
+        /// 确认缴费
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public ResponseStayContract GetStayContractDetail(Guid Id)
+        public string EditContract(Guid Id)
         {
-            var data = Kily.Set<SystemStayContract>().Where(t => t.Id == Id).AsNoTracking().Select(t => new ResponseStayContract()
-            {
-                Id = t.Id,
-                PayContract = t.PayContract
-            }).FirstOrDefault();
-            return data;
-        }
-        /// <summary>
-        /// 编辑缴费凭证
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditContract(RequestStayContract Param)
-        {
-            SystemStayContract Contract = Kily.Set<SystemStayContract>().Where(t => t.Id == Param.Id).FirstOrDefault();
-            Contract.PayContract = Param.PayContract;
-            if (UpdateField<SystemStayContract>(Contract, "PayContract"))
-                return ServiceMessage.UPDATESUCCESS;
-            else
-                return ServiceMessage.UPDATEFAIL;
+            SystemStayContract Contract = Kily.Set<SystemStayContract>().Where(t => t.IsDelete == false).Where(t => t.Id == Id).FirstOrDefault();
+            Contract.IsPay = true;
+            Contract.TryOut = null;
+            List<String> Fieds = new List<string> { "IsPay", "TryOut" };
+            return UpdateField<SystemStayContract>(Contract, null, Fieds) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         /// <summary>
         /// 审核合同

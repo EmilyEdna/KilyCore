@@ -273,6 +273,16 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.CG(key.Id,Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 获取可以签到合同的代理商
+        /// </summary>
+        /// <param name="mm"></param>
+        /// <returns></returns>
+        [HttpPost("GetAuthorAdmin")]
+        public ObjectResultEx GetAuthorAdmin(SimlpeParam<String> Param)
+        {
+            return ObjectResultEx.Instance(SystemService.GetAuthorAdmin(Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 省市区乡
         /// <summary>
@@ -438,26 +448,6 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(SystemService.GetStayContractPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
-        /// 获取入住合同详情
-        /// </summary>
-        /// <param name="pageParam"></param>
-        /// <returns></returns>
-        [HttpPost("GetStayContractDetail")]
-        public ObjectResultEx GetStayContractDetail(SimlpeParam<Guid> Param)
-        {
-            return ObjectResultEx.Instance(SystemService.GetStayContractDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }
-        /// <summary>
-        /// 编辑缴费凭证
-        /// </summary>
-        /// <param name="pageParam"></param>
-        /// <returns></returns>
-        [HttpPost("EditContract")]
-        public ObjectResultEx EditContract(RequestStayContract Param)
-        {
-            return ObjectResultEx.Instance(SystemService.EditContract(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }
-        /// <summary>
         /// 审核合同
         /// </summary>
         /// <param name="pageParam"></param>
@@ -486,6 +476,16 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx RemoveRecord(SimlpeParam<Guid> Param)
         {
             return ObjectResultEx.Instance(SystemService.RemoveRecord(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 确认缴费
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditContract")]
+        public ObjectResultEx EditContract(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(SystemService.EditContract(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

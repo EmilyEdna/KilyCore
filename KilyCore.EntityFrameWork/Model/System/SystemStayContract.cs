@@ -15,29 +15,56 @@ namespace KilyCore.EntityFrameWork.Model.System
     public class SystemStayContract : BaseEntity
     {
         /// <summary>
+        /// 运营商Id
+        /// </summary>
+        public virtual Guid? AdminId { get; set; }
+        /// <summary>
         /// 入住企业的Id
         /// </summary>
-        public virtual Guid? StayCompanyId { get; set; }
+        public virtual Guid CompanyId { get; set; }
         /// <summary>
-        /// 省份Id
+        /// 所属区域
         /// </summary>
-        public virtual Guid ProvinceId { get; set; }
+        public virtual string TypePath { get; set; }
         /// <summary>
         /// 入住企业名称
         /// </summary>
-        public virtual string StayCompanyName { get; set; }
+        public virtual string CompanyName { get; set; }
         /// <summary>
-        /// 入住合同
+        /// 缴费票据
         /// </summary>
-        public virtual string StayCompanyContract { get; set; }
+        public virtual string PayTicket { get; set; }
         /// <summary>
-        /// 入住缴费合同
+        /// 支付方式
         /// </summary>
-        public virtual string PayContract { get; set; }
+        public virtual PayEnum PayType { get; set; }
         /// <summary>
         /// 审核类型
         /// </summary>
         public virtual AuditEnum AuditType { get; set; }
-
+        /// <summary>
+        /// 合同年限
+        /// </summary>
+        public virtual string ContractYear { get; set; }
+        /// <summary>
+        /// 到期时间
+        /// </summary>
+        public virtual DateTime EndTime { get; set; }
+        /// <summary>
+        /// 合同模式 1表示线上合同，2表示线下合同
+        /// </summary>
+        public virtual int ContractType { get; set; }
+        /// <summary>
+        /// 是否缴费
+        /// </summary>
+        public virtual bool? IsPay { get; set; }
+        /// <summary>
+        /// 试用
+        /// </summary>
+        public virtual string TryOut { get; set; }
+        /// <summary>
+        /// 版本
+        /// </summary>
+        public virtual SystemVersionEnum VersionType { get; set; }
     }
 }

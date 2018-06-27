@@ -262,7 +262,8 @@ namespace KilyCore.Service.ServiceCore
                 CompanyAccount = t.CompanyAccount,
                 CommunityCode = t.CommunityCode,
                 Certification = t.Certification,
-                CompanyAddress = t.CompanyAddress
+                CompanyAddress = t.CompanyAddress,
+                TypePath=t.TypePath
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -313,7 +314,7 @@ namespace KilyCore.Service.ServiceCore
         }
         #endregion
 
-        #region 保存合同和缴费凭证
+        #region 保存合同
         /// <summary>
         /// 保存合同和缴费凭证
         /// </summary>
@@ -323,6 +324,23 @@ namespace KilyCore.Service.ServiceCore
         {
             Param.AuditType = AuditEnum.WaitAduit;
             SystemStayContract contract = Param.MapToEntity<SystemStayContract>();
+            if (contract.ContractType == 1)
+            {
+                contract.AdminId = null;
+                //调用支付
+                if (contract.PayType == PayEnum.Unionpay)
+                    contract.IsPay = false;
+                else
+                {
+                    //支付宝和微信支付
+                }
+            }
+            else
+            {
+                contract.PayType = PayEnum.AgentPay;
+                contract.TryOut = "30";
+                contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(contract.ContractYear));
+            }
             if (Insert<SystemStayContract>(contract))
                 return ServiceMessage.INSERTSUCCESS;
             else

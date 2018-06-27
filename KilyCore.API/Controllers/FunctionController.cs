@@ -220,7 +220,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetAreaVersion")]
-        public ObjectResultEx GetAreaVersion(SimlpeParam<Guid> Key, SimlpeParam<int> Value)
+        public ObjectResultEx GetAreaVersion(SimlpeParam<String> Key, SimlpeParam<int> Value)
         {
             return ObjectResultEx.Instance(FunctionService.GetAreaVersion(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }

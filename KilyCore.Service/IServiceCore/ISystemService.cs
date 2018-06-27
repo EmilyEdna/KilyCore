@@ -55,6 +55,7 @@ namespace KilyCore.Service.IServiceCore
         ResponseAdmin GetAdminDetail(Guid Id);
         IList<ResponseAdmin> GetBankInfo();
         String CG(Guid Id, bool Param);
+        IList<ResponseAdmin> GetAuthorAdmin(string TypePath);
         #endregion
         #region 任务调度
         String AddJob(RequestQuartz Param);
@@ -73,8 +74,7 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 入住合同
         PagedResult<ResponseStayContract> GetStayContractPage(PageParamList<RequestStayContract> pageParam);
-        ResponseStayContract GetStayContractDetail(Guid Id);
-        String EditContract(RequestStayContract Param);
+        String EditContract(Guid Id);
         String AuditContract(RequestAudit Param);
         PagedResult<ResponseAudit> GetContractRecord(PageParamList<RequestAudit> pageParam);
         String RemoveRecord(Guid Id);

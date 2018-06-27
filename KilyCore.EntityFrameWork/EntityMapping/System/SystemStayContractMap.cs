@@ -16,6 +16,7 @@ namespace KilyCore.EntityFrameWork.EntityMapping.System
         {
             builder.ToTable(typeof(SystemStayContract).Name);
             builder.HasKey(t => t.Id);
+            builder.Property(t => t.EndTime).HasColumnType(typeof(DateTime).Name);
         }
     }
 }

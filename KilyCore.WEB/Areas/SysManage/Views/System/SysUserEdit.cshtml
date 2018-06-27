@@ -188,8 +188,6 @@
             },
             //事件
             InitEvents: function () {
-                //验证
-                controller.ValidateConfirm("#Edit");
                 //文件上传
                 controller.Upload({
                     url: "File/UploadImg",
@@ -202,6 +200,8 @@
                         $("#Chapter").val(result.data);
                     }
                 });
+                //验证
+                controller.ValidateConfirm("#Edit");
             },
             //行为
             action: {}

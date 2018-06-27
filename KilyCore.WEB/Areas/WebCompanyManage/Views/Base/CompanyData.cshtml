@@ -23,6 +23,10 @@
                 //设置表单
                 this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetInfoPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { Id: CompanyInfo.Id}});
             },
+            //事件
+            InitEvents: function () { 
+
+            },
             //行为
             action: {
                 ImgFormatter: function (val, row, index) {
@@ -65,9 +69,9 @@
                         controller.OpenWindow({
                             title: "缴费",
                             type: 2,
-                            height: "500px",
-                            width: "600px",
-                            url: "WebCompanyManage/Base/Payment?Id=" + row.Id,
+                            height: "600px",
+                            width: "800px",
+                            url: "WebCompanyManage/Base/Payment?Id=" + row.Id + "&TypePath=" + row.TypePath + "&CompanyName=" + row.CompanyName,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }
@@ -114,7 +118,7 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="CompanyName" data-halign="center" data-align="center" data-valign="middle">企业账户</th>
+                                <th data-field="CompanyName" data-halign="center" data-align="center" data-valign="middle">企业名称</th>
                                 <th data-field="CompanyAccount" data-halign="center" data-align="center" data-valign="middle">企业账号</th>
                                 <th data-field="CommunityCode" data-halign="center" data-align="center" data-valign="middle">工商代码</th>
                                 <th data-field="CompanyAddress" data-halign="center" data-align="center" data-valign="middle">企业地址</th>
