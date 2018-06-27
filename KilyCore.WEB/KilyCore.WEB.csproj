@@ -28,8 +28,4 @@
     <None Include="wwwroot\Content\Uploader\js\upload.js" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\WebCompanyManage\Views\Logistics\" />
-  </ItemGroup>
-
 </Project>
