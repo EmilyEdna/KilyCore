@@ -17,7 +17,7 @@
     } else {
         throw new Error('Not found jQuery.');
     }
-})(function($) {
+})(function ($) {
     var VERSION = 'VERSION_PLACEHOLDER';
     var $window = $(window);
     var isIe = 'ActiveXObject' in window; // 用于对 IE 的兼容判断
@@ -118,7 +118,7 @@
         var parentWidth = $parent.width();
 
         if (options.autoDropup) {
-            setTimeout(function() {
+            setTimeout(function () {
                 var offsetTop = $input.offset().top;
                 var winScrollTop = $window.scrollTop();
                 var menuHeight = $dropdownMenu.height();
@@ -368,7 +368,7 @@
                 }
 
                 html.push('<th>', (options.effectiveFieldsAlias[field] || field),
-                    index === 0 ? ('(' + len + ')') : '' , // 表头第一列记录总数
+                    index === 0 ? ('(' + len + ')') : '', // 表头第一列记录总数
                     '</th>');
 
                 index++;
@@ -386,7 +386,7 @@
             dataI = dataList[i];
             idValue = dataI[options.idField] || '';
             keyValue = dataI[options.keyField] || '';
-
+            AttachValue = dataI[options.AttachField] || '';
             for (field in dataI) {
                 // 标记作为 value 和 作为 id 的值
                 if (!keyValue && options.indexKey === index) {
@@ -394,6 +394,9 @@
                 }
                 if (!idValue && options.indexId === index) {
                     idValue = dataI[field];
+                }
+                if (!AttachValue && options.indexAttach === index) {
+                    AttachValue = dataI[field];
                 }
 
                 index++;
@@ -406,7 +409,8 @@
 
             html.push('<tr data-index="', (dataI.__index || i),
                 '" data-id="', idValue,
-                '" data-key="', keyValue, '">',
+                '" data-key="', keyValue,
+                '" data-attach="', AttachValue, '">',
                 tds.join(''), '</tr>');
         }
         html.push('</tbody></table>');
@@ -416,7 +420,7 @@
         //.show();
 
         // scrollbar 存在时，延时到动画结束时调整 padding
-        setTimeout(function() {
+        setTimeout(function () {
             if (notNeedCalcPadding) {
                 return;
             }
@@ -486,7 +490,7 @@
         }
 
         // url 调整
-        ajaxParam.url = function() {
+        ajaxParam.url = function () {
             if (!keyword || ajaxParam.data) {
                 return ajaxParam.url || options.url;
             }
@@ -501,9 +505,9 @@
             return options.url + type + encodeURIComponent(keyword);
         }();
 
-        return options._preAjax = $.ajax(ajaxParam).done(function(result) {
+        return options._preAjax = $.ajax(ajaxParam).done(function (result) {
             options.data = options.fnProcessData(result);
-        }).fail(function(err) {
+        }).fail(function (err) {
             if (options.fnAjaxFail) {
                 options.fnAjaxFail(err, options);
             }
@@ -537,8 +541,8 @@
      */
     function getData(keyword, $input, callback, options) {
         var data, validData, filterData = {
-                value: []
-            },
+            value: []
+        },
             i, key, len,
             fnPreprocessKeyword = options.fnPreprocessKeyword;
 
@@ -553,18 +557,18 @@
         if (options.url) {
             var timer;
             if (options.searchingTip) {
-                timer = setTimeout(function() {
+                timer = setTimeout(function () {
                     showTip(options.searchingTip, $input, $input.parent().find('ul'), options);
                 }, 600);
             }
 
-            ajax(options, keyword).done(function(result) {
+            ajax(options, keyword).done(function (result) {
                 callback($input, options.data, options); // 为 refreshDropMenu
                 $input.trigger(onDataRequestSuccess, result);
                 if (options.getDataMethod === 'firstByUrl') {
                     options.url = null;
                 }
-            }).always(function() {
+            }).always(function () {
                 timer && clearTimeout(timer);
             });
         } else {
@@ -611,8 +615,8 @@
 
         // 是否可清除已输入的内容(添加清除按钮)
         if (options.clearable && !$iClear.length) {
-                $iClear = $('<i class="clearable glyphicon glyphicon-remove"></i>')
-                    .prependTo($input.parent());
+            $iClear = $('<i class="clearable glyphicon glyphicon-remove"></i>')
+                .prependTo($input.parent());
         }
 
         return $iClear.css({
@@ -636,8 +640,10 @@
         },                              // 提示所用的数据，注意格式
         indexId: 0,                     // 每组数据的第几个数据，作为input输入框的 data-id，设为 -1 且 idField 为空则不设置此值
         indexKey: 0,                    // 每组数据的第几个数据，作为input输入框的内容
+        indexAttach: 0,               // 每组数据的第几个数据，作为input输入框的内容
         idField: '',                    // 每组数据的哪个字段作为 data-id，优先级高于 indexId 设置（推荐）
         keyField: '',                   // 每组数据的哪个字段作为输入框内容，优先级高于 indexKey 设置（推荐）
+        AttachField: '',               // 每组数据的哪个字段作为输入框内容，优先级高于 indexAttach 设置（推荐）
 
         /* 搜索相关 */
         autoSelect: TRUE,               // 键盘向上/下方向键时，是否自动选择值
@@ -694,7 +700,7 @@
     };
 
     var methods = {
-        init: function(options) {
+        init: function (options) {
             // 参数设置
             var self = this;
             options = options || {};
@@ -716,7 +722,7 @@
             }
 
             if (options.getDataMethod === 'firstByUrl' && options.url && !options.delayUntilKeyup) {
-                ajax(options).done(function(result) {
+                ajax(options).done(function (result) {
                     options.url = null;
                     self.trigger(onDataRequestSuccess, result);
                 });
@@ -759,7 +765,7 @@
                 }
 
                 // 开始事件处理
-                $input.on('keydown', function(event) {
+                $input.on('keydown', function (event) {
                     var currentList, tipsKeyword; // 提示列表上被选中的关键字
 
                     // 当提示层显示时才对键盘事件处理
@@ -820,15 +826,15 @@
                     // 设置值 tipsKeyword
                     // console.log(tipsKeyword);
                     setValue($input, tipsKeyword, options);
-                }).on('compositionstart', function(event) {
+                }).on('compositionstart', function (event) {
                     // 中文输入开始，锁定
                     // console.log('compositionstart');
                     inputLock = TRUE;
-                }).on('compositionend', function(event) {
+                }).on('compositionend', function (event) {
                     // 中文输入结束，解除锁定
                     // console.log('compositionend');
                     inputLock = FALSE;
-                }).on('keyup input paste', function(event) {
+                }).on('keyup input paste', function (event) {
                     var word;
 
                     if (event.keyCode) {
@@ -842,7 +848,7 @@
                     }
 
                     clearTimeout(keyupTimer);
-                    keyupTimer = setTimeout(function() {
+                    keyupTimer = setTimeout(function () {
                         // console.log('input keyup', event);
 
                         // 锁定状态，返回
@@ -871,14 +877,14 @@
 
                         options.fnGetData($.trim(word), $input, refreshDropMenu, options);
                     }, options.delay || 300);
-                }).on('focus', function() {
+                }).on('focus', function () {
                     // console.log('input focus');
                     adjustDropMenuPos($input, $dropdownMenu, options);
-                }).on('blur', function() {
+                }).on('blur', function () {
                     if (!isMouseenterMenu) { // 不是进入下拉列表状态，则隐藏列表
                         hideDropMenu($input, options);
                     }
-                }).on('click', function() {
+                }).on('click', function () {
                     // console.log('input click');
                     var word = $input.val();
 
@@ -908,7 +914,7 @@
                 });
 
                 // 下拉按钮点击时
-                $parent.find('.btn:eq(0)').attr('data-toggle', '').click(function() {
+                $parent.find('.btn:eq(0)').attr('data-toggle', '').click(function () {
                     if (!$dropdownMenu.is(':visible')) {
                         if (options.url) {
                             $input.click().focus();
@@ -928,22 +934,22 @@
                 });
 
                 // 列表中滑动时，输入框失去焦点
-                $dropdownMenu.mouseenter(function() {
-                        // console.log('mouseenter')
-                        isMouseenterMenu = 1;
-                        $input.blur();
-                    }).mouseleave(function() {
-                        // console.log('mouseleave')
-                        isMouseenterMenu = 0;
-                        $input.focus();
-                    }).on('mouseenter', 'tbody tr', function() {
-                        // 行上的移动事件
-                        unHoverAll($dropdownMenu, options);
-                        $(this).addClass(options.listHoverCSS);
+                $dropdownMenu.mouseenter(function () {
+                    // console.log('mouseenter')
+                    isMouseenterMenu = 1;
+                    $input.blur();
+                }).mouseleave(function () {
+                    // console.log('mouseleave')
+                    isMouseenterMenu = 0;
+                    $input.focus();
+                }).on('mouseenter', 'tbody tr', function () {
+                    // 行上的移动事件
+                    unHoverAll($dropdownMenu, options);
+                    $(this).addClass(options.listHoverCSS);
 
-                        return FALSE; // 阻止冒泡
-                    })
-                    .on('mousedown', 'tbody tr', function() {
+                    return FALSE; // 阻止冒泡
+                })
+                    .on('mousedown', 'tbody tr', function () {
                         var keywords = getPointKeyword($(this));
                         setValue($input, keywords, options);
                         setOrGetAlt($input, keywords.key);
@@ -958,57 +964,57 @@
                         setBackground($input, options);
                     });
 
-                    $parent.mouseenter(function() {
+                    $parent.mouseenter(function () {
                         if (!$input.prop(DISABLED)) {
                             $iClear.css('right', options.showBtn ? Math.max($input.next('.input-group-btn').width(), 33) + 2 : 12)
                                 .show();
                         }
-                    }).mouseleave(function() {
+                    }).mouseleave(function () {
                         $iClear.hide();
                     });
                 }
 
             });
         },
-        show: function() {
-            return this.each(function() {
+        show: function () {
+            return this.each(function () {
                 $(this).click();
             });
         },
-        hide: function() {
-            return this.each(function() {
+        hide: function () {
+            return this.each(function () {
                 hideDropMenu($(this));
             });
         },
-        disable: function() {
-            return this.each(function() {
+        disable: function () {
+            return this.each(function () {
                 $(this).attr(DISABLED, TRUE)
                     .parent().find('.btn:eq(0)').prop(DISABLED, TRUE);
             });
         },
-        enable: function() {
-            return this.each(function() {
+        enable: function () {
+            return this.each(function () {
                 $(this).attr(DISABLED, FALSE)
                     .parent().find('.btn:eq(0)').prop(DISABLED, FALSE);
             });
         },
-        destroy: function() {
-            return this.each(function() {
+        destroy: function () {
+            return this.each(function () {
                 $(this).off().removeData(BSSUGGEST).removeAttr('style')
                     .parent().find('.btn:eq(0)').off().show().attr('data-toggle', 'dropdown').prop(DISABLED, FALSE) // .addClass(DISABLED);
                     .next().css('display', '').off();
             });
         },
-        version: function() {
+        version: function () {
             return VERSION;
         }
     };
 
-    $.fn[BSSUGGEST] = function(options) {
+    $.fn[BSSUGGEST] = function (options) {
         // 方法判断
         if (typeof options === 'string' && methods[options]) {
             var inited = TRUE;
-            this.each(function() {
+            this.each(function () {
                 if (!$(this).data(BSSUGGEST)) {
                     return inited = FALSE;
                 }

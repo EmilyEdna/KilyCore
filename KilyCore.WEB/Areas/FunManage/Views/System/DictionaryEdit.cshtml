@@ -17,6 +17,7 @@
             InitDom: function () {
                 var Guid = controller.GetParam("Id");
                 options.GetDicDetail(Guid);
+                controller.Editor(".summernote", {width:655});
             },
             //获取详细
             GetDicDetail: function (data) {
@@ -51,6 +52,7 @@
     <div class="ibox-content">
         <form class="orm-horizontal" method="post" action="Function/DicEdit" id="Edit">
             <input type="hidden" name="Id"/>
+            <input  type="hidden" name="DicDescript"/>
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">码表名称</label></th>
@@ -71,7 +73,7 @@
                 <tr>
                     <th><label class="control-label">详情描述</label></th>
                     <td class="has-warning" colspan="3">
-                        <textarea class="form-control" name="DicDescript" maxlength="300" rows="5"></textarea>
+                        <div class="summernote" name="DicDescript"></div>
                     </td>
             </table>
         </form>

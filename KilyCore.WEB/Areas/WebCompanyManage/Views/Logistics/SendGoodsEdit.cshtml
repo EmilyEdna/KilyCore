@@ -1,0 +1,118 @@
+﻿
+@{
+    ViewData["Title"] = "编辑发货";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var No = controller.GetParam("No")
+                $("input[name='CompanyId']").val(CompanyInfo.Id);
+                $("input[name='PackageNo']").val(No);
+                $("input[name='GoodsName']").val(controller.GetParam("GoodsName"));
+                controller.LayDate({ elem: "input[name='SendTime']" });
+                if (No != null && No != "")
+                    $("input[name='SendGoodsNum']").val(1);
+            },
+            //事件
+            InitEvents: function () {
+                //获取收货人
+                controller.AutoInput("#GainUser", {
+                    url: "EnterpriseWeb/GetSellerInEnterprise",
+                    effectiveFields: ["SupplierName"],
+                    effectiveFieldsAlias: { SupplierName: "收货人" },
+                    idField: "Id",
+                    keyField: "SupplierName",
+                    AttachField:"Address",
+                    processData: function (result) {
+                        var data = { value: [] };
+                        $.each(result.data, function (i, obj) {
+                            data.value.push({
+                                Id: obj.Id,
+                                SupplierName: obj.SupplierName,
+                                Address: obj.Address
+                            });
+                        });
+                        return data;
+                    }
+                });
+                //$("#GainId").on('change', function () {
+                //    var chk = $(this).find("option:selected");
+                //    $("#GainUser").val(chk.text());
+                //    $("input[name='Address']").val(chk.data().title);
+                //});
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditGoodsPackage" id="Edit">
+            <input type="hidden" name="Id" />
+            <input type="hidden" name="CompanyId" />
+            <input type="hidden" name="Flag" value="false" />
+            <input type="hidden" name="GainId" id="GainId" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">打包批次</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="PackageNo" readonly />
+                    </td>
+                    <th><label class="control-label">产品名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="GoodsName" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">收货人</label></th>
+                    <td class="has-warning">
+                        <div class="input-group" style="width:201px;">
+                            <input type="text" class="form-control" id="GainUser" name="GainUser"  Flag="GainId" titles="Address"/>
+                        </div>
+                    </td>
+                    <th><label class="control-label">发货数量</label></th>
+                    <td class="has-warning">
+                        <input type="text" name="SendGoodsNum" class="form-control" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">发货时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SendTime" />
+                    </td>
+                    <th><label class="control-label">收货地址</label></th>
+                    <td class="has-warning">
+                        <input type="text" name="Address" class="form-control" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">物流单号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="WayBill" />
+                    </td>
+                    <th><label class="control-label">联系电话</label></th>
+                    <td class="has-warning">
+                        <input type="text" name="LinkPhone" class="form-control" readonly />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

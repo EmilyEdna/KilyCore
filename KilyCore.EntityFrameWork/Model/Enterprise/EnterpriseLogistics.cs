@@ -42,6 +42,10 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual Guid GainId { get; set; }
         /// <summary>
+        /// 发货数量
+        /// </summary>
+        public virtual string SendGoodsNum { get; set; }
+        /// <summary>
         /// 收货人
         /// </summary>
         public virtual string GainUser { get; set; }

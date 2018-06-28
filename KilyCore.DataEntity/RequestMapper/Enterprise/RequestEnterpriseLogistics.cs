@@ -31,6 +31,10 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// </summary>
         public string PackageNo { get; set; }
         /// <summary>
+        /// 发货数量
+        /// </summary>
+        public  string SendGoodsNum { get; set; }
+        /// <summary>
         /// 产品名称
         /// </summary>
         public string GoodsName { get; set; }
@@ -58,5 +62,6 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// 是否收货
         /// </summary>
         public bool Flag { get; set; }
+        public bool SendType { get; set; }
     }
 }

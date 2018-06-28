@@ -630,6 +630,10 @@ controller.Editor = function (element, option) {
                 var formData = new FormData();
                 formData.append("Files", Image[0]);
                 SendImg(formData);
+            },
+            onChange: function (Content) {
+                var attr = $(element).attr("name");
+                $("input[name='" + attr + "']").val(Content);
             }
         }
     };
@@ -674,8 +678,9 @@ controller.AutoInput = function (element, option) {
     //});
     var defaultsOption = $.extend({
         url: undefined,
-        idField:"",
+        idField: "",
         keyField: "",
+        AttachField:"",
         effectiveFields: [], //需要显示的字段
         effectiveFieldsAlias: {}, //字典绑定数据格式化
         processData: null
@@ -691,6 +696,7 @@ controller.AutoInput = function (element, option) {
         autoDropup: true, //自动展开
         idField: defaultsOption.idField,
         keyField: defaultsOption.keyField,
+        AttachField: defaultsOption.AttachField,
         fnAdjustAjaxParam: function (keyword, opt) {
             //调整参数
             var ajaxOption = {
@@ -718,7 +724,10 @@ controller.AutoInput = function (element, option) {
             $(this).parent().append(html);
         $(this).InitAuto(options).on('onSetSelectValue', function (event, keyword) {
             $(element).val(keyword.key);
-            $('input[name="' + element + '"]').val(keyword.id);
+            var flag = $(element).attr("Flag");
+            var title = $(element).attr("titles");
+            $('input[name="' + flag + '"]').val(keyword.id);
+            $('input[name="' + title + '"]').val(keyword.attach);
         });
     });
 }

@@ -22,5 +22,15 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
             return View();
         }
         #endregion
+        #region 发货
+        public IActionResult SendGoods()
+        {
+            return View();
+        }
+        public IActionResult SendGoodsEdit()
+        {
+            return View();
+        }
+        #endregion
     }
 }

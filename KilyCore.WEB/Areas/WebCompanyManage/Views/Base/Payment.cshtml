@@ -30,7 +30,7 @@
                     success: function (result) {
                         var html = '<option>===请选择===</option>'
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.DicValue + '">' + obj.DicName + '</option>';
+                            html += '<option value="' + obj.DicValue + '" data-value="' + obj.DicDescript + '">' + obj.DicName + '</option>';
                         });
                         $("#VersionType").html(html);
                     }

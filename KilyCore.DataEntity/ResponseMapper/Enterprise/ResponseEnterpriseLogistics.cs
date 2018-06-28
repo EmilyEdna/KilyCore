@@ -27,6 +27,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// </summary>
         public string WayBill { get; set; }
         /// <summary>
+        /// 发货数量
+        /// </summary>
+        public string SendGoodsNum { get; set; }
+        /// <summary>
         /// 包装编号
         /// </summary>
         public string PackageNo { get; set; }

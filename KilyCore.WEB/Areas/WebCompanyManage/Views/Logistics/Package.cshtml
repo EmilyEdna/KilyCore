@@ -60,6 +60,18 @@
                             }
                         })
                     },
+                    "click .send": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "产品发货",
+                            type: 2,
+                            height: "450px",
+                            width: "600px",
+                            url: "SysManage/Logistics/SendGoodsEdit?GoodsName=" + row.ProductName + "&No=" + row.PackageNo,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
+                    },
                     "click .del": function (event, val, row, index) {
                         controller.Confirm("确认删除？", function (bool) {
                             if (bool) {

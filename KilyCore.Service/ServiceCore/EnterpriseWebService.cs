@@ -90,10 +90,13 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseSeller> Seller = Kily.Set<EnterpriseSeller>().Where(t => t.IsDelete == false).Where(t => t.SellerType == SellerEnum.Sale);
             IQueryable<EnterpriseInfo> Info = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
+            if (!string.IsNullOrEmpty(Param))
+                Seller = Seller.Where(t => t.SupplierName.Contains(Param));
             var data = Seller.GroupJoin(Info, t => t.SupplierName, x => x.CompanyName, (t, x) => new ResponseEnterpriseSeller()
             {
                 Id = x.FirstOrDefault().Id,
-                SupplierName = t.SupplierName
+                SupplierName = t.SupplierName,
+                Address = t.Address
             }).ToList();
             return data;
         }
@@ -257,13 +260,13 @@ namespace KilyCore.Service.ServiceCore
         {
             var data = Kily.Set<EnterpriseInfo>().Where(t => t.Id == pageParam.QueryParam.Id).Select(t => new ResponseEnterprise()
             {
-                Id=t.Id,
-                CompanyName=t.CompanyName,
+                Id = t.Id,
+                CompanyName = t.CompanyName,
                 CompanyAccount = t.CompanyAccount,
                 CommunityCode = t.CommunityCode,
                 Certification = t.Certification,
                 CompanyAddress = t.CompanyAddress,
-                TypePath=t.TypePath
+                TypePath = t.TypePath
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -2796,10 +2799,20 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseLogistics> queryable = Kily.Set<EnterpriseLogistics>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.GoodsName))
                 queryable = queryable.Where(t => t.GoodsName.Contains(pageParam.QueryParam.GoodsName));
-            if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            if (pageParam.QueryParam.SendType)
+            {
+                if (CompanyInfo() != null)
+                    queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                else
+                    queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            }
             else
-                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            {
+                if (CompanyInfo() != null)
+                    queryable = queryable.Where(t => t.GainId == CompanyInfo().Id);
+                else
+                    queryable = queryable.Where(t => t.GainId == CompanyUser().Id);
+            }
             var data = queryable.Select(t => new ResponseEnterpriseLogistics()
             {
                 Id = t.Id,
@@ -2810,6 +2823,7 @@ namespace KilyCore.Service.ServiceCore
                 LinkPhone = t.LinkPhone,
                 Address = t.Address,
                 WayBill = t.WayBill,
+                SendGoodsNum = t.SendGoodsNum,
                 GainUser = t.GainUser,
                 SendTime = t.SendTime,
                 Flag = t.Flag

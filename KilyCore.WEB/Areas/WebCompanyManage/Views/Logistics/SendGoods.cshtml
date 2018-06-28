@@ -21,17 +21,17 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetPackagePage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit"});
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetLogisticsPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { SendType: true } });
             },
             //事件
             InitEvents: function () {
                 $("#add").on('click', function () {
                     controller.OpenWindow({
-                        title: "新增打包",
+                        title: "新增发货",
                         type: 2,
                         height: "450px",
                         width: "600px",
-                        url: "WebCompanyManage/Logistics/PackageEdit",
+                        url: "WebCompanyManage/Logistics/SendGoodsEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
                         }
@@ -42,29 +42,15 @@
             action: {
                 TableFormatter: function (val, row, index) {
                     var action = [];
-                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
-                    action.push('<button class="btn btn-sm btn-primary send"><i class="fa fa-pencil-square-o"></i>发货</button>');
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
-                    "click .edit": function (event, val, row, index) {
-                        controller.OpenWindow({
-                            title: "编辑产品打包",
-                            type: 2,
-                            height: "450px",
-                            width: "600px",
-                            url: "SysManage/Logistics/PackageEdit?Id=" + row.Id,
-                            callBack: function (result) {
-                                result.$("#Edit").submit();
-                            }
-                        })
-                    },
                     "click .del": function (event, val, row, index) {
                         controller.Confirm("确认删除？", function (bool) {
                             if (bool) {
                                 controller.ajax({
-                                    url: "EnterpriseWeb/RemoveGoodsPackge",
+                                    url: "EnterpriseWeb/RemoveLogistics",
                                     data: { Id: row.Id },
                                     type: 'post',
                                     success: function (result) {
@@ -91,7 +77,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>产品打包</h5>
+                <h5>发货管理</h5>
             </div>
             <div class="ibox-content">
                 <div class="row">
@@ -103,7 +89,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input type="text" placeholder="产品名称" class="input-sm form-control" name="ProductName">
+                                <input type="text" placeholder="产品名称" class="input-sm form-control" name="GoodsName">
                                 <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
                                     <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
@@ -117,11 +103,14 @@
                         <thead>
                             <tr>
                                 <th data-field="PackageNo" data-halign="center" data-align="center" data-valign="middle">打包批次</th>
-                                <th data-field="ProductOutStockNo" data-halign="center" data-align="center" data-valign="middle">出库批次</th>
-                                <th data-field="ProductName" data-halign="center" data-align="center" data-valign="middle">产品名称</th>
-                                <th data-field="CodeStarSerialNo" data-halign="center" data-align="center" data-valign="middle">追溯开始号段</th>
-                                <th data-field="CodeEndSerialNo" data-halign="center" data-align="center" data-valign="middle">追溯结束号段</th>
-                                <th data-field="PackageNum" data-halign="center" data-align="center" data-valign="middle">打包数量</th>
+                                <th data-field="WayBill" data-halign="center" data-align="center" data-valign="middle">运单号</th>
+                                <th data-field="GoodsName" data-halign="center" data-align="center" data-valign="middle">产品名称</th>
+                                <th data-field="LinkPhone" data-halign="center" data-align="center" data-valign="middle">发货人电话</th>
+                                <th data-field="GainUser" data-halign="center" data-align="center" data-valign="middle">收货人</th>
+                                <th data-field="Address" data-halign="center" data-align="center" data-valign="middle">收货地址</th>
+                                <th data-field="SendGoodsNum" data-halign="center" data-align="center" data-valign="middle">发货数量</th>
+                                <th data-field="SendTime" data-halign="center" data-align="center" data-valign="middle">发货时间</th>
+                                <th data-field="FlagName" data-halign="center" data-align="center" data-valign="middle">状态</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>
