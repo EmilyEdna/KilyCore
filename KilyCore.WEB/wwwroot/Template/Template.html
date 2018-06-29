@@ -1,0 +1,207 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title></title>
+  </head>
+  <body style="text-align:center;">
+    <div style="width:100%;margin:auto auto;">
+      <!--头部-->
+      <div id="Header">
+        <p class="MsoNormal" align="center" style="margin-left:0.0000pt;text-indent:0.0000pt;text-align:center;vertical-align:top;position:relative;">
+          <img width="92" height="83" src="http://www.cfdacx.com/images/logo2018.png" />
+          <span style="position:absolute;right:0px;top:48px;">合同编号：{PathNo}</span>
+        </p>
+        <p class="MsoNormal" align="center" style="text-align:center;font-size:20px;">
+          <b>中食药监管信息查询平台</b>
+          <b></b>
+        </p>
+        <p class="MsoNormal" align="center" style="text-align:center;">
+          <b>
+            <u style="display:inline-block;padding:2px 6px;">{CompanyCategory}</u>企业入驻
+          </b>
+          <b>协议</b>
+          <b></b>
+        </p>
+      </div>
+      <!--重点内容-->
+      <div id="middle" style="text-align:left;">
+        <p class="MsoNormal">
+          <b>&nbsp;</b>
+        </p>
+        <p class="MsoNormal">
+          <b>甲方：</b>
+          <b>成都研成科技有限公司</b>
+          <b></b>
+        </p>
+        <p class="MsoNormal">
+          信用代码：91510100689027034C
+        </p>
+        <p class="MsoNormal">
+          地址：四川省<span>成都高新区天府大道中段</span>1388<span>号</span>A座1258<span>号</span>
+        </p>
+        <p class="MsoNormal">
+          <b>乙方：</b>
+          <b>
+            <u style="display:inline-block;padding:2px 6px;">{CompanyName}</u>
+          </b>
+        </p>
+        <p class="MsoNormal">
+          信用代码：<b>
+            <u style="display:inline-block;padding:2px 6px;">{CompanyCode}</u>
+          </b>
+        </p>
+        <p class="MsoNormal">
+          地址：<b>
+            <u style="display:inline-block;padding:2px 6px;">{CompanyAddress}</u>
+          </b>
+        </p>
+        <p class="MsoNormal" style="margin-left:0.0000pt;text-indent:24.0000pt;">
+          为深入贯彻《中华人民共和国食品安全法》，落实企业质量安全追溯体系建设主体责任，防止假冒伪劣食品的侵害，保护企业的合法权益，提升企业品牌价值，根据《中华人民共和国合同法》，经甲、乙双方友好协商，现就甲方为乙方提供产品追溯体系服务，特订立本协议。
+        </p>
+        <p class="MsoNormal">
+          <b>一、合作内容</b>
+          <b></b>
+        </p>
+        <p class="MsoNormal">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>本协议旨在乙方通过甲方运营的</span>“中食药监管信息查询平台”（以下简称“平台”）进行开设帐号并使用甲方向其提供的“<u style="display:inline-block;padding:2px 6px;">{CompanyCategory}</u>”—平台功能板块（<u>
+            <u style="display:inline-block;padding:2px 6px;">{CompanyVersion}</u>
+          </u><span>）</span>”相关事宜对协议各方应遵守的事项及各方的权利义务进行约定。<b></b>
+        </p>
+        <p class="MsoNormal">
+          <b>二、合作期限</b>
+          <b></b>
+        </p>
+        <p class="MsoNormal" style="text-indent:24.0000pt;">
+          协议的有效期限：自<u>{StartTimeYear}</u>年<u>{StartTimeMonth}</u>月<u>{StartTimeDay}</u>日起，至<u>{EndTimeYear}</u>年<u>{EndTimeMonth}</u>月<u>{EndTimeDay}</u>日，合同期为<u>{Years}</u>年。
+        </p>
+        <p class="15">
+          <b>三、费用结算</b>
+          <b></b>
+        </p>
+        <p class="15" style="text-indent:24.0000pt;">
+          乙方同意甲方平台技术服务费（<u>{CompanyVersion}</u>）为<u>{Moneys}</u><span>元</span>/年，在签订协议后将技术服务费缴纳至甲方账户。
+        </p>
+        <p class="MsoBodyTextIndent3" style="margin-left:0pt;text-indent:24pt;">
+          乙方应在签订本协议后三个工作日内通过转账方式向甲方支付平台技术服务费用，否则此协议视为无效。
+        </p>
+        <p class="MsoNormal">
+          <b>四、</b>
+          <b>甲方权利及义务</b>
+          <b></b>
+        </p>
+        <p class="MsoNormal" style="text-indent:24.0000pt;">
+          1、甲方根据版本类型（<u>{CompanyVersion}</u>）向乙方提供以下平台功能版块：
+        </p>
+        {ServerItems}
+        <p class="MsoNormal" style="margin-left:42.0000pt;">
+          <span>注：此版本可免费生成</span>1万枚以内的追溯码，若需生成更多追溯码须另外购买高级功能版本，或按追溯码生成量缴纳服务费。
+        </p>
+        <p class="MsoNormal" style="text-indent:24.0000pt;">
+          2、甲方有权对乙方的企业信息、产品信息的合法性和真实性、有效性进行审核。
+        </p>
+        <p class="MsoNormal" style="text-indent:24.0000pt;">
+          3、合作期间内，甲方有权对乙方企业信息和产品质量进行检查，对不符要求的有权督促责令整改，甚至终止服务。
+        </p>
+        <p class="MsoNormal" style="text-indent:24.0000pt;">
+          4、甲方负责向乙方开放数据库登陆接口，并负责客户数据保存、维护。
+        </p>
+        <p class="MsoNormal" style="text-indent:24.0000pt;">
+          5、甲方有义务在现有技术上维护整个甲方网上展示平台的正常运行，并努力提升和改进技术；
+        </p>
+        <p class="MsoNormal">
+          <b>五、乙方权利及义务</b>
+          <b></b>
+        </p>
+        <p class="MsoNormal" style="text-indent:24.0000pt;">
+          1、乙方保证在甲方平台上提交录入的企业信息、产品信息的合法、真实、有效，并承担相应法律责任。&nbsp;
+        </p>
+        <p class="MsoNormal" style="text-indent:24.0000pt;">
+          2、乙方必须按照甲方平台入驻要求完善相关手续，并按时交纳相关技术服务费用。
+        </p>
+        <p class="MsoNormal" style="text-indent:24.0000pt;">
+          3、对甲方提出的整改意见，乙方必须尽快按相关国家标准进行改进和完善。
+        </p>
+        <p class="15" style="text-indent:24.0000pt;">
+          4、乙方不得使用甲方平台发布违法内容或虚假信息。
+        </p>
+        <p class="MsoBodyTextIndent3" style="margin-left:0pt;">
+          <b>六、</b>
+          <b>特别约定条款</b>
+        </p>
+        <p class="MsoBodyTextIndent3" style="margin-left:0pt;">
+          &nbsp;&nbsp;&nbsp;1、自本协议签订之日，甲方应将乙方购买产品（服务）所载信息在数据库保存时间不低于<u>&nbsp;2</u>年。
+        </p>
+        <p class="MsoBodyTextIndent3" style="margin-left:0pt;">
+          &nbsp;&nbsp;&nbsp;2、乙方应向甲方提供真实有效的企业证照复印件或扫描件作为本合同附件。
+        </p>
+        <p class="MsoBodyTextIndent3" style="margin-left:0pt;">
+          &nbsp;&nbsp;&nbsp;3、乙方理解并认可，甲方平台保留抽查、要求乙方补充提交、及时更新入驻材料及入驻信息的权利。乙方应当对提交平台的相关信息独立承担真实性、合法性、有效性的全部责任；如乙方提交的信息造假或无效，甲方有权立即终止本协议，如对甲方造成损失，甲方有权要求乙方赔偿。
+        </p>
+        <p class="MsoBodyTextIndent3" style="margin-left:0pt;">
+          <b>七、</b>
+          <b>保密条款</b>
+          <b></b>
+        </p>
+        <p class="MsoBodyTextIndent3" style="margin-left:0pt;">
+          <span>&emsp;&emsp;</span>1、甲乙双方对于本协议的签订、内容及在履行本协议期间所获知的另一方的商业秘密负有保密义务。非经对方书面同意，任何一方不得向第三方（关联公司除外）泄露、给予或转让该等保密信息。（根据法律、法规、证券交易所规则向政府、证券交易所或其他监管机构提供、双方的法律、会计、商业及其他顾问、雇员除外）。
+        </p>
+        <p class="MsoBodyTextIndent3" style="margin-left:0pt;">
+          <span>&emsp;&emsp;</span>2、如对方提出要求，任何一方均应将载有对方保密信息的任何文件、资料或软件等，在本协议终止后按对方要求归还对方，或予以销毁，或进行其他处置，并且不得继续使用这些保密信息。
+        </p>
+        <p class="MsoBodyTextIndent3" style="margin-left:0pt;">
+          <span>&emsp;&emsp;</span>3、在本协议终止之后，各方在本条款项下的义务并不随之终止，各方仍需遵守本协议之保密条款，履行其所承诺的保密义务，直到双方同意其解除此项义务，或事实上不会因违反本协议的保密条款而给其他方造成任何形式的损害时为止。
+        </p>
+        <p class="MsoBodyTextIndent3" style="margin-left:0pt;text-indent:24pt;">
+          4、任何一方均应告知并督促其因履行本协议之目的而必须获知本协议内容及因合作而获知对方商业秘密的雇员、代理人、顾问等遵守保密条款，并对其雇员、代理人、顾问等的行为承担责任。
+        </p>
+        <p class="MsoBodyTextIndent3">
+          <b>八、</b>
+          <b>续订及争议处置条款</b>
+        </p>
+        <p class="MsoBodyTextIndent3" style="margin-left:0.0000pt;">
+          &nbsp;&nbsp;&nbsp;1、本协议到期后，双方如无异议，可自动续约，以乙方向甲方缴纳技术服务费用凭证作为续约依据，本协议持续有效，有效期限以新缴费服务年限为准。&nbsp;&nbsp;&nbsp;
+        </p>
+        <p class="MsoBodyTextIndent3" style="margin-left:0.0000pt;">
+          &nbsp;&nbsp;&nbsp;2、合作期间如若发生争议，甲乙双方应友好协商解决，协商不成的可向甲方所在地人民法院提起诉讼。
+        </p>
+        <p class="MsoBodyTextIndent3">
+          <b>九、其他</b>
+          <b></b>
+        </p>
+        <p class="MsoBodyTextIndent3" style="margin-left:0pt;">
+          &nbsp;&nbsp;&nbsp;1、本协议未尽事宜可以书面文件予以补充，并作为本协议附件。
+        </p>
+        <p class="MsoBodyTextIndent3" style="margin-left:0.0000pt;">
+          &nbsp;&nbsp;&nbsp;2、协议附件是本协议不可分割部分，和本协议具同等法律效力。
+        </p>
+        <p class="MsoBodyTextIndent3">
+          &nbsp;&nbsp;&nbsp;3、乙方在入驻甲方平台并使用中食药监管信息查询平台提供的各项服务时，即承诺接受并遵守甲方平台各项相关规则、规定。本协议内容包括协议正文及所有中食药监管信息查询平台已经发布的或将来可能发布的各类公告、规则等。
+        </p>
+        <p class="MsoBodyTextIndent3" style="margin-left:0.0000pt;">
+          &nbsp;&nbsp;&nbsp;4、本协议壹式贰份，甲乙双方各执壹份，经双方授权代表签字盖章之日起生效。
+        </p>
+        <p class="MsoBodyTextIndent3" style="margin-left:0.0000pt;text-indent:0.0000pt;">
+          &nbsp;
+        </p>
+        <p class="MsoBodyTextIndent3" style="margin-left:0.0000pt;text-indent:0.0000pt;position:relative;">
+          <img width="200" height="200" src="http://www.cfdacx.com/images/zhang.png" style="position:absolute;left:36px;top:-36px;" />
+        </p>
+      </div>
+      <p class="MsoBodyTextIndent3" style="margin-left:0.0000pt;text-indent:0.0000pt;text-align:left;">
+        <span style="display:inline-block;width:456px;">甲方：成都研成科技有限公司</span>乙方：_____________________
+      </p>
+      <p class="MsoBodyTextIndent3" style="margin-left:0.0000pt;text-indent:0.0000pt;text-align:left;">
+        <span style="display:inline-block;width:456px;">签字：___________________</span>签字：_____________________
+      </p>
+      <p class="MsoBodyTextIndent3" style="margin-left:0.0000pt;text-indent:0.0000pt;text-align:left;">
+        <span style="display:inline-block;width:456px;">
+          日期：_____&nbsp;<span>年</span>_____&nbsp;<span>月</span>&nbsp;____ 日
+        </span><span>日期：</span> _____&nbsp;<span>年</span> ____ 月____ 日
+      </p>
+      <p class="MsoBodyTextIndent3" style="margin-left:0.0000pt;text-indent:0.0000pt;">
+        &nbsp;
+      </p>
+    </div>
+  </body>
+</html>
