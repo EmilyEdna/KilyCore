@@ -20,6 +20,7 @@
                 options.GetAreaByCity();
                 options.GetTownByArea();
                 options.GetCompanyInfo();
+                options.UploadFiles();
             },
             //获取企业信息
             GetCompanyInfo: function () {
@@ -166,8 +167,8 @@
                     }
                 });
             },
-            //事件
-            InitEvents: function () {
+            //文件上传
+            UploadFiles: function () {
                 //文件上传-执照
                 controller.Upload({
                     url: "File/UploadImg",
@@ -190,6 +191,30 @@
                         $("#HonorCertification").val(result.data);
                     }
                 });
+                //文件上传-身份证
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-3",
+                    maxNum: 3,
+                    node: '#Img3',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        $("#IdCard").val(result.data);
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                $('input:radio[name="NatureAgent"]').on('change', function () {
+                    if ($(this).val() == 1) {
+                        $("#uploadIdCard").css({ display: "none" });
+                        $("#uploadCertification").css({ display: "block", display: "table-row" });
+                    }
+                    else {
+                        $("#uploadIdCard").css({ display: "block", display: "table-row" });
+                        $("#uploadCertification").css({ display: "none" });
+                    }
+                });
                 //验证
                 controller.ValidateConfirm("#Edit");
             },
@@ -205,8 +230,21 @@
 <div class="ibox float-e-margins">
     <div class="ibox-content">
         <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditEnterprise" id="Edit">
-            <input type="hidden" name="Id"/>
+            <input type="hidden" name="Id" />
             <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">企业性质</label></th>
+                    <td class="has-warning" colspan="3">
+                        <label class="radio-inline">
+                            <input type="radio" name="NatureAgent" value="1" style="margin-top:3px" checked/>
+                            <text title="企业或合作社">企业或合作社</text>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="NatureAgent" value="2" style="margin-top:3px" />
+                            <text title="个体商业户">个体商业户</text>
+                        </label>
+                    </td>
+                </tr>
                 <tr>
                     <th><label class="control-label">企业名称</label></th>
                     <td class="has-warning">
@@ -264,16 +302,6 @@
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">销售地址</label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control" name="SellerAddress">
-                    </td>
-                    <th><label class="control-label">生产地址</label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control" name="ProductionAddress">
-                    </td>
-                </tr>
-                <tr>
                     <th><label class="control-label">所属区域</label></th>
                     <td colspan="3">
                         <table>
@@ -308,6 +336,18 @@
                         <textarea class="form-control" name="Discription" rows="4" maxlength="300"></textarea>
                     </td>
                 </tr>
+                <tr id="uploadCertification">
+                    <th><label class="control-label">营业执照</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear" id="Img1">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" id="upload-input-1" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                        <input type="hidden" id="Certification" name="Certification" />
+                    </td>
+                </tr>
                 <tr>
                     <th><label class="control-label">荣誉证书</label></th>
                     <td class="has-warning" colspan="3">
@@ -320,16 +360,16 @@
                         <input type="hidden" id="HonorCertification" name="HonorCertification" />
                     </td>
                 </tr>
-                <tr>
-                    <th><label class="control-label">检测报告</label></th>
+                <tr style="display:none;" id="uploadIdCard">
+                    <th><label class="control-label">身份证</label></th>
                     <td class="has-warning" colspan="3">
-                        <div class="image-box clear" id="Img1">
+                        <div class="image-box clear" id="Img3">
                             <section class="upload-section">
                                 <div class="upload-btn"></div>
-                                <input type="file" name="Files" id="upload-input-1" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                                <input type="file" name="Files" id="upload-input-3" class="upload-input" value="" accept="image/*" multiple="multiple" />
                             </section>
                         </div>
-                        <input type="hidden" id="Certification" name="Certification" class="required" data-msg-required="请输上传营业执照" />
+                        <input type="hidden" id="IdCard" name="IdCard" />
                     </td>
                 </tr>
             </table>

@@ -717,7 +717,7 @@ controller.AutoInput = function (element, option) {
             return defaultsOption.processData(result);
         }
     }
-    $(element).on('change', function () {
+    $(element).on('click', function () {
         var html = '<ul class="dropdown-menu dropdown-menu-right" ></ul>';
         var ul = $(this).parent().find("ul")
         if (ul.length == 0)

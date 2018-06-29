@@ -45,11 +45,6 @@
                         return data;
                     }
                 });
-                //$("#GainId").on('change', function () {
-                //    var chk = $(this).find("option:selected");
-                //    $("#GainUser").val(chk.text());
-                //    $("input[name='Address']").val(chk.data().title);
-                //});
                 //验证
                 controller.ValidateConfirm("#Edit");
             },
@@ -64,7 +59,7 @@
 }
 <div class="ibox float-e-margins">
     <div class="ibox-content">
-        <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditGoodsPackage" id="Edit">
+        <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditLogistics" id="Edit">
             <input type="hidden" name="Id" />
             <input type="hidden" name="CompanyId" />
             <input type="hidden" name="Flag" value="false" />
@@ -84,7 +79,7 @@
                     <th><label class="control-label">收货人</label></th>
                     <td class="has-warning">
                         <div class="input-group" style="width:201px;">
-                            <input type="text" class="form-control" id="GainUser" name="GainUser"  Flag="GainId" titles="Address"/>
+                            <input type="text" class="form-control" id="GainUser" name="GainUser"  Flag="GainId" titles="Address" placeholder="请输入检索字段"/>
                         </div>
                     </td>
                     <th><label class="control-label">发货数量</label></th>
@@ -109,7 +104,7 @@
                     </td>
                     <th><label class="control-label">联系电话</label></th>
                     <td class="has-warning">
-                        <input type="text" name="LinkPhone" class="form-control" readonly />
+                        <input type="text" name="LinkPhone" class="form-control" />
                     </td>
                 </tr>
             </table>

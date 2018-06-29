@@ -47,7 +47,7 @@
             },
             //是否企业
             ShowCard: function () {
-                $("input:radio[name='SupplierType']").click(function () {
+                $("input:radio[name='SupplierType']").on('click',function () {
                     if ($(this).val() == 1)
                         $("#last").css("display", "none");
                     else

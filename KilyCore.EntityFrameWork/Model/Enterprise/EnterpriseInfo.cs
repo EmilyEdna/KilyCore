@@ -43,7 +43,7 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual string CommunityCode { get; set; }
         /// <summary>
-        /// 工商地址
+        /// 销售地址
         /// </summary>
         public virtual string SellerAddress { get; set; }
         /// <summary>
@@ -82,5 +82,13 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 系统版本
         /// </summary>
         public virtual SystemVersionEnum Version { get; set; }
+        /// <summary>
+        /// 身份证
+        /// </summary>
+        public virtual string IdCard { get; set; }
+        /// <summary>
+        /// 企业性质
+        /// </summary>
+        public virtual int NatureAgent { get; set; }
     }
 }

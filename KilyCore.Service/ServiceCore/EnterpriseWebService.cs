@@ -266,7 +266,9 @@ namespace KilyCore.Service.ServiceCore
                 CommunityCode = t.CommunityCode,
                 Certification = t.Certification,
                 CompanyAddress = t.CompanyAddress,
-                TypePath = t.TypePath
+                TypePath = t.TypePath,
+                NatureAgent = t.NatureAgent,
+                CompanyTypeName=AttrExtension.GetSingleDescription<CompanyEnum,DescriptionAttribute>(t.CompanyType)
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -294,7 +296,8 @@ namespace KilyCore.Service.ServiceCore
                 Discription = t.Discription,
                 NetAddress = t.NetAddress,
                 ProductionAddress = t.ProductionAddress,
-                SellerAddress = t.SellerAddress
+                SellerAddress = t.SellerAddress,
+                IdCard=t.IdCard
             }).FirstOrDefault();
             return data;
         }
@@ -327,6 +330,9 @@ namespace KilyCore.Service.ServiceCore
         {
             Param.AuditType = AuditEnum.WaitAduit;
             SystemStayContract contract = Param.MapToEntity<SystemStayContract>();
+            EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == contract.CompanyId).FirstOrDefault();
+            info.Version = contract.VersionType;
+            UpdateField(info, "Version");
             if (contract.ContractType == 1)
             {
                 contract.AdminId = null;
