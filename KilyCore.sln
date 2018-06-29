@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+VisualStudioVersion = 15.0.27130.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KilyCore.WEB", "KilyCore.WEB\KilyCore.WEB.csproj", "{C36BDF0E-7559-4CC8-8E93-53D1F585C8A2}"
 EndProject
