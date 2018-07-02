@@ -19,12 +19,12 @@ controller.ajax = function (option) {
         xhrFields: undefined,
         async: true,
         cache: false,
-        success: null
+        success: null,
     };
     var options = $.extend(defaultOption, option);
-    options.data.timespan = controller.SetRequestTime();
+    options.data.TimeSpan = controller.SetRequestTime();
     return $.ajax({
-        url: host + options.url,
+        url:host + options.url ,
         data: options.data,
         timeout: options.timeout,
         dataType: options.dataType,
@@ -710,7 +710,7 @@ controller.AutoInput = function (element, option) {
                 },
             };
             ajaxOption.data.Parameter = $(element).val();
-            ajaxOption.data.timespan = controller.SetRequestTime();
+            ajaxOption.data.TimeSpan = controller.SetRequestTime();
             return ajaxOption;
         },
         processData: function (result) {

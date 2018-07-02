@@ -1,9 +1,11 @@
 ﻿using System;
+using System.IO;
 using KilyCore.WEB.Model;
 using KilyCore.WEB.Util;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SelectPdf;
 
 namespace KilyCore.WEB.Controllers
 {
@@ -40,6 +42,20 @@ namespace KilyCore.WEB.Controllers
             var WebRootPath = Environment.WebRootPath;
             var result = FileUtil.CreatePDFBytes(Param, WebRootPath);
             var bytes = FileUtil.SavePDF(result);
+            FileResult PDF = new FileContentResult(bytes, "application/pdf");
+            PDF.FileDownloadName = "入住合同.pdf";
+            return PDF;
+        }
+        /// <summary>
+        /// 下载PDF合同文件
+        /// </summary>
+        /// <param name="help"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public FileResult HTMLToPDF(ContractHelp help)
+        {
+            var WebRootPath = Environment.WebRootPath;
+            byte[] bytes= FileUtil.HTMLToPDF(WebRootPath, help);
             FileResult PDF = new FileContentResult(bytes, "application/pdf");
             PDF.FileDownloadName = "入住合同.pdf";
             return PDF;

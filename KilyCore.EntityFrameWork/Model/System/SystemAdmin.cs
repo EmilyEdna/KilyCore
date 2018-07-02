@@ -31,6 +31,10 @@ namespace KilyCore.EntityFrameWork.Model.System
         /// </summary>
         public virtual string Email { get; set; }
         /// <summary>
+        /// 社会统一信用代码
+        /// </summary>
+        public virtual string CommunityCode { get; set; }
+        /// <summary>
         /// 电话
         /// </summary>
         public virtual string Phone { get; set; }
@@ -62,6 +66,10 @@ namespace KilyCore.EntityFrameWork.Model.System
         /// 开启网签
         /// </summary>
         public virtual bool OpenNet { get; set; }
+        /// <summary>
+        /// 详细地址
+        /// </summary>
+        public virtual string Addrees { get; set; }
         /// <summary>
         /// 电子章
         /// </summary>

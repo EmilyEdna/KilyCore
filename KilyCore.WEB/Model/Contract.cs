@@ -26,4 +26,63 @@ namespace KilyCore.WEB.Model
         public string Content { get; set; }
         public int Year{ get => 1; }
     }
+    public class ContractHelp
+    {
+        public string PathNo { get=> DateTime.Now.ToString("yyyyMMddHHmm"); }
+        public int StarYear { get => DateTime.Now.Year; }
+        public int StarMonth { get => DateTime.Now.Month; }
+        public int StarDay { get => DateTime.Now.Day; }
+        public int EndYear { get => DateTime.Now.Year + ContractYear; }
+        public int EndMonth { get => DateTime.Now.Month; }
+        public int EndDay { get => DateTime.Now.Day; }
+        /// <summary>
+        /// 合同类型 线上或线下
+        /// </summary>
+        public int ContractType { get; set; }
+        /// <summary>
+        /// 合同年限
+        /// </summary>
+        public int ContractYear { get; set; }
+        /// <summary>
+        /// 线下 授权公司
+        /// </summary>
+        public string AuthorCompany { get; set; }
+        /// <summary>
+        /// 线下 授权公司工商码
+        /// </summary>
+        public string Code { get; set; }
+        /// <summary>
+        /// 线下 授权公司公章
+        /// </summary>
+        public string Chapter { get; set; }
+        /// <summary>
+        /// 线下 授权公司地址
+        /// </summary>
+        public string Address { get; set; }
+        /// <summary>
+        /// 版本名称
+        /// </summary>
+        public string VersionName { get; set; }
+        /// <summary>
+        /// 版本内容
+        /// </summary>
+        public string VersionDes { get; set; }
+        /// <summary>
+        /// 乙方公司
+        /// </summary>
+        public string CompanyName { get; set; }
+        /// <summary>
+        /// 乙方代码
+        /// </summary>
+        public string CommunityCode { get; set; }
+        /// <summary>
+        /// 乙方地址
+        /// </summary>
+        public string CompanyAddress { get; set; }
+    }
+    public static class Configer {
+        public static string CompanySelf { get; set; }
+        public static string CodeSelf { get; set; }
+        public static string AddressSelf { get; set; }
+    }
 }

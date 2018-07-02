@@ -24,7 +24,7 @@
                 //获取版本
                 controller.ajax({
                     url: "Function/GetAreaVersion",
-                    data: { Id: TypePath, Parameter: CompanyInfo.Version },
+                    data: { Id: TypePath, Parameter: CompanyInfo.CompanyType },
                     async: false,
                     type: "post",
                     success: function (result) {
@@ -44,7 +44,7 @@
                     success: function (result) {
                         var html = '<option>===请选择===</option>'
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '" data-img="' + obj.Chapter + '">' + obj.TrueName + '</option>';
+                            html += '<option value="' + obj.Id + '" data-img="' + obj.Chapter + '" data-code="' + obj.CommunityCode + '" data-address="' + obj.Address + '">' + obj.TrueName + '</option>';
                         });
                         $("#AdminId").html(html);
                     }
@@ -73,7 +73,7 @@
                         $("#A3").css({ display: "block", display: "table-row" });
                     }
                     else {
-                        $("#A4").css({ display: "block", display:"table-footer-group" });
+                        $("#A4").css({ display: "block", display: "table-footer-group" });
                         $("#A2").css({ display: "none" });
                         $("#A3").css({ display: "none" });
                     }
@@ -87,6 +87,24 @@
                         controller.Alter(result.msg);
                         $("#PayTicket").val(result.data);
                     }
+                });
+                //生成合同
+                $("#down").on('click', function () {
+                    var data = {
+                        ContractType: $("input[type='radio'][name='ContractType']:checked").val(),
+                        ContractYear: $("input[type='text'][name='ContractYear']").val(),
+                        AuthorCompany: $("#AdminId").find("option:selected").text(),
+                        Code: $("#AdminId").find("option:selected").data().code,
+                        Chapter: $("#AdminId").find("option:selected").data().img,
+                        Address: $("#AdminId").find("option:selected").data().address,
+                        VersionName: $("#VersionType").find("option:selected").text(),
+                        VersionDes: $("#VersionType").find("option:selected").data().value,
+                        CompanyName: CompanyInfo.CompanyName,
+                        CommunityCode: CompanyInfo.CommunityCode,
+                        CompanyAddress: CompanyInfo.CompanyAddress
+                    }
+                    controller.SetCtrlValue("#PDF",data);
+                    $("#PDF").submit();
                 });
                 //验证
                 controller.ValidateConfirm("#Edit");
@@ -102,6 +120,19 @@
 }
 <div class="ibox float-e-margins">
     <div class="ibox-content">
+        <form method="post" action="/File/HTMLToPDF" id="PDF">
+            <input type="hidden" name="ContractType" />
+            <input type="hidden" name="ContractYear" />
+            <input type="hidden" name="AuthorCompany" />
+            <input type="hidden" name="Code" />
+            <input type="hidden" name="Chapter" />
+            <input type="hidden" name="Address" />
+            <input type="hidden" name="VersionName" />
+            <input type="hidden" name="VersionDes" />
+            <input type="hidden" name="CompanyName" />
+            <input type="hidden" name="CommunityCode" />
+            <input type="hidden" name="CompanyAddress" />
+        </form>
         <form class="orm-horizontal" method="post" action="EnterpriseWeb/SaveContract" id="Edit">
             <input type="hidden" name="PayTicket" id="PayTicket" />
             <input type="hidden" name="CompanyId" id="CompanyId" />
@@ -122,13 +153,16 @@
                     </td>
                     <th><label class="control-label">版本选择</label></th>
                     <td class="has-warning">
-                        <select type="select" name="VersionType" class="form-control" id="VersionType"></select>
+                        <div class="input-group">
+                            <select type="select" name="VersionType" class="form-control" id="VersionType"></select>
+                            <span class="input-group-addon btn btn-sm" id="down">下载合同</span>
+                        </div>
                     </td>
                 </tr>
                 <tr>
                     <th><label class="control-label">入住年限/年</label></th>
                     <td class="has-warning" colspan="3">
-                        <input type="text" name="ContractYear" class="form-control" placeholder="请填入纯数字不要带其他任何汉子特殊字符" />
+                        <input type="text" name="ContractYear" class="form-control required" placeholder="请填入纯数字不要带其他任何汉子特殊字符" data-msg-required="请输入入住年限" />
                     </td>
                 </tr>
                 <tr id="A1">
@@ -168,7 +202,9 @@
                 <tfoot id="A4">
                     <tr>
                         <th colspan="4">
-                            <a href="#" class="btn btn-block btn-sm">支付</a>
+                            <div class="text-center">
+                                <button class="btn btn-info btn-sm" type="button">支付</button>
+                            </div>
                         </th>
                     </tr>
                 </tfoot>

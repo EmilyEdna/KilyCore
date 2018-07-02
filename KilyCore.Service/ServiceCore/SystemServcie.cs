@@ -278,7 +278,8 @@ namespace KilyCore.Service.ServiceCore
                 TrueName = t.TrueName,
                 Account = t.Account,
                 AccountTypeName = AttrExtension.GetSingleDescription<AccountEnum, DescriptionAttribute>(t.AccountType),
-                Phone = t.Phone
+                Phone = t.Phone,
+                CommunityCode = t.CommunityCode
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -316,7 +317,9 @@ namespace KilyCore.Service.ServiceCore
                      RoleAuthorType = t.RoleAuthorType,
                      TypePath = t.TypePath,
                      OpenNet = t.OpenNet,
-                     Chapter = t.Chapter
+                     Chapter = t.Chapter,
+                     CommunityCode = t.CommunityCode,
+                     Addrees=t.Addrees
                  }).FirstOrDefault();
         }
         /// <summary>
@@ -350,8 +353,10 @@ namespace KilyCore.Service.ServiceCore
             .Where(t => t.OpenNet == true).Where(t=>t.AccountType>AccountEnum.Country).AsNoTracking().Select(t => new ResponseAdmin()
             {
                 Id = t.Id,
+                CommunityCode=t.CommunityCode,
                 TrueName = t.TrueName,
-                Chapter = t.Chapter
+                Chapter = t.Chapter,
+                Addrees = t.Addrees
             }).ToList();
             return data;
         }
@@ -535,6 +540,8 @@ namespace KilyCore.Service.ServiceCore
                Email = t.Email,
                AccountType = t.AccountType,
                RoleAuthorType = t.RoleAuthorType,
+               Addrees=t.Addrees,
+               CommunityCode=t.CommunityCode,
                TableName = typeof(ResponseAdmin).Name,
            }).FirstOrDefault();
             return Admin ?? null;

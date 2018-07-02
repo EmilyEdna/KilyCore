@@ -2,11 +2,15 @@
 using iTextSharp.text.pdf;
 using KilyCore.WEB.Model;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using SelectPdf;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日12点01分
@@ -110,6 +114,65 @@ namespace KilyCore.WEB.Util
             copy.Close();
             document.Close();
             return memory.ToArray();
+        }
+        /// <summary>
+        /// HTML合同模板转PDF
+        /// </summary>
+        /// <param name="WebRootPath"></param>
+        /// <param name="help"></param>
+        /// <returns></returns>
+        public static byte[] HTMLToPDF(string WebRootPath, ContractHelp help)
+        {
+            string TemplatePath = WebRootPath + @"/Template/Template.html";
+            StreamReader reader = new StreamReader(TemplatePath, Encoding.UTF8);
+            string HTMLContent = reader.ReadToEnd();
+            if (help.ContractType == 1)
+                HTMLContent = HTMLContent.Replace("{CompanySelf}", Configer.CompanySelf)
+                    .Replace("{CodeSelf}", Configer.CodeSelf)
+                    .Replace("{AddressSelf}", Configer.AddressSelf)
+                    .Replace("{CompanyCategory}", help.CompanyName)
+                    .Replace("{PathNo}", help.PathNo)
+                    .Replace("{CompanyName}", help.CompanyName)
+                    .Replace("{CompanyCode}", help.CommunityCode)
+                    .Replace("{CompanyAddress}", help.CompanyAddress)
+                    .Replace("{StartTimeYear}", help.StarYear.ToString())
+                    .Replace("{StartTimeMonth}", help.StarMonth.ToString())
+                    .Replace("{StartTimeDay}", help.StarDay.ToString())
+                    .Replace("{EndTimeYear}", help.EndYear.ToString())
+                    .Replace("{EndTimeMonth}", help.EndMonth.ToString())
+                    .Replace("{EndTimeDay}", help.EndDay.ToString())
+                    .Replace("{Years}", help.ContractYear.ToString())
+                    .Replace("{CompanyVersion}", help.VersionName)
+                    .Replace("{Moneys}", "1000")
+                    .Replace("{ServerItems}", help.VersionDes);
+            else
+                HTMLContent = HTMLContent.Replace("{CompanySelf}", help.AuthorCompany)
+                   .Replace("{CodeSelf}", help.Code)
+                   .Replace("{AddressSelf}", help.Address)
+                   .Replace("{CompanyCategory}", help.CompanyName)
+                   .Replace("{PathNo}", help.PathNo)
+                   .Replace("{CompanyName}", help.CompanyName)
+                   .Replace("{CompanyCode}", help.CommunityCode)
+                   .Replace("{CompanyAddress}", help.CompanyAddress)
+                   .Replace("{StartTimeYear}", help.StarYear.ToString())
+                   .Replace("{StartTimeMonth}", help.StarMonth.ToString())
+                   .Replace("{StartTimeDay}", help.StarDay.ToString())
+                   .Replace("{EndTimeYear}", help.EndYear.ToString())
+                   .Replace("{EndTimeMonth}", help.EndMonth.ToString())
+                   .Replace("{EndTimeDay}", help.EndDay.ToString())
+                   .Replace("{Years}", help.ContractYear.ToString())
+                   .Replace("{CompanyVersion}", help.VersionName)
+                   .Replace("{Moneys}", "1000")
+                   .Replace("{ServerItems}", help.VersionDes);
+            HtmlToPdf converter = new HtmlToPdf();
+            converter.Options.PdfPageSize = PdfPageSize.A4;
+            converter.Options.PdfPageOrientation = PdfPageOrientation.Portrait;
+            converter.Options.WebPageWidth = 1024;
+            converter.Options.WebPageHeight = 0;
+            SelectPdf.PdfDocument doc = converter.ConvertHtmlString(HTMLContent);
+            byte[] bytes = doc.Save();
+            doc.Close();
+            return bytes;
         }
     }
 }

@@ -36,7 +36,11 @@ namespace KilyCore.Extension.FilterGroup
             {
                 try
                 {
-                    long timespan = long.Parse(request.Query.Where(t => t.Key.Contains("timespan")).Select(t => t.Value).FirstOrDefault().ToString());
+                    long timespan = 0;
+                    if (!string.IsNullOrEmpty(request.Headers["TimeSpan"].FirstOrDefault()))
+                        timespan = long.Parse(request.Headers["TimeSpan"].FirstOrDefault());
+                    else
+                         timespan = long.Parse(request.Query.Where(t => t.Key.Contains("TimeSpan")).Select(t => t.Value).FirstOrDefault().ToString());
                     if (VerificationExtension.VerificationExpriseTime(timespan) > 10 || VerificationExtension.VerificationExpriseTime(timespan) < -10)
                         context.Result = new JsonResult("请求超时");
                 }
@@ -49,7 +53,11 @@ namespace KilyCore.Extension.FilterGroup
             {
                 try
                 {
-                    long timespan = long.Parse(request.Form.Where(t => t.Key.Contains("timespan")).Select(t => t.Value).FirstOrDefault().ToString());
+                    long timespan = 0;
+                    if (!string.IsNullOrEmpty(request.Headers["TimeSpan"].FirstOrDefault()))
+                        timespan = long.Parse(request.Headers["TimeSpan"].FirstOrDefault());
+                    else
+                        timespan = long.Parse(request.Form.Where(t => t.Key.Contains("TimeSpan")).Select(t => t.Value).FirstOrDefault().ToString());
                     if (VerificationExtension.VerificationExpriseTime(timespan) > 10 || VerificationExtension.VerificationExpriseTime(timespan) < -10)
                         context.Result = new JsonResult("请求超时");
                 }
