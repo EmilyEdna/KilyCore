@@ -258,6 +258,69 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.EditDic(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 升级续费
+        /// <summary>
+        /// 查看版本信息
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetLvPage")]
+        public ObjectResultEx GetLvPage(PageParamList<RequestEnterpriseLevelUp> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetLvPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑续费
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditContinued")]
+        public ObjectResultEx EditContinued(RequestEnterpriseContinued Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditContinued(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑升级
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditUpLevel")]
+        public ObjectResultEx EditUpLevel(RequestEnterpriseUpLevel Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditUpLevel(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 续费记录
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetContinuedPage")]
+        public ObjectResultEx GetContinuedPage(PageParamList<RequestEnterpriseContinued> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetContinuedPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 升级记录
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetUpLevelPage")]
+        public ObjectResultEx GetUpLevelPage(PageParamList<RequestEnterpriseUpLevel> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetUpLevelPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 审核审计续费
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("AuditContinuedAndLevel")]
+        public ObjectResultEx AuditContinuedAndLevel(SimlpeParam<Guid> Key, SimlpeParam<bool> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.AuditContinuedAndLevel(Key.Id, Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
         #endregion
         #region 成长档案
         #region 育苗信息

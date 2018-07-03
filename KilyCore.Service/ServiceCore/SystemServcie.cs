@@ -1096,6 +1096,7 @@ namespace KilyCore.Service.ServiceCore
                 StayTime = t.CreateTime,
                 EndTime = t.EndTime,
                 AuditType = t.AuditType,
+                CompanyId=t.CompanyId,
                 AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
                 TableName = t.GetType().Name,
                 ContractType = t.ContractType,

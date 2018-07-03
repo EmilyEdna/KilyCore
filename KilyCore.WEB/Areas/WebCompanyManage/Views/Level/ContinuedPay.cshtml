@@ -1,0 +1,103 @@
+﻿
+@{
+    ViewData["Title"] = "续费";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitEnterpriseRole();
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var Guid = controller.GetParam("Id");
+                $("#CompanyId").val(Guid);
+            },
+            //事件
+            InitEvents: function () {
+                //支付方式
+                $("input[type=radio][name=PayType]").on('click', function () {
+                    if ($(this).val() != 30)
+                        $("#Ticket").css("display", "none");
+                    else
+                        $("#Ticket").css({ display: "block", display: "table-row"});
+                });
+                //文件上传-票据
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: ".upload-input",
+                    maxNum: 1,
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        $("#PayTicket").val(result.data);
+                    }
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditContinued" id="Edit">
+            <input type="hidden" name="CompanyId" id="CompanyId" />
+            <input type="hidden" name="PayTicket" id="PayTicket" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">续费年限</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="ContinuedYear" data-msg-required="请输入续费年限" />
+                    </td>
+                    <th><label class="control-label">支付方式</label></th>
+                    <td class="has-warning">
+                        <label class="radio-inline">
+                            <input type="radio" name="PayType" value="10" style="margin-top:3px" checked />
+                            <text title="支付宝">支付宝</text>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="PayType" value="20" style="margin-top:3px" />
+                            <text title="微信">微信</text>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="PayType" value="30" style="margin-top:3px" />
+                            <text title="银行转账">银行转账</text>
+                        </label>
+                    </td>
+                </tr>
+                <tr id="Ticket" style="display:none">
+                    <th><label class="control-label">缴费票据</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                    </td>
+                </tr>
+                <tfoot>
+                    <tr>
+                        <th colspan="4">
+                            <div class="text-center">
+                                <button class="btn btn-info btn-sm" type="button">支付</button>
+                            </div>
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+        </form>
+    </div>
+</div>

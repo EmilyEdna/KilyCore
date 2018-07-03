@@ -51,6 +51,8 @@
                         action.push('<button class="btn btn-sm btn-primary ok"><i class="fa fa-pencil-square-o"></i>确认缴费</button>');
                     action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-pencil-square-o"></i>审核</button>');
                     action.push('<button class="btn btn-sm btn-primary watch"><i class="fa fa-eye"></i>审核记录</button>');
+                    action.push('<button class="btn btn-sm btn-primary up"><i class="fa fa-angle-double-up"></i>升级记录</button>');
+                    action.push('<button class="btn btn-sm btn-primary last"><i class="fa fa-rotate-right"></i>续费记录</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
@@ -80,7 +82,7 @@
                             }
                         })
                     },
-                     "click .watch": function (event, val, row, index) {
+                    "click .watch": function (event, val, row, index) {
                         controller.OpenWindow({
                             title: "审核信息",
                             type: 2,
@@ -89,6 +91,30 @@
                             url: "SysManage/System/AuditRecord?TableId=" + row.Id + "&TableName=" + row.TableName,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
+                            }
+                        })
+                    },
+                    "click .up": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "升级记录",
+                            type: 2,
+                            height: "500px",
+                            width: "600px",
+                            url: "SysManage/System/StayContractUpdate?CompanyId=" + row.CompanyId,
+                            callBack: function (result) {
+                                options.$table.refresh();
+                            }
+                        })
+                    },
+                    "click .last": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "续费记录",
+                            type: 2,
+                            height: "500px",
+                            width: "600px",
+                            url: "SysManage/System/StayContractContinued?CompanyId=" + row.CompanyId,
+                            callBack: function (result) {
+                                options.$table.refresh();
                             }
                         })
                     }

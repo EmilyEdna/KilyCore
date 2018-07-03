@@ -60,6 +60,14 @@ namespace KilyCore.Service.IServiceCore
         ResponseEnterpriseDictionary GetDicDetail(Guid Id);
         String EditDic(RequestEnterpriseDictionary Param);
         #endregion
+        #region 升级续费
+        PagedResult<ResponseEnterpriseLevelUp> GetLvPage(PageParamList<RequestEnterpriseLevelUp> pageParam);
+        String EditContinued(RequestEnterpriseContinued Param);
+        String EditUpLevel(RequestEnterpriseUpLevel Param);
+        PagedResult<ResponseEnterpriseContinued> GetContinuedPage(PageParamList<RequestEnterpriseContinued> pageParam);
+        PagedResult<ResponseEnterpriseUpLevel> GetUpLevelPage(PageParamList<RequestEnterpriseUpLevel> pageParam);
+        String AuditContinuedAndLevel(Guid Id, bool Param);
+        #endregion
         #endregion
         #region 成长档案
         #region 育苗信息

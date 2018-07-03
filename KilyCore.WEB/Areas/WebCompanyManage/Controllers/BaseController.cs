@@ -84,5 +84,13 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 升级续费
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult UpLevel()
+        {
+            return View();
+        }
     }
 }

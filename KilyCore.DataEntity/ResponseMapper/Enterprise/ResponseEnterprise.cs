@@ -83,5 +83,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string IdCard { get; set; }
         public int NatureAgent { get; set; }
         public string NatureName { get => NatureAgent == 1 ? "企业或合作社" : "个体商业户"; }
+        public long? TagCodeNum { get; set; }
     }
 }

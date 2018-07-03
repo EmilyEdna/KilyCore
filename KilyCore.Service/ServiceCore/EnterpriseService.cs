@@ -765,6 +765,9 @@ namespace KilyCore.Service.ServiceCore
             if (Insert<SystemAudit>(Audit))
             {
                 EnterpriseTagApply TagApply = Kily.Set<EnterpriseTagApply>().Where(t => t.IsDelete == false).Where(t => t.Id == Param.TableId).FirstOrDefault();
+                EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == TagApply.CompanyId).FirstOrDefault();
+                info.TagCodeNum = Convert.ToInt64(TagApply.ApplyNum);
+                UpdateField<EnterpriseInfo>(info, "TagCodeNum");
                 TagApply.AuditType = Param.AuditType;
                 if (UpdateField<EnterpriseTagApply>(TagApply, "AuditType"))
                     return ServiceMessage.HANDLESUCCESS;

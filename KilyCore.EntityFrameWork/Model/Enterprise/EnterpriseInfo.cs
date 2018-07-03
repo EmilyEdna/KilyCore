@@ -90,5 +90,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 企业性质
         /// </summary>
         public virtual int NatureAgent { get; set; }
+        /// <summary>
+        /// 当前版本的二维码数量
+        /// </summary>
+        public virtual long? TagCodeNum { get; set; }
     }
 }

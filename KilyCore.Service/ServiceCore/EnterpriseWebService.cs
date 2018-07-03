@@ -268,7 +268,8 @@ namespace KilyCore.Service.ServiceCore
                 CompanyAddress = t.CompanyAddress,
                 TypePath = t.TypePath,
                 NatureAgent = t.NatureAgent,
-                CompanyTypeName=AttrExtension.GetSingleDescription<CompanyEnum,DescriptionAttribute>(t.CompanyType)
+                TagCodeNum = t.TagCodeNum,
+                CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType)
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -297,7 +298,7 @@ namespace KilyCore.Service.ServiceCore
                 NetAddress = t.NetAddress,
                 ProductionAddress = t.ProductionAddress,
                 SellerAddress = t.SellerAddress,
-                IdCard=t.IdCard
+                IdCard = t.IdCard
             }).FirstOrDefault();
             return data;
         }
@@ -331,8 +332,17 @@ namespace KilyCore.Service.ServiceCore
             Param.AuditType = AuditEnum.WaitAduit;
             SystemStayContract contract = Param.MapToEntity<SystemStayContract>();
             EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == contract.CompanyId).FirstOrDefault();
-            info.Version = contract.VersionType;
-            UpdateField(info, "Version");
+            info.Version = Param.VersionType;
+            if (Param.VersionType == SystemVersionEnum.Test)
+                info.TagCodeNum = ServiceMessage.TEST;
+            if (Param.VersionType == SystemVersionEnum.Base)
+                info.TagCodeNum = ServiceMessage.BASE;
+            if (Param.VersionType == SystemVersionEnum.Level)
+                info.TagCodeNum = ServiceMessage.LEVEL;
+            if (Param.VersionType == SystemVersionEnum.Enterprise)
+                info.TagCodeNum = ServiceMessage.ENTERPRISE;
+            IList<string> Fields = new List<string> { "Version", "TagCodeNum" };
+            UpdateField(info, null, Fields);
             if (contract.ContractType == 1)
             {
                 contract.AdminId = null;
@@ -654,6 +664,157 @@ namespace KilyCore.Service.ServiceCore
             else
             {
                 return Insert<EnterpriseDictionary>(dictionary) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            }
+        }
+        #endregion
+
+        #region 升级续费
+        /// <summary>
+        /// 查看版本信息
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseLevelUp> GetLvPage(PageParamList<RequestEnterpriseLevelUp> pageParam)
+        {
+            IQueryable<SystemStayContract> queryable = Kily.Set<SystemStayContract>().Where(t => t.CompanyId == pageParam.QueryParam.Id).Where(t => t.IsDelete == false);
+            var data = queryable.Select(t => new ResponseEnterpriseLevelUp()
+            {
+                Id = t.CompanyId,
+                StarTime = t.CreateTime,
+                EndTime = t.EndTime,
+                Year = t.ContractYear,
+                VersionName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.VersionType),
+                VersionType = t.VersionType
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑续费
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditContinued(RequestEnterpriseContinued Param)
+        {
+            EnterpriseContinued continued = Param.MapToEntity<EnterpriseContinued>();
+            continued.AuditType = AuditEnum.WaitAduit;
+            return Insert<EnterpriseContinued>(continued) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 编辑升级
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditUpLevel(RequestEnterpriseUpLevel Param)
+        {
+            EnterpriseUpLevel level = Param.MapToEntity<EnterpriseUpLevel>();
+            level.AuditType = AuditEnum.WaitAduit;
+            return Insert<EnterpriseUpLevel>(level) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 续费记录
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseContinued> GetContinuedPage(PageParamList<RequestEnterpriseContinued> pageParam)
+        {
+            IQueryable<EnterpriseContinued> queryable = Kily.Set<EnterpriseContinued>().Where(t => t.CompanyId == pageParam.QueryParam.CompanyId);
+            var data = queryable.Select(t => new ResponseEnterpriseContinued()
+            {
+                Id = t.Id,
+                ContinuedYear = t.ContinuedYear,
+                PayTypeName = AttrExtension.GetSingleDescription<PayEnum, DescriptionAttribute>(t.PayType),
+                AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
+                IsPay = t.IsPay,
+                PayTicket = t.PayTicket
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 升级记录
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseUpLevel> GetUpLevelPage(PageParamList<RequestEnterpriseUpLevel> pageParam)
+        {
+            IQueryable<EnterpriseUpLevel> queryable = Kily.Set<EnterpriseUpLevel>().Where(t => t.CompanyId == pageParam.QueryParam.CompanyId);
+            var data = queryable.Select(t => new ResponseEnterpriseUpLevel()
+            {
+                Id = t.Id,
+                ContinuedYear = t.ContinuedYear,
+                PayTypeName = AttrExtension.GetSingleDescription<PayEnum, DescriptionAttribute>(t.PayType),
+                AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
+                VersionTypeName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.VersionType),
+                IsPay = t.IsPay,
+                PayTicket = t.PayTicket
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 审核审计续费
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string AuditContinuedAndLevel(Guid Id, bool Param)
+        {
+            EnterpriseContinued continued = null;
+            EnterpriseUpLevel level = null;
+            if (Param)
+                continued = Kily.Set<EnterpriseContinued>().Where(t => t.Id == Id).FirstOrDefault();
+            else
+                level = Kily.Set<EnterpriseUpLevel>().Where(t => t.Id == Id).FirstOrDefault();
+            if (UserInfo().AccountType > AccountEnum.Country)
+            {
+                if (Param)
+                {
+                    continued.AuditType = AuditEnum.AuditSuccess;
+                    return UpdateField(continued, "AuditType") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+                }
+                else
+                {
+                    level.AuditType = AuditEnum.AuditSuccess;
+                    return UpdateField(level, "AuditType") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+                }
+            }
+            else
+            {
+                if (Param)
+                {
+                    SystemStayContract contract = Kily.Set<SystemStayContract>().Where(t => t.CompanyId == continued.CompanyId).FirstOrDefault();
+                    contract.CreateTime = DateTime.Now;
+                    contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(continued.ContinuedYear));
+                    contract.ContractYear = continued.ContinuedYear;
+                    contract.PayTicket = continued.PayTicket;
+                    contract.PayType = continued.PayType;
+                    IList<string> Fields = new List<string> { "CreateTime", "EndTime", "ContractYear", "PayTicket", "PayType" };
+                    UpdateField(contract, null, Fields);
+                    continued.AuditType = AuditEnum.FinanceSuccess;
+                    return UpdateField(continued, "AuditType") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+                }
+                else
+                {
+                    SystemStayContract contract = Kily.Set<SystemStayContract>().Where(t => t.CompanyId == level.CompanyId).FirstOrDefault();
+                    EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == level.CompanyId).FirstOrDefault();
+                    contract.CreateTime = DateTime.Now;
+                    contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(continued.ContinuedYear));
+                    contract.ContractYear = level.ContinuedYear;
+                    contract.PayTicket = level.PayTicket;
+                    contract.PayType = level.PayType;
+                    contract.VersionType = level.VersionType;
+                    IList<string> Fields = new List<string> { "CreateTime", "EndTime", "ContractYear", "PayTicket", "PayType", "VersionType" };
+                    UpdateField(contract, null, Fields);
+                    if (level.VersionType == SystemVersionEnum.Test)
+                        info.TagCodeNum += ServiceMessage.TEST;
+                     if (level.VersionType == SystemVersionEnum.Base)
+                        info.TagCodeNum += ServiceMessage.BASE;
+                    if (level.VersionType == SystemVersionEnum.Level)
+                        info.TagCodeNum += ServiceMessage.LEVEL;
+                    if (level.VersionType == SystemVersionEnum.Enterprise)
+                        info.TagCodeNum += ServiceMessage.ENTERPRISE;
+                    UpdateField(info, "TagCodeNum");
+                    level.AuditType = AuditEnum.FinanceSuccess;
+                    return UpdateField(level, "AuditType") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+                }
             }
         }
         #endregion
@@ -1156,6 +1317,8 @@ namespace KilyCore.Service.ServiceCore
                 return "请选择类型!";
             //取省份code
             IQueryable<SystemProvince> queryable = Kily.Set<SystemProvince>().AsNoTracking();
+            //企业信息
+            EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Param.CompanyId).FirstOrDefault();
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => CompanyInfo().TypePath.Contains(t.Id.ToString()));
             else
@@ -1166,7 +1329,7 @@ namespace KilyCore.Service.ServiceCore
                 .Where(t => t.CompanyId == Param.CompanyId && t.IsDelete == false).FirstOrDefault();
             //懒加载主表信息
             IQueryable<EnterpriseTag> queryables = Kily.Set<EnterpriseTag>()
-                .Where(t => t.CompanyId == Param.CompanyId).OrderByDescending(t => t.CreateTime);
+                .Where(t => t.CompanyId == Param.CompanyId).Where(t => t.TagType == Param.TagType).OrderByDescending(t => t.CreateTime);
             List<EnterpriseTag> TagList = queryables.ToList();
             if (TagList.Count == 0)
                 Param.StarSerialNo = Convert.ToInt64(Province.Code + "100000000000");
@@ -1174,41 +1337,25 @@ namespace KilyCore.Service.ServiceCore
                 Param.StarSerialNo = TagList.FirstOrDefault().EndSerialNo + 1;
             Param.EndSerialNo = Param.StarSerialNo + Param.TotalNo;
             EnterpriseTag Tag = Param.MapToEntity<EnterpriseTag>();
+            //生成企业码更新企业信息表的二维码数量
             if (Tag.TagType == TagEnum.OneEnterprise)
-                return queryables.Where(t => t.TagType == TagEnum.OneEnterprise).ToList().Count >= 1 ?
-                    "企业只能拥有一个企业二维码!" :
-                    (Tag.TotalNo > 1 ? "一个企业只能创建一个企业二维码!" :
-                    (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL));
+            {
+                var data = queryables.Where(t => t.TagType == TagEnum.OneEnterprise).ToList().Count >= 1 ?
+                     "企业只能拥有一个企业二维码!" :
+                     (Tag.TotalNo > 1 ? "一个企业只能创建一个企业二维码!" :
+                     (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL));
+                info.TagCodeNum -= 1;
+                UpdateField<EnterpriseInfo>(info, "TagCodeNum");
+                return data;
+            }
             else
             {
-                if (Apply == null)
-                {
-                    long Total = queryables.Where(t => t.IsApplay == false).Sum(t => t.TotalNo);
-                    long Totals = (Total + Param.TotalNo);
-                    Tag.IsApplay = false;
-                    if ((CompanyInfo() != null ? CompanyInfo().Version : CompanyUser().Version) == SystemVersionEnum.Test)
-                        return ServiceMessage.TEST - Totals >= 0 ? (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL) : $"当前剩余标签数量:{ServiceMessage.TEST - Total},请升级版本或申请购买数量!";
-                    else if ((CompanyInfo() != null ? CompanyInfo().Version : CompanyUser().Version) == SystemVersionEnum.Base)
-                        return ServiceMessage.BASE - Totals >= 0 ? (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL) : $"当前剩余标签数量:{ServiceMessage.BASE - Total},请升级版本或申请购买数量!";
-                    else if ((CompanyInfo() != null ? CompanyInfo().Version : CompanyUser().Version) == SystemVersionEnum.Level)
-                        return ServiceMessage.LEVEL - Totals >= 0 ? (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL) : $"当前剩余标签数量:{ServiceMessage.LEVEL - Total},请升级版本或申请购买数量!";
-                    else
-                        return ServiceMessage.ENTERPRISE - Totals >= 0 ? (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL) : $"当前剩产标签数量:{ServiceMessage.ENTERPRISE - Total},请升级版本或申请购买数量!";
-                }
+                info.TagCodeNum -= Param.TotalNo;
+                if (info.TagCodeNum < 0)
+                    return $"当前剩余标签数量:{info.TagCodeNum},请升级版本或申请购买数量!";
                 else
-                {
-                    long Total = queryables.Where(t => t.IsApplay == true).Sum(t => t.TotalNo);
-                    long Totals = (Total + Param.TotalNo);
-                    Tag.IsApplay = true;
-                    if (Apply.Payment == 2)
-                    {
-                        return Convert.ToInt64(Apply.ApplyNum) - Totals >= 0 ? (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL) : $"当前剩余标签数量:{Convert.ToInt64(Apply.ApplyNum) - Total},请升级版本或申请购买数量!";
-                    }
-                    else
-                    {
-                        return (bool)Apply.IsPay ? (Insert(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL) : "请先付款";
-                    }
-                }
+                    UpdateField<EnterpriseInfo>(info, "TagCodeNum");
+                return Insert<EnterpriseTag>(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
             }
         }
         /// <summary>

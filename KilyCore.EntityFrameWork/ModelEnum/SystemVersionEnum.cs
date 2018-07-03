@@ -24,7 +24,7 @@ namespace KilyCore.EntityFrameWork.ModelEnum
         [Description("体验版")]
         Test =10,
         /// <summary>
-        /// 基础班
+        /// 基础版
         /// </summary>
         [Description("基础版")]
         Base=20,
