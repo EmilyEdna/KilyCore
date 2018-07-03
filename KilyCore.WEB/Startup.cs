@@ -58,6 +58,7 @@ namespace KilyCore.WEB
             Configer.CompanySelf = Configuration["Company:Name"];
             Configer.CodeSelf = Configuration["Company:Code"];
             Configer.AddressSelf = Configuration["Company:Address"];
+            Configer.Chapter = Configuration["Company:Chapter"];
         }
     }
 }

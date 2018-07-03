@@ -130,6 +130,7 @@ namespace KilyCore.WEB.Util
                 HTMLContent = HTMLContent.Replace("{CompanySelf}", Configer.CompanySelf)
                     .Replace("{CodeSelf}", Configer.CodeSelf)
                     .Replace("{AddressSelf}", Configer.AddressSelf)
+                    .Replace("{Chapter}", Configer.Chapter)
                     .Replace("{CompanyCategory}", help.CompanyName)
                     .Replace("{PathNo}", help.PathNo)
                     .Replace("{CompanyName}", help.CompanyName)
@@ -148,6 +149,7 @@ namespace KilyCore.WEB.Util
             else
                 HTMLContent = HTMLContent.Replace("{CompanySelf}", help.AuthorCompany)
                    .Replace("{CodeSelf}", help.Code)
+                   .Replace("{Chapter}", help.Chapter)
                    .Replace("{AddressSelf}", help.Address)
                    .Replace("{CompanyCategory}", help.CompanyName)
                    .Replace("{PathNo}", help.PathNo)

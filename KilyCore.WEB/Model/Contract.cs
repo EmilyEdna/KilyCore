@@ -84,5 +84,6 @@ namespace KilyCore.WEB.Model
         public static string CompanySelf { get; set; }
         public static string CodeSelf { get; set; }
         public static string AddressSelf { get; set; }
+        public static string Chapter { get; set; }
     }
 }
