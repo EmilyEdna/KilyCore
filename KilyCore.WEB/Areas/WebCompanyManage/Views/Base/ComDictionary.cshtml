@@ -10,7 +10,6 @@
             Init: function () {
                 this.InitDom();
                 this.InitEvents();
-                this.BindType();
             },
             //元素
             InitDom: function () {
@@ -24,22 +23,6 @@
                 //设置表单
                 this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetDicPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit"});
             },
-            //绑定批次
-            BindType: function () {
-                controller.ajax({
-                    url: "EnterpriseWeb/GetDictionaryList",
-                    async: false,
-                    data: {},
-                    type: 'post',
-                    success: function (result) {
-                        var html = '';
-                        $.each(result.data, function (i, data) {
-                            html += '<option value="' + data.DicType + '"></option>'
-                        });
-                        $("#Dic").html(html);
-                    }
-                });
-            },
             //事件
             InitEvents: function () {
                 $("#add").on('click', function () {
@@ -47,7 +30,7 @@
                         title: "新增记录",
                         type: 2,
                         height: "400px",
-                        width: "600px",
+                        width: "650px",
                         url: "WebCompanyManage/Base/DicEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
@@ -83,7 +66,7 @@
                             title: "编辑字典",
                             type: 2,
                             height: "400px",
-                            width: "600px",
+                            width: "650px",
                             url: "WebCompanyManage/Base/DicEdit?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();

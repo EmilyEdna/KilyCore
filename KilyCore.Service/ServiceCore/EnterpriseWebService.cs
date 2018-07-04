@@ -68,16 +68,18 @@ namespace KilyCore.Service.ServiceCore
                 .Select(t => new ResponseEnterpriseDictionary()
                 {
                     DicType = t.Key.ToString(),
-                    DictionaryList = Kily.Set<EnterpriseDictionary>()
-                   .Where(x => x.IsDelete == false)
-                   .Where(x => x.DicType == t.Key.ToString()).Select(x => new ResponseEnterpriseDictionary()
-                   {
-                       Id = x.Id,
-                       DicName = x.DicName,
-                       DicValue = x.DicValue,
-                       Remark = x.Remark
-                   }).ToList()
                 }).AsNoTracking().ToList();
+            data.ForEach(t => {
+               t.DictionaryList= Kily.Set<EnterpriseDictionary>()
+               .Where(x => x.IsDelete == false)
+               .Where(x => x.DicType == t.DicType).Select(x => new ResponseEnterpriseDictionary()
+               {
+                   Id = x.Id,
+                   DicName = x.DicName,
+                   DicValue = x.DicValue,
+                   Remark = x.Remark
+               }).AsNoTracking().ToList();
+            });
             return data;
 
         }
