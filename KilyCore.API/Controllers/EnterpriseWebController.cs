@@ -321,6 +321,48 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.AuditContinuedAndLevel(Key.Id, Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 内部文件
+        /// <summary>
+        /// 文件分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetFilePage")]
+        public ObjectResultEx GetFilePage(PageParamList<RequestEnterpriseInsideFile> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetFilePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 文件详情
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetFileDetail")]
+        public ObjectResultEx GetFileDetail(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetFileDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除文件
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveFile")]
+        public ObjectResultEx RemoveFile(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveFile(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑文件
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditFile")]
+        public ObjectResultEx EditFile(RequestEnterpriseInsideFile Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditFile(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
         #endregion
         #region 成长档案
         #region 育苗信息

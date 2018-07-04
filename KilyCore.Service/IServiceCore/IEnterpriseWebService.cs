@@ -68,6 +68,12 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseEnterpriseUpLevel> GetUpLevelPage(PageParamList<RequestEnterpriseUpLevel> pageParam);
         String AuditContinuedAndLevel(Guid Id, bool Param);
         #endregion
+        #region 内部文件
+        PagedResult<ResponseEnterpriseInsideFile> GetFilePage(PageParamList<RequestEnterpriseInsideFile> pageParam);
+        ResponseEnterpriseInsideFile GetFileDetail(Guid Id);
+        String RemoveFile(Guid Id);
+        String EditFile(RequestEnterpriseInsideFile Param);
+        #endregion
         #endregion
         #region 成长档案
         #region 育苗信息

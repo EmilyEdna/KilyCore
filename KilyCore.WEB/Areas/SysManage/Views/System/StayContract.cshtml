@@ -51,8 +51,8 @@
                         action.push('<button class="btn btn-sm btn-primary ok"><i class="fa fa-pencil-square-o"></i>确认缴费</button>');
                     action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-pencil-square-o"></i>审核</button>');
                     action.push('<button class="btn btn-sm btn-primary watch"><i class="fa fa-eye"></i>审核记录</button>');
-                    action.push('<button class="btn btn-sm btn-primary up"><i class="fa fa-angle-double-up"></i>升级记录</button>');
-                    action.push('<button class="btn btn-sm btn-primary last"><i class="fa fa-rotate-right"></i>续费记录</button>');
+                    action.push('<button class="btn btn-sm btn-primary up"><i class="fa fa-angle-double-up"></i>升级</button>');
+                    action.push('<button class="btn btn-sm btn-primary last"><i class="fa fa-rotate-right"></i>续费</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
@@ -98,9 +98,9 @@
                         controller.OpenWindow({
                             title: "升级记录",
                             type: 2,
-                            height: "500px",
-                            width: "600px",
-                            url: "SysManage/System/StayContractUpdate?CompanyId=" + row.CompanyId,
+                            height: "80%",
+                            width: "90%",
+                            url: "SysManage/System/StayContractUpdate?Id=" + row.CompanyId,
                             callBack: function (result) {
                                 options.$table.refresh();
                             }
@@ -110,9 +110,9 @@
                         controller.OpenWindow({
                             title: "续费记录",
                             type: 2,
-                            height: "500px",
-                            width: "600px",
-                            url: "SysManage/System/StayContractContinued?CompanyId=" + row.CompanyId,
+                            height: "80%",
+                            width: "90%",
+                            url: "SysManage/System/StayContractContinued?Id=" + row.CompanyId,
                             callBack: function (result) {
                                 options.$table.refresh();
                             }
@@ -167,7 +167,7 @@
                                 <th data-field="TryOut" data-halign="center" data-align="center" data-valign="middle">试用(天)</th>
                                 <th data-field="AuditTypeName" data-halign="center" data-align="center" data-valign="middle">审核状态</th>
                                 <th data-formatter="options.action.ImgFormatter" data-events="options.action.ImgEvents" data-halign="center" data-align="center" data-valign="middle">缴费凭证</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents">操作</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>
                     </table>

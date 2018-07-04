@@ -68,13 +68,24 @@ namespace KilyCore.WEB.Areas.SysManage.Controllers
         {
             return View();
         }
-        public IActionResult StayContractEdit() {
+        public IActionResult StayContractEdit()
+        {
             return View();
         }
-        public IActionResult AuditStayContract() {
+        public IActionResult AuditStayContract()
+        {
             return View();
         }
-        public IActionResult AuditRecord() {
+        public IActionResult AuditRecord()
+        {
+            return View();
+        }
+        public IActionResult StayContractContinued()
+        {
+            return View();
+        }
+        public IActionResult StayContractUpdate()
+        {
             return View();
         }
         #endregion

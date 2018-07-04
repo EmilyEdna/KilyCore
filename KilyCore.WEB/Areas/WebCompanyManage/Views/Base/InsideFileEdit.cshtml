@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "编辑码表";
+    ViewData["Title"] = "编辑文件";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section css{
@@ -16,21 +16,22 @@
             //元素
             InitDom: function () {
                 var Guid = controller.GetParam("Id");
-                var Editor = controller.Editor(".summernote", { width: 655 });
-                options.GetDicDetail(Guid, Editor);
+                $("#CompanyId").val(CompanyInfo.Id);
+                var Editor = controller.Editor(".summernote", {width:655});
+                options.GetFileDetail(Guid, Editor);
             },
             //获取详细
-            GetDicDetail: function (data, Editor) {
+            GetFileDetail: function (data, Editor) {
                 if (data != null && data != undefined && data != "")
                 {
                     controller.ajax({
-                        url: "Function/GetDicDetail",
+                        url: "EnterpriseWeb/GetFileDetail",
                         data: { Id: data },
                         type: "post",
                         async: false,
                         success: function (result) {
                             controller.SetCtrlValue("#Edit", result.data);
-                            Editor.summernote('code', result.data.DicDescript);
+                            Editor.summernote('code', result.data.FileContent);
                         }
                     });
                 }
@@ -51,30 +52,21 @@
 }
 <div class="ibox float-e-margins">
     <div class="ibox-content">
-        <form class="orm-horizontal" method="post" action="Function/DicEdit" id="Edit">
-            <input type="hidden" name="Id"/>
-            <input  type="hidden" name="DicDescript"/>
+        <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditFile" id="Edit">
+            <input type="hidden" name="Id" />
+            <input  type="hidden" name="CompanyId" id="CompanyId"/>
+            <input type="hidden" name="FileContent" />
             <table class="table table-hover table-bordered">
                 <tr>
-                    <th><label class="control-label">码表名称</label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control" name="DicName" />
-                    </td>
-                    <th><label class="control-label">码表值</label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control" name="DicValue" />
-                    </td>
-                </tr>
-                <tr>
-                    <th><label class="control-label">附加信息</label></th>
+                    <th><label class="control-label">文件标题</label></th>
                     <td class="has-warning" colspan="3">
-                        <input type="text" class="form-control" name="AttachInfo" />
+                        <input type="text" class="form-control" name="FileTitle" />
                     </td>
                 </tr>
                 <tr>
                     <th><label class="control-label">详情描述</label></th>
                     <td class="has-warning" colspan="3">
-                        <div class="summernote" name="DicDescript"></div>
+                        <div class="summernote" name="FileContent"></div>
                     </td>
             </table>
         </form>

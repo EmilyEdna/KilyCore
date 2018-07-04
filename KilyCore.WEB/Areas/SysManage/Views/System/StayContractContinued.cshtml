@@ -21,7 +21,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetContinuedPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { Id: controller.GetParam("Id") } });
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetContinuedPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { CompanyId: controller.GetParam("Id") } });
             },
             //事件
             InitEvents: function () {
@@ -108,7 +108,7 @@
                                 <th data-field="Payment" data-halign="center" data-align="center" data-valign="middle">是否付款</th>
                                 <th data-field="AuditTypeName" data-halign="center" data-align="center" data-valign="middle">审核状态</th>
                                 <th data-formatter="options.action.ImgFormatter" data-events="options.action.ImgEvents" data-halign="center" data-align="center" data-valign="middle">缴费凭证</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents">操作</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>
                     </table>

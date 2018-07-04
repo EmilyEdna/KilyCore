@@ -638,7 +638,7 @@ controller.Editor = function (element, option) {
         }
     };
     var options = $.extend(defaultOption, option);
-    $(element).summernote(options);
+    return $(element).summernote(options);
     function SendImg(formData) {
         $.ajax({
             url: WebUrl + option.url,

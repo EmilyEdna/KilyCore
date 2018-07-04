@@ -805,7 +805,7 @@ namespace KilyCore.Service.ServiceCore
                     UpdateField(contract, null, Fields);
                     if (level.VersionType == SystemVersionEnum.Test)
                         info.TagCodeNum += ServiceMessage.TEST;
-                     if (level.VersionType == SystemVersionEnum.Base)
+                    if (level.VersionType == SystemVersionEnum.Base)
                         info.TagCodeNum += ServiceMessage.BASE;
                     if (level.VersionType == SystemVersionEnum.Level)
                         info.TagCodeNum += ServiceMessage.LEVEL;
@@ -816,6 +816,66 @@ namespace KilyCore.Service.ServiceCore
                     return UpdateField(level, "AuditType") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
                 }
             }
+        }
+        #endregion
+
+        #region 内部文件
+        /// <summary>
+        /// 文件分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseInsideFile> GetFilePage(PageParamList<RequestEnterpriseInsideFile> pageParam)
+        {
+            IQueryable<EnterpriseInsideFile> queryable = Kily.Set<EnterpriseInsideFile>().OrderByDescending(t => t.CreateTime);
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.Select(t => new ResponseEnterpriseInsideFile()
+            {
+                Id = t.Id,
+                FileTitle = t.FileTitle
+            }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 内部文件详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseEnterpriseInsideFile GetFileDetail(Guid Id)
+        {
+            var data = Kily.Set<EnterpriseInsideFile>().Where(t => t.Id == Id).Select(t => new ResponseEnterpriseInsideFile()
+            {
+                Id = t.Id,
+                CompanyId = t.CompanyId,
+                FileTitle = t.FileTitle,
+                FileContent = t.FileContent
+            }).AsNoTracking().FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 删除文件
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveFile(Guid Id)
+        {
+            return Remove<EnterpriseInsideFile>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 编辑文件
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditFile(RequestEnterpriseInsideFile Param)
+        {
+            EnterpriseInsideFile insideFile = Param.MapToEntity<EnterpriseInsideFile>();
+            if (Param.Id == Guid.Empty)
+                return Insert<EnterpriseInsideFile>(insideFile) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+                return Update<EnterpriseInsideFile, RequestEnterpriseInsideFile>(insideFile, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         #endregion
         #endregion

@@ -48,4 +48,17 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         }
         public SystemVersionEnum VersionType { get; set; }
     }
+    public class ResponseEnterpriseInsideFile
+    {
+        public Guid Id { get; set; }
+        public Guid CompanyId { get; set; }
+        /// <summary>
+        /// 文件标题
+        /// </summary>
+        public string FileTitle { get; set; }
+        /// <summary>
+        /// 文件内容
+        /// </summary>
+        public string FileContent { get; set; }
+    }
 }

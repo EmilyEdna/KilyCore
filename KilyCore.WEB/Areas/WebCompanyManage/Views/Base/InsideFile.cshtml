@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "版本升级";
+    ViewData["Title"] = "内部文件";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
@@ -21,42 +21,38 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetUpLevelPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { CompanyId: controller.GetParam("Id") } });
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetFilePage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
             },
             //事件
             InitEvents: function () {
+                $("#add").on('click', function () {
+                    controller.OpenWindow({
+                        title: "新增内部文件",
+                        type: 2,
+                        height: "440px",
+                        width: "600px",
+                        url: "WebCompanyManage/Base/InsideFileEdit",
+                        callBack: function (result) {
+                            result.$("#Edit").submit();
+                        }
+                    })
+                });
             },
             //行为
             action: {
-                ImgFormatter: function (val, row, index) {
-                    var action = [];
-                    action.push('<img class="photo" src="' + row.PayTicket + '" style="width:48px;height:32px;"">')
-                    return action.join("&nbsp;");
-                },
-                ImgEvents: {
-                    "click .photo": function (event, val, row, index) {
-                        var option = {
-                            title: "缴费凭证",
-                            data: [{
-                                alt: "缴费凭证",
-                                src: $(this).attr("src")
-                            }]
-                        };
-                        controller.Photos(option);
-                    }
-                },
                 TableFormatter: function (val, row, index) {
                     var action = [];
-                    action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-pencil-square-o"></i>审核</button>');
+                    action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
+                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
-                    "click .audit": function (event, val, row, index) {
-                        controller.Confirm("确认审核？", function (bool) {
+                    "click .del": function (event, val, row, index) {
+                        controller.Confirm("确认删除？", function (bool) {
                             if (bool) {
                                 controller.ajax({
-                                    url: "EnterpriseWeb/AuditContinuedAndLevel",
-                                    data: { Id: row.Id, Parameter: false },
+                                    url: "Enterprise/RemoveFile",
+                                    data: { Id: row.Id },
                                     type: 'post',
                                     success: function (result) {
                                         options.$table.refresh();
@@ -65,6 +61,18 @@
                             }
                         });
                     },
+                    "click .edit": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "编辑内部文件",
+                            type: 2,
+                            height: "445px",
+                            width: "605px",
+                            url: "WebCompanyManage/Base/InsideFileEdit?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
+                    }
                 }//表单事件结束
             }//行为结束
         };
@@ -81,18 +89,21 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>续费记录</h5>
+                <h5>内部文件</h5>
             </div>
             <div class="ibox-content">
                 <div class="row">
                     <form id="Edit">
-                        <div class="col-sm-11 m-b-xs">
+                        <div class="col-sm-8 m-b-xs">
                             <div class="input-group">
+                                <button type="button" class="btn btn-sm btn-white" id="add"><i class="fa fa-plus"></i>新增</button>
                             </div>
                         </div>
-                        <div class="col-sm-1">
+                        <div class="col-sm-4">
                             <div class="input-group">
+                                <input type="text" placeholder="姓名" class="input-sm form-control" name="FileTitle">
                                 <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
                                     <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
                                 </span>
                             </div>
@@ -103,12 +114,7 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="ContinuedYear" data-halign="center" data-align="center" data-valign="middle">续费年限</th>
-                                <th data-field="PayTypeName" data-halign="center" data-align="center" data-valign="middle">支付类型</th>
-                                <th data-field="Payment" data-halign="center" data-align="center" data-valign="middle">是否付款</th>
-                                <th data-field="AuditTypeName" data-halign="center" data-align="center" data-valign="middle">审核状态</th>
-                                <th data-field="VersionTypeName" data-halign="center" data-align="center" data-valign="middle">版本名称</th>
-                                <th data-formatter="options.action.ImgFormatter" data-events="options.action.ImgEvents" data-halign="center" data-align="center" data-valign="middle">缴费凭证</th>
+                                <th data-field="FileTitle" data-halign="center" data-align="center" data-valign="middle">姓名</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>

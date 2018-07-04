@@ -10,7 +10,6 @@
         //配置
         var options = {
             Init: function () {
-                this.InitEnterpriseRole();
                 this.InitDom();
                 this.InitEvents();
             },
@@ -21,7 +20,7 @@
                 //获取版本
                 controller.ajax({
                     url: "Function/GetAreaVersion",
-                    data: { Id: TypePath, Parameter: CompanyInfo.CompanyType },
+                    data: { Id: CompanyInfo.TypePath, Parameter: CompanyInfo.CompanyType },
                     async: false,
                     type: "post",
                     success: function (result) {
@@ -89,7 +88,7 @@
             <input type="hidden" name="CommunityCode" />
             <input type="hidden" name="CompanyAddress" />
         </form>
-        <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditContinued" id="Edit">
+        <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditUpLevel" id="Edit">
             <input type="hidden" name="CompanyId" id="CompanyId" />
             <input type="hidden" name="PayTicket" id="PayTicket" />
             <table class="table table-hover table-bordered">
