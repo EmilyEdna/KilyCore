@@ -69,16 +69,17 @@ namespace KilyCore.Service.ServiceCore
                 {
                     DicType = t.Key.ToString(),
                 }).AsNoTracking().ToList();
-            data.ForEach(t => {
-               t.DictionaryList= Kily.Set<EnterpriseDictionary>()
-               .Where(x => x.IsDelete == false)
-               .Where(x => x.DicType == t.DicType).Select(x => new ResponseEnterpriseDictionary()
-               {
-                   Id = x.Id,
-                   DicName = x.DicName,
-                   DicValue = x.DicValue,
-                   Remark = x.Remark
-               }).AsNoTracking().ToList();
+            data.ForEach(t =>
+            {
+                t.DictionaryList = Kily.Set<EnterpriseDictionary>()
+                .Where(x => x.IsDelete == false)
+                .Where(x => x.DicType == t.DicType).Select(x => new ResponseEnterpriseDictionary()
+                {
+                    Id = x.Id,
+                    DicName = x.DicName,
+                    DicValue = x.DicValue,
+                    Remark = x.Remark
+                }).AsNoTracking().ToList();
             });
             return data;
 
@@ -282,7 +283,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public ResponseEnterprise GetEnterpriseInfo(Guid Id)
         {
-            var data = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Id).Select(t => new ResponseEnterprise()
+            var data = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Id).Join(Kily.Set<SystemStayContract>(), t => t.Id, x => x.CompanyId, (t, x) => new ResponseEnterprise()
             {
                 Id = t.Id,
                 CompanyAccount = t.CompanyAccount,
@@ -291,8 +292,8 @@ namespace KilyCore.Service.ServiceCore
                 CompanyName = t.CompanyName,
                 CompanyPhone = t.CompanyPhone,
                 CompanyType = t.CompanyType,
-                CompanyTypeName= AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
-                AuditTypeName= AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
+                CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
+                AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(x.AuditType),
                 VersionName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.Version),
                 Version = t.Version,
                 PassWord = t.PassWord,
