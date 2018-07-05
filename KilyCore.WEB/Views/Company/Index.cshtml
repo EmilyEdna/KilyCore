@@ -1,14 +1,196 @@
 ﻿
 @{
-    Layout = null;
+    ViewData["Title"] = "首页";
+    Layout = "~/Views/Shared/BaseView.cshtml";
 }
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
-    首页
-</body>
-</html>
+@section script{
+    <script>
+        var option = {
+            Init: function () {
+                this.IntDom();
+                this.InitEvent();
+            },
+            IntDom: function () {
+                $("body").addClass("gray-bg");
+                $("input").addClass("noborder");
+                $("img[name='Certification']").addClass("imgheight");
+                //获取详细
+                controller.ajax({
+                    url: "EnterpriseWeb/GetEnterpriseInfo",
+                    data: { Id: CompanyInfo.Id },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        controller.SetCtrlValue("#Edit", result.data);
+                        if (result.data.IdCard != null) {
+                            $("img[name='IdCard_1']").attr("src", result.data.IdCard.split(',')[0]);
+                            $("img[name='IdCard_2']").attr("src", result.data.IdCard.split(',')[1]);
+                        }
+                    }
+                });
+            },
+            InitEvent: function () {
+                //查看图片
+                $("img").on('click', function () { 
+                    var option = {
+                        title: "企业资料",
+                        data: [{
+                            alt: "企业资料",
+                            src: $(this).attr("src")
+                        }]
+                    };
+                    controller.Photos(option);
+                });
+                //显示或隐藏
+                $(".collapse-link").on('click', function () {
+                    var ibox = $(this.closest('div.ibox'));
+                    var i = $(this).find("i");
+                    var content = ibox.find("div.ibox-content");
+                    content.slideToggle(200);
+                    i.toggleClass("fa-chevron-up").toggleClass("fa-chevron-down");
+                    ibox.toggleClass("").toggleClass("border-bottom");
+                    setTimeout(function () {
+                        ibox.resize();
+                        ibox.find("[id^=map-]").resize();
+                    }, 50);
+                });
+                //关闭
+                $(".close-link").click(function () {
+                    var ibox = $(this).closest("div.ibox");
+                    ibox.hide()
+                });
+            }
+        };
+        $(document).ready(function () {
+            option.Init();
+        });
+    </script>
+}
+@section css{
+    <style>
+        .noborder {
+            border: none;
+        }
+
+        .imgheight {
+            height: 337px;
+        }
+    </style>
+}
+<form id="Edit">
+    <div class="wrapper wrapper-content">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>企业资料</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <table class="table table-hover no-margins">
+                            <tr>
+                                <th><label class="control-label">企业账号</label></th>
+                                <td>
+                                    <input type="text" class="form-control" name="CompanyAccount" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label class="control-label">企业名称</label></th>
+                                <td>
+                                    <input type="text" class="form-control" name="CompanyName" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label class="control-label">企业类型</label></th>
+                                <td>
+                                    <input type="text" class="form-control" name="CompanyTypeName" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label class="control-label">系统版本</label></th>
+                                <td>
+                                    <input type="text" class="form-control" name="VersionName" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label class="control-label">工商代码</label></th>
+                                <td>
+                                    <input type="text" class="form-control" name="CommunityCode" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label class="control-label">公司地址</label></th>
+                                <td>
+                                    <input type="text" class="form-control" name="CompanyAddress" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label class="control-label">公司电话</label></th>
+                                <td>
+                                    <input type="text" class="form-control" name="CompanyPhone" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label class="control-label">审核状态</label></th>
+                                <td>
+                                    <input type="text" class="form-control" name="AuditTypeName" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label class="control-label">企业性质</label></th>
+                                <td>
+                                    <input type="text" class="form-control" name="NatureName" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th><label class="control-label">二维码数量</label></th>
+                                <td>
+                                    <input type="text" class="form-control" name="TagCodeNum" readonly>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>企业图片</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <ul class="todo-list m-t small-list ui-sortable">
+                            <li>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <img class="img-preview-sm" src="" type="image" name="IdCard_1" style="display:block;margin:auto" title="点击放大身份证" />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <img class="img-preview-sm" src="" type="image" name="IdCard_2" style="display:block;margin:auto" title="点击放大身份证" />
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <img class="img-preview" src="" type="image" name="Certification" style="display:block;margin:auto" title="点击放大企业证书" />
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
