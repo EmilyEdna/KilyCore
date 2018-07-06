@@ -1,4 +1,5 @@
 ﻿using KilyCore.EntityFrameWork.Model.Base;
+using KilyCore.EntityFrameWork.ModelEnum;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -48,5 +49,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 单位
         /// </summary>
         public virtual string Unit { get; set; }
+        /// <summary>
+        /// 审核类型
+        /// </summary>
+        public virtual AuditEnum AuditType { get; set; }
     }
 }

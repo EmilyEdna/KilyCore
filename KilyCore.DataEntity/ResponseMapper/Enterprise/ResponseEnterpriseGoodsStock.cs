@@ -53,6 +53,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public List<ResponseEnterpriseMaterial> MaterialList { get; set; }
         public string Manager { get; set; }
         public Guid CheckGoodsId { get; set; }
+        public string AuditTypeName { get; set; }
     }
     public class ResponseEnterpriseGoodsStockAttach
     {

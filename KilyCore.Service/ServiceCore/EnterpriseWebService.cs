@@ -2382,6 +2382,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string EditGoods(RequestEnterpriseGoods Param)
         {
+            Param.AuditType = AuditEnum.WaitAduit;
             EnterpriseGoods Goods = Param.MapToEntity<EnterpriseGoods>();
             if (Param.Id != Guid.Empty)
                 return Update<EnterpriseGoods, RequestEnterpriseGoods>(Goods, Param) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
@@ -2468,6 +2469,7 @@ namespace KilyCore.Service.ServiceCore
                     MaterialId = o.MaterialId,
                     GoodsId = p.x.Id,
                     Manager = p.t.Manager,
+                    AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                     MaterialList = Material.ToList()
                 }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;

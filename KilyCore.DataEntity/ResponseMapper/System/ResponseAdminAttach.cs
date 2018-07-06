@@ -22,7 +22,7 @@ namespace KilyCore.DataEntity.ResponseMapper.System
         public DateTime? StartTime { get; set; }
         public DateTime? EndTime { get; set; }
         public bool? IsPay { get; set; }
-        public decimal Money { get; set; }
+        public decimal? Money { get; set; }
         public string PayUser { get; set; }
         public bool? IsDelete { get; set; }
         public string UseOrStop

@@ -1,8 +1,8 @@
 ﻿using KilyCore.Configure;
-using KilyCore.DataEntity.RequestMapper.Dining;
+using KilyCore.DataEntity.RequestMapper.Repast;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.System;
-using KilyCore.DataEntity.ResponseMapper.Dining;
+using KilyCore.DataEntity.ResponseMapper.Repast;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.Service.QueryExtend;
@@ -32,7 +32,7 @@ namespace KilyCore.Service.IServiceCore
         String AuditIndetEnterprisePay(Guid Key, bool Param);
         #endregion
         #region 餐饮认证
-        PagedResult<ResponseDiningIdent> IdentFoodPay(PageParamList<RequestDiningIdent> pageParam);
+        PagedResult<ResponseRepastIdent> IdentFoodPay(PageParamList<RequestDiningIdent> pageParam);
         String AuditIndetFoodPay(Guid Key, bool Param);
         #endregion
         #region 缴费凭证

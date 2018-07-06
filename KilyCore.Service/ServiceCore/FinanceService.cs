@@ -1,10 +1,9 @@
-﻿using KilyCore.DataEntity.RequestMapper.Dining;
+﻿using KilyCore.DataEntity.RequestMapper.Repast;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.System;
-using KilyCore.DataEntity.ResponseMapper.Dining;
+using KilyCore.DataEntity.ResponseMapper.Repast;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.System;
-using KilyCore.EntityFrameWork.Model.Dining;
 using KilyCore.EntityFrameWork.Model.Enterprise;
 using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
@@ -21,6 +20,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using KilyCore.EntityFrameWork.Model.Repast;
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日12点01分
@@ -43,7 +43,6 @@ namespace KilyCore.Service.ServiceCore
                 Admin = Admin.Where(t => t.Account.Equals(pageParam.QueryParam.Account));
             var data = Admin.OrderBy(t => t.CreateTime).GroupJoin(AdminAttach, t => t.Id, x => x.AdminId, (t, x) => new ResponseAdminAttach()
             {
-                Id = x.FirstOrDefault().Id,
                 AdminId = t.Id,
                 TrueName = t.TrueName,
                 AccountType = t.AccountType,
@@ -166,13 +165,13 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="pageParam"></param>
         /// <returns></returns>
-        public PagedResult<ResponseDiningIdent> IdentFoodPay(PageParamList<RequestDiningIdent> pageParam)
+        public PagedResult<ResponseRepastIdent> IdentFoodPay(PageParamList<RequestDiningIdent> pageParam)
         {
-            IQueryable<DiningIdent> queryable = Kily.Set<DiningIdent>().Where(t => t.IsDelete == false);
+            IQueryable<RepastIdent> queryable = Kily.Set<RepastIdent>().Where(t => t.IsDelete == false);
             queryable = queryable.Where(t => t.AuditType >= AuditEnum.AuditSuccess);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.MerchantName))
                 queryable = queryable.Where(t => t.MerchantName.Contains(pageParam.QueryParam.MerchantName));
-            var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseDiningIdent()
+            var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseRepastIdent()
             {
                 Id = t.Id,
                 IdentNo = t.IdentNo,
@@ -194,12 +193,12 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string AuditIndetFoodPay(Guid Key, bool Param)
         {
-            DiningIdent Ident = Kily.Set<DiningIdent>().Where(t => t.Id == Key).FirstOrDefault();
+            RepastIdent Ident = Kily.Set<RepastIdent>().Where(t => t.Id == Key).FirstOrDefault();
             if (Param)
                 Ident.AuditType = AuditEnum.FinanceSuccess;
             else
                 Ident.AuditType = AuditEnum.FinanceFail; ;
-            if (UpdateField<DiningIdent>(Ident, "AuditType"))
+            if (UpdateField<RepastIdent>(Ident, "AuditType"))
                 return ServiceMessage.HANDLESUCCESS;
             else
                 return ServiceMessage.HANDLEFAIL;

@@ -1,7 +1,7 @@
 ﻿using KilyCore.Configure;
-using KilyCore.DataEntity.RequestMapper.Dining;
+using KilyCore.DataEntity.RequestMapper.Repast;
 using KilyCore.DataEntity.RequestMapper.System;
-using KilyCore.DataEntity.ResponseMapper.Dining;
+using KilyCore.DataEntity.ResponseMapper.Repast;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.Service.QueryExtend;
 using System;
@@ -16,7 +16,7 @@ namespace KilyCore.Service.IServiceCore
     /// <summary>
     /// 点餐后台业务逻辑接口
     /// </summary>
-    public interface IDiningService :IService
+    public interface IRepastService :IService
     {
         #region 商家资料
         PagedResult<ResponseMerchant> GetMerchantPage(PageParamList<RequestMerchant> pageParam);
@@ -24,11 +24,11 @@ namespace KilyCore.Service.IServiceCore
         String AuditMerchant(RequestAudit Param);
         #endregion
         #region 餐饮菜单
-        PagedResult<ResponseDiningMenu> GetDiningMenuPage(PageParamList<RequestDiningMenu> pageParam);
-        String EditDiningMenu(RequestDiningMenu Param);
+        PagedResult<ResponseRepastMenu> GetDiningMenuPage(PageParamList<RequestRepastMenu> pageParam);
+        String EditDiningMenu(RequestRepastMenu Param);
         String RemoveMenu(Guid Id);
-        ResponseDiningMenu GetDiningMenuDetail(Guid Id);
-        IList<ResponseDiningMenu> AddDiningParentMenu();
+        ResponseRepastMenu GetDiningMenuDetail(Guid Id);
+        IList<ResponseRepastMenu> AddDiningParentMenu();
         #endregion
         #region 餐饮权限菜单树
         IList<ResponseParentTree> GetDiningTree();
@@ -39,8 +39,8 @@ namespace KilyCore.Service.IServiceCore
         String RemoveAuthorRole(Guid Id);
         #endregion
         #region 认证审核
-        PagedResult<ResponseDiningIdent> GetDiningIdentPage(PageParamList<RequestDiningIdent> pageParam);
-        ResponseDiningIdent GetDiningIdentDetail(Guid Id);
+        PagedResult<ResponseRepastIdent> GetDiningIdentPage(PageParamList<RequestDiningIdent> pageParam);
+        ResponseRepastIdent GetDiningIdentDetail(Guid Id);
         String AuditIdent(RequestAudit Param);
         String AuditPayment(RequestPayment Param);
         #endregion

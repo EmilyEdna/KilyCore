@@ -32,7 +32,7 @@ namespace KilyCore.EntityFrameWork.Model.System
         /// <summary>
         /// 加盟金额
         /// </summary>
-        public virtual decimal Money { get; set; } 
+        public virtual decimal? Money { get; set; } 
         /// <summary>
         /// 缴费人
         /// </summary>

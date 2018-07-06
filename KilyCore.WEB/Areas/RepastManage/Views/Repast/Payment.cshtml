@@ -1,0 +1,120 @@
+﻿
+@{
+    ViewData["Title"] = "认证缴费";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+    <style>
+        .line-width {
+        display:block;
+        }
+    </style>
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var Guid = controller.GetParam("Id");
+                var TableName = controller.GetParam("TableName");
+                $("#TableId").val(Guid);
+                $("#TableName").val(TableName);
+                //初始化时间
+                controller.LayDate({ elem: "#PayTime" });
+            },
+            //设置文件值
+            SetFileValue: function (data, elememt) {
+                var files = $(elememt).val();
+                if (files != null && files != "" && files != undefined) {
+                    files += "," + data;
+                    $(elememt).val(files);
+                } else {
+                    $(elememt).val(data);
+                }
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+                //文件上传
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: ".upload-input",
+                    maxNum:1,
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data,"#File");
+                    }
+                });
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="row m-b-xs">
+            <div class="col-sm-12 col-md-12"><h4 class="text text-danger">友情提示公司银行账户</h4></div>
+        </div>
+        <form class="orm-horizontal" method="post" action="Repast/AuditPayment" id="Edit">
+            <input name="TableId" id="TableId" type="hidden" />
+            <input name="TableName" id="TableName" type="hidden" />
+            <input name="PayCertificate" id="File"  type="hidden"/>
+            <div class="row">
+                <div class="col-sm-6 col-md-6">
+                    <div class="input-group line-width">
+                        <span class="label label-warning">缴费人</span>
+                        <input type="text" class="form-control required" name="PaymentUser" data-msg-required="请输入缴费人" />
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-6">
+                    <div class="input-group line-width">
+                        <span class="label label-warning">联系电话</span>
+                        <input type="text" class="form-control required" name="LinkPhone" data-msg-required="请输入联系电话" />
+                    </div>
+                </div>
+            </div>
+            <div class="row m-t-sm">
+                <div class="col-sm-6 col-md-6">
+                    <div class="input-group line-width">
+                        <span class="label label-warning">缴费时间</span>
+                        <input type="text" class="form-control required" name="PayTime" id="PayTime" data-msg-required="请输入缴费时间" />
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-6">
+                    <div class="input-group line-width">
+                        <span class="label label-warning">缴费金额</span>
+                        <input type="text" class="form-control required" name="Paymoney" data-msg-required="请输入缴费金额" />
+                    </div>
+                </div>
+            </div>
+            <div class="m-t-sm">
+                <div class="input-group line-width">
+                    <span class="label label-warning">备注</span>
+                    <textarea class="form-control" maxlength="120" name="Remark"></textarea>
+                </div>
+            </div>
+            <div class="m-t-sm">
+                <div class="input-group line-width">
+                    <span class="label label-warning">上传缴费凭证</span>
+                    <div class="image-box clear">
+                        <section class="upload-section">
+                            <div class="upload-btn"></div>
+                            <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

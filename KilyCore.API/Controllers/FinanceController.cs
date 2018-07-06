@@ -1,5 +1,5 @@
 ﻿using System;
-using KilyCore.DataEntity.RequestMapper.Dining;
+using KilyCore.DataEntity.RequestMapper.Repast;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.Extension.ResultExtension;

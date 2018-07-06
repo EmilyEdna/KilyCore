@@ -56,5 +56,13 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 产品质检表Id
         /// </summary>
         public virtual Guid CheckGoodsId { get; set; }
+        /// <summary>
+        /// 产品图片
+        /// </summary>
+        public virtual string ImgUrl { get; set; }
+        /// <summary>
+        /// 备注
+        /// </summary>
+        public virtual string Remark { get; set; }
     }
 }

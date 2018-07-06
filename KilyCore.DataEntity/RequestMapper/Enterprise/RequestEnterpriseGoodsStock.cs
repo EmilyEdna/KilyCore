@@ -31,6 +31,14 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public string Manager { get; set; }
         public DateTime ProductTime { get; set; }
         public Guid CheckGoodsId { get; set; }
+        /// <summary>
+        /// 产品图片
+        /// </summary>
+        public string ImgUrl { get; set; }
+        /// <summary>
+        /// 备注
+        /// </summary>
+        public string Remark { get; set; }
     }
     public class RequestEnterpriseGoodsStockAttach
     {

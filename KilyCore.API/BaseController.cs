@@ -16,7 +16,7 @@ namespace KilyCore.API
         public ISystemService SystemService = EngineExtension.Context.Resolve<ISystemService>();
         public IFinanceService FinanceService = EngineExtension.Context.Resolve<IFinanceService>();
         public IEnterpriseService EnterpriseService = EngineExtension.Context.Resolve<IEnterpriseService>();
-        public IDiningService DiningService = EngineExtension.Context.Resolve<IDiningService>();
+        public IRepastService RepastService = EngineExtension.Context.Resolve<IRepastService>();
         public IFunctionService FunctionService = EngineExtension.Context.Resolve<IFunctionService>();
 
         public IEnterpriseWebService EnterpriseWebService = EngineExtension.Context.Resolve<IEnterpriseWebService>();
