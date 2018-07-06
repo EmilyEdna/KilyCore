@@ -84,6 +84,8 @@ namespace KilyCore.Service.ServiceCore
                 TypePath = t.TypePath,
                 Certification = t.Certification,
                 ImplUser = t.ImplUser,
+                AllowUnit = t.AllowUnit,
+                VersionTypeName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.VersionType),
                 AuditInfo = Kily.Set<SystemAudit>()
                     .Where(x => x.IsDelete == false)
                     .Where(x => x.TableId == t.Id).ToList().MapToList<SystemAudit, ResponseAudit>()
@@ -338,7 +340,7 @@ namespace KilyCore.Service.ServiceCore
                 DiningTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
                 IdentYear = t.IdentYear,
                 TableName = t.GetType().Name,
-                AuditType=t.AuditType,
+                AuditType = t.AuditType,
                 AuditInfo = Kily.Set<SystemAudit>()
                     .Where(x => x.IsDelete == false)
                     .Where(x => x.TableId == t.Id).ToList().MapToList<SystemAudit, ResponseAudit>()

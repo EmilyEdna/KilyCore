@@ -11,6 +11,7 @@ namespace KilyCore.DataEntity.RequestMapper.Dining
     public class RequestMerchant
     {
         public Guid Id { get; set; }
+        public string AllowUnit { get; set; }
         public string Account { get; set; }
         public string PassWord { get; set; }
         public string CommunityCode { get; set; }
@@ -19,6 +20,7 @@ namespace KilyCore.DataEntity.RequestMapper.Dining
         public string Phone { get; set; }
         public Guid? DingRoleId { get; set; }
         public AuditEnum AuditType { get; set; }
+        public SystemVersionEnum VersionType { get; set; }
         public string AreaTree { get; set; }
         public string Province { get; set; }
         public string City { get; set; }

@@ -18,6 +18,8 @@ namespace KilyCore.DataEntity.ResponseMapper.Dining
         public string MerchantName { get; set; }
         public string Email { get; set; }
         public MerchantEnum DiningType { get; set; }
+        public  SystemVersionEnum VersionType { get; set; }
+        public string VersionTypeName { get; set; }
         public string DiningTypeName { get; set; }
         public string Phone { get; set; }
         public Guid? DingRoleId { get; set; }
@@ -54,5 +56,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Dining
         public string ImplUser { get; set; }
         public string TableName { get; set; }
         public IList<ResponseAudit> AuditInfo { get; set; }
+        public string AllowUnit { get; set; }
     }
 }

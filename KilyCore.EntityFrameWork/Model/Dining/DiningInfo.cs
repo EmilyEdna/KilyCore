@@ -62,5 +62,13 @@ namespace KilyCore.EntityFrameWork.Model.Dining
         /// 代表人
         /// </summary>
         public virtual string ImplUser { get; set; }
+        /// <summary>
+        /// 所属单位
+        /// </summary>
+        public virtual string AllowUnit { get; set; }
+        /// <summary>
+        /// 系统版本
+        /// </summary>
+        public virtual SystemVersionEnum VersionType { get; set; }
     }
 }
