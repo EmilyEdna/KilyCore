@@ -12,7 +12,7 @@ namespace KilyCore.EntityFrameWork.Model.Dining
     /// <summary>
     /// 餐饮认证表
     /// </summary>
-    public class DiningIdent:BaseEntity
+    public class DiningIdent: DiningBase
     {
         /// <summary>
         /// 认证编号
@@ -22,10 +22,6 @@ namespace KilyCore.EntityFrameWork.Model.Dining
         /// 商家名称
         /// </summary>
         public virtual string MerchantName { get; set; }
-        /// <summary>
-        /// 餐饮用户主键
-        /// </summary>
-        public virtual Guid InfoId { get; set; }
         /// <summary>
         /// 认证星级
         /// </summary>

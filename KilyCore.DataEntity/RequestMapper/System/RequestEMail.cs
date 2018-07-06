@@ -5,7 +5,7 @@ using System.Text;
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点13分
 /// </summary>
-namespace KilyCore.DataEntity.RequestMapper.Finance
+namespace KilyCore.DataEntity.RequestMapper.System
 {
     public class RequestEMail
     {

@@ -6,7 +6,7 @@ using System.Text;
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点29分
 /// </summary>
-namespace KilyCore.EntityFrameWork.Model.Finance
+namespace KilyCore.EntityFrameWork.Model.System
 {
     /// <summary>
     /// 后台用户信息附加表-财务专用表

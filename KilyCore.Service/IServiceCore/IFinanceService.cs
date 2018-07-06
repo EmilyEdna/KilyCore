@@ -1,11 +1,9 @@
 ﻿using KilyCore.Configure;
 using KilyCore.DataEntity.RequestMapper.Dining;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
-using KilyCore.DataEntity.RequestMapper.Finance;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Dining;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
-using KilyCore.DataEntity.ResponseMapper.Finance;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.Service.QueryExtend;
 using System;
@@ -39,14 +37,6 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 缴费凭证
         ResponsePayment WatchCertificate(Guid Id, string Param);
-        #endregion
-        #region 餐饮合同
-        PagedResult<ResponseContract> GetContractPage(PageParamList<RequestContract> pageParam);
-        #endregion
-        #region 餐饮缴费
-        PagedResult<ResponseDiningPay> GetDiningPayPage(PageParamList<RequestDiningPay> pageParam);
-        IList<ResponseAuthorRole> GetDiningRoles();
-        String EditDiningRole(RequestDiningInfo Param);
         #endregion
         #region 物码缴费
         PagedResult<ResponseEnterpriseApply> GetTagAuditPage(PageParamList<RequestEnterpriseApply> pageParam);

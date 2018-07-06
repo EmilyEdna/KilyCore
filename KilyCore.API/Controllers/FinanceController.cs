@@ -1,7 +1,6 @@
 ﻿using System;
 using KilyCore.DataEntity.RequestMapper.Dining;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
-using KilyCore.DataEntity.RequestMapper.Finance;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.Extension.ResultExtension;
 using KilyCore.Service.QueryExtend;
@@ -124,49 +123,6 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx WatchCertificate(SimlpeParam<Guid> Key, SimlpeParam<string> Value)
         {
             return ObjectResultEx.Instance(FinanceService.WatchCertificate(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }
-        #endregion
-        #region 餐饮合同
-        /// <summary>
-        /// 餐饮合同分页列表
-        /// </summary>
-        /// <param name="pageParam"></param>
-        /// <returns></returns>
-        [HttpPost("GetContractPage")]
-        public ObjectResultEx GetContractPage(PageParamList<RequestContract> pageParam)
-        {
-            return ObjectResultEx.Instance(FinanceService.GetContractPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }
-        #endregion
-        #region 餐饮缴费
-        /// <summary>
-        /// 餐饮缴费分页列表
-        /// </summary>
-        /// <param name="pageParam"></param>
-        /// <returns></returns>
-        [HttpPost("GetDiningPayPage")]
-        public ObjectResultEx GetDiningPayPage(PageParamList<RequestDiningPay> pageParam)
-        {
-            return ObjectResultEx.Instance(FinanceService.GetDiningPayPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }
-        /// <summary>
-        /// 权限列表
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost("GetDiningRoles")]
-        public ObjectResultEx GetDiningRoles()
-        {
-            return ObjectResultEx.Instance(FinanceService.GetDiningRoles(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }
-        /// <summary>
-        /// 更新餐饮权限
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        [HttpPost("EditDiningRole")]
-        public ObjectResultEx EditDiningRole(RequestDiningInfo Param)
-        {
-            return ObjectResultEx.Instance(FinanceService.EditDiningRole(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 物码缴费
