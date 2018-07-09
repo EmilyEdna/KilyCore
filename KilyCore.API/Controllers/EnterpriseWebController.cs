@@ -1178,6 +1178,16 @@ namespace KilyCore.API.Controllers
         #endregion
         #region 产品仓库
         /// <summary>
+        ///提交产品审核
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("AuditGoods")]
+        public ObjectResultEx AuditGoods(RequestEnterpriseGoodsStock Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.AuditGoods(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 产品入库分页
         /// </summary>
         /// <param name="pageParam"></param>

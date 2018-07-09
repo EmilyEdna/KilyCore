@@ -27,6 +27,10 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        public IActionResult SubmitAudit()
+        {
+            return View();
+        }
         public IActionResult StockOut()
         {
             return View();
@@ -35,7 +39,8 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
-        public IActionResult BindTarget() {
+        public IActionResult BindTarget()
+        {
             return View();
         }
         #endregion

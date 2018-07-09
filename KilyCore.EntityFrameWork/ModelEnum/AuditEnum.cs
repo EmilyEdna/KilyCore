@@ -14,6 +14,11 @@ namespace KilyCore.EntityFrameWork.ModelEnum
     public enum AuditEnum
     {
         /// <summary>
+        /// 无审核记录
+        /// </summary>
+        [Description("无审核记录")]
+        NULL = 0,
+        /// <summary>
         /// 审核不通过
         /// </summary>
         [Description("审核不通过")]

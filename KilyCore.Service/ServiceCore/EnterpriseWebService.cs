@@ -283,7 +283,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public ResponseEnterprise GetEnterpriseInfo(Guid Id)
         {
-            var data = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Id).Join(Kily.Set<SystemStayContract>(), t => t.Id, x => x.CompanyId, (t, x) => new ResponseEnterprise()
+            var data = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Id).GroupJoin(Kily.Set<SystemStayContract>(), t => t.Id, x => x.CompanyId, (t, x) => new ResponseEnterprise()
             {
                 Id = t.Id,
                 CompanyAccount = t.CompanyAccount,
@@ -293,7 +293,7 @@ namespace KilyCore.Service.ServiceCore
                 CompanyPhone = t.CompanyPhone,
                 CompanyType = t.CompanyType,
                 CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
-                AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(x.AuditType),
+                AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(x.FirstOrDefault()!=null? x.FirstOrDefault().AuditType:0),
                 VersionName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.Version),
                 Version = t.Version,
                 PassWord = t.PassWord,
@@ -2432,6 +2432,21 @@ namespace KilyCore.Service.ServiceCore
         }
         #endregion
         #region 产品仓库
+        /// <summary>
+        ///提交产品审核
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string AuditGoods(RequestEnterpriseGoodsStock Param)
+        {
+            EnterpriseGoodsStock stock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.Id == Param.Id).FirstOrDefault();
+            EnterpriseGoods goods = Kily.Set<EnterpriseGoods>().Where(t => t.Id == stock.GoodsId).FirstOrDefault();
+            goods.AuditType = AuditEnum.AuditLoading;
+            stock.ImgUrl = Param.ImgUrl;
+            stock.Remark = Param.Remark;
+            IList<String> Fields = new List<String> { "ImgUrl", "Remark" };
+            return (UpdateField(stock, null, Fields) && UpdateField(goods, "AuditType")) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
         /// <summary>
         /// 产品入库分页
         /// </summary>
