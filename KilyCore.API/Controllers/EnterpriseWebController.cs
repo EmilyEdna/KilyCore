@@ -1123,6 +1123,68 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.EditProBatchAttach(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 设施管理
+        /// <summary>
+        /// 设施分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetFacPage")]
+        public ObjectResultEx GetFacPage(PageParamList<RequestEnterpriseFacilities> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetFacPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑设施
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditFac")]
+        public ObjectResultEx EditFac(RequestEnterpriseFacilities Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditFac(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除设施
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveFac")]
+        public ObjectResultEx RemoveFac(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveFac(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 设施附加分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetFacAttachPage")]
+        public ObjectResultEx GetFacAttachPage(PageParamList<RequestEnterpriseFacilitiesAttach> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetFacAttachPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑设施附加
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditFacAttach")]
+        public ObjectResultEx EditFacAttach(RequestEnterpriseFacilitiesAttach Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditFacAttach(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除设施附加
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveFacAttach")]
+        public ObjectResultEx RemoveFacAttach(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveFacAttach(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
         #endregion
         #region 产品管理
         #region 产品列表
@@ -1537,6 +1599,38 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx CheckLogistics(SimlpeParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.CheckLogistics(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #region 进货管理
+        /// <summary>
+        /// 进货分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetBuyerPage")]
+        public ObjectResultEx GetBuyerPage(PageParamList<RequestEnterpriseBuyer> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetBuyerPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑进货
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditBuyer")]
+        public ObjectResultEx EditBuyer(RequestEnterpriseBuyer Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditBuyer(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除进货
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveBuyer")]
+        public ObjectResultEx RemoveBuyer(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveBuyer(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #endregion

@@ -48,6 +48,10 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 负责人
         /// </summary>
         public virtual string Manager { get; set; }
+        /// <summary>
+        /// 车间表Id
+        /// </summary>
+        public virtual Guid? FacId { get; set; }  
     }
     /// <summary>
     /// 生产批次与指标对照表

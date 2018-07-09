@@ -62,6 +62,14 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// 是否收货
         /// </summary>
         public bool Flag { get; set; }
+        /// <summary>
+        /// 运输方式
+        /// </summary>
+        public string TransportWay { get; set; }
+        /// <summary>
+        /// 交通工具
+        /// </summary>
+        public string Traffic { get; set; }
         public string FlagName { get => Flag ? "已签收" : "已发货"; }
     }
 }

@@ -5,13 +5,13 @@ using System.Text;
 
 #region << 版 本 注 释 >>
 /*----------------------------------------------------------------
-* 类 名 称 ：EnterpriseLogistics
+* 类 名 称 ：EnterpriseFacilities
 * 类 描 述 ：
 * 命名空间 ：KilyCore.EntityFrameWork.Model.Enterprise
 * 机器名称 ：DESKTOP-QPIVQ28 
 * CLR 版本 ：4.0.30319.42000
 * 作    者 ：刘泽华
-* 创建时间 ：2018/6/22 15:06:34
+* 创建时间 ：2018/7/9 15:14:28
 *******************************************************************
 * Copyright @ 刘泽华 2018. All rights reserved.
 *******************************************************************
@@ -19,55 +19,56 @@ using System.Text;
 #endregion
 namespace KilyCore.EntityFrameWork.Model.Enterprise
 {
-    public class EnterpriseLogistics:EnterpriseBase
+    /// <summary>
+    /// 企业设施表
+    /// </summary>
+    public class EnterpriseFacilities:EnterpriseBase
     {
         /// <summary>
-        /// 物流单号
+        /// 车间名称
         /// </summary>
-        public virtual string WayBill { get; set; }
+        public virtual string WorkShopName { get; set; }
         /// <summary>
-        /// 包装编号
+        /// 供水
         /// </summary>
-        public virtual string PackageNo { get; set; }
+        public virtual string GetWater { get; set; }
         /// <summary>
-        /// 产品名称
+        /// 排水
         /// </summary>
-        public virtual string GoodsName { get; set; }
+        public virtual string WaterOut { get; set; }
         /// <summary>
-        /// 发货时间
+        /// 光照
         /// </summary>
-        public virtual DateTime? SendTime { get; set; }
+        public virtual string Light { get; set; }
         /// <summary>
-        /// 收货人公司Id
+        /// 通风
         /// </summary>
-        public virtual Guid GainId { get; set; }
+        public virtual string Wind { get; set; }
         /// <summary>
-        /// 发货数量
+        /// 环境控制
         /// </summary>
-        public virtual string SendGoodsNum { get; set; }
+        public virtual string Environment { get; set; }
         /// <summary>
-        /// 收货人
+        /// 废物处理
         /// </summary>
-        public virtual string GainUser { get; set; }
+        public virtual string Waste { get; set; }
+    }
+    /// <summary>
+    /// 企业设施附加表
+    /// </summary>
+    public class EnterpriseFacilitiesAttach : EnterpriseBase
+    {
         /// <summary>
-        /// 电话
+        /// 企业设施表Id
         /// </summary>
-        public virtual string LinkPhone { get; set; }
+        public virtual Guid FacId { get; set; }
         /// <summary>
-        /// 地址
+        /// 名称
         /// </summary>
-        public virtual string Address { get; set; }
+        public virtual string DisinfectionName { get; set; }
         /// <summary>
-        /// 是否收货
+        /// 时间
         /// </summary>
-        public virtual bool Flag { get; set; }
-        /// <summary>
-        /// 运输方式
-        /// </summary>
-        public virtual string TransportWay { get; set; }
-        /// <summary>
-        /// 交通工具
-        /// </summary>
-        public virtual string Traffic { get; set; }
+        public virtual DateTime? CleanTime { get; set; } 
     }
 }

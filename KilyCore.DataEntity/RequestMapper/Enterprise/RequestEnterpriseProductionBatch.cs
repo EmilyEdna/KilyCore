@@ -29,6 +29,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public string DeviceName { get; set; }
         public string MaterId { get; set; }
         public string Manager { get; set; }
+        public Guid? FacId { get; set; }
     }
     public class RequestEnterpriseProductionBatchAttach
     {

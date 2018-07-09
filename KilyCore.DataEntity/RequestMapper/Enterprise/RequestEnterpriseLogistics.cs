@@ -63,5 +63,13 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// </summary>
         public bool Flag { get; set; }
         public bool SendType { get; set; }
+        /// <summary>
+        /// 运输方式
+        /// </summary>
+        public string TransportWay { get; set; }
+        /// <summary>
+        /// 交通工具
+        /// </summary>
+        public string Traffic { get; set; }
     }
 }

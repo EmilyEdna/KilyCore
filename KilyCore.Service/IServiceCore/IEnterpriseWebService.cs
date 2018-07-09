@@ -184,6 +184,14 @@ namespace KilyCore.Service.IServiceCore
         IList<ResponseEnterpriseProductionBatchAttach> GetProBatchAttachList(Guid Id);
         String EditProBatchAttach(RequestEnterpriseProductionBatchAttach Param);
         #endregion
+        #region 设施管理
+        PagedResult<ResponseEnterpriseFacilities> GetFacPage(PageParamList<RequestEnterpriseFacilities> pageParam);
+        String EditFac(RequestEnterpriseFacilities Param);
+        String RemoveFac(Guid Id);
+        PagedResult<ResponseEnterpriseFacilitiesAttach> GetFacAttachPage(PageParamList<RequestEnterpriseFacilitiesAttach> pageParam);
+        String EditFacAttach(RequestEnterpriseFacilitiesAttach Param);
+        String RemoveFacAttach(Guid Id);
+        #endregion
         #endregion
         #region 产品管理
         #region 产品列表
@@ -243,6 +251,11 @@ namespace KilyCore.Service.IServiceCore
         String EditLogistics(RequestEnterpriseLogistics Param);
         String RemoveLogistics(Guid Id);
         String CheckLogistics(Guid Id);
+        #endregion
+        #region 进货管理
+        PagedResult<ResponseEnterpriseBuyer> GetBuyerPage(PageParamList<RequestEnterpriseBuyer> pageParam);
+        String EditBuyer(RequestEnterpriseBuyer Param);
+        String RemoveBuyer(Guid Id);
         #endregion
         #endregion
     }

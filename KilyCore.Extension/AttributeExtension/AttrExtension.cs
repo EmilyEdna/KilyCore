@@ -69,6 +69,9 @@ namespace KilyCore.Extension.AttributeExtension
         /// <returns></returns>
         public static string GetSingleDescription<TEnum, T>(Object obj) where T : Attribute
         {
+
+            if (Convert.ToInt32(obj) == 0)
+                return "";
             FieldInfo field = typeof(TEnum).GetField(Enum.GetName(typeof(TEnum), obj));
             dynamic attr = (T)field.GetCustomAttribute(typeof(T), false);
             return attr.Description.ToString();
@@ -81,6 +84,8 @@ namespace KilyCore.Extension.AttributeExtension
         /// <returns></returns>
         public static string GetSingleDescription<T>(Enum Enum) where T : Attribute
         {
+            if (Convert.ToInt32(Enum) == 0)
+                return "";
             FieldInfo field = Enum.GetType().GetField(Enum.ToString());
             dynamic attr = (T)field.GetCustomAttribute(typeof(T), false);
             return attr.Description.ToString();

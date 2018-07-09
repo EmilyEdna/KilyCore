@@ -41,9 +41,17 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual int InStockNum { get; set; }
         /// <summary>
-        /// 生产批次表Id
+        /// 生产批次表Id--生产企业
         /// </summary>
-        public virtual Guid BatchId { get; set; }
+        public virtual Guid? BatchId { get; set; }
+        /// <summary>
+        /// 成长日记表Id--种养殖企业
+        /// </summary>
+        public virtual Guid? GrowNoteId { get; set; }
+        /// <summary>
+        /// 进货表Id--流通企业
+        /// </summary>
+        public virtual Guid? GetBuyId { get; set; }
         /// <summary>
         /// 负责人
         /// </summary>
