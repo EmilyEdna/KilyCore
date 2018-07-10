@@ -45,7 +45,7 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual string Num { get; set; }
         /// <summary>
-        /// 生成日期
+        /// 生产日期
         /// </summary>
         public virtual DateTime? ProTime { get; set; }
         /// <summary>

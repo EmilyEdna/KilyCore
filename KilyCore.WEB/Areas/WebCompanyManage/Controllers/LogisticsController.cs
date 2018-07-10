@@ -36,5 +36,15 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
             return View();
         }
         #endregion
+        #region 进货
+        public IActionResult Buyer()
+        {
+            return View();
+        }
+        public IActionResult BuyerEdit()
+        {
+            return View();
+        }
+        #endregion
     }
 }

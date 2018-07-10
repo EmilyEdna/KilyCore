@@ -43,7 +43,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// </summary>
         public string Num { get; set; }
         /// <summary>
-        /// 生成日期
+        /// 生产日期
         /// </summary>
         public DateTime? ProTime { get; set; }
         /// <summary>

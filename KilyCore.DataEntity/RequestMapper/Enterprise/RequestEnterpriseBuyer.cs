@@ -20,6 +20,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
 {
     public class RequestEnterpriseBuyer
     {
+        public Guid CompanyId { get; set; }
         /// <summary>
         /// 进货批次
         /// </summary>

@@ -18,7 +18,6 @@
             InitDom: function () {
                 $("#CompanyId").val(CompanyInfo.Id);
                 controller.LayDate({ elem: "#ProductTime" });
-                $("#ProductTime")
                 this.GetSupplier();
                 this.GetUsers();
             },
@@ -105,12 +104,8 @@
                 </tr>
                 <tr>
                     <th><label class="control-label">设备管理员</label></th>
-                    <td class="has-warning">
+                    <td class="has-warning" colspan="3">
                         <select type="select" class="form-control" name="Manager" id="Manager"></select>
-                    </td>
-                    <th><label class="control-label"></label></th>
-                    <td class="has-warning">
-                       
                     </td>
                 </tr>
             </table>
