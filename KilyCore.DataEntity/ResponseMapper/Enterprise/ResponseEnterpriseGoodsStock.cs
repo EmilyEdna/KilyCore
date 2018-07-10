@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KilyCore.EntityFrameWork.ModelEnum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -54,6 +55,27 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string Manager { get; set; }
         public Guid CheckGoodsId { get; set; }
         public string AuditTypeName { get; set; }
+        public AuditEnum AuditType { get; set; }
+        /// <summary>
+        /// 保质期
+        /// </summary>
+        public string ExpiredDate { get; set; }
+        /// <summary>
+        /// 规格
+        /// </summary>
+        public string Spec { get; set; }
+        /// <summary>
+        /// 单位
+        /// </summary>
+        public string Unit { get; set; }
+        /// <summary>
+        /// 产品图片
+        /// </summary>
+        public string ImgUrl { get; set; }
+        /// <summary>
+        /// 备注
+        /// </summary>
+        public string Remark { get; set; }
     }
     public class ResponseEnterpriseGoodsStockAttach
     {

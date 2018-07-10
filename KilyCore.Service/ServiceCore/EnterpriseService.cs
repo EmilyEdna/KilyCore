@@ -747,7 +747,7 @@ namespace KilyCore.Service.ServiceCore
                 ApplyMoney = t.ApplyMoney,
                 Payment = t.Payment,
                 IsPay = t.IsPay,
-                PaytTicket=t.PaytTicket,
+                PaytTicket = t.PaytTicket,
                 AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
                 TableName = t.GetType().Name
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -793,6 +793,49 @@ namespace KilyCore.Service.ServiceCore
                     AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType)
                 }).AsNoTracking().ToList();
             return data;
+        }
+        #endregion
+
+        #region  产品审核
+        /// <summary>
+        /// 产品审核列表分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseGoodsStock> GetWaitAuditGoodPage(PageParamList<RequestEnterpriseGoodsStock> pageParam)
+        {
+            IQueryable<EnterpriseInfo> info = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseGoodsStock> stocks = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.GoodsName))
+                goods = goods.Where(t => t.ProductName.Contains(pageParam.QueryParam.GoodsName));
+            if (UserInfo().AccountType > AccountEnum.Country)
+                info = info.Where(t => t.TypePath.Contains(UserInfo().Province) || t.TypePath.Contains(UserInfo().City) || t.TypePath.Contains(UserInfo().Area));
+            var data = goods.Join(info, x => x.CompanyId, y => y.Id, (x, y) => new { x }).Join(stocks, t => t.x.Id, p => p.GoodsId, (t, p) => new ResponseEnterpriseGoodsStock()
+            {
+                Id = p.Id,
+                GoodsId = t.x.Id,
+                GoodsName=t.x.ProductName,
+                Spec = t.x.Spec,
+                Unit = t.x.Unit,
+                ExpiredDate = t.x.ExpiredDate,
+                AuditType = t.x.AuditType,
+                AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.x.AuditType),
+                ImgUrl=p.ImgUrl,
+                Remark =p.Remark
+            }).AsNoTracking().ToPagedResult(pageParam.pageNumber,pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 审核产品
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string AuditGoodSuccess(Guid Id)
+        {
+            EnterpriseGoods goods = Kily.Set<EnterpriseGoods>().Where(t => t.Id == Id).FirstOrDefault();
+            goods.AuditType = AuditEnum.AuditSuccess;
+            return UpdateField(goods, "AuditType") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         #endregion
     }

@@ -307,5 +307,28 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseService.GetTagAuditDetail(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+
+        #region  产品审核
+        /// <summary>
+        /// 产品审核列表分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetWaitAuditGoodPage")]
+        public ObjectResultEx GetWaitAuditGoodPage(PageParamList<RequestEnterpriseGoodsStock> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseService.GetWaitAuditGoodPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 审核产品
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("AuditGoodSuccess")]
+        public ObjectResultEx AuditGoodSuccess(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseService.AuditGoodSuccess(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }

@@ -60,5 +60,10 @@ namespace KilyCore.Service.IServiceCore
         String AuditCode(RequestAudit Param);
         IList<ResponseAudit> GetTagAuditDetail(RequestAudit Param);
         #endregion
+
+        #region  产品审核
+        PagedResult<ResponseEnterpriseGoodsStock> GetWaitAuditGoodPage(PageParamList<RequestEnterpriseGoodsStock> pageParam);
+        String AuditGoodSuccess(Guid Id);
+        #endregion
     }
 }

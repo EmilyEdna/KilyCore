@@ -180,6 +180,7 @@ controller.Prompt = function (option, callBack) {
         formType: 0, //0文本 1密码 2多行文本
         value: undefined,
         title: undefined,
+        btn: ['确定', '取消'],
         area: ['500px', '300px']
     };
     var options = $.extend(defaultOption, option);
@@ -285,7 +286,7 @@ controller.OpenWindow = function (option) {
 }
 //关闭层
 controller.Close = function () {
-    layer.closeAll();
+    top.layer.closeAll();
 }
 //设置跳转
 controller.SetHref = function (option) {
