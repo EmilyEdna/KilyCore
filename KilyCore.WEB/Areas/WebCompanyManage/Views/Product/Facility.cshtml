@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "产品批次";
+    ViewData["Title"] = "设施管理";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
@@ -21,17 +21,17 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetProBatchPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit"});
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetFacPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit"});
             },
             //事件
             InitEvents: function () {
                 $("#add").on('click', function () {
                     controller.OpenWindow({
-                        title: "新增生产批次",
+                        title: "新增设施",
                         type: 2,
                         height: "500px",
                         width: "700px",
-                        url: "WebCompanyManage/Product/GoodsBatchEdit",
+                        url: "WebCompanyManage/Product/FacilityEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
                         }
@@ -42,8 +42,8 @@
             action: {
                 TableFormatter: function (val, row, index) {
                     var action = [];
+                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>保洁消毒</button>');
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
-                    action.push('<button class="btn btn-sm btn-primary watch"><i class="fa fa-eye"></i>指标参考</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
@@ -51,7 +51,7 @@
                         controller.Confirm("确认删除？", function (bool) {
                             if (bool) {
                                 controller.ajax({
-                                    url: "EnterpriseWeb/RemoveProBatch",
+                                    url: "EnterpriseWeb/RemoveFac",
                                     data: { Id: row.Id },
                                     type: 'post',
                                     success: function (result) {
@@ -61,13 +61,13 @@
                             }
                         });
                     },
-                    "click .watch": function (event, val, row, index) {
+                    "click .edit": function (event, val, row, index) {
                         controller.OpenWindow({
-                            title: "指标参考",
+                            title: "保洁消毒",
                             type: 2,
                             height: "600px",
-                            width: "800px",
-                            url: "WebCompanyManage/Product/ShowTarget?Id=" + row.Id + "&Manager=" + row.Manager,
+                            width: "1200px",
+                            url: "WebCompanyManage/Product/FacilityAttach?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }
@@ -90,7 +90,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>产品批次</h5>
+                <h5>设施管理</h5>
             </div>
             <div class="ibox-content">
                 <div class="row">
@@ -102,7 +102,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input type="text" placeholder="产品系列" class="input-sm form-control" name="SeriesName">
+                                <input type="text" placeholder="车间名称" class="input-sm form-control" name="WorkShopName">
                                 <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
                                     <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
@@ -115,12 +115,13 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="BatchNo" data-halign="center" data-align="center" data-valign="middle">批次号</th>
-                                <th data-field="DeviceName" data-halign="center" data-align="center" data-valign="middle">设备名称</th>
-                                <th data-field="SeriesName" data-halign="center" data-align="center" data-valign="middle">产品系列</th>
-                                <th data-field="Manager" data-halign="center" data-align="center" data-valign="middle">负责人</th>
-                                <th data-field="StartTime" data-halign="center" data-align="center" data-valign="middle">生产开始时间</th>
-                                <th data-field="MaterialName" data-halign="center" data-align="center" data-valign="middle">原辅料</th>
+                                <th data-field="WorkShopName" data-halign="center" data-align="center" data-valign="middle">车间名称</th>
+                                <th data-field="GetWater" data-halign="center" data-align="center" data-valign="middle">供水</th>
+                                <th data-field="Light" data-halign="center" data-align="center" data-valign="middle">光照</th>
+                                <th data-field="WaterOut" data-halign="center" data-align="center" data-valign="middle">排水</th>
+                                <th data-field="Wind" data-halign="center" data-align="center" data-valign="middle">通风</th>
+                                <th data-field="Waste" data-halign="center" data-align="center" data-valign="middle">废物处理</th>
+                                <th data-field="Environment" data-halign="center" data-align="center" data-valign="middle">环境控制</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>

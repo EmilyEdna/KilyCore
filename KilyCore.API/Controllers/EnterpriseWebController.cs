@@ -1125,6 +1125,15 @@ namespace KilyCore.API.Controllers
         #endregion
         #region 设施管理
         /// <summary>
+        /// 设施列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetFacList")]
+        public ObjectResultEx GetFacList()
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetFacList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 设施分页
         /// </summary>
         /// <param name="pageParam"></param>

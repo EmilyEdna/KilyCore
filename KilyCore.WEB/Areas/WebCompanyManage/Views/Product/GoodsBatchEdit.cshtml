@@ -19,8 +19,22 @@
                 $("#BatchNo").val('SC' + controller.FormatDate("YYYYMMDDHHmmss"));
                 $("#CompanyId").val(CompanyInfo.Id);
                 controller.LayDate({ elem: "#StartTime" });
-            },
-            GetSelect: function () {
+            }, 
+            GetSelect: function() {
+                //设施下拉
+                controller.ajax({
+                    url: "EnterpriseWeb/GetFacList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==情选择==</option>'
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.WorkShopName + '</option>';
+                        });
+                        $("#FacId").html(html);
+                    }
+                });
                 //设备下拉
                 controller.ajax({
                     url: "EnterpriseWeb/GetDeviceList",
@@ -126,8 +140,14 @@
                     <td class="has-warning">
                         <select type="select" name="SeriesId" id="SeriesId" class="form-control"></select>
                     </td>
-                    <th><label class="control-label">原辅料</label></th>
+                    <th><label class="control-label">生产设施</label></th>
                     <td class="has-warning">
+                        <select type="select" name="FacId" id="FacId" class="form-control"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">原辅料</label></th>
+                    <td class="has-warning" colspan="3">
                         <select type="select" class="selectpicker form-control" id="MaterialName" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
                     </td>
                 </tr>

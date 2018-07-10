@@ -80,5 +80,23 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
             return View();
         }
         #endregion
+        #region 设施管理
+        public IActionResult Facility()
+        {
+            return View();
+        }
+        public IActionResult FacilityEdit()
+        {
+            return View();
+        }
+        public IActionResult FacilityAttach()
+        {
+            return View();
+        }
+        public IActionResult FacilityAttachEdit()
+        {
+            return View();
+        }
+        #endregion
     }
 }

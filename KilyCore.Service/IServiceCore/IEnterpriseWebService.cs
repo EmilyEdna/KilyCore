@@ -185,6 +185,7 @@ namespace KilyCore.Service.IServiceCore
         String EditProBatchAttach(RequestEnterpriseProductionBatchAttach Param);
         #endregion
         #region 设施管理
+        IList<ResponseEnterpriseFacilities> GetFacList();
         PagedResult<ResponseEnterpriseFacilities> GetFacPage(PageParamList<RequestEnterpriseFacilities> pageParam);
         String EditFac(RequestEnterpriseFacilities Param);
         String RemoveFac(Guid Id);

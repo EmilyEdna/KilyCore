@@ -20,6 +20,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
 {
     public class RequestEnterpriseFacilities
     {
+        public Guid CompanyId { get; set; }
         /// <summary>
         /// 车间名称
         /// </summary>
@@ -51,6 +52,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
     }
     public class RequestEnterpriseFacilitiesAttach
     {
+        public Guid CompanyId { get; set; }
         public Guid FacId { get; set; }
         public string DisinfectionName { get; set; }
         public DateTime? CleanTime { get; set; }

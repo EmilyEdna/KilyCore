@@ -2336,6 +2336,24 @@ namespace KilyCore.Service.ServiceCore
         #endregion
         #region 设施管理
         /// <summary>
+        /// 设施列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseEnterpriseFacilities> GetFacList()
+        {
+            IQueryable<EnterpriseFacilities> queryable = Kily.Set<EnterpriseFacilities>().Where(t => t.IsDelete == false);
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.Select(t => new ResponseEnterpriseFacilities()
+            {
+                Id=t.Id,
+                WorkShopName=t.WorkShopName
+            }).ToList();
+            return data;
+        }
+        /// <summary>
         /// 设施分页
         /// </summary>
         /// <param name="pageParam"></param>
@@ -2391,9 +2409,9 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseFacilitiesAttach> queryable = Kily.Set<EnterpriseFacilitiesAttach>().Where(t => t.FacId == pageParam.QueryParam.FacId).OrderByDescending(t => t.CreateTime);
             var data = queryable.Select(t => new ResponseEnterpriseFacilitiesAttach()
             {
-                Id =t.Id,
-                DisinfectionName=t.DisinfectionName,
-                CleanTime=t.CleanTime
+                Id = t.Id,
+                DisinfectionName = t.DisinfectionName,
+                CleanTime = t.CleanTime
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }

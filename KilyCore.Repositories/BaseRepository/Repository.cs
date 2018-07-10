@@ -24,7 +24,6 @@ namespace KilyCore.Repositories.BaseRepository
         public ICache Cache = CacheFactory.Cache();
         public IMongoDbCache Caches = CacheFactory.Caches();
         public KilyContext Kily = KilyContextFactory.GetContext();
-
         /// <summary>
         /// 软删除
         /// </summary>
