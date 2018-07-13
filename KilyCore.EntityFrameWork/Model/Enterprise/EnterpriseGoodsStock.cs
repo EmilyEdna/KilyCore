@@ -69,6 +69,10 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual string ImgUrl { get; set; }
         /// <summary>
+        /// 说明书
+        /// </summary>
+        public virtual string Explanation { get; set; }
+        /// <summary>
         /// 备注
         /// </summary>
         public virtual string Remark { get; set; }

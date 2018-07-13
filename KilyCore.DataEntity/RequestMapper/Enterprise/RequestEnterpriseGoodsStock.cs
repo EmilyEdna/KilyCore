@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KilyCore.EntityFrameWork.ModelEnum;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -39,6 +40,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// 备注
         /// </summary>
         public string Remark { get; set; }
+        public string Explanation { get; set; }
     }
     public class RequestEnterpriseGoodsStockAttach
     {

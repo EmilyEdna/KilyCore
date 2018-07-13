@@ -723,6 +723,16 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetTagList(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 扫码管理
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetScanCodePage")]
+        public ObjectResultEx GetScanCodePage(PageParamList<RequestEnterpriseGoods> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetScanCodePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 厂商管理
         /// <summary>

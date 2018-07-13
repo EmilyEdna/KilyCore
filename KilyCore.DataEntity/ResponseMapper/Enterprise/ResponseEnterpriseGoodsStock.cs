@@ -76,6 +76,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// 备注
         /// </summary>
         public string Remark { get; set; }
+        public string Explanation { get; set; }
     }
     public class ResponseEnterpriseGoodsStockAttach
     {

@@ -25,7 +25,18 @@
             },
             //事件
             InitEvents: function () { 
-
+                $("#add").on('click', function () {
+                    controller.OpenWindow({
+                        title: "企业投保",
+                        type: 2,
+                        height: "680px",
+                        width: "1140px",
+                        url: "StaticHtml/Safe.html",
+                        callBack: function (result) {
+                            result.$("#Edit").submit();
+                        }
+                    })
+                });
             },
             //行为
             action: {
@@ -101,6 +112,7 @@
                     <form id="Edit">
                         <div class="col-sm-8 m-b-xs">
                             <div class="input-group">
+                                <button type="button" class="btn btn-sm btn-white" id="add"><i class="fa fa-plus"></i>企业投保</button>
                             </div>
                         </div>
                         <div class="col-sm-4">

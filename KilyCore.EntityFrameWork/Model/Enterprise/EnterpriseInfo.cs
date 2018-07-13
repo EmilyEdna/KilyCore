@@ -94,5 +94,13 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 当前版本的二维码数量
         /// </summary>
         public virtual long? TagCodeNum { get; set; }
+        /// <summary>
+        /// 保单号
+        /// </summary>
+        public virtual string SafeNo { get; set; }
+        /// <summary>
+        /// 保险公司
+        /// </summary>
+        public virtual string SafeCompany { get; set; }
     }
 }

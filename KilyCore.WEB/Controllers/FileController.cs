@@ -24,10 +24,10 @@ namespace KilyCore.WEB.Controllers
         /// <param name="Files"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult UploadImg(IFormFile Files)
+        public JsonResult UploadImg(IFormFile Files, string FolderName)
         {
             var WebRootPath = Environment.WebRootPath;
-            Object data = FileUtil.UploadFile(Files, WebRootPath);
+            Object data = FileUtil.UploadFile(Files, FolderName, WebRootPath);
             return new JsonResult(data);
         }
         /// <summary>
@@ -55,7 +55,7 @@ namespace KilyCore.WEB.Controllers
         public FileResult HTMLToPDF(ContractHelp help)
         {
             var WebRootPath = Environment.WebRootPath;
-            byte[] bytes= FileUtil.HTMLToPDF(WebRootPath, help);
+            byte[] bytes = FileUtil.HTMLToPDF(WebRootPath, help);
             FileResult PDF = new FileContentResult(bytes, "application/pdf");
             PDF.FileDownloadName = "入住合同.pdf";
             return PDF;

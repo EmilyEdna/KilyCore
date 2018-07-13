@@ -31,6 +31,7 @@
 
   <ItemGroup>
     <None Include="wwwroot\Content\Uploader\js\upload.js" />
+    <None Include="wwwroot\StaticHtml\Safe.html" />
   </ItemGroup>
 
 </Project>

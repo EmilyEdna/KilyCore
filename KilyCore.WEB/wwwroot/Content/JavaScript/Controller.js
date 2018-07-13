@@ -24,7 +24,7 @@ controller.ajax = function (option) {
     var options = $.extend(defaultOption, option);
     options.data.TimeSpan = controller.SetRequestTime();
     return $.ajax({
-        url:host + options.url ,
+        url: host + options.url,
         data: options.data,
         timeout: options.timeout,
         dataType: options.dataType,
@@ -547,6 +547,11 @@ controller.LayDate = function (option) {
 }
 //文件上传
 controller.Upload = function (option) {
+    var Name = '';
+    if (localStorage.UserInfo != undefined)
+        Name = JSON.parse(localStorage.UserInfo).TrueName
+    else
+        Name = JSON.parse(localStorage.CompanyUser).CompanyName;
     defaultOption = {
         url: undefined,
         data: null,
@@ -554,7 +559,8 @@ controller.Upload = function (option) {
         element: undefined,
         maxSize: 2,
         node: undefined,
-        success: null
+        success: null,
+        folder: Name
     }
     var options = $.extend(defaultOption, option);
     var defaults = {
@@ -563,6 +569,7 @@ controller.Upload = function (option) {
         maxNum: options.maxNum,
         maxSize: options.maxSize,
         element: options.node,
+        folder: options.folder,
         success: function (result) {
             options.success(result);
         },
@@ -681,7 +688,7 @@ controller.AutoInput = function (element, option) {
         url: undefined,
         idField: "",
         keyField: "",
-        AttachField:"",
+        AttachField: "",
         effectiveFields: [], //需要显示的字段
         effectiveFieldsAlias: {}, //字典绑定数据格式化
         processData: null

@@ -45,5 +45,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public Guid? EnterpriseRoleId { get; set; }
         public string IdCard { get; set; }
         public int NatureAgent { get; set; }
+        public string SafeNo { get; set; }
+        public string SafeCompany { get; set; }
     }
 }

@@ -64,7 +64,8 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         /// 支付
         /// </summary>
         /// <returns></returns>
-        public IActionResult Payment() {
+        public IActionResult Payment()
+        {
             return View();
         }
         /// <summary>
@@ -72,6 +73,18 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         /// </summary>
         /// <returns></returns>
         public IActionResult VeinTarget()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 扫码管理
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult ScanCode()
+        {
+            return View();
+        }
+        public IActionResult AddExplantion()
         {
             return View();
         }

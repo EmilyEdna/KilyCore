@@ -19,7 +19,8 @@ email:847432003@qq.com
             maxSize: 2, //设置允许上传图片的最大尺寸，单位M
             success: $.noop, //上传成功时的回调函数
             error: $.noop, //上传失败时的回调函数
-            element: undefined //上传图片区域元素
+            element: undefined, //上传图片区域元素
+            folder: undefined
         };
 
         var thisObj = $(this);
@@ -123,7 +124,7 @@ email:847432003@qq.com
 
                 // 目前仅支持单图上传
                 formData.append(inputName, fileData[0]);
-
+                formData.append("FolderName", config.folder);
             }
 
             var postData = config.data;

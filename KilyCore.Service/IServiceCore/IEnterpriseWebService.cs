@@ -125,6 +125,7 @@ namespace KilyCore.Service.IServiceCore
         String AcceptVeinTarget(Guid Id);
         String RemoveVeinTarget(Guid Id);
         Object GetTagList(int type);
+        PagedResult<ResponseEnterpriseScanCode> GetScanCodePage(PageParamList<RequestEnterpriseGoods> pageParam);
         #endregion
         #region 厂商管理
         PagedResult<ResponseEnterpriseSeller> GetSellerPage(PageParamList<RequestEnterpriseSeller> pageParam);
