@@ -204,6 +204,7 @@ namespace KilyCore.Service.IServiceCore
         IList<ResponseEnterpriseGoods> GetGoodsList();
         #endregion
         #region 产品仓库
+        String EditExplanation(RequestEnterpriseGoodsStock Param);
         String AuditGoods(RequestEnterpriseGoodsStock Param);
         PagedResult<ResponseEnterpriseGoodsStock> GetGoodsStockPage(PageParamList<RequestEnterpriseGoodsStock> pageParam);
         String RemoveGoodsStock(Guid Id);

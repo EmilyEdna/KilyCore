@@ -1660,7 +1660,19 @@ namespace KilyCore.Service.ServiceCore
                 goods = goods.Where(t => t.CompanyId == CompanyUser().Id);
             var Temp = goods.Join(stocks, q => q.Id, w => w.GoodsId, (q, w) => new
             {
-                q.CompanyId,q.ProductName,q.ProductType,q.ExpiredDate,w.Id,w.Remark,w.ImgUrl,w.Explanation,w.ProductTime,w.CheckGoodsId,w.BatchId,w.GoodsId,w.GrowNoteId
+                q.CompanyId,
+                q.ProductName,
+                q.ProductType,
+                q.ExpiredDate,
+                w.Id,
+                w.Remark,
+                w.ImgUrl,
+                w.Explanation,
+                w.ProductTime,
+                w.CheckGoodsId,
+                w.BatchId,
+                w.GoodsId,
+                w.GrowNoteId
             }).Join(checkGoods, e => e.CheckGoodsId, r => r.Id, (e, r) => new { e, r.CheckReport, r.CheckResult })
            .Join(batches, t => t.e.BatchId, y => y.Id, (t, y) => new { t, y.BatchNo, y.DeviceName, y.MaterialId })
            .Join(attaches, u => u.t.e.GoodsId, i => i.GoodsId, (u, i) => new { u, i.StarSerialNo, i.EndSerialNo }).AsNoTracking();
@@ -2653,6 +2665,17 @@ namespace KilyCore.Service.ServiceCore
         }
         #endregion
         #region 产品仓库
+        /// <summary>
+        /// 编辑说明书
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditExplanation(RequestEnterpriseGoodsStock Param)
+        {
+            EnterpriseGoodsStock stock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.Id == Param.Id).FirstOrDefault();
+            stock.Explanation = Param.Explanation;
+            return UpdateField(stock, "Explanation") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
         /// <summary>
         ///提交产品审核
         /// </summary>

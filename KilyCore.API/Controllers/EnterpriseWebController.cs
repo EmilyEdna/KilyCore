@@ -1259,6 +1259,16 @@ namespace KilyCore.API.Controllers
         #endregion
         #region 产品仓库
         /// <summary>
+        /// 编辑说明书
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditExplanation")]
+        public ObjectResultEx EditExplanation(RequestEnterpriseGoodsStock Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditExplanation(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         ///提交产品审核
         /// </summary>
         /// <param name="Param"></param>

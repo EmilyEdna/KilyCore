@@ -84,7 +84,7 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
-        public IActionResult AddExplantion()
+        public IActionResult AddExplanation()
         {
             return View();
         }
