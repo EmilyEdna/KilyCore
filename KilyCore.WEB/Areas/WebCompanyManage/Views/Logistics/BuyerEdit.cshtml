@@ -18,7 +18,6 @@
             InitDom: function () {
                 $("#CompanyId").val(CompanyInfo.Id);
                 $("#BatchNo").val("J" + controller.FormatDate("YYMMDDHHmmss"));
-                controller.LayDate({ elem: "#ExpiredDate" });
                 controller.LayDate({ elem: "#GetGoodsTime" });
                 controller.LayDate({ elem: "#ProTime" });
                 this.GetSupplier();
@@ -80,7 +79,7 @@
                 <tr>
                     <th><label class="control-label">保质期</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="ExpiredDate" id="ExpiredDate" />
+                        <input type="text" class="form-control" name="ExpiredDate"/>
                     </td>
                     <th><label class="control-label">进货日期</label></th>
                     <td class="has-warning">

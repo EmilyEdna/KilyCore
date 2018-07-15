@@ -264,7 +264,7 @@ namespace KilyCore.Repositories.BaseRepository
         public ResponseEnterprise CompanyInfo()
         {
             ResponseEnterprise Data = Cache.GetCache<ResponseEnterprise>(SystemInfoKey.PrivateKey);
-            return Data.TableName.Equals(typeof(ResponseEnterprise).Name) ? Data : null;
+            return Data == null ? null : (Data.TableName.Equals(typeof(ResponseEnterprise).Name) ? Data : null);
         }
         /// <summary>
         /// 重缓存中获取登录的公司子用户信息
@@ -273,7 +273,7 @@ namespace KilyCore.Repositories.BaseRepository
         public ResponseEnterpriseUser CompanyUser()
         {
             ResponseEnterpriseUser Data = Cache.GetCache<ResponseEnterpriseUser>(SystemInfoKey.PrivateKey);
-            return Data.TableName.Equals(typeof(ResponseEnterpriseUser).Name) ? Data : null;
+            return Data == null ? null : (Data.TableName.Equals(typeof(ResponseEnterpriseUser).Name) ? Data : null);
         }
         /// <summary>
         /// 返回动态属性集合

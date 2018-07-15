@@ -224,7 +224,10 @@ namespace KilyCore.Cache.RedisCache
         /// <returns></returns>
         public static T StringGet<T>(string key)
         {
-            return ConvertToObj<T>(Save(db => db.StringGet(key)));
+            if (!string.IsNullOrEmpty(key))
+                return ConvertToObj<T>(Save(db => db.StringGet(key)));
+            else
+                return default(T);
         }
         #endregion
         #region 异步执行
