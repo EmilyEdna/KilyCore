@@ -32,7 +32,7 @@ namespace KilyCore.Service.IServiceCore
         String AuditIndetEnterprisePay(Guid Key, bool Param);
         #endregion
         #region 餐饮认证
-        PagedResult<ResponseRepastIdent> IdentFoodPay(PageParamList<RequestDiningIdent> pageParam);
+        PagedResult<ResponseRepastIdent> IdentFoodPay(PageParamList<RequestRepastIdent> pageParam);
         String AuditIndetFoodPay(Guid Key, bool Param);
         #endregion
         #region 缴费凭证

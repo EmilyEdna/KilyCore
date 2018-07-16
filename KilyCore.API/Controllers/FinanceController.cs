@@ -96,7 +96,7 @@ namespace KilyCore.API.Controllers
         /// <param name="pageParam"></param>
         /// <returns></returns>
         [HttpPost("IdentFoodPay")]
-        public ObjectResultEx IdentFoodPay(PageParamList<RequestDiningIdent> pageParam)
+        public ObjectResultEx IdentFoodPay(PageParamList<RequestRepastIdent> pageParam)
         {
             return ObjectResultEx.Instance(FinanceService.IdentFoodPay(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }

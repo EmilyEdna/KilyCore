@@ -2,6 +2,7 @@
 using KilyCore.Cache.MongoCache;
 using KilyCore.Cache.RedisCache;
 using KilyCore.Configure;
+using KilyCore.DataEntity.ResponseMapper.Repast;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.EntityFrameWork;
@@ -258,7 +259,7 @@ namespace KilyCore.Repositories.BaseRepository
             return Data == null ? null : (Data.TableName.Equals(typeof(ResponseAdmin).Name) ? Data : null);
         }
         /// <summary>
-        /// 重缓存中获取登录的公司信息
+        /// 从缓存中获取登录的公司信息
         /// </summary>
         /// <returns></returns>
         public ResponseEnterprise CompanyInfo()
@@ -267,13 +268,29 @@ namespace KilyCore.Repositories.BaseRepository
             return Data == null ? null : (Data.TableName.Equals(typeof(ResponseEnterprise).Name) ? Data : null);
         }
         /// <summary>
-        /// 重缓存中获取登录的公司子用户信息
+        /// 从缓存中获取登录的公司子用户信息
         /// </summary>
         /// <returns></returns>
         public ResponseEnterpriseUser CompanyUser()
         {
             ResponseEnterpriseUser Data = Cache.GetCache<ResponseEnterpriseUser>(SystemInfoKey.PrivateKey);
             return Data == null ? null : (Data.TableName.Equals(typeof(ResponseEnterpriseUser).Name) ? Data : null);
+        }
+        /// <summary>
+        /// 从缓存中获取登录的餐饮商家信息
+        /// </summary>
+        /// <returns></returns>
+        public ResponseMerchant MerchantInfo() {
+            ResponseMerchant Data = Cache.GetCache<ResponseMerchant>(SystemInfoKey.PrivateKey);
+            return Data == null ? null : (Data.TableName.Equals(typeof(ResponseMerchant).Name) ? Data : null);
+        }
+        /// <summary>
+        /// 从缓存中获取登录的餐饮商家子用户信息
+        /// </summary>
+        /// <returns></returns>
+        public ResponseMerchantUser MerchantUser() {
+            ResponseMerchantUser Data = Cache.GetCache<ResponseMerchantUser>(SystemInfoKey.PrivateKey);
+            return Data == null ? null : (Data.TableName.Equals(typeof(ResponseMerchantUser).Name) ? Data : null);
         }
         /// <summary>
         /// 返回动态属性集合

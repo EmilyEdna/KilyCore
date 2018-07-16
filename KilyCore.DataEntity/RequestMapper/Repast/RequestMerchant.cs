@@ -35,12 +35,7 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
                 else return null;
             }
         }
-    }
-    public class RequestMerchantAttach
-    {
-       public Guid InfoId { get; set; }
         public string Certification { get; set; }
         public string ImplUser { get; set; }
-       
     }
 }

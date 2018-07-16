@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KilyCore.Configure;
 using KilyCore.DataEntity.RequestMapper.Repast;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.Extension.ResultExtension;
+using KilyCore.Extension.SessionExtension;
+using KilyCore.Extension.Token;
 using KilyCore.Service.QueryExtend;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 /// <summary>
@@ -148,7 +152,7 @@ namespace KilyCore.API.Controllers
         /// <param name="pageParam"></param>
         /// <returns></returns>
         [HttpPost("GetDiningIdentPage")]
-        public ObjectResultEx GetDiningIdentPage(PageParamList<RequestDiningIdent> pageParam)
+        public ObjectResultEx GetDiningIdentPage(PageParamList<RequestRepastIdent> pageParam)
         {
             return ObjectResultEx.Instance(RepastService.GetDiningIdentPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -180,6 +184,46 @@ namespace KilyCore.API.Controllers
         [HttpPost("AuditPayment")]
         public ObjectResultEx AuditPayment(RequestPayment Param) {
             return ObjectResultEx.Instance(RepastService.AuditPayment(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #region 登录注册
+        /// <summary>
+        /// 餐饮企业注册
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpPost("RegistRepastAccount")]
+        public ObjectResultEx RegistRepastAccount(SimlpeParam<RequestMerchant> Param)
+        {
+            return ObjectResultEx.Instance(RepastService.RegistRepastAccount(Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 餐饮企业登录
+        /// </summary>
+        /// <param name="LoginValidate"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpPost("MerchantLogin")]
+        public ObjectResultEx MerchantLogin(RequestValidate LoginValidate)
+        {
+            try
+            {
+                string Code = HttpContext.Session.GetSession<string>("ValidateCode").Trim();
+                var ComAdmin = RepastService.MerchantLogin(LoginValidate);
+                if (ComAdmin != null && Code.Equals(LoginValidate.ValidateCode.Trim()))
+                {
+                    CookieInfo cookie = new CookieInfo();
+                    VerificationExtension.WriteToken(cookie, ComAdmin);
+                    return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ResponseCookieInfo.RSASysKey, ComAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
+                }
+                else
+                    return ObjectResultEx.Instance(null, -1, "登录失败", HttpCode.NoAuth);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         #endregion
     }

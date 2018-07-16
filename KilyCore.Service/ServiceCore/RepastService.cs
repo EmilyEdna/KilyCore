@@ -313,7 +313,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="pageParam"></param>
         /// <returns></returns>
-        public PagedResult<ResponseRepastIdent> GetDiningIdentPage(PageParamList<RequestDiningIdent> pageParam)
+        public PagedResult<ResponseRepastIdent> GetDiningIdentPage(PageParamList<RequestRepastIdent> pageParam)
         {
             IQueryable<RepastIdent> queryable = Kily.Set<RepastIdent>().Where(t => t.IsDelete == false);
             IQueryable<RepastInfo> queryables = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false);
@@ -422,6 +422,87 @@ namespace KilyCore.Service.ServiceCore
                 return ServiceMessage.INSERTSUCCESS;
             else
                 return ServiceMessage.INSERTFAIL;
+        }
+        #endregion
+
+        #region 登录注册
+        /// <summary>
+        /// 餐饮系统注册
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string RegistRepastAccount(RequestMerchant Param)
+        {
+            Param.AuditType = AuditEnum.WaitAduit;
+            RepastRoleAuthor Author = Kily.Set<RepastRoleAuthor>().Where(t => t.IsDelete == false).Where(t => t.AuthorName.Contains("基本")).OrderBy(t => t.CreateTime).FirstOrDefault();
+            Param.DingRoleId = Author.Id;
+            RepastInfo Info = Param.MapToEntity<RepastInfo>();
+            if (Insert<RepastInfo>(Info))
+                return ServiceMessage.INSERTSUCCESS;
+            else
+                return ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 餐饮商家登录
+        /// </summary>
+        /// <param name="LoginValidate"></param>
+        /// <returns></returns>
+        public Object MerchantLogin(RequestValidate LoginValidate)
+        {
+            #region 餐饮企业登录
+            IQueryable<RepastInfo> queryable = Kily.Set<RepastInfo>()
+               .Where(t => t.Account.Equals(LoginValidate.Account))
+               .Where(t => t.PassWord.Equals(LoginValidate.PassWord))
+               .Where(t => t.IsDelete == false);
+            ResponseMerchant Info = queryable.Select(t => new ResponseMerchant()
+            {
+                Id = t.Id,
+                Account = t.Account,
+                CommunityCode = t.CommunityCode,
+                MerchantName = t.MerchantName,
+                Phone = t.Phone,
+                DiningType = t.DiningType,
+                VersionType = t.VersionType,
+                VersionTypeName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.VersionType),
+                DiningTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.DiningType),
+                AuditType = t.AuditType,
+                AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
+                DingRoleId = t.DingRoleId,
+                TypePath = t.TypePath,
+                Certification = t.Certification,
+                Email=t.Email,
+                ImplUser=t.ImplUser,
+                TableName = typeof(ResponseMerchant).Name
+            }).FirstOrDefault();
+            #endregion
+            #region 非企业登录
+            IQueryable<RepastInfoUser> queryables = Kily.Set<RepastInfoUser>()
+              .Where(t => t.Account.Equals(LoginValidate.Account))
+              .Where(t => t.PassWord.Equals(LoginValidate.PassWord))
+              .Where(t => t.IsDelete == false);
+            ResponseMerchantUser User = queryables.Select(t => new ResponseMerchantUser()
+            {
+                Id = t.InfoId,
+                InfoId = t.Id,
+                Account = t.Account,
+                TrueName = t.TrueName,
+                DiningType = t.DiningType,
+                VersionType = t.VersionType,
+                DingRoleId = t.DingRoleId,
+                TypePath = t.TypePath,
+                MerchantName=t.MerchantName,
+                Phone=t.Phone,
+                IdCard=t.Phone,
+                VersionTypeName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.VersionType),
+                DiningTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.DiningType),
+                TableName = typeof(ResponseMerchantUser).Name
+            }).FirstOrDefault();
+            #endregion
+            if (Info != null)
+                return Info;
+            else if (User != null)
+                return User;
+            else return null;
         }
         #endregion
     }

@@ -57,5 +57,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         public string TableName { get; set; }
         public IList<ResponseAudit> AuditInfo { get; set; }
         public string AllowUnit { get; set; }
+        public AuditEnum AuditType { get; set; }
+        public string AuditTypeName { get; set; }
     }
 }

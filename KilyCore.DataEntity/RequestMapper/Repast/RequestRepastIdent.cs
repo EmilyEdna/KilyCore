@@ -8,7 +8,7 @@ using System.Text;
 /// </summary>
 namespace KilyCore.DataEntity.RequestMapper.Repast
 {
-   public class RequestDiningIdent
+   public class RequestRepastIdent
     {
         /// <summary>
         /// 认证编号

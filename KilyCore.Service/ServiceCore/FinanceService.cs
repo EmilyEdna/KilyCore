@@ -165,7 +165,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="pageParam"></param>
         /// <returns></returns>
-        public PagedResult<ResponseRepastIdent> IdentFoodPay(PageParamList<RequestDiningIdent> pageParam)
+        public PagedResult<ResponseRepastIdent> IdentFoodPay(PageParamList<RequestRepastIdent> pageParam)
         {
             IQueryable<RepastIdent> queryable = Kily.Set<RepastIdent>().Where(t => t.IsDelete == false);
             queryable = queryable.Where(t => t.AuditType >= AuditEnum.AuditSuccess);

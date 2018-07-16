@@ -39,10 +39,14 @@ namespace KilyCore.Service.IServiceCore
         String RemoveAuthorRole(Guid Id);
         #endregion
         #region 认证审核
-        PagedResult<ResponseRepastIdent> GetDiningIdentPage(PageParamList<RequestDiningIdent> pageParam);
+        PagedResult<ResponseRepastIdent> GetDiningIdentPage(PageParamList<RequestRepastIdent> pageParam);
         ResponseRepastIdent GetDiningIdentDetail(Guid Id);
         String AuditIdent(RequestAudit Param);
         String AuditPayment(RequestPayment Param);
+        #endregion
+        #region 登录注册
+        String RegistRepastAccount(RequestMerchant Param);
+        Object MerchantLogin(RequestValidate LoginValidate);
         #endregion
     }
 }

@@ -10,7 +10,7 @@ using System.Text;
 namespace KilyCore.EntityFrameWork.Model.Repast
 {
     /// <summary>
-    /// 餐饮用户表
+    /// 餐饮企业表
     /// </summary>
     public class RepastInfo : BaseEntity
     {
