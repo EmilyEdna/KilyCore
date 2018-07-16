@@ -279,18 +279,21 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="pageParam"></param>
         /// <returns></returns>
-        public PagedResult<ResponseAuthorRole> GetAuthorPage(PageParamList<RequestRepastRoleAuthor> pageParam)
+        public PagedResult<ResponseRepastRoleAuthor> GetMerchantAuthorPage(PageParamList<RequestRepastRoleAuthor> pageParam)
         {
-            IQueryable<RepastRoleAuthor> queryable = Kily.Set<RepastRoleAuthor>().Where(t => t.IsDelete == false).AsQueryable();
-            if (!string.IsNullOrEmpty(pageParam.QueryParam.AuthorName))
-                queryable = queryable.Where(t => t.AuthorName.Contains(pageParam.QueryParam.AuthorName));
-            var data = queryable.Select(t => new ResponseAuthorRole()
+            IQueryable<RepastRoleAuthor> queryable = Kily.Set<RepastRoleAuthor>();
+            IQueryable<RepastInfo> queryables = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.MerchantName))
+                queryables = queryables.Where(t => t.MerchantName.Contains(pageParam.QueryParam.MerchantName));
+            var data = queryables.OrderBy(t => t.CreateTime).GroupJoin(queryable, t => t.DingRoleId, x => x.Id, (t, x) => new ResponseRepastRoleAuthor()
             {
-
                 Id = t.Id,
-                AuthorName = t.AuthorName,
-                AuthorMenuPath = t.AuthorMenuPath
-            }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                RepastRoleId = x.FirstOrDefault().Id,
+                MerchantName = t.MerchantName,
+                MerchantRoleName = x.FirstOrDefault().AuthorName,
+                MerchantTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.DiningType),
+                AuthorMenuPath = x.FirstOrDefault().AuthorMenuPath
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
         /// <summary>
@@ -300,10 +303,65 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string RemoveAuthorRole(Guid Id)
         {
-            if (Delete<RepastRoleAuthor>(t => t.Id == Id))
+            if (Remove<RepastRoleAuthor>(t => t.Id == Id))
                 return ServiceMessage.REMOVESUCCESS;
             else
                 return ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 角色分页列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRepastRoleAuthor> GetRoleAuthorPage(PageParamList<RequestRepastRoleAuthor> pageParam)
+        {
+            IQueryable<RepastRoleAuthor> queryable = Kily.Set<RepastRoleAuthor>();
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.AuthorName))
+                queryable = queryable.Where(t => t.AuthorName.Contains(pageParam.QueryParam.AuthorName));
+            var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseRepastRoleAuthor()
+            {
+                Id = t.Id,
+                MerchantRoleName = t.AuthorName,
+                AuthorMenuPath = t.AuthorMenuPath
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 获取角色列表
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public IList<ResponseRepastRoleAuthor> GetRoleAuthorList()
+        {
+            return Kily.Set<RepastRoleAuthor>().Select(t => new ResponseRepastRoleAuthor()
+            {
+                Id = t.Id,
+                MerchantRoleName = t.AuthorName
+            }).ToList();
+        }
+        /// <summary>
+        /// 分配角色
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string DistributionRole(RequestRepastRoleAuthor Param)
+        {
+            RepastInfo info = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).Where(t => t.Id == Param.Id).FirstOrDefault();
+            if (Param.AuthorName.Contains("基本"))
+                info.VersionType = SystemVersionEnum.Normal;
+            if (Param.AuthorName.Contains("体验"))
+                info.VersionType = SystemVersionEnum.Test;
+            if (Param.AuthorName.Contains("基础"))
+                info.VersionType = SystemVersionEnum.Base;
+            if (Param.AuthorName.Contains("升级"))
+                info.VersionType = SystemVersionEnum.Level;
+            if (Param.AuthorName.Contains("旗舰"))
+                info.VersionType = SystemVersionEnum.Enterprise;
+            info.DingRoleId = Param.RepastRoleId;
+            if (UpdateField<RepastInfo>(info, "DingRoleId"))
+                return ServiceMessage.HANDLESUCCESS;
+            else
+                return ServiceMessage.HANDLEFAIL;
         }
         #endregion
 

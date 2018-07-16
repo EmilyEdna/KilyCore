@@ -16,7 +16,7 @@ namespace KilyCore.Service.IServiceCore
     /// <summary>
     /// 餐饮后台业务逻辑接口
     /// </summary>
-    public interface IRepastService :IService
+    public interface IRepastService : IService
     {
         #region 商家资料
         PagedResult<ResponseMerchant> GetMerchantPage(PageParamList<RequestMerchant> pageParam);
@@ -35,8 +35,11 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 餐饮权限
         String EditRole(RequestRepastRoleAuthor Param);
-        PagedResult<ResponseAuthorRole> GetAuthorPage(PageParamList<RequestRepastRoleAuthor> pageParam);
+        PagedResult<ResponseRepastRoleAuthor> GetMerchantAuthorPage(PageParamList<RequestRepastRoleAuthor> pageParam);
         String RemoveAuthorRole(Guid Id);
+        PagedResult<ResponseRepastRoleAuthor> GetRoleAuthorPage(PageParamList<RequestRepastRoleAuthor> pageParam);
+        IList<ResponseRepastRoleAuthor> GetRoleAuthorList();
+        String DistributionRole(RequestRepastRoleAuthor Param);
         #endregion
         #region 认证审核
         PagedResult<ResponseRepastIdent> GetDiningIdentPage(PageParamList<RequestRepastIdent> pageParam);

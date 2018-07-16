@@ -40,7 +40,7 @@
                             type: 2,
                             height: "600px",
                             width: "800px",
-                            url: "FoodManage/Repast/MerchantDetail?Id=" + row.Id,
+                            url: "RepastManage/Repast/MerchantDetail?Id=" + row.Id,
                             callBack: function (result) {
                                 result.popClose();
                             }
@@ -52,7 +52,7 @@
                             type: 2,
                             height: "400px",
                             width: "700px",
-                            url: "FoodManage/Repast/AuditMerchant?Id=" + row.Id + "&TableName="+row.TableName,
+                            url: "RepastManage/Repast/AuditMerchant?Id=" + row.Id + "&TableName="+row.TableName,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }

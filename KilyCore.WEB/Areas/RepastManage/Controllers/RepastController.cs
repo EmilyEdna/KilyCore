@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace KilyCore.WEB.Areas.FoodManage.Controllers
+namespace KilyCore.WEB.Areas.RepastManage.Controllers
 {
     [Area("RepastManage")]
     public class RepastController : Controller
@@ -31,6 +31,10 @@ namespace KilyCore.WEB.Areas.FoodManage.Controllers
         #endregion
         #region 餐饮角色
         public IActionResult FoodRole()
+        {
+            return View();
+        }
+        public IActionResult FoodRoleEdit()
         {
             return View();
         }

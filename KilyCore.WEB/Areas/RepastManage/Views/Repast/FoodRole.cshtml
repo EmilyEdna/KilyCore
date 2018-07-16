@@ -19,7 +19,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "Repast/GetAuthorPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Role" });
+                this.$table = controller.Table("#tableList", { url: "Repast/GetMerchantAuthorPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Role" });
                 //设置权限菜单
                 controller.ajax({
                     url: "Repast/GetDiningTree",
@@ -42,21 +42,20 @@
             action: {
                 TableFormatter: function (val, row, index) {
                     var action = [];
-                    action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
+                    action.push('<button class="btn btn-sm btn-primary rash"><i class="fa fa-level-up"></i>分配菜单</button>');
                     return action.join("&nbsp;");
                 },
                 TableEvents: {
-                    "click .del": function (event, val, row, index) {
-                        controller.Confirm("确认删除？", function (bool) {
-                            if (bool) {
-                                controller.ajax({
-                                    url: "Repast/RemoveAuthorRole",
-                                    data: { Id: row.Id },
-                                    type: 'post',
-                                    success: function (result) {
-                                        options.$table.refresh();
-                                    }
-                                });
+                    "click .rash": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "分配菜单",
+                            type: 2,
+                            height: "500px",
+                            width: "750px",
+                            url: "RepastManage/Repast/FoodRoleEdit?RepastRoleId=" + row.RepastRoleId + "&Merchant=" + row.Id + "&MerchantName=" + row.MerchantName,
+                            callBack: function (result) {
+                                result.popup.close();
+                                options.$table.refresh();
                             }
                         });
                     },
@@ -91,11 +90,11 @@
             <div class="ibox-content">
                 <div class="row">
                     <form id="Role">
-                        <div class="col-sm-9 m-b-xs">
+                        <div class="col-sm-8 m-b-xs">
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <div class="input-group">
-                                <input type="text" placeholder="角色名称" class="input-sm form-control" name="AuthorName">
+                                <input type="text" placeholder="商家名称" class="input-sm form-control" name="MerchantName">
                                 <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
                                     <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
@@ -108,8 +107,10 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="AuthorName" data-halign="center" data-align="center" data-valign="middle">角色名称</th>
-                                <th data-field="AuthorCount" data-halign="center" data-align="center" data-valign="middle">菜单总数</th>
+                                <th data-field="MerchantName" data-halign="center" data-align="center" data-valign="middle">商家名称</th>
+                                <th data-field="MerchantTypeName" data-halign="center" data-align="center" data-valign="middle">商家类型</th>
+                                <th data-field="MerchantRoleName" data-halign="center" data-align="center" data-valign="middle">角色名称</th>
+                                <th data-field="AuthorMenuCount" data-halign="center" data-align="center" data-valign="middle">菜单总数</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>

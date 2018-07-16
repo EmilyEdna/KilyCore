@@ -129,10 +129,10 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="pageParam"></param>
         /// <returns></returns>
-        [HttpPost("GetAuthorPage")]
-        public ObjectResultEx GetAuthorPage(PageParamList<RequestRepastRoleAuthor> pageParam)
+        [HttpPost("GetMerchantAuthorPage")]
+        public ObjectResultEx GetMerchantAuthorPage(PageParamList<RequestRepastRoleAuthor> pageParam)
         {
-            return ObjectResultEx.Instance(RepastService.GetAuthorPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastService.GetMerchantAuthorPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 删除角色
@@ -143,6 +143,35 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx RemoveAuthorRole(SimlpeParam<Guid> Param)
         {
             return ObjectResultEx.Instance(RepastService.RemoveAuthorRole(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 角色分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetRoleAuthorPage")]
+        public ObjectResultEx GetRoleAuthorPage(PageParamList<RequestRepastRoleAuthor> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastService.GetRoleAuthorPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 权限下拉列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetRoleAuthorList")]
+        public ObjectResultEx GetRoleAuthorList()
+        {
+            return ObjectResultEx.Instance(RepastService.GetRoleAuthorList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 分配角色
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("DistributionRole")]
+        public ObjectResultEx DistributionRole(RequestRepastRoleAuthor Param)
+        {
+            return ObjectResultEx.Instance(RepastService.DistributionRole(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 认证审核
@@ -182,7 +211,8 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("AuditPayment")]
-        public ObjectResultEx AuditPayment(RequestPayment Param) {
+        public ObjectResultEx AuditPayment(RequestPayment Param)
+        {
             return ObjectResultEx.Instance(RepastService.AuditPayment(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
