@@ -120,7 +120,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("EditRole")]
-        public ObjectResultEx EditRole(RequestAuthorRole Param)
+        public ObjectResultEx EditRole(RequestRepastRoleAuthor Param)
         {
             return ObjectResultEx.Instance(RepastService.EditRole(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -130,7 +130,7 @@ namespace KilyCore.API.Controllers
         /// <param name="pageParam"></param>
         /// <returns></returns>
         [HttpPost("GetAuthorPage")]
-        public ObjectResultEx GetAuthorPage(PageParamList<RequestAuthorRole> pageParam)
+        public ObjectResultEx GetAuthorPage(PageParamList<RequestRepastRoleAuthor> pageParam)
         {
             return ObjectResultEx.Instance(RepastService.GetAuthorPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -186,7 +186,7 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(RepastService.AuditPayment(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
-        #region 登录注册
+        #region 登录注册退出
         /// <summary>
         /// 餐饮企业注册
         /// </summary>
@@ -210,12 +210,12 @@ namespace KilyCore.API.Controllers
             try
             {
                 string Code = HttpContext.Session.GetSession<string>("ValidateCode").Trim();
-                var ComAdmin = RepastService.MerchantLogin(LoginValidate);
-                if (ComAdmin != null && Code.Equals(LoginValidate.ValidateCode.Trim()))
+                var RepAdmin = RepastService.MerchantLogin(LoginValidate);
+                if (RepAdmin != null && Code.Equals(LoginValidate.ValidateCode.Trim()))
                 {
                     CookieInfo cookie = new CookieInfo();
-                    VerificationExtension.WriteToken(cookie, ComAdmin);
-                    return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ResponseCookieInfo.RSASysKey, ComAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
+                    VerificationExtension.WriteToken(cookie, RepAdmin);
+                    return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ResponseCookieInfo.RSASysKey, RepAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
                 }
                 else
                     return ObjectResultEx.Instance(null, -1, "登录失败", HttpCode.NoAuth);
@@ -224,6 +224,15 @@ namespace KilyCore.API.Controllers
             {
                 throw ex;
             }
+        }
+        /// <summary>
+        /// 安全退出
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("LoginOut")]
+        public ObjectResultEx LoginOut()
+        {
+            return ObjectResultEx.Instance(VerificationExtension.LoginOut(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

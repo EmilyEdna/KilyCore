@@ -22,4 +22,18 @@ namespace KilyCore.EntityFrameWork.Model.Repast
         /// </summary>
         public virtual string AuthorMenuPath { get; set; }
     }
+    /// <summary>
+    /// 集团账户表
+    /// </summary>
+    public class RepastRoleAuthorWeb : BaseEntity
+    {
+        /// <summary>
+        /// 名称
+        /// </summary>
+        public virtual string AuthorName { get; set; }
+        /// <summary>
+        /// 选中的菜单
+        /// </summary>
+        public virtual string AuthorMenuPath { get; set; }
+    }
 }

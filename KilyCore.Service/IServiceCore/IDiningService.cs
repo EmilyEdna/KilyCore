@@ -14,7 +14,7 @@ using System.Text;
 namespace KilyCore.Service.IServiceCore
 {
     /// <summary>
-    /// 点餐后台业务逻辑接口
+    /// 餐饮后台业务逻辑接口
     /// </summary>
     public interface IRepastService :IService
     {
@@ -34,8 +34,8 @@ namespace KilyCore.Service.IServiceCore
         IList<ResponseParentTree> GetDiningTree();
         #endregion
         #region 餐饮权限
-        String EditRole(RequestAuthorRole Param);
-        PagedResult<ResponseAuthorRole> GetAuthorPage(PageParamList<RequestAuthorRole> pageParam);
+        String EditRole(RequestRepastRoleAuthor Param);
+        PagedResult<ResponseAuthorRole> GetAuthorPage(PageParamList<RequestRepastRoleAuthor> pageParam);
         String RemoveAuthorRole(Guid Id);
         #endregion
         #region 认证审核

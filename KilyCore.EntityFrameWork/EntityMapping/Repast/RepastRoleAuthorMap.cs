@@ -18,4 +18,12 @@ namespace KilyCore.EntityFrameWork.EntityMapping.Dining
             builder.HasKey(t => t.Id);
         }
     }
+    public class RepastRoleAuthorWebMap : IEntityTypeConfiguration<RepastRoleAuthorWeb>
+    {
+        public void Configure(EntityTypeBuilder<RepastRoleAuthorWeb> builder)
+        {
+            builder.ToTable(typeof(RepastRoleAuthorWeb).Name);
+            builder.HasKey(t => t.Id);
+        }
+    }
 }

@@ -79,6 +79,8 @@ controller.SetCookie = function (option) {
         localStorage.UserInfo = JSON.stringify(obj.SysAdmin);//保存用户信息
     else if (obj.ComAdmin != undefined)
         localStorage.CompanyUser = JSON.stringify(obj.ComAdmin);//保存企业用户信息
+    else if (obj.RepAdmin != undefined)
+        localStorage.RepastUser = JSON.stringify(obj.RepAdmin);//保存餐饮企业用户信息
 }
 //删除Cookie
 controller.DeleteCookie = function () {

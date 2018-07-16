@@ -30,20 +30,20 @@
                 //安全退出
                 options.SignOut();
                 //用户信息
-                if ($("body").GetCompanyInfo())
+                if ($("body").GetRepastInfo())
                     $(".LoginOut").click();
                 else
                     //获取树
                     options.GetMenu();
                 //显示登录
-                $(".text-muted").prepend(CompanyUser.CompanyName);
-                $(".font-bold").prepend(CompanyUser.CompanyAccount);
+                $(".text-muted").prepend(RepastInfo.MerchantName);
+                $(".font-bold").prepend(RepastInfo.Account);
 
             },
             //获取树
             GetMenu: function () {
                 controller.ajax({
-                    url: "EnterpriseWeb/GetEnterpriseMenu",
+                    url: "RepastWeb/GetRepastMenu",
                     data: {},
                     type: "post",
                     async: false,
@@ -61,7 +61,7 @@
                 $(".LoginOut").on('click', function () {
                     controller.ClearLocal();
                     controller.ajax({
-                        url: "Enterprise/LoginOut",
+                        url: "Repast/LoginOut",
                         data: {},
                         type: "post",
                         async: false,
@@ -217,7 +217,7 @@
                 </button>
                 <nav class="page-tabs J_menuTabs">
                     <div class="page-tabs-content">
-                        <a href="javascript:;" class="active J_menuTab" data-id="/Company/Index">首页</a>
+                        <a href="javascript:;" class="active J_menuTab" data-id="/Repast/Index">首页</a>
                     </div>
                 </nav>
                 <button class="roll-nav roll-right J_tabRight">
@@ -243,7 +243,7 @@
                 <a href="#" class="roll-nav roll-right J_tabExit LoginOut"><i class="fa fa-sign-out"></i> 退出</a>
             </div>
             <div class="row J_mainContent" id="content-main">
-                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="~/Company/Index" frameborder="0" seamless></iframe>
+                <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="~/Repast/Index" frameborder="0" seamless></iframe>
             </div>
             <div class="footer">
                 <div class="pull-right">

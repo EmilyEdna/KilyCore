@@ -259,7 +259,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public string EditRole(RequestAuthorRole Param)
+        public string EditRole(RequestRepastRoleAuthor Param)
         {
             RepastRoleAuthor Author = Param.MapToEntity<RepastRoleAuthor>();
             if (Kily.Set<RepastRoleAuthor>().Where(t => t.IsDelete == false).Where(t => t.AuthorName.Equals(Author.AuthorName)).AsNoTracking().FirstOrDefault() != null)
@@ -279,7 +279,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="pageParam"></param>
         /// <returns></returns>
-        public PagedResult<ResponseAuthorRole> GetAuthorPage(PageParamList<RequestAuthorRole> pageParam)
+        public PagedResult<ResponseAuthorRole> GetAuthorPage(PageParamList<RequestRepastRoleAuthor> pageParam)
         {
             IQueryable<RepastRoleAuthor> queryable = Kily.Set<RepastRoleAuthor>().Where(t => t.IsDelete == false).AsQueryable();
             if (!string.IsNullOrEmpty(pageParam.QueryParam.AuthorName))

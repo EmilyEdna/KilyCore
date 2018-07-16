@@ -6,6 +6,7 @@ email:847432003@qq.com
 */
 var UserInfo = UserInfo || {};
 var CompanyUser = CompanyUser || {};
+var RepastInfo = RepastInfo || {};
 //设置菜单
 $.fn.SetTree = function (data) {
     var html = '';
@@ -54,6 +55,15 @@ $.fn.GetUserInfo = function () {
 $.fn.GetCompanyInfo = function () {
     if (localStorage.CompanyUser != undefined) {
         CompanyUser = JSON.parse(localStorage.CompanyUser);
+        return false;
+    }
+    else
+        return true;
+}
+//获取餐饮企业用户信息
+$.fn.GetRepastInfo = function () {
+    if (localStorage.RepastUser != undefined) {
+        RepastInfo = JSON.parse(localStorage.RepastUser);
         return false;
     }
     else
