@@ -1,5 +1,7 @@
 ﻿using KilyCore.Configure;
+using KilyCore.DataEntity.RequestMapper.Repast;
 using KilyCore.DataEntity.ResponseMapper.Repast;
+using KilyCore.Service.QueryExtend;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -27,6 +29,11 @@ namespace KilyCore.Service.IServiceCore
     {
         #region 获取全局集团菜单
         IList<ResponseRepastMenu> GetRepastMenu();
+        #endregion
+        #region 基础管理
+        #region 商家资料
+        PagedResult<ResponseMerchant> GetMerChantInfo(PageParamList<RequestMerchant> pageParam);
+        #endregion
         #endregion
     }
 }

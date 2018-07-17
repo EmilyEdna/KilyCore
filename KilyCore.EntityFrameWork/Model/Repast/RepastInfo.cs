@@ -27,6 +27,10 @@ namespace KilyCore.EntityFrameWork.Model.Repast
         /// </summary>
         public virtual string CommunityCode { get; set; }
         /// <summary>
+        /// 地址
+        /// </summary>
+        public virtual string Address { get; set; }
+        /// <summary>
         /// 商家名称
         /// </summary>
         public virtual string MerchantName { get; set; }

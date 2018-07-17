@@ -16,6 +16,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         public string PassWord { get; set; }
         public string CommunityCode { get; set; }
         public string MerchantName { get; set; }
+        public string Address { get; set; }
         public string Email { get; set; }
         public MerchantEnum DiningType { get; set; }
         public  SystemVersionEnum VersionType { get; set; }

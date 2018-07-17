@@ -1,11 +1,15 @@
-﻿using KilyCore.DataEntity.ResponseMapper.Repast;
+﻿using KilyCore.DataEntity.RequestMapper.Repast;
+using KilyCore.DataEntity.ResponseMapper.Repast;
 using KilyCore.EntityFrameWork.Model.Repast;
 using KilyCore.EntityFrameWork.ModelEnum;
+using KilyCore.Extension.AttributeExtension;
 using KilyCore.Repositories.BaseRepository;
 using KilyCore.Service.IServiceCore;
+using KilyCore.Service.QueryExtend;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
@@ -100,6 +104,30 @@ namespace KilyCore.Service.ServiceCore
                 return data;
             }
         }
+        #endregion
+        #region 基础管理
+        #region 商家资料
+        /// <summary>
+        /// 商家资料分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseMerchant> GetMerChantInfo(PageParamList<RequestMerchant> pageParam)
+        {
+            var data = Kily.Set<RepastInfo>().Where(t => t.Id == pageParam.QueryParam.Id).Select(t => new ResponseMerchant()
+            {
+                Id = t.Id,
+                MerchantName = t.MerchantName,
+                Account = t.Account,
+                Address=t.Address,
+                CommunityCode = t.CommunityCode,
+                Certification = t.Certification,
+                TypePath = t.TypePath,
+                DiningTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType)
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        #endregion
         #endregion
     }
 }
