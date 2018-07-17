@@ -291,7 +291,7 @@ namespace KilyCore.Service.ServiceCore
                 RepastRoleId = x.FirstOrDefault().Id,
                 MerchantName = t.MerchantName,
                 MerchantRoleName = x.FirstOrDefault().AuthorName,
-                MerchantTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.DiningType),
+                MerchantTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
                 AuthorMenuPath = x.FirstOrDefault().AuthorMenuPath
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
