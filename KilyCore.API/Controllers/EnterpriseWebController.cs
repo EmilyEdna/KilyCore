@@ -174,7 +174,7 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.GetUserList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
-        #region 集团账户
+        #region 权限角色
         /// <summary>
         /// 新增账户
         /// </summary>
@@ -203,6 +203,28 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx RemoveRole(SimlpeParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveRole(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #region 集团账户
+        /// <summary>
+        /// 集团账户列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetChildInfo")]
+        public ObjectResultEx GetChildInfo(PageParamList<RequestEnterprise> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetChildInfo(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑子公司
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditChildInfo")]
+        public ObjectResultEx EditChildInfo(RequestEnterprise Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditChildInfo(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 企业认证

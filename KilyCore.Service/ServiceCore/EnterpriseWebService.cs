@@ -29,6 +29,15 @@ namespace KilyCore.Service.ServiceCore
     {
         #region 下拉关联列表
         /// <summary>
+        /// 返回子公司Id列表
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public IQueryable<Guid> GetChildIdList(Guid Id)
+        {
+            return Kily.Set<EnterpriseInfo>().Where(t => t.CompanyId == Id).Select(t => t.Id).AsQueryable();
+        }
+        /// <summary>
         /// 厂商列表
         /// </summary>
         /// <param name="Type"></param>
@@ -37,7 +46,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseSeller> queryable = Kily.Set<EnterpriseSeller>().Where(t => t.IsDelete == false).AsNoTracking();
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             if ((SellerEnum)Type == SellerEnum.Supplier)
@@ -61,7 +70,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseDictionary> queryable = Kily.Set<EnterpriseDictionary>().Where(t => t.IsDelete == false);
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.GroupBy(t => t.DicType)
@@ -264,6 +273,7 @@ namespace KilyCore.Service.ServiceCore
             var data = Kily.Set<EnterpriseInfo>().Where(t => t.Id == pageParam.QueryParam.Id).Select(t => new ResponseEnterprise()
             {
                 Id = t.Id,
+                CompanyId = t.CompanyId,
                 CompanyName = t.CompanyName,
                 CompanyAccount = t.CompanyAccount,
                 CommunityCode = t.CommunityCode,
@@ -387,7 +397,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.TrueName))
                 queryable = queryable.Where(t => t.TrueName.Contains(pageParam.QueryParam.TrueName));
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseUser()
@@ -401,11 +411,15 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+        /// <summary>
+        /// 人员列表
+        /// </summary>
+        /// <returns></returns>
         public IList<ResponseEnterpriseUser> GetUserList()
         {
             IQueryable<EnterpriseUser> queryable = Kily.Set<EnterpriseUser>().Where(t => t.IsDelete == false);
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseUser()
@@ -485,7 +499,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseRoleAuthorWeb> queryable = Kily.Set<EnterpriseRoleAuthorWeb>().OrderByDescending(t => t.CreateTime);
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CreateUser == CompanyInfo().Id.ToString());
+                queryable = queryable.Where(t => t.CreateUser == CompanyInfo().Id.ToString() || GetChildIdList(CompanyInfo().Id).Contains(Guid.Parse(t.CreateUser)));
             else
                 queryable = queryable.Where(t => t.CreateUser == CompanyUser().Id.ToString());
             var data = queryable.Select(t => new ResponseRoleAuthorWeb()
@@ -497,7 +511,7 @@ namespace KilyCore.Service.ServiceCore
         }
         #endregion
 
-        #region 集团账户
+        #region 权限角色
         /// <summary>
         /// 新增账户
         /// </summary>
@@ -522,7 +536,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.AuthorName))
                 queryable = queryable.Where(t => t.AuthorName.Contains(pageParam.QueryParam.AuthorName));
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CreateUser == CompanyInfo().Id.ToString());
+                queryable = queryable.Where(t => t.CreateUser == CompanyInfo().Id.ToString() || GetChildIdList(CompanyInfo().Id).Contains(Guid.Parse(t.CreateUser)));
             else
                 queryable = queryable.Where(t => t.CreateUser == CompanyUser().Id.ToString());
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseRoleAuthorWeb()
@@ -544,6 +558,49 @@ namespace KilyCore.Service.ServiceCore
                 return ServiceMessage.REMOVESUCCESS;
             else
                 return ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+
+        #region 集团账户
+        /// <summary>
+        /// 集团账户列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterprise> GetChildInfo(PageParamList<RequestEnterprise> pageParam)
+        {
+            var data = Kily.Set<EnterpriseInfo>().Where(t => t.CompanyId == pageParam.QueryParam.Id)
+                .OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterprise()
+                {
+                    Id = t.Id,
+                    CompanyId = t.CompanyId,
+                    CompanyName = t.CompanyName,
+                    Certification = t.Certification,
+                    CompanyAccount = t.CompanyAccount,
+                    TagCodeNum = t.TagCodeNum,
+                    CompanyAddress = t.CompanyAddress,
+                }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑子账户
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditChildInfo(RequestEnterprise Param)
+        {
+            if (CompanyInfo() != null)
+            {
+                if (CompanyInfo().CompanyId != null)
+                    return "无权限创建，仅限总公司使用!";
+                EnterpriseInfo info = Param.MapToEntity<EnterpriseInfo>();
+                info.AuditType = AuditEnum.WaitAduit;
+                info.CompanyType = CompanyEnum.Other;
+                info.NatureAgent = 1;
+                info.TagCodeNum = 0;
+                return Insert(info) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            }
+            return "无权限创建!";
         }
         #endregion
 
@@ -618,7 +675,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.DicName))
                 queryable = queryable.Where(t => t.DicType.Contains(pageParam.QueryParam.DicName));
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.AsNoTracking().Select(t => new ResponseEnterpriseDictionary()
@@ -837,7 +894,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseInsideFile> queryable = Kily.Set<EnterpriseInsideFile>().OrderByDescending(t => t.CreateTime);
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseInsideFile()
@@ -944,7 +1001,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.GrowName))
                 queryable = queryable.Where(t => t.GrowName.Contains(pageParam.QueryParam.GrowName));
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseGrowInfo()
@@ -1022,7 +1079,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseGrowInfo> queryable = Kily.Set<EnterpriseGrowInfo>().Where(t => t.IsDelete == false).AsNoTracking();
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseGrowInfo()
@@ -1049,7 +1106,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.FeedName))
                 queryable = queryable.Where(t => t.FeedName.Contains(pageParam.QueryParam.FeedName));
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterprisePlanting()
@@ -1111,7 +1168,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.DrugName))
                 queryable = queryable.Where(t => t.DrugName.Contains(pageParam.QueryParam.DrugName));
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseDrug()
@@ -1170,7 +1227,7 @@ namespace KilyCore.Service.ServiceCore
             if (pageParam.QueryParam.RecordTime.HasValue)
                 queryable = queryable.Where(t => t.RecordTime <= pageParam.QueryParam.RecordTime);
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseEnvironment()
@@ -1225,7 +1282,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseEnvironmentAttach> queryable = Kily.Set<EnterpriseEnvironmentAttach>().Where(t => t.IsDelete == false).Where(t => t.EnvId == pageParam.QueryParam.EnvId).AsNoTracking();
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CreateUser == CompanyInfo().Id.ToString());
+                queryable = queryable.Where(t => t.CreateUser == CompanyInfo().Id.ToString() || GetChildIdList(CompanyInfo().Id).Contains(Guid.Parse(t.CreateUser)));
             else
                 queryable = queryable.Where(t => t.CreateUser == CompanyUser().Id.ToString());
             var data = queryable.Select(t => new ResponseEnterpriseEnvironmentAttach()
@@ -1278,7 +1335,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.NoteName))
                 queryable = queryable.Where(t => t.NoteName.Contains(pageParam.QueryParam.NoteName));
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseNote()
@@ -1358,7 +1415,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.BatchNo))
                 queryable = queryable.Where(t => t.BatchNo.Contains(pageParam.QueryParam.BatchNo));
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseTag()
@@ -1387,6 +1444,8 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<SystemProvince> queryable = Kily.Set<SystemProvince>().AsNoTracking();
             //企业信息
             EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Param.CompanyId).FirstOrDefault();
+            if (info.TagCodeNum <= 0)
+                return "二维码数量小于等于零，请购买二维码标签！";
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => CompanyInfo().TypePath.Contains(t.Id.ToString()));
             else
@@ -1449,7 +1508,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.BatchNo))
                 queryable = queryable.Where(t => t.BatchNo.Contains(pageParam.QueryParam.BatchNo));
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.OrderByDescending(t => t.CreateTime).AsNoTracking().Select(t => new ResponseEnterpriseApply()
@@ -1547,7 +1606,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.BatchNo))
                 queryable = queryable.Where(t => t.BatchNo.Contains(pageParam.QueryParam.BatchNo));
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseVeinTag()
@@ -1600,7 +1659,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 IQueryable<EnterpriseVeinTag> queryable = Kily.Set<EnterpriseVeinTag>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
                 if (CompanyInfo() != null)
-                    queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                    queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
                 else
                     queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
                 return queryable.Select(t => new ResponseVeinTag()
@@ -1613,7 +1672,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 IQueryable<EnterpriseTag> queryable = Kily.Set<EnterpriseTag>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
                 if (CompanyInfo() != null)
-                    queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                    queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
                 else
                     queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
                 if (type == 2)
@@ -1655,7 +1714,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.ProductName))
                 goods = goods.Where(t => t.ProductName.Contains(pageParam.QueryParam.ProductName));
             if (CompanyInfo() != null)
-                goods = goods.Where(t => t.CompanyId == CompanyInfo().Id);
+                goods = goods.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 goods = goods.Where(t => t.CompanyId == CompanyUser().Id);
             var Temp = goods.Join(stocks, q => q.Id, w => w.GoodsId, (q, w) => new
@@ -1771,7 +1830,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.SupplierName))
                 queryable = queryable.Where(t => t.SupplierName.Contains(pageParam.QueryParam.SupplierName));
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id|| GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.OrderByDescending(t => t.CreateTime).AsNoTracking().Select(t => new ResponseEnterpriseSeller()
@@ -1860,7 +1919,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.MaterName))
                 queryable = queryable.Where(t => t.MaterName.Contains(pageParam.QueryParam.MaterName));
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseMaterial()
@@ -1907,7 +1966,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseMaterial> queryable = Kily.Set<EnterpriseMaterial>().Where(t => t.IsDelete == false).AsNoTracking().OrderByDescending(t => t.CreateTime);
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseMaterial()
@@ -1932,7 +1991,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.MaterName))
                 queryables = queryables.Where(t => t.MaterName.Contains(pageParam.QueryParam.MaterName));
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.OrderByDescending(t => t.CreateTime)
@@ -2004,7 +2063,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.MaterName))
                 Material = Material.Where(t => t.MaterName.Contains(pageParam.QueryParam.MaterName));
             if (CompanyInfo() != null)
-                StockAttach = StockAttach.Where(t => t.CompanyId == CompanyInfo().Id);
+                StockAttach = StockAttach.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 StockAttach = StockAttach.Where(t => t.CompanyId == CompanyUser().Id);
             var data = StockAttach.OrderByDescending(t => t.CreateTime)
@@ -2062,7 +2121,7 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseMaterialStock> Stock = Kily.Set<EnterpriseMaterialStock>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseMaterial> queryable = Kily.Set<EnterpriseMaterial>().Where(t => t.IsDelete == false).AsNoTracking().OrderByDescending(t => t.CreateTime);
             if (CompanyInfo() != null)
-                Attach = Attach.Where(t => t.CompanyId == CompanyInfo().Id);
+                Attach = Attach.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 Attach = Attach.Where(t => t.CompanyId == CompanyUser().Id);
             var data = Attach.Join(Stock, t => t.MaterialStockId, y => y.Id, (t, y) => new { t, y }).Join(queryable, o => o.y.BatchNo, p => p.BatchNo, (o, p) => new ResponseEnterpriseMaterial()
@@ -2088,7 +2147,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.DeviceName))
                 queryable = queryable.Where(t => t.DeviceName.Contains(pageParam.QueryParam.DeviceName));
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseDevice
@@ -2131,7 +2190,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseDevice> queryable = Kily.Set<EnterpriseDevice>().Where(t => t.IsDelete == false);
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseDevice()
@@ -2226,7 +2285,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.SeriesName))
                 queryable = queryable.Where(t => t.SeriesName.Contains(pageParam.QueryParam.SeriesName));
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseProductSeries()
@@ -2266,7 +2325,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseProductSeries> queryable = Kily.Set<EnterpriseProductSeries>().Where(t => t.IsDelete == false);
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseProductSeries()
@@ -2287,7 +2346,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseTarget> queryable = Kily.Set<EnterpriseTarget>().Where(t => t.IsDelete == false);
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.TargetName))
@@ -2330,7 +2389,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseTarget> queryable = Kily.Set<EnterpriseTarget>().Where(t => t.IsDelete == false).AsNoTracking();
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseTarget()
@@ -2361,7 +2420,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.SeriesName))
                 queryables = queryables.Where(t => t.SeriesName.Contains(pageParam.QueryParam.SeriesName));
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.OrderByDescending(t => t.CreateTime).Join(queryables, t => t.SeriesId, x => x.Id, (t, x) => new ResponseEnterpriseProductionBatch()
@@ -2387,7 +2446,7 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseProductionBatch> queryable = Kily.Set<EnterpriseProductionBatch>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseProductSeries> queryables = Kily.Set<EnterpriseProductSeries>().Where(t => t.IsDelete == false);
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Join(queryables, t => t.SeriesId, x => x.Id, (t, x) => new ResponseEnterpriseProductionBatch()
@@ -2475,7 +2534,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseFacilities> queryable = Kily.Set<EnterpriseFacilities>().Where(t => t.IsDelete == false);
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseFacilities()
@@ -2496,7 +2555,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.WorkShopName))
                 queryable = queryable.Where(t => t.WorkShopName.Contains(pageParam.QueryParam.WorkShopName));
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseFacilities()
@@ -2581,7 +2640,7 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseGoods> queryable = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseProductSeries> queryables = Kily.Set<EnterpriseProductSeries>().Where(t => t.IsDelete == false);
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.ProductName))
@@ -2653,7 +2712,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseGoods> queryable = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseGoods()
@@ -2714,7 +2773,7 @@ namespace KilyCore.Service.ServiceCore
                 Goods = Goods.Where(t => t.ProductName.Contains(pageParam.QueryParam.GoodsName));
             if (CompanyInfo() != null)
             {
-                Stock = Stock.Where(t => t.CompanyId == CompanyInfo().Id);
+                Stock = Stock.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
                 var Temp = Stock.OrderByDescending(t => t.CreateTime).Join(Goods, t => t.GoodsId, x => x.Id, (t, x) => new { t, x }).AsNoTracking();
                 if (CompanyInfo().CompanyType == CompanyEnum.Plant || CompanyInfo().CompanyType == CompanyEnum.Culture)
                     return Temp.Join(Note, p => p.t.GrowNoteId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
@@ -2898,7 +2957,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.GoodsName))
                 Goods = Goods.Where(t => t.ProductName.Contains(pageParam.QueryParam.GoodsName));
             if (CompanyInfo() != null)
-                Stock = Stock.Where(t => t.CompanyId == CompanyInfo().Id);
+                Stock = Stock.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 Stock = Stock.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Join(Stock, t => t.StockId, x => x.Id, (t, x) => new { t, x })
@@ -2963,7 +3022,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseGoodsStockAttach> queryable = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false).AsNoTracking();
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             return queryable.Select(t => new ResponseEnterpriseGoodsStockAttach()
@@ -2988,7 +3047,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.CheckName))
                 queryable = queryable.Where(t => t.CheckName.Contains(pageParam.QueryParam.CheckName));
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Join(queryables, t => t.MaterId, x => x.Id, (t, x) => new ResponseEnterpriseCheckMaterial()
@@ -3030,7 +3089,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseCheckMaterial> queryable = Kily.Set<EnterpriseCheckMaterial>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseCheckMaterial()
@@ -3052,7 +3111,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.CheckName))
                 queryable = queryable.Where(t => t.CheckName.Contains(pageParam.QueryParam.CheckName));
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Join(queryables, t => t.GoodsId, x => x.Id, (t, x) => new ResponseEnterpriseCheckGoods()
@@ -3094,7 +3153,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseCheckGoods> queryable = Kily.Set<EnterpriseCheckGoods>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseCheckGoods()
@@ -3117,7 +3176,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.CustomName))
                 queryable = queryable.Where(t => t.CustomName.Contains(pageParam.QueryParam.CustomName));
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseInferiorExprired()
@@ -3189,7 +3248,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.RecoverGoodsName))
                 queryable = queryable.Where(t => t.RecoverGoodsName.Contains(pageParam.QueryParam.RecoverGoodsName));
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseRecover()
@@ -3268,7 +3327,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.ProductName))
                 Goods = Goods.Where(t => t.ProductName.Contains(pageParam.QueryParam.ProductName));
             if (CompanyInfo() != null)
-                Package = Package.Where(t => t.CompanyId == CompanyInfo().Id);
+                Package = Package.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 Package = Package.Where(t => t.CompanyId == CompanyUser().Id);
             var data = Package.Join(Attach, q => q.ProductOutStockNo, w => w.GoodsBatchNo, (q, w) => new { q, w.StockId })
@@ -3363,14 +3422,14 @@ namespace KilyCore.Service.ServiceCore
             if (pageParam.QueryParam.SendType)
             {
                 if (CompanyInfo() != null)
-                    queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                    queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
                 else
                     queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             }
             else
             {
                 if (CompanyInfo() != null)
-                    queryable = queryable.Where(t => t.GainId == CompanyInfo().Id);
+                    queryable = queryable.Where(t => t.GainId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
                 else
                     queryable = queryable.Where(t => t.GainId == CompanyUser().Id);
             }
@@ -3434,7 +3493,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseBuyer> queryable = Kily.Set<EnterpriseBuyer>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.GoodName))

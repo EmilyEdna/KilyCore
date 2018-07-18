@@ -12,8 +12,12 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
     /// <summary>
     /// 企业信息表
     /// </summary>
-    public class EnterpriseInfo :BaseEntity
+    public class EnterpriseInfo : BaseEntity
     {
+        /// <summary>
+        /// 子公司所属集团Id
+        /// </summary>
+        public virtual Guid? CompanyId { get; set; }
         /// <summary>
         /// 企业名称
         /// </summary>

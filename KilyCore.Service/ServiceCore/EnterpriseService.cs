@@ -666,6 +666,7 @@ namespace KilyCore.Service.ServiceCore
             ResponseEnterprise Info = queryable.Select(t => new ResponseEnterprise()
             {
                 Id = t.Id,
+                CompanyId=t.CompanyId,
                 CompanyAccount = t.CompanyAccount,
                 CommunityCode = t.CommunityCode,
                 CompanyAddress = t.CompanyAddress,

@@ -108,5 +108,21 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 集团账户
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult ChildAccount()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 编辑子账户
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult ChildrenAccountEdit()
+        {
+            return View();
+        }
     }
 }

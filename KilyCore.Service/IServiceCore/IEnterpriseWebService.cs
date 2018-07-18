@@ -46,10 +46,14 @@ namespace KilyCore.Service.IServiceCore
         IList<ResponseRoleAuthorWeb> GetRoleAuthorList();
         IList<ResponseEnterpriseUser> GetUserList();
         #endregion
-        #region 集团账户
+        #region 权限角色
         String EditRoleAuthor(RequestRoleAuthorWeb Param);
         PagedResult<ResponseRoleAuthorWeb> GetRoleAuthorPage(PageParamList<RequestRoleAuthorWeb> pageParam);
         String RemoveRole(Guid Id);
+        #endregion
+        #region 集团账户
+        PagedResult<ResponseEnterprise> GetChildInfo(PageParamList<RequestEnterprise> pageParam);
+        String EditChildInfo(RequestEnterprise Param);
         #endregion
         #region 企业认证
         String EditEnterpriseIdent(RequestEnterpriseIdent param);

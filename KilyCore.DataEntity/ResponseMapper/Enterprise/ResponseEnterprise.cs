@@ -13,6 +13,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
     public class ResponseEnterprise
     {
         public Guid Id { get; set; }
+        public Guid? CompanyId { get; set; }
         public string CompanyName { get; set; }
         public CompanyEnum CompanyType { get; set; }
         public string CompanyAccount { get; set; }
