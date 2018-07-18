@@ -293,7 +293,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public ResponseEnterprise GetEnterpriseInfo(Guid Id)
         {
-            var data = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Id).GroupJoin(Kily.Set<SystemStayContract>(), t => t.Id, x => x.CompanyId, (t, x) => new ResponseEnterprise()
+            var data = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Id).GroupJoin(Kily.Set<SystemStayContract>(), t => (t.CompanyId!=null?t.CompanyId:t.Id), x => x.CompanyId, (t, x) => new ResponseEnterprise()
             {
                 Id = t.Id,
                 CompanyAccount = t.CompanyAccount,
