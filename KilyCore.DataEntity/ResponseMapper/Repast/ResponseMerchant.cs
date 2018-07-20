@@ -12,6 +12,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
     public class ResponseMerchant
     {
         public Guid Id { get; set; }
+        public Guid? InfoId { get; set; }
         public string Account { get; set; }
         public string PassWord { get; set; }
         public string CommunityCode { get; set; }

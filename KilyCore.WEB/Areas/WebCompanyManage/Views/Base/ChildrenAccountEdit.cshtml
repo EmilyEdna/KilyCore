@@ -31,12 +31,14 @@
                         $.each(result.data, function (i, obj) {
                             html += '<option value="' + obj.Id + '">' + obj.AuthorName + '</option>'
                         });
-                        $("#RoleAuthorType").html(html);
+                        $("#EnterpriseRoleId").html(html);
                     }
                 });
             },
             //事件
             InitEvents: function () { 
+                //验证
+                controller.ValidateConfirm("#Edit");
             },
             //行为
             action: {}
@@ -76,7 +78,7 @@
                 <tr>
                     <th><label class="control-label">角色权限</label></th>
                     <td class="has-warning">
-                        <select type="select" class="form-control" name="RoleAuthorType" id="RoleAuthorType">
+                        <select type="select" class="form-control" name="EnterpriseRoleId" id="EnterpriseRoleId">
                             <option>===请选择===</option>
                         </select>
                     </td>

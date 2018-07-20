@@ -38,6 +38,7 @@ namespace KilyCore.EntityFrameWork
                 optionsBuilder.UseMySql(Configer.ConnentionString);
             else if (Configer.DataProvider.ToUpper().Equals("SQLSERVER"))
                 optionsBuilder.UseSqlServer(Configer.ConnentionString);
+            optionsBuilder.EnableSensitiveDataLogging();
         }
     }
 }

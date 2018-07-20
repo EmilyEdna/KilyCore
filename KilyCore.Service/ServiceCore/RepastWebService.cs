@@ -41,9 +41,20 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<RepastMenu> queryable = Kily.Set<RepastMenu>().Where(t => t.Level == MenuEnum.LevelOne).Where(t => t.IsDelete == false).AsNoTracking().AsQueryable().OrderBy(t => t.CreateTime);
             if (MerchantInfo() != null)
             {
-                RepastRoleAuthor Author = Kily.Set<RepastRoleAuthor>().Where(t => t.IsDelete == false)
-                    .Where(t => t.Id == MerchantInfo().DingRoleId).AsNoTracking().FirstOrDefault();
-                queryable = queryable.Where(t => Author.AuthorMenuPath.Contains(t.Id.ToString())).AsNoTracking();
+                RepastRoleAuthor Author = null;
+                RepastRoleAuthorWeb AuthorWeb = null;
+                String RolePath = String.Empty;
+                if (MerchantInfo().InfoId != null)
+                {
+                    Author = Kily.Set<RepastRoleAuthor>().Where(t => t.IsDelete == false).Where(t => t.Id == MerchantInfo().DingRoleId).AsNoTracking().FirstOrDefault();
+                    RolePath = Author.AuthorMenuPath;
+                }
+                else
+                {
+                    AuthorWeb= Kily.Set<RepastRoleAuthorWeb>().Where(t => t.IsDelete == false).Where(t => t.Id == MerchantUser().DingRoleId).AsNoTracking().FirstOrDefault();
+                    RolePath = AuthorWeb.AuthorMenuPath;
+                }
+                queryable = queryable.Where(t => RolePath.Contains(t.Id.ToString())).AsNoTracking();
                 var data = queryable.OrderBy(t => t.CreateTime).Select(t => new ResponseRepastMenu()
                 {
                     Id = t.Id,
@@ -57,7 +68,7 @@ namespace KilyCore.Service.ServiceCore
                     .Where(x => x.ParentId == t.MenuId)
                     .Where(x => x.Level != MenuEnum.LevelOne)
                     .Where(x => x.IsDelete == false)
-                    .Where(x => Author.AuthorMenuPath.Contains(x.Id.ToString()))
+                    .Where(x => RolePath.Contains(x.Id.ToString()))
                     .OrderBy(x => x.CreateTime).Select(x => new ResponseRepastMenu()
                     {
                         Id = x.Id,

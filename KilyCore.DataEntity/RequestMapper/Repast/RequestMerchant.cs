@@ -11,6 +11,7 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
     public class RequestMerchant
     {
         public Guid Id { get; set; }
+        public Guid? InfoId { get; set; }
         public string AllowUnit { get; set; }
         public string Account { get; set; }
         public string PassWord { get; set; }

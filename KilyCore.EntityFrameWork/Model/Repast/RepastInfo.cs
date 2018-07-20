@@ -15,6 +15,10 @@ namespace KilyCore.EntityFrameWork.Model.Repast
     public class RepastInfo : BaseEntity
     {
         /// <summary>
+        /// 母公司Id
+        /// </summary>
+        public virtual Guid? InfoId { get; set; }
+        /// <summary>
         /// 账号
         /// </summary>
         public virtual string Account { get; set; }

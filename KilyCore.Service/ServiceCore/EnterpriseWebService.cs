@@ -124,9 +124,20 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseMenu> queryable = Kily.Set<EnterpriseMenu>().Where(t => t.Level == MenuEnum.LevelOne).Where(t => t.IsDelete == false).AsNoTracking().AsQueryable().OrderBy(t => t.CreateTime);
             if (CompanyInfo() != null)
             {
-                EnterpriseRoleAuthor Author = Kily.Set<EnterpriseRoleAuthor>().Where(t => t.IsDelete == false)
-                    .Where(t => t.Id == CompanyInfo().EnterpriseRoleId).AsNoTracking().FirstOrDefault();
-                queryable = queryable.Where(t => Author.AuthorMenuPath.Contains(t.Id.ToString())).AsNoTracking();
+                EnterpriseRoleAuthor Author = null;
+                EnterpriseRoleAuthorWeb AuthorWeb = null;
+                String RolePath = String.Empty;
+                if (CompanyInfo().CompanyId == null)
+                {
+                    Author = Kily.Set<EnterpriseRoleAuthor>().Where(t => t.IsDelete == false).Where(t => t.Id == CompanyInfo().EnterpriseRoleId).AsNoTracking().FirstOrDefault();
+                    RolePath = Author.AuthorMenuPath;
+                }
+                else
+                {
+                    AuthorWeb = Kily.Set<EnterpriseRoleAuthorWeb>().Where(t => t.IsDelete == false).Where(t => t.Id == CompanyInfo().EnterpriseRoleId).AsNoTracking().FirstOrDefault();
+                    RolePath = AuthorWeb.AuthorMenuPath;
+                }
+                queryable = queryable.Where(t => RolePath.Contains(t.Id.ToString())).AsNoTracking();
                 var data = queryable.OrderBy(t => t.CreateTime).Select(t => new ResponseEnterpriseMenu()
                 {
                     Id = t.Id,
@@ -140,7 +151,7 @@ namespace KilyCore.Service.ServiceCore
                     .Where(x => x.ParentId == t.MenuId)
                     .Where(x => x.Level != MenuEnum.LevelOne)
                     .Where(x => x.IsDelete == false)
-                    .Where(x => Author.AuthorMenuPath.Contains(x.Id.ToString()))
+                    .Where(x => RolePath.Contains(x.Id.ToString()))
                     .OrderBy(x => x.CreateTime).Select(x => new ResponseEnterpriseMenu()
                     {
                         Id = x.Id,
@@ -293,7 +304,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public ResponseEnterprise GetEnterpriseInfo(Guid Id)
         {
-            var data = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Id).GroupJoin(Kily.Set<SystemStayContract>(), t => (t.CompanyId!=null?t.CompanyId:t.Id), x => x.CompanyId, (t, x) => new ResponseEnterprise()
+            var data = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Id).GroupJoin(Kily.Set<SystemStayContract>(), t => (t.CompanyId != null ? t.CompanyId : t.Id), x => x.CompanyId, (t, x) => new ResponseEnterprise()
             {
                 Id = t.Id,
                 CompanyAccount = t.CompanyAccount,
@@ -1830,7 +1841,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.SupplierName))
                 queryable = queryable.Where(t => t.SupplierName.Contains(pageParam.QueryParam.SupplierName));
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id|| GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.OrderByDescending(t => t.CreateTime).AsNoTracking().Select(t => new ResponseEnterpriseSeller()
