@@ -71,9 +71,17 @@ namespace KilyCore.EntityFrameWork.Model.Repast
         /// </summary>
         public virtual string ImplUser { get; set; }
         /// <summary>
+        /// 商家描述
+        /// </summary>
+        public virtual string Remark { get; set; }
+        /// <summary>
         /// 所属单位
         /// </summary>
         public virtual string AllowUnit { get; set; }
+        /// <summary>
+        /// 身份证
+        /// </summary>
+        public virtual string IdCard { get; set; }
         /// <summary>
         /// 系统版本
         /// </summary>

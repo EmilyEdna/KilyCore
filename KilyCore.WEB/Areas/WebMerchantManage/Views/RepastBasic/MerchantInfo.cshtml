@@ -3,6 +3,134 @@
     ViewData["Title"] = "商家资料";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                //恢复高度
+                $(window).resize(function (e) {
+                    window.setTimeout(function () {
+                        options.$table.bootstrapTable("resetView", { height: $(window).height() - 150 });
+                    }, 200);
+                    e.stopPropagation();
+                });
+                //设置表单
+                this.$table = controller.Table("#tableList", { url: "RepastWeb/GetMerchantInfo", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { Id: RepastUser.Id } });
+            },
+            //事件
+            InitEvents: function () {
+            },
+            //行为
+            action: {
+                ImgFormatter: function (val, row, index) {
+                    var action = [];
+                    if (row.Certification != null)
+                        action.push('<img class="photo" src="' + row.Certification + '" style="width:48px;height:32px;"">')
+                    return action.join("&nbsp;");
+                },
+                ImgEvents: {
+                    "click .photo": function (event, val, row, index) {
+                        var option = {
+                            title: "营业执照",
+                            data: [{
+                                alt: "营业执照",
+                                src: $(this).attr("src")
+                            }]
+                        };
+                        controller.Photos(option);
+                    }
+                },
+                TableFormatter: function (val, row, index) {
+                    var action = [];
+                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-plus"></i>完善资料</button>');
+                    if (row.CompanyId == null)
+                        action.push('<button class="btn btn-sm btn-primary pay"><i class="fa fa-plus"></i>缴费</button>');
+                    return action.join("&nbsp;")
+                },
+                TableEvents: {
+                    "click .edit": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "完善资料",
+                            type: 2,
+                            height: "700px",
+                            width: "900px",
+                            url: "WebMerchantManage/RepastBasic/MerchantInfoEdit",
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
+                    },
+                    "click .pay": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "缴费",
+                            type: 2,
+                            height: "600px",
+                            width: "800px",
+                            url: "WebMerchantManage/RepastBasic/Payment?Id=" + row.Id + "&TypePath=" + row.TypePath + "&MerchantName=" + row.MerchantName,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
+                    }
+                }//表单事件结束
+            }//行为结束
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+@section css{
 
-<h2>MerchantInfo</h2>
+}
 
+<div class="container-fluid">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>商家资料</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <form id="Edit">
+                        <div class="col-sm-8 m-b-xs">
+                            <div class="input-group">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" placeholder="" class="input-sm form-control" readonly>
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
+                                    <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive">
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="MerchantName" data-halign="center" data-align="center" data-valign="middle">商家名称</th>
+                                <th data-field="Account" data-halign="center" data-align="center" data-valign="middle">商家账号</th>
+                                <th data-field="Address" data-halign="center" data-align="center" data-valign="middle">经营地址</th>
+                                <th data-field="CommunityCode" data-halign="center" data-align="center" data-valign="middle">工商代码</th>
+                                <th data-field="DiningTypeName" data-halign="center" data-align="center" data-valign="middle">商家类型</th>
+                                <th data-formatter="options.action.ImgFormatter" data-events="options.action.ImgEvents" data-halign="center" data-align="center" data-valign="middle">营业执照</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

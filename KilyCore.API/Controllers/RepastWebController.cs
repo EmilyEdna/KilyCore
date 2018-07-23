@@ -32,9 +32,29 @@ namespace KilyCore.API.Controllers
         /// <param name="pageParam"></param>
         /// <returns></returns>
         [HttpPost("GetMerChantInfo")]
-        public ObjectResultEx GetMerChantInfo(PageParamList<RequestMerchant> pageParam)
+        public ObjectResultEx GetMerchantInfo(PageParamList<RequestMerchant> pageParam)
         {
-            return ObjectResultEx.Instance(RepastWebService.GetMerChantInfo(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.GetMerchantInfo(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取详细
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetMerchantDetail")]
+        public ObjectResultEx GetMerchantDetail(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetMerchantDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑商家资料
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditMerchant")]
+        public ObjectResultEx EditMerchant(RequestMerchant Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.EditMerchant(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #endregion

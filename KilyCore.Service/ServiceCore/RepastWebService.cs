@@ -3,7 +3,9 @@ using KilyCore.DataEntity.ResponseMapper.Repast;
 using KilyCore.EntityFrameWork.Model.Repast;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AttributeExtension;
+using KilyCore.Extension.AutoMapperExtension;
 using KilyCore.Repositories.BaseRepository;
+using KilyCore.Service.ConstMessage;
 using KilyCore.Service.IServiceCore;
 using KilyCore.Service.QueryExtend;
 using Microsoft.EntityFrameworkCore;
@@ -44,14 +46,14 @@ namespace KilyCore.Service.ServiceCore
                 RepastRoleAuthor Author = null;
                 RepastRoleAuthorWeb AuthorWeb = null;
                 String RolePath = String.Empty;
-                if (MerchantInfo().InfoId != null)
+                if (MerchantInfo().InfoId == null)
                 {
                     Author = Kily.Set<RepastRoleAuthor>().Where(t => t.IsDelete == false).Where(t => t.Id == MerchantInfo().DingRoleId).AsNoTracking().FirstOrDefault();
                     RolePath = Author.AuthorMenuPath;
                 }
                 else
                 {
-                    AuthorWeb= Kily.Set<RepastRoleAuthorWeb>().Where(t => t.IsDelete == false).Where(t => t.Id == MerchantUser().DingRoleId).AsNoTracking().FirstOrDefault();
+                    AuthorWeb = Kily.Set<RepastRoleAuthorWeb>().Where(t => t.IsDelete == false).Where(t => t.Id == MerchantInfo().DingRoleId).AsNoTracking().FirstOrDefault();
                     RolePath = AuthorWeb.AuthorMenuPath;
                 }
                 queryable = queryable.Where(t => RolePath.Contains(t.Id.ToString())).AsNoTracking();
@@ -123,20 +125,62 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="pageParam"></param>
         /// <returns></returns>
-        public PagedResult<ResponseMerchant> GetMerChantInfo(PageParamList<RequestMerchant> pageParam)
+        public PagedResult<ResponseMerchant> GetMerchantInfo(PageParamList<RequestMerchant> pageParam)
         {
             var data = Kily.Set<RepastInfo>().Where(t => t.Id == pageParam.QueryParam.Id).Select(t => new ResponseMerchant()
             {
                 Id = t.Id,
                 MerchantName = t.MerchantName,
                 Account = t.Account,
-                Address=t.Address,
+                Address = t.Address,
                 CommunityCode = t.CommunityCode,
                 Certification = t.Certification,
                 TypePath = t.TypePath,
                 DiningTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType)
-            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
+        }
+        /// <summary>
+        /// 获取详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseMerchant GetMerchantDetail(Guid Id)
+        {
+            var data = Kily.Set<RepastInfo>().Where(t => t.Id == Id).Select(t => new ResponseMerchant()
+            {
+                Id = t.Id,
+                Account = t.Account,
+                Address = t.Address,
+                PassWord = t.PassWord,
+                CommunityCode = t.CommunityCode,
+                MerchantName = t.MerchantName,
+                DiningType = t.DiningType,
+                Phone = t.Phone,
+                VersionType = t.VersionType,
+                TypePath = t.TypePath,
+                Certification = t.Certification,
+                Email = t.Email,
+                ImplUser = t.ImplUser,
+                AllowUnit = t.AllowUnit,
+                IdCard = t.IdCard,
+                Remark = t.Remark
+            }).FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 编辑商家资料
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditMerchant(RequestMerchant Param)
+        {
+            Param.AuditType = AuditEnum.WaitAduit;
+            RepastInfo data = Kily.Set<RepastInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
+            Param.DingRoleId = data.DingRoleId;
+            Param.InfoId = data.InfoId;
+            RepastInfo info = Param.MapToEntity<RepastInfo>();
+            return Update<RepastInfo, RequestMerchant>(info, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         #endregion
         #endregion

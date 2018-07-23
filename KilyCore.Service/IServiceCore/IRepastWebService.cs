@@ -32,7 +32,9 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 基础管理
         #region 商家资料
-        PagedResult<ResponseMerchant> GetMerChantInfo(PageParamList<RequestMerchant> pageParam);
+        PagedResult<ResponseMerchant> GetMerchantInfo(PageParamList<RequestMerchant> pageParam);
+        ResponseMerchant GetMerchantDetail(Guid Id);
+        String EditMerchant(RequestMerchant Param);
         #endregion
         #endregion
     }

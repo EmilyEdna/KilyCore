@@ -28,9 +28,10 @@
             },
             //行为
             action: {
-                ImgFormatter: function (val, row, index) { 
+                ImgFormatter: function (val, row, index) {
                     var action = [];
-                    action.push('<img class="photo" src="' + row.PaytTicket + '" style="width:48px;height:32px;"">')
+                    if (row.PaytTicket != null)
+                        action.push('<img class="photo" src="' + row.PaytTicket + '" style="width:48px;height:32px;"">')
                     return action.join("&nbsp;");
                 },
                 ImgEvents: {
@@ -44,7 +45,7 @@
                         };
                         controller.Photos(option);
                     }
-                 },
+                },
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-pencil-square-o"></i>审核</button>');

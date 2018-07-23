@@ -341,7 +341,7 @@ namespace KilyCore.Service.ServiceCore
             Param.AuditType = AuditEnum.WaitAduit;
             EnterpriseInfo data = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
             Param.EnterpriseRoleId = data.EnterpriseRoleId;
-
+            Param.CompanyId = data.CompanyId;
             EnterpriseInfo Info = Param.MapToEntity<EnterpriseInfo>();
             if (Update<EnterpriseInfo, RequestEnterprise>(Info, Param))
                 return ServiceMessage.UPDATESUCCESS;

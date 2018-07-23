@@ -30,7 +30,8 @@
             action: {
                 ImgFormatter: function (val, row, index) {
                     var action = [];
-                    action.push('<img class="photo" src="' + row.PayTicket + '" style="width:48px;height:32px;"">')
+                    if (row.PaytTicket != null)
+                        action.push('<img class="photo" src="' + row.PayTicket + '" style="width:48px;height:32px;"">')
                     return action.join("&nbsp;");
                 },
                 ImgEvents: {

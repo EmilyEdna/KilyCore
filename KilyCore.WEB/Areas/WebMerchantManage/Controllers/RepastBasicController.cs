@@ -9,13 +9,15 @@ namespace KilyCore.WEB.Areas.WebMerchantManage.Controllers
     [Area("WebMerchantManage")]
     public class RepastBasicController : Controller
     {
-        /// <summary>
-        /// 商家资料
-        /// </summary>
-        /// <returns></returns>
+        #region 商家资料
         public IActionResult MerchantInfo()
         {
             return View();
         }
+        public IActionResult MerchantInfoEdit()
+        {
+            return View();
+        }
+        #endregion
     }
 }

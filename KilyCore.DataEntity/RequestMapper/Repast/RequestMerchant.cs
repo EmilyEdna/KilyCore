@@ -12,12 +12,15 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
     {
         public Guid Id { get; set; }
         public Guid? InfoId { get; set; }
+        public string Remark { get; set; }
         public string AllowUnit { get; set; }
         public string Account { get; set; }
         public string PassWord { get; set; }
         public string CommunityCode { get; set; }
         public string MerchantName { get; set; }
         public string Address { get; set; }
+        public string Email { get; set; }
+        public string IdCard { get; set; }
         public MerchantEnum DiningType { get; set; }
         public string Phone { get; set; }
         public Guid? DingRoleId { get; set; }

@@ -59,7 +59,8 @@
             action: {
                 ImgFormatter: function (val, row, index) {
                     var action = [];
-                    action.push('<img class="photo" src="' + row.LvImg + '" style="width:48px;height:32px;"">')
+                    if (row.LvImg != null)
+                        action.push('<img class="photo" src="' + row.LvImg + '" style="width:48px;height:32px;"">')
                     return action.join("&nbsp;");
                 },
                 ImgEvents: {
@@ -116,26 +117,26 @@
             <div class="ibox-content">
                 <div class="row">
                     <form id="Edit">
-                            <div class="col-sm-6 m-b-xs">
-                                <div class="input-group">
-                                    <button type="button" class="btn btn-sm btn-white" id="add"><i class="fa fa-plus"></i>新增</button>
-                                </div>
+                        <div class="col-sm-6 m-b-xs">
+                            <div class="input-group">
+                                <button type="button" class="btn btn-sm btn-white" id="add"><i class="fa fa-plus"></i>新增</button>
                             </div>
-                            <div class="col-sm-2">
-                                <div class="input-group">
-                                    <input type="text" name="BatchNo" list="BatchNo" class="input-sm form-control" placeholder="请选择批次" />
-                                    <datalist id="BatchNo"></datalist>
-                                </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="input-group">
+                                <input type="text" name="BatchNo" list="BatchNo" class="input-sm form-control" placeholder="请选择批次" />
+                                <datalist id="BatchNo"></datalist>
                             </div>
-                            <div class="col-sm-4">
-                                <div class="input-group">
-                                    <input type="text" placeholder="阶段名称" class="input-sm form-control" name="LvName">
-                                    <span class="input-group-btn">
-                                        <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
-                                        <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
-                                    </span>
-                                </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" placeholder="阶段名称" class="input-sm form-control" name="LvName">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
+                                    <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
+                                </span>
                             </div>
+                        </div>
                     </form>
                 </div>
                 <div class="table-responsive">

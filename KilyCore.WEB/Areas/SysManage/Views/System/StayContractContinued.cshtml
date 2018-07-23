@@ -30,7 +30,8 @@
             action: {
                 ImgFormatter: function (val, row, index) {
                     var action = [];
-                    action.push('<img class="photo" src="' + row.PayTicket + '" style="width:48px;height:32px;"">')
+                    if (row.PaytTicket != null)
+                        action.push('<img class="photo" src="' + row.PayTicket + '" style="width:48px;height:32px;"">')
                     return action.join("&nbsp;");
                 },
                 ImgEvents: {
@@ -92,7 +93,7 @@
                         </div>
                         <div class="col-sm-1">
                             <div class="input-group">
-                               <span class="input-group-btn">
+                                <span class="input-group-btn">
                                     <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
                                 </span>
                             </div>

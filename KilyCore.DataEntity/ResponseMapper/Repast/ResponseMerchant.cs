@@ -19,13 +19,15 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         public string MerchantName { get; set; }
         public string Address { get; set; }
         public string Email { get; set; }
+        public string Remark { get; set; }
         public MerchantEnum DiningType { get; set; }
-        public  SystemVersionEnum VersionType { get; set; }
+        public SystemVersionEnum VersionType { get; set; }
         public string VersionTypeName { get; set; }
         public string DiningTypeName { get; set; }
         public string Phone { get; set; }
         public Guid? DingRoleId { get; set; }
         public string TypePath { get; set; }
+        public string IdCard { get; set; }
         public string Province
         {
             get

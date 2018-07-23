@@ -552,8 +552,10 @@ controller.Upload = function (option) {
     var Name = '';
     if (localStorage.UserInfo != undefined)
         Name = JSON.parse(localStorage.UserInfo).TrueName
-    else
+    else if (localStorage.CompanyUser != undefined)
         Name = JSON.parse(localStorage.CompanyUser).CompanyName;
+    else
+        Name = JSON.parse(localStorage.RepastUser).MerchantName
     defaultOption = {
         url: undefined,
         data: null,
