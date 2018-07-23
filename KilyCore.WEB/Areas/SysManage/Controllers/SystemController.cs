@@ -88,6 +88,10 @@ namespace KilyCore.WEB.Areas.SysManage.Controllers
         {
             return View();
         }
+        public IActionResult FoodContract()
+        {
+            return View();
+        }
         #endregion
     }
 }

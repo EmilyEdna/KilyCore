@@ -1078,7 +1078,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseStayContract> GetStayContractPage(PageParamList<RequestStayContract> pageParam)
         {
-            IQueryable<SystemStayContract> queryable = Kily.Set<SystemStayContract>().Where(t => t.EnterpriseOrMerchant == 1).Where(t => t.IsDelete == false);
+            IQueryable<SystemStayContract> queryable = Kily.Set<SystemStayContract>().Where(t => t.EnterpriseOrMerchant == pageParam.QueryParam.EnterpriseOrMerchant).Where(t => t.IsDelete == false);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.CompanyName))
                 queryable = queryable.Where(t => t.CompanyName.Contains(pageParam.QueryParam.CompanyName));
             if (UserInfo().AccountType == AccountEnum.Province)

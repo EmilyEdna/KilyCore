@@ -68,6 +68,18 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(RepastWebService.SaveContract(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 商家认证
+        /// <summary>
+        /// 商家认证
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditMerchantIdent")]
+        public ObjectResultEx EditMerchantIdent(RequestRepastIdent Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.EditMerchantIdent(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
         #endregion
     }
 }

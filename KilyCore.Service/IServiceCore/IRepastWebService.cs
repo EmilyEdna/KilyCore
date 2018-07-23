@@ -38,6 +38,9 @@ namespace KilyCore.Service.IServiceCore
         String EditMerchant(RequestMerchant Param);
         String SaveContract(RequestStayContract Param);
         #endregion
+        #region 商家认证
+        String EditMerchantIdent(RequestRepastIdent Param);
+        #endregion
         #endregion
     }
 }

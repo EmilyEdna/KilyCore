@@ -25,6 +25,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         public  DateTime IdentEndTime { get; set; }
         public string TableName { get; set; }
         public Guid Id { get; set; }
+        public Guid InfoId { get; set; }
         /// <summary>
         /// 商家名称
         /// </summary>

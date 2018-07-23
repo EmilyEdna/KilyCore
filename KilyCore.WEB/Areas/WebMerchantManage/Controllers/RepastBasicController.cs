@@ -23,5 +23,11 @@ namespace KilyCore.WEB.Areas.WebMerchantManage.Controllers
             return View();
         }
         #endregion
+        #region 商家认证
+        public IActionResult MerchantIdent()
+        {
+            return View();
+        }
+        #endregion
     }
 }

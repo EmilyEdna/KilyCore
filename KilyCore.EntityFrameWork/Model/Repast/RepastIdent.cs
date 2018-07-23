@@ -74,5 +74,25 @@ namespace KilyCore.EntityFrameWork.Model.Repast
         /// 备注
         /// </summary>
         public virtual string Remark { get; set; }
+        /// <summary>
+        /// 法人身份证
+        /// </summary>
+        public virtual string ImgCard { get; set; }
+        /// <summary>
+        /// 申请表
+        /// </summary>
+        public virtual string ImgApply { get; set; }
+        /// <summary>
+        /// 调查表
+        /// </summary>
+        public virtual string ImgResearch { get; set; }
+        /// <summary>
+        /// 认证协议
+        /// </summary>
+        public virtual string ImgAgreement { get; set; }
+        /// <summary>
+        /// 其他证书
+        /// </summary>
+        public virtual string ImgOther { get; set; }
     }
 }

@@ -216,6 +216,20 @@ namespace KilyCore.Service.ServiceCore
                 return ServiceMessage.INSERTFAIL;
         }
         #endregion
+        #region 商家认证
+        /// <summary>
+        /// 商家认证
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditMerchantIdent(RequestRepastIdent Param)
+        {
+            Param.AuditType = AuditEnum.WaitAduit;
+            Param.IdentEndTime = Param.IdentStartTime.AddYears(Param.IdentYear);
+            RepastIdent ident = Param.MapToEntity<RepastIdent>();
+            return Insert<RepastIdent>(ident) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        #endregion
         #endregion
     }
 }

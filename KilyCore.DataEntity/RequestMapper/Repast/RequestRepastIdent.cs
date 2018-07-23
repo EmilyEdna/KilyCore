@@ -8,13 +8,16 @@ using System.Text;
 /// </summary>
 namespace KilyCore.DataEntity.RequestMapper.Repast
 {
-   public class RequestRepastIdent
+    public class RequestRepastIdent
     {
         /// <summary>
         /// 认证编号
         /// </summary>
         public string IdentNo { get; set; }
         public Guid Id { get; set; }
+        public Guid InfoId { get; set; }
+        public DateTime IdentStartTime { get; set; }
+        public DateTime IdentEndTime { get; set; }
         /// <summary>
         /// 商家名称
         /// </summary>
@@ -67,5 +70,25 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
         /// 区域树查询
         /// </summary>
         public string AreaTree { get; set; }
+        /// <summary>
+        /// 法人身份证
+        /// </summary>
+        public string ImgCard { get; set; }
+        /// <summary>
+        /// 申请表
+        /// </summary>
+        public string ImgApply { get; set; }
+        /// <summary>
+        /// 调查表
+        /// </summary>
+        public string ImgResearch { get; set; }
+        /// <summary>
+        /// 认证协议
+        /// </summary>
+        public string ImgAgreement { get; set; }
+        /// <summary>
+        /// 其他证书
+        /// </summary>
+        public string ImgOther { get; set; }
     }
 }

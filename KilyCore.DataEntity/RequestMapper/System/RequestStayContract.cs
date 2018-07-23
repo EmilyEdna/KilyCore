@@ -56,5 +56,6 @@ namespace KilyCore.DataEntity.RequestMapper.System
         /// 版本
         /// </summary>
         public  SystemVersionEnum VersionType { get; set; }
+        public int EnterpriseOrMerchant { get; set; }
     }
 }
