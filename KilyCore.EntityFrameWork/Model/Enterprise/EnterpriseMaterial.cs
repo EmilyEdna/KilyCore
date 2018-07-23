@@ -29,6 +29,10 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual string BatchNo { get; set; }
         /// <summary>
+        /// 原料类型
+        /// </summary>
+        public virtual string MaterType { get; set; }
+        /// <summary>
         /// 原料名称
         /// </summary>
         public virtual string MaterName { get; set; }

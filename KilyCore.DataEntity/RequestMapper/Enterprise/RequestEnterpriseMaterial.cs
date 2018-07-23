@@ -25,6 +25,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public string BatchNo { get; set; }
         public string MaterName { get; set; }
         public string ExpiredDay { get; set; }
+        public string MaterType { get; set; }
         public string Spec { get; set; }
         public string Unit { get; set; }
         public string Standard { get; set; }

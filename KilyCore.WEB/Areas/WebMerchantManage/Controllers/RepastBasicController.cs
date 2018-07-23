@@ -18,6 +18,10 @@ namespace KilyCore.WEB.Areas.WebMerchantManage.Controllers
         {
             return View();
         }
+        public IActionResult Payment()
+        {
+            return View();
+        }
         #endregion
     }
 }

@@ -1,6 +1,8 @@
 ﻿using KilyCore.DataEntity.RequestMapper.Repast;
+using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Repast;
 using KilyCore.EntityFrameWork.Model.Repast;
+using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AttributeExtension;
 using KilyCore.Extension.AutoMapperExtension;
@@ -181,6 +183,37 @@ namespace KilyCore.Service.ServiceCore
             Param.InfoId = data.InfoId;
             RepastInfo info = Param.MapToEntity<RepastInfo>();
             return Update<RepastInfo, RequestMerchant>(info, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        /// <summary>
+        /// 保存合同
+        /// </summary>
+        /// <returns></returns>
+        public string SaveContract(RequestStayContract Param)
+        {
+            Param.AuditType = AuditEnum.WaitAduit;
+            SystemStayContract contract = Param.MapToEntity<SystemStayContract>();
+            contract.EnterpriseOrMerchant = 2;
+            if (contract.ContractType == 1)
+            {
+                contract.AdminId = null;
+                //调用支付
+                if (contract.PayType == PayEnum.Unionpay)
+                    contract.IsPay = false;
+                else
+                {
+                    //支付宝和微信支付
+                }
+            }
+            else
+            {
+                contract.PayType = PayEnum.AgentPay;
+                contract.TryOut = "30";
+                contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(contract.ContractYear));
+            }
+            if (Insert<SystemStayContract>(contract))
+                return ServiceMessage.INSERTSUCCESS;
+            else
+                return ServiceMessage.INSERTFAIL;
         }
         #endregion
         #endregion

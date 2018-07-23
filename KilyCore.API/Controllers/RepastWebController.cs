@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using KilyCore.DataEntity.RequestMapper.Repast;
+using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.Extension.ResultExtension;
 using KilyCore.Service.QueryExtend;
 using Microsoft.AspNetCore.Http;
@@ -55,6 +56,16 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx EditMerchant(RequestMerchant Param)
         {
             return ObjectResultEx.Instance(RepastWebService.EditMerchant(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 保存合同
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("SaveContract")]
+        public ObjectResultEx SaveContract(RequestStayContract Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.SaveContract(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #endregion

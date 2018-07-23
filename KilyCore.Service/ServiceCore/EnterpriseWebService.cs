@@ -304,7 +304,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public ResponseEnterprise GetEnterpriseInfo(Guid Id)
         {
-            var data = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Id).GroupJoin(Kily.Set<SystemStayContract>(), t => (t.CompanyId != null ? t.CompanyId : t.Id), x => x.CompanyId, (t, x) => new ResponseEnterprise()
+            var data = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Id).GroupJoin(Kily.Set<SystemStayContract>().Where(t=>t.EnterpriseOrMerchant==1), t => (t.CompanyId != null ? t.CompanyId : t.Id), x => x.CompanyId, (t, x) => new ResponseEnterprise()
             {
                 Id = t.Id,
                 CompanyAccount = t.CompanyAccount,
@@ -360,6 +360,7 @@ namespace KilyCore.Service.ServiceCore
         {
             Param.AuditType = AuditEnum.WaitAduit;
             SystemStayContract contract = Param.MapToEntity<SystemStayContract>();
+            contract.EnterpriseOrMerchant = 1;
             EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == contract.CompanyId).FirstOrDefault();
             info.Version = Param.VersionType;
             if (Param.VersionType == SystemVersionEnum.Test)
@@ -752,7 +753,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseEnterpriseLevelUp> GetLvPage(PageParamList<RequestEnterpriseLevelUp> pageParam)
         {
-            IQueryable<SystemStayContract> queryable = Kily.Set<SystemStayContract>().Where(t => t.CompanyId == pageParam.QueryParam.Id).Where(t => t.IsDelete == false);
+            IQueryable<SystemStayContract> queryable = Kily.Set<SystemStayContract>().Where(t => t.CompanyId == pageParam.QueryParam.Id).Where(t => t.EnterpriseOrMerchant == 1).Where(t => t.IsDelete == false);
             var data = queryable.Select(t => new ResponseEnterpriseLevelUp()
             {
                 Id = t.CompanyId,
@@ -856,7 +857,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 if (Param)
                 {
-                    SystemStayContract contract = Kily.Set<SystemStayContract>().Where(t => t.CompanyId == continued.CompanyId).FirstOrDefault();
+                    SystemStayContract contract = Kily.Set<SystemStayContract>().Where(t => t.EnterpriseOrMerchant == 1).Where(t => t.CompanyId == continued.CompanyId).FirstOrDefault();
                     contract.CreateTime = DateTime.Now;
                     contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(continued.ContinuedYear));
                     contract.ContractYear = continued.ContinuedYear;
@@ -869,7 +870,7 @@ namespace KilyCore.Service.ServiceCore
                 }
                 else
                 {
-                    SystemStayContract contract = Kily.Set<SystemStayContract>().Where(t => t.CompanyId == level.CompanyId).FirstOrDefault();
+                    SystemStayContract contract = Kily.Set<SystemStayContract>().Where(t => t.EnterpriseOrMerchant == 1).Where(t => t.CompanyId == level.CompanyId).FirstOrDefault();
                     EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == level.CompanyId).FirstOrDefault();
                     contract.CreateTime = DateTime.Now;
                     contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(continued.ContinuedYear));

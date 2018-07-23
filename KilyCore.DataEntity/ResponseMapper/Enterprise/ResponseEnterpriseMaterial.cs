@@ -22,6 +22,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
     {
         public Guid Id { get; set; }
         public Guid CompanyId { get; set; }
+        public string MaterType { get; set; }
         public  string BatchNo { get; set; }
         public  string MaterName { get; set; }
         public  string ExpiredDay { get; set; }

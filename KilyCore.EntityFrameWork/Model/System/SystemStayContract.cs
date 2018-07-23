@@ -19,7 +19,7 @@ namespace KilyCore.EntityFrameWork.Model.System
         /// </summary>
         public virtual Guid? AdminId { get; set; }
         /// <summary>
-        /// 入住企业的Id
+        /// 入住企业或商家的Id
         /// </summary>
         public virtual Guid CompanyId { get; set; }
         /// <summary>
@@ -66,5 +66,9 @@ namespace KilyCore.EntityFrameWork.Model.System
         /// 版本
         /// </summary>
         public virtual SystemVersionEnum VersionType { get; set; }
+        /// <summary>
+        /// 企业或商家 1=》企业；2=》商家
+        /// </summary>
+        public virtual int EnterpriseOrMerchant { get; set; }
     }
 }

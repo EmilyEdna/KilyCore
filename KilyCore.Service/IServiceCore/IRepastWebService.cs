@@ -1,5 +1,6 @@
 ﻿using KilyCore.Configure;
 using KilyCore.DataEntity.RequestMapper.Repast;
+using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Repast;
 using KilyCore.Service.QueryExtend;
 using System;
@@ -35,6 +36,7 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseMerchant> GetMerchantInfo(PageParamList<RequestMerchant> pageParam);
         ResponseMerchant GetMerchantDetail(Guid Id);
         String EditMerchant(RequestMerchant Param);
+        String SaveContract(RequestStayContract Param);
         #endregion
         #endregion
     }
