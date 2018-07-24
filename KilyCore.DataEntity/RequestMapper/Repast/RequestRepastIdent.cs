@@ -15,6 +15,7 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
         /// </summary>
         public string IdentNo { get; set; }
         public Guid Id { get; set; }
+        public Guid IdentId { get; set; }
         public Guid InfoId { get; set; }
         public DateTime IdentStartTime { get; set; }
         public DateTime IdentEndTime { get; set; }
@@ -87,7 +88,31 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
         /// </summary>
         public string ImgAgreement { get; set; }
         /// <summary>
-        /// 其他证书
+        /// 原料购买证明
+        /// </summary>
+        public string ImgMaterialOrder { get; set; }
+        /// <summary>
+        /// 消毒证明
+        /// </summary>
+        public string ImgDisinfection { get; set; }
+        /// <summary>
+        /// 原料储藏证明
+        /// </summary>
+        public string ImgMaterialSave { get; set; }
+        /// <summary>
+        /// 废弃物处理证明
+        /// </summary>
+        public string ImgAbandoned { get; set; }
+        /// <summary>
+        /// 留样证明
+        /// </summary>
+        public string ImgSample { get; set; }
+        /// <summary>
+        /// 从业证明
+        /// </summary>
+        public string ImgWorkingPerson { get; set; }
+        /// <summary>
+        /// 其他证明
         /// </summary>
         public string ImgOther { get; set; }
     }

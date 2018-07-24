@@ -224,10 +224,13 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string EditMerchantIdent(RequestRepastIdent Param)
         {
+            Param.Id = Guid.NewGuid();
+            Param.IdentId = Param.Id;
             Param.AuditType = AuditEnum.WaitAduit;
             Param.IdentEndTime = Param.IdentStartTime.AddYears(Param.IdentYear);
             RepastIdent ident = Param.MapToEntity<RepastIdent>();
-            return Insert<RepastIdent>(ident) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            RepastIdentAttach attach = Param.MapToEntity<RepastIdentAttach>();
+            return Insert<RepastIdent>(ident,false)&&Insert<RepastIdentAttach>(attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         #endregion
         #endregion

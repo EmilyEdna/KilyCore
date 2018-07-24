@@ -24,6 +24,7 @@
                 controller.LayDate({ elem: "#IdentStartTime", value: controller.FormatDate("YYYY-MM-DD HH:mm:ss") });
                 $("input[name='InfoId']").val(RepastUser.Id);
                 $("input[name='DiningType']").val(RepastUser.DiningType);
+                $("input[name='MerchantName']").val(RepastUser.MerchantName);
             },
             //设置文件值
             SetFileValue: function (data, elememt) {
@@ -45,7 +46,7 @@
             },
             //通用上传
             Comom: function () {
-                //文件上传-代表
+                //文件上传-身份证
                 controller.Upload({
                     url: "File/UploadImg",
                     element: "#upload-input-1",
@@ -56,7 +57,7 @@
                         options.SetFileValue(result.data, "#ImgCard");
                     }
                 });
-                //文件上传-报送
+                //文件上传-申请
                 controller.Upload({
                     url: "File/UploadImg",
                     element: "#upload-input-2",
@@ -64,7 +65,7 @@
                     node: '#Img2',
                     success: function (result) {
                         controller.Alter(result.msg);
-                        options.SetFileValue(result.data, "#SendCard");
+                        options.SetFileValue(result.data, "#ImgApply");
                     }
                 });
                 //文件上传-调查
@@ -97,7 +98,73 @@
                     node: '#Img5',
                     success: function (result) {
                         controller.Alter(result.msg);
-                        options.SetFileValue(result.data, "#ImgAgreement");
+                        options.SetFileValue(result.data, "#ImgOther");
+                    }
+                });
+                //文件上传-原料购买
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-6",
+                    maxNum: 1,
+                    node: '#Img6',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#ImgMaterialOrder");
+                    }
+                });
+                //文件上传-消毒证明
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-7",
+                    maxNum: 1,
+                    node: '#Img7',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#ImgDisinfection");
+                    }
+                });
+                //文件上传-储藏证明
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-8",
+                    maxNum: 1,
+                    node: '#Img8',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#ImgMaterialSave");
+                    }
+                });
+                //文件上传-处理
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-9",
+                    maxNum: 1,
+                    node: '#Img9',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#ImgAbandoned");
+                    }
+                });
+                //文件上传-留样
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-10",
+                    maxNum: 1,
+                    node: '#Img10',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#ImgSample");
+                    }
+                });
+                //文件上传-从业证明
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-11",
+                    maxNum: 1,
+                    node: '#Img11',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#ImgWorkingPerson");
                     }
                 });
             },
@@ -114,7 +181,8 @@
 <div class="tabs-container" style="margin-top:10px;">
     <form method="post" class="form-horizontal" action="RepastWeb/EditMerchantIdent" id="Edit">
         <input type="hidden" name="InfoId" />
-        <input  type="hidden" name="DiningType"/>
+        <input type="hidden" name="MerchantName" />
+        <input type="hidden" name="DiningType" />
         <ul class="nav nav-tabs">
             <li class="active">
                 <a data-toggle="tab" href="#tab-1" aria-expanded="true">资料页一</a>
@@ -124,6 +192,12 @@
             </li>
             <li>
                 <a data-toggle="tab" href="#tab-3" aria-expanded="false">资料页三</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-4" aria-expanded="false">资料页四</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-5" aria-expanded="false">资料页五</a>
             </li>
             <li>
                 <a id="save">保存内容</a>
@@ -338,6 +412,114 @@
                         </div>
                         <div class="col-sm-2">
                             <input type="hidden" id="ImgOther" name="ImgOther" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-4" class="tab-pane">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">原料购买证明</label>
+                        <div class="col-sm-8">
+                            <div class="upload-box">
+                                <div class="image-box clear" id="Img6">
+                                    <section class="upload-section">
+                                        <div class="upload-btn"></div>
+                                        <input type="file" name="Files" id="upload-input-6" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="hidden" id="ImgMaterialOrder" name="ImgMaterialOrder" />
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">消毒证明</label>
+                        <div class="col-sm-8">
+                            <div class="upload-box">
+                                <div class="image-box clear" id="Img7">
+                                    <section class="upload-section">
+                                        <div class="upload-btn"></div>
+                                        <input type="file" name="Files" id="upload-input-7" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="hidden" id="ImgDisinfection" name="ImgDisinfection" />
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">原料储藏证明</label>
+                        <div class="col-sm-8">
+                            <div class="upload-box">
+                                <div class="image-box clear" id="Img8">
+                                    <section class="upload-section">
+                                        <div class="upload-btn"></div>
+                                        <input type="file" name="Files" id="upload-input-8" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="hidden" id="ImgMaterialSave" name="ImgMaterialSave" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-5" class="tab-pane">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">废弃物处理证明</label>
+                        <div class="col-sm-8">
+                            <div class="upload-box">
+                                <div class="image-box clear" id="Img9">
+                                    <section class="upload-section">
+                                        <div class="upload-btn"></div>
+                                        <input type="file" name="Files" id="upload-input-9" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="hidden" id="ImgAbandoned" name="ImgAbandoned" />
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">留样证明</label>
+                        <div class="col-sm-8">
+                            <div class="upload-box">
+                                <div class="image-box clear" id="Img10">
+                                    <section class="upload-section">
+                                        <div class="upload-btn"></div>
+                                        <input type="file" name="Files" id="upload-input-10" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="hidden" id="ImgSample" name="ImgSample" />
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">从业证明</label>
+                        <div class="col-sm-8">
+                            <div class="upload-box">
+                                <div class="image-box clear" id="Img11">
+                                    <section class="upload-section">
+                                        <div class="upload-btn"></div>
+                                        <input type="file" name="Files" id="upload-input-11" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="hidden" id="ImgWorkingPerson" name="ImgWorkingPerson" />
                         </div>
                     </div>
                 </div>
