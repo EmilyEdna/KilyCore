@@ -362,7 +362,7 @@ namespace KilyCore.Service.ServiceCore
         {
             Param.AuditType = AuditEnum.WaitAduit;
             RequestAliPayModel AliPayModel = new RequestAliPayModel();
-            AliPayModel.OrderTitle = "合同费用";
+            AliPayModel.OrderTitle = CompanyInfo().CompanyName + "合同缴费";
             SystemStayContract contract = Param.MapToEntity<SystemStayContract>();
             contract.EnterpriseOrMerchant = 1;
             EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == contract.CompanyId).FirstOrDefault();

@@ -15,7 +15,13 @@
             },
             //元素
             InitDom: function () {
-                var TypePath = controller.GetParam("TypePath")
+                var TypePath = controller.GetParam("TypePath");
+                if (TypePath == "null") {
+                    controller.Confirm("请先完善资料!", function () {
+                        controller.Close();
+                    });
+                    return;
+                }
                 $("#CompanyId").val(controller.GetParam("Id"));
                 $("#TypePath").val(TypePath);
                 $("#CompanyName").val(controller.GetParam("CompanyName"));

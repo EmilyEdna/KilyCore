@@ -23,7 +23,7 @@ namespace KilyCore.Extension.ApplicationService.DependencyIdentity
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static IEngine Initialize(bool ReFind)
         {
-            if (Instance == null || ReFind) //forceRecreate 是否强制重新查找IOC容器
+            if (Instance == null || ReFind) //是否强制重新查找IOC容器
             {
                 Instance = CreateEngineInstance();
             }
