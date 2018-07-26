@@ -5,6 +5,7 @@ using KilyCore.Cache.RedisCache;
 using KilyCore.Configure;
 using KilyCore.EntityFrameWork;
 using KilyCore.Extension.ApplicationService.IocManager;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -59,10 +60,12 @@ namespace KilyCore.Extension.ApplicationService.DependencyIdentity
         /// <param name="builder"></param>
         protected void Register(ContainerBuilder builder)
         {
+            //注入请求上下文
+            builder.RegisterType<HttpContextAccessor>().As<IHttpContextAccessor>().SingleInstance();
             //数据库注入
             Context.ToList().ForEach(t =>
             {
-                builder.RegisterType(Activator.CreateInstance(t).GetType()).AsImplementedInterfaces().InstancePerLifetimeScope();
+                builder.RegisterType(Activator.CreateInstance(t).GetType()).AsImplementedInterfaces().OwnedByLifetimeScope();
             });
             //业务逻辑注入
             Service.ToList().ForEach(t =>
@@ -79,7 +82,8 @@ namespace KilyCore.Extension.ApplicationService.DependencyIdentity
                 builder.RegisterType(Activator.CreateInstance(t).GetType()).As(t.GetInterfaces().FirstOrDefault()).SingleInstance();
             });
             //mongodb注入
-            Caches.ToList().ForEach(t => {
+            Caches.ToList().ForEach(t =>
+            {
                 //可以通过CacheFactory取也可以通过AutoFac取
                 builder.RegisterType(Activator.CreateInstance(t).GetType()).As(t.GetInterfaces().FirstOrDefault()).SingleInstance();
             });

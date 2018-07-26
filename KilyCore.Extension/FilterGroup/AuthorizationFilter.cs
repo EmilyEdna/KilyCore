@@ -1,5 +1,7 @@
 ﻿using KilyCore.Configure;
+using KilyCore.Extension.ApplicationService.DependencyIdentity;
 using KilyCore.Extension.Token;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -24,7 +26,7 @@ namespace KilyCore.Extension.FilterGroup
         /// <param name="context"></param>
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            Configer.HttpContext = context.HttpContext;
+            Configer.HttpContext = EngineExtension.Context.Resolve<IHttpContextAccessor>().HttpContext;
             //客服端IP
             Configer.ClientIP = context.HttpContext.Connection.RemoteIpAddress.ToString();
             if (context.Filters.Any(t => (t as AllowAnonymousFilter) != null))

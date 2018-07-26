@@ -79,6 +79,8 @@ namespace KilyCore.API
             env.ConfigureNLog("Nlog.config");
             //设置全局跨域
             app.UseCors("KilyCore");
+            //使用支付
+            app.UsePaySharp();
             //启用Session
             app.UseSession();
             if (env.IsDevelopment())

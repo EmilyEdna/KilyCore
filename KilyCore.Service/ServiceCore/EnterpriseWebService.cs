@@ -10,6 +10,7 @@ using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AttributeExtension;
 using KilyCore.Extension.AutoMapperExtension;
 using KilyCore.Extension.PayCore.AliPay;
+using KilyCore.Extension.PayCore.WxPay;
 using KilyCore.Repositories.BaseRepository;
 using KilyCore.Service.ConstMessage;
 using KilyCore.Service.IServiceCore;
@@ -366,6 +367,7 @@ namespace KilyCore.Service.ServiceCore
             contract.EnterpriseOrMerchant = 1;
             EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == contract.CompanyId).FirstOrDefault();
             info.Version = Param.VersionType;
+            Param.VersionType = SystemVersionEnum.Test;
             if (Param.VersionType == SystemVersionEnum.Test)
             {
                 info.TagCodeNum = ServiceMessage.TEST;
@@ -426,10 +428,12 @@ namespace KilyCore.Service.ServiceCore
                     }
                     else
                     {
+                        RequestWxPayModel WxPayModel = AliPayModel.MapToEntity<RequestWxPayModel>();
                         contract.TryOut = "/";
                         contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(contract.ContractYear));
                         Insert<SystemStayContract>(contract);
-                        return null;
+                        var s = WxPayCore.Instance.WebPay(WxPayModel);
+                        return s;
                     }
                 }
             }
