@@ -27,6 +27,8 @@ namespace KilyCore.Extension.PayCore.AliPay
     /// </summary>
     public class AliPayCore
     {
+        public static AliPayCore Instance { get => new AliPayCore(); }
+
         /// <summary>
         /// 商户数据
         /// </summary>

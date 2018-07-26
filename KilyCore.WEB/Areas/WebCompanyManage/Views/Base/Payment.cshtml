@@ -108,6 +108,9 @@
                 });
                 //验证
                 controller.ValidateConfirm("#Edit");
+                $("#pay").click(function () {
+                    $("#Edit").submit();
+                });
             },
             //行为
             action: {}
@@ -203,7 +206,7 @@
                     <tr>
                         <th colspan="4">
                             <div class="text-center">
-                                <button class="btn btn-info btn-sm" type="button">支付</button>
+                                <button class="btn btn-info btn-sm" type="button" id="pay">支付</button>
                             </div>
                         </th>
                     </tr>

@@ -9,6 +9,7 @@ using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AttributeExtension;
 using KilyCore.Extension.AutoMapperExtension;
+using KilyCore.Extension.PayCore.AliPay;
 using KilyCore.Repositories.BaseRepository;
 using KilyCore.Service.ConstMessage;
 using KilyCore.Service.IServiceCore;
@@ -304,7 +305,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public ResponseEnterprise GetEnterpriseInfo(Guid Id)
         {
-            var data = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Id).GroupJoin(Kily.Set<SystemStayContract>().Where(t=>t.EnterpriseOrMerchant==1), t => (t.CompanyId != null ? t.CompanyId : t.Id), x => x.CompanyId, (t, x) => new ResponseEnterprise()
+            var data = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Id).GroupJoin(Kily.Set<SystemStayContract>().Where(t => t.EnterpriseOrMerchant == 1), t => (t.CompanyId != null ? t.CompanyId : t.Id), x => x.CompanyId, (t, x) => new ResponseEnterprise()
             {
                 Id = t.Id,
                 CompanyAccount = t.CompanyAccount,
@@ -359,18 +360,52 @@ namespace KilyCore.Service.ServiceCore
         public string SaveContract(RequestStayContract Param)
         {
             Param.AuditType = AuditEnum.WaitAduit;
+            RequestAliPayModel AliPayModel = new RequestAliPayModel();
+            AliPayModel.OrderTitle = "合同费用";
             SystemStayContract contract = Param.MapToEntity<SystemStayContract>();
             contract.EnterpriseOrMerchant = 1;
             EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == contract.CompanyId).FirstOrDefault();
             info.Version = Param.VersionType;
             if (Param.VersionType == SystemVersionEnum.Test)
+            {
                 info.TagCodeNum = ServiceMessage.TEST;
+                if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
+                    AliPayModel.Money = 480 * Convert.ToInt32(Param.ContractYear);
+                if (info.CompanyType == CompanyEnum.Production)
+                    AliPayModel.Money = 600 * Convert.ToInt32(Param.ContractYear);
+                if (info.CompanyType == CompanyEnum.Circulation)
+                    AliPayModel.Money = 360 * Convert.ToInt32(Param.ContractYear);
+            }
             if (Param.VersionType == SystemVersionEnum.Base)
+            {
                 info.TagCodeNum = ServiceMessage.BASE;
+                if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
+                    AliPayModel.Money = 2000 * Convert.ToInt32(Param.ContractYear);
+                if (info.CompanyType == CompanyEnum.Production)
+                    AliPayModel.Money = 3000 * Convert.ToInt32(Param.ContractYear);
+                if (info.CompanyType == CompanyEnum.Circulation)
+                    AliPayModel.Money = 1500 * Convert.ToInt32(Param.ContractYear);
+            }
             if (Param.VersionType == SystemVersionEnum.Level)
+            {
                 info.TagCodeNum = ServiceMessage.LEVEL;
+                if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
+                    AliPayModel.Money = 4000 * Convert.ToInt32(Param.ContractYear);
+                if (info.CompanyType == CompanyEnum.Production)
+                    AliPayModel.Money = 6000 * Convert.ToInt32(Param.ContractYear);
+                if (info.CompanyType == CompanyEnum.Circulation)
+                    AliPayModel.Money = 3000 * Convert.ToInt32(Param.ContractYear);
+            }
             if (Param.VersionType == SystemVersionEnum.Enterprise)
+            {
                 info.TagCodeNum = ServiceMessage.ENTERPRISE;
+                if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
+                    AliPayModel.Money = 80000 * Convert.ToInt32(Param.ContractYear);
+                if (info.CompanyType == CompanyEnum.Production)
+                    AliPayModel.Money = 100000 * Convert.ToInt32(Param.ContractYear);
+                if (info.CompanyType == CompanyEnum.Circulation)
+                    AliPayModel.Money = 60000 * Convert.ToInt32(Param.ContractYear);
+            }
             IList<string> Fields = new List<string> { "Version", "TagCodeNum" };
             UpdateField(info, null, Fields);
             if (contract.ContractType == 1)
@@ -382,6 +417,20 @@ namespace KilyCore.Service.ServiceCore
                 else
                 {
                     //支付宝和微信支付
+                    if (contract.PayType == PayEnum.Alipay)
+                    {
+                        contract.TryOut = "/";
+                        contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(contract.ContractYear));
+                        Insert<SystemStayContract>(contract);
+                        return AliPayCore.Instance.WebPay(AliPayModel);
+                    }
+                    else
+                    {
+                        contract.TryOut = "/";
+                        contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(contract.ContractYear));
+                        Insert<SystemStayContract>(contract);
+                        return null;
+                    }
                 }
             }
             else
@@ -389,11 +438,9 @@ namespace KilyCore.Service.ServiceCore
                 contract.PayType = PayEnum.AgentPay;
                 contract.TryOut = "30";
                 contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(contract.ContractYear));
+               return Insert<SystemStayContract>(contract)? ServiceMessage.INSERTSUCCESS: ServiceMessage.INSERTFAIL;
             }
-            if (Insert<SystemStayContract>(contract))
-                return ServiceMessage.INSERTSUCCESS;
-            else
-                return ServiceMessage.INSERTFAIL;
+            return null;
         }
         #endregion
 

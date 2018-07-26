@@ -398,7 +398,8 @@ controller.ValidateConfirm = function (element, option) {
                 data: data,
                 type: method,
                 success: function (data) {
-                    window.source.options.$table.refresh();
+                    if (window.source != undefined)
+                        window.source.options.$table.refresh();
                     controller.Confirm(data.data, function (flag) {
                         if (flag) {
                             window.popClose();
