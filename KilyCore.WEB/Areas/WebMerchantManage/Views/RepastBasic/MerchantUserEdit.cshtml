@@ -1,5 +1,6 @@
-﻿@{
-    ViewData["Title"] = "编辑用户";
+﻿
+@{
+    ViewData["Title"] = "人员编辑";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section css{
@@ -17,19 +18,19 @@
             InitDom: function () {
                 var Guid = controller.GetParam("Id");
                 if (Guid != null && Guid != undefined && Guid != "")
-                    options.GetEnterpriseUserDetail(Guid);
+                    options.GetUserDetail(Guid);
                 else
                 {
-                    $("#CompanyId").val(CompanyInfo.Id);
-                    $("#Version").val(CompanyInfo.Version);
-                    $("#CompanyName").val(CompanyInfo.CompanyName);
-                    $("#CompanyType").val(CompanyInfo.CompanyType);
+                    $("#InfoId").val(RepastUser.Id);
+                    $("#VersionType").val(RepastUser.VersionType);
+                    $("#MerchantName").val(RepastUser.MerchantName);
+                    $("#DiningType").val(RepastUser.DiningType);
                 }
             },
             //获取详情
-            GetEnterpriseUserDetail: function (Guid) {
+            GetUserDetail: function (Guid) {
                 controller.ajax({
-                    url: "EnterpriseWeb/GetUserDetail",
+                    url: "RepastWeb/GetUserDetail",
                     data: { Id: Guid },
                     type: "post",
                     async: false,
@@ -41,22 +42,32 @@
             //获取集团账户
             InitEnterpriseRole: function () {
                 controller.ajax({
-                    url: "EnterpriseWeb/GetRoleAuthorList",
+                    url: "RepastWeb/GetRoleAuthorList",
                     data: {},
                     type: "post",
                     async: false,
                     success: function (result)
-                    { 
+                    {
                         var html = '<option>===请选择===</option>';
                         $.each(result.data, function (i, obj) {
                             html += '<option value="' + obj.Id + '">' + obj.AuthorName + '</option>'
                         });
-                        $("#RoleAuthorType").html(html);
+                        $("#DingRoleId").html(html);
                     }
                 });
             },
             //事件
             InitEvents: function () {
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: ".upload-input",
+                    maxNum: 1,
+                    node: '.image-box',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        $("#HealthCard").val(result.data);
+                    }
+                });
                 //验证
                 controller.ValidateConfirm("#Edit");
             },
@@ -71,12 +82,12 @@
 }
 <div class="ibox float-e-margins">
     <div class="ibox-content">
-        <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditUser" id="Edit">
+        <form class="orm-horizontal" method="post" action="RepastWeb/EditUser" id="Edit">
             <input type="hidden" name="Id" />
-            <input type="hidden" name="CompanyId"  id="CompanyId"/>
-            <input type="hidden" name="Version"  id="Version"/>
-            <input type="hidden" name="CompanyName"  id="CompanyName"/>
-            <input type="hidden" name="CompanyType"  id="CompanyType"/>
+            <input type="hidden" name="InfoId" id="InfoId" />
+            <input type="hidden" name="VersionType" id="VersionType" />
+            <input type="hidden" name="MerchantName" id="MerchantName" />
+            <input type="hidden" name="DiningType" id="DiningType" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">用户账户</label></th>
@@ -105,9 +116,21 @@
                     </td>
                     <th><label class="control-label">角色权限</label></th>
                     <td class="has-warning">
-                        <select type="select" class="form-control" name="RoleAuthorType" id="RoleAuthorType">
+                        <select type="select" class="form-control" name="DingRoleId" id="DingRoleId">
                             <option>===请选择===</option>
                         </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">健康证</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                        <input type="hidden" id="HealthCard" name="HealthCard" />
                     </td>
                 </tr>
             </table>

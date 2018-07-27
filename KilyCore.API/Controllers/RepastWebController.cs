@@ -120,6 +120,15 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastWebService.RemoveRole(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 获取权限角色
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetRoleAuthorList")]
+        public ObjectResultEx GetRoleAuthorList()
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetRoleAuthorList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 人员管理
         /// <summary>

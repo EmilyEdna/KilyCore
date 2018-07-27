@@ -363,6 +363,24 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.REMOVEFAIL;
         }
+        /// <summary>
+        /// 集团账户权限列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseRoleAuthorWeb> GetRoleAuthorList()
+        {
+            IQueryable<RepastRoleAuthorWeb> queryable = Kily.Set<RepastRoleAuthorWeb>().OrderByDescending(t => t.CreateTime);
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.CreateUser == MerchantInfo().Id.ToString() || GetChildIdList(MerchantInfo().Id).Contains(Guid.Parse(t.CreateUser)));
+            else
+                queryable = queryable.Where(t => t.CreateUser == MerchantUser().Id.ToString());
+            var data = queryable.Select(t => new ResponseRoleAuthorWeb()
+            {
+                Id = t.Id,
+                AuthorName = t.AuthorName
+            }).ToList();
+            return data;
+        }
         #endregion
         #region 人员管理
         /// <summary>

@@ -24,8 +24,7 @@ email:847432003@qq.com
         };
 
         var thisObj = $(this);
-        var config  = $.extend(defaults, options);
-
+        var config = $.extend(defaults, options);
         var uploadBox = $(config.element).parent(".upload-box");
         var imageBox = $(config.element);
         var inputName = thisObj.attr('name');

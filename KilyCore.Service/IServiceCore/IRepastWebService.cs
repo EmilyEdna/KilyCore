@@ -47,6 +47,7 @@ namespace KilyCore.Service.IServiceCore
          String EditRoleAuthor(RequestRoleAuthorWeb Param);
          PagedResult<ResponseRoleAuthorWeb> GetRoleAuthorPage(PageParamList<RequestRoleAuthorWeb> pageParam);
          String RemoveRole(Guid Id);
+        IList<ResponseRoleAuthorWeb> GetRoleAuthorList();
         #endregion
         #region 人员管理
         PagedResult<ResponseMerchantUser> GetMerchantUserPage(PageParamList<RequestMerchantUser> pageParam);
