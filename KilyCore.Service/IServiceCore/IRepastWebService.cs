@@ -2,6 +2,7 @@
 using KilyCore.DataEntity.RequestMapper.Repast;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Repast;
+using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.Service.QueryExtend;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,7 @@ namespace KilyCore.Service.IServiceCore
     {
         #region 获取全局集团菜单
         IList<ResponseRepastMenu> GetRepastMenu();
+        IList<ResponseParentTree> GetRepastWebTree();
         #endregion
         #region 基础管理
         #region 商家资料
@@ -40,6 +42,17 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 商家认证
         String EditMerchantIdent(RequestRepastIdent Param);
+        #endregion
+        #region 权限角色
+         String EditRoleAuthor(RequestRoleAuthorWeb Param);
+         PagedResult<ResponseRoleAuthorWeb> GetRoleAuthorPage(PageParamList<RequestRoleAuthorWeb> pageParam);
+         String RemoveRole(Guid Id);
+        #endregion
+        #region 人员管理
+        PagedResult<ResponseMerchantUser> GetMerchantUserPage(PageParamList<RequestMerchantUser> pageParam);
+        String EditUser(RequestMerchantUser Param);
+        ResponseMerchantUser GetUserDetail(Guid Id);
+        String RemoveUser(Guid Id);
         #endregion
         #endregion
     }

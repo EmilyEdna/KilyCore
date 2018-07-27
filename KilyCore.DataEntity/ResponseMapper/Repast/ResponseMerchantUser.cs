@@ -100,5 +100,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         /// </summary>
         public  string MerchantName { get; set; }
         public string TableName { get; set; }
+        public  string HealthCard { get; set; }
     }
 }

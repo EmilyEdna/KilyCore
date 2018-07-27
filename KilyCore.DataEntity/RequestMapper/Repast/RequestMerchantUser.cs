@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KilyCore.EntityFrameWork.ModelEnum;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -20,6 +21,8 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
 {
     public class RequestMerchantUser
     {
+        public Guid Id { get; set; }
+        public Guid? InfoId { get; set; }
         /// <summary>
         /// 名称
         /// </summary>
@@ -32,5 +35,33 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
         /// 密码
         /// </summary>
         public string PassWord { get; set; }
+        /// <summary>
+        /// 健康证
+        /// </summary>
+        public string HealthCard { get; set; }
+        /// <summary>
+        /// 身份证
+        /// </summary>
+        public string IdCard { get; set; }
+        /// <summary>
+        /// 电话
+        /// </summary>
+        public string Phone { get; set; }
+        /// <summary>
+        /// 系统版本
+        /// </summary>
+        public SystemVersionEnum VersionType { get; set; }
+        /// <summary>
+        /// 商家类型
+        /// </summary>
+        public MerchantEnum DiningType { get; set; }
+        /// <summary>
+        /// 餐饮角色ID
+        /// </summary>
+        public Guid? DingRoleId { get; set; }
+        /// <summary>
+        /// 商家名称
+        /// </summary>
+        public string MerchantName { get; set; }
     }
 }

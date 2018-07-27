@@ -21,7 +21,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetUserPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Admin" });
+                this.$table = controller.Table("#tableList", { url: "RepastWeb/GetMerchantUserPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Admin" });
             },
             //事件
             InitEvents: function () {
@@ -31,7 +31,7 @@
                         type: 2,
                         height: "440px",
                         width: "700px",
-                        url: "WebCompanyManage/Base/UserEdit",
+                        url: "WebMerchantManage/RepastBasic/MerchantUserEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
                         }
@@ -51,7 +51,7 @@
                         controller.Confirm("确认删除？", function (bool) {
                             if (bool) {
                                 controller.ajax({
-                                    url: "EnterpriseWeb/RemoveUser",
+                                    url: "RepastWeb/RemoveUser",
                                     data: { Id: row.Id },
                                     type: 'post',
                                     success: function (result) {
@@ -67,7 +67,7 @@
                             type: 2,
                             height: "445px",
                             width: "605px",
-                            url: "WebCompanyManage/Base/UserEdit?Id=" + row.Id,
+                            url: "WebMerchantManage/RepastBasic/MerchantUserEdit?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }

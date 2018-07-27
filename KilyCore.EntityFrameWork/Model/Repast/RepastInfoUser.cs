@@ -65,5 +65,9 @@ namespace KilyCore.EntityFrameWork.Model.Repast
         /// 商家名称
         /// </summary>
         public virtual string MerchantName { get; set; }
+        /// <summary>
+        /// 健康证
+        /// </summary>
+        public virtual string HealthCard { get; set; }
     }
 }
