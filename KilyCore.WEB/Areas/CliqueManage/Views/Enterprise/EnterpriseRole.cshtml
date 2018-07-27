@@ -71,7 +71,7 @@
                             type: 2,
                             height: "500px",
                             width: "750px",
-                            url: "CliqueManage/Enterprise/EnterpriseRoleEdit?EnterpriseRoleId=" + row.EnterpriseRoleId + "&CompanyId=" + row.Id + "&CompanyName=" + row.CompanyName,
+                            url: "CliqueManage/Enterprise/EnterpriseRoleEdit?CompanyId=" + row.Id + "&CompanyName=" + row.CompanyName,
                             callBack: function (result) {
                                 result.popup.close();
                                 options.$table.refresh();

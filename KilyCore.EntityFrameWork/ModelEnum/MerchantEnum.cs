@@ -24,25 +24,20 @@ namespace KilyCore.EntityFrameWork.ModelEnum
         [Description("单位食堂")]
         UnitCanteen = 20,
         /// <summary>
-        /// 乡村厨师
-        /// </summary>
-        [Description("乡村厨师")]
-        VillageCook = 30,
-        /// <summary>
         /// 小经营店
         /// </summary>
         [Description("小经营店")]
-        SmallStore = 40,
+        SmallStore = 30,
         /// <summary>
         /// 小作坊
         /// </summary>
         [Description("小作坊")]
-        WorkShop=50,
+        WorkShop=40,
         /// <summary>
         /// 小摊贩
         /// </summary>
         [Description("小摊贩")]
-        Vendors=60
+        Vendors=50
 
 
 

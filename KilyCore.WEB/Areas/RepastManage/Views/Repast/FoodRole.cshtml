@@ -52,7 +52,7 @@
                             type: 2,
                             height: "500px",
                             width: "750px",
-                            url: "RepastManage/Repast/FoodRoleEdit?RepastRoleId=" + row.RepastRoleId + "&Merchant=" + row.Id + "&MerchantName=" + row.MerchantName,
+                            url: "RepastManage/Repast/FoodRoleEdit?MerchantId=" + row.Id + "&MerchantName=" + row.MerchantName,
                             callBack: function (result) {
                                 result.popup.close();
                                 options.$table.refresh();
