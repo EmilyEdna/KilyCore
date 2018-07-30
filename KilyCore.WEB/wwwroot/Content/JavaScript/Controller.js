@@ -400,11 +400,22 @@ controller.ValidateConfirm = function (element, option) {
                 success: function (data) {
                     if (window.source != undefined)
                         window.source.options.$table.refresh();
-                    controller.Confirm(data.data, function (flag) {
-                        if (flag) {
-                            window.popClose();
+                    if (!controller.JsonObject(data.data))
+                    {
+                        var obj = JSON.parse(data.data);
+                        if (obj.PayType)//支付宝
+                        {
+                            controller.Msg(obj.PayContent);
+                            return;
+                        }//微信
+                        else {
+                            {
+                                controller.QRCode("#QRCode", { text: obj.PayContent });
+                                return;
+                            }
                         }
-                    });
+                    }
+                    controller.Confirm(data.data, function () { });
                 },
                 fail: option.ajaxFail
             });
@@ -590,6 +601,15 @@ controller.FormatDate = function (option) {
 }
 //下拉控件
 controller.Select = function (option) {
+    //<select type="select" class="selectpicker form-control" data-max-options="2" id="Standard" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
+    //controller.Select({
+    //    document: '.selectpicker',
+    //    arrelemnt: ['#Standard'],
+    //    url: '',
+    //});
+    //$("#TargetUnit").on('changed.bs.select', function () {
+    //    $('input[name="TargetUnit"]').val($(this).val());
+    //});
     defaultOption = {
         document: undefined,
         arrelemnt: [],
@@ -743,4 +763,15 @@ controller.AutoInput = function (element, option) {
             $('input[name="' + title + '"]').val(keyword.attach);
         });
     });
+}
+//二维码生成
+controller.QRCode = function (element,option) {
+    defaultOption = {
+        render: "canvas", //canvas 或者 table
+        width: undefined,
+        height: undefined,
+        text: undefined,
+    }
+    var options = $.extend(defaultOption, option);
+    $(element).qrcode(options);
 }

@@ -1,4 +1,5 @@
 ﻿using KilyCore.DataEntity.RequestMapper.System;
+using Newtonsoft.Json;
 using PaySharp.Alipay;
 using PaySharp.Alipay.Domain;
 using PaySharp.Alipay.Request;
@@ -77,7 +78,12 @@ namespace KilyCore.Extension.PayCore.AliPay
         /// <returns></returns>
         public string WebPay(RequestAliPayModel Param)
         {
-            return GetGatewayData().Execute(GetPayRequest(Param)).Html;
+            ResponsePayCoreContent Model = new ResponsePayCoreContent
+            {
+                PayType = true,
+                PayContent = GetGatewayData().Execute(GetPayRequest(Param)).Html.Replace("'gateway'", "'gateway' target='_blank'")
+            };
+            return JsonConvert.SerializeObject(Model);
         }
     }
 }

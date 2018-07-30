@@ -413,28 +413,28 @@ namespace KilyCore.Service.ServiceCore
             if (contract.ContractType == 1)
             {
                 contract.AdminId = null;
-                //调用支付
+                contract.IsPay = false;
+                contract.TryOut = "/";
+                contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(contract.ContractYear));
+                //银联
                 if (contract.PayType == PayEnum.Unionpay)
-                    contract.IsPay = false;
+                {
+                    return Insert<SystemStayContract>(contract) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+                }
+                //支付宝支付
+                else if (contract.PayType == PayEnum.Alipay)
+                {
+                    Insert<SystemStayContract>(contract);
+                    return AliPayCore.Instance.WebPay(AliPayModel);
+                }
+                //微信支付
                 else
                 {
-                    //支付宝和微信支付
-                    if (contract.PayType == PayEnum.Alipay)
-                    {
-                        contract.TryOut = "/";
-                        contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(contract.ContractYear));
-                        Insert<SystemStayContract>(contract);
-                        return AliPayCore.Instance.WebPay(AliPayModel);
-                    }
-                    else
-                    {
-                        RequestWxPayModel WxPayModel = AliPayModel.MapToEntity<RequestWxPayModel>();
-                        contract.TryOut = "/";
-                        contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(contract.ContractYear));
-                        Insert<SystemStayContract>(contract);
-                        var s = WxPayCore.Instance.WebPay(WxPayModel);
-                        return s;
-                    }
+                    RequestWxPayModel WxPayModel = AliPayModel.MapToEntity<RequestWxPayModel>();
+                    WxPayModel.Money = WxPayModel.Money * 100;
+                    Insert<SystemStayContract>(contract);
+                    return WxPayCore.Instance.WebPay(WxPayModel);
+
                 }
             }
             else
@@ -442,9 +442,8 @@ namespace KilyCore.Service.ServiceCore
                 contract.PayType = PayEnum.AgentPay;
                 contract.TryOut = "30";
                 contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(contract.ContractYear));
-               return Insert<SystemStayContract>(contract)? ServiceMessage.INSERTSUCCESS: ServiceMessage.INSERTFAIL;
+                return Insert<SystemStayContract>(contract) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
             }
-            return null;
         }
         #endregion
 

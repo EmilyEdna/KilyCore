@@ -74,7 +74,12 @@ namespace KilyCore.Extension.PayCore.WxPay
         /// <returns></returns>
         public string WebPay(RequestWxPayModel Param)
         {
-            return JsonConvert.SerializeObject(GetGatewayData().Execute(GetPayRequest(Param)));
+            ResponsePayCoreContent Model = new ResponsePayCoreContent
+            {
+                PayType = false,
+                PayContent = GetGatewayData().Execute(GetPayRequest(Param)).CodeUrl
+            };
+            return JsonConvert.SerializeObject(Model);
         }
     }
 }

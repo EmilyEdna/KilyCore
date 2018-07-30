@@ -109,7 +109,7 @@
                         CommunityCode: CompanyInfo.CommunityCode,
                         CompanyAddress: CompanyInfo.CompanyAddress
                     }
-                    controller.SetCtrlValue("#PDF",data);
+                    controller.SetCtrlValue("#PDF", data);
                     $("#PDF").submit();
                 });
                 //验证
@@ -213,7 +213,6 @@
                         <th colspan="4">
                             <div class="text-center">
                                 <button class="btn btn-info btn-sm" type="button" id="pay">支付</button>
-                                
                             </div>
                         </th>
                     </tr>
@@ -222,3 +221,7 @@
         </form>
     </div>
 </div>
+<div class="text-center">
+    <div id="QRCode"></div>
+</div>
+
