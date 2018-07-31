@@ -55,6 +55,10 @@ namespace KilyCore.Service.IServiceCore
         ResponseMerchantUser GetUserDetail(Guid Id);
         String RemoveUser(Guid Id);
         #endregion
+        #region 集团账户
+        PagedResult<ResponseMerchant> GetChildInfo(PageParamList<RequestMerchant> pageParam);
+        String EditChildInfo(RequestMerchant Param);
+        #endregion
         #endregion
     }
 }

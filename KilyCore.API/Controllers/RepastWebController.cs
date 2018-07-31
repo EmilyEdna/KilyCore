@@ -172,6 +172,28 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(RepastWebService.RemoveUser(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 集团账户
+        /// <summary>
+        /// 集团账户列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetChildInfo")]
+        public ObjectResultEx GetChildInfo(PageParamList<RequestMerchant> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetChildInfo(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑子账户
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditChildInfo")]
+        public ObjectResultEx EditChildInfo(RequestMerchant Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.EditChildInfo(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
         #endregion
     }
 }

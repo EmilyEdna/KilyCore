@@ -367,7 +367,6 @@ namespace KilyCore.Service.ServiceCore
             contract.EnterpriseOrMerchant = 1;
             EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == contract.CompanyId).FirstOrDefault();
             info.Version = Param.VersionType;
-            Param.VersionType = SystemVersionEnum.Test;
             if (Param.VersionType == SystemVersionEnum.Test)
             {
                 info.TagCodeNum = ServiceMessage.TEST;
@@ -914,9 +913,11 @@ namespace KilyCore.Service.ServiceCore
                     contract.PayTicket = continued.PayTicket;
                     contract.PayType = continued.PayType;
                     IList<string> Fields = new List<string> { "CreateTime", "EndTime", "ContractYear", "PayTicket", "PayType" };
+                    IList<string> Field = new List<string> { "IsPay", "AuditType" };
                     UpdateField(contract, null, Fields);
                     continued.AuditType = AuditEnum.FinanceSuccess;
-                    return UpdateField(continued, "AuditType") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+                    continued.IsPay = true;
+                    return UpdateField(continued, null, Field) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
                 }
                 else
                 {
@@ -929,6 +930,7 @@ namespace KilyCore.Service.ServiceCore
                     contract.PayType = level.PayType;
                     contract.VersionType = level.VersionType;
                     IList<string> Fields = new List<string> { "CreateTime", "EndTime", "ContractYear", "PayTicket", "PayType", "VersionType" };
+                    IList<string> Field = new List<string> { "IsPay", "AuditType" };
                     UpdateField(contract, null, Fields);
                     if (level.VersionType == SystemVersionEnum.Test)
                         info.TagCodeNum += ServiceMessage.TEST;
@@ -940,7 +942,8 @@ namespace KilyCore.Service.ServiceCore
                         info.TagCodeNum += ServiceMessage.ENTERPRISE;
                     UpdateField(info, "TagCodeNum");
                     level.AuditType = AuditEnum.FinanceSuccess;
-                    return UpdateField(level, "AuditType") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+                    level.IsPay = true;
+                    return UpdateField(level, null, Field) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
                 }
             }
         }
@@ -3595,6 +3598,121 @@ namespace KilyCore.Service.ServiceCore
             return Delete<EnterpriseBuyer>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         #endregion
+        #endregion
+
+        #region 微信和支付宝调用
+        /// <summary>
+        /// 版本续费和升级使用支付宝支付
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="Value"></param>
+        /// <returns></returns>
+        public string AliPay(int Key, int? Value)
+        {
+            if (CompanyInfo() == null)
+                return "请使用企业账户进行操作！";
+            EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == CompanyInfo().Id).FirstOrDefault();
+            RequestAliPayModel AliPayModel = new RequestAliPayModel();
+            AliPayModel.OrderTitle = CompanyInfo().CompanyName + (Value == null ? "版本续费" : "版本升级");
+
+            if ((Value == null ? info.Version : (SystemVersionEnum)(Value)) == SystemVersionEnum.Test)
+            {
+                info.TagCodeNum += ServiceMessage.TEST;
+                if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
+                    AliPayModel.Money = 480 * Key;
+                if (info.CompanyType == CompanyEnum.Production)
+                    AliPayModel.Money = 600 * Key;
+                if (info.CompanyType == CompanyEnum.Circulation)
+                    AliPayModel.Money = 360 * Key;
+            }
+            if ((Value == null ? info.Version : (SystemVersionEnum)(Value)) == SystemVersionEnum.Base)
+            {
+                info.TagCodeNum += ServiceMessage.BASE;
+                if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
+                    AliPayModel.Money = 2000 * Key;
+                if (info.CompanyType == CompanyEnum.Production)
+                    AliPayModel.Money = 3000 * Key;
+                if (info.CompanyType == CompanyEnum.Circulation)
+                    AliPayModel.Money = 1500 * Key;
+            }
+            if ((Value == null ? info.Version : (SystemVersionEnum)(Value)) == SystemVersionEnum.Level)
+            {
+                info.TagCodeNum += ServiceMessage.LEVEL;
+                if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
+                    AliPayModel.Money = 4000 * Key;
+                if (info.CompanyType == CompanyEnum.Production)
+                    AliPayModel.Money = 6000 * Key;
+                if (info.CompanyType == CompanyEnum.Circulation)
+                    AliPayModel.Money = 3000 * Key;
+            }
+            if ((Value == null ? info.Version : (SystemVersionEnum)(Value)) == SystemVersionEnum.Enterprise)
+            {
+                info.TagCodeNum += ServiceMessage.ENTERPRISE;
+                if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
+                    AliPayModel.Money = 80000 * Key;
+                if (info.CompanyType == CompanyEnum.Production)
+                    AliPayModel.Money = 100000 * Key;
+                if (info.CompanyType == CompanyEnum.Circulation)
+                    AliPayModel.Money = 60000 * Key;
+            }
+            return AliPayCore.Instance.WebPay(AliPayModel);
+        }
+        /// <summary>
+        /// 版本续费和升级使用微信支付
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="Value"></param>
+        /// <returns></returns>
+        public string WxPay(int Key, int? Value)
+        {
+            if (CompanyInfo() == null)
+                return "请使用企业账户进行操作！";
+            EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == CompanyInfo().Id).FirstOrDefault();
+            RequestWxPayModel WxPayModel = new RequestWxPayModel();
+            WxPayModel.OrderTitle = CompanyInfo().CompanyName + (Value == null ? "版本续费" : "版本升级");
+
+            if ((Value == null ? info.Version : (SystemVersionEnum)(Value)) == SystemVersionEnum.Test)
+            {
+                info.TagCodeNum += ServiceMessage.TEST;
+                if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
+                    WxPayModel.Money = 100 * 480 * Key;
+                if (info.CompanyType == CompanyEnum.Production)
+                    WxPayModel.Money = 100 * 600 * Key;
+                if (info.CompanyType == CompanyEnum.Circulation)
+                    WxPayModel.Money = 100 * 360 * Key;
+            }
+            if ((Value == null ? info.Version : (SystemVersionEnum)(Value)) == SystemVersionEnum.Base)
+            {
+                info.TagCodeNum += ServiceMessage.BASE;
+                if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
+                    WxPayModel.Money = 100 * 2000 * Key;
+                if (info.CompanyType == CompanyEnum.Production)
+                    WxPayModel.Money = 100 * 3000 * Key;
+                if (info.CompanyType == CompanyEnum.Circulation)
+                    WxPayModel.Money = 100 * 1500 * Key;
+            }
+            if ((Value == null ? info.Version : (SystemVersionEnum)(Value)) == SystemVersionEnum.Level)
+            {
+                info.TagCodeNum += ServiceMessage.LEVEL;
+                if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
+                    WxPayModel.Money = 100 * 4000 * Key;
+                if (info.CompanyType == CompanyEnum.Production)
+                    WxPayModel.Money = 100 * 6000 * Key;
+                if (info.CompanyType == CompanyEnum.Circulation)
+                    WxPayModel.Money = 100 * 3000 * Key;
+            }
+            if ((Value == null ? info.Version : (SystemVersionEnum)(Value)) == SystemVersionEnum.Enterprise)
+            {
+                info.TagCodeNum += ServiceMessage.ENTERPRISE;
+                if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
+                    WxPayModel.Money = 100 * 80000 * Key;
+                if (info.CompanyType == CompanyEnum.Production)
+                    WxPayModel.Money = 100 * 100000 * Key;
+                if (info.CompanyType == CompanyEnum.Circulation)
+                    WxPayModel.Money = 100 * 60000 * Key;
+            }
+            return WxPayCore.Instance.WebPay(WxPayModel);
+        }
         #endregion
     }
 }

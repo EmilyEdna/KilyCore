@@ -45,7 +45,7 @@
             CheckType: function () { 
                 $("input:radio[name='Payment']").click(function () {
                     var type = $(this).val();
-                    if (type == 1)//年付费 10W
+                    if (type == 1)//年付费 10W =5,000,000枚
                     {
                         $("#ApplyMoney").val("10000");
                         $("#PaytTicket").addClass("required")
@@ -71,7 +71,6 @@
                     var num = Number($(this).val());
                     if (CompanyInfo.Version == 40)//旗舰版1厘钱
                     {
-                        debugger;
                         $("#ApplyMoney").val(num * 0.001);
                     }
                     else

@@ -472,6 +472,45 @@ namespace KilyCore.Service.ServiceCore
                 return ServiceMessage.REMOVEFAIL;
         }
         #endregion
+        #region 集团账户
+        /// <summary>
+        /// 集团账户列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseMerchant> GetChildInfo(PageParamList<RequestMerchant> pageParam)
+        {
+            var data = Kily.Set<RepastInfo>().Where(t => t.InfoId == pageParam.QueryParam.Id)
+               .OrderByDescending(t => t.CreateTime).Select(t => new ResponseMerchant()
+               {
+                   Id = t.Id,
+                   InfoId = t.InfoId,
+                   MerchantName = t.MerchantName,
+                   Account = t.Account,
+                   Address = t.Address,
+                   Certification=t.Certification
+               }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑子账户
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditChildInfo(RequestMerchant Param)
+        {
+            if (MerchantInfo() != null)
+            {
+                if (MerchantInfo().InfoId != null)
+                    return "无权限创建，仅限总公司使用!";
+                RepastInfo info = Param.MapToEntity<RepastInfo>();
+                info.AuditType = AuditEnum.WaitAduit;
+                info.DiningType = MerchantEnum.Normal;
+                return Insert(info) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            }
+            return "无权限创建!";
+        }
+        #endregion
         #endregion
     }
 }

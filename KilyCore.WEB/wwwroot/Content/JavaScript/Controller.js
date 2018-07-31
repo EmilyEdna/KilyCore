@@ -405,7 +405,7 @@ controller.ValidateConfirm = function (element, option) {
                         var obj = JSON.parse(data.data);
                         if (obj.PayType)//支付宝
                         {
-                            controller.Msg(obj.PayContent);
+                            $("#QRCode").css({ "display": "none" }).html(obj.PayContent);
                             return;
                         }//微信
                         else {

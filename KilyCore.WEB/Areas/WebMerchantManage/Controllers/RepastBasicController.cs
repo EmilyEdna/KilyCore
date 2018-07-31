@@ -45,5 +45,15 @@ namespace KilyCore.WEB.Areas.WebMerchantManage.Controllers
             return View();
         }
         #endregion
+        #region 集团账户
+        public IActionResult MerchantGroup()
+        {
+            return View();
+        }
+        public IActionResult MerchantGroupEdit()
+        {
+            return View();
+        }
+        #endregion
     }
 }
