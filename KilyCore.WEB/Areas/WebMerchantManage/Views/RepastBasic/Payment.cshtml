@@ -16,7 +16,6 @@
             //元素
             InitDom: function () {
                 var TypePath = controller.GetParam("TypePath");
-                debugger;
                 if (TypePath == "null") {
                     controller.Confirm("请先完善资料!", function () {
                         controller.Close();
@@ -31,7 +30,7 @@
                 //获取版本
                 controller.ajax({
                     url: "Function/GetAreaVersion",
-                    data: { Id: TypePath, Parameter: CompanyInfo.CompanyType },
+                    data: { Id: TypePath, Parameter: RepastUser.CompanyType },
                     async: false,
                     type: "post",
                     success: function (result) {

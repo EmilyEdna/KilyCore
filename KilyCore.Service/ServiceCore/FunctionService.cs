@@ -529,16 +529,26 @@ namespace KilyCore.Service.ServiceCore
         public IList<ResponseAreaDictionary> GetAreaVersion(string TypePath, int Param)
         {
             IQueryable<FunctionDictionary> queryable = Kily.Set<FunctionDictionary>().Where(t => t.DicName.Contains("版"));
-            if ((CompanyEnum)Param == CompanyEnum.Plant)
-                queryable = queryable.Where(t => t.DicName.Contains("种植"));
-            if ((CompanyEnum)Param == CompanyEnum.Culture)
-                queryable = queryable.Where(t => t.DicName.Contains("养殖"));
-            if ((CompanyEnum)Param == CompanyEnum.Production)
-                queryable = queryable.Where(t => t.DicName.Contains("生产"));
-            if ((CompanyEnum)Param == CompanyEnum.Circulation)
-                queryable = queryable.Where(t => t.DicName.Contains("流通"));
-            if ((CompanyEnum)Param == CompanyEnum.Other)
-                queryable = queryable.Where(t => t.DicName.Contains("其他"));
+            if (CompanyInfo() != null)
+            {
+                if ((CompanyEnum)Param == CompanyEnum.Plant)
+                    queryable = queryable.Where(t => t.DicName.Contains("种植"));
+                if ((CompanyEnum)Param == CompanyEnum.Culture)
+                    queryable = queryable.Where(t => t.DicName.Contains("养殖"));
+                if ((CompanyEnum)Param == CompanyEnum.Production)
+                    queryable = queryable.Where(t => t.DicName.Contains("生产"));
+                if ((CompanyEnum)Param == CompanyEnum.Circulation)
+                    queryable = queryable.Where(t => t.DicName.Contains("流通"));
+                if ((CompanyEnum)Param == CompanyEnum.Other)
+                    queryable = queryable.Where(t => t.DicName.Contains("其他"));
+            }
+            else
+            {
+                if((MerchantEnum)Param==MerchantEnum.Normal)
+                    queryable = queryable.Where(t => t.DicName.Contains("餐饮"));
+                if ((MerchantEnum)Param == MerchantEnum.UnitCanteen)
+                    queryable = queryable.Where(t => t.DicName.Contains("单位"));
+            }
             var data = Kily.Set<FunctionAreaDictionary>().Where(t => TypePath.Contains(t.ProvinceId.ToString())).Where(t => t.IsDelete == false)
                   .Join(queryable, t => t.DictionaryId, x => x.Id, (t, x) => new ResponseAreaDictionary()
                   {
