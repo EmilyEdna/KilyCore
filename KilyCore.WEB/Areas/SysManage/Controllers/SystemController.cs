@@ -10,85 +10,73 @@ namespace KilyCore.WEB.Areas.SysManage.Controllers
     public class SystemController : Controller
     {
         #region 菜单
-        public IActionResult SysMenu()
+        public IActionResult SystemMenu()
         {
             return View();
         }
-        public IActionResult SysMenuEdit()
-        {
-            return View();
-        }
-        public IActionResult SysCompanyMenu()
-        {
-            return View();
-        }
-        public IActionResult SysCompanyMenuEdit()
+        public IActionResult SystemMenuEdit()
         {
             return View();
         }
         #endregion
         #region 角色
-        public IActionResult SysRole()
+        public IActionResult SystemRole()
         {
             return View();
         }
         #endregion
         #region 用户
-        public IActionResult SysUser()
+        public IActionResult SystemUser()
         {
             return View();
         }
-        public IActionResult SysUserEdit()
+        public IActionResult SystemUserEdit()
         {
             return View();
         }
         #endregion
         #region 任务
-        public IActionResult SysQuartz()
+        public IActionResult SystemQuartz()
         {
             return View();
         }
-        public IActionResult SysQuartzEdit()
+        public IActionResult SystemQuartzEdit()
         {
             return View();
         }
         #endregion
         #region 人员
-        public IActionResult PresonCount()
+        public IActionResult SystemPreson()
         {
             return View();
         }
-        public IActionResult PresonEdit()
+        public IActionResult SystemPresonEdit()
         {
             return View();
         }
         #endregion
         #region 合同
-        public IActionResult StayContract()
+        public IActionResult SystemEnterpriseContract()
         {
             return View();
         }
-        public IActionResult StayContractEdit()
+        public IActionResult SystemAuditContract()
         {
             return View();
         }
-        public IActionResult AuditStayContract()
+        public IActionResult SystemAuditRecord()
         {
             return View();
         }
-        public IActionResult AuditRecord()
+        public IActionResult SystemContinued()
         {
             return View();
         }
-        public IActionResult StayContractContinued()
+        public IActionResult SystemUpdate()
         {
             return View();
         }
-        public IActionResult StayContractUpdate()
-        {
-            return View();
-        }
-        public IActionResult FoodContract()
+        public IActionResult SystemRepastContract()
         {
             return View();
         }

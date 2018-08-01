@@ -47,6 +47,37 @@ namespace KilyCore.Service.ServiceCore
             return Kily.Set<RepastInfo>().Where(t => t.InfoId == Id).Select(t => t.Id).AsQueryable();
         }
         /// <summary>
+        /// 下拉字典类型
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseRepastDictionary> GetDictionaryList()
+        {
+            IQueryable<RepastDictionary> queryable = Kily.Set<RepastDictionary>().Where(t => t.IsDelete == false);
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == CompanyInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data = queryable.GroupBy(t => t.DicType)
+                .Select(t => new ResponseRepastDictionary()
+                {
+                    DicType = t.Key.ToString(),
+                }).AsNoTracking().ToList();
+            data.ForEach(t =>
+            {
+                t.DictionaryList = Kily.Set<RepastDictionary>()
+                .Where(x => x.IsDelete == false)
+                .Where(x => x.DicType == t.DicType).Select(x => new ResponseRepastDictionary()
+                {
+                    Id = x.Id,
+                    DicName = x.DicName,
+                    DicValue = x.DicValue,
+                    Remark = x.Remark
+                }).AsNoTracking().ToList();
+            });
+            return data;
+
+        }
+        /// <summary>
         /// 获取导航菜单
         /// </summary>
         /// <returns></returns>
@@ -509,6 +540,221 @@ namespace KilyCore.Service.ServiceCore
                 return Insert(info) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
             }
             return "无权限创建!";
+        }
+        #endregion
+        #region 餐饮字典
+        /// <summary>
+        /// 字典分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRepastDictionary> GetDicPage(PageParamList<RequestRepastDictionary> pageParam)
+        {
+            IQueryable<RepastDictionary> queryable = Kily.Set<RepastDictionary>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.DicType))
+                queryable = queryable.Where(t => t.DicType.Contains(pageParam.QueryParam.DicType));
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.DicName))
+                queryable = queryable.Where(t => t.DicType.Contains(pageParam.QueryParam.DicName));
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data = queryable.AsNoTracking().Select(t => new ResponseRepastDictionary()
+            {
+                Id = t.Id,
+                DicType = t.DicType,
+                DicName = t.DicName,
+                DicValue = t.DicValue
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 删除码表
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveDic(Guid Id)
+        {
+            return Remove<RepastDictionary>(ExpressionExtension.GetExpression<RepastDictionary>("Id", Id, ExpressionEnum.Equals)) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 字典详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseRepastDictionary GetDicDetail(Guid Id)
+        {
+            var data = Kily.Set<RepastDictionary>().AsNoTracking().Select(t => new ResponseRepastDictionary()
+            {
+                Id = t.Id,
+                InfoId = t.InfoId,
+                DicType = t.DicType,
+                DicName = t.DicName,
+                DicValue = t.DicValue,
+                Remark = t.Remark
+            }).FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 编辑字典
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditDic(RequestRepastDictionary Param)
+        {
+            RepastDictionary dictionary = Param.MapToEntity<RepastDictionary>();
+            if (Param.Id != Guid.Empty)
+            {
+                return Update<RepastDictionary, RequestRepastDictionary>(dictionary, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            }
+            else
+            {
+                return Insert<RepastDictionary>(dictionary) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            }
+        }
+        #endregion
+        #region 升级续费
+        /// <summary>
+        /// 查看版本信息
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRepastLevelUp> GetLvPage(PageParamList<RequestRepastLevelUp> pageParam)
+        {
+            IQueryable<SystemStayContract> queryable = Kily.Set<SystemStayContract>().Where(t => t.CompanyId == pageParam.QueryParam.Id).Where(t => t.EnterpriseOrMerchant == 2).Where(t => t.IsDelete == false);
+            var data = queryable.Select(t => new ResponseRepastLevelUp()
+            {
+                Id = t.CompanyId,
+                StarTime = t.CreateTime,
+                EndTime = t.EndTime,
+                Year = t.ContractYear,
+                VersionName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.VersionType),
+                VersionType = t.VersionType
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑续费
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditContinued(RequestRepastContinued Param)
+        {
+            RepastContinued continued = Param.MapToEntity<RepastContinued>();
+            continued.AuditType = AuditEnum.WaitAduit;
+            return Insert<RepastContinued>(continued) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 编辑升级
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditUpLevel(RequestRepastUpLevel Param)
+        {
+            RepastUpLevel level = Param.MapToEntity<RepastUpLevel>();
+            level.AuditType = AuditEnum.WaitAduit;
+            return Insert<RepastUpLevel>(level) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 续费记录
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRepastContinued> GetContinuedPage(PageParamList<RequestRepastContinued> pageParam)
+        {
+            IQueryable<RepastContinued> queryable = Kily.Set<RepastContinued>().Where(t => t.InfoId == pageParam.QueryParam.InfoId);
+            var data = queryable.Select(t => new ResponseRepastContinued()
+            {
+                Id = t.Id,
+                ContinuedYear = t.ContinuedYear,
+                PayTypeName = AttrExtension.GetSingleDescription<PayEnum, DescriptionAttribute>(t.PayType),
+                AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
+                IsPay = t.IsPay,
+                PayTicket = t.PayTicket
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 升级记录
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRepastUpLevel> GetUpLevelPage(PageParamList<RequestRepastUpLevel> pageParam)
+        {
+            IQueryable<RepastUpLevel> queryable = Kily.Set<RepastUpLevel>().Where(t => t.InfoId == pageParam.QueryParam.InfoId);
+            var data = queryable.Select(t => new ResponseRepastUpLevel()
+            {
+                Id = t.Id,
+                ContinuedYear = t.ContinuedYear,
+                PayTypeName = AttrExtension.GetSingleDescription<PayEnum, DescriptionAttribute>(t.PayType),
+                AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
+                VersionTypeName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.VersionType),
+                IsPay = t.IsPay,
+                PayTicket = t.PayTicket
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 审核审计续费
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string AuditContinuedAndLevel(Guid Id, bool Param)
+        {
+            RepastContinued continued = null;
+            RepastUpLevel level = null;
+            if (Param)
+                continued = Kily.Set<RepastContinued>().Where(t => t.Id == Id).FirstOrDefault();
+            else
+                level = Kily.Set<RepastUpLevel>().Where(t => t.Id == Id).FirstOrDefault();
+            if (UserInfo().AccountType > AccountEnum.Country)
+            {
+                if (Param)
+                {
+                    continued.AuditType = AuditEnum.AuditSuccess;
+                    return UpdateField(continued, "AuditType") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+                }
+                else
+                {
+                    level.AuditType = AuditEnum.AuditSuccess;
+                    return UpdateField(level, "AuditType") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+                }
+            }
+            else
+            {
+                if (Param)
+                {
+                    SystemStayContract contract = Kily.Set<SystemStayContract>().Where(t => t.EnterpriseOrMerchant == 1).Where(t => t.CompanyId == continued.InfoId).FirstOrDefault();
+                    contract.CreateTime = DateTime.Now;
+                    contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(continued.ContinuedYear));
+                    contract.ContractYear = continued.ContinuedYear;
+                    contract.PayTicket = continued.PayTicket;
+                    contract.PayType = continued.PayType;
+                    IList<string> Fields = new List<string> { "CreateTime", "EndTime", "ContractYear", "PayTicket", "PayType" };
+                    IList<string> Field = new List<string> { "IsPay", "AuditType" };
+                    UpdateField(contract, null, Fields);
+                    continued.AuditType = AuditEnum.FinanceSuccess;
+                    continued.IsPay = true;
+                    return UpdateField(continued, null, Field) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+                }
+                else
+                {
+                    SystemStayContract contract = Kily.Set<SystemStayContract>().Where(t => t.EnterpriseOrMerchant == 1).Where(t => t.CompanyId == level.InfoId).FirstOrDefault();
+                    contract.CreateTime = DateTime.Now;
+                    contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(continued.ContinuedYear));
+                    contract.ContractYear = level.ContinuedYear;
+                    contract.PayTicket = level.PayTicket;
+                    contract.PayType = level.PayType;
+                    contract.VersionType = level.VersionType;
+                    IList<string> Fields = new List<string> { "CreateTime", "EndTime", "ContractYear", "PayTicket", "PayType", "VersionType" };
+                    IList<string> Field = new List<string> { "IsPay", "AuditType" };
+                    UpdateField(contract, null, Fields);
+                    level.AuditType = AuditEnum.FinanceSuccess;
+                    level.IsPay = true;
+                    return UpdateField(level, null, Field) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+                }
+            }
         }
         #endregion
         #endregion

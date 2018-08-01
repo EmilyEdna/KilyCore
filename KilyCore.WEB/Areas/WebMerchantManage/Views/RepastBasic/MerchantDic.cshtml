@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "菜单管理";
+    ViewData["Title"] = "餐饮字典";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
@@ -21,17 +21,17 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", {url: "System/GetMenuPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Menu" });
+                this.$table = controller.Table("#tableList", { url: "RepastWeb/GetDicPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit"});
             },
             //事件
             InitEvents: function () {
-                $("#add").on('click', function () { 
+                $("#add").on('click', function () {
                     controller.OpenWindow({
-                        title: "新增菜单",
+                        title: "新增记录",
                         type: 2,
                         height: "400px",
                         width: "650px",
-                        url: "SysManage/System/SysMenuEdit",
+                        url: "WebMerchantManage/RpastBase/MerchantDicEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
                         }
@@ -51,7 +51,7 @@
                         controller.Confirm("确认删除？", function (bool) {
                             if (bool) {
                                 controller.ajax({
-                                    url: "System/RemoveMenu",
+                                    url: "RepastWeb/RemoveDic",
                                     data: { Id: row.Id },
                                     type: 'post',
                                     success: function (result) {
@@ -63,14 +63,14 @@
                     },
                     "click .edit": function (event, val, row, index) {
                         controller.OpenWindow({
-                            title: "编辑菜单",
+                            title: "编辑字典",
                             type: 2,
                             height: "400px",
                             width: "650px",
-                            url: "SysManage/System/SysMenuEdit?Id=" + row.Id,
+                            url: "WebMerchantManage/RpastBase/MerchantDicEdit?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
-                             }
+                            }
                         })
                     }
                 }//表单事件结束
@@ -90,19 +90,26 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>菜单管理</h5>
+                <h5>餐饮字典</h5>
             </div>
             <div class="ibox-content">
                 <div class="row">
-                    <form id="Menu">
-                        <div class="col-sm-9 m-b-xs">
+                    <form id="Edit">
+                        <div class="col-sm-5 m-b-xs">
                             <div class="input-group">
                                 <button type="button" class="btn btn-sm btn-white" id="add"><i class="fa fa-plus"></i>新增</button>
                             </div>
                         </div>
                         <div class="col-sm-3">
                             <div class="input-group">
-                                <input type="text" placeholder="菜单名称" class="input-sm form-control" name="MenuName"> <span class="input-group-btn">
+                                <input type="text" name="DicType" list="Dic" class="input-sm form-control" placeholder="请选择或输入字典分类" />
+                                <datalist id="Dic"></datalist>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" placeholder="字典名称" class="input-sm form-control" name="DicName">
+                                <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
                                     <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
                                 </span>
@@ -114,9 +121,10 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="MenuName">菜单名称</th>
-                                <th data-field="MenuAddress">菜单地址</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents">操作</th>
+                                <th data-field="DicType" data-halign="center" data-align="center" data-valign="middle">字典分类</th>
+                                <th data-field="DicName" data-halign="center" data-align="center" data-valign="middle">字典名称</th>
+                                <th data-field="DicValue" data-halign="center" data-align="center" data-valign="middle">字典值</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>
                     </table>

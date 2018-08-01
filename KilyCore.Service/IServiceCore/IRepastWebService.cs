@@ -30,6 +30,7 @@ namespace KilyCore.Service.IServiceCore
     public interface IRepastWebService : IService
     {
         #region 获取全局集团菜单
+        IList<ResponseRepastDictionary> GetDictionaryList();
         IList<ResponseRepastMenu> GetRepastMenu();
         IList<ResponseParentTree> GetRepastWebTree();
         #endregion
@@ -58,6 +59,20 @@ namespace KilyCore.Service.IServiceCore
         #region 集团账户
         PagedResult<ResponseMerchant> GetChildInfo(PageParamList<RequestMerchant> pageParam);
         String EditChildInfo(RequestMerchant Param);
+        #endregion
+        #region 餐饮字典
+        PagedResult<ResponseRepastDictionary> GetDicPage(PageParamList<RequestRepastDictionary> pageParam);
+        String RemoveDic(Guid Id);
+        ResponseRepastDictionary GetDicDetail(Guid Id);
+        String EditDic(RequestRepastDictionary Param);
+        #endregion
+        #region 升级续费
+        PagedResult<ResponseRepastLevelUp> GetLvPage(PageParamList<RequestRepastLevelUp> pageParam);
+        String EditContinued(RequestRepastContinued Param);
+        String EditUpLevel(RequestRepastUpLevel Param);
+         PagedResult<ResponseRepastContinued> GetContinuedPage(PageParamList<RequestRepastContinued> pageParam);
+        PagedResult<ResponseRepastUpLevel> GetUpLevelPage(PageParamList<RequestRepastUpLevel> pageParam);
+        String AuditContinuedAndLevel(Guid Id, bool Param);
         #endregion
         #endregion
     }

@@ -755,7 +755,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string RemoveDic(Guid Id)
         {
-            return Delete<EnterpriseDictionary>(ExpressionExtension.GetExpression<EnterpriseDictionary>("Id", Id, ExpressionEnum.Equals)) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+            return Remove<EnterpriseDictionary>(ExpressionExtension.GetExpression<EnterpriseDictionary>("Id", Id, ExpressionEnum.Equals)) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         /// <summary>
         /// 字典详情

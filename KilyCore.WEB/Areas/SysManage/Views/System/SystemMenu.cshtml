@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "人员管理";
+    ViewData["Title"] = "菜单管理";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
@@ -21,17 +21,17 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", {url: "System/GetPresonPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Preson" });
+                this.$table = controller.Table("#tableList", {url: "System/GetMenuPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Menu" });
             },
             //事件
             InitEvents: function () {
-                $("#add").on('click', function () {
+                $("#add").on('click', function () { 
                     controller.OpenWindow({
-                        title: "新增人员",
+                        title: "新增菜单",
                         type: 2,
-                        height: "500px",
-                        width: "700px",
-                        url: "SysManage/System/PresonEdit",
+                        height: "400px",
+                        width: "650px",
+                        url: "SysManage/System/SystemMenuEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
                         }
@@ -51,7 +51,7 @@
                         controller.Confirm("确认删除？", function (bool) {
                             if (bool) {
                                 controller.ajax({
-                                    url: "System/RemovePreson",
+                                    url: "System/RemoveMenu",
                                     data: { Id: row.Id },
                                     type: 'post',
                                     success: function (result) {
@@ -63,11 +63,11 @@
                     },
                     "click .edit": function (event, val, row, index) {
                         controller.OpenWindow({
-                            title: "编辑人员",
+                            title: "编辑菜单",
                             type: 2,
-                            height: "500px",
-                            width: "700px",
-                            url: "SysManage/System/PresonEdit?Id=" + row.Id,
+                            height: "400px",
+                            width: "650px",
+                            url: "SysManage/System/SystemMenuEdit?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                              }
@@ -90,7 +90,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>人员管理</h5>
+                <h5>菜单管理</h5>
             </div>
             <div class="ibox-content">
                 <div class="row">
@@ -102,7 +102,7 @@
                         </div>
                         <div class="col-sm-3">
                             <div class="input-group">
-                                <input type="text" placeholder="人员工号" class="input-sm form-control" name="WorkNum"> <span class="input-group-btn">
+                                <input type="text" placeholder="菜单名称" class="input-sm form-control" name="MenuName"> <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
                                     <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
                                 </span>
@@ -114,11 +114,9 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="TrueName" data-halign="center" data-align="center" data-valign="middle">姓名</th>
-                                <th data-field="WorkNum" data-halign="center" data-align="center" data-valign="middle">工号</th>
-                                <th data-field="LinkPhone" data-halign="center" data-align="center" data-valign="middle">电话</th>
-                                <th data-field="IdCard" data-halign="center" data-align="center" data-valign="middle">身份证</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th data-field="MenuName">菜单名称</th>
+                                <th data-field="MenuAddress">菜单地址</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents">操作</th>
                             </tr>
                         </thead>
                     </table>

@@ -55,5 +55,21 @@ namespace KilyCore.WEB.Areas.WebMerchantManage.Controllers
             return View();
         }
         #endregion
+        #region 餐饮字典
+        public IActionResult MerchantDic()
+        {
+            return View();
+        }
+        public IActionResult MerchantDicEdit()
+        {
+            return View();
+        }
+        #endregion
+        #region 升级续费
+        public IActionResult MerchantLv()
+        {
+            return View();
+        }
+        #endregion
     }
 }

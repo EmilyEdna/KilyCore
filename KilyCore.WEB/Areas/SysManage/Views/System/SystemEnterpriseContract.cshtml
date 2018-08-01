@@ -77,7 +77,7 @@
                             type: 2,
                             height: "500px",
                             width: "700px",
-                            url: "SysManage/System/AuditStayContract?TableId=" + row.Id + "&TableName=" + row.TableName,
+                            url: "SysManage/System/SystemAuditContract?TableId=" + row.Id + "&TableName=" + row.TableName,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }
@@ -85,11 +85,11 @@
                     },
                     "click .watch": function (event, val, row, index) {
                         controller.OpenWindow({
-                            title: "审核信息",
+                            title: "审核记录",
                             type: 2,
                             height: "500px",
                             width: "700px",
-                            url: "SysManage/System/AuditRecord?TableId=" + row.Id + "&TableName=" + row.TableName,
+                            url: "SysManage/System/SystemAuditRecord?TableId=" + row.Id + "&TableName=" + row.TableName,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }
@@ -101,7 +101,7 @@
                             type: 2,
                             height: "80%",
                             width: "90%",
-                            url: "SysManage/System/StayContractUpdate?Id=" + row.CompanyId,
+                            url: "SysManage/System/SystemUpdate?Id=" + row.CompanyId,
                             callBack: function (result) {
                                 options.$table.refresh();
                             }
@@ -113,7 +113,7 @@
                             type: 2,
                             height: "80%",
                             width: "90%",
-                            url: "SysManage/System/StayContractContinued?Id=" + row.CompanyId,
+                            url: "SysManage/System/SystemContinued?Id=" + row.CompanyId,
                             callBack: function (result) {
                                 options.$table.refresh();
                             }

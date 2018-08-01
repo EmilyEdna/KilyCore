@@ -25,6 +25,15 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(RepastWebService.GetRepastMenu(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
+        /// 下拉字典类型
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetDictionaryList")]
+        public ObjectResultEx GetDictionaryList()
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetDictionaryList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 获取权限菜单树
         /// </summary>
         /// <returns></returns>
@@ -192,6 +201,111 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx EditChildInfo(RequestMerchant Param)
         {
             return ObjectResultEx.Instance(RepastWebService.EditChildInfo(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #region 餐饮字典
+        /// <summary>
+        /// 字典分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetDicPage")]
+        public ObjectResultEx GetDicPage(PageParamList<RequestRepastDictionary> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetDicPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除码表
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveDic")]
+        public ObjectResultEx RemoveDic(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.RemoveDic(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 字典详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetDicDetail")]
+        public ObjectResultEx GetDicDetail(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetDicDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑字典
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditDic")]
+        public ObjectResultEx EditDic(RequestRepastDictionary Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.EditDic(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #region 升级续费
+        /// <summary>
+        /// 查看版本信息
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetLvPage")]
+        public ObjectResultEx GetLvPage(PageParamList<RequestRepastLevelUp> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetLvPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑续费
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditContinued")]
+        public ObjectResultEx EditContinued(RequestRepastContinued Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.EditContinued(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑升级
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditUpLevel")]
+        public ObjectResultEx EditUpLevel(RequestRepastUpLevel Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.EditUpLevel(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 续费记录
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetContinuedPage")]
+        public ObjectResultEx GetContinuedPage(PageParamList<RequestRepastContinued> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetContinuedPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 升级记录
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetUpLevelPage")]
+        public ObjectResultEx GetUpLevelPage(PageParamList<RequestRepastUpLevel> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetUpLevelPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 审核审计续费
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("AuditContinuedAndLevel")]
+        public ObjectResultEx AuditContinuedAndLevel(SimlpeParam<Guid> Key, SimlpeParam<bool> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.AuditContinuedAndLevel(Key.Id, Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #endregion

@@ -1,6 +1,7 @@
-﻿@{
-    ViewData["Title"] = "系统用户";
-    Layout = "~/Views/Shared/BaseAreaView.cshtml";
+﻿
+@{
+    ViewData["Title"] = "任务调度";
+    Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
     <script>
@@ -20,17 +21,17 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "System/GetAdminPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Admin" });
+                this.$table = controller.Table("#tableList", { url: "System/GetJobPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Menu" });
             },
             //事件
             InitEvents: function () {
                 $("#add").on('click', function () {
                     controller.OpenWindow({
-                        title: "新增用户",
+                        title: "新增任务",
                         type: 2,
-                        height: "600px",
-                        width: "800px",
-                        url: "SysManage/system/SysUserEdit",
+                        height: "550px",
+                        width: "750px",
+                        url: "SysManage/system/SystemQuartzEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
                         }
@@ -41,19 +42,64 @@
             action: {
                 TableFormatter: function (val, row, index) {
                     var action = [];
-                    action.push('<button class="btn btn-sm btn-primary open"><i class="fa fa-cog"></i>开启网签</button>');
-                    action.push('<button class="btn btn-sm btn-primary close"><i class="fa fa-cog"></i>关闭网签</button>');
+                    action.push('<button class="btn btn-sm btn-primary run"><i class="fa fa-play-circle-o"></i>启动</button>');
+                    action.push('<button class="btn btn-sm btn-primary pause"><i class="fa fa-stop-circle-o"></i>暂停</button>');
+                    action.push('<button class="btn btn-sm btn-primary recover"><i class="fa fa-pause-circle-o"></i>恢复</button>');
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
-                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
+                    "click .run": function (event, val, row, index) {
+                        controller.Confirm("确认启动？", function (bool) {
+                            if (bool) {
+                                row.JobType = 10;
+                                controller.ajax({
+                                    url: "System/ExcuteJob",
+                                    data: { Param: row },
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    "click .pause": function (event, val, row, index) {
+                        controller.Confirm("确认暂停？", function (bool) {
+                            if (bool) {
+                                row.JobType = 20;
+                                controller.ajax({
+                                    url: "System/PauseAppointJob",
+                                    data: { Param: row },
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    "click .recover": function (event, val, row, index) {
+                        controller.Confirm("确认恢复？", function (bool) {
+                            if (bool) {
+                                row.JobType = 10;
+                                controller.ajax({
+                                    url: "System/RecoverPauseJob",
+                                    data: { Param: row },
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
+                    },
                     "click .del": function (event, val, row, index) {
                         controller.Confirm("确认删除？", function (bool) {
                             if (bool) {
                                 controller.ajax({
-                                    url: "System/RemoveAdmin",
-                                    data: { Id: row.Id },
+                                    url: "System/RemoveJob",
+                                    data: { Param: row },
                                     type: 'post',
                                     success: function (result) {
                                         options.$table.refresh();
@@ -61,47 +107,7 @@
                                 });
                             }
                         });
-                    },
-                    "click .edit": function (event, val, row, index) {
-                        controller.OpenWindow({
-                            title: "编辑用户",
-                            type: 2,
-                            height: "600px",
-                            width: "800px",
-                            url: "SysManage/System/SysUserEdit?Id=" + row.Id,
-                            callBack: function (result) {
-                                result.$("#Edit").submit();
-                            }
-                        })
-                    },
-                    "click .open": function (event, val, row, index) {
-                        controller.Confirm("确认开启？", function (bool) {
-                            if (bool) {
-                                controller.ajax({
-                                    url: "System/CG",
-                                    data: { Id: row.Id, Parameter: true },
-                                    type: 'post',
-                                    success: function (result) {
-                                        options.$table.refresh();
-                                    }
-                                });
-                            }
-                        });
-                    },
-                    "click .close": function (event, val, row, index) {
-                        controller.Confirm("确认开启？", function (bool) {
-                            if (bool) {
-                                controller.ajax({
-                                    url: "System/CG",
-                                    data: { Id: row.Id, Parameter: false },
-                                    type: 'post',
-                                    success: function (result) {
-                                        options.$table.refresh();
-                                    }
-                                });
-                            }
-                        });
-                    },
+                    }
                 }//表单事件结束
             }//行为结束
         };
@@ -109,35 +115,29 @@
         $(document).ready(function () {
             options.Init();
         });
-        //来至父页面的树选中事件
-        function nodeSelected(event, node) {
-            options.$table.queryParams.AreaTree = node.id;
-            $("#Admin").submit();
-            //清空查询参数
-            options.$table.queryParams = {};
-        }
     </script>
 }
 @section css{
 
 }
+
 <div class="container-fluid">
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>用户管理</h5>
+                <h5>任务作业</h5>
             </div>
             <div class="ibox-content">
                 <div class="row">
-                    <form id="Admin">
-                        <div class="col-sm-8 m-b-xs">
+                    <form id="Menu">
+                        <div class="col-sm-9 m-b-xs">
                             <div class="input-group">
-                                <button type="button" class="btn btn-sm btn-white" id="add"><i class="fa fa-plus"></i>新增</button>
+                                <button type="button" class="btn btn-sm btn-white" id="add"><i class="fa fa-plus"></i>新增任务</button>
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
                             <div class="input-group">
-                                <input type="text" placeholder="姓名" class="input-sm form-control" name="TrueName"> <span class="input-group-btn">
+                                <input type="text" placeholder="任务名称" class="input-sm form-control" name="JobName"> <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
                                     <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
                                 </span>
@@ -149,11 +149,15 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="TrueName" data-halign="center" data-align="center" data-valign="middle">姓名</th>
-                                <th data-field="Account" data-halign="center" data-align="center" data-valign="middle">账号</th>
-                                <th data-field="AccountTypeName" data-halign="center" data-align="center" data-valign="middle">账号类型</th>
-                                <th data-field="Phone" data-halign="center" data-align="center" data-valign="middle">电话</th>
-                                <th data-field="CommunityCode" data-halign="center" data-align="center" data-valign="middle">工商代码</th>
+                                <th data-field="JobGroup" data-halign="center" data-align="center" data-valign="middle">任务组别</th>
+                                <th data-field="JobName" data-halign="center" data-align="center" data-valign="middle">任务名称</th>
+                                <th data-field="StartTime" data-halign="center" data-align="center" data-valign="middle">开始时间</th>
+                                <th data-field="EndTime" data-halign="center" data-align="center" data-valign="middle">结束时间</th>
+                                <th data-field="RunTimes" data-halign="center" data-align="center" data-valign="middle">执行次数</th>
+                                <th data-field="IntervalSecond" data-halign="center" data-align="center" data-valign="middle">执行周期</th>
+                                <th data-field="JobDetail" data-halign="center" data-align="center" data-valign="middle">任务描述</th>
+                                <th data-field="Cron" data-halign="center" data-align="center" data-valign="middle">时间表达式</th>
+                                <th data-field="JobState" data-halign="center" data-align="center" data-valign="middle">任务状态</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>
@@ -163,4 +167,3 @@
         </div>
     </div>
 </div>
-
