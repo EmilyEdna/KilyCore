@@ -7,6 +7,8 @@ using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AttributeExtension;
 using KilyCore.Extension.AutoMapperExtension;
+using KilyCore.Extension.PayCore.AliPay;
+using KilyCore.Extension.PayCore.WxPay;
 using KilyCore.Repositories.BaseRepository;
 using KilyCore.Service.ConstMessage;
 using KilyCore.Service.IServiceCore;
@@ -233,6 +235,7 @@ namespace KilyCore.Service.ServiceCore
             }
         }
         #endregion
+
         #region 基础管理
         #region 商家资料
         /// <summary>
@@ -304,18 +307,69 @@ namespace KilyCore.Service.ServiceCore
         public string SaveContract(RequestStayContract Param)
         {
             Param.AuditType = AuditEnum.WaitAduit;
+            RequestAliPayModel AliPayModel = new RequestAliPayModel();
+            AliPayModel.OrderTitle = MerchantInfo().MerchantName + "合同缴费";
             SystemStayContract contract = Param.MapToEntity<SystemStayContract>();
             contract.EnterpriseOrMerchant = 2;
+            RepastInfo info = Kily.Set<RepastInfo>().Where(t => t.Id == contract.CompanyId).FirstOrDefault();
+            info.VersionType = Param.VersionType;
+            if (Param.VersionType == SystemVersionEnum.Test)
+            {
+
+                if (info.DiningType == MerchantEnum.Normal)
+                    AliPayModel.Money = 360 * Convert.ToInt32(Param.ContractYear);
+                if (info.DiningType == MerchantEnum.UnitCanteen)
+                    AliPayModel.Money = 240 * Convert.ToInt32(Param.ContractYear);
+            }
+            if (Param.VersionType == SystemVersionEnum.Base)
+            {
+                if (info.DiningType == MerchantEnum.Normal)
+                    AliPayModel.Money = 1500 * Convert.ToInt32(Param.ContractYear);
+                if (info.DiningType == MerchantEnum.UnitCanteen)
+                    AliPayModel.Money = 1000 * Convert.ToInt32(Param.ContractYear);
+            }
+            if (Param.VersionType == SystemVersionEnum.Level)
+            {
+                if (info.DiningType == MerchantEnum.Normal)
+                    AliPayModel.Money = 5000 * Convert.ToInt32(Param.ContractYear);
+                if (info.DiningType == MerchantEnum.UnitCanteen)
+                    AliPayModel.Money = 3000 * Convert.ToInt32(Param.ContractYear);
+            }
+            if (Param.VersionType == SystemVersionEnum.Enterprise)
+            {
+                if (info.DiningType == MerchantEnum.Normal)
+                    AliPayModel.Money = 10000 * Convert.ToInt32(Param.ContractYear);
+                if (info.DiningType == MerchantEnum.UnitCanteen)
+                    AliPayModel.Money = 5000 * Convert.ToInt32(Param.ContractYear);
+            }
+            if (Param.VersionType == SystemVersionEnum.Common)
+                AliPayModel.Money = 60 * Convert.ToInt32(Param.ContractYear);
+            UpdateField(info, "VersionType");
             if (contract.ContractType == 1)
             {
-                contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(contract.ContractYear));
                 contract.AdminId = null;
-                //调用支付
+                contract.IsPay = false;
+                contract.TryOut = "/";
+                contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(contract.ContractYear));
+                //银联
                 if (contract.PayType == PayEnum.Unionpay)
-                    contract.IsPay = false;
+                {
+                    return Insert<SystemStayContract>(contract) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+                }
+                //支付宝支付
+                else if (contract.PayType == PayEnum.Alipay)
+                {
+                    Insert<SystemStayContract>(contract);
+                    return AliPayCore.Instance.WebPay(AliPayModel);
+                }
+                //微信支付
                 else
                 {
-                    //支付宝和微信支付
+                    RequestWxPayModel WxPayModel = AliPayModel.MapToEntity<RequestWxPayModel>();
+                    WxPayModel.Money = WxPayModel.Money * 100;
+                    Insert<SystemStayContract>(contract);
+                    return WxPayCore.Instance.WebPay(WxPayModel);
+
                 }
             }
             else
@@ -323,11 +377,8 @@ namespace KilyCore.Service.ServiceCore
                 contract.PayType = PayEnum.AgentPay;
                 contract.TryOut = "30";
                 contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(contract.ContractYear));
+                return Insert<SystemStayContract>(contract) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
             }
-            if (Insert<SystemStayContract>(contract))
-                return ServiceMessage.INSERTSUCCESS;
-            else
-                return ServiceMessage.INSERTFAIL;
         }
         #endregion
         #region 商家认证
@@ -520,7 +571,7 @@ namespace KilyCore.Service.ServiceCore
                    MerchantName = t.MerchantName,
                    Account = t.Account,
                    Address = t.Address,
-                   Certification=t.Certification
+                   Certification = t.Certification
                }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -758,6 +809,95 @@ namespace KilyCore.Service.ServiceCore
             }
         }
         #endregion
+        #endregion
+
+        #region 微信和支付宝调用
+        /// <summary>
+        /// 版本续费和升级使用支付宝支付
+        /// </summary>
+        /// <param name="Key">年限</param>
+        /// <param name="Value">版本</param>
+        /// <returns></returns>
+        public string AliPay(int Key, int? Value)
+        {
+            if (CompanyInfo() == null)
+                return "请使用企业账户进行操作！";
+            RepastInfo info = Kily.Set<RepastInfo>().Where(t => t.Id == MerchantInfo().Id).FirstOrDefault();
+            RequestAliPayModel AliPayModel = new RequestAliPayModel();
+            AliPayModel.OrderTitle = MerchantInfo().MerchantName + (Value == null ? "版本续费" : "版本升级");
+            if ((Value == null ? info.VersionType : (SystemVersionEnum)(Value)) == SystemVersionEnum.Test)
+            {
+                if (info.DiningType == MerchantEnum.Normal)
+                    AliPayModel.Money = 360 * Key;
+                if (info.DiningType == MerchantEnum.UnitCanteen)
+                    AliPayModel.Money = 240 * Key;
+            }
+            if ((Value == null ? info.VersionType : (SystemVersionEnum)(Value)) == SystemVersionEnum.Base)
+            {
+                if (info.DiningType == MerchantEnum.Normal)
+                    AliPayModel.Money = 1500 * Key;
+                if (info.DiningType == MerchantEnum.UnitCanteen)
+                    AliPayModel.Money = 1000 * Key;
+            }
+            if ((Value == null ? info.VersionType : (SystemVersionEnum)(Value)) == SystemVersionEnum.Level)
+            {
+                if (info.DiningType == MerchantEnum.Normal)
+                    AliPayModel.Money = 5000 * Key;
+                if (info.DiningType == MerchantEnum.UnitCanteen)
+                    AliPayModel.Money = 3000 * Key;
+            }
+            if ((Value == null ? info.VersionType : (SystemVersionEnum)(Value)) == SystemVersionEnum.Enterprise)
+            {
+                if (info.DiningType == MerchantEnum.Normal)
+                    AliPayModel.Money = 10000 * Key;
+                if (info.DiningType == MerchantEnum.UnitCanteen)
+                    AliPayModel.Money = 5000 * Key;
+            }
+            return AliPayCore.Instance.WebPay(AliPayModel);
+        }
+        /// <summary>
+        /// 版本续费和升级使用微信支付
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="Value"></param>
+        /// <returns></returns>
+        public string WxPay(int Key, int? Value)
+        {
+            if (CompanyInfo() == null)
+                return "请使用企业账户进行操作！";
+            RepastInfo info = Kily.Set<RepastInfo>().Where(t => t.Id == MerchantInfo().Id).FirstOrDefault();
+            RequestWxPayModel WxPayModel = new RequestWxPayModel();
+            WxPayModel.OrderTitle = MerchantInfo().MerchantName + (Value == null ? "版本续费" : "版本升级");
+            if ((Value == null ? info.VersionType : (SystemVersionEnum)(Value)) == SystemVersionEnum.Test)
+            {
+                if (info.DiningType == MerchantEnum.Normal)
+                    WxPayModel.Money = 100 * 360 * Key;
+                if (info.DiningType == MerchantEnum.UnitCanteen)
+                    WxPayModel.Money = 100 * 240 * Key;
+            }
+            if ((Value == null ? info.VersionType : (SystemVersionEnum)(Value)) == SystemVersionEnum.Base)
+            {
+                if (info.DiningType == MerchantEnum.Normal)
+                    WxPayModel.Money = 100 * 1500 * Key;
+                if (info.DiningType == MerchantEnum.UnitCanteen)
+                    WxPayModel.Money = 100 * 1000 * Key;
+            }
+            if ((Value == null ? info.VersionType : (SystemVersionEnum)(Value)) == SystemVersionEnum.Level)
+            {
+                if (info.DiningType == MerchantEnum.Normal)
+                    WxPayModel.Money = 100*5000 * Key;
+                if (info.DiningType == MerchantEnum.UnitCanteen)
+                    WxPayModel.Money = 100*3000 * Key;
+            }
+            if ((Value == null ? info.VersionType : (SystemVersionEnum)(Value)) == SystemVersionEnum.Enterprise)
+            {
+                if (info.DiningType == MerchantEnum.Normal)
+                    WxPayModel.Money = 100*10000 * Key;
+                if (info.DiningType == MerchantEnum.UnitCanteen)
+                    WxPayModel.Money = 100*5000 * Key;
+            }
+            return WxPayCore.Instance.WebPay(WxPayModel);
+        }
         #endregion
     }
 }

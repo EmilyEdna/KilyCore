@@ -42,6 +42,11 @@ namespace KilyCore.EntityFrameWork.ModelEnum
         /// 定制版
         /// </summary>
         [Description("定制版")]
-        DIY=50
+        DIY=50,
+        /// <summary>
+        /// 公用版
+        /// </summary>
+        [Description("公用版")]
+        Common =60,
     }
 }

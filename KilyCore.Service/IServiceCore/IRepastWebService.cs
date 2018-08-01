@@ -75,5 +75,9 @@ namespace KilyCore.Service.IServiceCore
         String AuditContinuedAndLevel(Guid Id, bool Param);
         #endregion
         #endregion
+        #region 微信和支付宝调用
+        String AliPay(int Key, int? Value);
+        String WxPay(int Key, int? Value);
+        #endregion
     }
 }

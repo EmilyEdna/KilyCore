@@ -309,5 +309,29 @@ namespace KilyCore.API.Controllers
         }
         #endregion
         #endregion
+        #region 支付模块
+        /// <summary>
+        /// 版本续费和升级使用支付宝支付
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="Value"></param>
+        /// <returns></returns>
+        [HttpPost("AliPay")]
+        public ObjectResultEx AliPay(SimlpeParam<int> Key, SimlpeParam<int?> Value)
+        {
+            return ObjectResultEx.Instance(RepastWebService.AliPay(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 版本续费和升级使用微信支付
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="Value"></param>
+        /// <returns></returns>
+        [HttpPost("WxPay")]
+        public ObjectResultEx WxPay(SimlpeParam<int> Key, SimlpeParam<int?> Value)
+        {
+            return ObjectResultEx.Instance(RepastWebService.WxPay(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }
