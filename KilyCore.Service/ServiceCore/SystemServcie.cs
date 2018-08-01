@@ -373,11 +373,23 @@ namespace KilyCore.Service.ServiceCore
                 || t.TypePath.Contains(CompanyInfo().Area)
                 || t.TypePath.Contains(CompanyInfo().Town)
                 || t.AccountType == AccountEnum.Country).AsNoTracking();
-            else
+             else if(CompanyUser()!=null)
                 queryable = queryable.Where(t => t.TypePath.Contains(CompanyUser().Province)
                 || t.TypePath.Contains(CompanyUser().City)
                 || t.TypePath.Contains(CompanyUser().Area)
                 || t.TypePath.Contains(CompanyUser().Town)
+                || t.AccountType == AccountEnum.Country).AsNoTracking();
+            else if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.TypePath.Contains(MerchantInfo().Province)
+                || t.TypePath.Contains(MerchantInfo().City)
+                || t.TypePath.Contains(MerchantInfo().Area)
+                || t.TypePath.Contains(MerchantInfo().Town)
+                || t.AccountType == AccountEnum.Country).AsNoTracking();
+            else 
+                queryable = queryable.Where(t => t.TypePath.Contains(MerchantUser().Province)
+                || t.TypePath.Contains(MerchantUser().City)
+                || t.TypePath.Contains(MerchantUser().Area)
+                || t.TypePath.Contains(MerchantUser().Town)
                 || t.AccountType == AccountEnum.Country).AsNoTracking();
             var data = queryable.Select(t => new ResponseAdmin()
             {
@@ -1114,7 +1126,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string EditContract(Guid Id)
         {
-            SystemStayContract Contract = Kily.Set<SystemStayContract>().Where(t => t.EnterpriseOrMerchant == 1).Where(t => t.IsDelete == false).Where(t => t.Id == Id).FirstOrDefault();
+            SystemStayContract Contract = Kily.Set<SystemStayContract>().Where(t => t.IsDelete == false).Where(t => t.Id == Id).FirstOrDefault();
             Contract.IsPay = true;
             Contract.TryOut = null;
             List<String> Fieds = new List<string> { "IsPay", "TryOut" };

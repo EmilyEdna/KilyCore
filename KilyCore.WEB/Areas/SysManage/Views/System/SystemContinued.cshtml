@@ -20,8 +20,10 @@
                     }, 200);
                     e.stopPropagation();
                 });
+                var pre = controller.GetParam("Flag") == "true" ? "EnterpriseWeb" : "RepastWeb";
+                var obj = controller.GetParam("Flag") == "true"  ? { CompanyId: controller.GetParam("Id") } : { InfoId: controller.GetParam("Id") }
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetContinuedPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { CompanyId: controller.GetParam("Id") } });
+                this.$table = controller.Table("#tableList", { url: pre + "/GetContinuedPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: obj });
             },
             //事件
             InitEvents: function () {
@@ -54,9 +56,10 @@
                 TableEvents: {
                     "click .audit": function (event, val, row, index) {
                         controller.Confirm("确认审核？", function (bool) {
+                            var pre = controller.GetParam("Flag") == "true" ? "EnterpriseWeb" : "RepastWeb";
                             if (bool) {
                                 controller.ajax({
-                                    url: "EnterpriseWeb/AuditContinuedAndLevel",
+                                    url: pre +"/AuditContinuedAndLevel",
                                     data: { Id: row.Id, Parameter: true },
                                     type: 'post',
                                     success: function (result) {

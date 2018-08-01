@@ -1,0 +1,170 @@
+﻿
+@{
+    ViewData["Title"] = "版本续费";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var Guid = controller.GetParam("Id");
+                $("#InfoId").val(Guid);
+                //绑定银行信息
+                controller.ajax({
+                    url: "System/GetBankInfo",
+                    type: "post",
+                    async: false,
+                    data: {},
+                    success: function (result) {
+                        var html = '<option>===请选择===</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.BankCard + '" data-value="' + obj.BankName + '">' + obj.TrueName + '</option>'
+                        });
+                        $("select").html(html);
+                    }
+                });
+                //支付方式
+            },
+            //事件
+            InitEvents: function () {
+                $("input[type=radio][name=PayType]").on('click', function () {
+                    $("#QRCode").html("");
+                    if ($(this).val() != 30) {
+                        $(".Ticket").css("display", "none");
+                        $(".text-center").css("display", "block");
+                    }
+                    else {
+                        $(".Ticket").css({ display: "block", display: "table-row" });
+                        $(".text-center").css("display", "none");
+                    }
+                });
+                $("select").on('change', function () {
+                    var flag = $(this).find("option:selected");
+                    $("#BankCard").val(flag.val());
+                    $("#BankName").val(flag.data().value);
+                });
+                //文件上传-票据
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: ".upload-input",
+                    maxNum: 1,
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        $("#PayTicket").val(result.data);
+                    }
+                });
+                //微信支付宝支付
+                $("#pay").click(function () {
+                    var Type = $("input[type=radio][name=PayType]:checked").val();
+                    var reg = /^(?:0|[1-9]\d*)(?:\.\d*[1-9])?$/;
+                    var year = $("input[name='ContinuedYear']").val()
+                    if (!reg.test(year)) {
+                        controller.Msg("请输入数字");
+                        return;
+                    }
+                    controller.ajax({
+                        url: (Type == 10 ? "RepastWeb/AliPay" : "RepastWeb/WxPay"),
+                        type: "post",
+                        data: { Id: year },
+                        success: function (result) {
+                            if (Type == 10)
+                                $("#QRCode").css("display", "none").html(JSON.parse(result.data).PayContent);
+                            else {
+                                $("#QRCode").css("display", "block");
+                                controller.QRCode("#QRCode", { text: JSON.parse(result.data).PayContent })
+                            }
+                        }
+                    });
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="RepastWeb/EditContinued" id="Edit">
+            <input type="hidden" name="InfoId" id="InfoId" />
+            <input type="hidden" name="PayTicket" id="PayTicket" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">续费年限</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required IsNumber" name="ContinuedYear" data-msg-required="请输入续费年限" />
+                    </td>
+                    <th><label class="control-label">支付方式</label></th>
+                    <td class="has-warning">
+                        <label class="radio-inline">
+                            <input type="radio" name="PayType" value="10" style="margin-top:3px" checked />
+                            <text title="支付宝">支付宝</text>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="PayType" value="20" style="margin-top:3px" />
+                            <text title="微信">微信</text>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="PayType" value="30" style="margin-top:3px" />
+                            <text title="银行转账">银行转账</text>
+                        </label>
+                    </td>
+                </tr>
+                <tr class="Ticket" style="display:none">
+                    <th><label class="control-label">收款方</label></th>
+                    <td class="has-warning" colspan="3">
+                        <select type="select" class="form-control">
+                            <option>===请选择===</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr class="Ticket" style="display:none">
+                    <th><label class="control-label">银行名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" readonly id="BankName" />
+                    </td>
+                    <th><label class="control-label">银行卡号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" readonly id="BankCard" />
+                    </td>
+                </tr>
+                <tr class="Ticket" style="display:none">
+                    <th><label class="control-label">缴费票据</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                    </td>
+                </tr>
+                <tfoot>
+                    <tr>
+                        <th colspan="4">
+                            <div class="text-center">
+                                <button class="btn btn-info btn-sm" type="button" id="pay">支付</button>
+                            </div>
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+        </form>
+    </div>
+</div>
+<div class="text-center">
+    <div id="QRCode"></div>
+</div>

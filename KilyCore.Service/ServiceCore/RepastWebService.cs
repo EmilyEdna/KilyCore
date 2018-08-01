@@ -308,6 +308,7 @@ namespace KilyCore.Service.ServiceCore
             contract.EnterpriseOrMerchant = 2;
             if (contract.ContractType == 1)
             {
+                contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(contract.ContractYear));
                 contract.AdminId = null;
                 //调用支付
                 if (contract.PayType == PayEnum.Unionpay)
@@ -725,7 +726,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 if (Param)
                 {
-                    SystemStayContract contract = Kily.Set<SystemStayContract>().Where(t => t.EnterpriseOrMerchant == 1).Where(t => t.CompanyId == continued.InfoId).FirstOrDefault();
+                    SystemStayContract contract = Kily.Set<SystemStayContract>().Where(t => t.EnterpriseOrMerchant == 2).Where(t => t.CompanyId == continued.InfoId).FirstOrDefault();
                     contract.CreateTime = DateTime.Now;
                     contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(continued.ContinuedYear));
                     contract.ContractYear = continued.ContinuedYear;
@@ -740,7 +741,7 @@ namespace KilyCore.Service.ServiceCore
                 }
                 else
                 {
-                    SystemStayContract contract = Kily.Set<SystemStayContract>().Where(t => t.EnterpriseOrMerchant == 1).Where(t => t.CompanyId == level.InfoId).FirstOrDefault();
+                    SystemStayContract contract = Kily.Set<SystemStayContract>().Where(t => t.EnterpriseOrMerchant == 2).Where(t => t.CompanyId == level.InfoId).FirstOrDefault();
                     contract.CreateTime = DateTime.Now;
                     contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(continued.ContinuedYear));
                     contract.ContractYear = level.ContinuedYear;

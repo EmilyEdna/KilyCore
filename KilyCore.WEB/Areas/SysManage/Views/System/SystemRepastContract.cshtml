@@ -48,7 +48,7 @@
                 },
                 TableFormatter: function (val, row, index) {
                     var action = [];
-                    if (row.IsPay != null && row.IsPay == false)
+                    if (row.IsPay == false)
                         action.push('<button class="btn btn-sm btn-primary ok"><i class="fa fa-pencil-square-o"></i>确认缴费</button>');
                     action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-pencil-square-o"></i>审核</button>');
                     action.push('<button class="btn btn-sm btn-primary watch"><i class="fa fa-eye"></i>审核记录</button>');
@@ -101,7 +101,7 @@
                             type: 2,
                             height: "80%",
                             width: "90%",
-                            url: "SysManage/System/SystemUpdate?Id=" + row.CompanyId,
+                            url: "SysManage/System/SystemUpdate?Flag=false&Id=" + row.CompanyId,
                             callBack: function (result) {
                                 options.$table.refresh();
                             }
@@ -113,7 +113,7 @@
                             type: 2,
                             height: "80%",
                             width: "90%",
-                            url: "SysManage/System/SystemContinued?Id=" + row.CompanyId,
+                            url: "SysManage/System/SystemContinued?Flag=false&Id=" + row.CompanyId,
                             callBack: function (result) {
                                 options.$table.refresh();
                             }

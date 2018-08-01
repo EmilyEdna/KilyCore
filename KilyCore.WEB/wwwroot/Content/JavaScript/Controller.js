@@ -142,6 +142,15 @@ controller.JsonObject = function (option) {
     return typeof (option) == "object" && Object.prototype.toString.call(option).toLowerCase() == "[object object]" && !option.length; //true or false
 
 }
+//检查字符串是否为Json
+controller.CheckJsonFormat = function (option) {
+    try {
+        $.parseJSON(option);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
 //对话框
 controller.Confirm = function (option, callBack, title) {
     if (!title)
@@ -400,8 +409,7 @@ controller.ValidateConfirm = function (element, option) {
                 success: function (data) {
                     if (window.source != undefined)
                         window.source.options.$table.refresh();
-                    if (!controller.JsonObject(data.data))
-                    {
+                    if (controller.CheckJsonFormat(data.data)) {
                         var obj = JSON.parse(data.data);
                         if (obj.PayType)//支付宝
                         {
@@ -415,7 +423,9 @@ controller.ValidateConfirm = function (element, option) {
                             }
                         }
                     }
-                    controller.Confirm(data.data, function () { });
+                    controller.Confirm(data.data, function () {
+                        window.popClose();
+                    });
                 },
                 fail: option.ajaxFail
             });
@@ -765,7 +775,7 @@ controller.AutoInput = function (element, option) {
     });
 }
 //二维码生成
-controller.QRCode = function (element,option) {
+controller.QRCode = function (element, option) {
     defaultOption = {
         render: "canvas", //canvas 或者 table
         width: undefined,
