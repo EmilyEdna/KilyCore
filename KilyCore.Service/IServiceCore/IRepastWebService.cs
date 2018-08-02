@@ -45,9 +45,9 @@ namespace KilyCore.Service.IServiceCore
         String EditMerchantIdent(RequestRepastIdent Param);
         #endregion
         #region 权限角色
-         String EditRoleAuthor(RequestRoleAuthorWeb Param);
-         PagedResult<ResponseRoleAuthorWeb> GetRoleAuthorPage(PageParamList<RequestRoleAuthorWeb> pageParam);
-         String RemoveRole(Guid Id);
+        String EditRoleAuthor(RequestRoleAuthorWeb Param);
+        PagedResult<ResponseRoleAuthorWeb> GetRoleAuthorPage(PageParamList<RequestRoleAuthorWeb> pageParam);
+        String RemoveRole(Guid Id);
         IList<ResponseRoleAuthorWeb> GetRoleAuthorList();
         #endregion
         #region 人员管理
@@ -70,9 +70,16 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseRepastLevelUp> GetLvPage(PageParamList<RequestRepastLevelUp> pageParam);
         String EditContinued(RequestRepastContinued Param);
         String EditUpLevel(RequestRepastUpLevel Param);
-         PagedResult<ResponseRepastContinued> GetContinuedPage(PageParamList<RequestRepastContinued> pageParam);
+        PagedResult<ResponseRepastContinued> GetContinuedPage(PageParamList<RequestRepastContinued> pageParam);
         PagedResult<ResponseRepastUpLevel> GetUpLevelPage(PageParamList<RequestRepastUpLevel> pageParam);
         String AuditContinuedAndLevel(Guid Id, bool Param);
+        #endregion
+        #endregion
+        #region 功能管理
+        #region 供应商
+        PagedResult<ResponseRepastSupplier> GetSupplierPage(PageParamList<RequestRepastSupplier> pageParam);
+        String RemoveSupplier(Guid Id);
+        String EditSupplier(RequestRepastSupplier Param);
         #endregion
         #endregion
         #region 微信和支付宝调用

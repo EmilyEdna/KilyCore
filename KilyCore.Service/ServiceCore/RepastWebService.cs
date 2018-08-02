@@ -811,6 +811,55 @@ namespace KilyCore.Service.ServiceCore
         #endregion
         #endregion
 
+        #region 功能管理
+        #region 供应商
+        /// <summary>
+        /// 供应商列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRepastSupplier> GetSupplierPage(PageParamList<RequestRepastSupplier> pageParam)
+        {
+            IQueryable<RepastSupplier> queryable = Kily.Set<RepastSupplier>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id);
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data = queryable.Select(t => new ResponseRepastSupplier()
+            {
+                Id = t.Id,
+                SupplierName = t.SupplierName,
+                SupplierNo = t.SupplierNo,
+                Address = t.Address,
+                SupplierUser = t.SupplierUser,
+                LinkPhone = t.LinkPhone
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 删除供应商
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveSupplier(Guid Id)
+        {
+            return Delete(ExpressionExtension.GetExpression<RepastSupplier>("Id", Id, ExpressionEnum.Equals)) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 编辑供应商
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditSupplier(RequestRepastSupplier Param)
+        {
+            RepastSupplier supplier = Param.MapToEntity<RepastSupplier>();
+            return Insert(supplier) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        #endregion
+        #region 进货台账
+        #endregion
+        #endregion
+
         #region 微信和支付宝调用
         /// <summary>
         /// 版本续费和升级使用支付宝支付
@@ -885,16 +934,16 @@ namespace KilyCore.Service.ServiceCore
             if ((Value == null ? info.VersionType : (SystemVersionEnum)(Value)) == SystemVersionEnum.Level)
             {
                 if (info.DiningType == MerchantEnum.Normal)
-                    WxPayModel.Money = 100*5000 * Key;
+                    WxPayModel.Money = 100 * 5000 * Key;
                 if (info.DiningType == MerchantEnum.UnitCanteen)
-                    WxPayModel.Money = 100*3000 * Key;
+                    WxPayModel.Money = 100 * 3000 * Key;
             }
             if ((Value == null ? info.VersionType : (SystemVersionEnum)(Value)) == SystemVersionEnum.Enterprise)
             {
                 if (info.DiningType == MerchantEnum.Normal)
-                    WxPayModel.Money = 100*10000 * Key;
+                    WxPayModel.Money = 100 * 10000 * Key;
                 if (info.DiningType == MerchantEnum.UnitCanteen)
-                    WxPayModel.Money = 100*5000 * Key;
+                    WxPayModel.Money = 100 * 5000 * Key;
             }
             return WxPayCore.Instance.WebPay(WxPayModel);
         }

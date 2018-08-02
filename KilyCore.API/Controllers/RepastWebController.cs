@@ -309,6 +309,40 @@ namespace KilyCore.API.Controllers
         }
         #endregion
         #endregion
+        #region 功能管理
+        #region 供应商
+        /// <summary>
+        /// 供应商列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetSupplierPage")]
+        public ObjectResultEx GetSupplierPage(PageParamList<RequestRepastSupplier> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetSupplierPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除供应商
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveSupplier")]
+        public ObjectResultEx RemoveSupplier(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.RemoveSupplier(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑供应商
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditSupplier")]
+        public ObjectResultEx EditSupplier(RequestRepastSupplier Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.EditSupplier(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #endregion
         #region 支付模块
         /// <summary>
         /// 版本续费和升级使用支付宝支付
