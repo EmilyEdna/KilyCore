@@ -1,8 +1,85 @@
 ﻿
 @{
-    ViewData["Title"] = "MerchantSellbillEdit";
+    ViewData["Title"] = "编辑销售台账";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
-
-<h2>MerchantSellbillEdit</h2>
-
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#InfoId").val(RepastUser.Id);
+                controller.LayDate({ elem: "input[name='SellTime']" });
+                var Guid = controller.GetParam("Id");
+                options.GetDetail(Guid);
+            },
+            //获取详情
+            GetDetail: function (Guid) {
+                if (Guid != null && Guid != undefined && Guid != "")
+                    controller.ajax({
+                        url: "RepastWeb/GetSellbillDetail",
+                        data: { Id: Guid },
+                        async: false,
+                        type: "post",
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                        }
+                    });
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="RepastWeb/EditSellbill" id="Edit">
+            <input type="hidden" name="Id" id="Id" />
+            <input type="hidden" name="InfoId" id="InfoId" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">食品名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="GoodsName"/>
+                    </td>
+                    <th><label class="control-label">销售数量</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="GoodsNum"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">单价</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="UnPay" />
+                    </td>
+                    <th><label class="control-label">总价</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ToPay" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">销售时间</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" class="form-control" name="SellTime" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
