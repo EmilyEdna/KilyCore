@@ -1,8 +1,126 @@
 ﻿
 @{
-    ViewData["Title"] = "MerchantSupplierEdit";
+    ViewData["Title"] = "编辑供应商";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
-
-<h2>MerchantSupplierEdit</h2>
-
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#InfoId").val(RepastUser.Id);
+                $("input[name='SupplierNo']").val("G" + controller.FormatDate("YYMMDDHHmmss"));
+            },
+            //事件
+            InitEvents: function () {
+                //卫生许可证
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#ui1",
+                    maxNum: 1,
+                    node: '#Img1',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        $("#HealthCard").val(result.data);
+                    }
+                });
+                //营业执照
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#ui2",
+                    maxNum: 1,
+                    node: '#Img2',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        $("#RunCard").val(result.data);
+                    }
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="RepastWeb/EditSupplier" id="Edit">
+            <input type="hidden" name="InfoId" id="InfoId" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">编号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SupplierNo" />
+                    </td>
+                    <th><label class="control-label">供应商</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="SupplierName" data-msg-required="请输入供应商名称" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">法人代表</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="SupplierUser" data-msg-required="请输入供应商指定法人" />
+                    </td>
+                    <th><label class="control-label">联系电话</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="LinkPhone" data-msg-required="请输入联系电话" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">详细地址</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="Address" data-msg-required="请输入详细地址" />
+                    </td>
+                    <th><label class="control-label">供应商类型</label></th>
+                    <td class="has-warning">
+                        <label class="radio-inline">
+                            <input type="radio" name="SupplierType" value="1" style="margin-top:3px" checked />
+                            <text title="企业">企业</text>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="SupplierType" value="2" style="margin-top:3px" />
+                            <text title="个人">个人</text>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">卫生许可证</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear" id="Img1">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" id="ui1" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                        <input type="hidden" id="HealthCard" name="HealthCard" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">营业执照</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear" id="Img2">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" id="ui2" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                        <input type="hidden" id="RunCard" name="RunCard" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

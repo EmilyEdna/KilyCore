@@ -1,8 +1,149 @@
 ﻿
 @{
-    ViewData["Title"] = "MerchantBuybillEdit";
+    ViewData["Title"] = "编辑进货台账";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
-
-<h2>MerchantBuybillEdit</h2>
-
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#InfoId").val(RepastUser.Id);
+                controller.LayDate({ elem: "input[name='OrderTime']" });
+                var Guid = controller.GetParam("Id");
+                options.GetDetail(Guid);
+                options.GetList();
+            },
+            //获取详情
+            GetDetail: function (Guid) {
+                if (Guid != null && Guid != undefined && Guid != "")
+                    controller.ajax({
+                        url: "RepastWeb/GetBuybillDetail",
+                        data: { Id: Guid },
+                        async: false,
+                        type: "post",
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                        }
+                    });
+            },
+            //获取列表
+            GetList: function () {
+                //获取负责人
+                controller.ajax({
+                    url: "RepastWeb/GetMerchantList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>'
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.TrueName + '</option>'
+                        });
+                        $("select[name='Purchase']").html(html);
+                    }
+                });
+                //获取供应商
+                controller.ajax({
+                    url: "RepastWeb/GetSupplierList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>'
+                        $.each(result.data, function (i, obj) {
+                            html += '<option data-value="' + obj.LinkPhone + '">' + obj.SupplierName + '</option>'
+                        });
+                        $("select[name='Supplier']").html(html);
+                    }
+                });
+                controller.Select({
+                    document: '.selectpicker',
+                    arrelemnt: ['#Unit'],
+                    url: 'RepastWeb/GetDictionaryList',
+                });
+                $("#Unit").on('changed.bs.select', function () {
+                    $('input[name="Unit"]').val($(this).val());
+                });
+            },
+            //事件
+            InitEvents: function () {
+                $("select[name='Supplier']").on('change', function () {
+                    var phone = $(this).find("option:selected").data().value;
+                    $("input[name='LinkPhone']").val(phone);
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="RepastWeb/EditBuybill" id="Edit">
+            <input type="hidden" name="Id" id="Id" />
+            <input type="hidden" name="InfoId" id="InfoId" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">原料名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="GoodsName" data-msg-required="请输入原料名称" />
+                    </td>
+                    <th><label class="control-label">进货数量</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="GoodsNum" data-msg-required="请输入进货数量" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">单价</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="UnPay" />
+                    </td>
+                    <th><label class="control-label">总价</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ToPay" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">供应商</label></th>
+                    <td class="has-warning">
+                        <select type="select" name="Supplier" class="form-control"></select>
+                    </td>
+                    <th><label class="control-label">采购负责人</label></th>
+                    <td class="has-warning">
+                        <select type="select" name="Purchase" class="form-control"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">联系电话</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="LinkPhone" />
+                    </td>
+                    <th><label class="control-label">单位</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="selectpicker form-control" data-max-options="1" id="Unit" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">进货时间</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" class="form-control" name="OrderTime" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

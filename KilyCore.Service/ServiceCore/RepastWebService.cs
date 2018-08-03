@@ -56,7 +56,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<RepastDictionary> queryable = Kily.Set<RepastDictionary>().Where(t => t.IsDelete == false);
             if (MerchantInfo() != null)
-                queryable = queryable.Where(t => t.InfoId == CompanyInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
             else
                 queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
             var data = queryable.GroupBy(t => t.DicType)
@@ -477,7 +477,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.TrueName))
                 queryable = queryable.Where(t => t.TrueName.Contains(pageParam.QueryParam.TrueName));
             if (MerchantInfo() != null)
-                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id);
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
             else
                 queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
             var data = queryable.Select(t => new ResponseMerchantUser()
@@ -562,7 +562,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<RepastInfoUser> queryable = Kily.Set<RepastInfoUser>().Where(t => t.IsDelete == false).AsNoTracking();
             if (MerchantInfo() != null)
-                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id);
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
             else
                 queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
             var data = queryable.Select(t => new ResponseMerchantUser()
@@ -839,8 +839,10 @@ namespace KilyCore.Service.ServiceCore
         public PagedResult<ResponseRepastSupplier> GetSupplierPage(PageParamList<RequestRepastSupplier> pageParam)
         {
             IQueryable<RepastSupplier> queryable = Kily.Set<RepastSupplier>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.SupplierName))
+                queryable = queryable.Where(t => t.SupplierName.Contains(pageParam.QueryParam.SupplierName));
             if (MerchantInfo() != null)
-                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id);
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
             else
                 queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
             var data = queryable.Select(t => new ResponseRepastSupplier()
@@ -850,7 +852,9 @@ namespace KilyCore.Service.ServiceCore
                 SupplierNo = t.SupplierNo,
                 Address = t.Address,
                 SupplierUser = t.SupplierUser,
-                LinkPhone = t.LinkPhone
+                LinkPhone = t.LinkPhone,
+                HealthCard = t.HealthCard,
+                RunCard = t.RunCard
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -873,6 +877,25 @@ namespace KilyCore.Service.ServiceCore
             RepastSupplier supplier = Param.MapToEntity<RepastSupplier>();
             return Insert(supplier) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
+        /// <summary>
+        /// 供应商列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseRepastSupplier> GetSupplierList()
+        {
+            IQueryable<RepastSupplier> queryable = Kily.Set<RepastSupplier>().Where(t => t.IsDelete == false);
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data = queryable.Select(t => new ResponseRepastSupplier()
+            {
+                Id=t.Id,
+                LinkPhone=t.LinkPhone,
+                SupplierName=t.SupplierName
+            }).ToList();
+            return data;
+        }
         #endregion
         #region 进货台账
         /// <summary>
@@ -886,7 +909,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.GoodsName))
                 queryable = queryable.Where(t => t.GoodsName.Contains(pageParam.QueryParam.GoodsName));
             if (MerchantInfo() != null)
-                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id);
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
             else
                 queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseRepastBuybill()
@@ -961,7 +984,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.GoodsName))
                 queryable = queryable.Where(t => t.GoodsName.Contains(pageParam.QueryParam.GoodsName));
             if (MerchantInfo() != null)
-                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id);
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
             else
                 queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseRepastSellbill()
@@ -1027,7 +1050,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string AliPay(int Key, int? Value)
         {
-            if (CompanyInfo() == null)
+            if (MerchantInfo() == null)
                 return "请使用企业账户进行操作！";
             RepastInfo info = Kily.Set<RepastInfo>().Where(t => t.Id == MerchantInfo().Id).FirstOrDefault();
             RequestAliPayModel AliPayModel = new RequestAliPayModel();
@@ -1070,7 +1093,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string WxPay(int Key, int? Value)
         {
-            if (CompanyInfo() == null)
+            if (MerchantInfo() == null)
                 return "请使用企业账户进行操作！";
             RepastInfo info = Kily.Set<RepastInfo>().Where(t => t.Id == MerchantInfo().Id).FirstOrDefault();
             RequestWxPayModel WxPayModel = new RequestWxPayModel();

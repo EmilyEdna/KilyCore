@@ -81,6 +81,7 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseRepastSupplier> GetSupplierPage(PageParamList<RequestRepastSupplier> pageParam);
         String RemoveSupplier(Guid Id);
         String EditSupplier(RequestRepastSupplier Param);
+        IList<ResponseRepastSupplier> GetSupplierList();
         #endregion
         #region 进货台账
         PagedResult<ResponseRepastBuybill> GetBuybillPage(PageParamList<RequestRepastBuybill> pageParam);

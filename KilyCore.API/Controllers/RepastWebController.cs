@@ -352,6 +352,14 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastWebService.EditSupplier(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 供应商列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetSupplierList")]
+        public ObjectResultEx GetSupplierList() {
+            return ObjectResultEx.Instance(RepastWebService.GetSupplierList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 进货台账
         /// <summary>
