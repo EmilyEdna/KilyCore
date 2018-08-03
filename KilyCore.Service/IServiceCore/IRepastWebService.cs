@@ -36,7 +36,7 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 基础管理
         #region 商家资料
-        PagedResult<ResponseMerchant> GetMerchantInfo(PageParamList<RequestMerchant> pageParam);
+        PagedResult<ResponseMerchant> GetMerchantInfoPage(PageParamList<RequestMerchant> pageParam);
         ResponseMerchant GetMerchantDetail(Guid Id);
         String EditMerchant(RequestMerchant Param);
         String SaveContract(RequestStayContract Param);
@@ -55,9 +55,10 @@ namespace KilyCore.Service.IServiceCore
         String EditUser(RequestMerchantUser Param);
         ResponseMerchantUser GetUserDetail(Guid Id);
         String RemoveUser(Guid Id);
+        IList<ResponseMerchantUser> GetMerchantList();
         #endregion
         #region 集团账户
-        PagedResult<ResponseMerchant> GetChildInfo(PageParamList<RequestMerchant> pageParam);
+        PagedResult<ResponseMerchant> GetChildInfoPage(PageParamList<RequestMerchant> pageParam);
         String EditChildInfo(RequestMerchant Param);
         #endregion
         #region 餐饮字典
@@ -80,6 +81,18 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseRepastSupplier> GetSupplierPage(PageParamList<RequestRepastSupplier> pageParam);
         String RemoveSupplier(Guid Id);
         String EditSupplier(RequestRepastSupplier Param);
+        #endregion
+        #region 进货台账
+        PagedResult<ResponseRepastBuybill> GetBuybillPage(PageParamList<RequestRepastBuybill> pageParam);
+        String RemoveBuybill(Guid Id);
+        ResponseRepastBuybill GetBuybillDetail(Guid Id);
+        String EditBuybill(RequestRepastBuybill Param);
+        #endregion
+        #region 销售台账
+        PagedResult<ResponseRepastSellbill> GetSellbillPage(PageParamList<RequestRepastSellbill> pageParam);
+        String RemoveSellbill(Guid Id);
+        ResponseRepastSellbill GetSellbillDetail(Guid Id);
+        String EditSellbill(RequestRepastSellbill Param);
         #endregion
         #endregion
         #region 微信和支付宝调用

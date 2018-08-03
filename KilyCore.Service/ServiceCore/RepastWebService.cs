@@ -243,7 +243,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="pageParam"></param>
         /// <returns></returns>
-        public PagedResult<ResponseMerchant> GetMerchantInfo(PageParamList<RequestMerchant> pageParam)
+        public PagedResult<ResponseMerchant> GetMerchantInfoPage(PageParamList<RequestMerchant> pageParam)
         {
             var data = Kily.Set<RepastInfo>().Where(t => t.Id == pageParam.QueryParam.Id).Select(t => new ResponseMerchant()
             {
@@ -554,6 +554,24 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.REMOVEFAIL;
         }
+        /// <summary>
+        /// 人员列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseMerchantUser> GetMerchantList()
+        {
+            IQueryable<RepastInfoUser> queryable = Kily.Set<RepastInfoUser>().Where(t => t.IsDelete == false).AsNoTracking();
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id);
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data = queryable.Select(t => new ResponseMerchantUser()
+            {
+                Id = t.Id,
+                TrueName = t.TrueName
+            }).ToList();
+            return data;
+        }
         #endregion
         #region 集团账户
         /// <summary>
@@ -561,7 +579,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="pageParam"></param>
         /// <returns></returns>
-        public PagedResult<ResponseMerchant> GetChildInfo(PageParamList<RequestMerchant> pageParam)
+        public PagedResult<ResponseMerchant> GetChildInfoPage(PageParamList<RequestMerchant> pageParam)
         {
             var data = Kily.Set<RepastInfo>().Where(t => t.InfoId == pageParam.QueryParam.Id)
                .OrderByDescending(t => t.CreateTime).Select(t => new ResponseMerchant()
@@ -857,6 +875,146 @@ namespace KilyCore.Service.ServiceCore
         }
         #endregion
         #region 进货台账
+        /// <summary>
+        /// 进货台账分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRepastBuybill> GetBuybillPage(PageParamList<RequestRepastBuybill> pageParam)
+        {
+            IQueryable<RepastBuybill> queryable = Kily.Set<RepastBuybill>().Where(t => t.IsDelete == false).AsNoTracking();
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.GoodsName))
+                queryable = queryable.Where(t => t.GoodsName.Contains(pageParam.QueryParam.GoodsName));
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id);
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseRepastBuybill()
+            {
+                Id = t.Id,
+                GoodsName = t.GoodsName,
+                GoodsNum = t.GoodsNum,
+                LinkPhone = t.LinkPhone,
+                Purchase = t.Purchase,
+                Unit = t.Unit,
+                ToPay = t.ToPay,
+                Supplier = t.Supplier,
+                OrderTime = t.OrderTime,
+                UnPay = t.UnPay
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 删除进货台账
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveBuybill(Guid Id)
+        {
+            return Delete<RepastBuybill>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 进货台账详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseRepastBuybill GetBuybillDetail(Guid Id)
+        {
+            var data = Kily.Set<RepastBuybill>().Where(t => t.Id == Id).Select(t => new ResponseRepastBuybill()
+            {
+                Id = t.Id,
+                GoodsName = t.GoodsName,
+                GoodsNum = t.GoodsNum,
+                LinkPhone = t.LinkPhone,
+                Purchase = t.Purchase,
+                Unit = t.Unit,
+                ToPay = t.ToPay,
+                Supplier = t.Supplier,
+                OrderTime = t.OrderTime,
+                UnPay = t.UnPay
+            }).FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 编辑进货台账
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditBuybill(RequestRepastBuybill Param)
+        {
+            RepastBuybill buybill = Param.MapToEntity<RepastBuybill>();
+            if (Param.Id == Guid.Empty)
+                return Insert(buybill) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+                return Update<RepastBuybill, RequestRepastBuybill>(buybill, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        #endregion
+        #region 销售台账
+        /// <summary>
+        /// 销售台账分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRepastSellbill> GetSellbillPage(PageParamList<RequestRepastSellbill> pageParam)
+        {
+            IQueryable<RepastSellbill> queryable = Kily.Set<RepastSellbill>().Where(t => t.IsDelete == false).AsNoTracking();
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.GoodsName))
+                queryable = queryable.Where(t => t.GoodsName.Contains(pageParam.QueryParam.GoodsName));
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id);
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseRepastSellbill()
+            {
+                Id = t.Id,
+                GoodsName = t.GoodsName,
+                GoodsNum = t.GoodsNum,
+                ToPay = t.ToPay,
+                SellTime = t.SellTime,
+                UnPay = t.UnPay
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 删除销售台账
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveSellbill(Guid Id)
+        {
+            return Delete<RepastSellbill>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 销售台账详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseRepastSellbill GetSellbillDetail(Guid Id)
+        {
+            var data = Kily.Set<RepastSellbill>().Where(t => t.Id == Id).Select(t => new ResponseRepastSellbill()
+            {
+                Id = t.Id,
+                GoodsName = t.GoodsName,
+                GoodsNum = t.GoodsNum,
+                ToPay = t.ToPay,
+                SellTime = t.SellTime,
+                UnPay = t.UnPay
+            }).FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 编辑销售台账
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditSellbill(RequestRepastSellbill Param)
+        {
+            RepastSellbill sellbill = Param.MapToEntity<RepastSellbill>();
+            if (Param.Id == Guid.Empty)
+                return Insert(sellbill) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+                return Update<RepastSellbill, RequestRepastSellbill>(sellbill, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
         #endregion
         #endregion
 

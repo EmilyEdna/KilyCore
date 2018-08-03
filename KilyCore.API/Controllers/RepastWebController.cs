@@ -43,6 +43,7 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(RepastWebService.GetRepastWebTree(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+
         #region 基础管理
         #region 商家资料
         /// <summary>
@@ -50,10 +51,10 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="pageParam"></param>
         /// <returns></returns>
-        [HttpPost("GetMerChantInfo")]
-        public ObjectResultEx GetMerchantInfo(PageParamList<RequestMerchant> pageParam)
+        [HttpPost("GetMerchantInfoPage")]
+        public ObjectResultEx GetMerchantInfoPage(PageParamList<RequestMerchant> pageParam)
         {
-            return ObjectResultEx.Instance(RepastWebService.GetMerchantInfo(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.GetMerchantInfoPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 获取详细
@@ -180,6 +181,15 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastWebService.RemoveUser(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 人员列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetMerchantList")]
+        public ObjectResultEx GetMerchantList()
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetMerchantList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 集团账户
         /// <summary>
@@ -187,10 +197,10 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="pageParam"></param>
         /// <returns></returns>
-        [HttpPost("GetChildInfo")]
-        public ObjectResultEx GetChildInfo(PageParamList<RequestMerchant> pageParam)
+        [HttpPost("GetChildInfoPage")]
+        public ObjectResultEx GetChildInfoPage(PageParamList<RequestMerchant> pageParam)
         {
-            return ObjectResultEx.Instance(RepastWebService.GetChildInfo(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.GetChildInfoPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 编辑子账户
@@ -309,6 +319,7 @@ namespace KilyCore.API.Controllers
         }
         #endregion
         #endregion
+
         #region 功能管理
         #region 供应商
         /// <summary>
@@ -342,7 +353,92 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(RepastWebService.EditSupplier(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 进货台账
+        /// <summary>
+        /// 进货台账分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetBuybillPage")]
+        public ObjectResultEx GetBuybillPage(PageParamList<RequestRepastBuybill> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetBuybillPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除进货台账
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveBuybill")]
+        public ObjectResultEx RemoveBuybill(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.RemoveBuybill(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 进货台账详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetBuybillDetail")]
+        public ObjectResultEx GetBuybillDetail(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetBuybillDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑进货台账
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditBuybill")]
+        public ObjectResultEx EditBuybill(RequestRepastBuybill Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.EditBuybill(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
+        #region 销售台账
+        /// <summary>
+        /// 销售台账分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetSellbillPage")]
+        public ObjectResultEx GetSellbillPage(PageParamList<RequestRepastSellbill> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetSellbillPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除销售台账
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveSellbill")]
+        public ObjectResultEx RemoveSellbill(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.RemoveSellbill(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 销售台账详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetSellbillDetail")]
+        public ObjectResultEx GetSellbillDetail(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetSellbillDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑销售台账
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditSellbill")]
+        public ObjectResultEx EditSellbill(RequestRepastSellbill Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.EditSellbill(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #endregion
+
         #region 支付模块
         /// <summary>
         /// 版本续费和升级使用支付宝支付
