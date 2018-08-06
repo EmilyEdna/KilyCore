@@ -57,6 +57,7 @@
                 });
             },
             //事件
+            InitEvents: function () {
                 //合同模式
                 $("input:radio[name='ContractType']").on('click', function () {
                     if ($(this).val() == 1) {
@@ -108,7 +109,7 @@
                         CommunityCode: RepastUser.CommunityCode,
                         CompanyAddress: RepastUser.Address
                     }
-                    controller.SetCtrlValue("#PDF",data);
+                    controller.SetCtrlValue("#PDF", data);
                     $("#PDF").submit();
                 });
                 //验证
@@ -148,7 +149,7 @@
                     <th><label class="control-label">合同模式</label></th>
                     <td class="has-warning">
                         <label class="radio-inline">
-                            <input type="radio" name="ContractType" value="1" style="margin-top:3px" checked />
+                            <input type="radio" name="radio2" id="radio4" value="option2" checked="">
                             <text title="线上合同">线上合同</text>
                         </label>
                         <label class="radio-inline">

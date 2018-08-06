@@ -357,7 +357,8 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetSupplierList")]
-        public ObjectResultEx GetSupplierList() {
+        public ObjectResultEx GetSupplierList()
+        {
             return ObjectResultEx.Instance(RepastWebService.GetSupplierList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
@@ -445,6 +446,49 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(RepastWebService.EditSellbill(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #endregion
+
+        #region 菜品管理
+        /// <summary>
+        /// 菜品分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetDishPage")]
+        public ObjectResultEx GetDishPage(PageParamList<RequestRepastDish> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetDishPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 菜品详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetDishDetail")]
+        public ObjectResultEx GetDishDetail(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetDishDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除菜品
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveDish")]
+        public ObjectResultEx RemoveDish(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.RemoveDish(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑菜品
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditDish")]
+        public ObjectResultEx EditDish(RequestRepastDish Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.EditDish(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
 
         #region 支付模块

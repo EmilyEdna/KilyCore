@@ -3,6 +3,104 @@
     ViewData["Title"] = "编辑菜品";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
-
-<h2>MerchantDishEdit</h2>
-
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#InfoId").val(RepastUser.Id);
+                var Guid = controller.GetParam("Id"); 
+                var Editor = controller.Editor(".summernote", { width: 655 });
+                options.GetDetail(Guid, Editor);
+            },
+            //获取详情
+            GetDetail: function (Guid,Editor) {
+                if (Guid != null && Guid != undefined && Guid != "")
+                    controller.ajax({
+                        url: "RepastWeb/GetDishDetail",
+                        data: { Id: Guid },
+                        async: false,
+                        type: "post",
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                            Editor.summernote('code', result.data.Remark);
+                        }
+                    });
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="RepastWeb/EditDish" id="Edit">
+            <input type="hidden" name="Id" id="Id" />
+            <input type="hidden" name="InfoId" id="InfoId" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">菜品名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="DishName" />
+                    </td>
+                    <th><label class="control-label">菜品类型</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="DishType" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">主料</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="MainBatch" />
+                    </td>
+                    <th><label class="control-label">配料</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Batching" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">调料</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Seasoning" />
+                    </td>
+                    <th><label class="control-label">口味</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Taste" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">烹饪时长</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="CookingTime" />
+                    </td>
+                    <th><label class="control-label">烹饪方式</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="CookingType" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">菜品介绍</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="summernote" name="Remark"></div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

@@ -890,9 +890,9 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
             var data = queryable.Select(t => new ResponseRepastSupplier()
             {
-                Id=t.Id,
-                LinkPhone=t.LinkPhone,
-                SupplierName=t.SupplierName
+                Id = t.Id,
+                LinkPhone = t.LinkPhone,
+                SupplierName = t.SupplierName
             }).ToList();
             return data;
         }
@@ -1039,6 +1039,78 @@ namespace KilyCore.Service.ServiceCore
                 return Update<RepastSellbill, RequestRepastSellbill>(sellbill, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         #endregion
+        #endregion
+
+        #region 菜品管理
+        /// <summary>
+        /// 菜品分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRepastDish> GetDishPage(PageParamList<RequestRepastDish> pageParam)
+        {
+            IQueryable<RepastDish> queryable = Kily.Set<RepastDish>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.DishName))
+                queryable = queryable.Where(t => t.DishName.Contains(pageParam.QueryParam.DishName));
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data = queryable.Select(t => new ResponseRepastDish()
+            {
+                Id = t.Id,
+                DishName = t.DishName,
+                DishType = t.DishType,
+                CookingTime = t.CookingTime,
+                CookingType = t.CookingType
+            }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 菜品详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseRepastDish GetDishDetail(Guid Id)
+        {
+            var data = Kily.Set<RepastDish>().Where(t => t.Id == Id).Select(t => new ResponseRepastDish()
+            {
+                Id=t.Id,
+                InfoId=t.InfoId,
+                DishName=t.DishName,
+                Batching=t.Batching,
+                Seasoning=t.Seasoning,
+                CookingTime=t.CookingTime,
+                CookingType=t.CookingType,
+                DishType=t.DishType,
+                MainBatch=t.MainBatch,
+                Remark=t.Remark,
+                Taste=t.Taste
+            }).FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 删除菜品
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveDish(Guid Id)
+        {
+            return Delete(ExpressionExtension.GetExpression<RepastDish>("Id", Id, ExpressionEnum.Equals)) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 编辑菜品
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditDish(RequestRepastDish Param)
+        {
+            RepastDish dish = Param.MapToEntity<RepastDish>();
+            if (Param.Id == Guid.Empty)
+                return Insert<RepastDish>(dish) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+                return Update<RepastDish, RequestRepastDish>(dish, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
         #endregion
 
         #region 微信和支付宝调用

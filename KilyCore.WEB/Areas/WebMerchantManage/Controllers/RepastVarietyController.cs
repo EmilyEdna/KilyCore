@@ -19,15 +19,5 @@ namespace KilyCore.WEB.Areas.WebMerchantManage.Controllers
             return View();
         }
         #endregion
-        #region 菜品管理
-        public IActionResult MerchantCookbook()
-        {
-            return View();
-        }
-        public IActionResult MerchantCookbookEdit()
-        {
-            return View();
-        }
-        #endregion
     }
 }

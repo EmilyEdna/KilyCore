@@ -96,6 +96,12 @@ namespace KilyCore.Service.IServiceCore
         String EditSellbill(RequestRepastSellbill Param);
         #endregion
         #endregion
+        #region 菜品管理
+        PagedResult<ResponseRepastDish> GetDishPage(PageParamList<RequestRepastDish> pageParam);
+        ResponseRepastDish GetDishDetail(Guid Id);
+        String RemoveDish(Guid Id);
+        String EditDish(RequestRepastDish Param);
+        #endregion
         #region 微信和支付宝调用
         String AliPay(int Key, int? Value);
         String WxPay(int Key, int? Value);
