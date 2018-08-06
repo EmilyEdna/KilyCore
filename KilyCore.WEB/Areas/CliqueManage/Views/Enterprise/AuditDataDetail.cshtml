@@ -25,13 +25,13 @@
                     var option = {
                         title: "荣誉证书",
                         data: [{
-                            alt:"荣誉证书",
+                            alt: "荣誉证书",
                             src: $(this).attr("src")
                         }]
                     };
                     controller.Photos(option);
                 });
-                $("#tab-3").find("img").on('click', function () { 
+                $("#tab-3").find("img").on('click', function () {
                     var option = {
                         title: "营业执照",
                         data: [{
@@ -110,9 +110,9 @@
                         $("#area").html(html);
                     }
                 });
-            }, 
-           //取得详情后获取乡镇
-            GetTown: function () { 
+            },
+            //取得详情后获取乡镇
+            GetTown: function () {
                 controller.ajax({
                     url: "System/GetTown",
                     data: { Id: $("#area").find("option:selected").data().id },
@@ -231,23 +231,23 @@
                         <td class="has-warning" colspan="3">
                             <table>
                                 <tr>
-                                    <td class="has-warning">
-                                        <select type="select" class="form-control" name="Province" id="province" style="width:125px" disabled="disabled">
+                                    <td class="has-warning" style="width:25%">
+                                        <select type="select" class="form-control" name="Province" id="province" disabled="disabled">
                                             <option>=请选择=</option>
                                         </select>
                                     </td>
-                                    <td class="has-warning">
-                                        <select type="select" class="form-control" name="City" id="city" style="width:125px" disabled="disabled">
+                                    <td class="has-warning" style="width:25%">
+                                        <select type="select" class="form-control" name="City" id="city" disabled="disabled">
                                             <option>=请选择=</option>
                                         </select>
                                     </td>
-                                    <td class="has-warning">
-                                        <select type="select" class="form-control" name="Area" id="area" style="width:125px" disabled="disabled">
+                                    <td class="has-warning" style="width:25%">
+                                        <select type="select" class="form-control" name="Area" id="area" disabled="disabled">
                                             <option>=请选择=</option>
                                         </select>
                                     </td>
-                                    <td class="has-warning">
-                                        <select type="select" class="form-control" name="Town" id="town" style="width:125px" disabled="disabled">
+                                    <td class="has-warning" style="width:25%">
+                                        <select type="select" class="form-control" name="Town" id="town" disabled="disabled">
                                             <option>=请选择=</option>
                                         </select>
                                     </td>
@@ -265,7 +265,7 @@
             </div>
             <div id="tab-3" class="tab-pane">
                 <div class="ibox-content">
-                <img class="img-preview-sm" src="" type="image" name="Certification" style="display:block;margin:auto" title="点击放大" />
+                    <img class="img-preview-sm" src="" type="image" name="Certification" style="display:block;margin:auto" title="点击放大" />
                 </div>
             </div>
             <div id="tab-4" class="tab-pane">
