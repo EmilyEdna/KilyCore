@@ -4,13 +4,13 @@ using System.Text;
 
 #region << 版 本 注 释 >>
 /*----------------------------------------------------------------
-* 类 名 称 ：ReponseRepastStuff
+* 类 名 称 ：ReponseRepastInStorage
 * 类 描 述 ：
 * 命名空间 ：KilyCore.DataEntity.ResponseMapper.Repast
 * 机器名称 ：EMILY 
 * CLR 版本 ：4.0.30319.42000
 * 作    者 ：$刘泽华$
-* 创建时间 ：2018/8/7 11:19:44
+* 创建时间 ：2018/8/7 14:19:05
 *******************************************************************
 * Copyright @ $刘泽华$ 2018. All rights reserved.
 *******************************************************************
@@ -18,18 +18,30 @@ using System.Text;
 #endregion
 namespace KilyCore.DataEntity.ResponseMapper.Repast
 {
-    public class ReponseRepastStuff
+    public class ResponseRepastInStorage
     {
         public Guid Id { get; set; }
         public Guid InfoId { get; set; }
         /// <summary>
-        /// 原料名称
+        /// 批次号
         /// </summary>
-        public string MaterialName { get; set; }
+        public string BatchNo { get; set; }
         /// <summary>
-        /// 原料类型
+        /// 食材名称
         /// </summary>
-        public string MaterialType { get; set; }
+        public string IngredientName { get; set; }
+        /// <summary>
+        /// 入口数量
+        /// </summary>
+        public int InStorageNum { get; set; }
+        /// <summary>
+        /// 单价
+        /// </summary>
+        public decimal? PrePrice { get; set; }
+        /// <summary>
+        /// 总价
+        /// </summary>
+        public decimal? ToPrice { get; set; }
         /// <summary>
         /// 供应商
         /// </summary>
@@ -47,14 +59,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         /// </summary>
         public string QualityReport { get; set; }
         /// <summary>
-        /// 资质证书
-        /// </summary>
-        public string Aptitude { get; set; }
-        /// <summary>
-        /// 执行标准
-        /// </summary>
-        public string Standard { get; set; }
-        /// <summary>
         /// 生产地址
         /// </summary>
         public string Address { get; set; }
@@ -70,5 +74,9 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         /// 备注
         /// </summary>
         public string Remark { get; set; }
+        /// <summary>
+        /// 采购负责人
+        /// </summary>
+        public string BuyUser { get; set; }
     }
 }

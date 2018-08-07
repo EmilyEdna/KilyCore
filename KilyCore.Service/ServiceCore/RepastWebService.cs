@@ -1075,17 +1075,17 @@ namespace KilyCore.Service.ServiceCore
         {
             var data = Kily.Set<RepastDish>().Where(t => t.Id == Id).Select(t => new ResponseRepastDish()
             {
-                Id=t.Id,
-                InfoId=t.InfoId,
-                DishName=t.DishName,
-                Batching=t.Batching,
-                Seasoning=t.Seasoning,
-                CookingTime=t.CookingTime,
-                CookingType=t.CookingType,
-                DishType=t.DishType,
-                MainBatch=t.MainBatch,
-                Remark=t.Remark,
-                Taste=t.Taste
+                Id = t.Id,
+                InfoId = t.InfoId,
+                DishName = t.DishName,
+                Batching = t.Batching,
+                Seasoning = t.Seasoning,
+                CookingTime = t.CookingTime,
+                CookingType = t.CookingType,
+                DishType = t.DishType,
+                MainBatch = t.MainBatch,
+                Remark = t.Remark,
+                Taste = t.Taste
             }).FirstOrDefault();
             return data;
         }
@@ -1111,6 +1111,146 @@ namespace KilyCore.Service.ServiceCore
             else
                 return Update<RepastDish, RequestRepastDish>(dish, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
+        #endregion
+
+        #region 仓库管理
+
+        #region 原料仓库-入库
+        /// <summary>
+        /// 原料入库分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRepastInStorage> GetInStoragePage(PageParamList<RequestRepastInStorage> pageParam)
+        {
+            IQueryable<RepastInStorage> queryable = Kily.Set<RepastInStorage>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.IngredientName))
+                queryable = queryable.Where(t => t.IngredientName.Contains(pageParam.QueryParam.IngredientName));
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data = queryable.Select(t => new ResponseRepastInStorage()
+            {
+                Id = t.Id,
+                InfoId = t.InfoId,
+                BatchNo = t.BatchNo,
+                IngredientName = t.IngredientName,
+                InStorageNum = t.InStorageNum,
+                Supplier = t.Supplier,
+                BuyUser = t.BuyUser
+            }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑原料入库
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditInStorage(RequestRepastInStorage Param)
+        {
+            RepastInStorage storage = Param.MapToEntity<RepastInStorage>();
+            if (Param.Id == Guid.Empty)
+                return Insert<RepastInStorage>(storage) ? ServiceMessage.SAVENOTUPDATESUCCESS : ServiceMessage.INSERTFAIL;
+            else
+                return null;
+        }
+        /// <summary>
+        /// 删除原料入库
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveInStorage(Guid Id)
+        {
+            return Delete(ExpressionExtension.GetExpression<RepastInStorage>("Id", Id, ExpressionEnum.Equals)) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 原料入库详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseRepastInStorage GetInStorageDetail(Guid Id)
+        {
+            var data = Kily.Set<RepastInStorage>().Where(t => t.Id == Id).Select(t => new ResponseRepastInStorage()
+            {
+                Id = t.Id,
+                InfoId = t.InfoId,
+                BatchNo = t.BatchNo,
+                IngredientName = t.IngredientName,
+                Address = t.Address,
+                ToPrice = t.ToPrice,
+                ExpiredTime = t.ExpiredTime,
+                SuppTime = t.SuppTime,
+                BuyUser = t.BuyUser,
+                InStorageNum = t.InStorageNum,
+                Phone = t.Phone,
+                PrePrice = t.PrePrice,
+                QualityReport = t.QualityReport,
+                Remark = t.Remark,
+                SourceLink = t.SourceLink,
+                Supplier = t.Supplier
+            }).AsNoTracking().FirstOrDefault();
+            return data;
+        }
+        #endregion
+
+        #region 原料仓库-出库
+        /// <summary>
+        /// 出库分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRepastOutStorage> GetOutStoragePage(PageParamList<RequestRepastOutStorage> pageParam)
+        {
+            IQueryable<RepastOutStorage> queryable = Kily.Set<RepastOutStorage>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<RepastInStorage> queryables = Kily.Set<RepastInStorage>().Where(t => t.IsDelete == false);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.IngredientName))
+                queryable = queryable.Where(t => t.IngredientName.Contains(pageParam.QueryParam.IngredientName));
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data = queryable.Join(queryables, t => t.InStorageId, x => x.Id, (t, x) => new ResponseRepastOutStorage()
+            {
+                Id = t.Id,
+                BatchNo = t.BatchNo,
+                InBatchNo = x.BatchNo,
+                IngredientName = t.IngredientName,
+                InStorageNum = x.InStorageNum,
+                OutStorageNum = t.OutStorageNum,
+                OutStorageTime = t.OutStorageTime,
+                OutUser = t.OutUser
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑出库
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditOutStorage(RequestRepastOutStorage Param)
+        {
+            if (Param.OutStorageNum < 0)
+                return "出库数量必须大于0";
+            RepastInStorage inStorage = Kily.Set<RepastInStorage>().Where(t => t.IsDelete == false).Where(t => t.Id == Param.InStorageId).FirstOrDefault();
+            if (inStorage.InStorageNum - Param.OutStorageNum < 0)
+                return "当前库存少于出库量";
+            inStorage.InStorageNum -= Param.OutStorageNum;
+            RepastOutStorage outStorage = Param.MapToEntity<RepastOutStorage>();
+            return Insert(outStorage) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+
+        }
+        /// <summary>
+        /// 删除出库
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveOutStorage(Guid Id)
+        {
+            return Delete<RepastOutStorage>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+
         #endregion
 
         #region 微信和支付宝调用

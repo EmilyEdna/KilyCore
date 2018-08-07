@@ -3036,7 +3036,7 @@ namespace KilyCore.Service.ServiceCore
                     Seller = o.t.Seller,
                     GoodsName = p.ProductName,
                     OutStockNum = o.t.OutStockNum,
-                    StockEx = o.x.InStockNum - o.t.OutStockNum,
+                    StockEx = o.x.InStockNum,
                     CodeEndSerialNo = o.t.CodeEndSerialNo,
                     CodeStarSerialNo = o.t.CodeStarSerialNo
                 }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -3049,6 +3049,13 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string EditStockAttach(RequestEnterpriseGoodsStockAttach Param)
         {
+            if (Param.OutStockNum <= 0)
+                return "出库数量必须大于0";
+            EnterpriseGoodsStock stock = Kily.Set<EnterpriseGoodsStock>().Where(t=>t.IsDelete==false).Where(t => t.Id == Param.StockId).FirstOrDefault();
+            if (stock.InStockNum < Param.OutStockNum)
+                return "当前库存少于出库量";
+            stock.InStockNum -= Param.OutStockNum;
+            UpdateField(stock, "InStockNum");
             Param.CodeEndSerialNo = Param.CodeStarSerialNo + Param.OutStockNum;
             EnterpriseGoodsStockAttach Attach = Param.MapToEntity<EnterpriseGoodsStockAttach>();
             return Insert<EnterpriseGoodsStockAttach>(Attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;

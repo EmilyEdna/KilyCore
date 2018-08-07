@@ -42,6 +42,10 @@ namespace KilyCore.Service.ConstMessage
         /// </summary>
         public const string HANDLEFAIL = "操作失败!";
         /// <summary>
+        /// 保存成功后将不可更改
+        /// </summary>
+        public const string SAVENOTUPDATESUCCESS = "保存成功后将不可更改!";
+        /// <summary>
         /// 体验版1W枚
         /// </summary>
         public const Int64 TEST = 10000;
