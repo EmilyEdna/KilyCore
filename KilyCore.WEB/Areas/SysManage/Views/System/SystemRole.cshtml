@@ -123,7 +123,6 @@
             },
             //更具权限设置区域
             SetPathByAccountType: function () {
-                debugger;
                 if (SysUserInfo.AccountType >= 30) {
                     var Pid = $("#province").attr("disabled", true).find("option[value='" + SysUserInfo.Province + "']").attr("selected", true).data().id;
                     controller.ajax({

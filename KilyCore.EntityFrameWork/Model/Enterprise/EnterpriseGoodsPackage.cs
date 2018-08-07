@@ -19,6 +19,9 @@ using System.Text;
 #endregion
 namespace KilyCore.EntityFrameWork.Model.Enterprise
 {
+    /// <summary>
+    /// 产品打包表
+    /// </summary>
     public class EnterpriseGoodsPackage:EnterpriseBase
     {
         /// <summary>
