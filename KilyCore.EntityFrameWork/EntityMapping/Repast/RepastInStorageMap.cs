@@ -27,7 +27,6 @@ namespace KilyCore.EntityFrameWork.EntityMapping.Repast
         {
             builder.ToTable(typeof(RepastInStorage).Name);
             builder.HasKey(t => t.Id);
-            builder.Property(t => t.ExpiredTime).HasColumnType(typeof(DateTime).Name);
             builder.Property(t => t.SuppTime).HasColumnType(typeof(DateTime).Name);
             builder.Property(t => t.PrePrice).HasColumnType("decimal");
             builder.Property(t => t.ToPrice).HasColumnType("decimal");

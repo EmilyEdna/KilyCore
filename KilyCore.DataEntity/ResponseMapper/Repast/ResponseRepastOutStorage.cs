@@ -37,7 +37,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         /// <summary>
         /// 入库数量
         /// </summary>
-        public int InStorageNum { get; set; }
+        public int InStorageEx { get; set; }
         /// <summary>
         /// 出库数量
         /// </summary>

@@ -1,8 +1,209 @@
-﻿
-@{
-    ViewData["Title"] = "MerchantStuffStock";
+﻿@{
+    ViewData["Title"] = "原料仓库";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
-
-<h2>MerchantStuffStock</h2>
-
+@section script{
+    <script>
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                //恢复高度
+                $(window).resize(function (e) {
+                    window.setTimeout(function () {
+                        options.$table.bootstrapTable("resetView", { height: $(window).height() - 150 });
+                    }, 200);
+                    e.stopPropagation();
+                });
+                //设置表单
+                this.$table = controller.Table("#tableListSet", { async: false, url: "RepastWeb/GetInStoragePage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#InStock" });
+            },
+            //事件
+            InitEvents: function () {
+                $("li").find("a").on('click', function () {
+                    if ($(this).attr("href") == "#tab-1")
+                        this.$table = controller.Table("#tableListSet", { async: false, url: "RepastWeb/GetInStoragePage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#InStock" });
+                    else
+                        this.$table = controller.Table("#tableListOut", { async: false, url: "RepastWeb/GetOutStoragePage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#OutStock" });
+                });
+                $("#add").on('click', function () {
+                    controller.OpenWindow({
+                        title: "新增入库",
+                        type: 2,
+                        height: "600px",
+                        width: "800px",
+                        url: "WebMerchantManage/Stock/MerchantInStorage",
+                        callBack: function (result) {
+                            result.$("#Edit").submit();
+                        }
+                    });
+                });
+            },
+            //行为
+            action: {
+                TableFormatter: function (val, row, index) {
+                    var action = [];
+                    if (row.InStorageNum != undefined) {
+                        action.push('<button class="btn btn-sm btn-primary out"><i class="fa fa-pencil-square-o"></i>出库</button>');
+                        action.push('<button class="btn btn-sm btn-primary detail"><i class="fa fa-pencil-square-o"></i>详情</button>');
+                    }
+                    action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
+                    return action.join("&nbsp;");
+                },
+                TableEvents: {
+                    "click .del": function (event, val, row, index) {
+                        if (row.InStorageNum != null) {
+                            controller.Confirm("确认删除?", function (bool) {
+                                if (bool) {
+                                    controller.ajax({
+                                        url: "RepastWeb/RemoveInStorage",
+                                        data: { Id: row.Id },
+                                        type: "post",
+                                        success: function (result) {
+                                            options.$table.refresh();
+                                        }
+                                    });
+                                }
+                            });
+                        } else {
+                            controller.Confirm("确认删除?", function (bool) {
+                                if (bool) {
+                                    controller.ajax({
+                                        url: "RepastWeb/EditOutStorage",
+                                        data: { Id: row.Id },
+                                        type: "post",
+                                        success: function (result) {
+                                            options.$table.refresh();
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    },
+                    "click .out": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "新增出库",
+                            type: 2,
+                            height: "450px",
+                            width: "700px",
+                            url: "WebMerchantManage/Stock/MerchantOutStorage?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        });
+                    },
+                    "click .detail": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "查看详情",
+                            type: 2,
+                            height: "600px",
+                            width: "800px",
+                            url: "WebMerchantManage/Stock/MerchantInStorage?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        });
+                    }
+                },//表单事件结束
+            }//行为结束
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+@section css{
+    <style>
+        .ibox-content {
+            border-top-style: none;
+        }
+    </style>
+}
+<!--导航-->
+<div class="tabs-container" style="margin-top:10px;">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a data-toggle="tab" href="#tab-1" aria-expanded="true"> 入库清单</a>
+        </li>
+        <li>
+            <a data-toggle="tab" href="#tab-2" aria-expanded="false">出库清单</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div id="tab-1" class="tab-pane active">
+            <div class="ibox-content">
+                <div class="row">
+                    <form id="InStock">
+                        <div class="col-sm-8 m-b-xs">
+                            <div class="input-group">
+                                <button type="button" class="btn btn-sm btn-white" id="add"><i class="fa fa-plus"></i>新增</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" placeholder="原料名称" class="input-sm form-control" name="IngredientName">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
+                                    <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive m-t-sm">
+                    <table id="tableListSet" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="BatchNo" data-halign="center" data-align="center" data-valign="middle">批次号</th>
+                                <th data-field="IngredientName" data-halign="center" data-align="center" data-valign="middle">食材名称</th>
+                                <th data-field="InStorageNum" data-halign="center" data-align="center" data-valign="middle">入库数量</th>
+                                <th data-field="Supplier" data-halign="center" data-align="center" data-valign="middle">供应商</th>
+                                <th data-field="BuyUser" data-halign="center" data-align="center" data-valign="middle">负责人</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="tab-2" class="tab-pane">
+            <div class="ibox-content">
+                <div class="row">
+                    <form id="OutStock">
+                        <div class="col-sm-8 m-b-xs">
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" placeholder="原料名称" class="input-sm form-control" name="IngredientName">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
+                                    <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive m-t-sm">
+                    <table id="tableListOut" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="InBatchNo" data-halign="center" data-align="center" data-valign="middle">入库批次</th>
+                                <th data-field="BatchNo" data-halign="center" data-align="center" data-valign="middle">出库批次</th>
+                                <th data-field="IngredientName" data-halign="center" data-align="center" data-valign="middle">食材名称</th>
+                                <th data-field="OutStorageNum" data-halign="center" data-align="center" data-valign="middle">出库数量</th>
+                                <th data-field="InStorageEx" data-halign="center" data-align="center" data-valign="middle">库存</th>
+                                <th data-field="OutStorageTime" data-halign="center" data-align="center" data-valign="middle">出库时间</th>
+                                <th data-field="OutUser" data-halign="center" data-align="center" data-valign="middle">负责人</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

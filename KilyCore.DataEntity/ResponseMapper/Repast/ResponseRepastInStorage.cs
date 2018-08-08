@@ -31,7 +31,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         /// </summary>
         public string IngredientName { get; set; }
         /// <summary>
-        /// 入口数量
+        /// 入库数量
         /// </summary>
         public int InStorageNum { get; set; }
         /// <summary>
@@ -53,7 +53,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         /// <summary>
         /// 保质期
         /// </summary>
-        public DateTime? ExpiredTime { get; set; }
+        public string ExpiredDay { get; set; }
         /// <summary>
         /// 质检报告
         /// </summary>

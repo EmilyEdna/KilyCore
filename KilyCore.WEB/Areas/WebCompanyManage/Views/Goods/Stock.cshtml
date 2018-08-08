@@ -58,21 +58,29 @@
                 TableEvents: {
                     "click .del": function (event, val, row, index) {
                         if (row.InStockNum != null) {
-                            controller.ajax({
-                                url: "EnterpriseWeb/RemoveGoodsStock",
-                                data: { Id: row.Id },
-                                type: "post",
-                                success: function (result) {
-                                    options.$table.refresh();
+                            controller.Confirm("确认删除?", function (bool) {
+                                if (bool) {
+                                    controller.ajax({
+                                        url: "EnterpriseWeb/RemoveGoodsStock",
+                                        data: { Id: row.Id },
+                                        type: "post",
+                                        success: function (result) {
+                                            options.$table.refresh();
+                                        }
+                                    });
                                 }
                             });
                         } else {
-                            controller.ajax({
-                                url: "EnterpriseWeb/RemoveGoodsStockAttach",
-                                data: { Id: row.Id },
-                                type: "post",
-                                success: function (result) {
-                                    options.$table.refresh();
+                            controller.Confirm("确认删除?", function (bool) {
+                                if (bool) {
+                                    controller.ajax({
+                                        url: "EnterpriseWeb/RemoveGoodsStockAttach",
+                                        data: { Id: row.Id },
+                                        type: "post",
+                                        success: function (result) {
+                                            options.$table.refresh();
+                                        }
+                                    });
                                 }
                             });
                         }

@@ -892,7 +892,8 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 LinkPhone = t.LinkPhone,
-                SupplierName = t.SupplierName
+                SupplierName = t.SupplierName,
+                Address=t.Address,
             }).ToList();
             return data;
         }
@@ -1179,7 +1180,7 @@ namespace KilyCore.Service.ServiceCore
                 IngredientName = t.IngredientName,
                 Address = t.Address,
                 ToPrice = t.ToPrice,
-                ExpiredTime = t.ExpiredTime,
+                ExpiredDay = t.ExpiredDay,
                 SuppTime = t.SuppTime,
                 BuyUser = t.BuyUser,
                 InStorageNum = t.InStorageNum,
@@ -1216,7 +1217,7 @@ namespace KilyCore.Service.ServiceCore
                 BatchNo = t.BatchNo,
                 InBatchNo = x.BatchNo,
                 IngredientName = t.IngredientName,
-                InStorageNum = x.InStorageNum,
+                InStorageEx = x.InStorageNum,
                 OutStorageNum = t.OutStorageNum,
                 OutStorageTime = t.OutStorageTime,
                 OutUser = t.OutUser

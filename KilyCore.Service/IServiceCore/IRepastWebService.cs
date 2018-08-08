@@ -102,6 +102,19 @@ namespace KilyCore.Service.IServiceCore
         String RemoveDish(Guid Id);
         String EditDish(RequestRepastDish Param);
         #endregion
+        #region 仓库管理
+        #region 原料仓库-入库
+        PagedResult<ResponseRepastInStorage> GetInStoragePage(PageParamList<RequestRepastInStorage> pageParam);
+        String EditInStorage(RequestRepastInStorage Param);
+        String RemoveInStorage(Guid Id);
+        ResponseRepastInStorage GetInStorageDetail(Guid Id);
+        #endregion
+        #region 原料仓库-出库
+        PagedResult<ResponseRepastOutStorage> GetOutStoragePage(PageParamList<RequestRepastOutStorage> pageParam);
+        String EditOutStorage(RequestRepastOutStorage Param);
+        String RemoveOutStorage(Guid Id);
+        #endregion
+        #endregion
         #region 微信和支付宝调用
         String AliPay(int Key, int? Value);
         String WxPay(int Key, int? Value);

@@ -55,7 +55,7 @@ namespace KilyCore.EntityFrameWork.Model.Repast
         /// <summary>
         /// 保质期
         /// </summary>
-        public virtual DateTime? ExpiredTime { get; set; }
+        public virtual string ExpiredDay { get; set; }
         /// <summary>
         /// 质检报告
         /// </summary>

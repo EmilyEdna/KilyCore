@@ -53,7 +53,7 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
         /// <summary>
         /// 保质期
         /// </summary>
-        public DateTime? ExpiredTime { get; set; }
+        public string ExpiredDay { get; set; }
         /// <summary>
         /// 质检报告
         /// </summary>

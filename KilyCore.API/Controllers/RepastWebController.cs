@@ -491,6 +491,85 @@ namespace KilyCore.API.Controllers
         }
         #endregion
 
+        #region 仓库管理
+
+        #region 原料仓库-入库
+        /// <summary>
+        /// 原料入库分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetInStoragePage")]
+        public ObjectResultEx GetInStoragePage(PageParamList<RequestRepastInStorage> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetInStoragePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑原料入库
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditInStorage")]
+        public ObjectResultEx EditInStorage(RequestRepastInStorage Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.EditInStorage(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除原料入库
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveInStorage")]
+        public ObjectResultEx RemoveInStorage(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.RemoveInStorage(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 原料入库详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetInStorageDetail")]
+        public ObjectResultEx GetInStorageDetail(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetInStorageDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region 原料仓库-出库
+        /// <summary>
+        /// 出库分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetOutStoragePage")]
+        public ObjectResultEx GetOutStoragePage(PageParamList<RequestRepastOutStorage> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetOutStoragePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑出库
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditOutStorage")]
+        public ObjectResultEx EditOutStorage(RequestRepastOutStorage Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.EditOutStorage(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除出库
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveOutStorage")]
+        public ObjectResultEx RemoveOutStorage(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.RemoveOutStorage(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #endregion
+
         #region 支付模块
         /// <summary>
         /// 版本续费和升级使用支付宝支付

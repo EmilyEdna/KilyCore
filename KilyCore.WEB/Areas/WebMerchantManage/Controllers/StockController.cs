@@ -9,7 +9,21 @@ namespace KilyCore.WEB.Areas.WebMerchantManage.Controllers
     [Area("WebMerchantManage")]
     public class StockController : Controller
     {
-        public IActionResult Index()
+        #region 原料仓库
+        public IActionResult MerchantStuffStock()
+        {
+            return View();
+        }
+        public IActionResult MerchantInStorage()
+        {
+            return View();
+        }
+        public IActionResult MerchantOutStorage()
+        {
+            return View();
+        }
+        #endregion
+        public IActionResult MerchantReport()
         {
             return View();
         }
