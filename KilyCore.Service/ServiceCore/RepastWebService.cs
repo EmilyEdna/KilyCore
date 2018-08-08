@@ -893,7 +893,7 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 LinkPhone = t.LinkPhone,
                 SupplierName = t.SupplierName,
-                Address=t.Address,
+                Address = t.Address,
             }).ToList();
             return data;
         }
@@ -1112,6 +1112,84 @@ namespace KilyCore.Service.ServiceCore
             else
                 return Update<RepastDish, RequestRepastDish>(dish, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
+        #endregion
+
+        #region 溯源追踪
+        #region 原料溯源
+        /// <summary>
+        /// 原料溯源分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRepastStuff> GetStuffPage(PageParamList<RequestRepastStuff> pageParam)
+        {
+            IQueryable<RepastStuff> queryable = Kily.Set<RepastStuff>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.MaterialName))
+                queryable = queryable.Where(t => t.MaterialName.Contains(pageParam.QueryParam.MaterialName));
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data = queryable.Select(t => new ResponseRepastStuff()
+            {
+                Id = t.Id,
+                MaterialName = t.MaterialName,
+                MaterialType = t.MaterialType,
+                Supplier = t.Supplier,
+                ExpiredDay = t.ExpiredDay,
+                Phone = t.Phone
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 删除溯源信息
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveStuff(Guid Id)
+        {
+            return Delete<RepastStuff>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 编辑溯源信息
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditStuff(RequestRepastStuff Param)
+        {
+            RepastStuff stuff = Param.MapToEntity<RepastStuff>();
+            if (Param.Id == Guid.Empty)
+                return Insert(stuff) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+                return Update(stuff, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        /// <summary>
+        /// 获取溯源详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseRepastStuff GetStuffDetail(Guid Id)
+        {
+            var data = Kily.Set<RepastStuff>().Where(t => t.Id == Id).Select(t => new ResponseRepastStuff()
+            {
+                Id = t.Id,
+                InfoId=t.InfoId,
+                MaterialName = t.MaterialName,
+                MaterialType = t.MaterialType,
+                Supplier = t.Supplier,
+                ExpiredDay = t.ExpiredDay,
+                Phone = t.Phone,
+                Address=t.Address,
+                SourceLink=t.SourceLink,
+                Aptitude=t.Aptitude,
+                Standard=t.Standard,
+                SuppTime=t.SuppTime,
+                QualityReport=t.QualityReport,
+                Remark=t.Remark
+            }).FirstOrDefault();
+            return data;
+        }
+        #endregion
         #endregion
 
         #region 仓库管理

@@ -102,6 +102,14 @@ namespace KilyCore.Service.IServiceCore
         String RemoveDish(Guid Id);
         String EditDish(RequestRepastDish Param);
         #endregion
+        #region 溯源追踪
+        #region 原料溯源
+        PagedResult<ResponseRepastStuff> GetStuffPage(PageParamList<RequestRepastStuff> pageParam);
+        String RemoveStuff(Guid Id);
+        String EditStuff(RequestRepastStuff Param);
+        ResponseRepastStuff GetStuffDetail(Guid Id);
+        #endregion
+        #endregion
         #region 仓库管理
         #region 原料仓库-入库
         PagedResult<ResponseRepastInStorage> GetInStoragePage(PageParamList<RequestRepastInStorage> pageParam);

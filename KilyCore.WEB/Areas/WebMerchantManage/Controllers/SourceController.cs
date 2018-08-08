@@ -9,9 +9,15 @@ namespace KilyCore.WEB.Areas.WebMerchantManage.Controllers
     [Area("WebMerchantManage")]
     public class SourceController : Controller
     {
-        public IActionResult Index()
+        #region 原料溯源
+        public IActionResult MerchantStuff()
         {
             return View();
         }
+        public IActionResult MerchantStuffEdit()
+        {
+            return View();
+        }
+        #endregion
     }
 }

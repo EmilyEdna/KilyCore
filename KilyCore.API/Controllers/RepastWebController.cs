@@ -491,6 +491,51 @@ namespace KilyCore.API.Controllers
         }
         #endregion
 
+        #region 溯源追踪
+        #region 原料溯源
+        /// <summary>
+        /// 原料溯源分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetStuffPage")]
+        public ObjectResultEx GetStuffPage(PageParamList<RequestRepastStuff> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetStuffPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除溯源信息
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveStuff")]
+        public ObjectResultEx RemoveStuff(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.RemoveStuff(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑溯源信息
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditStuff")]
+        public ObjectResultEx EditStuff(RequestRepastStuff Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.EditStuff(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取溯源详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetStuffDetail")]
+        public ObjectResultEx GetStuffDetail(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetStuffDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #endregion
+
         #region 仓库管理
 
         #region 原料仓库-入库
