@@ -24,6 +24,7 @@
             //事件
             InitEvents: function () {
                 $("li").find("a").on('click', function () {
+                    debugger;
                     if ($(this).attr("href") == "#tab-1")
                         this.$table = controller.Table("#tableListSet", { async: false, url: "RepastWeb/GetInStoragePage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#InStock" });
                     else
@@ -89,7 +90,7 @@
                             type: 2,
                             height: "450px",
                             width: "700px",
-                            url: "WebMerchantManage/Stock/MerchantOutStorage?Id=" + row.Id,
+                            url: "WebMerchantManage/Stock/MerchantOutStorage?Id=" + row.Id + "&Name=" + row.IngredientName,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }

@@ -3,3 +3,90 @@
     ViewData["Title"] = "原料出库";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#BatchNo").val("C" + controller.FormatDate("YYMMDDHHmmss"));
+                controller.LayDate({ elem: "#OutStorageTime" });
+                $("#InfoId").val(RepastUser.Id);
+                var Guid = controller.GetParam("Id");
+                $("#InStorageId").val(Guid);
+                $("input[name='IngredientName']").val(controller.GetParam('Name'));
+                options.BindOption();
+            },
+            //数据绑定
+            BindOption: function () {
+                //人员下拉
+                controller.ajax({
+                    url: "RepastWeb/GetMerchantList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.TrueName + '">' + obj.TrueName + '</option>';
+                        });
+                        $("#OutUser").html(html);
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="RepastWeb/EditOutStorage" id="Edit">
+            <input type="hidden" id="InStorageId" name="InStorageId" />
+            <input type="hidden" class="form-control" name="InfoId" id="InfoId" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">批次号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="BatchNo" id="BatchNo" readonly />
+                    </td>
+                    <th><label class="control-label">食材名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="IngredientName" readonly/>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">出库数量</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="OutStorageNum" />
+                    </td>
+                    <th><label class="control-label">负责人</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="OutUser" id="OutUser"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">出库时间</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" class="form-control" name="OutStorageTime" id="OutStorageTime" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
