@@ -3,6 +3,199 @@
     ViewData["Title"] = "MerchantStuffEdit";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
-
-<h2>MerchantStuffEdit</h2>
-
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#InfoId").val(RepastUser.Id);
+                var Guid = controller.GetParam("Id");
+                var Editor = controller.Editor(".summernote", { width: 655 });
+                options.BindData(Guid, Editor);
+            },
+            //数据绑定
+            BindData: function (Guid, Editor) {
+                //初始化下拉
+                controller.Select({
+                    document: '.selectpicker',
+                    arrelemnt: ['#Standard'],
+                    url: 'RepastWeb/GetDictionaryList',
+                });
+                $("#Standard").on('changed.bs.select', function () {
+                    $('input[name="Standard"]').val($(this).val());
+                });
+                //获取原料列表
+                controller.ajax({
+                    url: "RepastWeb/GetInStorageList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择原料==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option data-value="' + obj.Id + '" value="' + obj.IngredientName + '">' + obj.IngredientName + '</option>';
+                        });
+                        $("#MaterialName").html(html);
+                    }
+                });
+                //获取详情
+                if (Guid != null && Guid != undefined && Guid != "")
+                    controller.ajax({
+                        url: "RepastWeb/GetStuffDetail",
+                        data: { Id: Guid },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                            $("#Standard").selectpicker('val', result.data.Standard);
+                            Editor.summernote('code', result.data.Remark);
+                        }
+                    });
+            },
+            //事件
+            InitEvents: function () {
+                //原料下拉事件
+                $("#MaterialName").on('change', function () {
+                    var Id = $(this).find("option:selected").data().value;
+                    controller.ajax({
+                        url: "RepastWeb/GetInStorageDetail",
+                        data: { Id: Id },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                        }
+                    });
+                });
+                //文件上传-质检报告
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "B1",
+                    maxNum: 1,
+                    node: 'A1',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        $("#QualityReport").val(result.data);
+                    }
+                });
+                //文件上传-资质证书
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "B2",
+                    maxNum: 1,
+                    node: 'A2',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        $("#Aptitude").val(result.data);
+                    }
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="RepastWeb/EditStuff" id="Edit">
+            <input type="hidden" id="Id" name="Id" />
+            <input type="hidden" class="form-control" name="InfoId" id="InfoId" />
+            <input name="Remark" type="hidden" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">原料名称</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="MaterialName" id="MaterialName"></select>
+                    </td>
+                    <th><label class="control-label">原料类型</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="MaterialType">
+                            <option value="主料">主料</option>
+                            <option value="配料">配料</option>
+                            <option value="调料">调料</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">供应商</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Supplier" readonly />
+                    </td>
+                    <th><label class="control-label">供应时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SuppTime" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">保质期</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ExpiredDay" />
+                    </td>
+                    <th><label class="control-label">生产地址</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Address" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">溯源链接</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SourceLink" />
+                    </td>
+                    <th><label class="control-label">电话</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Phone" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">执行标准</label></th>
+                    <td class="has-warning" colspan="3">
+                        <select type="select" class="selectpicker form-control" data-max-options="1" id="Standard" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">备注</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="summernote" name="Remark"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">质检报告</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear" id="A1">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" id="B1" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                        <input type="hidden" id="QualityReport" name="QualityReport" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">资质证书</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear" id="A2">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" id="B2" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                        <input type="hidden" id="Aptitude" name="Aptitude" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

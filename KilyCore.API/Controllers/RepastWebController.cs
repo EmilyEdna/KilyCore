@@ -533,6 +533,15 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastWebService.GetStuffDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 仓库原料列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetInStorageList")]
+        public ObjectResultEx GetInStorageList()
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetInStorageList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #endregion
 

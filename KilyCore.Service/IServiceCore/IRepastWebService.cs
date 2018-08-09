@@ -116,6 +116,7 @@ namespace KilyCore.Service.IServiceCore
         String EditInStorage(RequestRepastInStorage Param);
         String RemoveInStorage(Guid Id);
         ResponseRepastInStorage GetInStorageDetail(Guid Id);
+        IList<ResponseRepastInStorage> GetInStorageList();
         #endregion
         #region 原料仓库-出库
         PagedResult<ResponseRepastOutStorage> GetOutStoragePage(PageParamList<RequestRepastOutStorage> pageParam);

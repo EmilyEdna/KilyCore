@@ -1173,19 +1173,19 @@ namespace KilyCore.Service.ServiceCore
             var data = Kily.Set<RepastStuff>().Where(t => t.Id == Id).Select(t => new ResponseRepastStuff()
             {
                 Id = t.Id,
-                InfoId=t.InfoId,
+                InfoId = t.InfoId,
                 MaterialName = t.MaterialName,
                 MaterialType = t.MaterialType,
                 Supplier = t.Supplier,
                 ExpiredDay = t.ExpiredDay,
                 Phone = t.Phone,
-                Address=t.Address,
-                SourceLink=t.SourceLink,
-                Aptitude=t.Aptitude,
-                Standard=t.Standard,
-                SuppTime=t.SuppTime,
-                QualityReport=t.QualityReport,
-                Remark=t.Remark
+                Address = t.Address,
+                SourceLink = t.SourceLink,
+                Aptitude = t.Aptitude,
+                Standard = t.Standard,
+                SuppTime = t.SuppTime,
+                QualityReport = t.QualityReport,
+                Remark = t.Remark
             }).FirstOrDefault();
             return data;
         }
@@ -1219,6 +1219,19 @@ namespace KilyCore.Service.ServiceCore
                 Supplier = t.Supplier,
                 BuyUser = t.BuyUser
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 仓库原料列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseRepastInStorage> GetInStorageList()
+        {
+            var data = Kily.Set<RepastInStorage>().Where(t => t.IsDelete == false).Select(t => new ResponseRepastInStorage()
+            {
+                Id=t.Id,
+                IngredientName=t.IngredientName,
+            }).AsNoTracking().ToList();
             return data;
         }
         /// <summary>

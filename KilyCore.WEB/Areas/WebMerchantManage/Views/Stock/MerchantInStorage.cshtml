@@ -79,7 +79,7 @@
                     var num = $("input[name='InStorageNum']").val();
                     $("input[name='ToPrice']").val(price * num);
                 });
-                //文件上传-执照
+                //文件上传-质检报告
                 controller.Upload({
                     url: "File/UploadImg",
                     element: ".upload-input",
@@ -114,7 +114,7 @@
                     <td class="has-warning">
                         <input type="text" class="form-control" name="BatchNo" id="BatchNo" readonly />
                     </td>
-                    <th><label class="control-label">食材名称</label></th>
+                    <th><label class="control-label">原料名称</label></th>
                     <td class="has-warning">
                         <input class="form-control" name="IngredientName" type="text" />
                     </td>
