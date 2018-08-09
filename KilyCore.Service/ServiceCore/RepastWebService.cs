@@ -1229,8 +1229,8 @@ namespace KilyCore.Service.ServiceCore
         {
             var data = Kily.Set<RepastInStorage>().Where(t => t.IsDelete == false).Select(t => new ResponseRepastInStorage()
             {
-                Id=t.Id,
-                IngredientName=t.IngredientName,
+                Id = t.Id,
+                IngredientName = t.IngredientName,
             }).AsNoTracking().ToList();
             return data;
         }
@@ -1344,9 +1344,134 @@ namespace KilyCore.Service.ServiceCore
         #endregion
 
         #region 物品仓库-入库
+        /// <summary>
+        /// 物品入库分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRepastArticleInStock> GetInStockPage(PageParamList<RequestRepastArticleInStock> pageParam)
+        {
+            IQueryable<RepastArticleInStock> queryable = Kily.Set<RepastArticleInStock>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.ArticleName))
+                queryable = queryable.Where(t => t.ArticleName.Contains(pageParam.QueryParam.ArticleName));
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data = queryable.Select(t => new ResponseRepastArticleInStock()
+            {
+                Id = t.Id,
+                InfoId = t.InfoId,
+                ArticleName = t.ArticleName,
+                BatchNo = t.BatchNo,
+                Supplier = t.Supplier,
+                Phone = t.Phone,
+                InStockNum = t.InStockNum
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 删除物品入库
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveInStock(Guid Id)
+        {
+            return Delete<RepastArticleInStock>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 编辑物品入库
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditInStock(RequestRepastArticleInStock Param)
+        {
+            RepastArticleInStock stock = Param.MapToEntity<RepastArticleInStock>();
+            if (Param.Id == Guid.Empty)
+                return Insert(stock) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+                return null;
+        }
+        /// <summary>
+        /// 获取物品入库详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseRepastArticleInStock GetInStockDetail(Guid Id)
+        {
+            var data = Kily.Set<RepastArticleInStock>().Where(t => t.Id == Id).Select(t => new ResponseRepastArticleInStock()
+            {
+                Id = t.Id,
+                InfoId = t.InfoId,
+                ArticleName = t.ArticleName,
+                BatchNo = t.BatchNo,
+                Supplier = t.Supplier,
+                Phone = t.Phone,
+                InStockNum = t.InStockNum,
+                Address = t.Address,
+                BuyUser = t.BuyUser,
+                ToPrice = t.ToPrice,
+                PrePrice = t.PrePrice,
+                Remark = t.Remark
+            }).AsNoTracking().FirstOrDefault();
+            return data;
+        }
         #endregion
 
         #region 物品仓库-出库
+        /// <summary>
+        /// 物品出库分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRepastArticleOutStock> GetOutStockPage(PageParamList<RequestRepastArticleOutStock> pageParam)
+        {
+            IQueryable<RepastArticleOutStock> queryable = Kily.Set<RepastArticleOutStock>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<RepastArticleInStock> queryables = Kily.Set<RepastArticleInStock>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.ArticleName))
+                queryable = queryable.Where(t => t.ArticleName.Contains(pageParam.QueryParam.ArticleName));
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data = queryable.Join(queryables, t => t.InStockId, x => x.Id, (t, x) => new ResponseRepastArticleOutStock()
+            {
+                Id = t.Id,
+                ArticleName = t.ArticleName,
+                BatchNo = t.BatchNo,
+                InBatchNo = x.BatchNo,
+                OutStockNum = t.OutStockNum,
+                OutStockTime = t.OutStockTime,
+                OutUser = t.OutUser,
+                StockEx = x.InStockNum
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 删除物品出库
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveOutStock(Guid Id)
+        {
+            return Delete<RepastArticleOutStock>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 编辑物品出库
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditOutStock(RequestRepastArticleOutStock Param)
+        {
+            if (Param.OutStockNum < 0)
+                return "出库数量必须大于0";
+            RepastArticleInStock inStock = Kily.Set<RepastArticleInStock>().Where(t => t.Id == Param.InStockId).FirstOrDefault();
+            if (inStock.InStockNum - Param.OutStockNum < 0)
+                return "当前库存少于出库量";
+            inStock.InStockNum -= Param.OutStockNum;
+            RepastArticleOutStock outStock = Param.MapToEntity<RepastArticleOutStock>();
+            return Insert(outStock) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
         #endregion
 
         #endregion

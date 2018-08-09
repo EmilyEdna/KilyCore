@@ -123,6 +123,17 @@ namespace KilyCore.Service.IServiceCore
         String EditOutStorage(RequestRepastOutStorage Param);
         String RemoveOutStorage(Guid Id);
         #endregion
+        #region 物品仓库-入库
+        PagedResult<ResponseRepastArticleInStock> GetInStockPage(PageParamList<RequestRepastArticleInStock> pageParam);
+        String RemoveInStock(Guid Id);
+        String EditInStock(RequestRepastArticleInStock Param);
+        ResponseRepastArticleInStock GetInStockDetail(Guid Id);
+        #endregion
+        #region 物品仓库-出库
+         PagedResult<ResponseRepastArticleOutStock> GetOutStockPage(PageParamList<RequestRepastArticleOutStock> pageParam);
+         String RemoveOutStock(Guid Id);
+        String EditOutStock(RequestRepastArticleOutStock Param);
+        #endregion
         #endregion
         #region 微信和支付宝调用
         String AliPay(int Key, int? Value);

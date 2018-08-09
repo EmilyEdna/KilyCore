@@ -622,6 +622,82 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(RepastWebService.RemoveOutStorage(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+
+        #region 物品仓库-入库
+        /// <summary>
+        /// 物品入库分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetInStockPage")]
+        public ObjectResultEx GetInStockPage(PageParamList<RequestRepastArticleInStock> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetInStockPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除物品入库
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveInStock")]
+        public ObjectResultEx RemoveInStock(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.RemoveInStock(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑物品入库
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditInStock")]
+        public ObjectResultEx EditInStock(RequestRepastArticleInStock Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.EditInStock(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取物品入库详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetInStockDetail")]
+        public ObjectResultEx GetInStockDetail(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetInStockDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region 物品仓库-出库
+        /// <summary>
+        /// 物品出库分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetOutStockPage")]
+        public ObjectResultEx GetOutStockPage(PageParamList<RequestRepastArticleOutStock> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetOutStockPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除物品出库
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveOutStock")]
+        public ObjectResultEx RemoveOutStock(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.RemoveOutStock(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑物品出库
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditOutStock")]
+        public ObjectResultEx EditOutStock(RequestRepastArticleOutStock Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.EditOutStock(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
         #endregion
 
         #region 支付模块
