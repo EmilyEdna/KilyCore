@@ -1343,6 +1343,12 @@ namespace KilyCore.Service.ServiceCore
         }
         #endregion
 
+        #region 物品仓库-入库
+        #endregion
+
+        #region 物品仓库-出库
+        #endregion
+
         #endregion
 
         #region 微信和支付宝调用
