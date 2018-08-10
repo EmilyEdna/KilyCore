@@ -1474,6 +1474,127 @@ namespace KilyCore.Service.ServiceCore
         }
         #endregion
 
+        #region 库存报表
+        /// <summary>
+        /// 原料报表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRepastStockReport> GetStorageReportPage(PageParamList<RequestRepastStockReport> pageParam)
+        {
+            IQueryable<RepastInStorage> queryable = Kily.Set<RepastInStorage>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<RepastOutStorage> queryables = Kily.Set<RepastOutStorage>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.Name))
+                queryable = queryable.Where(t => t.IngredientName.Contains(pageParam.QueryParam.Name));
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data = queryable.Join(queryables, t => t.Id, x => x.InStorageId, (t, x) => new
+            {
+                t.IngredientName,
+                t.InStorageNum,
+                x.OutStorageNum
+            }).GroupBy(t => t.IngredientName).Select(t => new ResponseRepastStockReport()
+            {
+                Name = t.FirstOrDefault().IngredientName,
+                InStock = t.Sum(x => x.InStorageNum),
+                OutStock = t.Sum(x => x.OutStorageNum)
+            }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 物品报表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRepastStockReport> GetStockReportPage(PageParamList<RequestRepastStockReport> pageParam)
+        {
+            IQueryable<RepastArticleInStock> queryable = Kily.Set<RepastArticleInStock>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<RepastArticleOutStock> queryables = Kily.Set<RepastArticleOutStock>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.Name))
+                queryable = queryable.Where(t => t.ArticleName.Contains(pageParam.QueryParam.Name));
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data = queryable.Join(queryables, t => t.Id, x => x.InStockId, (t, x) => new
+            {
+                t.ArticleName,
+                t.InStockNum,
+                x.OutStockNum
+            }).GroupBy(t => t.ArticleName).Select(t => new ResponseRepastStockReport()
+            {
+                Name = t.FirstOrDefault().ArticleName,
+                InStock = t.Sum(x => x.InStockNum),
+                OutStock = t.Sum(x => x.OutStockNum)
+            }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        #endregion
+
+        #region 名称管理
+        /// <summary>
+        /// 名称分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRepastTypeName> GetNamesPage(PageParamList<RequestRepastTypeName> pageParam)
+        {
+            IQueryable<RepastTypeName> queryable = Kily.Set<RepastTypeName>().OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.TypeNames))
+                queryable = queryable.Where(t => t.TypeNames.Contains(pageParam.QueryParam.TypeNames));
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data = queryable.Select(t => new ResponseRepastTypeName()
+            {
+                Id = t.Id,
+                TypeNames = t.TypeNames,
+                Types = t.Types,
+                Spec = t.Spec
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize); ;
+            return data;
+        }
+        /// <summary>
+        /// 编辑名称
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditNames(RequestRepastTypeName Param)
+        {
+            RepastTypeName typeName = Param.MapToEntity<RepastTypeName>();
+            return Insert(typeName) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 删除名称
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveNames(Guid Id)
+        {
+            return Remove<RepastTypeName>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 名称列表
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <returns></returns>
+        public IList<ResponseRepastTypeName> GetNamesList(int Key)
+        {
+            IQueryable<RepastTypeName> queryable = Kily.Set<RepastTypeName>().OrderByDescending(t => t.CreateTime).Where(t => t.Types == Key);
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            return queryable.Select(t => new ResponseRepastTypeName()
+            {
+                TypeNames = $"{t.TypeNames}+{t.Spec}"
+            }).ToList();
+        }
+        #endregion
+
         #endregion
 
         #region 微信和支付宝调用

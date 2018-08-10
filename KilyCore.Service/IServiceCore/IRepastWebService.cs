@@ -134,6 +134,16 @@ namespace KilyCore.Service.IServiceCore
          String RemoveOutStock(Guid Id);
         String EditOutStock(RequestRepastArticleOutStock Param);
         #endregion
+        #region 名称管理
+        PagedResult<ResponseRepastTypeName> GetNamesPage(PageParamList<RequestRepastTypeName> pageParam);
+        String EditNames(RequestRepastTypeName Param);
+        String RemoveNames(Guid Id);
+         IList<ResponseRepastTypeName> GetNamesList(int Key);
+        #endregion
+        #region 库存报表
+         PagedResult<ResponseRepastStockReport> GetStorageReportPage(PageParamList<RequestRepastStockReport> pageParam);
+         PagedResult<ResponseRepastStockReport> GetStockReportPage(PageParamList<RequestRepastStockReport> pageParam);
+        #endregion
         #endregion
         #region 微信和支付宝调用
         String AliPay(int Key, int? Value);

@@ -698,6 +698,71 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(RepastWebService.EditOutStock(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 库存报表
+        /// <summary>
+        /// 原料报表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetStorageReportPage")]
+        public ObjectResultEx GetStorageReportPage(PageParamList<RequestRepastStockReport> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetStorageReportPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 物品报表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetStockReportPage")]
+        public ObjectResultEx GetStockReportPage(PageParamList<RequestRepastStockReport> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetStockReportPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region 名称管理
+        /// <summary>
+        /// 名称分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetNamesPage")]
+        public ObjectResultEx GetNamesPage(PageParamList<RequestRepastTypeName> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetNamesPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑名称
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditNames")]
+        public ObjectResultEx EditNames(RequestRepastTypeName Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.EditNames(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除名称
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveNames")]
+        public ObjectResultEx RemoveNames(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.RemoveNames(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 名称列表
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <returns></returns>
+        [HttpPost("GetNamesList")]
+        public ObjectResultEx GetNamesList(SimlpeParam<int> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetNamesList(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
         #endregion
 
         #region 支付模块
