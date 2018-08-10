@@ -78,5 +78,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         /// 采购负责人
         /// </summary>
         public string BuyUser { get; set; }
+        public string StockMsg { get => InStorageNum == 0 ? "已全部出库" : "有剩余"; }
     }
 }

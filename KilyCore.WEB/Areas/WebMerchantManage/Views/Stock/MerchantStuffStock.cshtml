@@ -73,7 +73,7 @@
                             controller.Confirm("确认删除?", function (bool) {
                                 if (bool) {
                                     controller.ajax({
-                                        url: "RepastWeb/EditOutStorage",
+                                        url: "RepastWeb/RemoveOutStorage",
                                         data: { Id: row.Id },
                                         type: "post",
                                         success: function (result) {
@@ -164,6 +164,7 @@
                                 <th data-field="InStorageNum" data-halign="center" data-align="center" data-valign="middle">入库数量</th>
                                 <th data-field="Supplier" data-halign="center" data-align="center" data-valign="middle">供应商</th>
                                 <th data-field="BuyUser" data-halign="center" data-align="center" data-valign="middle">负责人</th>
+                                <th data-field="StockMsg" data-halign="center" data-align="center" data-valign="middle">库存状况</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>

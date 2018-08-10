@@ -23,6 +23,23 @@ namespace KilyCore.WEB.Areas.WebMerchantManage.Controllers
             return View();
         }
         #endregion
+
+        #region 物品仓库
+        public IActionResult MerchantGoodsStock()
+        {
+            return View();
+        }
+        public IActionResult MerchantInStock()
+        {
+            return View();
+        }
+        public IActionResult MerchantOutStock()
+        {
+            return View();
+        }
+
+        #endregion
+
         public IActionResult MerchantReport()
         {
             return View();

@@ -77,6 +77,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// </summary>
         public string Remark { get; set; }
         public string Explanation { get; set; }
+        public string StockMsg { get => InStockNum == 0 ? "已全部出库" : "有剩余"; }
     }
     public class ResponseEnterpriseGoodsStockAttach
     {
