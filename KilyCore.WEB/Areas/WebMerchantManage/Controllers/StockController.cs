@@ -40,9 +40,22 @@ namespace KilyCore.WEB.Areas.WebMerchantManage.Controllers
 
         #endregion
 
+        #region 报表
         public IActionResult MerchantReport()
         {
             return View();
         }
+        #endregion
+
+        #region 名称类型
+        public IActionResult MerchantNameType()
+        {
+            return View();
+        }
+        public IActionResult MerchantNameTypeEdit()
+        {
+            return View();
+        }
+        #endregion
     }
 }

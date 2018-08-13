@@ -20,6 +20,6 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
 {
     public class RequestRepastStockReport
     {
-        public string Name
+        public string Name { get; set; }
     }
 }

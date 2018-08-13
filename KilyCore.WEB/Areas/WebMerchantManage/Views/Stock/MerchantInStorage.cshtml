@@ -24,6 +24,20 @@
             },
             //数据绑定
             BindOption: function (Guid, Editor) {
+                //获取名称
+                controller.ajax({
+                    url: "RepastWeb/GetNamesList",
+                    data: { Id: 1 },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.TypeNames + '">' + obj.TypeNames + '</option>';
+                        });
+                        $("#IngredientName").html(html);
+                    }
+                });
                 //人员下拉
                 controller.ajax({
                     url: "RepastWeb/GetMerchantList",
@@ -116,7 +130,7 @@
                     </td>
                     <th><label class="control-label">原料名称</label></th>
                     <td class="has-warning">
-                        <input class="form-control" name="IngredientName" type="text" />
+                        <select type="select" name="IngredientName" id="IngredientName" class="form-control"></select>
                     </td>
                 </tr>
                 <tr>
