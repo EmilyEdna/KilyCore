@@ -36,7 +36,7 @@
                     success: function (result) {
                         var html = '<option>===请选择===</option>'
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.DicValue + '" data-value="' + obj.DicDescript + '">' + obj.DicName + '</option>';
+                            html += '<option value="' + obj.DicValue + '" data-value="' + obj.DicDescript + '" data-attach="' + obj.AttachInfo + '">' + obj.DicName + '</option>';
                         });
                         $("#VersionType").html(html);
                     }
@@ -107,7 +107,8 @@
                         VersionDes: $("#VersionType").find("option:selected").data().value,
                         CompanyName: CompanyInfo.CompanyName,
                         CommunityCode: CompanyInfo.CommunityCode,
-                        CompanyAddress: CompanyInfo.CompanyAddress
+                        CompanyAddress: CompanyInfo.CompanyAddress,
+                        AttachInfo: $("#VersionType").find("option:selected").data().attach
                     }
                     controller.SetCtrlValue("#PDF", data);
                     $("#PDF").submit();
@@ -141,6 +142,7 @@
             <input type="hidden" name="CompanyName" />
             <input type="hidden" name="CommunityCode" />
             <input type="hidden" name="CompanyAddress" />
+            <input  type="hidden" name="AttachInfo"/>
         </form>
         <form class="orm-horizontal" method="post" action="EnterpriseWeb/SaveContract" id="Edit">
             <input type="hidden" name="PayTicket" id="PayTicket" />

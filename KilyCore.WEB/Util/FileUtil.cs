@@ -26,7 +26,7 @@ namespace KilyCore.WEB.Util
         /// <param name="Files"></param>
         /// <param name="WebRootPath"></param>
         /// <returns></returns>
-        public static Object UploadFile(IFormFile Files,string FolderName,string WebRootPath)
+        public static Object UploadFile(IFormFile Files, string FolderName, string WebRootPath)
         {
             string[] FileType = { ".jpg", ".png", ".jpeg", ".bmp", ".gif", ".ico" };
             //文件后缀
@@ -144,7 +144,7 @@ namespace KilyCore.WEB.Util
                     .Replace("{EndTimeDay}", help.EndDay.ToString())
                     .Replace("{Years}", help.ContractYear.ToString())
                     .Replace("{CompanyVersion}", help.VersionName)
-                    .Replace("{Moneys}", "1000")
+                    .Replace("{Moneys}", Money(help).ToString())
                     .Replace("{ServerItems}", help.VersionDes);
             else
                 HTMLContent = HTMLContent.Replace("{CompanySelf}", help.AuthorCompany)
@@ -164,7 +164,7 @@ namespace KilyCore.WEB.Util
                    .Replace("{EndTimeDay}", help.EndDay.ToString())
                    .Replace("{Years}", help.ContractYear.ToString())
                    .Replace("{CompanyVersion}", help.VersionName)
-                   .Replace("{Moneys}", "1000")
+                   .Replace("{Moneys}", Money(help).ToString())
                    .Replace("{ServerItems}", help.VersionDes);
             HtmlToPdf converter = new HtmlToPdf();
             converter.Options.PdfPageSize = PdfPageSize.A4;
@@ -175,6 +175,21 @@ namespace KilyCore.WEB.Util
             byte[] bytes = doc.Save();
             doc.Close();
             return bytes;
+        }
+        /// <summary>
+        /// 计算版本价格
+        /// </summary>
+        /// <param name="help"></param>
+        /// <returns></returns>
+        public static int Money(ContractHelp help) {
+            try
+            {
+                return Convert.ToInt32(help.AttachInfo) * help.ContractYear;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

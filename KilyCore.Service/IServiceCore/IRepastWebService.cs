@@ -109,6 +109,21 @@ namespace KilyCore.Service.IServiceCore
         String EditStuff(RequestRepastStuff Param);
         ResponseRepastStuff GetStuffDetail(Guid Id);
         #endregion
+        #region 留样管理
+        PagedResult<ResponseRepastSample> GetSamplePage(PageParamList<RequestRepastSample> pageParam);
+        String EditSample(RequestRepastSample Param);
+        String RemoveSample(Guid Id);
+        #endregion
+        #region 抽样管理
+        PagedResult<ResponseRepastDraw> GetDrawPage(PageParamList<RequestRepastDraw> pageParam);
+        String EditDraw(RequestRepastDraw Param);
+        String RemoveDraw(Guid Id);
+        #endregion
+        #region 废物处理
+        PagedResult<ResponseRepastDuck> GetDuckPage(PageParamList<RequestRepastDuck> pageParam);
+        String EditDuck(RequestRepastDuck Param);
+        String RemoveDuck(Guid Id);
+        #endregion
         #endregion
         #region 仓库管理
         #region 原料仓库-入库

@@ -12,9 +12,7 @@ namespace KilyCore.Extension.ApplicationService.DependencyIdentity
 {
     public class EngineExtension
     {
-
-        private static IEngine instance;
-        public static IEngine Instance { get => instance; set => instance = value; }
+        public static IEngine Instance { get; set; }
         /// <summary>
         ///  确保方法同步实例化
         /// </summary>

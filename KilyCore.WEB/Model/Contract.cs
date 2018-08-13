@@ -36,6 +36,10 @@ namespace KilyCore.WEB.Model
         public int EndMonth { get => DateTime.Now.Month; }
         public int EndDay { get => DateTime.Now.Day; }
         /// <summary>
+        /// 附加信息
+        /// </summary>
+        public string AttachInfo { get; set; }
+        /// <summary>
         /// 合同类型 线上或线下
         /// </summary>
         public int ContractType { get; set; }

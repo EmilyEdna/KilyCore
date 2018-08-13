@@ -543,6 +543,105 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(RepastWebService.GetInStorageList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+
+        #region 留样管理
+        /// <summary>
+        /// 留样分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetSamplePage")]
+        public ObjectResultEx GetSamplePage(PageParamList<RequestRepastSample> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetSamplePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑留样
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditSample")]
+        public ObjectResultEx EditSample(RequestRepastSample Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.EditSample(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除留样
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveSample")]
+        public ObjectResultEx RemoveSample(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.RemoveSample(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region 抽样管理
+        /// <summary>
+        /// 抽样分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetDrawPage")]
+        public ObjectResultEx GetDrawPage(PageParamList<RequestRepastDraw> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetDrawPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑抽样
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditDraw")]
+        public ObjectResultEx EditDraw(RequestRepastDraw Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.EditDraw(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除抽样
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveDraw")]
+        public ObjectResultEx RemoveDraw(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.RemoveDraw(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region 废物处理
+        /// <summary>
+        /// 废物分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetDuckPage")]
+        public ObjectResultEx GetDuckPage(PageParamList<RequestRepastDuck> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetDuckPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑废物
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditDuck")]
+        public ObjectResultEx EditDuck(RequestRepastDuck Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.EditDuck(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除废物
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveDuck")]
+        public ObjectResultEx RemoveDuck(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.RemoveDuck(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
         #endregion
 
         #region 仓库管理
@@ -698,6 +797,7 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(RepastWebService.EditOutStock(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+
         #region 库存报表
         /// <summary>
         /// 原料报表

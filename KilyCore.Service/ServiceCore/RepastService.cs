@@ -522,7 +522,7 @@ namespace KilyCore.Service.ServiceCore
                 DiningType = t.DiningType,
                 VersionType = t.VersionType,
                 VersionTypeName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.VersionType),
-                DiningTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.DiningType),
+                DiningTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
                 AuditType = t.AuditType,
                 AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
                 DingRoleId = t.DingRoleId,
@@ -552,7 +552,7 @@ namespace KilyCore.Service.ServiceCore
                 Phone=t.Phone,
                 IdCard=t.Phone,
                 VersionTypeName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.VersionType),
-                DiningTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.DiningType),
+                DiningTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
                 TableName = typeof(ResponseMerchantUser).Name
             }).FirstOrDefault();
             #endregion

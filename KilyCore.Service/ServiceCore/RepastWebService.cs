@@ -1192,14 +1192,142 @@ namespace KilyCore.Service.ServiceCore
         #endregion
 
         #region 留样管理
+        /// <summary>
+        /// 留样分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRepastSample> GetSamplePage(PageParamList<RequestRepastSample> pageParam)
+        {
+            IQueryable<RepastSample> queryable = Kily.Set<RepastSample>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.DishName))
+                queryable = queryable.Where(t => t.DishName.Contains(pageParam.QueryParam.DishName));
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data = queryable.Select(t => new ResponseRepastSample()
+            {
+                Id = t.Id,
+                DishName = t.DishName,
+                Phone = t.Phone,
+                SampleImg = t.SampleImg,
+                SampleTime = t.SampleTime,
+                OperatUser = t.OperatUser
+            }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑留样
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditSample(RequestRepastSample Param)
+        {
+            RepastSample sample = Param.MapToEntity<RepastSample>();
+            return Insert(sample) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 删除留样
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveSample(Guid Id)
+        {
+            return Delete<RepastSample>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
         #endregion
 
         #region 抽样管理
+        /// <summary>
+        /// 抽样分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRepastDraw> GetDrawPage(PageParamList<RequestRepastDraw> pageParam)
+        {
+            IQueryable<RepastDraw> queryable = Kily.Set<RepastDraw>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.DrawUnit))
+                queryable = queryable.Where(t => t.DrawUnit.Contains(pageParam.QueryParam.DrawUnit));
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data = queryable.Select(t => new ResponseRepastDraw()
+            {
+                Id = t.Id,
+                DrawUnit = t.DrawUnit,
+                Phone = t.Phone,
+                DrawTime = t.DrawTime,
+                DrawUser = t.DrawUser
+            }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑抽样
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditDraw(RequestRepastDraw Param)
+        {
+            RepastDraw draw = Param.MapToEntity<RepastDraw>();
+            return Insert(draw) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 删除抽样
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveDraw(Guid Id)
+        {
+            return Delete<RepastDraw>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
         #endregion
 
         #region 废物处理
+        /// <summary>
+        /// 废物分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRepastDuck> GetDuckPage(PageParamList<RequestRepastDuck> pageParam)
+        {
+            IQueryable<RepastDuck> queryable = Kily.Set<RepastDuck>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data = queryable.Select(t => new ResponseRepastDuck()
+            {
+                Id = t.Id,
+                HandleWays = t.HandleWays,
+                Phone = t.Phone,
+                HandleImg = t.HandleImg,
+                HandleTime = t.HandleTime,
+                HandleUser = t.HandleUser
+            }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑废物
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditDuck(RequestRepastDuck Param)
+        {
+            RepastDuck duck = Param.MapToEntity<RepastDuck>();
+            return Insert(duck) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 删除废物
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveDuck(Guid Id)
+        {
+            return Delete<RepastDuck>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
         #endregion
-
         #endregion
 
         #region 仓库管理
