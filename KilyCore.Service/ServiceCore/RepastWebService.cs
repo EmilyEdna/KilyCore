@@ -1190,6 +1190,16 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         #endregion
+
+        #region 留样管理
+        #endregion
+
+        #region 抽样管理
+        #endregion
+
+        #region 废物处理
+        #endregion
+
         #endregion
 
         #region 仓库管理
