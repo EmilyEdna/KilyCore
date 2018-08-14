@@ -101,6 +101,7 @@ namespace KilyCore.Service.IServiceCore
         ResponseRepastDish GetDishDetail(Guid Id);
         String RemoveDish(Guid Id);
         String EditDish(RequestRepastDish Param);
+        IList<ResponseRepastDish> GetDishList();
         #endregion
         #region 溯源追踪
         #region 原料溯源

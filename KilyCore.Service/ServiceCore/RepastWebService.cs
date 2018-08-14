@@ -1112,6 +1112,23 @@ namespace KilyCore.Service.ServiceCore
             else
                 return Update<RepastDish, RequestRepastDish>(dish, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
+        /// <summary>
+        /// 菜品列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseRepastDish> GetDishList()
+        {
+            IQueryable<RepastDish> queryable = Kily.Set<RepastDish>().Where(t => t.IsDelete == false);
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            return queryable.Select(t => new ResponseRepastDish()
+            {
+                Id=t.Id,
+                DishName=t.DishName
+            }).ToList();
+        }
         #endregion
 
         #region 溯源追踪
@@ -1325,7 +1342,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string RemoveDuck(Guid Id)
         {
-            return Delete<RepastDuck>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+            return Remove<RepastDuck>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         #endregion
         #endregion

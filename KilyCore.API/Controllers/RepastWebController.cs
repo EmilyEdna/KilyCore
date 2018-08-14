@@ -489,6 +489,15 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastWebService.EditDish(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 菜品列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetDishList")]
+        public ObjectResultEx GetDishList()
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetDishList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
 
         #region 溯源追踪

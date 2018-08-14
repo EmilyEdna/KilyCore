@@ -19,5 +19,35 @@ namespace KilyCore.WEB.Areas.WebMerchantManage.Controllers
             return View();
         }
         #endregion
+        #region 留样
+        public IActionResult MerchantSample()
+        {
+            return View();
+        }
+        public IActionResult MerchantSampleEdit()
+        {
+            return View();
+        }
+        #endregion
+        #region 抽查
+        public IActionResult MerchantDraw()
+        {
+            return View();
+        }
+        public IActionResult MerchantDrawEdit()
+        {
+            return View();
+        }
+        #endregion
+        #region 废物
+        public IActionResult MerchantDuck()
+        {
+            return View();
+        }
+        public IActionResult MerchantDuckEdit()
+        {
+            return View();
+        }
+        #endregion
     }
 }

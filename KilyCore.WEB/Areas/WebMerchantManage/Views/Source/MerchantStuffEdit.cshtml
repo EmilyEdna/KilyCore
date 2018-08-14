@@ -77,9 +77,9 @@
                 //文件上传-质检报告
                 controller.Upload({
                     url: "File/UploadImg",
-                    element: "B1",
+                    element: "#B1",
                     maxNum: 1,
-                    node: 'A1',
+                    node: '#A1',
                     success: function (result) {
                         controller.Alter(result.msg);
                         $("#QualityReport").val(result.data);
@@ -88,9 +88,9 @@
                 //文件上传-资质证书
                 controller.Upload({
                     url: "File/UploadImg",
-                    element: "B2",
+                    element: "#B2",
                     maxNum: 1,
-                    node: 'A2',
+                    node: '#A2',
                     success: function (result) {
                         controller.Alter(result.msg);
                         $("#Aptitude").val(result.data);
