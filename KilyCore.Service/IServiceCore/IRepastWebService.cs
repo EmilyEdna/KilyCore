@@ -95,6 +95,11 @@ namespace KilyCore.Service.IServiceCore
         ResponseRepastSellbill GetSellbillDetail(Guid Id);
         String EditSellbill(RequestRepastSellbill Param);
         #endregion
+        #region 实时监控
+        PagedResult<ResponseRepastVideo> GetVideoPage(PageParamList<RequestRepastVideo> pageParam);
+        String EditVideo(RequestRepastVideo Param);
+        String RemoveVideo(Guid Id);
+        #endregion
         #endregion
         #region 菜品管理
         PagedResult<ResponseRepastDish> GetDishPage(PageParamList<RequestRepastDish> pageParam);
@@ -146,19 +151,19 @@ namespace KilyCore.Service.IServiceCore
         ResponseRepastArticleInStock GetInStockDetail(Guid Id);
         #endregion
         #region 物品仓库-出库
-         PagedResult<ResponseRepastArticleOutStock> GetOutStockPage(PageParamList<RequestRepastArticleOutStock> pageParam);
-         String RemoveOutStock(Guid Id);
+        PagedResult<ResponseRepastArticleOutStock> GetOutStockPage(PageParamList<RequestRepastArticleOutStock> pageParam);
+        String RemoveOutStock(Guid Id);
         String EditOutStock(RequestRepastArticleOutStock Param);
         #endregion
         #region 名称管理
         PagedResult<ResponseRepastTypeName> GetNamesPage(PageParamList<RequestRepastTypeName> pageParam);
         String EditNames(RequestRepastTypeName Param);
         String RemoveNames(Guid Id);
-         IList<ResponseRepastTypeName> GetNamesList(int Key);
+        IList<ResponseRepastTypeName> GetNamesList(int Key);
         #endregion
         #region 库存报表
-         PagedResult<ResponseRepastStockReport> GetStorageReportPage(PageParamList<RequestRepastStockReport> pageParam);
-         PagedResult<ResponseRepastStockReport> GetStockReportPage(PageParamList<RequestRepastStockReport> pageParam);
+        PagedResult<ResponseRepastStockReport> GetStorageReportPage(PageParamList<RequestRepastStockReport> pageParam);
+        PagedResult<ResponseRepastStockReport> GetStockReportPage(PageParamList<RequestRepastStockReport> pageParam);
         #endregion
         #endregion
         #region 微信和支付宝调用

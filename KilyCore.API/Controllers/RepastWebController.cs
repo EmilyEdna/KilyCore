@@ -446,6 +446,38 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(RepastWebService.EditSellbill(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 实时监控
+        /// <summary>
+        /// 视频分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetVideoPage")]
+        public ObjectResultEx GetVideoPage(PageParamList<RequestRepastVideo> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetVideoPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑视频
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditVideo")]
+        public ObjectResultEx EditVideo(RequestRepastVideo Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.EditVideo(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除视频
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveVideo")]
+        public ObjectResultEx RemoveVideo(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.RemoveVideo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
         #endregion
 
         #region 菜品管理

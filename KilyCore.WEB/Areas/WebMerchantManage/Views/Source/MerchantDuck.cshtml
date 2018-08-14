@@ -41,8 +41,7 @@
         action: {
             ImgFormatter: function (val, row, index) {
                 var action = [];
-                if (row.LvImg != null)
-                    action.push('<img class="photo" src="' + row.HandleImg + '" style="width:48px;height:32px;"">')
+                action.push('<img class="photo" src="' + row.HandleImg + '" style="width:48px;height:32px;"">')
                 return action.join("&nbsp;");
             },
             ImgEvents: {

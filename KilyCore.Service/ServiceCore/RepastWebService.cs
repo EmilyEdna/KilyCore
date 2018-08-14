@@ -898,6 +898,7 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         #endregion
+
         #region 进货台账
         /// <summary>
         /// 进货台账分页
@@ -973,6 +974,7 @@ namespace KilyCore.Service.ServiceCore
                 return Update<RepastBuybill, RequestRepastBuybill>(buybill, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         #endregion
+
         #region 销售台账
         /// <summary>
         /// 销售台账分页
@@ -1038,6 +1040,49 @@ namespace KilyCore.Service.ServiceCore
                 return Insert(sellbill) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
             else
                 return Update<RepastSellbill, RequestRepastSellbill>(sellbill, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        #endregion
+
+        #region 实时监控
+        /// <summary>
+        /// 视频分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRepastVideo> GetVideoPage(PageParamList<RequestRepastVideo> pageParam)
+        {
+            IQueryable<RepastVideo> queryable = Kily.Set<RepastVideo>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data = queryable.Select(t => new ResponseRepastVideo()
+            {
+                Id = t.Id,
+                MonitorAddress = t.MonitorAddress,
+                CoverPhoto = t.CoverPhoto,
+                VideoAddress = t.VideoAddress
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑视频
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditVideo(RequestRepastVideo Param)
+        {
+            RepastVideo video = Param.MapToEntity<RepastVideo>();
+            return Insert(video) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 删除视频
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveVideo(Guid Id)
+        {
+            return Remove<RepastVideo>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         #endregion
         #endregion
@@ -1125,8 +1170,8 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
             return queryable.Select(t => new ResponseRepastDish()
             {
-                Id=t.Id,
-                DishName=t.DishName
+                Id = t.Id,
+                DishName = t.DishName
             }).ToList();
         }
         #endregion
