@@ -24,11 +24,11 @@ namespace KilyCore.WEB.Model
         public string CompanyTypeName { get; set; }
         public string Price { get; set; }
         public string Content { get; set; }
-        public int Year{ get => 1; }
+        public int Year { get => 1; }
     }
     public class ContractHelp
     {
-        public string PathNo { get=> DateTime.Now.ToString("yyyyMMddHHmm"); }
+        public string PathNo { get => DateTime.Now.ToString("yyyyMMddHHmm"); }
         public int StarYear { get => DateTime.Now.Year; }
         public int StarMonth { get => DateTime.Now.Month; }
         public int StarDay { get => DateTime.Now.Day; }
@@ -84,7 +84,12 @@ namespace KilyCore.WEB.Model
         /// </summary>
         public string CompanyAddress { get; set; }
     }
-    public static class Configer {
+    public class FormData
+    {
+        public string Param { get; set; }
+    }
+    public static class Configer
+    {
         public static string CompanySelf { get; set; }
         public static string CodeSelf { get; set; }
         public static string AddressSelf { get; set; }

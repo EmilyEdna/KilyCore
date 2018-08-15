@@ -60,5 +60,19 @@ namespace KilyCore.WEB.Controllers
             PDF.FileDownloadName = "入住合同.pdf";
             return PDF;
         }
+        /// <summary>
+        /// 删除图片物理路径
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult RemovePath([FromBody]FormData data)
+        {
+            var WebRootPath = Environment.WebRootPath;
+            Object Result = FileUtil.RemovePath(data,WebRootPath);
+            return new JsonResult(Result);
+        }
+       
     }
+    
 }

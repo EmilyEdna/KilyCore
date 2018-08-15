@@ -19,5 +19,6 @@ namespace KilyCore.Repositories.BaseRepository
         bool Remove<TEntity>(Expression<Func<TEntity, bool>> exp) where TEntity : class, new();
         IQueryable<TEntity> ExcuteSQL<TEntity> (string SQL) where TEntity : class, new();
         int ExcuteSQL(string SQL);
+        String RemovePath<TEntity>(TEntity Entity) where TEntity : class, new();
     }
 }

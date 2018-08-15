@@ -306,31 +306,33 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public ResponseEnterprise GetEnterpriseInfo(Guid Id)
         {
-            var data = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Id).GroupJoin(Kily.Set<SystemStayContract>().Where(t => t.EnterpriseOrMerchant == 1), t => (t.CompanyId != null ? t.CompanyId : t.Id), x => x.CompanyId, (t, x) => new ResponseEnterprise()
-            {
-                Id = t.Id,
-                CompanyAccount = t.CompanyAccount,
-                CommunityCode = t.CommunityCode,
-                CompanyAddress = t.CompanyAddress,
-                CompanyName = t.CompanyName,
-                CompanyPhone = t.CompanyPhone,
-                CompanyType = t.CompanyType,
-                CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
-                AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(x.FirstOrDefault() != null ? x.FirstOrDefault().AuditType : 0),
-                VersionName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.Version),
-                Version = t.Version,
-                PassWord = t.PassWord,
-                TypePath = t.TypePath,
-                Certification = t.Certification,
-                Honor = t.HonorCertification,
-                Discription = t.Discription,
-                NetAddress = t.NetAddress,
-                ProductionAddress = t.ProductionAddress,
-                SellerAddress = t.SellerAddress,
-                IdCard = t.IdCard,
-                SafeNo = t.SafeNo,
-                SafeCompany = t.SafeCompany
-            }).FirstOrDefault();
+            var query = Kily.Set<SystemStayContract>().Where(t => t.EnterpriseOrMerchant == 1).AsNoTracking();
+            var data = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Id)
+                .GroupJoin(query, t => (t.CompanyId != null ? t.CompanyId : t.Id), x => x.CompanyId, (t, x) => new ResponseEnterprise()
+                {
+                    Id = t.Id,
+                    CompanyAccount = t.CompanyAccount,
+                    CommunityCode = t.CommunityCode,
+                    CompanyAddress = t.CompanyAddress,
+                    CompanyName = t.CompanyName,
+                    CompanyPhone = t.CompanyPhone,
+                    CompanyType = t.CompanyType,
+                    CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
+                    AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(x.FirstOrDefault() != null ? x.FirstOrDefault().AuditType : 0),
+                    VersionName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.Version),
+                    Version = t.Version,
+                    PassWord = t.PassWord,
+                    TypePath = t.TypePath,
+                    Certification = t.Certification,
+                    Honor = t.HonorCertification,
+                    Discription = t.Discription,
+                    NetAddress = t.NetAddress,
+                    ProductionAddress = t.ProductionAddress,
+                    SellerAddress = t.SellerAddress,
+                    IdCard = t.IdCard,
+                    SafeNo = t.SafeNo,
+                    SafeCompany = t.SafeCompany
+                }).FirstOrDefault();
             return data;
         }
         /// <summary>
@@ -3051,7 +3053,7 @@ namespace KilyCore.Service.ServiceCore
         {
             if (Param.OutStockNum <= 0)
                 return "出库数量必须大于0";
-            EnterpriseGoodsStock stock = Kily.Set<EnterpriseGoodsStock>().Where(t=>t.IsDelete==false).Where(t => t.Id == Param.StockId).FirstOrDefault();
+            EnterpriseGoodsStock stock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false).Where(t => t.Id == Param.StockId).FirstOrDefault();
             if (stock.InStockNum < Param.OutStockNum)
                 return "当前库存少于出库量";
             stock.InStockNum -= Param.OutStockNum;

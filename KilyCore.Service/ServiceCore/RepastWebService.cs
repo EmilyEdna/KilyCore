@@ -265,25 +265,30 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public ResponseMerchant GetMerchantDetail(Guid Id)
         {
-            var data = Kily.Set<RepastInfo>().Where(t => t.Id == Id).Select(t => new ResponseMerchant()
-            {
-                Id = t.Id,
-                Account = t.Account,
-                Address = t.Address,
-                PassWord = t.PassWord,
-                CommunityCode = t.CommunityCode,
-                MerchantName = t.MerchantName,
-                DiningType = t.DiningType,
-                Phone = t.Phone,
-                VersionType = t.VersionType,
-                TypePath = t.TypePath,
-                Certification = t.Certification,
-                Email = t.Email,
-                ImplUser = t.ImplUser,
-                AllowUnit = t.AllowUnit,
-                IdCard = t.IdCard,
-                Remark = t.Remark
-            }).FirstOrDefault();
+            var query = Kily.Set<SystemStayContract>().Where(t => t.EnterpriseOrMerchant == 2).AsNoTracking();
+            var data = Kily.Set<RepastInfo>().Where(t => t.Id == Id)
+                .GroupJoin(query, t => (t.InfoId != null ? t.InfoId : t.Id), x => x.CompanyId, (t, x) => new ResponseMerchant
+                {
+                    Id = t.Id,
+                    Account = t.Account,
+                    Address = t.Address,
+                    PassWord = t.PassWord,
+                    CommunityCode = t.CommunityCode,
+                    MerchantName = t.MerchantName,
+                    DiningType = t.DiningType,
+                    DiningTypeName= AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
+                    Phone = t.Phone,
+                    VersionType = t.VersionType,
+                    VersionTypeName=AttrExtension.GetSingleDescription<SystemVersionEnum,DescriptionAttribute>(t.VersionType),
+                    AuditTypeName= AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(x.FirstOrDefault() != null ? x.FirstOrDefault().AuditType : 0),
+                    TypePath = t.TypePath,
+                    Certification = t.Certification,
+                    Email = t.Email,
+                    ImplUser = t.ImplUser,
+                    AllowUnit = t.AllowUnit,
+                    IdCard = t.IdCard,
+                    Remark = t.Remark
+                }).FirstOrDefault();
             return data;
         }
         /// <summary>

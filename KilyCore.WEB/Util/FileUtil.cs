@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.RegularExpressions;
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日12点01分
@@ -181,7 +182,8 @@ namespace KilyCore.WEB.Util
         /// </summary>
         /// <param name="help"></param>
         /// <returns></returns>
-        public static int Money(ContractHelp help) {
+        public static int Money(ContractHelp help)
+        {
             try
             {
                 return Convert.ToInt32(help.AttachInfo) * help.ContractYear;
@@ -190,6 +192,37 @@ namespace KilyCore.WEB.Util
             {
                 throw ex;
             }
+        }
+        /// <summary>
+        /// 删除图片物理路径
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <param name="WebRootPath"></param>
+        /// <returns></returns>
+        public static string RemovePath(FormData Data, string WebRootPath)
+        {
+            String Path = Data.Param;
+            if (Path.Contains("img"))
+            {
+                Regex regImg = new Regex(@"<img\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""']?[\s\t\r\n]*(?<imgUrl>[^\s\t\r\n""'<>]*)[^<>]*?/?[\s\t\r\n]*>", RegexOptions.IgnoreCase);
+                MatchCollection matches = regImg.Matches(Path);
+                //遍历所有的img标签对象
+                foreach (Match match in matches)
+                {
+                    File.Delete(WebRootPath + match.Groups["imgUrl"].Value);
+                }
+            }
+            else
+            {
+                if (Path.Contains(","))
+                    Path.Split(",").ToList().ForEach(t =>
+                    {
+                        File.Delete(WebRootPath + t);
+                    });
+                else
+                    File.Delete(WebRootPath + Path);
+            }
+            return null;
         }
     }
 }

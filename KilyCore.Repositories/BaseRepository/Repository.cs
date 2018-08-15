@@ -14,6 +14,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using KilyCore.Extension.HttpClientFactory;
+using Newtonsoft.Json;
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日12点01分
@@ -34,7 +36,8 @@ namespace KilyCore.Repositories.BaseRepository
         {
             try
             {
-                TEntity Entity = Kily.Set<TEntity>().Where(exp).SingleOrDefault();
+                TEntity Entity = Kily.Set<TEntity>().Where(exp).FirstOrDefault();
+                RemovePath(Entity);
                 List<PropertyInfo> props = Entity.GetType().GetProperties().Where(t => t.Name.Contains("Delete")).ToList();
                 props.Where(t => t.Name.Equals("IsDelete")).FirstOrDefault().SetValue(Entity, true);
                 props.Where(t => t.Name.Equals("DeleteTime")).FirstOrDefault().SetValue(Entity, DateTime.Now);
@@ -216,6 +219,7 @@ namespace KilyCore.Repositories.BaseRepository
             {
                 Kily.Set<TEntity>().Where(exp).ToList().ForEach(t =>
                 {
+                    RemovePath(t);
                     Kily.Set<TEntity>().Remove(t);
                 });
                 this.SaveChages();
@@ -223,7 +227,6 @@ namespace KilyCore.Repositories.BaseRepository
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
         }
@@ -232,7 +235,7 @@ namespace KilyCore.Repositories.BaseRepository
         /// </summary>
         /// <typeparam name="TEntity"></typeparam>
         /// <param name="SQL"></param>
-        public IQueryable<TEntity> ExcuteSQL<TEntity>(string SQL) where TEntity : class, new()
+        public virtual IQueryable<TEntity> ExcuteSQL<TEntity>(string SQL) where TEntity : class, new()
         {
             try
             {
@@ -249,7 +252,7 @@ namespace KilyCore.Repositories.BaseRepository
         /// </summary>
         /// <param name="SQL"></param>
         /// <returns></returns>
-        public int ExcuteSQL(string SQL)
+        public virtual int ExcuteSQL(string SQL)
         {
             try
             {
@@ -339,6 +342,31 @@ namespace KilyCore.Repositories.BaseRepository
                 }
             });
             return Props;
+        }
+        /// <summary>
+        /// 删除图片物理路径
+        /// </summary>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <param name="Entity"></param>
+        public virtual String RemovePath<TEntity>(TEntity Entity) where TEntity : class, new()
+        {
+            try
+            {
+                IList<String> PhotoPath = new List<String>();
+                String Url = $"{ Configer.HttpContext.Response.Headers["Access-Control-Allow-Origin"].ToString()}/File/RemovePath";
+                Entity.GetType().GetProperties().ToList().ForEach(t =>
+                {
+                    if (t.PropertyType == typeof(String))
+                        if ((t.GetValue(Entity) == null ? "" : t.GetValue(Entity)).ToString().Contains(@"/Upload/Images/"))
+                            PhotoPath.Add(t.GetValue(Entity).ToString());
+                });
+                String Key = JsonConvert.SerializeObject(new { Param = String.Join(",", PhotoPath) });
+                return HttpClientExtension.HttpPostAsync(Url, Key,null,"application/json").Result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

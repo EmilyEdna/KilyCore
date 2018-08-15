@@ -668,10 +668,19 @@ controller.Editor = function (element, option) {
         maximumImageFileSize: 2097152,
         placeholder: "请输入内容!",
         disableDragAndDrop: true,
+        url: undefined,
         callbacks: {
             onImageUpload: function (Image) {
+                var Name = '';
+                if (localStorage.UserInfo != undefined)
+                    Name = JSON.parse(localStorage.UserInfo).TrueName
+                else if (localStorage.CompanyUser != undefined)
+                    Name = JSON.parse(localStorage.CompanyUser).CompanyName;
+                else
+                    Name = JSON.parse(localStorage.RepastUser).MerchantName
                 var formData = new FormData();
                 formData.append("Files", Image[0]);
+                formData.append("FolderName", Name);
                 SendImg(formData);
             },
             onChange: function (Content) {
@@ -684,7 +693,7 @@ controller.Editor = function (element, option) {
     return $(element).summernote(options);
     function SendImg(formData) {
         $.ajax({
-            url: WebUrl + option.url,
+            url: WebUrl + "/File/UploadImg",
             type: "post",
             data: formData,
             cache: false,
