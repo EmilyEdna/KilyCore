@@ -960,6 +960,8 @@ namespace KilyCore.Service.ServiceCore
         public PagedResult<ResponseEnterpriseInsideFile> GetFilePage(PageParamList<RequestEnterpriseInsideFile> pageParam)
         {
             IQueryable<EnterpriseInsideFile> queryable = Kily.Set<EnterpriseInsideFile>().OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.FileTitle))
+                queryable = queryable.Where(t => t.FileTitle.Contains(pageParam.QueryParam.FileTitle));
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else

@@ -202,6 +202,8 @@ namespace KilyCore.WEB.Util
         public static string RemovePath(FormData Data, string WebRootPath)
         {
             String Path = Data.Param;
+            if (string.IsNullOrEmpty(Path))
+                return null;
             if (Path.Contains("img"))
             {
                 Regex regImg = new Regex(@"<img\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""']?[\s\t\r\n]*(?<imgUrl>[^\s\t\r\n""'<>]*)[^<>]*?/?[\s\t\r\n]*>", RegexOptions.IgnoreCase);

@@ -7,7 +7,10 @@ email:847432003@qq.com
 var controller = controller || {};
 var host = "http://localhost:50039/api/";
 var WebUrl = "http://localhost:50070/";
-//ajax请求
+/**
+ * ajax请求
+ * @param {any} 基本配置
+ */
 controller.ajax = function (option) {
     defaultOption = {
         url: undefined,
@@ -57,7 +60,10 @@ controller.ajax = function (option) {
         }
     });
 }
-//设置Cookie
+/**
+ * 设置Cookie
+ * @param {json} 返回的数据
+ */
 controller.SetCookie = function (option) {
     var flag = controller.JsonObject(option);
     if (!flag) var obj = JSON.parse(option);
@@ -82,13 +88,17 @@ controller.SetCookie = function (option) {
     else if (obj.RepAdmin != undefined)
         localStorage.RepastUser = JSON.stringify(obj.RepAdmin);//保存餐饮企业用户信息
 }
-//删除Cookie
+/*
+ *删除Cookie
+ * */
 controller.DeleteCookie = function () {
     $.removeCookie('Token', { path: '/' });
     $.removeCookie('ApiKey', { path: '/' });
     $.removeCookie('SysKey', { path: '/' });
 }
-//获取Cookie
+/*
+ * 获取Cookie
+ * */
 controller.GetCookie = function () {
     return {
         Token: $.cookie("Token"),
@@ -96,21 +106,32 @@ controller.GetCookie = function () {
         SysKey: $.cookie("SysKey")
     }
 }
-//设置请求时间
+/*
+ *设置请求时间
+ * */
 controller.SetRequestTime = function () {
     return dt = new Date().getTime();
 }
-//清空本地存储
+/**
+ * 清空本地存储
+ * */
 controller.ClearLocal = function () {
     localStorage.clear();
 }
-//获取URL参数
+/**
+ * 获取URL参数
+ * @param {any} 参数名称
+ */
 controller.GetParam = function (option) {
     var reg = new RegExp("(^|&)" + option + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
     var r = window.location.search.substr(1).match(reg);  //匹配目标参数
     if (r != null) return decodeURI(r[2]); return null; //返回参数值
 }
-//设置表单控件值
+/**
+ * 设置表单控件值
+ * @param {any} 节点
+ * @param {any} 配置
+ */
 controller.SetCtrlValue = function (element, option) {
     for (var key in option) {
         var node = $("[name='" + key + "']", $(element));
@@ -137,12 +158,18 @@ controller.SetCtrlValue = function (element, option) {
         }
     }
 }
-//判断是否Json对象
+/**
+ * 判断是否Json对象
+ * @param {json} 对象
+ */
 controller.JsonObject = function (option) {
     return typeof (option) == "object" && Object.prototype.toString.call(option).toLowerCase() == "[object object]" && !option.length; //true or false
 
 }
-//检查字符串是否为Json
+/**
+ * 检查字符串是否为Json
+ * @param {any} 字符串
+ */
 controller.CheckJsonFormat = function (option) {
     try {
         $.parseJSON(option);
@@ -151,7 +178,12 @@ controller.CheckJsonFormat = function (option) {
     }
     return true;
 }
-//对话框
+/**
+ * 对话框
+ * @param {any} 参数
+ * @param {any} 回调
+ * @param {any} 标题
+ */
 controller.Confirm = function (option, callBack, title) {
     if (!title)
         title = "系统提示";
@@ -170,7 +202,10 @@ controller.Confirm = function (option, callBack, title) {
     });
 
 }
-//提示框
+/**
+ * 提示框
+ * @param {any} 文本内容
+ */
 controller.Msg = function (option) {
     top.layer.msg(option);
 }
@@ -185,7 +220,11 @@ controller.Alter = function (option, title) {
             skin: 'layui-layer-molv'
         });
 }
-//输入框
+/**
+ * 输入框
+ * @param {any} 参数
+ * @param {any} 回调
+ */
 controller.Prompt = function (option, callBack) {
     defaultOption = {
         formType: 0, //0文本 1密码 2多行文本
@@ -197,14 +236,23 @@ controller.Prompt = function (option, callBack) {
     var options = $.extend(defaultOption, option);
     top.layer.prompt(options, callBack);
 }
-//选项卡
+/**
+ * 选项卡
+ * @param {json} 参数
+ */
 controller.Tab = function (option) {
     top.layer.tab({
         area: ['600px', '300px'],
         tab: option //json数组
     });
 }
-//吸附卡
+/**
+ * 吸附卡
+ * @param {any} 标题
+ * @param {any} 元素节点
+ * @param {any} 参数
+ * @param {any} 标识
+ */
 controller.Tips = function (title, element, option, flag) {
     if (!flag)
         layer.tips(title, element, option);
@@ -212,7 +260,10 @@ controller.Tips = function (title, element, option, flag) {
         top.layer.tips(title, element, option);
 
 }
-//图片框
+/**
+ * 图片框
+ * @param {any} 图片框参数
+ */
 controller.Photos = function (option) {
     //option格式
     //var option = {
@@ -237,7 +288,10 @@ controller.Photos = function (option) {
         closeBtn: true
     });
 }
-//打开视窗
+/**
+ * 打开视窗
+ * @param {any} 窗口参数
+ */
 controller.OpenWindow = function (option) {
     var defaultOptions = $.extend({
         id: null,
@@ -295,15 +349,24 @@ controller.OpenWindow = function (option) {
     };
     top.layer.open(options);
 }
-//关闭层
+/**
+ * 关闭层
+  */
 controller.Close = function () {
     top.layer.closeAll();
 }
-//设置跳转
+/**
+ * 设置跳转
+ * @param {any} 地址
+ */
 controller.SetHref = function (option) {
     window.location.href = option;
 }
-//表格控件
+/**
+ * 表格控件
+ * @param {any} 元素节点
+ * @param {any} 表格参数
+ */
 controller.Table = function (element, option) {
     defaultOption = {
         height: undefined,
@@ -317,7 +380,7 @@ controller.Table = function (element, option) {
         queryParamsType: '',
         contentType: "application/x-www-form-urlencoded",
         pagination: true,
-        clickToSelect: true,
+        clickToSelect: false,
         toolbar: undefined,
         param: {},
         sidePagination: "server",
@@ -376,11 +439,70 @@ controller.Table = function (element, option) {
         ajax: controller.ajax,
         clickToSelect: options.clickToSelect,
         toolbar: options.toolbar,
-        toolbarAlign: 'right'
+        toolbarAlign: 'right',
     });
     return bootstrapTable;
 }
-//验证表单-针对弹出框
+/**
+ * 表格事件
+ * @param {any} 类型
+ * @param {any} 数据
+ * @param {any} 模式
+ */
+controller.TableEvent = function (type, rows, flag) {
+    //flag表示模式
+    if (flag < 0)
+    {
+        var IdListIn = $(this).data("Set");
+        if (!IdListIn) //JQ单例模式
+            $(this).data("Set", (IdListIn = new Set()));
+        var datas = $.isArray(rows) ? rows : [rows];
+        if (type.indexOf('uncheck') == -1)//选中
+            $.each(datas, function (i, data) {
+                IdListIn.add(data.Id);
+            });
+        else//反选
+            $.each(datas, function (i, data) {
+                IdListIn.delete(data.Id);
+            });
+        return IdListIn;
+    }
+    else if (flag == 0) {
+        var IdList = $(this).data("Set");
+        if (!IdList) //JQ单例模式
+            $(this).data("Set", (IdList = new Set()));
+        var datas = $.isArray(rows) ? rows : [rows];
+        if (type.indexOf('uncheck') == -1)//选中
+            $.each(datas, function (i, data) {
+                IdList.add(data.Id);
+            });
+        else//反选
+            $.each(datas, function (i, data) {
+                IdList.delete(data.Id);
+            });
+        return IdList;
+    }
+    else {
+        var IdListOut = $(this).data("Set");
+        if (!IdListOut) //JQ单例模式
+            $(this).data("Set", (IdListOut = new Set()));
+        var datas = $.isArray(rows) ? rows : [rows];
+        if (type.indexOf('uncheck') == -1)//选中
+            $.each(datas, function (i, data) {
+                IdListOut.add(data.Id);
+            });
+        else//反选
+            $.each(datas, function (i, data) {
+                IdListOut.delete(data.Id);
+            });
+        return IdListOut;
+    }
+}
+/**
+ * 验证表单-针对弹出框
+ * @param {any} 元素节点
+ * @param {any} 空对象
+ */
 controller.ValidateConfirm = function (element, option) {
     option = option || {};
     return $(element).validate($.extend({
@@ -432,7 +554,11 @@ controller.ValidateConfirm = function (element, option) {
         }
     }, option));
 }
-//验证表单
+/**
+ * 验证表单
+ * @param {any} 元素节点
+ * @param {any} 表单数据
+ */
 controller.Validate = function (element, data) {
     return $(element).validate({
         meta: 'validate',
@@ -464,7 +590,12 @@ controller.Validate = function (element, data) {
         }
     });
 }
-//TreeView控件
+/**
+ * TreeView控件
+ * @param {any} 节点
+ * @param {any} 配置参数
+ * @param {any} 节点
+ */
 controller.TreeCtrl = function (element, option, document) {
     var defaultOption = {
         levels: 5,
@@ -555,7 +686,10 @@ controller.TreeCtrl = function (element, option, document) {
         $(document).html(html);
     }
 }
-//日期选择器
+/**
+ * 日期选择器
+ * @param {any} 日期配置
+ */
 controller.LayDate = function (option) {
     defaultOption = {
         elem: undefined,
@@ -569,7 +703,10 @@ controller.LayDate = function (option) {
     Setting = $.extend(defaultOption, option);
     laydate.render(Setting);
 }
-//文件上传
+/**
+ * 文件上传
+ * @param {any} 上传配置
+ */
 controller.Upload = function (option) {
     var Name = '';
     if (localStorage.UserInfo != undefined)
@@ -605,11 +742,17 @@ controller.Upload = function (option) {
     };
     return $(options.element).ajaxImageUpload(defaults);
 }
-//格式化日期
+/**
+ * 格式化日期
+ * @param {any} 时间格式
+ */
 controller.FormatDate = function (option) {
     return moment().format(option);
 }
-//下拉控件
+/**
+ * 下拉控件
+ * @param {any} 下拉控件配置
+ */
 controller.Select = function (option) {
     //<select type="select" class="selectpicker form-control" data-max-options="2" id="Standard" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
     //controller.Select({
@@ -659,7 +802,11 @@ controller.Select = function (option) {
         });
     }
 }
-//富文本编辑器
+/**
+ * 富文本编辑器
+ * @param {any} 节点
+ * @param {any} 配置
+ */
 controller.Editor = function (element, option) {
     defaultOption = {
         height: Math.ceil($(window).height() / 2),
@@ -709,7 +856,11 @@ controller.Editor = function (element, option) {
         });
     }
 }
-//自动完成
+/**
+ * 自动完成
+ * @param {any} 节点
+ * @param {any} 配置
+ */
 controller.AutoInput = function (element, option) {
     //controller.AutoInput("#GainId", {
     //    url: "EnterpriseWeb/GetSellerInEnterprise",
@@ -783,7 +934,11 @@ controller.AutoInput = function (element, option) {
         });
     });
 }
-//二维码生成
+/**
+ * 二维码生成
+ * @param {any} 节点
+ * @param {any} 配置
+ */
 controller.QRCode = function (element, option) {
     defaultOption = {
         render: "canvas", //canvas 或者 table

@@ -37,9 +37,22 @@
                         }
                     })
                 });
+                options.IdList = null;
+                $('#tableList').on('uncheck.bs.table check.bs.table check-all.bs.table uncheck-all.bs.table', function (event, rows) {
+                    options.IdList = controller.TableEvent(event.type, rows, 0);
+                });
             },
             //行为
             action: {
+                CheckFormatter: function (val, row, index) {
+                    if (options.IdList != null) {
+                        //集合先转数组
+                        if ($.inArray(row.Id, Array.from(options.IdList)) != -1)
+                            return {
+                                checked: true
+                            }
+                    }
+                },
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
@@ -97,6 +110,7 @@
                         <div class="col-sm-8 m-b-xs">
                             <div class="input-group">
                                 <button type="button" class="btn btn-sm btn-white" id="add"><i class="fa fa-plus"></i>新增</button>
+                                <button type="button" class="btn btn-sm btn-white" id="export"><i class="fa fa-file-excel-o"></i>导出Excel</button>
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -114,7 +128,8 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="FileTitle" data-halign="center" data-align="center" data-valign="middle">姓名</th>
+                                <th data-field="Stutas" data-checkbox="true" data-halign="center" data-align="center" data-valign="middle" data-formatter="options.action.CheckFormatter"></th>
+                                <th data-field="FileTitle" data-halign="center" data-align="center" data-valign="middle">文件标题</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>

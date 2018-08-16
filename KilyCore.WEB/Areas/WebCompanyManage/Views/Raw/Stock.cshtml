@@ -41,9 +41,35 @@
                         }
                     })
                 });
+                options.IdListIn = null;
+                options.IdListOut = null;
+                $('#tableListSet').on('uncheck.bs.table check.bs.table check-all.bs.table uncheck-all.bs.table', function (event, rows) {
+                    options.IdListIn = controller.TableEvent(event.type, rows,-1);
+                });
+                $('#tableListOut').on('uncheck.bs.table check.bs.table check-all.bs.table uncheck-all.bs.table', function (event, rows) {
+                    options.IdListOut = controller.TableEvent(event.type, rows,1);
+                });
             },
             //行为
             action: {
+                CheckInFormatter: function (val, row, index) {
+                    if (options.IdList != null) {
+                        //集合先转数组
+                        if ($.inArray(row.Id, Array.from(options.IdListIn)) != -1)
+                            return {
+                                checked: true
+                            }
+                    }
+                },
+                CheckOutFormatter: function (val, row, index) {
+                    if (options.IdList != null) {
+                        //集合先转数组
+                        if ($.inArray(row.Id, Array.from(options.IdListOut)) != -1)
+                            return {
+                                checked: true
+                            }
+                    }
+                },
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     if (row.SetStockNum != undefined)
@@ -144,6 +170,7 @@
                     <table id="tableListSet" class="table">
                         <thead>
                             <tr>
+                                <th data-field="Stutas" data-checkbox="true" data-halign="center" data-align="center" data-valign="middle" data-formatter="options.action.CheckInFormatter"></th>
                                 <th data-field="SerializNo" data-halign="center" data-align="center" data-valign="middle">入库批次</th>
                                 <th data-field="BatchNo" data-halign="center" data-align="center" data-valign="middle">原料批次</th>
                                 <th data-field="MaterName" data-halign="center" data-align="center" data-valign="middle">原料名称</th>
@@ -179,6 +206,7 @@
                     <table id="tableListOut" class="table">
                         <thead>
                             <tr>
+                                <th data-field="Stutas" data-checkbox="true" data-halign="center" data-align="center" data-valign="middle" data-formatter="options.action.CheckOutFormatter"></th>
                                 <th data-field="SerializNo" data-halign="center" data-align="center" data-valign="middle">出库批次</th>
                                 <th data-field="BatchNo" data-halign="center" data-align="center" data-valign="middle">原料批次</th>
                                 <th data-field="MaterName" data-halign="center" data-align="center" data-valign="middle">原料名称</th>
