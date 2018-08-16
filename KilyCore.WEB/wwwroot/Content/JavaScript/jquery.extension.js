@@ -7,7 +7,10 @@ email:847432003@qq.com
 var UserInfo = UserInfo || {};
 var CompanyUser = CompanyUser || {};
 var RepastInfo = RepastInfo || {};
-//设置菜单
+/**
+ * 设置菜单
+ * @param {any} 数据
+ */
 $.fn.SetTree = function (data) {
     var html = '';
     $.each(data, function (i, obj) {
@@ -24,7 +27,9 @@ $.fn.SetTree = function (data) {
     });
     this.append(html);
 }
-//Jq拓展方法 - 序列化表单
+/**
+ * Jq拓展方法 - 序列化表单
+ * */
 $.fn.SerializeJson = function () {
     var serializeObj = {};
     var array = this.serializeArray();
@@ -42,7 +47,9 @@ $.fn.SerializeJson = function () {
     });
     return serializeObj;
 };
-//获取用户信息
+/**
+ * 获取用户信息
+ * */
 $.fn.GetUserInfo = function () {
     if (localStorage.UserInfo != undefined) {
         UserInfo = JSON.parse(localStorage.UserInfo);
@@ -51,7 +58,9 @@ $.fn.GetUserInfo = function () {
     else
         return true;
 }
-//获取企业用户信息
+/**
+ * 获取企业用户信息
+ * */
 $.fn.GetCompanyInfo = function () {
     if (localStorage.CompanyUser != undefined) {
         CompanyUser = JSON.parse(localStorage.CompanyUser);
@@ -60,7 +69,9 @@ $.fn.GetCompanyInfo = function () {
     else
         return true;
 }
-//获取餐饮企业用户信息
+/**
+ * 获取餐饮企业用户信息
+ * */
 $.fn.GetRepastInfo = function () {
     if (localStorage.RepastUser != undefined) {
         RepastInfo = JSON.parse(localStorage.RepastUser);
@@ -69,7 +80,9 @@ $.fn.GetRepastInfo = function () {
     else
         return true;
 }
-//只针对角色页面使用
+/**
+ * 序列化表单-只针对角色页面使用
+ * */
 $.fn.SerializeOver = function () {
     var serializeObj = {};
     var datas = [];

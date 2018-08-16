@@ -22,7 +22,6 @@ namespace KilyCore.Extension.FilterGroup
         /// <param name="context"></param>
         public void OnResourceExecuted(ResourceExecutedContext context)
         {
-
         }
         /// <summary>
         /// 第二执行
@@ -40,7 +39,7 @@ namespace KilyCore.Extension.FilterGroup
                     if (!string.IsNullOrEmpty(request.Headers["TimeSpan"].FirstOrDefault()))
                         timespan = long.Parse(request.Headers["TimeSpan"].FirstOrDefault());
                     else
-                         timespan = long.Parse(request.Query.Where(t => t.Key.Contains("TimeSpan")).Select(t => t.Value).FirstOrDefault().ToString());
+                        timespan = long.Parse(request.Query.Where(t => t.Key.Contains("TimeSpan")).Select(t => t.Value).FirstOrDefault().ToString());
                     if (VerificationExtension.VerificationExpriseTime(timespan) > 10 || VerificationExtension.VerificationExpriseTime(timespan) < -10)
                         context.Result = new JsonResult("请求超时");
                 }

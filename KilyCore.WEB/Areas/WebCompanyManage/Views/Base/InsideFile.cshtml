@@ -37,6 +37,19 @@
                         }
                     })
                 });
+                $("#export").on('click', function () {
+                    if (options.IdList == null) {
+                        controller.Msg("请选择需要导出的数据!");
+                        return;
+                    };
+                    var data = Array.from(options.IdList);
+                    if (data.length == 0) {
+                        controller.Msg("请选择需要导出的数据!");
+                        return;
+                    }
+                    $("#Ids").val(data);
+                    $("#Excel").submit();
+                });
                 options.IdList = null;
                 $('#tableList').on('uncheck.bs.table check.bs.table check-all.bs.table uncheck-all.bs.table', function (event, rows) {
                     options.IdList = controller.TableEvent(event.type, rows, 0);
@@ -98,6 +111,9 @@
 @section css{
 
 }
+<form method="get" action="/File/ExportExcel" id="Excel">
+    <input type="hidden" name="Id"  id="Ids"/>
+</form>
 <div class="container-fluid">
     <div class="col-lg-12">
         <div class="ibox float-e-margins">

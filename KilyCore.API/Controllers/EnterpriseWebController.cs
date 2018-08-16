@@ -1709,5 +1709,7 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.WxPay(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 导出Excel
+        #endregion
     }
 }

@@ -72,7 +72,13 @@ namespace KilyCore.WEB.Controllers
             Object Result = FileUtil.RemovePath(data,WebRootPath);
             return new JsonResult(Result);
         }
-       
+        /// <summary>
+        /// 导出Excel
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public FileResult ExportExcel() {
+            return null;
+        }
     }
-    
 }

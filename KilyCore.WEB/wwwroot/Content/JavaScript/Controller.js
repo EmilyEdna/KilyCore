@@ -209,7 +209,11 @@ controller.Confirm = function (option, callBack, title) {
 controller.Msg = function (option) {
     top.layer.msg(option);
 }
-//对话框
+/**
+ * 对话框
+ * @param {any} 内容
+ * @param {any} 标题
+ */
 controller.Alter = function (option, title) {
     if (!title)
         title = "信息";
