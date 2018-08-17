@@ -251,7 +251,7 @@ namespace KilyCore.WEB.Util
                     int index = 1;
                     Data.ForEach(t =>
                     {
-                        t.GetType().GetProperty("No").SetValue(t, index);
+                        t.GetType().GetProperty("编号").SetValue(t, index);
                         index++;
                     });
                 }

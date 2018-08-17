@@ -10,9 +10,11 @@ namespace KilyCore.WEB.Model
     {
         public List<FileText> data { get; set; }
     }
-    public class FileText 
+    public class FileText
     {
-        public int No { get; set; }
-        public string FileTitle { get; set; }
+        [JsonProperty("No")]
+        public int 编号 { get; set; }
+        [JsonProperty("FileTitle")]
+        public string 标题 { get; set; }
     }
 }
