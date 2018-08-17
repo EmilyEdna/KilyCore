@@ -3725,5 +3725,21 @@ namespace KilyCore.Service.ServiceCore
             return WxPayCore.Instance.WebPay(WxPayModel);
         }
         #endregion
+        public IList<ResponseEnterpriseInsideFile> ExportFile(String Param)
+        {
+            IQueryable<EnterpriseInsideFile> queryable = Kily.Set<EnterpriseInsideFile>().Where(t => t.IsDelete == false);
+            if (Param.Contains(","))
+            {
+                List<String> Ids = Param.Split(",").ToList();
+                queryable = queryable.Where(t => Ids.Contains(t.Id.ToString()));
+            }
+            else
+                queryable = queryable.Where(t => t.Id.ToString() == Param);
+            var data = queryable.Select(t => new ResponseEnterpriseInsideFile()
+            {
+                FileTitle = t.FileTitle
+            }).ToList();
+            return data;
+        }
     }
 }

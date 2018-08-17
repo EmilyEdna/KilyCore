@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
+using System.Linq;
 using KilyCore.WEB.Model;
 using KilyCore.WEB.Util;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SelectPdf;
 
 namespace KilyCore.WEB.Controllers
@@ -42,9 +47,7 @@ namespace KilyCore.WEB.Controllers
             var WebRootPath = Environment.WebRootPath;
             var result = FileUtil.CreatePDFBytes(Param, WebRootPath);
             var bytes = FileUtil.SavePDF(result);
-            FileResult PDF = new FileContentResult(bytes, "application/pdf");
-            PDF.FileDownloadName = "入住合同.pdf";
-            return PDF;
+            return File(bytes, "application/pdf", "入住合同.pdf");
         }
         /// <summary>
         /// 下载PDF合同文件
@@ -69,7 +72,7 @@ namespace KilyCore.WEB.Controllers
         public JsonResult RemovePath([FromBody]FormData data)
         {
             var WebRootPath = Environment.WebRootPath;
-            Object Result = FileUtil.RemovePath(data,WebRootPath);
+            Object Result = FileUtil.RemovePath(data, WebRootPath);
             return new JsonResult(Result);
         }
         /// <summary>
@@ -77,8 +80,16 @@ namespace KilyCore.WEB.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public FileResult ExportExcel() {
-            return null;
+        public FileResult ExportExcel(ExcelModel datas)
+        {
+            string Path = Configer.Host + datas.ApiUrl;
+            IDictionary<String, String> Map = new Dictionary<string, string>();
+            Map.Add("Ids", "Id");
+            var keyValuePairs = HttpClientUtil.keyValuePairs(datas, Map);
+            var Result = HttpClientUtil.HttpPostAsync(Path, keyValuePairs, null, "application/x-www-form-urlencoded").Result;
+            var data = JsonConvert.DeserializeObject<ExportModelBase>(Result);
+            var bytes = FileUtil.ExportExcel(data.data, null, "报表", true);
+            return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "TEST.xlsx");
         }
     }
 }

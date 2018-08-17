@@ -7,6 +7,7 @@ using KilyCore.DataEntity.RequestMapper.Function;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.Extension.ResultExtension;
 using KilyCore.Service.QueryExtend;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 /// <summary>
@@ -1710,6 +1711,12 @@ namespace KilyCore.API.Controllers
         }
         #endregion
         #region 导出Excel
+        [HttpPost("ExportFile")]
+        [AllowAnonymous]
+        public ObjectResultEx ExportFile(SimlpeParam<String> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.ExportFile(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
     }
 }

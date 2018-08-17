@@ -451,9 +451,9 @@ controller.Table = function (element, option) {
  * 表格事件
  * @param {any} 类型
  * @param {any} 数据
- * @param {any} 模式
+ * @param {int} 模式
  */
-controller.TableEvent = function (type, rows, flag) {
+controller.TableEvent = function (type, rows,flag) {
     //flag表示模式
     if (flag < 0)
     {
@@ -470,21 +470,6 @@ controller.TableEvent = function (type, rows, flag) {
                 IdListIn.delete(data.Id);
             });
         return IdListIn;
-    }
-    else if (flag == 0) {
-        var IdList = $(this).data("Set");
-        if (!IdList) //JQ单例模式
-            $(this).data("Set", (IdList = new Set()));
-        var datas = $.isArray(rows) ? rows : [rows];
-        if (type.indexOf('uncheck') == -1)//选中
-            $.each(datas, function (i, data) {
-                IdList.add(data.Id);
-            });
-        else//反选
-            $.each(datas, function (i, data) {
-                IdList.delete(data.Id);
-            });
-        return IdList;
     }
     else {
         var IdListOut = $(this).data("Set");

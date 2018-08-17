@@ -2,14 +2,13 @@
 using iTextSharp.text.pdf;
 using KilyCore.WEB.Model;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using SelectPdf;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Text.RegularExpressions;
 /// <summary>
@@ -18,6 +17,9 @@ using System.Text.RegularExpressions;
 /// </summary>
 namespace KilyCore.WEB.Util
 {
+    /// <summary>
+    /// 文件工具类
+    /// </summary>
     public class FileUtil
     {
         /// <summary>
@@ -225,6 +227,87 @@ namespace KilyCore.WEB.Util
                     File.Delete(WebRootPath + Path);
             }
             return null;
+        }
+        /// <summary>
+        /// 导出Excel-EPPLUS
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="ColName">列明</param>
+        /// <param name="Data">数据源</param>
+        /// <param name="WorkSheetName">工作簿名称</param>
+        /// <param name="ShowNo">是否显示编号</param>
+        /// <returns></returns>
+        public static byte[] ExportExcel<T>(List<T> Data, List<String> ColName = null, string WorkSheetName = null, bool ShowNo = false)
+        {
+            byte[] Result = null;
+            using (ExcelPackage package = new ExcelPackage())
+            {
+                //添加工作簿
+                ExcelWorksheet workSheet = package.Workbook.Worksheets.Add(WorkSheetName);
+                int startRowFrom = string.IsNullOrEmpty(WorkSheetName) ? 1 : 3;  //开始的行
+                //是否显示行编号
+                if (ShowNo)
+                {
+                    int index = 1;
+                    Data.ForEach(t =>
+                    {
+                        t.GetType().GetProperty("No").SetValue(t, index);
+                        index++;
+                    });
+                }
+                //添加数据
+                workSheet.Cells["A" + startRowFrom].LoadFromCollection(Data, true);
+                int columnIndex = 1;
+                for (int i = 0; i < Data.Count; i++)
+                {
+                    ExcelRange columnCells = workSheet.Cells[workSheet.Dimension.Start.Row, columnIndex, workSheet.Dimension.End.Row, columnIndex];
+                    int maxLength = columnCells.Max(cell => cell.Value.ToString().Count());
+                    if (maxLength < 150)
+                    {
+                        workSheet.Column(columnIndex).AutoFit();
+                    }
+                    columnIndex++;
+                }
+                //样式
+                using (ExcelRange r = workSheet.Cells[startRowFrom, 1, startRowFrom, Data.Count])
+                {
+                    r.Style.Font.Color.SetColor(System.Drawing.Color.White);
+                    r.Style.Font.Bold = true;
+                    r.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    r.Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#1fb5ad"));
+                }
+                // 格式化列
+                using (ExcelRange r = workSheet.Cells[startRowFrom + 1, 1, startRowFrom + Data.FirstOrDefault().GetType().GetProperties().Count(), Data.Count])
+                {
+                    r.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    r.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                    r.Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    r.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+
+                    r.Style.Border.Top.Color.SetColor(System.Drawing.Color.Black);
+                    r.Style.Border.Bottom.Color.SetColor(System.Drawing.Color.Black);
+                    r.Style.Border.Left.Color.SetColor(System.Drawing.Color.Black);
+                    r.Style.Border.Right.Color.SetColor(System.Drawing.Color.Black);
+                }
+                // 删除忽略的列
+                int flag = Data.Count-1;
+                if (ColName != null)
+                    Data.FirstOrDefault().GetType().GetProperties().ToList().ForEach(t => {
+                        flag -= flag;
+                        if (!ColName.Contains(t.Name))
+                            workSheet.DeleteColumn(flag);
+                    });
+                if (!String.IsNullOrEmpty(WorkSheetName))
+                {
+                    workSheet.Cells["A1"].Value = WorkSheetName;
+                    workSheet.Cells["A1"].Style.Font.Size = 20;
+                    workSheet.InsertColumn(1, 1);
+                    workSheet.InsertRow(1, 1);
+                    workSheet.Column(1).Width = 5;
+                }
+                Result = package.GetAsByteArray();
+            }
+            return Result;
         }
     }
 }

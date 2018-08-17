@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日12点01分
@@ -94,5 +95,14 @@ namespace KilyCore.WEB.Model
         public static string CodeSelf { get; set; }
         public static string AddressSelf { get; set; }
         public static string Chapter { get; set; }
+        public static string Host { get; set; }
+    }
+    public class ExcelModel
+    {
+        public string Ids { get; set; }
+        [JsonIgnore]
+        public string ApiUrl { get; set; }
+        [JsonIgnore]
+        public string TimeSpan { get => ((Int64)(new TimeSpan(DateTime.UtcNow.Ticks - (new DateTime(1970, 1, 1, 0, 0, 0).Ticks)).TotalMilliseconds)).ToString(); }
     }
 }

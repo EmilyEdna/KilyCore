@@ -52,7 +52,7 @@
                 });
                 options.IdList = null;
                 $('#tableList').on('uncheck.bs.table check.bs.table check-all.bs.table uncheck-all.bs.table', function (event, rows) {
-                    options.IdList = controller.TableEvent(event.type, rows, 0);
+                    options.IdList = controller.TableEvent(event.type, rows, 1);
                 });
             },
             //行为
@@ -111,9 +111,10 @@
 @section css{
 
 }
-<form method="get" action="/File/ExportExcel" id="Excel">
-    <input type="hidden" name="Id"  id="Ids"/>
-</form>
+    <form method="post" action="/File/ExportExcel" id="Excel">
+        <input type="hidden" name="Ids" id="Ids" />
+        <input type="hidden" name="ApiUrl" value="EnterpriseWeb/ExportFile"/>
+    </form>
 <div class="container-fluid">
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
