@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -38,6 +40,30 @@ namespace KilyCore.Extension.HttpClientFactory
             return Client;
         }
         /// <summary>
+        /// 将数据制作表单数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="Entity"></param>
+        /// <param name="Map"></param>
+        /// <returns></returns>
+        public static IList<KeyValuePair<String, String>> KeyValuePairs<T>(T Entity, IDictionary<string, string> Map = null) where T : class, new()
+        {
+            IList<KeyValuePair<String, String>> keyValuePairs = new List<KeyValuePair<string, string>>();
+            Entity.GetType().GetProperties().ToList().ForEach(t =>
+            {
+                var flag = t.CustomAttributes.Where(x => x.AttributeType == typeof(JsonIgnoreAttribute)).FirstOrDefault();
+                if (Map != null)
+                    foreach (KeyValuePair<String, String> item in Map)
+                    {
+                        if (item.Key.Equals(t.Name))
+                            keyValuePairs.Add(new KeyValuePair<string, string>(item.Value, t.GetValue(Entity).ToString()));
+                    }
+                else if (flag == null)
+                    keyValuePairs.Add(new KeyValuePair<string, string>(t.Name, t.GetValue(Entity).ToString()));
+            });
+            return keyValuePairs;
+        }
+        /// <summary>
         /// Post异步请求
         /// </summary>
         /// <param name="url"></param>
@@ -47,7 +73,7 @@ namespace KilyCore.Extension.HttpClientFactory
         /// <param name="timeout"></param>
         /// <param name="encoding"></param>
         /// <returns></returns>
-        public static async Task<String> HttpPostAsync(string url, string data, Dictionary<string, string> headers = null, string contentType = null, int timeout = 0, Encoding encoding = null)
+        public static async Task<String> HttpPostAsync(string url, string data, IList<KeyValuePair<String, String>> datas = null, Dictionary<string, string> headers = null, string contentType = null, int timeout = 0, Encoding encoding = null)
         {
             Client = Client ?? CreateInstance();
             if (headers != null)
@@ -57,7 +83,17 @@ namespace KilyCore.Extension.HttpClientFactory
                 }
             if (timeout > 0)
                 Client.Timeout = new TimeSpan(0, 0, timeout);
-            HttpContent content = new StringContent(data ?? "", encoding ?? Encoding.UTF8);
+            HttpContent content = null;
+            if (datas != null)
+            {
+                content = new FormUrlEncodedContent(datas);
+                contentType = "application/x-www-form-urlencoded";
+            }
+            else
+            {
+                content = new StringContent(data ?? "", encoding ?? Encoding.UTF8);
+                contentType = "application/json";
+            }
             if (contentType != null)
                 content.Headers.ContentType = new MediaTypeHeaderValue(contentType);
             HttpResponseMessage responseMessage = await Client.PostAsync(url, content);

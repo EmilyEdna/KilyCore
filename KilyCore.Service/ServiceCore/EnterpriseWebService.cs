@@ -3725,9 +3725,17 @@ namespace KilyCore.Service.ServiceCore
             return WxPayCore.Instance.WebPay(WxPayModel);
         }
         #endregion
-        public IList<ResponseEnterpriseInsideFile> ExportFile(String Param)
+
+        #region 导出Excel
+        /// <summary>
+        /// 原料入库Excel导出
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public IList<ResponseEnterpriseMaterialStock> ExportMaterialInStockFile(String Param)
         {
-            IQueryable<EnterpriseInsideFile> queryable = Kily.Set<EnterpriseInsideFile>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseMaterialStock> queryable = Kily.Set<EnterpriseMaterialStock>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseMaterial> queryables = Kily.Set<EnterpriseMaterial>().Where(t => t.IsDelete == false);
             if (Param.Contains(","))
             {
                 List<String> Ids = Param.Split(",").ToList();
@@ -3735,11 +3743,43 @@ namespace KilyCore.Service.ServiceCore
             }
             else
                 queryable = queryable.Where(t => t.Id.ToString() == Param);
-            var data = queryable.Select(t => new ResponseEnterpriseInsideFile()
+            var data = queryable.Join(queryables, t => t.BatchNo, x => x.BatchNo, (t, x) => new ResponseEnterpriseMaterialStock()
             {
-                FileTitle = t.FileTitle
+                MaterName = x.MaterName,
+                SerializNo = t.SerializNo,
+                StockType = t.StockType,
+                SetStockNum = t.SetStockNum,
+                SetStockTime = t.SetStockTime,
+                SetStockUser = t.SetStockUser,
+                Supplier = x.Supplier
             }).ToList();
             return data;
         }
+        /// <summary>
+        /// 原料出库Excel导出
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public IList<ResponseEnterpriseMaterialStockAttach> ExportMaterialOutStockFile(String Param)
+        {
+            IQueryable<EnterpriseMaterialStockAttach> queryable = Kily.Set<EnterpriseMaterialStockAttach>().Where(t => t.IsDelete == false);
+            if (Param.Contains(","))
+            {
+                List<String> Ids = Param.Split(",").ToList();
+                queryable = queryable.Where(t => Ids.Contains(t.Id.ToString()));
+            }
+            else
+                queryable = queryable.Where(t => t.Id.ToString() == Param);
+            var data = queryable.Select(t => new ResponseEnterpriseMaterialStockAttach()
+            {
+            OutStockTime=t.OutStockTime,
+            OutStockUser=t.OutStockUser,
+            OutStockNum=t.OutStockNum,
+            SerializNo=t.SerializNo,
+            StockType=t.StockType
+            }).ToList();
+            return data;
+        }
+        #endregion
     }
 }

@@ -1711,11 +1711,27 @@ namespace KilyCore.API.Controllers
         }
         #endregion
         #region 导出Excel
-        [HttpPost("ExportFile")]
+        /// <summary>
+        /// 原料入库Excel导出
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("ExportMaterialInStockFile")]
         [AllowAnonymous]
-        public ObjectResultEx ExportFile(SimlpeParam<String> Param)
+        public ObjectResultEx ExportMaterialInStockFile(SimlpeParam<String> Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.ExportFile(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.ExportMaterialInStockFile(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 原料出库Excel导出
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("ExportMaterialOutStockFile")]
+        [AllowAnonymous]
+        public ObjectResultEx ExportMaterialOutStockFile(SimlpeParam<String> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.ExportMaterialOutStockFile(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

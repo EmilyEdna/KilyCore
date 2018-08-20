@@ -269,6 +269,9 @@ namespace KilyCore.Service.IServiceCore
         String AliPay(int Key, int? Value);
         String WxPay(int Key, int? Value);
         #endregion
-        IList<ResponseEnterpriseInsideFile> ExportFile(String Param);
+        #region 导出Excel
+        IList<ResponseEnterpriseMaterialStock> ExportMaterialInStockFile(String Param);
+        IList<ResponseEnterpriseMaterialStockAttach> ExportMaterialOutStockFile(String Param);
+        #endregion
     }
 }

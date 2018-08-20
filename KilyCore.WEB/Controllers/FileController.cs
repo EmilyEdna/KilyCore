@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
-using System.IO;
-using System.Linq;
 using KilyCore.WEB.Model;
 using KilyCore.WEB.Util;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Linq;
 using Newtonsoft.Json.Linq;
-using SelectPdf;
 
 namespace KilyCore.WEB.Controllers
 {
@@ -69,7 +66,7 @@ namespace KilyCore.WEB.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult RemovePath([FromBody]FormData data)
+        public JsonResult RemovePath(FromData data)
         {
             var WebRootPath = Environment.WebRootPath;
             Object Result = FileUtil.RemovePath(data, WebRootPath);
@@ -83,13 +80,23 @@ namespace KilyCore.WEB.Controllers
         public FileResult ExportExcel(ExcelModel datas)
         {
             string Path = Configer.Host + datas.ApiUrl;
-            IDictionary<String, String> Map = new Dictionary<string, string>();
-            Map.Add("Ids", "Id");
-            var keyValuePairs = HttpClientUtil.keyValuePairs(datas, Map);
+            IDictionary<String, String> Map = new Dictionary<String, String>
+            {
+                { "Ids", "Id" }
+            };
+            var keyValuePairs = HttpClientUtil.KeyValuePairs(datas, Map);
             var Result = HttpClientUtil.HttpPostAsync(Path, keyValuePairs, null, "application/x-www-form-urlencoded").Result;
-            var data = JsonConvert.DeserializeObject<ExportModelBase>(Result);
-            var bytes = FileUtil.ExportExcel(data.data, null, "报表", true);
-            return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "TEST.xlsx");
+            var data = JsonConvert.DeserializeObject<MaterialStockIn>(Result);
+            data.GetType().GetProperties().ToList();
+            dynamic dynamics = JsonConvert.DeserializeObject<dynamic>(Result).data;
+           var s= ((dynamics.First as JContainer).First as JProperty).Name;
+            var count = (dynamics.First as JContainer).Count;
+            for (int i = 0; i < count; i++)
+            {
+
+            }
+            var bytes = FileUtil.ExportExcel(data.data, "报表", true);
+            return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "报表单.xlsx");
         }
     }
 }

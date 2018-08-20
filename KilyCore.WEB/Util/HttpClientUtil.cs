@@ -32,20 +32,20 @@ namespace KilyCore.WEB.Util
         /// <param name="Entity"></param>
         /// <param name="Map"></param>
         /// <returns></returns>
-        public static IList<KeyValuePair<String, String>> keyValuePairs<T>(T Entity, IDictionary<string, string> Map = null) where T : class, new()
+        public static IList<KeyValuePair<String, String>> KeyValuePairs<T>(T Entity, IDictionary<string, string> Map = null) where T : class, new()
         {
             IList<KeyValuePair<String, String>> keyValuePairs = new List<KeyValuePair<string, string>>();
             Entity.GetType().GetProperties().ToList().ForEach(t =>
             {
-                foreach (KeyValuePair<String, String> item in Map)
-                {
-                    var flag = t.CustomAttributes.Where(x => x.AttributeType == typeof(JsonIgnoreAttribute)).FirstOrDefault();
-                    if (item.Key.Equals(t.Name))
-                        keyValuePairs.Add(new KeyValuePair<string, string>(item.Value, t.GetValue(Entity).ToString()));
-                    else
-                        if (flag == null)
-                        keyValuePairs.Add(new KeyValuePair<string, string>(t.Name, t.GetValue(Entity).ToString()));
-                }
+                var flag = t.CustomAttributes.Where(x => x.AttributeType == typeof(JsonIgnoreAttribute)).FirstOrDefault();
+                if (Map != null)
+                    foreach (KeyValuePair<String, String> item in Map)
+                    {
+                        if (item.Key.Equals(t.Name))
+                            keyValuePairs.Add(new KeyValuePair<string, string>(item.Value, t.GetValue(Entity).ToString()));
+                    }
+                else if (flag == null)
+                    keyValuePairs.Add(new KeyValuePair<string, string>(t.Name, t.GetValue(Entity).ToString()));
             });
             return keyValuePairs;
         }

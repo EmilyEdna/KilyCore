@@ -24,7 +24,7 @@
             //事件
             InitEvents: function () {
                 $("li").find("a").on('click', function () {
-                    if($(this).attr("href") == "#tab-1")
+                    if ($(this).attr("href") == "#tab-1")
                         this.$table = controller.Table("#tableListSet", { async: false, url: "EnterpriseWeb/GetStockPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#InStock" });
                     else
                         this.$table = controller.Table("#tableListOut", { async: false, url: "EnterpriseWeb/GetOutStockPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#OutStock" });
@@ -41,13 +41,45 @@
                         }
                     })
                 });
+                //导出Excel-入库
+                $("#exportIn").on('click', function () {
+                    if (options.IdListIn == null) {
+                        controller.Msg("请选择需要导出的数据!");
+                        return;
+                    };
+                    var data = Array.from(options.IdListIn);
+                    if (data.length == 0) {
+                        controller.Msg("请选择需要导出的数据!");
+                        return;
+                    }
+                    $("#Ids").val(data);
+                    $("#ApiUrl").val("EnterpriseWeb/ExportMaterialInStockFile")
+                    $("#Excel").submit();
+                });
+                //导出Excel-出库
+                $("#exportOut").on('click', function () {
+                    if (options.IdListOut == null) {
+                        controller.Msg("请选择需要导出的数据!");
+                        return;
+                    };
+                    var data = Array.from(options.IdListOut);
+                    if (data.length == 0) {
+                        controller.Msg("请选择需要导出的数据!");
+                        return;
+                    }
+                    $("#ApiUrl").val("EnterpriseWeb/ExportMaterialOutStockFile")
+                    $("#Ids").val(data);
+                    $("#Excel").submit();
+                });
                 options.IdListIn = null;
                 options.IdListOut = null;
+                //入库绑定复选框事件
                 $('#tableListSet').on('uncheck.bs.table check.bs.table check-all.bs.table uncheck-all.bs.table', function (event, rows) {
-                    options.IdListIn = controller.TableEvent(event.type, rows,-1);
+                    options.IdListIn = controller.TableEvent(event.type, rows, -1);
                 });
+                //出库绑定复选框事件
                 $('#tableListOut').on('uncheck.bs.table check.bs.table check-all.bs.table uncheck-all.bs.table', function (event, rows) {
-                    options.IdListOut = controller.TableEvent(event.type, rows,1);
+                    options.IdListOut = controller.TableEvent(event.type, rows, 1);
                 });
             },
             //行为
@@ -92,7 +124,7 @@
                                     });
                                 }
                             });
-                        } else { 
+                        } else {
                             controller.Confirm("确认删除?", function (bool) {
                                 if (bool) {
                                     controller.ajax({
@@ -135,6 +167,10 @@
         }
     </style>
 }
+<form method="post" action="/File/ExportExcel" id="Excel">
+    <input type="hidden" name="Ids" id="Ids" />
+    <input type="hidden" name="ApiUrl" id="ApiUrl" />
+</form>
 <!--导航-->
 <div class="tabs-container" style="margin-top:10px;">
     <ul class="nav nav-tabs">
@@ -153,6 +189,7 @@
                         <div class="col-sm-8 m-b-xs">
                             <div class="input-group">
                                 <button type="button" class="btn btn-sm btn-white" id="add"><i class="fa fa-plus"></i>新增</button>
+                                <button type="button" class="btn btn-sm btn-white" id="exportIn"><i class="fa fa-file-excel-o"></i>导出Excel</button>
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -190,6 +227,7 @@
                 <div class="row">
                     <form id="OutStock">
                         <div class="col-sm-8 m-b-xs">
+                            <button type="button" class="btn btn-sm btn-white" id="exportOut"><i class="fa fa-file-excel-o"></i>导出Excel</button>
                         </div>
                         <div class="col-sm-4">
                             <div class="input-group">

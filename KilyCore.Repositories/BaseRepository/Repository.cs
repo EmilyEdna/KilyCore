@@ -15,7 +15,6 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using KilyCore.Extension.HttpClientFactory;
-using Newtonsoft.Json;
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日12点01分
@@ -360,8 +359,7 @@ namespace KilyCore.Repositories.BaseRepository
                         if ((t.GetValue(Entity) == null ? "" : t.GetValue(Entity)).ToString().Contains(@"/Upload/Images/"))
                             PhotoPath.Add(t.GetValue(Entity).ToString());
                 });
-                String Key = JsonConvert.SerializeObject(new { Param = String.Join(",", PhotoPath) });
-                return HttpClientExtension.HttpPostAsync(Url, Key,null,"application/json").Result;
+                return HttpClientExtension.HttpPostAsync(Url,null, HttpClientExtension.KeyValuePairs<Object>(new { Path = String.Join(",", PhotoPath) })).Result;
             }
             catch (Exception ex)
             {

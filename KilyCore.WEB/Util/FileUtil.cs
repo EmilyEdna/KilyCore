@@ -7,6 +7,7 @@ using OfficeOpenXml.Style;
 using SelectPdf;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -29,9 +30,9 @@ namespace KilyCore.WEB.Util
         /// <param name="Files"></param>
         /// <param name="WebRootPath"></param>
         /// <returns></returns>
-        public static Object UploadFile(IFormFile Files, string FolderName, string WebRootPath)
+        public static Object UploadFile(IFormFile Files, String FolderName, String WebRootPath)
         {
-            string[] FileType = { ".jpg", ".png", ".jpeg", ".bmp", ".gif", ".ico" };
+            String[] FileType = { ".jpg", ".png", ".jpeg", ".bmp", ".gif", ".ico" };
             //文件后缀
             var FileExtension = Path.GetExtension(Files.FileName);
             if (FileExtension == null)
@@ -39,11 +40,11 @@ namespace KilyCore.WEB.Util
             if (!FileType.Contains(FileExtension))
                 return new { data = "", flag = -1, msg = "文件类型不正确！", HttpCode = 50 };
             long bytes = Files.Length;
-            string RootPath = $"/Upload/Images/{FolderName}/{DateTime.Now.ToString("yyyyMMdd")}/";
-            string SavePath = WebRootPath + RootPath;
+            String RootPath = $"/Upload/Images/{FolderName}/{DateTime.Now.ToString("yyyyMMdd")}/";
+            String SavePath = WebRootPath + RootPath;
             if (!Directory.Exists(SavePath))
                 Directory.CreateDirectory(SavePath);
-            string FullFileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + FileExtension;
+            String FullFileName = DateTime.Now.ToString("yyyyMMddHHmmssfff") + FileExtension;
             using (FileStream fs = File.Create(SavePath + FullFileName))
             {
                 Files.CopyTo(fs);
@@ -58,7 +59,7 @@ namespace KilyCore.WEB.Util
         /// <param name="Version"></param>
         /// <param name="WebRootPath"></param>
         /// <returns></returns>
-        public static IList<byte[]> CreatePDFBytes(Contract Params, string WebRootPath)
+        public static IList<byte[]> CreatePDFBytes(Contract Params, String WebRootPath)
         {
             IDictionary<Object, Object> Map = new Dictionary<Object, Object>();
             IList<byte[]> Lbyte = new List<byte[]>();
@@ -124,11 +125,11 @@ namespace KilyCore.WEB.Util
         /// <param name="WebRootPath"></param>
         /// <param name="help"></param>
         /// <returns></returns>
-        public static byte[] HTMLToPDF(string WebRootPath, ContractHelp help)
+        public static byte[] HTMLToPDF(String WebRootPath, ContractHelp help)
         {
-            string TemplatePath = WebRootPath + @"/Template/Template.html";
+            String TemplatePath = WebRootPath + @"/Template/Template.html";
             StreamReader reader = new StreamReader(TemplatePath, Encoding.UTF8);
-            string HTMLContent = reader.ReadToEnd();
+            String HTMLContent = reader.ReadToEnd();
             if (help.ContractType == 1)
                 HTMLContent = HTMLContent.Replace("{CompanySelf}", Configer.CompanySelf)
                     .Replace("{CodeSelf}", Configer.CodeSelf)
@@ -201,10 +202,10 @@ namespace KilyCore.WEB.Util
         /// <param name="Param"></param>
         /// <param name="WebRootPath"></param>
         /// <returns></returns>
-        public static string RemovePath(FormData Data, string WebRootPath)
+        public static String RemovePath(FromData Param, String WebRootPath)
         {
-            String Path = Data.Param;
-            if (string.IsNullOrEmpty(Path))
+            String Path = Param.Path;
+            if (String.IsNullOrEmpty(Path))
                 return null;
             if (Path.Contains("img"))
             {
@@ -237,14 +238,13 @@ namespace KilyCore.WEB.Util
         /// <param name="WorkSheetName">工作簿名称</param>
         /// <param name="ShowNo">是否显示编号</param>
         /// <returns></returns>
-        public static byte[] ExportExcel<T>(List<T> Data, List<String> ColName = null, string WorkSheetName = null, bool ShowNo = false)
+        public static byte[] ExportExcel<T>(List<T> Data, String WorkSheetName = null, bool ShowNo = false, List<String> ColName = null)
         {
             byte[] Result = null;
             using (ExcelPackage package = new ExcelPackage())
             {
                 //添加工作簿
                 ExcelWorksheet workSheet = package.Workbook.Worksheets.Add(WorkSheetName);
-                int startRowFrom = string.IsNullOrEmpty(WorkSheetName) ? 1 : 3;  //开始的行
                 //是否显示行编号
                 if (ShowNo)
                 {
@@ -255,56 +255,42 @@ namespace KilyCore.WEB.Util
                         index++;
                     });
                 }
-                //添加数据
-                workSheet.Cells["A" + startRowFrom].LoadFromCollection(Data, true);
-                int columnIndex = 1;
-                for (int i = 0; i < Data.Count; i++)
+                //从A1开始添加数据
+                workSheet.Cells["A1"].LoadFromCollection(Data, true);
+                workSheet.Cells.AutoFitColumns();
+                //设置表格样式
+                using (ExcelRange rng = workSheet.Cells[1, 1, Data.Count + 1, Data[0].GetType().GetProperties().Count()])
                 {
-                    ExcelRange columnCells = workSheet.Cells[workSheet.Dimension.Start.Row, columnIndex, workSheet.Dimension.End.Row, columnIndex];
-                    int maxLength = columnCells.Max(cell => cell.Value.ToString().Count());
-                    if (maxLength < 150)
-                    {
-                        workSheet.Column(columnIndex).AutoFit();
-                    }
-                    columnIndex++;
-                }
-                //样式
-                using (ExcelRange r = workSheet.Cells[startRowFrom, 1, startRowFrom, Data.Count])
-                {
-                    r.Style.Font.Color.SetColor(System.Drawing.Color.White);
-                    r.Style.Font.Bold = true;
-                    r.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                    r.Style.Fill.BackgroundColor.SetColor(System.Drawing.ColorTranslator.FromHtml("#1fb5ad"));
-                }
-                // 格式化列
-                using (ExcelRange r = workSheet.Cells[startRowFrom + 1, 1, startRowFrom + Data.FirstOrDefault().GetType().GetProperties().Count(), Data.Count])
-                {
-                    r.Style.Border.Top.Style = ExcelBorderStyle.Thin;
-                    r.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                    r.Style.Border.Left.Style = ExcelBorderStyle.Thin;
-                    r.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    rng.Style.Font.Name = "宋体";
+                    rng.Style.Font.Size = 10;
+                    rng.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    rng.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, 255, 255));
 
-                    r.Style.Border.Top.Color.SetColor(System.Drawing.Color.Black);
-                    r.Style.Border.Bottom.Color.SetColor(System.Drawing.Color.Black);
-                    r.Style.Border.Left.Color.SetColor(System.Drawing.Color.Black);
-                    r.Style.Border.Right.Color.SetColor(System.Drawing.Color.Black);
+                    rng.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    rng.Style.Border.Top.Color.SetColor(Color.FromArgb(155, 155, 155));
+
+                    rng.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                    rng.Style.Border.Bottom.Color.SetColor(Color.FromArgb(155, 155, 155));
+
+                    rng.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    rng.Style.Border.Right.Color.SetColor(Color.FromArgb(155, 155, 155));
+                }
+                using (ExcelRange rng = workSheet.Cells[1, 1, 1, Data[0].GetType().GetProperties().Count()])
+                {
+                    rng.Style.Font.Bold = true;
+                    rng.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    rng.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(234, 241, 246));  //Set color to dark blue
+                    rng.Style.Font.Color.SetColor(Color.FromArgb(51, 51, 51));
                 }
                 // 删除忽略的列
-                int flag = Data.Count-1;
+                int flag = 0;
                 if (ColName != null)
-                    Data.FirstOrDefault().GetType().GetProperties().ToList().ForEach(t => {
-                        flag -= flag;
+                    Data.FirstOrDefault().GetType().GetProperties().ToList().ForEach(t =>
+                    {
+                        flag += 1;
                         if (!ColName.Contains(t.Name))
                             workSheet.DeleteColumn(flag);
                     });
-                if (!String.IsNullOrEmpty(WorkSheetName))
-                {
-                    workSheet.Cells["A1"].Value = WorkSheetName;
-                    workSheet.Cells["A1"].Style.Font.Size = 20;
-                    workSheet.InsertColumn(1, 1);
-                    workSheet.InsertRow(1, 1);
-                    workSheet.Column(1).Width = 5;
-                }
                 Result = package.GetAsByteArray();
             }
             return Result;

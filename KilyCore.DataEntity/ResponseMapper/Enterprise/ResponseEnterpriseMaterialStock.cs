@@ -31,6 +31,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string SetStockUser { get; set; }
         public string StockType { get; set; }
         public Guid CheckMaterialId { get; set; }
+        public string Supplier { get; set; }
     }
     public class ResponseEnterpriseMaterialStockAttach {
         public Guid Id { get; set; }
