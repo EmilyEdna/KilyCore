@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Linq;
 using Newtonsoft.Json.Linq;
+using System.Dynamic;
 
 namespace KilyCore.WEB.Controllers
 {
@@ -85,17 +86,9 @@ namespace KilyCore.WEB.Controllers
                 { "Ids", "Id" }
             };
             var keyValuePairs = HttpClientUtil.KeyValuePairs(datas, Map);
-            var Result = HttpClientUtil.HttpPostAsync(Path, keyValuePairs, null, "application/x-www-form-urlencoded").Result;
-            var data = JsonConvert.DeserializeObject<MaterialStockIn>(Result);
-            data.GetType().GetProperties().ToList();
-            dynamic dynamics = JsonConvert.DeserializeObject<dynamic>(Result).data;
-           var s= ((dynamics.First as JContainer).First as JProperty).Name;
-            var count = (dynamics.First as JContainer).Count;
-            for (int i = 0; i < count; i++)
-            {
-
-            }
-            var bytes = FileUtil.ExportExcel(data.data, "报表", true);
+            String Result = HttpClientUtil.HttpPostAsync(Path, keyValuePairs, null, "application/x-www-form-urlencoded").Result;
+            var dt = FileUtil.ConvertJsonToDatatable(JsonConvert.SerializeObject(JsonConvert.DeserializeObject<dynamic>(Result).data));
+            var bytes = FileUtil.ExportExcel(dt, "报表");
             return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "报表单.xlsx");
         }
     }

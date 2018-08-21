@@ -270,8 +270,8 @@ namespace KilyCore.Service.IServiceCore
         String WxPay(int Key, int? Value);
         #endregion
         #region 导出Excel
-        IList<ResponseEnterpriseMaterialStock> ExportMaterialInStockFile(String Param);
-        IList<ResponseEnterpriseMaterialStockAttach> ExportMaterialOutStockFile(String Param);
+        IList<Object> ExportMaterialInStockFile(String Param);
+        IList<Object> ExportMaterialOutStockFile(String Param);
         #endregion
     }
 }

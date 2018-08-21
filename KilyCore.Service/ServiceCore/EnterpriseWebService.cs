@@ -2095,8 +2095,10 @@ namespace KilyCore.Service.ServiceCore
                  {
                      Sum += t;
                  });
-                if (MaterNum - Sum >= 0)
+                if (MaterNum - Sum > 0)
                     return Insert<EnterpriseMaterialStock>(stock) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+                else if (MaterNum - Sum == 0)
+                    return $"该原料已经全部入库,请重新选择!";
                 else
                     return $"超出采购数量{MaterNum - Sum}";
             }
@@ -3732,7 +3734,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public IList<ResponseEnterpriseMaterialStock> ExportMaterialInStockFile(String Param)
+        public IList<Object> ExportMaterialInStockFile(String Param)
         {
             IQueryable<EnterpriseMaterialStock> queryable = Kily.Set<EnterpriseMaterialStock>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseMaterial> queryables = Kily.Set<EnterpriseMaterial>().Where(t => t.IsDelete == false);
@@ -3743,16 +3745,17 @@ namespace KilyCore.Service.ServiceCore
             }
             else
                 queryable = queryable.Where(t => t.Id.ToString() == Param);
-            var data = queryable.Join(queryables, t => t.BatchNo, x => x.BatchNo, (t, x) => new ResponseEnterpriseMaterialStock()
+            var data = queryable.Join(queryables, t => t.BatchNo, x => x.BatchNo, (t, x) => new
             {
-                MaterName = x.MaterName,
-                SerializNo = t.SerializNo,
-                StockType = t.StockType,
-                SetStockNum = t.SetStockNum,
-                SetStockTime = t.SetStockTime,
-                SetStockUser = t.SetStockUser,
-                Supplier = x.Supplier
-            }).ToList();
+                编号 ="",
+                原料名称 = x.MaterName,
+                入库批次 = t.SerializNo,
+                入库类型 = t.StockType,
+                入库数量 = t.SetStockNum,
+                入库时间 = t.SetStockTime,
+                负责人 = t.SetStockUser,
+                供应商 = x.Supplier
+            }).ToList<Object>();
             return data;
         }
         /// <summary>
@@ -3760,7 +3763,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public IList<ResponseEnterpriseMaterialStockAttach> ExportMaterialOutStockFile(String Param)
+        public IList<Object> ExportMaterialOutStockFile(String Param)
         {
             IQueryable<EnterpriseMaterialStockAttach> queryable = Kily.Set<EnterpriseMaterialStockAttach>().Where(t => t.IsDelete == false);
             if (Param.Contains(","))
@@ -3770,14 +3773,15 @@ namespace KilyCore.Service.ServiceCore
             }
             else
                 queryable = queryable.Where(t => t.Id.ToString() == Param);
-            var data = queryable.Select(t => new ResponseEnterpriseMaterialStockAttach()
+            var data = queryable.Select(t => new
             {
-            OutStockTime=t.OutStockTime,
-            OutStockUser=t.OutStockUser,
-            OutStockNum=t.OutStockNum,
-            SerializNo=t.SerializNo,
-            StockType=t.StockType
-            }).ToList();
+                编号 = "",
+                出库时间 = t.OutStockTime,
+                负责人 = t.OutStockUser,
+                出库数量 = t.OutStockNum,
+                出库批次 = t.SerializNo,
+                出库类型 = t.StockType
+            }).ToList<Object>();
             return data;
         }
         #endregion

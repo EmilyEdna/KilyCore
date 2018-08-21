@@ -2,11 +2,14 @@
 using iTextSharp.text.pdf;
 using KilyCore.WEB.Model;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using SelectPdf;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -294,6 +297,96 @@ namespace KilyCore.WEB.Util
                 Result = package.GetAsByteArray();
             }
             return Result;
+        }
+        /// <summary>
+        /// 导出Excel-EPPLUS
+        /// </summary>
+        /// <param name="Data">数据源</param>
+        /// <param name="WorkSheetName">工作簿名称</param>
+        /// <returns></returns>
+        public static byte[] ExportExcel(DataTable Data, String WorkSheetName = null, List<String> ColName = null)
+        {
+            byte[] Result = null;
+            using (ExcelPackage package = new ExcelPackage())
+            {
+                //添加工作簿
+                ExcelWorksheet workSheet = package.Workbook.Worksheets.Add(WorkSheetName);
+                //从A1开始添加数据
+                workSheet.Cells["A1"].LoadFromDataTable(Data, true);
+                workSheet.Cells.AutoFitColumns();
+                //设置表格样式
+                using (ExcelRange rng = workSheet.Cells[1, 1, Data.Rows.Count + 1, Data.Columns.Count])
+                {
+                    rng.Style.Font.Name = "宋体";
+                    rng.Style.Font.Size = 10;
+                    rng.Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    rng.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(255, 255, 255));
+
+                    rng.Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    rng.Style.Border.Top.Color.SetColor(Color.FromArgb(155, 155, 155));
+
+                    rng.Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                    rng.Style.Border.Bottom.Color.SetColor(Color.FromArgb(155, 155, 155));
+
+                    rng.Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    rng.Style.Border.Right.Color.SetColor(Color.FromArgb(155, 155, 155));
+                }
+                using (ExcelRange rng = workSheet.Cells[1, 1, 1, Data.Columns.Count])
+                {
+                    rng.Style.Font.Bold = true;
+                    rng.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    rng.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(234, 241, 246));  //Set color to dark blue
+                    rng.Style.Font.Color.SetColor(Color.FromArgb(51, 51, 51));
+                }
+                //删除忽略列
+                for (int i = Data.Columns.Count - 1; i >= 0; i--)
+                {
+                    if (!ColName.Contains(Data.Columns[i].ColumnName))
+                        workSheet.DeleteColumn(i + 1);
+                }
+                Result = package.GetAsByteArray();
+            }
+            return Result;
+        }
+        /// <summary>
+        /// JSON转DataTable
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public static DataTable ConvertJsonToDatatable(String Param)
+        {
+            DataTable dt = new DataTable();
+            ArrayList arrayList = JsonConvert.DeserializeObject<ArrayList>(Param);
+            ArrayList array = new ArrayList();
+            if (arrayList.Count > 0)
+            {
+                for (int i = 0; i < arrayList.Count; i++)
+                {
+                    Dictionary<String, Object> Map = JsonConvert.DeserializeObject<Dictionary<String, Object>>(JsonConvert.SerializeObject(arrayList[i]));
+                    if (Map.Keys.Contains("编号"))
+                        Map["编号"] = i + 1;
+                    array.Add(Map);
+                }
+                foreach (Dictionary<String, Object> dictionary in array)
+                {
+                    if (dictionary.Keys.Count() == 0)
+                        return dt;
+                    //列
+                    if (dt.Columns.Count == 0)
+                        foreach (string current in dictionary.Keys)
+                        {
+                            dt.Columns.Add(current, dictionary[current].GetType());
+                        }
+                    //行
+                    DataRow dataRow = dt.NewRow();
+                    foreach (string current in dictionary.Keys)
+                    {
+                        dataRow[current] = dictionary[current];
+                    }
+                    dt.Rows.Add(dataRow);
+                }
+            }
+            return dt;
         }
     }
 }

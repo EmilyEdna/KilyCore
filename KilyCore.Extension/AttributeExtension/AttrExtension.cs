@@ -90,5 +90,17 @@ namespace KilyCore.Extension.AttributeExtension
             dynamic attr = (T)field.GetCustomAttribute(typeof(T), false);
             return attr.Description.ToString();
         }
+        /// <summary>
+        /// 获取某个属性的DescriptAttribute
+        /// </summary>
+        /// <typeparam name="T">DescriptAttribute</typeparam>
+        /// <param name="entity">实体</param>
+        /// <param name="FieldName">字段名称</param>
+        /// <returns></returns>
+        public static string GetSingleDescription<T>(Object entity ,String FieldName) where T : Attribute
+        {
+            dynamic attr =  entity.GetType().GetProperty(FieldName).GetCustomAttribute(typeof(T), false);
+            return attr.Description.ToString();
+        }
     }
 }

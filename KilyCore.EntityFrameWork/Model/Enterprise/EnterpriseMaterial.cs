@@ -1,6 +1,7 @@
 ﻿using KilyCore.EntityFrameWork.Model.Base;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 #region << 版 本 注 释 >>
@@ -35,6 +36,7 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// <summary>
         /// 原料名称
         /// </summary>
+        [Description("原料名称")]
         public virtual string MaterName { get; set; }
         /// <summary>
         /// 保质期
