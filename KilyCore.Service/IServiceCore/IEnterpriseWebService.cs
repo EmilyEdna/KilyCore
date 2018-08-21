@@ -272,6 +272,8 @@ namespace KilyCore.Service.IServiceCore
         #region 导出Excel
         IList<Object> ExportMaterialInStockFile(String Param);
         IList<Object> ExportMaterialOutStockFile(String Param);
+        IList<Object> ExportProInStockFile(String Param);
+        IList<Object> ExportProOutStockFile(String Param);
         #endregion
     }
 }

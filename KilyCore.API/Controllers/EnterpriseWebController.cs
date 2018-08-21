@@ -1733,6 +1733,28 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseWebService.ExportMaterialOutStockFile(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 产品入库Excel导出
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("ExportProInStockFile")]
+        [AllowAnonymous]
+        public ObjectResultEx ExportProInStockFile(SimlpeParam<String> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.ExportProInStockFile(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 产品出库Excel导出
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("ExportProOutStockFile")]
+        [AllowAnonymous]
+        public ObjectResultEx ExportProOutStockFile(SimlpeParam<String> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.ExportProOutStockFile(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
     }
 }

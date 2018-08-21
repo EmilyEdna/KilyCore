@@ -276,11 +276,11 @@ namespace KilyCore.Service.ServiceCore
                     CommunityCode = t.CommunityCode,
                     MerchantName = t.MerchantName,
                     DiningType = t.DiningType,
-                    DiningTypeName= AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
+                    DiningTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
                     Phone = t.Phone,
                     VersionType = t.VersionType,
-                    VersionTypeName=AttrExtension.GetSingleDescription<SystemVersionEnum,DescriptionAttribute>(t.VersionType),
-                    AuditTypeName= AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(x.FirstOrDefault() != null ? x.FirstOrDefault().AuditType : 0),
+                    VersionTypeName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.VersionType),
+                    AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(x.FirstOrDefault() != null ? x.FirstOrDefault().AuditType : 0),
                     TypePath = t.TypePath,
                     Certification = t.Certification,
                     Email = t.Email,
@@ -1888,6 +1888,114 @@ namespace KilyCore.Service.ServiceCore
                     WxPayModel.Money = 100 * 5000 * Key;
             }
             return WxPayCore.Instance.WebPay(WxPayModel);
+        }
+        #endregion
+
+        #region 导出Excel
+        /// <summary>
+        /// 食材入库Excel导出
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public IList<Object> ExportStuffInStockFile(String Param)
+        {
+            IQueryable<RepastInStorage> queryable = Kily.Set<RepastInStorage>().Where(t => t.IsDelete == false);
+            if (Param.Contains(","))
+            {
+                List<String> Ids = Param.Split(",").ToList();
+                queryable = queryable.Where(t => Ids.Contains(t.Id.ToString()));
+            }
+            else
+                queryable = queryable.Where(t => t.Id.ToString() == Param);
+            var data = queryable.Select(t => new
+            {
+                编号 = "",
+                食材名称 = t.IngredientName,
+                入库批次 = t.BatchNo,
+                入库数量 = t.InStorageNum,
+                供应时间 = t.SuppTime,
+                负责人 = t.BuyUser,
+                供应商 = t.Supplier
+            }).ToList<Object>();
+            return data;
+        }
+        /// <summary>
+        /// 食材出库Excel导出
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public IList<Object> ExportStuffOutStockFile(String Param)
+        {
+            IQueryable<RepastOutStorage> queryable = Kily.Set<RepastOutStorage>().Where(t => t.IsDelete == false);
+            if (Param.Contains(","))
+            {
+                List<String> Ids = Param.Split(",").ToList();
+                queryable = queryable.Where(t => Ids.Contains(t.Id.ToString()));
+            }
+            else
+                queryable = queryable.Where(t => t.Id.ToString() == Param);
+            var data = queryable.Select(t => new
+            {
+                编号 = "",
+                出库批次 = t.BatchNo,
+                食材名称 = t.IngredientName,
+                出库数量 = t.OutStorageNum,
+                出库时间 = t.OutStorageTime,
+                负责人 = t.OutUser
+            }).ToList<Object>();
+            return data;
+        }
+        /// <summary>
+        /// 物品入库Excel导出
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public IList<Object> ExportGoodsInStockFile(String Param)
+        {
+            IQueryable<RepastArticleInStock> queryable = Kily.Set<RepastArticleInStock>().Where(t => t.IsDelete == false);
+            if (Param.Contains(","))
+            {
+                List<String> Ids = Param.Split(",").ToList();
+                queryable = queryable.Where(t => Ids.Contains(t.Id.ToString()));
+            }
+            else
+                queryable = queryable.Where(t => t.Id.ToString() == Param);
+            var data = queryable.Select(t => new
+            {
+                编号 = "",
+                产品名称 = t.ArticleName,
+                入库批次 = t.BatchNo,
+                供应商 = t.Supplier,
+                入库数量 = t.InStockNum,
+                负责人 = t.BuyUser
+            }).ToList<Object>();
+            return data;
+        }
+        /// <summary>
+        /// 物品出库Excel导出
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public IList<Object> ExportGoodsOutStockFile(String Param)
+        {
+            IQueryable<RepastArticleOutStock> queryable = Kily.Set<RepastArticleOutStock>().Where(t => t.IsDelete == false);
+            if (Param.Contains(","))
+            {
+                List<String> Ids = Param.Split(",").ToList();
+                queryable = queryable.Where(t => Ids.Contains(t.Id.ToString()));
+            }
+            else
+                queryable = queryable.Where(t => t.Id.ToString() == Param);
+            var data = queryable.Select(t => new
+            {
+                编号 = "",
+                出库批次 = t.BatchNo,
+                物品名称 = t.ArticleName,
+                出库数量 = t.OutStockNum,
+                出库时间 = t.OutStockTime,
+                负责人 = t.OutUser,
+            }).ToList<Object>();
+            return data;
         }
         #endregion
     }

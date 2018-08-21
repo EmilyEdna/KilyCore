@@ -6,6 +6,7 @@ using KilyCore.DataEntity.RequestMapper.Repast;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.Extension.ResultExtension;
 using KilyCore.Service.QueryExtend;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -928,6 +929,53 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx WxPay(SimlpeParam<int> Key, SimlpeParam<int?> Value)
         {
             return ObjectResultEx.Instance(RepastWebService.WxPay(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region 导出Excel
+        /// <summary>
+        /// 食材入库Excel导出
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("ExportStuffInStockFile")]
+        [AllowAnonymous]
+        public ObjectResultEx ExportStuffInStockFile(SimlpeParam<String> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.ExportStuffInStockFile(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 食材出库Excel导出
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("ExportStuffOutStockFile")]
+        [AllowAnonymous]
+        public ObjectResultEx ExportStuffOutStockFile(SimlpeParam<String> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.ExportStuffOutStockFile(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 物品入库Excel导出
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("ExportGoodsInStockFile")]
+        [AllowAnonymous]
+        public ObjectResultEx ExportGoodsInStockFile(SimlpeParam<String> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.ExportGoodsInStockFile(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 物品出库Excel导出
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("ExportGoodsOutStockFile")]
+        [AllowAnonymous]
+        public ObjectResultEx ExportGoodsOutStockFile(SimlpeParam<String> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.ExportGoodsOutStockFile(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

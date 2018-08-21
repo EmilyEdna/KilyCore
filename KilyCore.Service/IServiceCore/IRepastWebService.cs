@@ -170,5 +170,11 @@ namespace KilyCore.Service.IServiceCore
         String AliPay(int Key, int? Value);
         String WxPay(int Key, int? Value);
         #endregion
+        #region 导出Excel
+        IList<Object> ExportStuffInStockFile(String Param);
+         IList<Object> ExportStuffOutStockFile(String Param);
+         IList<Object> ExportGoodsInStockFile(String Param);
+         IList<Object> ExportGoodsOutStockFile(String Param);
+        #endregion
     }
 }

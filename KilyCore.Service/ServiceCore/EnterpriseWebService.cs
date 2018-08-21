@@ -3747,7 +3747,7 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.Id.ToString() == Param);
             var data = queryable.Join(queryables, t => t.BatchNo, x => x.BatchNo, (t, x) => new
             {
-                编号 ="",
+                编号 = "",
                 原料名称 = x.MaterName,
                 入库批次 = t.SerializNo,
                 入库类型 = t.StockType,
@@ -3781,6 +3781,61 @@ namespace KilyCore.Service.ServiceCore
                 出库数量 = t.OutStockNum,
                 出库批次 = t.SerializNo,
                 出库类型 = t.StockType
+            }).ToList<Object>();
+            return data;
+        }
+        /// <summary>
+        /// 产品入库Excel导出
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public IList<Object> ExportProInStockFile(String Param)
+        {
+            IQueryable<EnterpriseGoodsStock> queryable = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseGoods> queryables = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
+            if (Param.Contains(","))
+            {
+                List<String> Ids = Param.Split(",").ToList();
+                queryable = queryable.Where(t => Ids.Contains(t.Id.ToString()));
+            }
+            else
+                queryable = queryable.Where(t => t.Id.ToString() == Param);
+            var data = queryable.Join(queryables, t => t.GoodsId, x => x.Id, (t, x) => new
+            {
+                编号 = "",
+                产品名称 = x.ProductName,
+                入库批次 = t.GoodsBatchNo,
+                入库类型 = t.StockType,
+                入库数量 = t.InStockNum,
+                入库时间 = t.ProductTime,
+                负责人 = t.Manager
+            }).ToList<Object>();
+            return data;
+        }
+        /// <summary>
+        /// 产品出库Excel导出
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public IList<Object> ExportProOutStockFile(String Param)
+        {
+            IQueryable<EnterpriseGoodsStockAttach> queryable = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false);
+            if (Param.Contains(","))
+            {
+                List<String> Ids = Param.Split(",").ToList();
+                queryable = queryable.Where(t => Ids.Contains(t.Id.ToString()));
+            }
+            else
+                queryable = queryable.Where(t => t.Id.ToString() == Param);
+            var data = queryable.Select(t => new
+            {
+                编号 = "",
+                出库批次 = t.GoodsBatchNo,
+                出库数量 = t.OutStockNum,
+                出库时间 = t.OutStockTime,
+                负责人 = t.OutStockUser,
+                分销商 = t.Seller,
+                出库类型 = t.OutStockType
             }).ToList<Object>();
             return data;
         }
