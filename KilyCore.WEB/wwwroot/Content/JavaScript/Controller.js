@@ -453,10 +453,9 @@ controller.Table = function (element, option) {
  * @param {any} 数据
  * @param {int} 模式
  */
-controller.TableEvent = function (type, rows,flag) {
+controller.TableEvent = function (type, rows, flag) {
     //flag表示模式
-    if (flag < 0)
-    {
+    if (flag < 0) {
         var IdListIn = $(this).data("Set");
         if (!IdListIn) //JQ单例模式
             $(this).data("Set", (IdListIn = new Set()));
@@ -937,4 +936,109 @@ controller.QRCode = function (element, option) {
     }
     var options = $.extend(defaultOption, option);
     $(element).qrcode(options);
+}
+/**
+ * 数据统计图
+ * @param {any} 元素
+ * @param {any} 数据
+ */
+controller.Echarts = function (element, option) {
+    if (option.Type) {
+        OptionPie = {
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b}: {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+                data: option.DataTitle
+            },
+            series: [
+                {
+                    name: '数据统计',
+                    type: 'pie',
+                    selectedMode: 'single',
+                    radius: [0, '30%'],
+                    label: {
+                        normal: {
+                            position: 'inner'
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    data: option.InSideData
+                },
+                {
+                    name: '数据统计',
+                    type: 'pie',
+                    radius: ['40%', '55%'],
+                    label: {
+                        normal: {
+                            formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
+                            backgroundColor: '#eee',
+                            borderColor: '#aaa',
+                            borderWidth: 1,
+                            borderRadius: 4,
+                            rich: {
+                                a: {
+                                    color: '#999',
+                                    lineHeight: 22,
+                                    align: 'center'
+                                },
+                                hr: {
+                                    borderColor: '#aaa',
+                                    width: '100%',
+                                    borderWidth: 0.5,
+                                    height: 0
+                                },
+                                b: {
+                                    fontSize: 16,
+                                    lineHeight: 33
+                                },
+                                per: {
+                                    color: '#eee',
+                                    backgroundColor: '#334455',
+                                    padding: [2, 4],
+                                    borderRadius: 2
+                                }
+                            }
+                        }
+                    },
+                    data: option.OutSideData
+                }
+            ]
+        };
+        echarts.init($(element)[0]).setOption(OptionPie);
+    }
+    else {
+        OptionBar = {
+            tooltip: {},
+            legend: {
+                data: option.DataTitle
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value'
+                }
+            ],
+            series: option.BarData
+        };
+        echarts.init($(element)[0]).setOption(OptionBar);
+    }
 }

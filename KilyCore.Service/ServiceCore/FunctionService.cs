@@ -2,8 +2,10 @@
 using KilyCore.DataEntity.ResponseMapper.Function;
 using KilyCore.EntityFrameWork.Model.Enterprise;
 using KilyCore.EntityFrameWork.Model.Function;
+using KilyCore.EntityFrameWork.Model.Repast;
 using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
+using KilyCore.Extension.AttributeExtension;
 using KilyCore.Extension.AutoMapperExtension;
 using KilyCore.Repositories.BaseRepository;
 using KilyCore.Service.ConstMessage;
@@ -12,6 +14,7 @@ using KilyCore.Service.QueryExtend;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 /// <summary>
@@ -544,7 +547,7 @@ namespace KilyCore.Service.ServiceCore
             }
             else
             {
-                if((MerchantEnum)Param==MerchantEnum.Normal)
+                if ((MerchantEnum)Param == MerchantEnum.Normal)
                     queryable = queryable.Where(t => t.DicName.Contains("餐饮"));
                 if ((MerchantEnum)Param == MerchantEnum.UnitCanteen)
                     queryable = queryable.Where(t => t.DicName.Contains("单位"));
@@ -559,6 +562,121 @@ namespace KilyCore.Service.ServiceCore
                       AttachInfo = x.AttachInfo
                   }).ToList();
             return data;
+        }
+        #endregion
+        #region 数据统计
+        public IList<ResponseDataCount> GetPieData()
+        {
+            //需要统计入住的企业、餐饮商家、乡村厨师
+            //第一步判断权限
+            IQueryable<EnterpriseInfo> enterprises = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
+            IQueryable<RepastInfo> repasts = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false);
+            IList<ResponseDataCount> dataCounts = new List<ResponseDataCount>();
+            IList<DataPie> InSideData = null;
+            IList<DataPie> OutSideData = null;
+            if (UserInfo().AccountType == AccountEnum.Province)
+            {
+                //企业
+                OutSideData = enterprises.Where(t => t.AuditType == AuditEnum.AuditSuccess)
+                    .Where(t => t.TypePath.Contains(UserInfo().Province))
+                    .GroupBy(t => t.CompanyType).Select(t => new DataPie
+                    {
+                        value = t.Key.ToString(),
+                        name = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.Key)
+                    }).ToList();
+                //商家
+                InSideData = repasts.Where(t => t.AuditType == AuditEnum.AuditSuccess)
+                    .Where(t => t.TypePath.Contains(UserInfo().Province))
+                    .GroupBy(t => t.DiningType).Select(t => new DataPie
+                    {
+                        value = t.Key.ToString(),
+                        name = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.Key)
+                    }).ToList();
+            }
+            else if (UserInfo().AccountType == AccountEnum.City)
+            {
+                //企业
+                OutSideData = enterprises.Where(t => t.AuditType == AuditEnum.AuditSuccess)
+                    .Where(t => t.TypePath.Contains(UserInfo().City))
+                    .GroupBy(t => t.CompanyType).Select(t => new DataPie
+                    {
+                        value = t.Key.ToString(),
+                        name = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.Key)
+                    }).ToList();
+                //商家
+                InSideData = repasts.Where(t => t.AuditType == AuditEnum.AuditSuccess)
+                    .Where(t => t.TypePath.Contains(UserInfo().Area))
+                    .GroupBy(t => t.DiningType).Select(t => new DataPie
+                    {
+                        value = t.Key.ToString(),
+                        name = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.Key)
+                    }).ToList();
+            }
+            else if (UserInfo().AccountType == AccountEnum.Area)
+            {
+                //企业
+                OutSideData = enterprises.Where(t => t.AuditType == AuditEnum.AuditSuccess)
+                    .Where(t => t.TypePath.Contains(UserInfo().Area))
+                    .GroupBy(t => t.CompanyType).Select(t => new DataPie
+                    {
+                        value = t.Key.ToString(),
+                        name = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.Key)
+                    }).ToList();
+                //商家
+                InSideData = repasts.Where(t => t.AuditType == AuditEnum.AuditSuccess)
+                    .Where(t => t.TypePath.Contains(UserInfo().Area))
+                    .GroupBy(t => t.DiningType).Select(t => new DataPie
+                    {
+                        value = t.Key.ToString(),
+                        name = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.Key)
+                    }).ToList();
+            }
+            else if (UserInfo().AccountType == AccountEnum.Village)
+            {
+                //企业
+                OutSideData = enterprises.Where(t => t.AuditType == AuditEnum.AuditSuccess)
+                    .Where(t => t.TypePath.Contains(UserInfo().Town))
+                    .GroupBy(t => t.CompanyType).Select(t => new DataPie
+                    {
+                        value = t.Key.ToString(),
+                        name = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.Key)
+                    }).ToList();
+                //商家
+                InSideData = repasts.Where(t => t.AuditType == AuditEnum.AuditSuccess)
+                    .Where(t => t.TypePath.Contains(UserInfo().Town))
+                    .GroupBy(t => t.DiningType).Select(t => new DataPie
+                    {
+                        value = t.Key.ToString(),
+                        name = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.Key)
+                    }).ToList();
+            }
+            else
+            {
+                //企业
+                OutSideData = enterprises.Where(t => t.AuditType == AuditEnum.AuditSuccess)
+                    .GroupBy(t => t.CompanyType).Select(t => new DataPie
+                    {
+                        value = t.Key.ToString(),
+                        name = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.Key)
+                    }).ToList();
+                //商家
+                InSideData = repasts.Where(t => t.AuditType == AuditEnum.AuditSuccess)
+                    .GroupBy(t => t.DiningType).Select(t => new DataPie
+                    {
+                        value = t.Key.ToString(),
+                        name = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.Key)
+                    }).ToList();
+            }
+            List<String> title = new List<String>() {"种植企业", "养殖企业", "生产企业", "流通企业","其他企业","餐饮企业","单位食堂","小经营店","小作坊","小摊贩"};
+            ResponseDataCount dataCount = new ResponseDataCount()
+            {
+                Type = true,
+                DataTitle = title,
+                InSideData= InSideData,
+                OutSideData=OutSideData
+            };
+            dataCounts.Add(dataCount);
+            return dataCounts;
         }
         #endregion
     }
