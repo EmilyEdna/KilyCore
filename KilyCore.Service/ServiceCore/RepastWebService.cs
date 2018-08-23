@@ -380,6 +380,7 @@ namespace KilyCore.Service.ServiceCore
             else
             {
                 contract.PayType = PayEnum.AgentPay;
+                contract.IsPay = false;
                 contract.TryOut = "30";
                 contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(contract.ContractYear));
                 return Insert<SystemStayContract>(contract) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;

@@ -44,5 +44,9 @@ namespace KilyCore.Service.IServiceCore
         String IsEnable(Guid Id, bool Param);
         IList<ResponseAreaDictionary> GetAreaVersion(String TypePath, int Param);
         #endregion
+        #region 数据统计
+        ResponseDataCount GetPieData();
+        ResponseDataCount GetBarData();
+        #endregion
     }
 }

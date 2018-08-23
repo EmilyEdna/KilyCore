@@ -225,5 +225,25 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(FunctionService.GetAreaVersion(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 数据统计
+        /// <summary>
+        /// 饼状统计图
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetPieData")]
+        public ObjectResultEx GetPieData()
+        {
+            return ObjectResultEx.Instance(FunctionService.GetPieData(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 柱状统计图
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetBarData")]
+        public ObjectResultEx GetBarData()
+        {
+            return ObjectResultEx.Instance(FunctionService.GetBarData(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }

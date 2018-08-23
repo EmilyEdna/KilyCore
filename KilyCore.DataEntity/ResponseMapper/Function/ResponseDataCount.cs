@@ -31,7 +31,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Function
     /// </summary>
     public class DataPie
     {
-        public string value { get; set; }
+        public int value { get; set; }
         public string name { get; set; }
     }
     /// <summary>
@@ -42,5 +42,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Function
         public string name { get; set; }
         public string type { get => "bar"; }
         public IList<int> data { get; set; }
+
     }
 }

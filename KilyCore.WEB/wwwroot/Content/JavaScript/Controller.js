@@ -956,7 +956,7 @@ controller.Echarts = function (element, option) {
             },
             series: [
                 {
-                    name: '数据统计',
+                    name: '未审核统计',
                     type: 'pie',
                     selectedMode: 'single',
                     radius: [0, '30%'],
@@ -965,15 +965,42 @@ controller.Echarts = function (element, option) {
                             position: 'inner'
                         }
                     },
-                    labelLine: {
+                    label: {
                         normal: {
-                            show: false
+                            formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
+                            backgroundColor: '#eee',
+                            borderColor: '#aaa',
+                            borderWidth: 1,
+                            borderRadius: 4,
+                            rich: {
+                                a: {
+                                    color: '#999',
+                                    lineHeight: 22,
+                                    align: 'center'
+                                },
+                                hr: {
+                                    borderColor: '#aaa',
+                                    width: '100%',
+                                    borderWidth: 0.5,
+                                    height: 0
+                                },
+                                b: {
+                                    fontSize: 16,
+                                    lineHeight: 33
+                                },
+                                per: {
+                                    color: '#eee',
+                                    backgroundColor: '#334455',
+                                    padding: [2, 4],
+                                    borderRadius: 2
+                                }
+                            }
                         }
                     },
                     data: option.InSideData
                 },
                 {
-                    name: '数据统计',
+                    name: '已审核统计',
                     type: 'pie',
                     radius: ['40%', '55%'],
                     label: {
@@ -1012,7 +1039,7 @@ controller.Echarts = function (element, option) {
                 }
             ]
         };
-        echarts.init($(element)[0]).setOption(OptionPie);
+        echarts.init($(element)[0],"light").setOption(OptionPie);
     }
     else {
         OptionBar = {
@@ -1029,7 +1056,7 @@ controller.Echarts = function (element, option) {
             xAxis: [
                 {
                     type: 'category',
-                    data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                    data: ['体验版', '基础版', '升级版', '旗舰版', '公用版']
                 }
             ],
             yAxis: [
@@ -1039,6 +1066,6 @@ controller.Echarts = function (element, option) {
             ],
             series: option.BarData
         };
-        echarts.init($(element)[0]).setOption(OptionBar);
+        echarts.init($(element)[0],"light").setOption(OptionBar);
     }
 }
