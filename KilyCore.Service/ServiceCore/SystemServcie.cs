@@ -474,12 +474,12 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="param"></param>
         /// <returns></returns>
-        public string EditRole(RequestAuthorRole param)
+        public string EditRole(RequestAuthorRole Param)
         {
-            SystemRoleAuthor Author = param.MapToEntity<SystemRoleAuthor>();
-            if (param.AuthorRoleLvId == null)
+            SystemRoleAuthor Author = Param.MapToEntity<SystemRoleAuthor>();
+            if (Param.AuthorRoleLvId == null)
                 return "请选择权限等级!";
-            if (string.IsNullOrEmpty(param.TypePath))
+            if (string.IsNullOrEmpty(Param.TypePath))
                 return "请选中所属区域!";
             if (Kily.Set<SystemRoleAuthor>().Where(t => t.IsDelete == false).Where(t => t.AuthorName.Equals(Author.AuthorName)).AsNoTracking().FirstOrDefault() != null)
             {
@@ -554,7 +554,7 @@ namespace KilyCore.Service.ServiceCore
                RoleAuthorType = t.RoleAuthorType,
                Addrees=t.Addrees,
                CommunityCode=t.CommunityCode,
-               TableName = typeof(ResponseAdmin).Name,
+               TableName = typeof(ResponseAdmin).Name
            }).FirstOrDefault();
             return Admin ?? null;
         }

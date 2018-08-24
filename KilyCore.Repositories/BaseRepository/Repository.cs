@@ -15,6 +15,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using KilyCore.Extension.HttpClientFactory;
+using KilyCore.DataEntity.ResponseMapper.Cook;
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日12点01分
@@ -50,6 +51,8 @@ namespace KilyCore.Repositories.BaseRepository
                     props.Where(t => t.Name.Equals("DeleteUser")).FirstOrDefault().SetValue(Entity, MerchantInfo().Id.ToString());
                 else if (MerchantUser() != null)
                     props.Where(t => t.Name.Equals("DeleteUser")).FirstOrDefault().SetValue(Entity, MerchantUser().InfoId.ToString());
+                else if (CookInfo() != null)
+                    props.Where(t => t.Name.Equals("DeleteUser")).FirstOrDefault().SetValue(Entity, CookInfo().Id.ToString());
                 Kily.Entry<TEntity>(Entity).State = EntityState.Modified;
                 this.SaveChages();
                 return true;
@@ -83,6 +86,8 @@ namespace KilyCore.Repositories.BaseRepository
                     props.Where(t => t.Name.Equals("CreateUser")).FirstOrDefault().SetValue(Entity, MerchantInfo().Id.ToString());
                 else if (MerchantUser() != null)
                     props.Where(t => t.Name.Equals("CreateUser")).FirstOrDefault().SetValue(Entity, MerchantUser().InfoId.ToString());
+                else if (CookInfo() != null)
+                    props.Where(t => t.Name.Equals("CreateUser")).FirstOrDefault().SetValue(Entity, CookInfo().Id.ToString());
                 Kily.Entry<TEntity>(Entity).State = EntityState.Added;
                 this.SaveChages();
                 return true;
@@ -118,6 +123,8 @@ namespace KilyCore.Repositories.BaseRepository
                     EntityProp.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, MerchantInfo().Id.ToString());
                 else if (MerchantUser() != null)
                     EntityProp.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, MerchantUser().InfoId.ToString());
+                else if (CookInfo() != null)
+                    EntityProp.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, CookInfo().Id.ToString());
                 foreach (var Prop in EntityProp)
                 {
                     Kily.Entry<TEntity>(Entity).Property(Prop.Name).IsModified = true;//更新的时间和更新人
@@ -167,6 +174,8 @@ namespace KilyCore.Repositories.BaseRepository
                         EntityProps.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, MerchantInfo().Id.ToString());
                     else if (MerchantUser() != null)
                         EntityProps.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, MerchantUser().InfoId.ToString());
+                    else if (CookInfo() != null)
+                        EntityProps.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, CookInfo().Id.ToString());
                     foreach (var Prop in EntityProps)
                     {
                         Kily.Entry<TEntity>(Entity).Property(Prop.Name).IsModified = true;//更新的时间和更新人
@@ -192,6 +201,8 @@ namespace KilyCore.Repositories.BaseRepository
                         EntityProps.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, MerchantInfo().Id.ToString());
                     else if (MerchantUser() != null)
                         EntityProps.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, MerchantUser().InfoId.ToString());
+                    else if (CookInfo() != null)
+                        EntityProps.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, CookInfo().Id.ToString());
                     foreach (var Prop in EntityProps)
                     {
                         Kily.Entry<TEntity>(Entity).Property(Prop.Name).IsModified = true;//更新的时间和更新人
@@ -317,6 +328,15 @@ namespace KilyCore.Repositories.BaseRepository
             return Data == null ? null : (Data.TableName.Equals(typeof(ResponseMerchantUser).Name) ? Data : null);
         }
         /// <summary>
+        /// 从缓存中获取登录的厨师信息
+        /// </summary>
+        /// <returns></returns>
+        public ResponseCookInfo CookInfo()
+        {
+            ResponseCookInfo Data = Cache.GetCache<ResponseCookInfo>(SystemInfoKey.PrivateKey);
+            return Data == null ? null : (Data.TableName.Equals(typeof(ResponseCookInfo).Name) ? Data : null);
+        }
+        /// <summary>
         /// 返回动态属性集合
         /// </summary>
         /// <typeparam name="DEntity">数据传输对象</typeparam>
@@ -359,7 +379,7 @@ namespace KilyCore.Repositories.BaseRepository
                         if ((t.GetValue(Entity) == null ? "" : t.GetValue(Entity)).ToString().Contains(@"/Upload/Images/"))
                             PhotoPath.Add(t.GetValue(Entity).ToString());
                 });
-                return HttpClientExtension.HttpPostAsync(Url,null, HttpClientExtension.KeyValuePairs<Object>(new { Path = String.Join(",", PhotoPath) })).Result;
+                return HttpClientExtension.HttpPostAsync(Url, null, HttpClientExtension.KeyValuePairs<Object>(new { Path = String.Join(",", PhotoPath) })).Result;
             }
             catch (Exception ex)
             {

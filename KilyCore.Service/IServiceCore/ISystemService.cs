@@ -30,7 +30,7 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 角色权限
         IList<ResponseRoleLv> GetRoleLv();
-        String EditRole(RequestAuthorRole param);
+        String EditRole(RequestAuthorRole Param);
         PagedResult<ResponseAuthorRole> GetAuthorPage(PageParamList<RequestAuthorRole> pageParam);
         String RemoveAuthorRole(Guid Id);
         IList<ResponseAuthorRole> GetAuthorRole();

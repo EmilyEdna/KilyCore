@@ -7,6 +7,7 @@ email:847432003@qq.com
 var UserInfo = UserInfo || {};
 var CompanyUser = CompanyUser || {};
 var RepastInfo = RepastInfo || {};
+var Cooker = Cooker || {};
 /**
  * 设置菜单
  * @param {any} 数据
@@ -75,6 +76,17 @@ $.fn.GetCompanyInfo = function () {
 $.fn.GetRepastInfo = function () {
     if (localStorage.RepastUser != undefined) {
         RepastInfo = JSON.parse(localStorage.RepastUser);
+        return false;
+    }
+    else
+        return true;
+}
+/**
+ * 获取厨师信息
+ * */
+$.fn.GetCookInfo = function () {
+    if (localStorage.Cooker != undefined) {
+        Cooker = JSON.parse(localStorage.Cooker);
         return false;
     }
     else
