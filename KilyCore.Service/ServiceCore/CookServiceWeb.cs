@@ -4,9 +4,12 @@ using KilyCore.DataEntity.ResponseMapper.Cook;
 using KilyCore.EntityFrameWork.Model.Cook;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AutoMapperExtension;
+using KilyCore.Extension.PayCore.AliPay;
+using KilyCore.Extension.PayCore.WxPay;
 using KilyCore.Repositories.BaseRepository;
 using KilyCore.Service.ConstMessage;
 using KilyCore.Service.IServiceCore;
+using KilyCore.Service.QueryExtend;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -119,6 +122,127 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
             return data;
 
+        }
+        #endregion
+
+        #region 账号管理
+        /// <summary>
+        /// 账号分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseCookInfo> GetCookVipPage(PageParamList<RequestCookInfo> pageParam)
+        {
+            var data = Kily.Set<CookVip>().Where(t => t.Id == CookInfo().Id).Select(t => new ResponseCookInfo()
+            {
+                Id = t.Id,
+                Account = t.Account,
+                IsVip = t.IsVip,
+                StartTime = t.StartTime,
+                EndTime = t.EndTime,
+                Phone = t.Phone,
+                Photo = t.Photo,
+            }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 账号详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseCookInfo GetCookVipDetail(Guid Id)
+        {
+            var data = Kily.Set<CookVip>().Select(t => new ResponseCookInfo()
+            {
+                Id = t.Id,
+                Account = t.Account,
+                IsVip = t.IsVip,
+                PassWord = t.PassWord,
+                StartTime = t.StartTime,
+                EndTime = t.EndTime,
+                Phone = t.Phone,
+                Photo = t.Photo,
+                RoleId = t.RoleId
+            }).FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 修改账号
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditCookVip(RequestCookInfo Param)
+        {
+            CookVip vip = Param.MapToEntity<CookVip>();
+            if (Param.Id != Guid.Empty)
+                return Update(vip, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            else
+                return Insert(vip) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 开通服务
+        /// </summary>
+        /// <param name="Year"></param>
+        /// <param name="PayType"></param>
+        /// <returns></returns>
+        public string OpenService(RequestStayContract Param)
+        {
+            CookVip vip = Kily.Set<CookVip>().Where(t => t.Id == Param.Id).FirstOrDefault();
+            IList<String> Fields = new List<String> { "IsVip", "StartTime", "EndTime" };
+            RequestAliPayModel AliPayModel = new RequestAliPayModel();
+            AliPayModel.OrderTitle = "厨师系统会员服务";
+            AliPayModel.Money = 120 * Convert.ToInt32(Param.ContractYear);
+            RequestWxPayModel WxPayModel = AliPayModel.MapToEntity<RequestWxPayModel>();
+            WxPayModel.Money = WxPayModel.Money * 100;
+            vip.IsVip = true;
+            vip.StartTime = DateTime.Now;
+            vip.EndTime = DateTime.Now.AddYears(Convert.ToInt32(Param.ContractYear));
+            UpdateField(vip, null, Fields);
+            if (Param.PayType == PayEnum.Alipay)
+                return AliPayCore.Instance.WebPay(AliPayModel);
+            else
+                return WxPayCore.Instance.WebPay(WxPayModel);
+        }
+        #endregion
+
+        #region 厨师信息
+        /// <summary>
+        /// 厨师详情
+        /// </summary>
+        /// <returns></returns>
+        public ResponseCookInfo GetCookInfoDetail()
+        {
+            var data = Kily.Set<CookInfo>().Where(t => t.CookId == CookInfo().Id).Select(t => new ResponseCookInfo()
+            {
+                Id = t.Id,
+                CookId = t.CookId,
+                TrueName = t.TrueName,
+                Sexlab = t.Sexlab,
+                Nation = t.Nation,
+                Birthday = t.Birthday,
+                IdCardNo = t.IdCardNo,
+                TypePath = t.TypePath,
+                Address = t.Address,
+                CardOffice = t.CardOffice,
+                ExpiredDay = t.ExpiredDay,
+                IdCardPhoto = t.IdCardPhoto,
+                BookInCard = t.BookInCard,
+                TrainCard = t.TrainCard
+            }).AsNoTracking().FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 编辑厨师信息
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditCookInfo(RequestCookInfo Param)
+        {
+            CookInfo info = Param.MapToEntity<CookInfo>();
+            if (Param.Id != Guid.Empty)
+                return Update(info, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            else
+                return Insert(info) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         #endregion
     }

@@ -1,0 +1,95 @@
+﻿
+@{
+    ViewData["Title"] = "编辑账号";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                //获取详情
+                controller.ajax({
+                    url: "CookWeb/GetCookVipDetail",
+                    data: { Id: controller.GetParam("Id") },
+                    type: "post",
+                    success: function (result) {
+                        controller.SetCtrlValue("#Edit", result.data);
+                    }
+                });
+                options.UploadFiles();
+            },
+            //文件上传
+            UploadFiles: function () {
+                //文件头像
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input",
+                    maxNum: 1,
+                    node: '.image-box',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        $("#Photo").val(result.data);
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="CookWeb/EditCookVip" id="Edit">
+            <input type="hidden" name="Id" />
+            <input type="hidden" name="RoleId" />
+            <input type="hidden" name="IsVip" />
+            <input type="hidden" name="StartTime" />
+            <input type="hidden" name="EndTime" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">个人账号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Account" readonly>
+                    </td>
+                    <th><label class="control-label">个人密码</label></th>
+                    <td class="has-warning">
+                        <input type="password" class="form-control" name="PassWord">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">个人电话</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" class="form-control required IsPhone" name="Phone" data-msg-required="请输入个人电话">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">个人形象</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" id="upload-input" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                        <input type="hidden" id="Photo" name="Photo" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

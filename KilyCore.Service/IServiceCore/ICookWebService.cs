@@ -2,6 +2,7 @@
 using KilyCore.DataEntity.RequestMapper.Cook;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Cook;
+using KilyCore.Service.QueryExtend;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -34,6 +35,18 @@ namespace KilyCore.Service.IServiceCore
 
         #region 全局菜单
         IList<ResponseCookMenu> GetCookMenu();
+        #endregion
+
+        #region 账号管理
+        PagedResult<ResponseCookInfo> GetCookVipPage(PageParamList<RequestCookInfo> pageParam);
+        ResponseCookInfo GetCookVipDetail(Guid Id);
+        String EditCookVip(RequestCookInfo Param);
+        String OpenService(RequestStayContract Param);
+        #endregion
+
+        #region 厨师信息
+        ResponseCookInfo GetCookInfoDetail();
+        String EditCookInfo(RequestCookInfo Param);
         #endregion
     }
 }

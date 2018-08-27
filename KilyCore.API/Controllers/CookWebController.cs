@@ -76,5 +76,70 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(CookWebService.GetCookMenu(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+
+        #region 账号管理
+        /// <summary>
+        /// 账号分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetCookVipPage")]
+        public ObjectResultEx GetCookVipPage(PageParamList<RequestCookInfo> pageParam)
+        {
+            return ObjectResultEx.Instance(CookWebService.GetCookVipPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 账号详情
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetCookVipDetail")]
+        public ObjectResultEx GetCookVipDetail(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(CookWebService.GetCookVipDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑账号
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditCookVip")]
+        public ObjectResultEx EditCookVip(RequestCookInfo Param)
+        {
+            return ObjectResultEx.Instance(CookWebService.EditCookVip(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 开通服务
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("OpenService")]
+        public ObjectResultEx OpenService(RequestStayContract Param)
+        {
+            return ObjectResultEx.Instance(CookWebService.OpenService(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region 厨师信息
+        /// <summary>
+        /// 厨师详情
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetCookInfoDetail")]
+        public ObjectResultEx GetCookInfoDetail()
+        {
+            return ObjectResultEx.Instance(CookWebService.GetCookInfoDetail(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑厨师信息
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditCookInfo")]
+        public ObjectResultEx EditCookInfo(RequestCookInfo Param)
+        {
+            return ObjectResultEx.Instance(CookWebService.EditCookInfo(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }

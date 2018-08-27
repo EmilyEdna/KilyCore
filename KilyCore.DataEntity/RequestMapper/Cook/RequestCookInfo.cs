@@ -62,10 +62,6 @@ namespace KilyCore.DataEntity.RequestMapper.Cook
         /// </summary>
         public string IdCardNo { get; set; }
         /// <summary>
-        /// 所在区域
-        /// </summary>
-        public string TypePath { get; set; }
-        /// <summary>
         /// 详细地址
         /// </summary>
         public string Address { get; set; }
@@ -105,5 +101,21 @@ namespace KilyCore.DataEntity.RequestMapper.Cook
         /// 所属角色
         /// </summary>
         public  Guid? RoleId { get; set; }
+        /// <summary>
+        /// 所在区域
+        /// </summary>
+        public string TypePath
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(Province) || !string.IsNullOrEmpty(City) || !string.IsNullOrEmpty(Area) || !string.IsNullOrEmpty(Town))
+                    return Province + "," + City + "," + Area + "," + Town;
+                else return null;
+            }
+        }
+        public string Province { get; set; }
+        public string City { get; set; }
+        public string Area { get; set; }
+        public string Town { get; set; }
     }
 }
