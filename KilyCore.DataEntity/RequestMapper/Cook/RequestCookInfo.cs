@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KilyCore.EntityFrameWork.ModelEnum;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -117,5 +118,7 @@ namespace KilyCore.DataEntity.RequestMapper.Cook
         public string City { get; set; }
         public string Area { get; set; }
         public string Town { get; set; }
+        public AuditEnum AuditType { get; set; }
+        public string AreaTree { get; set; }
     }
 }

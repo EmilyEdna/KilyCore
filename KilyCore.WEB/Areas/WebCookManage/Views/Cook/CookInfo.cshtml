@@ -27,6 +27,7 @@
                     type: "post",
                     async: false,
                     success: function (result) {
+                        $("#Audit").html(result.data.AuditTypeName);
                         controller.SetCtrlValue("#Edit", result.data);
                         options.SetCity();
                         controller.SetCtrlValue("#Edit", result.data);
@@ -225,6 +226,7 @@
 <div class="ibox-title">
     <div class="ibox-content text-center">
         <h3 class="m-b-xxs">厨师信息</h3>
+        <small><label class="label label-warning" style="float:none;margin-left:0px;" id="Audit"></label></small>
     </div>
 </div>
 <div class="ibox float-e-margins">
@@ -232,6 +234,7 @@
         <form class="orm-horizontal" method="post" action="CookWeb/EditCookInfo" id="Edit">
             <input type="hidden" name="Id" />
             <input type="hidden" name="CookId" />
+            <input type="hidden" name="AuditType" value="20" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">真实姓名</label></th>

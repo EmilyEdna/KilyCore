@@ -13,6 +13,14 @@ namespace KilyCore.WEB.Areas.CookManage.Controllers
         {
             return View();
         }
+        public IActionResult CookInfoDetail()
+        {
+            return View();
+        }
+        public IActionResult CookInfoAudit()
+        {
+            return View();
+        }
         public IActionResult CookService()
         {
             return View();

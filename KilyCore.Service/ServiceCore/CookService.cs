@@ -1,8 +1,11 @@
 ﻿using KilyCore.DataEntity.RequestMapper.Cook;
+using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Cook;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.EntityFrameWork.Model.Cook;
+using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
+using KilyCore.Extension.AttributeExtension;
 using KilyCore.Extension.AutoMapperExtension;
 using KilyCore.Repositories.BaseRepository;
 using KilyCore.Service.ConstMessage;
@@ -11,6 +14,7 @@ using KilyCore.Service.QueryExtend;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
@@ -180,7 +184,7 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<CookRoleAuthor> queryable = Kily.Set<CookRoleAuthor>().Where(t => t.IsDelete == false);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.AuthorName))
                 queryable = queryable.Where(t => t.AuthorName.Contains(pageParam.QueryParam.AuthorName));
-            var data = queryable.Select(t=>new ResponseCookRole()
+            var data = queryable.Select(t => new ResponseCookRole()
             {
                 Id = t.Id,
                 AuthorName = t.AuthorName,
@@ -224,6 +228,69 @@ namespace KilyCore.Service.ServiceCore
             }
             else
                 return ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+
+        #region 厨师信息
+        /// <summary>
+        /// 厨师信息
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseCookInfo> GetCookInfoPage(PageParamList<RequestCookInfo> pageParam)
+        {
+            if (UserInfo().AccountType > AccountEnum.Country)
+                return null;
+            IQueryable<CookInfo> queryable = Kily.Set<CookInfo>().OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.AreaTree))
+                queryable = queryable.Where(t => t.TypePath.Contains(pageParam.QueryParam.AreaTree));
+            var data = queryable.Select(t => new ResponseCookInfo()
+            {
+                Id=t.Id,
+                TrueName=t.TrueName,
+                IdCardNo=t.IdCardNo,
+                AuditTypeName= AttrExtension.GetSingleDescription<DescriptionAttribute>(t.AuditType),
+                TableName=t.GetType().Name
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 厨师详情
+        /// </summary>
+        /// <returns></returns>
+        public ResponseCookInfo GetCookInfoDetail(Guid Id)
+        {
+            var data = Kily.Set<CookInfo>().Where(t=>t.Id==Id).Select(t => new ResponseCookInfo()
+            {
+                Id = t.Id,
+                CookId = t.CookId,
+                TrueName = t.TrueName,
+                Sexlab = t.Sexlab,
+                Nation = t.Nation,
+                Birthday = t.Birthday,
+                IdCardNo = t.IdCardNo,
+                TypePath = t.TypePath,
+                Address = t.Address,
+                CardOffice = t.CardOffice,
+                ExpiredDay = t.ExpiredDay,
+                IdCardPhoto = t.IdCardPhoto,
+                BookInCard = t.BookInCard,
+                TrainCard = t.TrainCard
+            }).AsNoTracking().FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 审核厨师信息
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string AuditCookInfo(RequestAudit Param)
+        {
+            CookInfo info = Kily.Set<CookInfo>().Where(t => t.Id == Param.TableId).FirstOrDefault();
+            info.AuditType = Param.AuditType;
+            UpdateField(info, "AuditType");
+            SystemAudit audit = Param.MapToEntity<SystemAudit>();
+            return Insert(audit) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         #endregion
     }

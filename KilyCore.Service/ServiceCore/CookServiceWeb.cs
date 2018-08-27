@@ -3,6 +3,7 @@ using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Cook;
 using KilyCore.EntityFrameWork.Model.Cook;
 using KilyCore.EntityFrameWork.ModelEnum;
+using KilyCore.Extension.AttributeExtension;
 using KilyCore.Extension.AutoMapperExtension;
 using KilyCore.Extension.PayCore.AliPay;
 using KilyCore.Extension.PayCore.WxPay;
@@ -13,6 +14,7 @@ using KilyCore.Service.QueryExtend;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
@@ -227,7 +229,8 @@ namespace KilyCore.Service.ServiceCore
                 ExpiredDay = t.ExpiredDay,
                 IdCardPhoto = t.IdCardPhoto,
                 BookInCard = t.BookInCard,
-                TrainCard = t.TrainCard
+                TrainCard = t.TrainCard,
+                AuditTypeName = AttrExtension.GetSingleDescription<DescriptionAttribute>(t.AuditType)
             }).AsNoTracking().FirstOrDefault();
             return data;
         }

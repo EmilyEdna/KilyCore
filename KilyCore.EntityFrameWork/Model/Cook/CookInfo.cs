@@ -1,4 +1,5 @@
 ﻿using KilyCore.EntityFrameWork.Model.Base;
+using KilyCore.EntityFrameWork.ModelEnum;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -72,5 +73,9 @@ namespace KilyCore.EntityFrameWork.Model.Cook
         /// 培训合格证
         /// </summary>
         public virtual string TrainCard { get; set; }
+        /// <summary>
+        /// 审核
+        /// </summary>
+        public virtual AuditEnum AuditType { get; set; }
     }
 }

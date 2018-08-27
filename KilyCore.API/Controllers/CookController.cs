@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using KilyCore.DataEntity.RequestMapper.Cook;
+using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.Extension.ResultExtension;
 using KilyCore.Service.QueryExtend;
 using Microsoft.AspNetCore.Http;
@@ -63,14 +64,15 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(CookService.EditCookMenu(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
-        
+
         #region 权限菜单树
         /// <summary>
         /// 获取权限菜单树
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetCookTree")]
-        public ObjectResultEx GetCookTree() {
+        public ObjectResultEx GetCookTree()
+        {
             return ObjectResultEx.Instance(CookService.GetCookTree(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
@@ -105,6 +107,38 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx RemoveAuthorRole(SimlpeParam<Guid> Param)
         {
             return ObjectResultEx.Instance(CookService.RemoveAuthorRole(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region 厨师信息
+        /// <summary>
+        /// 厨师信息
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetCookInfoPage")]
+        public ObjectResultEx GetCookInfoPage(PageParamList<RequestCookInfo> pageParam)
+        {
+            return ObjectResultEx.Instance(CookService.GetCookInfoPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 厨师详情
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetCookInfoDetail")]
+        public ObjectResultEx GetCookInfoDetail(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(CookService.GetCookInfoDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 审核厨师信息
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("AuditCookInfo")]
+        public ObjectResultEx AuditCookInfo(RequestAudit Param)
+        {
+            return ObjectResultEx.Instance(CookService.AuditCookInfo(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

@@ -1,5 +1,6 @@
 ﻿using KilyCore.Configure;
 using KilyCore.DataEntity.RequestMapper.Cook;
+using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Cook;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.Service.QueryExtend;
@@ -44,6 +45,12 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseCookRole> GetCookAuthorPage(PageParamList<RequestCookRole> pageParam);
         String EditRole(RequestCookRole Param);
         String RemoveAuthorRole(Guid Id);
+        #endregion
+
+        #region 厨师信息
+        PagedResult<ResponseCookInfo> GetCookInfoPage(PageParamList<RequestCookInfo> pageParam);
+        ResponseCookInfo GetCookInfoDetail(Guid Id);
+        String AuditCookInfo(RequestAudit Param);
         #endregion
     }
 }

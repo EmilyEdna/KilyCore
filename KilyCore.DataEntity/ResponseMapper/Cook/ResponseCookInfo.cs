@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KilyCore.EntityFrameWork.ModelEnum;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -135,5 +136,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Cook
         /// </summary>
         public Guid? RoleId { get; set; }
         public string TableName { get; set; }
+        public AuditEnum AuditType { get; set; }
+        public string AuditTypeName { get; set; }
     }
 }
