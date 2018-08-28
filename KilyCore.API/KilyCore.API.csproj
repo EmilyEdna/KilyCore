@@ -28,4 +28,6 @@
     <ProjectReference Include="..\KilyCore.Service\KilyCore.Service.csproj" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1Development_1json__JSONSchema="" /></VisualStudio></ProjectExtensions>
+
 </Project>

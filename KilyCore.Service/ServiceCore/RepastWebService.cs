@@ -1,4 +1,5 @@
-﻿using KilyCore.DataEntity.RequestMapper.Repast;
+﻿using KilyCore.Configure;
+using KilyCore.DataEntity.RequestMapper.Repast;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Repast;
 using KilyCore.DataEntity.ResponseMapper.System;
@@ -320,35 +321,34 @@ namespace KilyCore.Service.ServiceCore
             info.VersionType = Param.VersionType;
             if (Param.VersionType == SystemVersionEnum.Test)
             {
-
                 if (info.DiningType == MerchantEnum.Normal)
-                    AliPayModel.Money = 360 * Convert.ToInt32(Param.ContractYear);
+                    AliPayModel.Money = ConfigMoney.RepastTest * Convert.ToInt32(Param.ContractYear);
                 if (info.DiningType == MerchantEnum.UnitCanteen)
-                    AliPayModel.Money = 240 * Convert.ToInt32(Param.ContractYear);
+                    AliPayModel.Money = ConfigMoney.UnitCanteenTest * Convert.ToInt32(Param.ContractYear);
             }
             if (Param.VersionType == SystemVersionEnum.Base)
             {
                 if (info.DiningType == MerchantEnum.Normal)
-                    AliPayModel.Money = 1500 * Convert.ToInt32(Param.ContractYear);
+                    AliPayModel.Money = ConfigMoney.RepastBase * Convert.ToInt32(Param.ContractYear);
                 if (info.DiningType == MerchantEnum.UnitCanteen)
-                    AliPayModel.Money = 1000 * Convert.ToInt32(Param.ContractYear);
+                    AliPayModel.Money = ConfigMoney.UnitCanteenBase * Convert.ToInt32(Param.ContractYear);
             }
             if (Param.VersionType == SystemVersionEnum.Level)
             {
                 if (info.DiningType == MerchantEnum.Normal)
-                    AliPayModel.Money = 5000 * Convert.ToInt32(Param.ContractYear);
+                    AliPayModel.Money = ConfigMoney.RepastLv * Convert.ToInt32(Param.ContractYear);
                 if (info.DiningType == MerchantEnum.UnitCanteen)
-                    AliPayModel.Money = 3000 * Convert.ToInt32(Param.ContractYear);
+                    AliPayModel.Money = ConfigMoney.UnitCanteenLv * Convert.ToInt32(Param.ContractYear);
             }
             if (Param.VersionType == SystemVersionEnum.Enterprise)
             {
                 if (info.DiningType == MerchantEnum.Normal)
-                    AliPayModel.Money = 10000 * Convert.ToInt32(Param.ContractYear);
+                    AliPayModel.Money = ConfigMoney.RepastEnterprise * Convert.ToInt32(Param.ContractYear);
                 if (info.DiningType == MerchantEnum.UnitCanteen)
-                    AliPayModel.Money = 5000 * Convert.ToInt32(Param.ContractYear);
+                    AliPayModel.Money = ConfigMoney.UnitCanteenEnterprise * Convert.ToInt32(Param.ContractYear);
             }
             if (Param.VersionType == SystemVersionEnum.Common)
-                AliPayModel.Money = 60 * Convert.ToInt32(Param.ContractYear);
+                AliPayModel.Money = ConfigMoney.Common * Convert.ToInt32(Param.ContractYear);
             UpdateField(info, "VersionType");
             if (contract.ContractType == 1)
             {
@@ -371,7 +371,6 @@ namespace KilyCore.Service.ServiceCore
                 else
                 {
                     RequestWxPayModel WxPayModel = AliPayModel.MapToEntity<RequestWxPayModel>();
-                    WxPayModel.Money = WxPayModel.Money * 100;
                     Insert<SystemStayContract>(contract);
                     return WxPayCore.Instance.WebPay(WxPayModel);
 
@@ -1863,30 +1862,30 @@ namespace KilyCore.Service.ServiceCore
             if ((Value == null ? info.VersionType : (SystemVersionEnum)(Value)) == SystemVersionEnum.Test)
             {
                 if (info.DiningType == MerchantEnum.Normal)
-                    WxPayModel.Money = 100 * 360 * Key;
+                    WxPayModel.Money = ConfigMoney.RepastTest * Key;
                 if (info.DiningType == MerchantEnum.UnitCanteen)
-                    WxPayModel.Money = 100 * 240 * Key;
+                    WxPayModel.Money = ConfigMoney.UnitCanteenTest * Key;
             }
             if ((Value == null ? info.VersionType : (SystemVersionEnum)(Value)) == SystemVersionEnum.Base)
             {
                 if (info.DiningType == MerchantEnum.Normal)
-                    WxPayModel.Money = 100 * 1500 * Key;
+                    WxPayModel.Money = ConfigMoney.RepastBase * Key;
                 if (info.DiningType == MerchantEnum.UnitCanteen)
-                    WxPayModel.Money = 100 * 1000 * Key;
+                    WxPayModel.Money = ConfigMoney.UnitCanteenBase * Key;
             }
             if ((Value == null ? info.VersionType : (SystemVersionEnum)(Value)) == SystemVersionEnum.Level)
             {
                 if (info.DiningType == MerchantEnum.Normal)
-                    WxPayModel.Money = 100 * 5000 * Key;
+                    WxPayModel.Money = ConfigMoney.RepastLv * Key;
                 if (info.DiningType == MerchantEnum.UnitCanteen)
-                    WxPayModel.Money = 100 * 3000 * Key;
+                    WxPayModel.Money = ConfigMoney.UnitCanteenLv * Key;
             }
             if ((Value == null ? info.VersionType : (SystemVersionEnum)(Value)) == SystemVersionEnum.Enterprise)
             {
                 if (info.DiningType == MerchantEnum.Normal)
-                    WxPayModel.Money = 100 * 10000 * Key;
+                    WxPayModel.Money = ConfigMoney.RepastEnterprise * Key;
                 if (info.DiningType == MerchantEnum.UnitCanteen)
-                    WxPayModel.Money = 100 * 5000 * Key;
+                    WxPayModel.Money = ConfigMoney.UnitCanteenEnterprise * Key;
             }
             return WxPayCore.Instance.WebPay(WxPayModel);
         }

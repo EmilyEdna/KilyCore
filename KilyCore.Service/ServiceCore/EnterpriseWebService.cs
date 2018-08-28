@@ -1,4 +1,5 @@
-﻿using KilyCore.DataEntity.RequestMapper.Enterprise;
+﻿using KilyCore.Configure;
+using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.Function;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
@@ -373,41 +374,41 @@ namespace KilyCore.Service.ServiceCore
             {
                 info.TagCodeNum = ServiceMessage.TEST;
                 if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
-                    AliPayModel.Money = 480 * Convert.ToInt32(Param.ContractYear);
+                    AliPayModel.Money = ConfigMoney.PlantAndCultureTest  * Convert.ToInt32(Param.ContractYear);
                 if (info.CompanyType == CompanyEnum.Production)
-                    AliPayModel.Money = 600 * Convert.ToInt32(Param.ContractYear);
+                    AliPayModel.Money = ConfigMoney.ProductionTest * Convert.ToInt32(Param.ContractYear);
                 if (info.CompanyType == CompanyEnum.Circulation)
-                    AliPayModel.Money = 360 * Convert.ToInt32(Param.ContractYear);
+                    AliPayModel.Money = ConfigMoney.CirculationTest * Convert.ToInt32(Param.ContractYear);
             }
             if (Param.VersionType == SystemVersionEnum.Base)
             {
                 info.TagCodeNum = ServiceMessage.BASE;
                 if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
-                    AliPayModel.Money = 2000 * Convert.ToInt32(Param.ContractYear);
+                    AliPayModel.Money = ConfigMoney.PlantAndCultureBase * Convert.ToInt32(Param.ContractYear);
                 if (info.CompanyType == CompanyEnum.Production)
-                    AliPayModel.Money = 3000 * Convert.ToInt32(Param.ContractYear);
+                    AliPayModel.Money = ConfigMoney.ProductionBase * Convert.ToInt32(Param.ContractYear);
                 if (info.CompanyType == CompanyEnum.Circulation)
-                    AliPayModel.Money = 1500 * Convert.ToInt32(Param.ContractYear);
+                    AliPayModel.Money = ConfigMoney.CirculationBase * Convert.ToInt32(Param.ContractYear);
             }
             if (Param.VersionType == SystemVersionEnum.Level)
             {
                 info.TagCodeNum = ServiceMessage.LEVEL;
                 if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
-                    AliPayModel.Money = 4000 * Convert.ToInt32(Param.ContractYear);
+                    AliPayModel.Money = ConfigMoney.PlantAndCultureLv * Convert.ToInt32(Param.ContractYear);
                 if (info.CompanyType == CompanyEnum.Production)
-                    AliPayModel.Money = 6000 * Convert.ToInt32(Param.ContractYear);
+                    AliPayModel.Money = ConfigMoney.ProductionLv * Convert.ToInt32(Param.ContractYear);
                 if (info.CompanyType == CompanyEnum.Circulation)
-                    AliPayModel.Money = 3000 * Convert.ToInt32(Param.ContractYear);
+                    AliPayModel.Money = ConfigMoney.CirculationLv * Convert.ToInt32(Param.ContractYear);
             }
             if (Param.VersionType == SystemVersionEnum.Enterprise)
             {
                 info.TagCodeNum = ServiceMessage.ENTERPRISE;
                 if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
-                    AliPayModel.Money = 80000 * Convert.ToInt32(Param.ContractYear);
+                    AliPayModel.Money = ConfigMoney.PlantAndCultureEnterprise * Convert.ToInt32(Param.ContractYear);
                 if (info.CompanyType == CompanyEnum.Production)
-                    AliPayModel.Money = 100000 * Convert.ToInt32(Param.ContractYear);
+                    AliPayModel.Money = ConfigMoney.ProductionEnterprise * Convert.ToInt32(Param.ContractYear);
                 if (info.CompanyType == CompanyEnum.Circulation)
-                    AliPayModel.Money = 60000 * Convert.ToInt32(Param.ContractYear);
+                    AliPayModel.Money = ConfigMoney.CirculationEnterprise * Convert.ToInt32(Param.ContractYear);
             }
             IList<string> Fields = new List<string> { "Version", "TagCodeNum" };
             UpdateField(info, null, Fields);
@@ -432,10 +433,8 @@ namespace KilyCore.Service.ServiceCore
                 else
                 {
                     RequestWxPayModel WxPayModel = AliPayModel.MapToEntity<RequestWxPayModel>();
-                    WxPayModel.Money = WxPayModel.Money * 100;
                     Insert<SystemStayContract>(contract);
                     return WxPayCore.Instance.WebPay(WxPayModel);
-
                 }
             }
             else
@@ -3689,41 +3688,41 @@ namespace KilyCore.Service.ServiceCore
             {
                 info.TagCodeNum += ServiceMessage.TEST;
                 if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
-                    WxPayModel.Money = 100 * 480 * Key;
+                    WxPayModel.Money = ConfigMoney.PlantAndCultureTest * Key;
                 if (info.CompanyType == CompanyEnum.Production)
-                    WxPayModel.Money = 100 * 600 * Key;
+                    WxPayModel.Money = ConfigMoney.ProductionTest * Key;
                 if (info.CompanyType == CompanyEnum.Circulation)
-                    WxPayModel.Money = 100 * 360 * Key;
+                    WxPayModel.Money = ConfigMoney.CirculationTest * Key;
             }
             if ((Value == null ? info.Version : (SystemVersionEnum)(Value)) == SystemVersionEnum.Base)
             {
                 info.TagCodeNum += ServiceMessage.BASE;
                 if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
-                    WxPayModel.Money = 100 * 2000 * Key;
+                    WxPayModel.Money = ConfigMoney.PlantAndCultureBase * Key;
                 if (info.CompanyType == CompanyEnum.Production)
-                    WxPayModel.Money = 100 * 3000 * Key;
+                    WxPayModel.Money = ConfigMoney.ProductionBase * Key;
                 if (info.CompanyType == CompanyEnum.Circulation)
-                    WxPayModel.Money = 100 * 1500 * Key;
+                    WxPayModel.Money = ConfigMoney.CirculationBase * Key;
             }
             if ((Value == null ? info.Version : (SystemVersionEnum)(Value)) == SystemVersionEnum.Level)
             {
                 info.TagCodeNum += ServiceMessage.LEVEL;
                 if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
-                    WxPayModel.Money = 100 * 4000 * Key;
+                    WxPayModel.Money = ConfigMoney.PlantAndCultureLv * Key;
                 if (info.CompanyType == CompanyEnum.Production)
-                    WxPayModel.Money = 100 * 6000 * Key;
+                    WxPayModel.Money = ConfigMoney.ProductionLv * Key;
                 if (info.CompanyType == CompanyEnum.Circulation)
-                    WxPayModel.Money = 100 * 3000 * Key;
+                    WxPayModel.Money = ConfigMoney.CirculationLv * Key;
             }
             if ((Value == null ? info.Version : (SystemVersionEnum)(Value)) == SystemVersionEnum.Enterprise)
             {
                 info.TagCodeNum += ServiceMessage.ENTERPRISE;
                 if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
-                    WxPayModel.Money = 100 * 80000 * Key;
+                    WxPayModel.Money = ConfigMoney.PlantAndCultureEnterprise * Key;
                 if (info.CompanyType == CompanyEnum.Production)
-                    WxPayModel.Money = 100 * 100000 * Key;
+                    WxPayModel.Money = ConfigMoney.ProductionEnterprise * Key;
                 if (info.CompanyType == CompanyEnum.Circulation)
-                    WxPayModel.Money = 100 * 60000 * Key;
+                    WxPayModel.Money = ConfigMoney.CirculationEnterprise * Key;
             }
             return WxPayCore.Instance.WebPay(WxPayModel);
         }

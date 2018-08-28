@@ -12,6 +12,7 @@ using KilyCore.Service.QueryExtend;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点13分

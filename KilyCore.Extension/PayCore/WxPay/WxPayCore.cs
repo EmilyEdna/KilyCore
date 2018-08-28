@@ -63,7 +63,7 @@ namespace KilyCore.Extension.PayCore.WxPay
             Request.AddGatewayData(new ScanPayModel
             {
                 Body = Param.OrderTitle,
-                TotalAmount = Param.Money,
+                TotalAmount = Param.Money * 100,
                 OutTradeNo = WxPayModel.OutTradeNo
             });
             return Request;

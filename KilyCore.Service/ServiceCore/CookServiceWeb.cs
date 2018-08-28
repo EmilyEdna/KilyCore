@@ -1,4 +1,5 @@
-﻿using KilyCore.DataEntity.RequestMapper.Cook;
+﻿using KilyCore.Configure;
+using KilyCore.DataEntity.RequestMapper.Cook;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Cook;
 using KilyCore.EntityFrameWork.Model.Cook;
@@ -191,11 +192,12 @@ namespace KilyCore.Service.ServiceCore
         {
             CookVip vip = Kily.Set<CookVip>().Where(t => t.Id == Param.Id).FirstOrDefault();
             IList<String> Fields = new List<String> { "IsVip", "StartTime", "EndTime" };
-            RequestAliPayModel AliPayModel = new RequestAliPayModel();
-            AliPayModel.OrderTitle = "厨师系统会员服务";
-            AliPayModel.Money = 120 * Convert.ToInt32(Param.ContractYear);
+            RequestAliPayModel AliPayModel = new RequestAliPayModel
+            {
+                OrderTitle = "厨师系统会员服务",
+                Money = ConfigMoney.Cook * Convert.ToInt32(Param.ContractYear)
+            };
             RequestWxPayModel WxPayModel = AliPayModel.MapToEntity<RequestWxPayModel>();
-            WxPayModel.Money = WxPayModel.Money * 100;
             vip.IsVip = true;
             vip.StartTime = DateTime.Now;
             vip.EndTime = DateTime.Now.AddYears(Convert.ToInt32(Param.ContractYear));

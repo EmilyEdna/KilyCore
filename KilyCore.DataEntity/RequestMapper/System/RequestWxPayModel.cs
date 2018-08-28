@@ -21,9 +21,6 @@ namespace KilyCore.DataEntity.RequestMapper.System
     public class RequestWxPayModel
     {
         public string OrderTitle { get; set; }
-        /// <summary>
-        /// 单位：分
-        /// </summary>
-        public int Money { get; set; }
+        public int Money{ get; set; }
     }
 }
