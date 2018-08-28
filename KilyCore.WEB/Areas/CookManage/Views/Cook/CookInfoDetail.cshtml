@@ -1,5 +1,294 @@
 ﻿
 @{
-    ViewData["Title"] = "CookInfoDetail";
+    ViewData["Title"] = "厨师详情";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                options.GetProvince();
+                options.GetCityByProvince();
+                options.GetAreaByCity();
+                options.GetTownByArea();
+                //获取详情
+                controller.ajax({
+                    url: "Cook/GetCookInfoDetail",
+                    data: { Id: controller.GetParam("Id") },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        controller.SetCtrlValue("#Edit", result.data);
+                        options.SetCity();
+                        controller.SetCtrlValue("#Edit", result.data);
+                        options.SetArea();
+                        controller.SetCtrlValue("#Edit", result.data);
+                        options.SetTown();
+                        controller.SetCtrlValue("#Edit", result.data);
+                        if (result.data.IdCardPhoto != null) {
+                            var html = '';
+                            $.each(result.data.IdCardPhoto.split(","), function (i, obj) {
+                                html += '<div class="col-sm-6"><img class="img-preview-sm" src="' + obj + '" type="image" name="IdCardPhoto" style="display:block;margin:auto" title="点击放大" /></div>'
+                            });
+                            $("#IdCardPhoto").html(html);
+                        }
+                    }
+                });
+            },
+            //获取省份
+            GetProvince: function () {
+                controller.ajax({
+                    url: "System/GetProvince",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option value="undefined">=请选择=</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '" data-id="' + obj.ProvinceId + '">' + obj.ProvinceName + '</option>';
+                        });
+                        $("#province").html(html);
+                    }
+                });
+            },
+            //选中省份后获取城市
+            GetCityByProvince: function () {
+                $("#province").change(function () {
+                    controller.ajax({
+                        url: "System/GetCity",
+                        data: { Id: $(this).find("option:selected").data().id },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            var html = '<option>=请选择=</option>';
+                            $.each(result.data, function (i, obj) {
+                                html += '<option value="' + obj.Id + '" data-id="' + obj.CityId + '">' + obj.CityName + '</option>';
+                            });
+                            $("#city").html(html);
+                        }
+                    });
+                });
+            },
+            //选中城市后获取区域
+            GetAreaByCity: function () {
+                $("#province").change(function () {
+                    var html = '<option>=请选择=</option>';
+                    $("#area").html(html);
+                    $("#town").html(html);
+                });
+                $("#city").change(function () {
+                    controller.ajax({
+                        url: "System/GetArea",
+                        data: { Id: $(this).find("option:selected").data().id },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            var html = '<option>=请选择=</option>';
+                            $.each(result.data, function (i, obj) {
+                                html += '<option value="' + obj.Id + '" data-id="' + obj.AreaId + '">' + obj.AreaName + '</option>';
+                            });
+                            $("#area").html(html);
+                        }
+                    });
+                });
+            },
+            //选中区域后获取乡镇
+            GetTownByArea: function () {
+                $("#city").change(function () {
+                    var html = '<option>=请选择=</option>';
+                    $("#town").html(html);
+                });
+                $("#area").change(function () {
+                    controller.ajax({
+                        url: "System/GetTown",
+                        data: { Id: $(this).find("option:selected").data().id },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            var html = '<option>=请选择=</option>';
+                            $.each(result.data, function (i, obj) {
+                                html += '<option value="' + obj.Id + '" data-id="' + obj.TownId + '">' + obj.TownName + '</option>';
+                            });
+                            $("#town").html(html);
+                        }
+                    });
+                });
+            },
+            //取得详情后获取城市
+            SetCity: function () {
+                controller.ajax({
+                    url: "System/GetCity",
+                    data: { Id: $("#province").find("option:selected").data().id },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>=请选择=</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '" data-id="' + obj.CityId + '">' + obj.CityName + '</option>';
+                        });
+                        $("#city").html(html);
+                    }
+                });
+            },
+            //取得详情后获取区域
+            SetArea: function () {
+                controller.ajax({
+                    url: "System/GetArea",
+                    data: { Id: $("#city").find("option:selected").data().id },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>=请选择=</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '" data-id="' + obj.AreaId + '">' + obj.AreaName + '</option>';
+                        });
+                        $("#area").html(html);
+                    }
+                });
+            },
+            //取得详情后获取乡镇
+            SetTown: function () {
+                controller.ajax({
+                    url: "System/GetTown",
+                    data: { Id: $("#area").find("option:selected").data().id },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>=请选择=</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '" data-id="' + obj.TownId + '">' + obj.TownName + '</option>';
+                        });
+                        $("#town").html(html);
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                $("img").on('click', function () {
+                    var option = {
+                        title: "图像预览",
+                        data: [{
+                            alt: "图像预览",
+                            src: $(this).attr("src")
+                        }]
+                    };
+                    controller.Photos(option);
+                });
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" id="Edit">
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">真实姓名</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="TrueName">
+                    </td>
+                    <th><label class="control-label">性别</label></th>
+                    <td class="has-warning">
+                        <select type="select" name="Sexlab" class="form-control">
+                            <option value="1">男</option>
+                            <option value="2">女</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">名族</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Nation">
+                    </td>
+                    <th><label class="control-label">电话</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Phone">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">发证机关</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="CardOffice">
+                    </td>
+                    <th><label class="control-label">过期时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ExpiredDay">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">所属区域</label></th>
+                    <td colspan="3">
+                        <table style="width:100%">
+                            <tr>
+                                <td class="has-warning" style="width:25%">
+                                    <select type="select" class="form-control" name="Province" id="province">
+                                        <option>=请选择=</option>
+                                    </select>
+                                </td>
+                                <td class="has-warning" style="width:25%">
+                                    <select type="select" class="form-control" name="City" id="city">
+                                        <option>=请选择=</option>
+                                    </select>
+                                </td>
+                                <td class="has-warning" style="width:25%">
+                                    <select type="select" class="form-control" name="Area" id="area">
+                                        <option>=请选择=</option>
+                                    </select>
+                                </td>
+                                <td class="has-warning" style="width:25%">
+                                    <select type="select" class="form-control" name="Town" id="town">
+                                        <option>=请选择=</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">详细地址</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Address">
+                    </td>
+                    <th><label class="control-label">出生日期</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Birthday">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">身份证号</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" class="form-control" name="IdCardNo">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">正反身份证</label></th>
+                    <td class="has-warning" colspan="3" id="IdCardPhoto"></td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">培训合格证</label></th>
+                    <td class="has-warning" colspan="3">
+                        <img class="img-preview-sm" src="" type="image" name="TrainCard" style="display:block;margin:auto" title="点击放大" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">登记证</label></th>
+                    <td class="has-warning" colspan="3">
+                        <img class="img-preview-sm" src="" type="image" name="BookInCard" style="display:block;margin:auto" title="点击放大" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

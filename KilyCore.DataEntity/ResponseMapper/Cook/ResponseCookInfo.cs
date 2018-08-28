@@ -138,5 +138,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Cook
         public string TableName { get; set; }
         public AuditEnum AuditType { get; set; }
         public string AuditTypeName { get; set; }
+        public bool? IsEnable { get; set; }
+        public string Stauts { get => (bool)IsEnable ? "停用" : "启用"; }
     }
 }

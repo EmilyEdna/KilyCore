@@ -246,11 +246,11 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.TypePath.Contains(pageParam.QueryParam.AreaTree));
             var data = queryable.Select(t => new ResponseCookInfo()
             {
-                Id=t.Id,
-                TrueName=t.TrueName,
-                IdCardNo=t.IdCardNo,
-                AuditTypeName= AttrExtension.GetSingleDescription<DescriptionAttribute>(t.AuditType),
-                TableName=t.GetType().Name
+                Id = t.Id,
+                TrueName = t.TrueName,
+                IdCardNo = t.IdCardNo,
+                AuditTypeName = AttrExtension.GetSingleDescription<DescriptionAttribute>(t.AuditType),
+                TableName = t.GetType().Name
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -260,10 +260,11 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public ResponseCookInfo GetCookInfoDetail(Guid Id)
         {
-            var data = Kily.Set<CookInfo>().Where(t=>t.Id==Id).Select(t => new ResponseCookInfo()
+            var data = Kily.Set<CookInfo>().Where(t => t.Id == Id).Join(Kily.Set<CookVip>(), t => t.CookId, x => x.Id, (t, x) => new ResponseCookInfo()
             {
                 Id = t.Id,
                 CookId = t.CookId,
+                Phone = x.Phone,
                 TrueName = t.TrueName,
                 Sexlab = t.Sexlab,
                 Nation = t.Nation,
@@ -291,6 +292,61 @@ namespace KilyCore.Service.ServiceCore
             UpdateField(info, "AuditType");
             SystemAudit audit = Param.MapToEntity<SystemAudit>();
             return Insert(audit) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        #endregion
+
+        #region 服务管理
+        /// <summary>
+        /// 厨师开通的服务分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseCookInfo> GetCookServicePage(PageParamList<RequestCookInfo> pageParam)
+        {
+            if (UserInfo().AccountType > AccountEnum.Country)
+                return null;
+            IQueryable<CookInfo> queryable = Kily.Set<CookInfo>().OrderByDescending(t => t.CreateTime);
+            IQueryable<CookVip> queryables = Kily.Set<CookVip>().OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.AreaTree))
+                queryable = queryable.Where(t => t.TypePath.Contains(pageParam.QueryParam.AreaTree));
+            var data = queryable.Join(queryables, t => t.CookId, x => x.Id, (t, x) => new ResponseCookInfo()
+            {
+                Id=x.Id,
+                Phone=x.Phone,
+                IsVip=x.IsVip,
+                StartTime=x.StartTime,
+                EndTime=x.EndTime,
+                TrueName = t.TrueName,
+                IdCardNo = t.IdCardNo,
+                IsEnable=x.IsDelete
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 启用
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string StartUse(Guid Id)
+        {
+            CookVip vip = Kily.Set<CookVip>().Where(t => t.Id == Id).First();
+            vip.IsDelete = false;
+            if (UpdateField<CookVip>(vip, "IsDelete"))
+                return ServiceMessage.UPDATESUCCESS;
+            else
+                return ServiceMessage.UPDATEFAIL;
+        }
+        /// <summary>
+        /// 停用
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string BlockUp(Guid Id)
+        {
+            if (Delete<CookVip>(t => t.Id == Id))
+                return ServiceMessage.UPDATESUCCESS;
+            else
+                return ServiceMessage.UPDATEFAIL;
         }
         #endregion
     }

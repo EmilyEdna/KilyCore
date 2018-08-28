@@ -52,5 +52,11 @@ namespace KilyCore.Service.IServiceCore
         ResponseCookInfo GetCookInfoDetail(Guid Id);
         String AuditCookInfo(RequestAudit Param);
         #endregion
+
+        #region 服务管理
+        PagedResult<ResponseCookInfo> GetCookServicePage(PageParamList<RequestCookInfo> pageParam);
+        String StartUse(Guid Id);
+        String BlockUp(Guid Id);
+        #endregion
     }
 }

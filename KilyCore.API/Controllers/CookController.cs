@@ -141,5 +141,38 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(CookService.AuditCookInfo(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+
+        #region 服务管理
+        /// <summary>
+        /// 厨师开通的服务分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetCookServicePage")]
+        public ObjectResultEx GetCookServicePage(PageParamList<RequestCookInfo> pageParam)
+        {
+            return ObjectResultEx.Instance(CookService.GetCookServicePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 启用账号
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("StartUse")]
+        public ObjectResultEx StartUse(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(CookService.StartUse(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 停用账号
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("BlockUp")]
+        public ObjectResultEx BlockUp(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(CookService.BlockUp(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }

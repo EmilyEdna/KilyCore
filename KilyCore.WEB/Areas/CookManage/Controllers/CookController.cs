@@ -9,6 +9,7 @@ namespace KilyCore.WEB.Areas.CookManage.Controllers
     [Area("CookManage")]
     public class CookController : Controller
     {
+        #region 厨师信息
         public IActionResult CookInfo()
         {
             return View();
@@ -21,18 +22,19 @@ namespace KilyCore.WEB.Areas.CookManage.Controllers
         {
             return View();
         }
+        #endregion
+        #region 厨师服务
         public IActionResult CookService()
         {
             return View();
         }
-        /// <summary>
-        /// 厨师角色
-        /// </summary>
-        /// <returns></returns>
+        #endregion
+        #region 厨师角色
         public IActionResult CookRole()
         {
             return View();
         }
+        #endregion
         #region 厨师菜单
         public IActionResult CookMenu()
         {

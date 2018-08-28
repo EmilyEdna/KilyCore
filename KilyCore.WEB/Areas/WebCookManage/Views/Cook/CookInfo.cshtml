@@ -39,6 +39,16 @@
                 });
                 options.UploadFiles();
             },
+            //设置文件值
+            SetFileValue: function (data, elememt) {
+                var files = $(elememt).val();
+                if (files != null && files != "" && files != undefined) {
+                    files += "," + data;
+                    $(elememt).val(files);
+                } else {
+                    $(elememt).val(data);
+                }
+            },
             //文件上传
             UploadFiles: function () {
                 //文件上传-身份证正反面
@@ -49,7 +59,7 @@
                     node: '#img1',
                     success: function (result) {
                         controller.Alter(result.msg);
-                        $("#IdCardPhoto").val(result.data);
+                        options.SetFileValue(result.data, "#IdCardPhoto");
                     }
                 });
                 //文件上传-身份证正反面
