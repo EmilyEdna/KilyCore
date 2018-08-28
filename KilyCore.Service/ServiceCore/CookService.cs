@@ -311,14 +311,14 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.TypePath.Contains(pageParam.QueryParam.AreaTree));
             var data = queryable.Join(queryables, t => t.CookId, x => x.Id, (t, x) => new ResponseCookInfo()
             {
-                Id=x.Id,
-                Phone=x.Phone,
-                IsVip=x.IsVip,
-                StartTime=x.StartTime,
-                EndTime=x.EndTime,
+                Id = x.Id,
+                Phone = x.Phone,
+                IsVip = x.IsVip,
+                StartTime = x.StartTime,
+                EndTime = x.EndTime,
                 TrueName = t.TrueName,
                 IdCardNo = t.IdCardNo,
-                IsEnable=x.IsDelete
+                IsEnable = x.IsDelete
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -347,6 +347,19 @@ namespace KilyCore.Service.ServiceCore
                 return ServiceMessage.UPDATESUCCESS;
             else
                 return ServiceMessage.UPDATEFAIL;
+        }
+        /// <summary>
+        /// 确认缴费并分配角色
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string CheckPayment(Guid Id)
+        {
+            var exp = ExpressionExtension.GetExpression<CookRoleAuthor>("AuthorName", "基本", ExpressionEnum.NotLike);
+            CookRoleAuthor author = Kily.Set<CookRoleAuthor>().Where(exp).Where(t => t.IsDelete == false).AsNoTracking().FirstOrDefault();
+            CookVip vip = Kily.Set<CookVip>().Where(t => t.Id == Id).FirstOrDefault();
+            vip.RoleId = author.Id;
+            return UpdateField(vip, "RoleId") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         #endregion
     }

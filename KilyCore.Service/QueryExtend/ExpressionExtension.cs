@@ -34,10 +34,10 @@ namespace KilyCore.Service.QueryExtend
             switch (QueryType)
             {
                 case ExpressionEnum.Like:
-                    Filter = Expression.Call(Left, typeof(String).GetMethod("Contains"), Right);
+                    Filter = Expression.Call(Left, typeof(String).GetMethod("Contains", new Type[] { typeof(String) }), Right);
                     break;
                 case ExpressionEnum.NotLike:
-                    Filter = Expression.Not(Expression.Call(Left, typeof(String).GetMethod("Contains"), Right));
+                    Filter = Expression.Not(Expression.Call(Left, typeof(String).GetMethod("Contains", new Type[] { typeof(String) }), Right));
                     break;
                 case ExpressionEnum.Equals:
                     Filter = Expression.Equal(Left,Right);

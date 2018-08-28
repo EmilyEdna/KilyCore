@@ -16,7 +16,7 @@ using System.Text;
 namespace KilyCore.Service.IServiceCore
 {
     /// <summary>
-    /// 企业前台后也基础管理业务逻辑接口
+    /// 企业前台后台业务逻辑接口
     /// </summary>
     public interface IEnterpriseWebService : IService
     {

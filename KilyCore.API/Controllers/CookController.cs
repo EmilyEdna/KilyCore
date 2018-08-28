@@ -173,6 +173,16 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(CookService.BlockUp(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 确认缴费
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("CheckPayment")]
+        public ObjectResultEx CheckPayment(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(CookService.CheckPayment(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
     }
 }

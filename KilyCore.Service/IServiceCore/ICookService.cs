@@ -57,6 +57,7 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseCookInfo> GetCookServicePage(PageParamList<RequestCookInfo> pageParam);
         String StartUse(Guid Id);
         String BlockUp(Guid Id);
+        String CheckPayment(Guid Id);
         #endregion
     }
 }

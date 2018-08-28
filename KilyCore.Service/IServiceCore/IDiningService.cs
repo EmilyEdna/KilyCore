@@ -14,7 +14,7 @@ using System.Text;
 namespace KilyCore.Service.IServiceCore
 {
     /// <summary>
-    /// 餐饮后台业务逻辑接口
+    /// 餐饮业务逻辑接口
     /// </summary>
     public interface IRepastService : IService
     {

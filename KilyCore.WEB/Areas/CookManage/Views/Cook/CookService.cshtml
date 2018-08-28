@@ -32,9 +32,24 @@
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary open"><i class="fa fa-check"></i>启用</button>');
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>停用</button>');
+                    action.push('<button class="btn btn-sm btn-primary ok"><i class="fa fa-check"></i>确认缴费</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
+                    "click .ok": function (event, val, row, index) {
+                        controller.Confirm("确认收款？", function (bool) {
+                            if (bool) {
+                                controller.ajax({
+                                    url: "Cook/CheckPayment",
+                                    data: { Id: row.Id },
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
+                    },
                     "click .open": function (event, val, row, index) {
                         controller.Confirm("确认启用？", function (bool) {
                             if (bool) {
@@ -109,7 +124,7 @@
                         <thead>
                             <tr>
                                 <th data-field="TrueName" data-halign="center" data-align="center" data-valign="middle">真实姓名</th>
-                                <th data-field="IdCardNo" data-halign="center" data-align="center" data-valign="middle">身份证号</th>
+                                <!--<th data-field="IdCardNo" data-halign="center" data-align="center" data-valign="middle">身份证号</th>-->
                                 <th data-field="Phone" data-halign="center" data-align="center" data-valign="middle">联系电话</th>
                                 <th data-field="VipType" data-halign="center" data-align="center" data-valign="middle">是否会员</th>
                                 <th data-field="StartTime" data-halign="center" data-align="center" data-valign="middle">开通时间</th>
