@@ -26,7 +26,7 @@ namespace KilyCore.Service.IServiceCore
     /// <summary>
     /// 厨师前台后台业务逻辑接口
     /// </summary>
-    public interface ICookWebService:IService
+    public interface ICookWebService : IService
     {
         #region 登录注册
         String RegistCookAccount(RequestCookInfo Param);
@@ -47,6 +47,33 @@ namespace KilyCore.Service.IServiceCore
         #region 厨师信息
         ResponseCookInfo GetCookInfoDetail();
         String EditCookInfo(RequestCookInfo Param);
+        #endregion
+
+        #region 办宴报备
+        PagedResult<ResponseCookBanquet> GetBanquetPage(PageParamList<RequestCookBanquet> pageParam);
+        String EditBanquet(RequestCookBanquet Param);
+        ResponseCookBanquet GetBanquetDetail(Guid Id);
+        String RemoveBanquet(Guid Id);
+        #endregion
+
+        #region 帮厨管理
+        PagedResult<ResponseCookHelper> GetHelperPage(PageParamList<RequestCookHelper> pageParam);
+        String EditHelper(RequestCookHelper Param);
+        String RemoveHelper(Guid Id);
+        IList<ResponseCookHelper> GetHelperList();
+        #endregion
+
+        #region 食材信息
+        PagedResult<ResponseCookFood> GetFoodPage(PageParamList<RequestCookFood> pageParam);
+        String RemoveFood(Guid Id);
+        String EditFood(RequestCookFood Param);
+        IList<ResponseCookFood> GetFoodList();
+        #endregion
+
+        #region 责任协议
+        PagedResult<ResponseCookAgree> GetAgreePage(PageParamList<RequestCookAgree> pageParam);
+        String EditAgree(RequestCookAgree Param);
+        String RemoveAgree(Guid Id);
         #endregion
     }
 }

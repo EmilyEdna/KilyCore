@@ -319,7 +319,7 @@ namespace KilyCore.Service.ServiceCore
                      OpenNet = t.OpenNet,
                      Chapter = t.Chapter,
                      CommunityCode = t.CommunityCode,
-                     Addrees=t.Addrees
+                     Addrees = t.Addrees
                  }).FirstOrDefault();
         }
         /// <summary>
@@ -350,10 +350,10 @@ namespace KilyCore.Service.ServiceCore
             t.TypePath.Contains(TypePathList[0])
             || t.TypePath.Contains(TypePathList[1])
             || t.TypePath.Contains(TypePathList[2]))
-            .Where(t => t.OpenNet == true).Where(t=>t.AccountType>AccountEnum.Country).AsNoTracking().Select(t => new ResponseAdmin()
+            .Where(t => t.OpenNet == true).Where(t => t.AccountType > AccountEnum.Country).AsNoTracking().Select(t => new ResponseAdmin()
             {
                 Id = t.Id,
-                CommunityCode=t.CommunityCode,
+                CommunityCode = t.CommunityCode,
                 TrueName = t.TrueName,
                 Chapter = t.Chapter,
                 Addrees = t.Addrees
@@ -373,7 +373,7 @@ namespace KilyCore.Service.ServiceCore
                 || t.TypePath.Contains(CompanyInfo().Area)
                 || t.TypePath.Contains(CompanyInfo().Town)
                 || t.AccountType == AccountEnum.Country).AsNoTracking();
-             else if(CompanyUser()!=null)
+            else if (CompanyUser() != null)
                 queryable = queryable.Where(t => t.TypePath.Contains(CompanyUser().Province)
                 || t.TypePath.Contains(CompanyUser().City)
                 || t.TypePath.Contains(CompanyUser().Area)
@@ -385,7 +385,7 @@ namespace KilyCore.Service.ServiceCore
                 || t.TypePath.Contains(MerchantInfo().Area)
                 || t.TypePath.Contains(MerchantInfo().Town)
                 || t.AccountType == AccountEnum.Country).AsNoTracking();
-            else 
+            else
                 queryable = queryable.Where(t => t.TypePath.Contains(MerchantUser().Province)
                 || t.TypePath.Contains(MerchantUser().City)
                 || t.TypePath.Contains(MerchantUser().Area)
@@ -500,15 +500,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string RemoveAuthorRole(Guid Id)
         {
-            if (Delete<SystemRoleAuthor>(ExpressionExtension.GetExpression<SystemRoleAuthor>("Id", Id, ExpressionEnum.Equals)))
-            {
-                if (Delete<SystemAdmin>(ExpressionExtension.GetExpression<SystemAdmin>("RoleAuthorType", Id, ExpressionEnum.Equals)))
-                    return ServiceMessage.REMOVESUCCESS;
-                else
-                    return ServiceMessage.REMOVEFAIL;
-            }
-            else
-                return ServiceMessage.REMOVEFAIL;
+            return Remove<SystemRoleAuthor>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         #endregion
 
@@ -552,8 +544,8 @@ namespace KilyCore.Service.ServiceCore
                Email = t.Email,
                AccountType = t.AccountType,
                RoleAuthorType = t.RoleAuthorType,
-               Addrees=t.Addrees,
-               CommunityCode=t.CommunityCode,
+               Addrees = t.Addrees,
+               CommunityCode = t.CommunityCode,
                TableName = typeof(ResponseAdmin).Name
            }).FirstOrDefault();
             return Admin ?? null;
@@ -1108,7 +1100,7 @@ namespace KilyCore.Service.ServiceCore
                 StayTime = t.CreateTime,
                 EndTime = t.EndTime,
                 AuditType = t.AuditType,
-                CompanyId=t.CompanyId,
+                CompanyId = t.CompanyId,
                 AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
                 TableName = t.GetType().Name,
                 ContractType = t.ContractType,

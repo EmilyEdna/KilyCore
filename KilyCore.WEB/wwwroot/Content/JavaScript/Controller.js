@@ -202,7 +202,6 @@ controller.Confirm = function (option, callBack, title) {
         callBack(false, index);
         top.layer.close(index);
     });
-
 }
 /**
  * 提示框
@@ -761,7 +760,9 @@ controller.Select = function (option) {
         url: undefined,
         data: {},
         type: 'post',
-        async: false
+        async: false,
+        flag: true,
+        callBack: undefined
     };
     var options = $.extend(defaultOption, option);
     controller.ajax({
@@ -770,7 +771,10 @@ controller.Select = function (option) {
         async: options.async,
         type: options.type,
         success: function (result) {
-            InitHtml(result.data);
+            if (options.flag)
+                InitHtml(result.data);
+            else
+                options.callBack(result.data);
             InitHidden();
         }
     });
@@ -1045,7 +1049,7 @@ controller.Echarts = function (element, option) {
                 }
             ]
         };
-        echarts.init($(element)[0],"light").setOption(OptionPie);
+        echarts.init($(element)[0], "light").setOption(OptionPie);
     }
     else {
         OptionBar = {
@@ -1072,6 +1076,6 @@ controller.Echarts = function (element, option) {
             ],
             series: option.BarData
         };
-        echarts.init($(element)[0],"light").setOption(OptionBar);
+        echarts.init($(element)[0], "light").setOption(OptionBar);
     }
 }

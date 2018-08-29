@@ -141,5 +141,164 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(CookWebService.EditCookInfo(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+
+        #region 办宴报备
+        /// <summary>
+        /// 报备列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetBanquetPage")]
+        public ObjectResultEx GetBanquetPage(PageParamList<RequestCookBanquet> pageParam)
+        {
+            return ObjectResultEx.Instance(CookWebService.GetBanquetPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 新增报备记录
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditBanquet")]
+        public ObjectResultEx EditBanquet(RequestCookBanquet Param)
+        {
+            return ObjectResultEx.Instance(CookWebService.EditBanquet(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 查看详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetBanquetDetail")]
+        public ObjectResultEx GetBanquetDetail(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(CookWebService.GetBanquetDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除报备
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveBanquet")]
+        public ObjectResultEx RemoveBanquet(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(CookWebService.RemoveBanquet(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region 帮厨管理
+        /// <summary>
+        /// 帮厨分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetHelperPage")]
+        public ObjectResultEx GetHelperPage(PageParamList<RequestCookHelper> pageParam)
+        {
+            return ObjectResultEx.Instance(CookWebService.GetHelperPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑帮厨
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditHelper")]
+        public ObjectResultEx EditHelper(RequestCookHelper Param)
+        {
+            return ObjectResultEx.Instance(CookWebService.EditHelper(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除帮厨
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveHelper")]
+        public ObjectResultEx RemoveHelper(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(CookWebService.RemoveHelper(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 帮厨列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetHelperList")]
+        public ObjectResultEx GetHelperList() {
+            return ObjectResultEx.Instance(CookWebService.GetHelperList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region 食材信息
+        /// <summary>
+        /// 食材分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetFoodPage")]
+        public ObjectResultEx GetFoodPage(PageParamList<RequestCookFood> pageParam)
+        {
+            return ObjectResultEx.Instance(CookWebService.GetFoodPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除食材
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveFood")]
+        public ObjectResultEx RemoveFood(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(CookWebService.RemoveFood(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑食材
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditFood")]
+        public ObjectResultEx EditFood(RequestCookFood Param)
+        {
+            return ObjectResultEx.Instance(CookWebService.EditFood(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 食材列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetFoodList")]
+        public ObjectResultEx GetFoodList()
+        {
+            return ObjectResultEx.Instance(CookWebService.GetFoodList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region 责任协议
+        /// <summary>
+        /// 协议分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetAgreePage")]
+        public ObjectResultEx GetAgreePage(PageParamList<RequestCookAgree> pageParam)
+        {
+            return ObjectResultEx.Instance(CookWebService.GetAgreePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑协议
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditAgree")]
+        public ObjectResultEx EditAgree(RequestCookAgree Param)
+        {
+            return ObjectResultEx.Instance(CookWebService.EditAgree(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除协议
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveAgree")]
+        public ObjectResultEx RemoveAgree(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(CookWebService.RemoveAgree(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }

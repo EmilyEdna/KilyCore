@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewData["Title"] = "宴会报备";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+            },
+            //事件
+            InitEvents: function () {
+            },
+            //行为
+            action: {
+             
+            }//行为结束
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+@section css{
+
+}

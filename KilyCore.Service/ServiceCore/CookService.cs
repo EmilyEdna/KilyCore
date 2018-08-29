@@ -219,15 +219,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string RemoveAuthorRole(Guid Id)
         {
-            if (Delete<CookRoleAuthor>(ExpressionExtension.GetExpression<CookRoleAuthor>("Id", Id, ExpressionEnum.Equals)))
-            {
-                if (Delete<CookVip>(ExpressionExtension.GetExpression<CookVip>("RoleId", Id, ExpressionEnum.Equals)))
-                    return ServiceMessage.REMOVESUCCESS;
-                else
-                    return ServiceMessage.REMOVEFAIL;
-            }
-            else
-                return ServiceMessage.REMOVEFAIL;
+            return Remove<CookRoleAuthor>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         #endregion
 

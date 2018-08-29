@@ -250,5 +250,231 @@ namespace KilyCore.Service.ServiceCore
                 return Insert(info) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         #endregion
+
+        #region 办宴报备
+        /// <summary>
+        /// 报备列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseCookBanquet> GetBanquetPage(PageParamList<RequestCookBanquet> pageParam)
+        {
+            IQueryable<CookBanquet> queryable = Kily.Set<CookBanquet>().Where(t => t.CookId == CookInfo().Id).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.HoldName))
+                queryable = queryable.Where(t => t.HoldName.Contains(pageParam.QueryParam.HoldName));
+            var data = queryable.Select(t => new ResponseCookBanquet()
+            {
+                Id = t.Id,
+                HoldTime = t.HoldTime,
+                CreateTime = t.CreateTime,
+                HoldName = t.HoldName,
+                Address = t.Address
+            }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 新增报备记录
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditBanquet(RequestCookBanquet Param)
+        {
+            CookBanquet banquet = Param.MapToEntity<CookBanquet>();
+            return Insert(banquet) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 查看详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseCookBanquet GetBanquetDetail(Guid Id)
+        {
+            var data = Kily.Set<CookBanquet>().Where(t => t.Id == Id).Select(t => new ResponseCookBanquet()
+            {
+                Id = t.Id,
+                HoldName = t.HoldName,
+                Phone = t.Phone,
+                TypePath = t.TypePath,
+                Address = t.Address,
+                HoldDay = t.HoldDay,
+                HoldTime = t.HoldTime,
+                HoldType = t.HoldType,
+                Helper = t.Helper,
+                Water = t.Water,
+                Disinfection = t.Disinfection,
+                Facility = t.Facility,
+                Poisonous = t.Poisonous,
+                Processing = t.Processing,
+                Ingredients = t.Ingredients,
+                CookBook = t.CookBook,
+                Stauts = t.Stauts,
+                ResultImg = t.ResultImg
+            }).AsNoTracking().FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 删除报备信息
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveBanquet(Guid Id)
+        {
+            return Remove<CookBanquet>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+
+        #region 帮厨管理
+        /// <summary>
+        /// 帮厨分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseCookHelper> GetHelperPage(PageParamList<RequestCookHelper> pageParam)
+        {
+            IQueryable<CookHelper> queryable = Kily.Set<CookHelper>().Where(t => t.CookId == CookInfo().Id).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.HelperName))
+                queryable = queryable.Where(t => t.HelperName.Contains(pageParam.QueryParam.HelperName));
+            var data = queryable.Select(t => new ResponseCookHelper()
+            {
+                Id = t.Id,
+                HelperName = t.HelperName,
+                TypePath = t.TypePath,
+                HealthCard = t.HealthCard,
+                Phone = t.Phone
+            }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑帮厨
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditHelper(RequestCookHelper Param)
+        {
+            CookHelper helper = Param.MapToEntity<CookHelper>();
+            return Insert(helper) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 删除帮厨
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveHelper(Guid Id)
+        {
+            return Remove<CookHelper>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 帮厨列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseCookHelper> GetHelperList()
+        {
+            var data = Kily.Set<CookHelper>().Where(t => t.CookId == CookInfo().Id).OrderByDescending(t => t.CreateTime).Select(t => new ResponseCookHelper()
+            {
+                Id = t.Id,
+                HelperName = t.HelperName,
+            }).ToList();
+            return data;
+        }
+        #endregion
+
+        #region 食材信息
+        /// <summary>
+        /// 食材分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseCookFood> GetFoodPage(PageParamList<RequestCookFood> pageParam)
+        {
+            IQueryable<CookFood> queryable = Kily.Set<CookFood>().Where(t => t.CookId == CookInfo().Id).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.FoodName))
+                queryable = queryable.Where(t => t.FoodName.Contains(pageParam.QueryParam.FoodName));
+            var data = queryable.Select(t => new ResponseCookFood()
+            {
+                Id = t.Id,
+                FoodType = t.FoodType,
+                FoodName = t.FoodName,
+                Number = t.Number,
+                Supplier = t.Supplier,
+                ProductionAddress = t.ProductionAddress,
+                BuyTime = t.BuyTime,
+                Report = t.Report,
+                BuyUser = t.BuyUser,
+                Phone = t.Phone
+            }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 删除食材
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveFood(Guid Id)
+        {
+            return Remove<CookFood>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 编辑食材
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditFood(RequestCookFood Param)
+        {
+            CookFood food = Param.MapToEntity<CookFood>();
+            return Insert(food) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 食材列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseCookFood> GetFoodList()
+        {
+            var data = Kily.Set<CookFood>().Where(t => t.CookId == CookInfo().Id).OrderByDescending(t => t.CreateTime).Select(t => new ResponseCookFood()
+            {
+                Id = t.Id,
+                FoodName = t.FoodName
+            }).ToList();
+            return data;
+        }
+        #endregion
+
+        #region 责任协议
+        /// <summary>
+        /// 协议分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseCookAgree> GetAgreePage(PageParamList<RequestCookAgree> pageParam)
+        {
+            IQueryable<CookAgree> queryable = Kily.Set<CookAgree>().Where(t => t.CookId == CookInfo().Id).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.Title))
+                queryable = queryable.Where(t => t.Title.Contains(pageParam.QueryParam.Title));
+            var data = queryable.Select(t => new ResponseCookAgree()
+            {
+                Id = t.Id,
+                Title = t.Title
+            }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑协议
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditAgree(RequestCookAgree Param)
+        {
+            CookAgree agree = Param.MapToEntity<CookAgree>();
+            return Insert(agree) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 删除协议
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveAgree(Guid Id)
+        {
+            return Remove<CookAgree>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
     }
 }
