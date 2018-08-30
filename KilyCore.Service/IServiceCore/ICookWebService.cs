@@ -73,6 +73,7 @@ namespace KilyCore.Service.IServiceCore
         #region 责任协议
         PagedResult<ResponseCookAgree> GetAgreePage(PageParamList<RequestCookAgree> pageParam);
         String EditAgree(RequestCookAgree Param);
+        ResponseCookAgree GetAgreeDetail(Guid Id);
         String RemoveAgree(Guid Id);
         #endregion
     }

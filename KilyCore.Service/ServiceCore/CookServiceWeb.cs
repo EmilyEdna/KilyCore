@@ -467,6 +467,19 @@ namespace KilyCore.Service.ServiceCore
             return Insert(agree) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         /// <summary>
+        /// 协议详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseCookAgree GetAgreeDetail(Guid Id)
+        {
+            return Kily.Set<CookAgree>().Where(t => t.Id == Id).Select(t => new ResponseCookAgree()
+            {
+                Title=t.Title,
+                AgreeConent=t.AgreeConent,
+            }).AsNoTracking().FirstOrDefault();
+        }
+        /// <summary>
         /// 删除协议
         /// </summary>
         /// <param name="Id"></param>

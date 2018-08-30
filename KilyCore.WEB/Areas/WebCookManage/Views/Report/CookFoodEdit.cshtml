@@ -1,0 +1,112 @@
+﻿
+@{
+    ViewData["Title"] = "编辑食材";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("input[name='CookId']").val(CookerInfo.Id);
+                controller.LayDate({ elem: "input[name='BuyTime']" });
+                options.UploadFiles();
+            },
+            //文件上传
+            UploadFiles: function () {
+                //文件头像
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input",
+                    maxNum: 1,
+                    node: '.image-box',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        $("#Report").val(result.data);
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="CookWeb/EditFood" id="Edit">
+            <input type="hidden" name="CookId" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">食材名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="FoodName">
+                    </td>
+                    <th><label class="control-label">食材类型</label></th>
+                    <td class="has-warning">
+                        <select type="select" name="FoodType" class="form-control">
+                            <option value="主料">主料</option>
+                            <option value="辅料">辅料</option>
+                            <option value="调料">调料</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">供应商</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Supplier">
+                    </td>
+                    <th><label class="control-label">电话</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="phone">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">采购数量</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Number">
+                    </td>
+                    <th><label class="control-label">采购时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="BuyTime">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">生产地址</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ProductionAddress">
+                    </td>
+                    <th><label class="control-label">采购人</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="BuyUser">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">检测报告</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" id="upload-input" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                        <input type="hidden" id="Report" name="Report" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

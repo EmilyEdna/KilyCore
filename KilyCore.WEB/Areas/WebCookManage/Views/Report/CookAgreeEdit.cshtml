@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewData["Title"] = "编辑协议";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("input[name='CookId']").val(CookerInfo.Id);
+                var Editor = controller.Editor(".summernote", { width: 655 });
+                var id = controller.GetParam("Id");
+                if (id != null && id != "" && id != undefined) {
+                    controller.ajax({
+                        url: "CookWeb/GetAgreeDetail",
+                        data: { Id: id },
+                        type: "post",
+                        async: false,
+                        success: function (result) { 
+                            controller.SetCtrlValue("#Edit", result.data);
+                            Editor.summernote('code', result.data.AgreeConent);
+                        }
+                    });
+                }
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="CookWeb/EditAgree" id="Edit">
+            <input type="hidden" name="CookId" />
+            <input type="hidden" name="AgreeConent" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">协议标题</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Title">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">协议内容</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="summernote" name="AgreeConent"></div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

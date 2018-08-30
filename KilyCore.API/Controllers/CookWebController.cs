@@ -290,6 +290,16 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(CookWebService.EditAgree(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
+        /// 协议详情
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetAgreeDetail")]
+        public ObjectResultEx GetAgreeDetail(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(CookWebService.GetAgreeDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 删除协议
         /// </summary>
         /// <param name="Id"></param>

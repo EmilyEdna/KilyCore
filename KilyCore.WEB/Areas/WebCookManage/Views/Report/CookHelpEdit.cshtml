@@ -1,0 +1,189 @@
+﻿
+@{
+    ViewData["Title"] = "编辑帮厨";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("input[name='CookId']").val(CookerInfo.Id);
+                options.GetProvince();
+                options.GetCityByProvince();
+                options.GetAreaByCity();
+                options.GetTownByArea();
+                options.UploadFiles();
+            },
+            //文件上传
+            UploadFiles: function () {
+                //文件头像
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input",
+                    maxNum: 1,
+                    node: '.image-box',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        $("#HealthCard").val(result.data);
+                    }
+                });
+            },
+            //获取省份
+            GetProvince: function () {
+                controller.ajax({
+                    url: "System/GetProvince",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option value="undefined">=请选择=</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '" data-id="' + obj.ProvinceId + '">' + obj.ProvinceName + '</option>';
+                        });
+                        $("#province").html(html);
+                    }
+                });
+            },
+            //选中省份后获取城市
+            GetCityByProvince: function () {
+                $("#province").change(function () {
+                    controller.ajax({
+                        url: "System/GetCity",
+                        data: { Id: $(this).find("option:selected").data().id },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            var html = '<option>=请选择=</option>';
+                            $.each(result.data, function (i, obj) {
+                                html += '<option value="' + obj.Id + '" data-id="' + obj.CityId + '">' + obj.CityName + '</option>';
+                            });
+                            $("#city").html(html);
+                        }
+                    });
+                });
+            },
+            //选中城市后获取区域
+            GetAreaByCity: function () {
+                $("#province").change(function () {
+                    var html = '<option>=请选择=</option>';
+                    $("#area").html(html);
+                    $("#town").html(html);
+                });
+                $("#city").change(function () {
+                    controller.ajax({
+                        url: "System/GetArea",
+                        data: { Id: $(this).find("option:selected").data().id },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            var html = '<option>=请选择=</option>';
+                            $.each(result.data, function (i, obj) {
+                                html += '<option value="' + obj.Id + '" data-id="' + obj.AreaId + '">' + obj.AreaName + '</option>';
+                            });
+                            $("#area").html(html);
+                        }
+                    });
+                });
+            },
+            //选中区域后获取乡镇
+            GetTownByArea: function () {
+                $("#city").change(function () {
+                    var html = '<option>=请选择=</option>';
+                    $("#town").html(html);
+                });
+                $("#area").change(function () {
+                    controller.ajax({
+                        url: "System/GetTown",
+                        data: { Id: $(this).find("option:selected").data().id },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            var html = '<option>=请选择=</option>';
+                            $.each(result.data, function (i, obj) {
+                                html += '<option value="' + obj.Id + '" data-id="' + obj.TownId + '">' + obj.TownName + '</option>';
+                            });
+                            $("#town").html(html);
+                        }
+                    });
+                });
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="CookWeb/EditHelper" id="Edit">
+            <input type="hidden" name="CookId" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">帮厨姓名</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="HelperName">
+                    </td>
+                    <th><label class="control-label">帮厨电话</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required IsPhone" name="Phone" data-msg-required="请输入个人电话">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">所属区域</label></th>
+                    <td colspan="3">
+                        <table style="width:100%">
+                            <tr>
+                                <td class="has-warning" style="width:25%">
+                                    <select type="select" class="form-control" name="Province" id="province">
+                                        <option>=请选择=</option>
+                                    </select>
+                                </td>
+                                <td class="has-warning" style="width:25%">
+                                    <select type="select" class="form-control" name="City" id="city">
+                                        <option>=请选择=</option>
+                                    </select>
+                                </td>
+                                <td class="has-warning" style="width:25%">
+                                    <select type="select" class="form-control" name="Area" id="area">
+                                        <option>=请选择=</option>
+                                    </select>
+                                </td>
+                                <td class="has-warning" style="width:25%">
+                                    <select type="select" class="form-control" name="Town" id="town">
+                                        <option>=请选择=</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">健康证</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" id="upload-input" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                        <input type="hidden" id="HealthCard" name="HealthCard" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
