@@ -42,7 +42,7 @@
                     });
             },
             //绑定下拉列表
-            BindList: function () { 
+            BindList: function () {
                 //帮厨
                 controller.Select({
                     arrelemnt: ['#Helper'],
@@ -217,6 +217,13 @@
         });
     </script>
 }
+@section css{
+    <style>
+        .checkbox input[type=checkbox] {
+        margin-top:3px;
+        }
+    </style>
+}
 <div class="ibox float-e-margins">
     <div class="ibox-content">
         <form class="orm-horizontal" method="post" action="CookWeb/EditBanquet" id="Edit">
@@ -292,6 +299,107 @@
                     <th><label class="control-label">帮厨信息</label></th>
                     <td class="has-warning">
                         <select type="select" class="selectpicker form-control" id="Helper" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">卫生设施</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="checkbox">
+                            <div class="row">
+                                <div class="col-sm-6" style="height:34px;">
+                                    <label class="control-label" style="margin-top:7px;">
+                                        <input type="checkbox" value="保洁柜"/><small>保洁柜</small> 
+                                    </label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="input-group" style="display:none">
+                                        <span class="input-group-addon">-</span>
+                                        <input type="text" class="form-control">
+                                        <span class="input-group-addon">+</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="checkbox">
+                            <div class="row">
+                                <div class="col-sm-6" style="height:34px;">
+                                    <label class="control-label" style="margin-top:7px;">
+                                        <input type="checkbox" value="冰箱" />冰箱
+                                    </label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="input-group" style="display:none">
+                                        <span class="input-group-addon">-</span>
+                                        <input type="text" class="form-control">
+                                        <span class="input-group-addon">+</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="checkbox">
+                            <div class="row">
+                                <div class="col-sm-6" style="height:34px;">
+                                    <label class="control-label" style="margin-top:7px;">
+                                        <input type="checkbox" value="消毒柜" />消毒柜
+                                    </label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="input-group" style="display:none">
+                                        <span class="input-group-addon">-</span>
+                                        <input type="text" class="form-control">
+                                        <span class="input-group-addon">+</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="checkbox">
+                            <div class="row">
+                                <div class="col-sm-6" style="height:34px;">
+                                    <label class="control-label" style="margin-top:7px;">
+                                        <input type="checkbox" value="食品留样" />食品留样
+                                    </label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="input-group" style="display:none">
+                                        <span class="input-group-addon">-</span>
+                                        <input type="text" class="form-control">
+                                        <span class="input-group-addon">+</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="checkbox">
+                            <div class="row">
+                                <div class="col-sm-6" style="height:34px;">
+                                    <label class="control-label" style="margin-top:7px;">
+                                        <input type="checkbox" value="垃圾桶\防鼠\防蝇\防尘设施" />垃圾桶\防鼠\防蝇\防尘设施
+                                    </label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="input-group" style="display:none">
+                                        <span class="input-group-addon">-</span>
+                                        <input type="text" class="form-control">
+                                        <span class="input-group-addon">+</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="checkbox">
+                            <div class="row">
+                                <div class="col-sm-6" style="height:34px;">
+                                    <label class="control-label" style="margin-top:7px;">
+                                        <input type="checkbox" value="洗菜\洗肉\洗鱼池" />洗菜\洗肉\洗鱼池
+                                    </label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="input-group" style="display:none">
+                                        <span class="input-group-addon">-</span>
+                                        <input type="text" class="form-control">
+                                        <span class="input-group-addon">+</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                 </tr>
                 <tr>
