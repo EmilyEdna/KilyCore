@@ -33,6 +33,13 @@
                         width: "800px",
                         url: "WebCookManage/Report/CookFeastEdit",
                         callBack: function (result) {
+                            var checkboxs = result.$("#Edit").find("input[type='checkbox']:checked");
+                            var html = '';
+                            for (var i = 0; i < checkboxs.length; i++) {
+                                var num = $(checkboxs[i]).parents(".col-sm-6").find("+div div input").val();
+                                html += (checkboxs[i].value + "-" + num + ",");
+                            }
+                            result.$("#Edit").find("input[type='hidden'][name='Processing']").val(html);
                             result.$("#Edit").submit();
                         }
                     })

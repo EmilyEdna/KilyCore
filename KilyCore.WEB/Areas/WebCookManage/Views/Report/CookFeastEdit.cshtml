@@ -205,10 +205,27 @@
             },
             //事件
             InitEvents: function () {
-                $('input[type="checkbox"]').on('click', function ()
-                {
-                   
-                 });
+                $('input[type="checkbox"]').on('click', function () {
+                    var selector = $(this).parents(".col-sm-6").find("+div div");
+                    if ($(this).is(":checked")) {
+                        selector.css("display", "table");
+                        selector.find("span:first").on('click', function () {
+                            var sub = $(this).find("+input");
+                            if (sub.val() > 0)
+                                sub.val(sub.val() - 1);
+                        });
+                        selector.find("span:last").on('click', function () {
+                            var add = $(this).prev("input");
+                            if (add.val() == "")
+                                add.val(1);
+                            else
+                                add.val(Number(add.val()) + 1);
+                        });
+                    } else {
+                        selector.css("display", "none");
+                        selector.find("input").val("");
+                    }
+                });
                 //验证
                 controller.ValidateConfirm("#Edit");
             },
@@ -224,7 +241,7 @@
 @section css{
     <style>
         .checkbox input[type=checkbox] {
-        margin-top:3px;
+            margin-top: 3px;
         }
     </style>
 }
@@ -233,6 +250,7 @@
         <form class="orm-horizontal" method="post" action="CookWeb/EditBanquet" id="Edit">
             <input type="hidden" name="Id" />
             <input type="hidden" name="CookId" />
+            <input type="hidden" name="Processing" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">举办者</label></th>
@@ -312,14 +330,14 @@
                             <div class="row">
                                 <div class="col-sm-6" style="height:34px;">
                                     <label class="control-label" style="margin-top:7px;">
-                                        <input type="checkbox" value="保洁柜"/><small>保洁柜</small> 
+                                        <input type="checkbox" value="保洁柜" /><small>保洁柜</small>
                                     </label>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="input-group" style="display:none">
-                                        <span class="input-group-addon">-</span>
-                                        <input type="text" class="form-control">
-                                        <span class="input-group-addon">+</span>
+                                        <span class="input-group-addon btn btn-default">-</span>
+                                        <input type="number" class="form-control" min="0" readonly>
+                                        <span class="input-group-addon btn btn-default">+</span>
                                     </div>
                                 </div>
                             </div>
@@ -333,9 +351,9 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="input-group" style="display:none">
-                                        <span class="input-group-addon">-</span>
-                                        <input type="text" class="form-control">
-                                        <span class="input-group-addon">+</span>
+                                        <span class="input-group-addon btn btn-default">-</span>
+                                        <input type="number" class="form-control" min="0" readonly>
+                                        <span class="input-group-addon btn btn-default">+</span>
                                     </div>
                                 </div>
                             </div>
@@ -349,9 +367,9 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="input-group" style="display:none">
-                                        <span class="input-group-addon">-</span>
-                                        <input type="text" class="form-control">
-                                        <span class="input-group-addon">+</span>
+                                        <span class="input-group-addon btn btn-default">-</span>
+                                        <input type="number" class="form-control" min="0" readonly>
+                                        <span class="input-group-addon btn btn-default">+</span>
                                     </div>
                                 </div>
                             </div>
@@ -365,9 +383,9 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="input-group" style="display:none">
-                                        <span class="input-group-addon">-</span>
-                                        <input type="text" class="form-control">
-                                        <span class="input-group-addon">+</span>
+                                        <span class="input-group-addon btn btn-default">-</span>
+                                        <input type="number" class="form-control" min="0" readonly>
+                                        <span class="input-group-addon btn btn-default">+</span>
                                     </div>
                                 </div>
                             </div>
@@ -381,9 +399,9 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="input-group" style="display:none">
-                                        <span class="input-group-addon">-</span>
-                                        <input type="text" class="form-control">
-                                        <span class="input-group-addon">+</span>
+                                        <span class="input-group-addon btn btn-default">-</span>
+                                        <input type="number" class="form-control" min="0" readonly>
+                                        <span class="input-group-addon btn btn-default">+</span>
                                     </div>
                                 </div>
                             </div>
@@ -397,9 +415,9 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="input-group" style="display:none">
-                                        <span class="input-group-addon">-</span>
-                                        <input type="text" class="form-control">
-                                        <span class="input-group-addon">+</span>
+                                        <span class="input-group-addon btn btn-default">-</span>
+                                        <input type="number" class="form-control" min="0" readonly>
+                                        <span class="input-group-addon btn btn-default">+</span>
                                     </div>
                                 </div>
                             </div>
