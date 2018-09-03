@@ -41,6 +41,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Cook
         /// 所属区域
         /// </summary>
         public string TypePath { get; set; }
+        public DateTime? ExpiredDate { get; set; }
         public string Province => !string.IsNullOrEmpty(TypePath) ? (TypePath.Split(',').Length >= 1 ? TypePath.Split(',')[0] : null) : null;
         public string City => !string.IsNullOrEmpty(TypePath) ? (TypePath.Split(',').Length >= 2 ? TypePath.Split(',')[1] : null) : null;
         public string Area => !string.IsNullOrEmpty(TypePath) ? (TypePath.Split(',').Length >= 3 ? TypePath.Split(',')[2] : null) : null;

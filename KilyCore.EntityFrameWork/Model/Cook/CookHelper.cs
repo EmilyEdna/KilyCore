@@ -37,6 +37,10 @@ namespace KilyCore.EntityFrameWork.Model.Cook
         /// </summary>
         public virtual string HealthCard { get; set; }
         /// <summary>
+        /// 到期时间
+        /// </summary>
+        public virtual DateTime? ExpiredDate { get; set; }
+        /// <summary>
         /// 所属区域
         /// </summary>
         public virtual string TypePath { get; set; }

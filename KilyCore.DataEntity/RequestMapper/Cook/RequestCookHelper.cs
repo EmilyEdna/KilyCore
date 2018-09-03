@@ -49,6 +49,7 @@ namespace KilyCore.DataEntity.RequestMapper.Cook
                 else return null;
             }
         }
+        public DateTime? ExpiredDate { get; set; }
         public string Province { get; set; }
         public string City { get; set; }
         public string Area { get; set; }

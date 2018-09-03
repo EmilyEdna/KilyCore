@@ -339,6 +339,7 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 HelperName = t.HelperName,
                 TypePath = t.TypePath,
+                ExpiredDate=t.ExpiredDate,
                 HealthCard = t.HealthCard,
                 Phone = t.Phone
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);

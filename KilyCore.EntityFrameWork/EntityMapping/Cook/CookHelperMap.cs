@@ -27,6 +27,7 @@ namespace KilyCore.EntityFrameWork.EntityMapping.Cook
         {
             builder.ToTable(typeof(CookHelper).Name);
             builder.HasKey(t => t.Id);
+            builder.Property(t => t.ExpiredDate).HasColumnType(typeof(DateTime).Name);
         }
     }
     public class CookAgreeMap : IEntityTypeConfiguration<CookAgree>

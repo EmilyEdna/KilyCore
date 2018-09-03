@@ -14,6 +14,7 @@
             //元素
             InitDom: function () {
                 $("input[name='CookId']").val(CookerInfo.Id);
+                controller.LayDate({ elem: "#ExpiredDate" });
                 options.GetProvince();
                 options.GetCityByProvince();
                 options.GetAreaByCity();
@@ -140,6 +141,12 @@
                     <th><label class="control-label">帮厨电话</label></th>
                     <td class="has-warning">
                         <input type="text" class="form-control required IsPhone" name="Phone" data-msg-required="请输入个人电话">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">到期时间</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" class="form-control" name="ExpiredDate" id="ExpiredDate">
                     </td>
                 </tr>
                 <tr>
