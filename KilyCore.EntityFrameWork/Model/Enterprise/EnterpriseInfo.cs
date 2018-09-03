@@ -106,5 +106,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 保险公司
         /// </summary>
         public virtual string SafeCompany { get; set; }
+        /// <summary>
+        /// 经营范围
+        /// </summary>
+        public virtual string Scope { get; set; }
     }
 }

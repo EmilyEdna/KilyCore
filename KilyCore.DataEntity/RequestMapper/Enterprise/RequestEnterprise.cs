@@ -48,5 +48,6 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public int NatureAgent { get; set; }
         public string SafeNo { get; set; }
         public string SafeCompany { get; set; }
+        public string Scope { get; set; }
     }
 }

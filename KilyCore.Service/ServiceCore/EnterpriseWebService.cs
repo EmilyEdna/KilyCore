@@ -332,6 +332,7 @@ namespace KilyCore.Service.ServiceCore
                     SellerAddress = t.SellerAddress,
                     IdCard = t.IdCard,
                     SafeNo = t.SafeNo,
+                    Scope=t.Scope,
                     SafeCompany = t.SafeCompany
                 }).FirstOrDefault();
             return data;

@@ -87,5 +87,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public long? TagCodeNum { get; set; }
         public string SafeNo { get; set; }
         public string SafeCompany { get; set; }
+        public string Scope { get; set; }
     }
 }
