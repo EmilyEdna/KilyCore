@@ -26,7 +26,6 @@
                 $("#TypePath").val(TypePath);
                 $("#MerchantName").val(controller.GetParam("MerchantName"));
                 $("#A2").css({ display: "none" });
-                $("#A3").css({ display: "none" });
                 //获取版本
                 controller.ajax({
                     url: "Function/GetAreaVersion",
@@ -67,27 +66,24 @@
                 //合同模式
                 $("input:radio[name='ContractType']").on('click', function () {
                     if ($(this).val() == 1) {
-                        $("#A1").css({ display: "block", display: "table-row" });
+                        $("#A1").css({ display: "block", display: "table-row" });        
                         $("#A2").css({ display: "none" });
-                        $("#A3").css({ display: "none" });
+                        $("#A3").css({ display: "block", display: "table-footer-group" });
                     } else {
                         $("#A1").css({ display: "none" });
+                        $("#A2").css({ display: "none" });
                         $("#A3").css({ display: "none" });
-                        $("#A4").css({ display: "none" });
-                        $("#A2").css({ display: "block", display: "table-row" });
                     }
                 });
                 //支付方式
                 $("input:radio[name='PayType']").on('click', function () {
                     if ($(this).val() == 30) {
-                        $("#A2").css({ display: "none" });
-                        $("#A4").css({ display: "none" });
-                        $("#A3").css({ display: "block", display: "table-row" });
+                        $("#A3").css({ display: "none" });
+                        $("#A2").css({ display: "block", display: "table-row" });
                     }
                     else {
-                        $("#A4").css({ display: "block", display: "table-footer-group" });
+                        $("#A3").css({ display: "block", display: "table-footer-group" });
                         $("#A2").css({ display: "none" });
-                        $("#A3").css({ display: "none" });
                     }
                 });
                 //文件上传-票据
@@ -179,6 +175,12 @@
                         <input type="text" name="ContractYear" class="form-control required" placeholder="请填入纯数字不要带其他任何汉子特殊字符" data-msg-required="请输入入住年限" />
                     </td>
                 </tr>
+                <tr id="A2">
+                    <th><label class="control-label">授权企业</label></th>
+                    <td class="has-warning" colspan="3">
+                        <select type="select" name="AdminId" class="form-control" id="AdminId"></select>
+                    </td>
+                </tr>
                 <tr id="A1">
                     <th><label class="control-label">缴费方式</label></th>
                     <td class="has-warning" colspan="3">
@@ -197,12 +199,6 @@
                     </td>
                 </tr>
                 <tr id="A2">
-                    <th><label class="control-label">授权企业</label></th>
-                    <td class="has-warning" colspan="3">
-                        <select type="select" name="AdminId" class="form-control" id="AdminId"></select>
-                    </td>
-                </tr>
-                <tr id="A3">
                     <th><label class="control-label">缴费票据</label></th>
                     <td class="has-warning" colspan="3">
                         <div class="image-box clear">
@@ -213,7 +209,7 @@
                         </div>
                     </td>
                 </tr>
-                <tfoot id="A4">
+                <tfoot id="A3">
                     <tr>
                         <th colspan="4">
                             <div class="text-center">

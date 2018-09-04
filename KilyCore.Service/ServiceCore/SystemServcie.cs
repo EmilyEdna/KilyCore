@@ -358,6 +358,16 @@ namespace KilyCore.Service.ServiceCore
                 Chapter = t.Chapter,
                 Addrees = t.Addrees
             }).ToList();
+            ResponseAdmin admin = Kily.Set<SystemAdmin>().Where(t => t.IsDelete == false)
+            .Where(t => t.AccountType <= AccountEnum.Country).Select(t => new ResponseAdmin()
+            {
+                Id = t.Id,
+                CommunityCode = t.CommunityCode,
+                TrueName = t.TrueName,
+                Chapter = t.Chapter,
+                Addrees = t.Addrees
+            }).FirstOrDefault();
+            data.Add(admin);
             return data;
         }
         /// <summary>

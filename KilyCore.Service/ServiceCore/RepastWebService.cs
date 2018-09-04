@@ -386,7 +386,6 @@ namespace KilyCore.Service.ServiceCore
             UpdateField(info, "VersionType");
             if (contract.ContractType == 1)
             {
-                contract.AdminId = null;
                 contract.IsPay = false;
                 contract.TryOut = "/";
                 contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(contract.ContractYear));

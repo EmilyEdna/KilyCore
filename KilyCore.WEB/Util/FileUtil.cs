@@ -133,7 +133,7 @@ namespace KilyCore.WEB.Util
             String TemplatePath = WebRootPath + @"/Template/Template.html";
             StreamReader reader = new StreamReader(TemplatePath, Encoding.UTF8);
             String HTMLContent = reader.ReadToEnd();
-            if (help.ContractType == 1)
+            if (help.ContractType == 1&& help.AuthorCompany=="超级管理员")
                 HTMLContent = HTMLContent.Replace("{CompanySelf}", Configer.CompanySelf)
                     .Replace("{CodeSelf}", Configer.CodeSelf)
                     .Replace("{AddressSelf}", Configer.AddressSelf)
