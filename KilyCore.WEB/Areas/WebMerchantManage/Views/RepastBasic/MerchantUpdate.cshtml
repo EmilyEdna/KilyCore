@@ -20,7 +20,7 @@
                 //获取版本
                 controller.ajax({
                     url: "Function/GetAreaVersion",
-                    data: { Id: RepastUser.Province, Parameter: RepastUser.DiningType },
+                    data: { Id: RepastUser.TypePath, Parameter: RepastUser.DiningType },
                     async: false,
                     type: "post",
                     success: function (result) {
@@ -65,7 +65,12 @@
                     $("#BankCard").val(flag.val());
                     $("#BankName").val(flag.data().value);
                 });
-
+                //显示版本详情
+                $("#VersionType").on("change", function () {
+                    var selector = $(this).find("option:selected");
+                    var html = "版本费用：" + selector.data().attach + "/年。</br>当前版本功能为：" + selector.data().value;
+                    controller.Alter(html);
+                });
                 //文件上传-票据
                 controller.Upload({
                     url: "File/UploadImg",

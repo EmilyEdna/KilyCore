@@ -304,6 +304,7 @@ controller.OpenWindow = function (option) {
         width: "100px",
         height: "100px",
         url: "",
+        type: 2,
         shade: 0.5,
         data: null,
         btn: ['确定', '取消'],
