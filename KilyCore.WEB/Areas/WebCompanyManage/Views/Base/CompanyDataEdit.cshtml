@@ -205,12 +205,14 @@
             },
             //事件
             InitEvents: function () {
-                $('input:radio[name="NatureAgent"]').on('change', function () {
+                $('input:radio[name="Agent"]').on('change', function () {
                     if ($(this).val() == 1) {
+                        $("input[name='NatureAgent']").val("1");
                         $("#uploadIdCard").css({ display: "none" });
                         $("#uploadCertification").css({ display: "block", display: "table-row" });
                     }
                     else {
+                        $("input[name='NatureAgent']").val("2");
                         $("#uploadIdCard").css({ display: "block", display: "table-row" });
                         $("#uploadCertification").css({ display: "none" });
                     }
@@ -231,16 +233,17 @@
     <div class="ibox-content">
         <form class="orm-horizontal" method="post" action="EnterpriseWeb/EditEnterprise" id="Edit">
             <input type="hidden" name="Id" />
+            <input  type="hidden" name="NatureAgent"/>
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">企业性质</label></th>
                     <td class="has-warning" colspan="3">
                         <label class="radio-inline">
-                            <input type="radio" name="NatureAgent" value="1" style="margin-top:3px" checked />
+                            <input type="radio" name="Agent" value="1" style="margin-top:3px" checked />
                             <text title="企业或合作社">企业或合作社</text>
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" name="NatureAgent" value="2" style="margin-top:3px" />
+                            <input type="radio" name="Agent" value="2" style="margin-top:3px" />
                             <text title="个体商业户">个体商业户</text>
                         </label>
                     </td>

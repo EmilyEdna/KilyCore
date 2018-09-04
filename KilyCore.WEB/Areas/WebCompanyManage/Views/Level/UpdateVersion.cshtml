@@ -20,7 +20,7 @@
                 //获取版本
                 controller.ajax({
                     url: "Function/GetAreaVersion",
-                    data: { Id: CompanyInfo.TypePath, Parameter: CompanyInfo.CompanyType },
+                    data: { Id: CompanyInfo.Province, Parameter: CompanyInfo.CompanyType },
                     async: false,
                     type: "post",
                     success: function (result) {

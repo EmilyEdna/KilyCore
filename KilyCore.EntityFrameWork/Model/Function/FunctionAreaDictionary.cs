@@ -16,7 +16,7 @@ namespace KilyCore.EntityFrameWork.Model.Function
         /// <summary>
         /// 省份Id
         /// </summary>
-        public virtual Guid ProvinceId { get; set; }
+        public virtual string ProvinceId { get; set; }
         /// <summary>
         /// 系统字典Id
         /// </summary>

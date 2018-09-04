@@ -492,7 +492,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<FunctionAreaDictionary> queryable = Kily.Set<FunctionAreaDictionary>().AsNoTracking();
             if (UserInfo().AccountType != AccountEnum.Admin && UserInfo().AccountType != AccountEnum.Country)
-                queryable = queryable.Where(t => UserInfo().TypePath.Contains(t.ProvinceId.ToString()));
+                queryable = queryable.Where(t => t.ProvinceId.Contains(UserInfo().Province));
             var data = queryable.Join(Kily.Set<FunctionDictionary>(), t => t.DictionaryId, x => x.Id, (t, x) => new ResponseAreaDictionary()
             {
                 DicName = x.DicName,
@@ -552,7 +552,7 @@ namespace KilyCore.Service.ServiceCore
                 if ((MerchantEnum)Param == MerchantEnum.UnitCanteen)
                     queryable = queryable.Where(t => t.DicName.Contains("单位"));
             }
-            var data = Kily.Set<FunctionAreaDictionary>().Where(t => TypePath.Contains(t.ProvinceId.ToString())).Where(t => t.IsDelete == false)
+            var data = Kily.Set<FunctionAreaDictionary>().Where(t => t.ProvinceId.Contains(TypePath)).Where(t => t.IsDelete == false)
                   .Join(queryable, t => t.DictionaryId, x => x.Id, (t, x) => new ResponseAreaDictionary()
                   {
                       DicName = x.DicName,

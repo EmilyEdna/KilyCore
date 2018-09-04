@@ -171,35 +171,70 @@ namespace KilyCore.Service.ServiceCore
         {
             if (MerchantInfo() != null)
             {
-                IQueryable<RepastRoleAuthor> queryables = Kily.Set<RepastRoleAuthor>().Where(t => t.IsDelete == false);
-                queryables = queryables.Where(t => t.Id == MerchantInfo().DingRoleId).AsNoTracking();
-                RepastRoleAuthor Author = queryables.FirstOrDefault();
-                IQueryable<ResponseParentTree> queryable = Kily.Set<RepastMenu>().Where(t => t.IsDelete == false)
-                     .Where(t => t.Level == MenuEnum.LevelOne)
-                     .Where(t => Author.AuthorMenuPath.Contains(t.Id.ToString()))
-                     .AsNoTracking().Select(t => new ResponseParentTree()
-                     {
-                         Id = t.Id,
-                         Text = t.MenuName,
-                         Color = "black",
-                         BackClolor = "white",
-                         SelectedIcon = "fa fa-refresh fa-spin",
-                         Nodes = Kily.Set<RepastMenu>().Where(x => x.IsDelete == false)
-                         .Where(x => x.Level != MenuEnum.LevelOne)
-                         .Where(x => x.ParentId == t.MenuId)
-                         .Where(x => Author.AuthorMenuPath.Contains(x.Id.ToString()))
-                         .AsNoTracking()
-                         .Select(x => new ResponseChildTree()
+                if (MerchantInfo().InfoId == null)
+                {
+                    IQueryable<RepastRoleAuthor> queryables = Kily.Set<RepastRoleAuthor>().Where(t => t.IsDelete == false);
+                    queryables = queryables.Where(t => t.Id == MerchantInfo().DingRoleId).AsNoTracking();
+                    RepastRoleAuthor Author = queryables.FirstOrDefault();
+                    IQueryable<ResponseParentTree> queryable = Kily.Set<RepastMenu>().Where(t => t.IsDelete == false)
+                         .Where(t => t.Level == MenuEnum.LevelOne)
+                         .Where(t => Author.AuthorMenuPath.Contains(t.Id.ToString()))
+                         .AsNoTracking().Select(t => new ResponseParentTree()
                          {
-                             Id = x.Id,
-                             Text = x.MenuName,
+                             Id = t.Id,
+                             Text = t.MenuName,
                              Color = "black",
                              BackClolor = "white",
                              SelectedIcon = "fa fa-refresh fa-spin",
-                         }).AsQueryable()
-                     }).AsQueryable();
-                var data = queryable.ToList();
-                return data;
+                             Nodes = Kily.Set<RepastMenu>().Where(x => x.IsDelete == false)
+                             .Where(x => x.Level != MenuEnum.LevelOne)
+                             .Where(x => x.ParentId == t.MenuId)
+                             .Where(x => Author.AuthorMenuPath.Contains(x.Id.ToString()))
+                             .AsNoTracking()
+                             .Select(x => new ResponseChildTree()
+                             {
+                                 Id = x.Id,
+                                 Text = x.MenuName,
+                                 Color = "black",
+                                 BackClolor = "white",
+                                 SelectedIcon = "fa fa-refresh fa-spin",
+                             }).AsQueryable()
+                         }).AsQueryable();
+                    var data = queryable.ToList();
+                    return data;
+                }
+                else
+                {
+                    IQueryable<RepastRoleAuthorWeb> queryables = Kily.Set<RepastRoleAuthorWeb>().Where(t => t.IsDelete == false);
+                    queryables = queryables.Where(t => t.Id == MerchantInfo().DingRoleId).AsNoTracking();
+                    RepastRoleAuthorWeb Author = queryables.FirstOrDefault();
+                    IQueryable<ResponseParentTree> queryable = Kily.Set<RepastMenu>().Where(t => t.IsDelete == false)
+                         .Where(t => t.Level == MenuEnum.LevelOne)
+                         .Where(t => Author.AuthorMenuPath.Contains(t.Id.ToString()))
+                         .AsNoTracking().Select(t => new ResponseParentTree()
+                         {
+                             Id = t.Id,
+                             Text = t.MenuName,
+                             Color = "black",
+                             BackClolor = "white",
+                             SelectedIcon = "fa fa-refresh fa-spin",
+                             Nodes = Kily.Set<RepastMenu>().Where(x => x.IsDelete == false)
+                             .Where(x => x.Level != MenuEnum.LevelOne)
+                             .Where(x => x.ParentId == t.MenuId)
+                             .Where(x => Author.AuthorMenuPath.Contains(x.Id.ToString()))
+                             .AsNoTracking()
+                             .Select(x => new ResponseChildTree()
+                             {
+                                 Id = x.Id,
+                                 Text = x.MenuName,
+                                 Color = "black",
+                                 BackClolor = "white",
+                                 SelectedIcon = "fa fa-refresh fa-spin",
+                             }).AsQueryable()
+                         }).AsQueryable();
+                    var data = queryable.ToList();
+                    return data;
+                }
             }
             else
             {
@@ -232,7 +267,6 @@ namespace KilyCore.Service.ServiceCore
                      }).AsQueryable();
                 var data = queryable.ToList();
                 return data;
-
             }
         }
         #endregion

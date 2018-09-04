@@ -17,26 +17,30 @@
             InitDom: function () {
                 $("#Id").val(controller.GetParam("Id"));
                 options.GetProvince();
+
             },
             //获取省份
             GetProvince: function () {
-                controller.ajax({
-                    url: "System/GetProvince",
-                    data: {},
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        var html = '<option>===请选择===</option>';
-                        $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '" data-id="' + obj.ProvinceId + '">' + obj.ProvinceName + '</option>';
+                controller.Select({
+                    document: '.selectpicker',
+                    arrelemnt: ['#ProvinceId'],
+                    url: 'System/GetProvince',
+                    flag: false,
+                    callBack: function (result) {
+                        var html = '';
+                        $.each(result, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.ProvinceName + '</option>';
                         });
-                        $("#Pid").html(html);
+                        $("#ProvinceId").html(html);
                     }
+                });
+                $("#ProvinceId").on('changed.bs.select', function () {
+                    $('input[name="ProvinceId"]').val($(this).val());
                 });
             },
             //事件
             InitEvents: function () {
-             
+
                 //验证
                 controller.ValidateConfirm("#Edit");
             },
@@ -52,14 +56,12 @@
 <div class="ibox float-e-margins">
     <div class="ibox-content">
         <form class="orm-horizontal" method="post" action="Function/RecordAreaDic" id="Edit">
-            <input  type="hidden" id="Id" name="DictionaryId"/>
+            <input type="hidden" id="Id" name="DictionaryId" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">选择省份</label></th>
                     <td class="has-warning" colspan="3">
-                        <select type="select" name="ProvinceId" id="Pid" class="form-control">
-                            <option>===请选择===</option>
-                        </select>
+                        <select type="select" class="selectpicker form-control" id="ProvinceId" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
                     </td>
                 </tr>
             </table>
