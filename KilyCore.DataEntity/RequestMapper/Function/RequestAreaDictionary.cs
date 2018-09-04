@@ -9,6 +9,7 @@ namespace KilyCore.DataEntity.RequestMapper.Function
 {
     public class RequestAreaDictionary
     {
+        public Guid Id { get; set; }
         public string ProvinceId { get; set; }
         public Guid DictionaryId { get; set; }
     }

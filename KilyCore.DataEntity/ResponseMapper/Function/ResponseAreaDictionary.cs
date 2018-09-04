@@ -17,4 +17,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Function
         public bool? IsEnable { get; set; }
         public string States { get => (bool)IsEnable ? "禁用中" : "启用中"; }
     }
+    public class ResponseAreaDic {
+        public Guid Id { get; set; }
+        public string ProvinceId { get; set; }
+        public string ProvinceName { get; set; }
+        public Guid DictionaryId { get; set; }
+    }
 }

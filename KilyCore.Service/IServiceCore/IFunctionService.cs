@@ -42,7 +42,8 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseAreaDictionary> GetAreaDicPage(PageParamList<RequestAreaDictionary> pageParam);
         String RecordAreaDic(RequestAreaDictionary Param);
         String IsEnable(Guid Id, bool Param);
-        IList<ResponseAreaDictionary> GetAreaVersion(String TypePath, int Param);
+        IList<ResponseAreaDictionary> GetAreaVersion(String TypePaths, int Param);
+        ResponseAreaDic GetAreaDicDetail(Guid Id);
         #endregion
         #region 数据统计
         ResponseDataCount GetPieData();

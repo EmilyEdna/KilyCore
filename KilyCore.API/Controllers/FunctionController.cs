@@ -224,6 +224,16 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(FunctionService.GetAreaVersion(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 获取分配详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetAreaDicDetail")]
+        public ObjectResultEx GetAreaDicDetail(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(FunctionService.GetAreaDicDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 数据统计
         /// <summary>

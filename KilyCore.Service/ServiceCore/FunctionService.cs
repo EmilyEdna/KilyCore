@@ -510,7 +510,10 @@ namespace KilyCore.Service.ServiceCore
         public string RecordAreaDic(RequestAreaDictionary Param)
         {
             FunctionAreaDictionary dictionary = Param.MapToEntity<FunctionAreaDictionary>();
+            if (Param.Id==Guid.Empty)
             return Insert<FunctionAreaDictionary>(dictionary) ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
+            else
+                return Update<FunctionAreaDictionary, RequestAreaDictionary>(dictionary,Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         /// <summary>
         /// 启用或禁用
@@ -529,9 +532,10 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public IList<ResponseAreaDictionary> GetAreaVersion(string TypePath, int Param)
+        public IList<ResponseAreaDictionary> GetAreaVersion(string TypePaths, int Param)
         {
             IQueryable<FunctionDictionary> queryable = Kily.Set<FunctionDictionary>().Where(t => t.DicName.Contains("版"));
+            string TypePath = TypePaths.Split(',')[0];
             if (CompanyInfo() != null)
             {
                 if ((CompanyEnum)Param == CompanyEnum.Plant)
@@ -562,6 +566,21 @@ namespace KilyCore.Service.ServiceCore
                       AttachInfo = x.AttachInfo
                   }).ToList();
             return data;
+        }
+        /// <summary>
+        /// 获取分配详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseAreaDic GetAreaDicDetail(Guid Id)
+        {
+            return Kily.Set<FunctionAreaDictionary>().Where(t => t.DictionaryId == Id).Select(t => new ResponseAreaDic()
+            {
+                Id=t.Id,
+                ProvinceId=t.ProvinceId,
+                ProvinceName = string.Join(",",Kily.Set<SystemProvince>().Where(x=>t.ProvinceId.Contains(x.Id.ToString())).Select(x=>x.Name).ToList()),
+                DictionaryId = t.DictionaryId,
+            }).FirstOrDefault();
         }
         #endregion
         #region 数据统计
