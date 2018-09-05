@@ -48,8 +48,11 @@
                 },
                 TableFormatter: function (val, row, index) {
                     var action = [];
-                    if (row.IsPay == false)
-                        action.push('<button class="btn btn-sm btn-primary ok"><i class="fa fa-pencil-square-o"></i>确认缴费</button>');
+                    if (SysUserInfo.AccountType < 20)
+                        if (row.IsPay == false)
+                            action.push('<button class="btn btn-sm btn-primary ok"><i class="fa fa-pencil-square-o"></i>确认缴费</button>');
+                    if (SysUserInfo.AccountType == 30 && row.PayType==40)
+                        action.push('<button class="btn btn-sm btn-primary pay"><i class="fa fa-pencil-square-o"></i>支付</button>');
                     action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-pencil-square-o"></i>审核</button>');
                     action.push('<button class="btn btn-sm btn-primary watch"><i class="fa fa-eye"></i>审核记录</button>');
                     action.push('<button class="btn btn-sm btn-primary up"><i class="fa fa-angle-double-up"></i>升级</button>');
@@ -57,18 +60,29 @@
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
-                    "click .ok": function (event, val, row, index) {
-                        controller.Confirm("确认缴费？", function (bool) {
-                            if (bool) {
-                                controller.ajax({
-                                    url: "System/EditContract",
-                                    data: { Id: row.Id },
-                                    type: 'post',
-                                    success: function (result) {
-                                        options.$table.refresh();
-                                    }
-                                });
+                    "click .pay": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "自定义支付",
+                            type: 2,
+                            height: "500px",
+                            width: "700px",
+                            url: "SysManage/System/SystemPayment?Price=" + row.TotalPrice + "&Id=" + row.Id,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
                             }
+                        })
+                    },
+                    "click .ok": function (event, val, row, index) {
+                        controller.Prompt({ formType: 0, title:"确认缴费",value:"请在此输入实际金额" }, function (index) {
+                            controller.ajax({
+                                url: "System/EditContract",
+                                data: { Id: row.Id, Parameter: index },
+                                type: 'post',
+                                success: function (result) {
+                                    options.$table.refresh();
+                                    controller.Close();
+                                }
+                            });
                         });
                     },
                     "click .audit": function (event, val, row, index) {
@@ -165,6 +179,8 @@
                                 <th data-field="Payment" data-halign="center" data-align="center" data-valign="middle">缴费状态</th>
                                 <th data-field="VersionTypeName" data-halign="center" data-align="center" data-valign="middle">版本</th>
                                 <th data-field="PayTypeName" data-halign="center" data-align="center" data-valign="middle">支付方式</th>
+                                <th data-field="TotalPrice" data-halign="center" data-align="center" data-valign="middle">合同金额</th>
+                                <th data-field="ActualPrice" data-halign="center" data-align="center" data-valign="middle">实际金额</th>
                                 <th data-field="TryOut" data-halign="center" data-align="center" data-valign="middle">试用(天)</th>
                                 <th data-field="AuditTypeName" data-halign="center" data-align="center" data-valign="middle">审核状态</th>
                                 <th data-formatter="options.action.ImgFormatter" data-events="options.action.ImgEvents" data-halign="center" data-align="center" data-valign="middle">缴费凭证</th>

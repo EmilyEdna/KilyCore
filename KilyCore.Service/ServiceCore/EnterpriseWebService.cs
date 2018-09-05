@@ -446,7 +446,7 @@ namespace KilyCore.Service.ServiceCore
                     AliPayModel.Money = ConfigMoney.CirculationEnterprise * Convert.ToInt32(Param.ContractYear);
             }
             IList<string> Fields = new List<string> { "Version", "TagCodeNum" };
-            UpdateField(info, null, Fields);
+            //UpdateField(info, null, Fields);
             if (contract.ContractType == 1)
             {
                 contract.IsPay = false;
@@ -460,14 +460,16 @@ namespace KilyCore.Service.ServiceCore
                 //支付宝支付
                 else if (contract.PayType == PayEnum.Alipay)
                 {
-                    Insert<SystemStayContract>(contract);
+                    contract.TotalPrice = (decimal)AliPayModel.Money;
+                    //Insert<SystemStayContract>(contract);
                     return AliPayCore.Instance.WebPay(AliPayModel);
                 }
                 //微信支付
                 else
                 {
                     RequestWxPayModel WxPayModel = AliPayModel.MapToEntity<RequestWxPayModel>();
-                    Insert<SystemStayContract>(contract);
+                    contract.TotalPrice = (decimal)WxPayModel.Money;
+                    //Insert<SystemStayContract>(contract);
                     return WxPayCore.Instance.WebPay(WxPayModel);
                 }
             }
@@ -3666,41 +3668,41 @@ namespace KilyCore.Service.ServiceCore
             {
                 info.TagCodeNum += ServiceMessage.TEST;
                 if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
-                    AliPayModel.Money = 480 * Key;
+                    AliPayModel.Money = ConfigMoney.PlantAndCultureTest * Key;
                 if (info.CompanyType == CompanyEnum.Production)
-                    AliPayModel.Money = 600 * Key;
+                    AliPayModel.Money = ConfigMoney.ProductionTest * Key;
                 if (info.CompanyType == CompanyEnum.Circulation)
-                    AliPayModel.Money = 360 * Key;
+                    AliPayModel.Money = ConfigMoney.CirculationTest * Key;
             }
             if ((Value == null ? info.Version : (SystemVersionEnum)(Value)) == SystemVersionEnum.Base)
             {
                 info.TagCodeNum += ServiceMessage.BASE;
                 if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
-                    AliPayModel.Money = 2000 * Key;
+                    AliPayModel.Money = ConfigMoney.PlantAndCultureBase * Key;
                 if (info.CompanyType == CompanyEnum.Production)
-                    AliPayModel.Money = 3000 * Key;
+                    AliPayModel.Money = ConfigMoney.ProductionBase * Key;
                 if (info.CompanyType == CompanyEnum.Circulation)
-                    AliPayModel.Money = 1500 * Key;
+                    AliPayModel.Money = ConfigMoney.CirculationBase * Key;
             }
             if ((Value == null ? info.Version : (SystemVersionEnum)(Value)) == SystemVersionEnum.Level)
             {
                 info.TagCodeNum += ServiceMessage.LEVEL;
                 if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
-                    AliPayModel.Money = 4000 * Key;
+                    AliPayModel.Money = ConfigMoney.PlantAndCultureLv * Key;
                 if (info.CompanyType == CompanyEnum.Production)
-                    AliPayModel.Money = 6000 * Key;
+                    AliPayModel.Money = ConfigMoney.ProductionLv * Key;
                 if (info.CompanyType == CompanyEnum.Circulation)
-                    AliPayModel.Money = 3000 * Key;
+                    AliPayModel.Money = ConfigMoney.CirculationLv * Key;
             }
             if ((Value == null ? info.Version : (SystemVersionEnum)(Value)) == SystemVersionEnum.Enterprise)
             {
                 info.TagCodeNum += ServiceMessage.ENTERPRISE;
                 if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
-                    AliPayModel.Money = 80000 * Key;
+                    AliPayModel.Money = ConfigMoney.PlantAndCultureEnterprise * Key;
                 if (info.CompanyType == CompanyEnum.Production)
-                    AliPayModel.Money = 100000 * Key;
+                    AliPayModel.Money = ConfigMoney.ProductionEnterprise * Key;
                 if (info.CompanyType == CompanyEnum.Circulation)
-                    AliPayModel.Money = 60000 * Key;
+                    AliPayModel.Money = ConfigMoney.CirculationEnterprise * Key;
             }
             return AliPayCore.Instance.WebPay(AliPayModel);
         }

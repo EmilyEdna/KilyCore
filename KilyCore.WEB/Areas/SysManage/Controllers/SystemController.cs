@@ -81,5 +81,9 @@ namespace KilyCore.WEB.Areas.SysManage.Controllers
             return View();
         }
         #endregion
+        public IActionResult SystemPayment()
+        {
+            return View();
+        }
     }
 }

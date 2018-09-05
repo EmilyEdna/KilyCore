@@ -74,10 +74,15 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 入住合同
         PagedResult<ResponseStayContract> GetStayContractPage(PageParamList<RequestStayContract> pageParam);
-        String EditContract(Guid Id);
+        String EditContract(Guid Id, decimal Money);
         String AuditContract(RequestAudit Param);
         PagedResult<ResponseAudit> GetContractRecord(PageParamList<RequestAudit> pageParam);
         String RemoveRecord(Guid Id);
+        #endregion
+        #region 支付宝微信银行支付
+         String AliPay(int Money);
+         String WxPay(int Money);
+         String EditPay(RequestStayContract Param);
         #endregion
     }
 }

@@ -54,6 +54,10 @@ namespace KilyCore.DataEntity.ResponseMapper.System
         /// 是否缴费
         /// </summary>
         public  bool? IsPay { get; set; }
+        /// <summary>
+        /// 缴费金额
+        /// </summary>
+        public decimal? TotalPrice { get; set; }
         public  string Payment{get => IsPay != null ? ((bool)IsPay ? "已缴费" : "未缴费") : "未缴费"; }
         /// <summary>
         /// 试用
@@ -77,5 +81,6 @@ namespace KilyCore.DataEntity.ResponseMapper.System
         /// </summary>
         public DateTime EndTime { get; set; }
         public string TableName { get; set; }
+        public decimal? ActualPrice { get; set; }
     }
 }

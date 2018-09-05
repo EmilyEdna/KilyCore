@@ -4,6 +4,8 @@ using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AttributeExtension;
 using KilyCore.Extension.AutoMapperExtension;
+using KilyCore.Extension.PayCore.AliPay;
+using KilyCore.Extension.PayCore.WxPay;
 using KilyCore.Quartz;
 using KilyCore.Repositories.BaseRepository;
 using KilyCore.Service.ConstMessage;
@@ -1105,6 +1107,7 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.OrderByDescending(t => t.CreateTime).AsNoTracking().Select(t => new ResponseStayContract()
             {
                 Id = t.Id,
+                TotalPrice = t.TotalPrice,
                 CompanyName = t.CompanyName,
                 PayTicket = t.PayTicket,
                 StayTime = t.CreateTime,
@@ -1116,6 +1119,7 @@ namespace KilyCore.Service.ServiceCore
                 ContractType = t.ContractType,
                 IsPay = t.IsPay,
                 TryOut = t.TryOut,
+                ActualPrice=t.ActualPrice,
                 VersionTypeName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.VersionType),
                 PayTypeName = AttrExtension.GetSingleDescription<PayEnum, DescriptionAttribute>(t.PayType)
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -1126,12 +1130,13 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public string EditContract(Guid Id)
+        public string EditContract(Guid Id,decimal Money)
         {
             SystemStayContract Contract = Kily.Set<SystemStayContract>().Where(t => t.IsDelete == false).Where(t => t.Id == Id).FirstOrDefault();
             Contract.IsPay = true;
             Contract.TryOut = null;
-            List<String> Fieds = new List<string> { "IsPay", "TryOut" };
+            Contract.ActualPrice = Money;
+            List<String> Fieds = new List<string> { "IsPay", "TryOut" , "ActualPrice" };
             return UpdateField<SystemStayContract>(Contract, null, Fieds) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         /// <summary>
@@ -1185,6 +1190,46 @@ namespace KilyCore.Service.ServiceCore
                 return ServiceMessage.REMOVESUCCESS;
             else
                 return ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+
+        #region 支付宝微信银行支付
+        /// <summary>
+        /// 支付宝
+        /// </summary>
+        /// <param name="Money"></param>
+        /// <returns></returns>
+        public string AliPay(int Money)
+        {
+            RequestAliPayModel AliPayModel = new RequestAliPayModel();
+            AliPayModel.OrderTitle = "营运中心缴费";
+            AliPayModel.Money = Money;
+            return AliPayCore.Instance.WebPay(AliPayModel);
+        }
+        /// <summary>
+        /// 微信
+        /// </summary>
+        /// <param name="Money"></param>
+        /// <returns></returns>
+        public string WxPay(int Money)
+        {
+            RequestWxPayModel WxPayModel = new RequestWxPayModel();
+            WxPayModel.OrderTitle = "营运中心缴费";
+            WxPayModel.Money = Money;
+            return WxPayCore.Instance.WebPay(WxPayModel);
+        }
+        /// <summary>
+        /// 更新支付
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditPay(RequestStayContract Param)
+        {
+            SystemStayContract contract = Kily.Set<SystemStayContract>().Where(t => t.Id == Param.Id).FirstOrDefault();
+            contract.PayTicket = Param.PayTicket;
+            contract.PayType = Param.PayType;
+            List<String> Fields = new List<String>() {"PayTicket","PayType"};
+            return UpdateField(contract, null, Fields) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         #endregion
     }

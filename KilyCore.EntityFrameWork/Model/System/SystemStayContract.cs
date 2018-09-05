@@ -70,5 +70,13 @@ namespace KilyCore.EntityFrameWork.Model.System
         /// 企业或商家 1=》企业；2=》商家
         /// </summary>
         public virtual int EnterpriseOrMerchant { get; set; }
+        /// <summary>
+        /// 合同金额
+        /// </summary>
+        public virtual decimal? TotalPrice { get; set; }
+        /// <summary>
+        /// 实际金额
+        /// </summary>
+        public virtual decimal? ActualPrice { get; set; }
     }
 }

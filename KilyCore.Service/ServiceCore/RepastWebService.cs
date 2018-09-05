@@ -383,7 +383,7 @@ namespace KilyCore.Service.ServiceCore
             }
             if (Param.VersionType == SystemVersionEnum.Common)
                 AliPayModel.Money = ConfigMoney.Common * Convert.ToInt32(Param.ContractYear);
-            UpdateField(info, "VersionType");
+            //UpdateField(info, "VersionType");
             if (contract.ContractType == 1)
             {
                 contract.IsPay = false;
@@ -397,14 +397,16 @@ namespace KilyCore.Service.ServiceCore
                 //支付宝支付
                 else if (contract.PayType == PayEnum.Alipay)
                 {
-                    Insert<SystemStayContract>(contract);
+                    contract.TotalPrice = (decimal)AliPayModel.Money;
+                    //Insert<SystemStayContract>(contract);
                     return AliPayCore.Instance.WebPay(AliPayModel);
                 }
                 //微信支付
                 else
                 {
                     RequestWxPayModel WxPayModel = AliPayModel.MapToEntity<RequestWxPayModel>();
-                    Insert<SystemStayContract>(contract);
+                    contract.TotalPrice = (decimal)WxPayModel.Money;
+                    //Insert<SystemStayContract>(contract);
                     return WxPayCore.Instance.WebPay(WxPayModel);
 
                 }
@@ -1852,30 +1854,30 @@ namespace KilyCore.Service.ServiceCore
             if ((Value == null ? info.VersionType : (SystemVersionEnum)(Value)) == SystemVersionEnum.Test)
             {
                 if (info.DiningType == MerchantEnum.Normal)
-                    AliPayModel.Money = 360 * Key;
+                    AliPayModel.Money = ConfigMoney.RepastTest * Key;
                 if (info.DiningType == MerchantEnum.UnitCanteen)
-                    AliPayModel.Money = 240 * Key;
+                    AliPayModel.Money = ConfigMoney.UnitCanteenTest * Key;
             }
             if ((Value == null ? info.VersionType : (SystemVersionEnum)(Value)) == SystemVersionEnum.Base)
             {
                 if (info.DiningType == MerchantEnum.Normal)
-                    AliPayModel.Money = 1500 * Key;
+                    AliPayModel.Money = ConfigMoney.RepastBase * Key;
                 if (info.DiningType == MerchantEnum.UnitCanteen)
-                    AliPayModel.Money = 1000 * Key;
+                    AliPayModel.Money = ConfigMoney.UnitCanteenBase * Key;
             }
             if ((Value == null ? info.VersionType : (SystemVersionEnum)(Value)) == SystemVersionEnum.Level)
             {
                 if (info.DiningType == MerchantEnum.Normal)
-                    AliPayModel.Money = 5000 * Key;
+                    AliPayModel.Money = ConfigMoney.RepastLv * Key;
                 if (info.DiningType == MerchantEnum.UnitCanteen)
-                    AliPayModel.Money = 3000 * Key;
+                    AliPayModel.Money = ConfigMoney.UnitCanteenLv * Key;
             }
             if ((Value == null ? info.VersionType : (SystemVersionEnum)(Value)) == SystemVersionEnum.Enterprise)
             {
                 if (info.DiningType == MerchantEnum.Normal)
-                    AliPayModel.Money = 10000 * Key;
+                    AliPayModel.Money = ConfigMoney.RepastEnterprise * Key;
                 if (info.DiningType == MerchantEnum.UnitCanteen)
-                    AliPayModel.Money = 5000 * Key;
+                    AliPayModel.Money = ConfigMoney.UnitCanteenEnterprise * Key;
             }
             return AliPayCore.Instance.WebPay(AliPayModel);
         }
