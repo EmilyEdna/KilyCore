@@ -1,5 +1,7 @@
 ﻿using KilyCore.Configure;
+using KilyCore.Extension.ResultExtension;
 using KilyCore.Extension.RSACryption;
+using KilyCore.Extension.SessionExtension;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -39,6 +41,16 @@ namespace KilyCore.Extension.FilterGroup
         public void OnActionExecuting(ActionExecutingContext context)
         {
             var request = context.HttpContext.Request;
+            if (request.Path.ToString().Contains("Regist"))
+            {
+               var PhoneCode = request.Form["Parameter[PhoneCode]"].ToString();
+                var SessionCode = context.HttpContext.Session.GetSession<string>("PhoneCode");
+                if (!string.IsNullOrEmpty(SessionCode))
+                    context.Result = ObjectResultEx.Instance("请输入验证码", 1, RetrunMessge.SUCCESS, HttpCode.FAIL);
+                if (!SessionCode.Trim().Equals(PhoneCode))
+                    context.Result =ObjectResultEx.Instance("请输入正确的验证码", 1, RetrunMessge.SUCCESS, HttpCode.FAIL);
+                context.HttpContext.Session.DeleteSession("PhoneCode");
+            }
             if (context.Filters.Any(t => (t as AllowAnonymousFilter) != null))
                 return;
             if (request.Headers.ContainsKey("ApiKey") && request.Headers.ContainsKey("SysKey"))

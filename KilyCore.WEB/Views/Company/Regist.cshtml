@@ -36,6 +36,10 @@
                         url: "System/GetPhoneCode",
                         data: { Parameter: $("#CompanyPhone").val() },
                         async: false,
+                        xhrFields: {
+                            withCredentials: true
+                        },
+                        crossDomain: true,
                         success: function (result) {
                             options.SetTime();
                         }
@@ -75,7 +79,7 @@
                         controller.Tips("请输入公司手机", "#CompanyPhone", { tips: [2, '#FF0000'] });
                         return;
                     } else {
-                        var reg = /^[a-zA-Z0-9_-]+@@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+                        var reg = /^1[3|4|5|7|8][0-9]{9}$/;
                         if (!reg.test(data.CompanyPhone)) {
                             controller.Tips("请输入正确手机号", "#CompanyPhone", { tips: [2, '#FF0000'] });
                             return;
@@ -108,9 +112,17 @@
                             url: "Enterprise/RegistCompanyAccount",
                             data: { Parameter: data },
                             type: "post",
+                            xhrFields: {
+                                withCredentials: true
+                            },
+                            crossDomain: true,
                             success: function (result) {
-                                $("#Edit")[0].reset();
-                                controller.SetHref("Login");
+                                if (result.HttpCode != 50) {
+                                    $("#Edit")[0].reset();
+                                    controller.SetHref("Login");
+                                }
+                                else
+                                    controller.Msg(result.data);
                             }
                         });
                     }

@@ -53,7 +53,7 @@ namespace KilyCore.Extension.ValidateExtension
                 {
                     rand = new Random(i * flag * ((int)DateTime.Now.Ticks));
                 }
-                int t = rand.Next(10);
+                int t = rand.Next(8);
                 if (flag == t)
                 {
                     return CreateCode();

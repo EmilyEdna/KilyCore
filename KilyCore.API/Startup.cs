@@ -65,7 +65,11 @@ namespace KilyCore.API
                 option.AddPolicy("KilyCore", builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
             });
             //添加Session
-            services.AddSession();
+            services.AddSession(t =>
+            {
+                //Session 1分钟后过期
+                t.IdleTimeout = TimeSpan.FromMinutes(1);
+             });
             IServiceProvider IocProviderService = Engine.ServiceProvider(services);
             //持久化任务
             IocProviderServices.Instance.IocProviderService.RestartQuartz();
@@ -120,7 +124,8 @@ namespace KilyCore.API
         /// <summary>
         /// 获取版本价格
         /// </summary>
-        protected void GetVersionPriceConfiger() {
+        protected void GetVersionPriceConfiger()
+        {
             ConfigMoney.Common = Convert.ToInt32(Configuration["ConfigMoney:Common"]);
             ConfigMoney.Cook = Convert.ToInt32(Configuration["ConfigMoney:Cook"]);
             #region 体验版
