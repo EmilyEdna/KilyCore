@@ -5,6 +5,7 @@ using KilyCore.Configure;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.Extension.ResultExtension;
+using KilyCore.Extension.SendMessage;
 using KilyCore.Extension.SessionExtension;
 using KilyCore.Extension.Token;
 using KilyCore.Extension.ValidateExtension;
@@ -170,6 +171,20 @@ namespace KilyCore.API.Controllers
             String Code = ValidateCode.CreateValidateCode();
             HttpContext.Session.SetSession("ValidateCode", Code);
             return ObjectResultEx.Instance(Code, 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取手机短信验证码
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpGet("GetPhoneCode")]
+        [AllowAnonymous]
+        public ObjectResultEx GetPhoneCode(SimlpeParam<String> Param)
+        {
+            String Code = ValidateCode.CreateCode();
+            HttpContext.Session.SetSession("PhoneCode", Code);
+            String Contents = $"你的手机验证码是：{Code}，请在5分钟内输入，如非本人操作，请忽略此短信。";
+            return ObjectResultEx.Instance(PhoneSMS.SendPhoneMsg(Param.Parameter, Contents), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 安全退出

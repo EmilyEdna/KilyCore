@@ -25,7 +25,36 @@
                 this.InitEvents();
             },
             InitDom: function () {
-            
+                $(".code").on('click', function () {
+                    if ($("#Phone").val() == "") {
+                        controller.Msg("请输入手机号");
+                        return;
+                    }
+                    controller.ajax({
+                        url: "System/GetPhoneCode",
+                        data: { Parameter: $("#Phone").val() },
+                        async: false,
+                        success: function (result) {
+                            options.SetTime();
+                        }
+                    });
+                });
+            },
+            //倒计时
+            SetTime: function () {
+                var html = '';
+                if (Timer > 0) {
+                    html = Timer + "秒";
+                    Account = setTimeout("options.SetTime()", 1000);
+                    Timer = Timer - 1;
+                    $(".code").attr("disabled", "true");
+                } else {
+                    clearTimeout(Account);
+                    Timer = 60;
+                    html = '获取验证码';
+                    $(".code").removeAttr("disabled");
+                }
+                $(".code").text(html);
             },
             InitEvents: function () {
                 //注册事件
@@ -127,6 +156,10 @@
                 </div>
                 <div class="rg-input rg-psw">
                     <input type="password" maxlength="32" class="ui-input" id="PassWord_Two" placeholder="| 请再次输入密码">
+                </div>
+                <div class="rg-input rg-type">
+                    <input type="text" maxlength="6" class="ui-input" id="" placeholder="| 输入手机验证码" style=" width:225px;" name="PhoneCode">
+                    <button class="code" type="button">获取验证码</button>
                 </div>
                 <div class="rg-agree">
                     <input id="checkbox" type="checkbox" name="gender">我同意<a href="#">《注册协议》</a>

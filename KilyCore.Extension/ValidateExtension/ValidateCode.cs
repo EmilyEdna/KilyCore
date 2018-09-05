@@ -42,5 +42,26 @@ namespace KilyCore.Extension.ValidateExtension
             }
             return randomNum;
         }
+        public static string CreateCode() {
+            char[] CharArray ={'1','2','3','4','5','6','7','8','9'};
+            string randomNum = "";
+            int flag = -1;//记录上次随机数的数值，尽量避免产生几个相同的随机数 
+            Random rand = new Random();
+            for (int i = 0; i < 6; i++)
+            {
+                if (flag != -1)
+                {
+                    rand = new Random(i * flag * ((int)DateTime.Now.Ticks));
+                }
+                int t = rand.Next(10);
+                if (flag == t)
+                {
+                    return CreateCode();
+                }
+                flag = t;
+                randomNum += CharArray[t];
+            }
+            return randomNum;
+        }
     }
 }
