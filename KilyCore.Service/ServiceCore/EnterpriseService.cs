@@ -660,7 +660,7 @@ namespace KilyCore.Service.ServiceCore
         {
             #region 公司账号登录
             IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>()
-                .Where(t => t.CompanyAccount.Equals(LoginValidate.Account))
+                .Where(t => t.CompanyAccount.Equals(LoginValidate.Account) || t.CompanyPhone.Equals(LoginValidate.Account))
                 .Where(t => t.PassWord.Equals(LoginValidate.PassWord))
                 .Where(t => t.IsDelete == false);
             ResponseEnterprise Info = queryable.Select(t => new ResponseEnterprise()
@@ -691,7 +691,7 @@ namespace KilyCore.Service.ServiceCore
             #endregion
             #region 公司子账号登录
             IQueryable<EnterpriseUser> queryables = Kily.Set<EnterpriseUser>()
-                .Where(t => t.Account.Equals(LoginValidate.Account))
+                .Where(t => t.Account.Equals(LoginValidate.Account)||t.Phone.Equals(LoginValidate.Account))
                 .Where(t => t.PassWord.Equals(LoginValidate.PassWord))
                 .Where(t => t.IsDelete == false);
             ResponseEnterpriseUser User = queryables.Select(t => new ResponseEnterpriseUser()

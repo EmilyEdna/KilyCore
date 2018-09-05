@@ -509,7 +509,7 @@ namespace KilyCore.Service.ServiceCore
         {
             #region 餐饮企业登录
             IQueryable<RepastInfo> queryable = Kily.Set<RepastInfo>()
-               .Where(t => t.Account.Equals(LoginValidate.Account))
+               .Where(t => t.Account.Equals(LoginValidate.Account)||t.Phone.Equals(LoginValidate.Account))
                .Where(t => t.PassWord.Equals(LoginValidate.PassWord))
                .Where(t => t.IsDelete == false);
             ResponseMerchant Info = queryable.Select(t => new ResponseMerchant()
@@ -535,7 +535,7 @@ namespace KilyCore.Service.ServiceCore
             #endregion
             #region 非企业登录
             IQueryable<RepastInfoUser> queryables = Kily.Set<RepastInfoUser>()
-              .Where(t => t.Account.Equals(LoginValidate.Account))
+              .Where(t => t.Account.Equals(LoginValidate.Account)|| t.Phone.Equals(LoginValidate.Account))
               .Where(t => t.PassWord.Equals(LoginValidate.PassWord))
               .Where(t => t.IsDelete == false);
             ResponseMerchantUser User = queryables.Select(t => new ResponseMerchantUser()

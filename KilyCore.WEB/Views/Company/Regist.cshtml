@@ -39,6 +39,17 @@
                         controller.Tips("请输入公司账号", "#CompanyAccount", { tips: [2, '#FF0000'] });
                         return;
                     }
+                    if (data.CompanyPhone == "") {
+                      
+                        controller.Tips("请输入公司手机", "#CompanyPhone", { tips: [2, '#FF0000'] });
+                        return;
+                    } else {
+                        var reg = /^[a-zA-Z0-9_-]+@@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+                        if (!reg.test(data.CompanyPhone)) {
+                            controller.Tips("请输入正确手机号", "#CompanyPhone", { tips: [2, '#FF0000'] });
+                            return;
+                        }
+                    }
                     if (data.CompanyType == "") {
                         controller.Tips("请选择公司类型", "#CompanyType", { tips: [2, '#FF0000'] });
                         return;
@@ -98,9 +109,12 @@
                 <div class="rg-input rg-number">
                     <input type="text" maxlength="32" class="ui-input" name="CompanyAccount" id="CompanyAccount" placeholder="| 请输入登录账户">
                 </div>
+                <div class="rg-input rg-number">
+                    <input type="text" maxlength="11" class="ui-input" name="CompanyPhone" id="CompanyPhone" placeholder="| 请输入公司手机">
+                </div>
                 <div class="rg-input rg-type">
-                    <input type="text" list="dataType" maxlength="32"  class="ui-input" name="CompanyType" id="CompanyType" placeholder="| 请选择公司类型">
-                    <datalist  id="dataType">
+                    <input type="text" list="dataType" maxlength="32" class="ui-input" name="CompanyType" id="CompanyType" placeholder="| 请选择公司类型">
+                    <datalist id="dataType">
                         <option value="种植企业"></option>
                         <option value="养殖企业"></option>
                         <option value="生产企业"></option>

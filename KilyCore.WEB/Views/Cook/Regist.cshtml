@@ -34,6 +34,17 @@
                         controller.Tips("请输入账号", "#Account", { tips: [2, '#FF0000'] });
                         return;
                     }
+                    if (data.Phone == "") {
+
+                        controller.Tips("请输入公司手机", "#CompanyPhone", { tips: [2, '#FF0000'] });
+                        return;
+                    } else {
+                        var reg = /^[a-zA-Z0-9_-]+@@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+                        if (!reg.test(data.Phone)) {
+                            controller.Tips("请输入正确手机号", "#CompanyPhone", { tips: [2, '#FF0000'] });
+                            return;
+                        }
+                    }
                     if (data.PassWord == "") {
                         controller.Tips("请输入公司密码", "#PassWord_One", { tips: [2, '#FF0000'] });
                         return;
@@ -72,13 +83,16 @@
     </header>
     <!--中间-->
     <div class="main">
-        <div class="rg-box" style="height:400px;">
+        <div class="rg-box" style="height:430px;">
             <div class="reg-head">
                 <h3 class="head-title">注册</h3>
             </div>
             <form class="form-horizontal" role="form" id="Edit">
                 <div class="rg-input rg-number">
                     <input type="text" maxlength="32" class="ui-input" name="Account" id="Account" placeholder="| 请输入登录账户">
+                </div>
+                <div class="rg-input rg-number">
+                    <input type="text" maxlength="11" class="ui-input" name="Phone" id="Phone" placeholder="| 请输入个人手机">
                 </div>
                 <div class="rg-input rg-psw">
                     <input type="password" maxlength="32" class="ui-input" name="PassWord" id="PassWord_One" placeholder="| 输入密码">

@@ -59,7 +59,7 @@ namespace KilyCore.Service.ServiceCore
         public ResponseCookInfo CookLogin(RequestValidate LoginValidate)
         {
             IQueryable<CookVip> queryable = Kily.Set<CookVip>()
-                .Where(t => t.Account.Equals(LoginValidate.Account))
+                .Where(t => t.Account.Equals(LoginValidate.Account)||t.Phone.Equals(LoginValidate.Account))
                 .Where(t => t.PassWord.Equals(LoginValidate.PassWord))
                 .Where(t => t.IsDelete == false);
             IQueryable<CookInfo> queryables = Kily.Set<CookInfo>();

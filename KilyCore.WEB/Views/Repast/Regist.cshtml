@@ -39,6 +39,17 @@
                         controller.Tips("请输入登录账户", "#Account", { tips: [2, '#FF0000'] });
                         return;
                     }
+                    if (data.Phone == "") {
+
+                        controller.Tips("请输入公司手机", "#CompanyPhone", { tips: [2, '#FF0000'] });
+                        return;
+                    } else {
+                        var reg = /^[a-zA-Z0-9_-]+@@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+                        if (!reg.test(data.Phone)) {
+                            controller.Tips("请输入正确手机号", "#CompanyPhone", { tips: [2, '#FF0000'] });
+                            return;
+                        }
+                    }
                     if (data.DiningType == "") {
                         controller.Tips("请选择商家类型", "#DiningType", { tips: [2, '#FF0000'] });
                         return;
@@ -98,8 +109,11 @@
                 <div class="rg-input rg-number">
                     <input type="text" maxlength="32" class="ui-input" name="Account" id="Account" placeholder="| 请输入登录账户">
                 </div>
+                <div class="rg-input rg-number">
+                    <input type="text" maxlength="11" class="ui-input" name="Phone" id="Phone" placeholder="| 请输入商家手机">
+                </div>
                 <div class="rg-input rg-type">
-                    <input type="text" list="dataType" maxlength="32"  class="ui-input" name="DiningType" id="DiningType" placeholder="| 请选择商家类型">
+                    <input type="text" list="dataType" maxlength="32" class="ui-input" name="DiningType" id="DiningType" placeholder="| 请选择商家类型">
                     <datalist id="dataType">
                         <option value="餐饮企业"></option>
                         <option value="单位食堂"></option>
