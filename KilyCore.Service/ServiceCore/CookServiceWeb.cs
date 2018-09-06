@@ -69,6 +69,7 @@ namespace KilyCore.Service.ServiceCore
                 CookId = t.Id,
                 Sexlab = x.FirstOrDefault().Sexlab,
                 Account = t.Account,
+                PassWord=t.PassWord,
                 Address = x.FirstOrDefault().Address,
                 Birthday = x.FirstOrDefault().Birthday,
                 CardOffice = x.FirstOrDefault().CardOffice,

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using KilyCore.Configure;
 using KilyCore.DataEntity.RequestMapper.Govt;
-using KilyCore.DataEntity.ResponseMapper.Govt;
 using KilyCore.Extension.ResultExtension;
 using KilyCore.Extension.SessionExtension;
 using KilyCore.Extension.Token;
@@ -25,7 +24,7 @@ namespace KilyCore.API.Controllers
             try
             {
                 string Code = HttpContext.Session.GetSession<string>("ValidateCode").Trim();
-                ResponseGovtInfo GovtInfo = GovtService.GovtLogin(Param);
+                var GovtInfo = GovtService.GovtLogin(Param);
                 if (GovtInfo != null && Code.Equals(Param.ValidateCode.Trim()))
                 {
                     CookieInfo cookie = new CookieInfo();

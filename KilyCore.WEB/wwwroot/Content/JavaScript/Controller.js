@@ -40,6 +40,7 @@ controller.ajax = function (option) {
             options.success(result);
         },
         beforeSend: function (xhr) {
+            xhr.setRequestHeader("PC", "PC");
             xhr.setRequestHeader("Token", controller.GetCookie().Token == undefined ? "" : controller.GetCookie().Token);
             xhr.setRequestHeader("ApiKey", controller.GetCookie().ApiKey == undefined ? "" : controller.GetCookie().ApiKey);
             xhr.setRequestHeader("SysKey", controller.GetCookie().SysKey == undefined ? "" : controller.GetCookie().SysKey);
