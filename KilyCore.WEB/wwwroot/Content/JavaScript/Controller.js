@@ -89,6 +89,8 @@ controller.SetCookie = function (option) {
         localStorage.RepastUser = JSON.stringify(obj.RepAdmin);//保存餐饮企业用户信息
     else if (obj.CookAdmin != undefined)
         localStorage.Cooker = JSON.stringify(obj.CookAdmin);//保存厨师用户信息
+    else
+        localStorage.Govt = JSON.stringify(obj.GovtInfo);//保存监管用户信息
 }
 /*
  *删除Cookie
@@ -705,8 +707,10 @@ controller.Upload = function (option) {
         Name = JSON.parse(localStorage.CompanyUser).CompanyName;
     else if (localStorage.RepastUser != undefined)
         Name = JSON.parse(localStorage.RepastUser).MerchantName;
-    else
+    else if (localStorage.Cooker != undefined)
         Name = JSON.parse(localStorage.Cooker).TrueName + "厨师";
+    else
+        Name = JSON.parse(localStorage.Govt).DepartName;
     defaultOption = {
         url: undefined,
         data: null,
@@ -822,8 +826,10 @@ controller.Editor = function (element, option) {
                     Name = JSON.parse(localStorage.CompanyUser).CompanyName;
                 else if (localStorage.RepastUser != undefined)
                     Name = JSON.parse(localStorage.RepastUser).MerchantName;
-                else
+                else if (localStorage.Cooker != undefined)
                     Name = JSON.parse(localStorage.Cooker).TrueName + "厨师";
+                else
+                    Name = JSON.parse(localStorage.Govt).DepartName;
                 var formData = new FormData();
                 formData.append("Files", Image[0]);
                 formData.append("FolderName", Name);

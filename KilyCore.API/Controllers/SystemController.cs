@@ -138,9 +138,9 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
-        [HttpPost("Login")]
+        [HttpPost("SystemLogin")]
         [AllowAnonymous]
-        public ObjectResultEx Login(RequestValidate LoginValidate)
+        public ObjectResultEx SystemLogin(RequestValidate LoginValidate)
         {
             try
             {

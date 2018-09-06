@@ -41,7 +41,7 @@
         function UserLogin() {
             $('#loading').on('click', function () {
                 controller.ajax({
-                    url: "CookWeb/CookLogin",
+                    url: "Govt/GovtLogin",
                     type: 'post',
                     xhrFields: {
                         withCredentials: true
@@ -101,7 +101,7 @@
             </div>
             <div class="col-sm-5">
                 <form id="Login">
-                    <h4 class="no-margins">登录乡村厨师</h4>
+                    <h4 class="no-margins">登录政府监管</h4>
                     <p class="m-t-md"></p>
                     <input type="text" class="form-control uname" name="Account" placeholder="账号或手机号" />
                     <input type="password" class="form-control pword" placeholder="密码" name="PassWord" />

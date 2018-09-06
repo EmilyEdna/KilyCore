@@ -242,9 +242,9 @@ namespace KilyCore.API.Controllers
         /// 集团登录
         /// </summary>
         /// <returns></returns>
-        [HttpPost("Login")]
+        [HttpPost("EnterpriseLogin")]
         [AllowAnonymous]
-        public ObjectResultEx Login(RequestValidate LoginValidate)
+        public ObjectResultEx EnterpriseLogin(RequestValidate LoginValidate)
         {
             try
             {

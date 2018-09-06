@@ -8,6 +8,7 @@ var UserInfo = UserInfo || {};
 var CompanyUser = CompanyUser || {};
 var RepastInfo = RepastInfo || {};
 var Cooker = Cooker || {};
+var Govt = Govt || {};
 /**
  * 设置菜单
  * @param {any} 数据
@@ -87,6 +88,17 @@ $.fn.GetRepastInfo = function () {
 $.fn.GetCookInfo = function () {
     if (localStorage.Cooker != undefined) {
         Cooker = JSON.parse(localStorage.Cooker);
+        return false;
+    }
+    else
+        return true;
+}
+/**
+ * 获取政府监管信息
+ * */
+$.fn.GetGovtInfo = function () {
+    if (localStorage.Govt != undefined) {
+        Govt = JSON.parse(localStorage.Govt);
         return false;
     }
     else
