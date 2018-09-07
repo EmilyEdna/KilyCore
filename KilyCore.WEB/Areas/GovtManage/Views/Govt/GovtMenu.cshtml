@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "菜单管理";
+    ViewData["Title"] = "监管菜单";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
@@ -21,17 +21,17 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", {url: "System/GetMenuPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Menu" });
+                this.$table = controller.Table("#tableList", { url: "Govt/GetGovtMenuPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Menu" });
             },
             //事件
             InitEvents: function () {
-                $("#add").on('click', function () { 
+                $("#add").on('click', function () {
                     controller.OpenWindow({
                         title: "新增菜单",
                         type: 2,
                         height: "400px",
                         width: "650px",
-                        url: "SysManage/System/SystemMenuEdit",
+                        url: "GovtManage/Govt/GovtMenuEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
                         }
@@ -51,7 +51,7 @@
                         controller.Confirm("确认删除？", function (bool) {
                             if (bool) {
                                 controller.ajax({
-                                    url: "System/RemoveMenu",
+                                    url: "Govt/RemoveGovtMenu",
                                     data: { Id: row.Id },
                                     type: 'post',
                                     success: function (result) {
@@ -67,7 +67,7 @@
                             type: 2,
                             height: "400px",
                             width: "650px",
-                            url: "SysManage/System/SystemMenuEdit?Id=" + row.Id,
+                            url: "GovtManage/Govt/GovtMenuEdit?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                              }
@@ -90,7 +90,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>菜单管理</h5>
+                <h5>监管菜单</h5>
             </div>
             <div class="ibox-content">
                 <div class="row">

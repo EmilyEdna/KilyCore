@@ -36,12 +36,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\GovtManage\Controllers\" />
-    <Folder Include="Areas\GovtManage\Views\" />
     <Folder Include="Views\Repast\" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Areas\GovtManage\Views\Govt\GovtRoler.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\GovtManage\Views\Govt\GovtMenuEdit.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Cook\Home.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

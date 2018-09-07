@@ -80,7 +80,7 @@ namespace KilyCore.Service.IServiceCore
         String RemoveRecord(Guid Id);
         #endregion
         #region 支付宝微信银行支付
-         String AliPay(int Money);
+        String AliPay(int Money);
          String WxPay(int Money);
          String EditPay(RequestStayContract Param);
         #endregion

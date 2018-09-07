@@ -1,6 +1,8 @@
 ﻿using KilyCore.Configure;
 using KilyCore.DataEntity.RequestMapper.Govt;
 using KilyCore.DataEntity.ResponseMapper.Govt;
+using KilyCore.DataEntity.ResponseMapper.System;
+using KilyCore.Service.QueryExtend;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,8 +28,22 @@ namespace KilyCore.Service.IServiceCore
     /// </summary>
     public interface IGovtService : IService
     {
-        #region 登录
-        ResponseGovtInfo GovtLogin(RequestGovtInfo Param);
+        #region 政府监管
+        IList<ResponseGovtMenu> AddGovtParentMenu();
+        PagedResult<ResponseGovtMenu> GetGovtMenuPage(PageParamList<RequestGovtMenu> pageParam);
+        ResponseGovtMenu GetGovtMenuDetail(Guid Id);
+        String RemoveGovtMenu(Guid Id);
+        String EditGovtMenu(RequestGovtMenu Param);
+        #endregion
+
+        #region 权限菜单树
+        IList<ResponseParentTree> GetGovtTree();
+        #endregion
+
+        #region 角色权限
+        PagedResult<ResponseGovtRoleAuthor> GetAuthorPage(PageParamList<RequestGovtRoleAuthor> pageParam);
+        String RemoveAuthor(Guid Id);
+        String EditAuthor(RequestGovtRoleAuthor Param);
         #endregion
     }
 }

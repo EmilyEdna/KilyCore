@@ -24,5 +24,6 @@ namespace KilyCore.API
         public IEnterpriseWebService EnterpriseWebService = EngineExtension.Context.Resolve<IEnterpriseWebService>();
         public IRepastWebService RepastWebService = EngineExtension.Context.Resolve<IRepastWebService>();
         public ICookWebService CookWebService = EngineExtension.Context.Resolve<ICookWebService>();
+        public IGovtWebService GovtWebService = EngineExtension.Context.Resolve<IGovtWebService>();
     }
 }

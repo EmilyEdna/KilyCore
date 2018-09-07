@@ -287,7 +287,7 @@ namespace KilyCore.API.Controllers
         [HttpPost("CG")]
         public ObjectResultEx CG(SimlpeParam<Guid> key, SimlpeParam<bool> Param)
         {
-            return ObjectResultEx.Instance(SystemService.CG(key.Id,Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(SystemService.CG(key.Id, Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 获取可以签到合同的代理商
@@ -499,22 +499,25 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("EditContract")]
-        public ObjectResultEx EditContract(SimlpeParam<Guid> Param,SimlpeParam<decimal> Key)
+        public ObjectResultEx EditContract(SimlpeParam<Guid> Param, SimlpeParam<decimal> Key)
         {
             return ObjectResultEx.Instance(SystemService.EditContract(Param.Id, Key.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 支付宝微信银行支付
         [HttpPost("AliPay")]
-        public ObjectResultEx AliPay(SimlpeParam<int> Param) {
+        public ObjectResultEx AliPay(SimlpeParam<int> Param)
+        {
             return ObjectResultEx.Instance(SystemService.AliPay(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         [HttpPost("WxPay")]
-        public ObjectResultEx WxPay(SimlpeParam<int> Param) {
+        public ObjectResultEx WxPay(SimlpeParam<int> Param)
+        {
             return ObjectResultEx.Instance(SystemService.WxPay(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         [HttpPost("EditPay")]
-        public ObjectResultEx EditPay(RequestStayContract Param) {
+        public ObjectResultEx EditPay(RequestStayContract Param)
+        {
             return ObjectResultEx.Instance(SystemService.EditPay(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion

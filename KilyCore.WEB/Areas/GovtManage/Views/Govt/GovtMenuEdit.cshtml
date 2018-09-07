@@ -1,0 +1,114 @@
+﻿
+@{
+    ViewData["Title"] = "菜单编辑";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var Guid = controller.GetParam("Id");
+                if (Guid != null || Guid == "")
+                {
+                    //获取详情
+                    controller.ajax({
+                        url: "Govt/GetGovtMenuDetail",
+                        data: { Id: Guid },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                            if (!result.data.HasChildrenNode)
+                                options.AppendParentMenu();
+                            controller.SetCtrlValue("#Edit", result.data);
+                        }
+                    });
+                }
+            },
+             //追加父菜单
+            AppendParentMenu: function () {
+                controller.ajax({
+                    url: 'Govt/AddGovtParentMenu',
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<th id="title"><label class="control-label">父级菜单</label></th>';
+                        html += '<td class="has-warning" id="content">';
+                        html += '<select class="form-control" name="ParentId" id="ParentId" type="select">';
+                        $.each(result.data, function (i, data) {
+                            html += '<option value="' + data.MenuId + '">' + data.MenuName + '</option>';
+                        });
+                        html += '</select>';
+                        html += '</td>';
+                        $('#HasChildrenNode').parent().parent().append(html);
+                    }
+                });
+
+            },
+            //事件
+            InitEvents: function () {
+                //是否显示父级菜单
+                $('#HasChildrenNode').on('change', function () {
+                    if ($(this).val() == "false") {
+                        options.AppendParentMenu();
+                    } else {
+                        $("#title").remove();
+                        $("#content").remove();
+                    }
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="Govt/EditGovtMenu" id="Edit">
+            <input name="Id" id="id" type="hidden" />
+            <input name="MenuId" id="menuId" type="hidden" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">菜单名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="MenuName" data-msg-required="请输入菜单名称" />
+                    </td>
+                    <th><label class="control-label">菜单图标</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="MenuIcon" placeholder="例:fa fa-home" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">菜单地址</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" class="form-control" name="MenuAddress" placeholder="例:/SysManage/System/Menu" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">是否父菜单</label></th>
+                    <td class="has-warning">
+                        <select class="form-control" name="HasChildrenNode" id="HasChildrenNode" type="select">
+                            <option value="true">是</option>
+                            <option value="false">否</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

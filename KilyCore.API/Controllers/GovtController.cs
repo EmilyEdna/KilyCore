@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using KilyCore.Configure;
 using KilyCore.DataEntity.RequestMapper.Govt;
 using KilyCore.Extension.ResultExtension;
-using KilyCore.Extension.SessionExtension;
-using KilyCore.Extension.Token;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+using KilyCore.Service.QueryExtend;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KilyCore.API.Controllers
@@ -16,28 +9,95 @@ namespace KilyCore.API.Controllers
     [Route("api/[controller]")]
     public class GovtController : BaseController
     {
-        #region 登录
-        [HttpPost("GovtLogin")]
-        [AllowAnonymous]
-        public ObjectResultEx GovtLogin(RequestGovtInfo Param)
+        #region 政府监管
+        /// <summary>
+        /// 获取父级菜单
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("AddGovtParentMenu")]
+        public ObjectResultEx AddGovtParentMenu()
         {
-            try
-            {
-                string Code = HttpContext.Session.GetSession<string>("ValidateCode").Trim();
-                var GovtInfo = GovtService.GovtLogin(Param);
-                if (GovtInfo != null && Code.Equals(Param.ValidateCode.Trim()))
-                {
-                    CookieInfo cookie = new CookieInfo();
-                    VerificationExtension.WriteToken(cookie, GovtInfo);
-                    return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ResponseCookieInfo.RSASysKey, GovtInfo }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
-                }
-                else
-                    return ObjectResultEx.Instance(null, -1, "登录失败或账户冻结", HttpCode.NoAuth);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return ObjectResultEx.Instance(GovtService.AddGovtParentMenu(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 政府菜单分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetGovtMenuPage")]
+        public ObjectResultEx GetGovtMenuPage(PageParamList<RequestGovtMenu> pageParam)
+        {
+            return ObjectResultEx.Instance(GovtService.GetGovtMenuPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取政府菜单详情
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost("GetGovtMenuDetail")]
+        public ObjectResultEx GetGovtMenuDetail(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtService.GetGovtMenuDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除政府菜单
+        /// </summary>
+        /// <param name="Id"></param>
+        [HttpPost("RemoveGovtMenu")]
+        public ObjectResultEx RemoveGovtMenu(SimlpeParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtService.RemoveGovtMenu(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 新增政府菜单
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        [HttpPost("EditGovtMenu")]
+        public ObjectResultEx EditGovtMenu(RequestGovtMenu Param)
+        {
+            return ObjectResultEx.Instance(GovtService.EditGovtMenu(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region 权限菜单树
+        /// <summary>
+        /// 获取权限菜单树
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetGovtTree")]
+        public ObjectResultEx GetGovtTree() {
+            return ObjectResultEx.Instance(GovtService.GetGovtTree(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region 角色权限
+        /// <summary>
+        /// 权限分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetAuthorPage")]
+        public ObjectResultEx GetAuthorPage(PageParamList<RequestGovtRoleAuthor> pageParam) {
+            return ObjectResultEx.Instance(GovtService.GetAuthorPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除角色
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveAuthor")]
+        public ObjectResultEx RemoveAuthor(SimlpeParam<Guid> Param) {
+            return ObjectResultEx.Instance(GovtService.RemoveAuthor(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑权限
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditAuthor")]
+        public ObjectResultEx EditAuthor(RequestGovtRoleAuthor Param) {
+            return ObjectResultEx.Instance(GovtService.EditAuthor(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }
