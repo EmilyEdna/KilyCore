@@ -355,6 +355,7 @@ namespace KilyCore.Service.ServiceCore
                     AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(x.FirstOrDefault() != null ? x.FirstOrDefault().AuditType : 0),
                     VersionName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.Version),
                     Version = t.Version,
+                    LngAndLat=t.LngAndLat,
                     PassWord = t.PassWord,
                     TypePath = t.TypePath,
                     Certification = t.Certification,

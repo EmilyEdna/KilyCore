@@ -194,6 +194,20 @@
             },
             //事件
             InitEvents: function () {
+                //坐标选区
+                $("input[name='LngAndLat']").on('click', function () {
+                    controller.OpenWindow({
+                        title: "坐标选取",
+                        type: 2,
+                        height: "600px",
+                        width: "800px",
+                        url: "StaticHtml/BaiduMap.html",
+                        callBack: function (result) {
+                            $("input[name='LngAndLat']").val(result.$("#Edit").find("input[name='lng']").val() + "，" + result.$("#Edit").find("input[name='lat']").val());
+                            result.popClose();
+                        }
+                    })
+                });
                 //验证
                 controller.ValidateConfirm("#Edit");
             },
@@ -294,6 +308,12 @@
                                 </td>
                             </tr>
                         </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">经度纬度</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" class="form-control" name="LngAndLat" placeholder="点击获取" readonly>
                     </td>
                 </tr>
                 <tr>

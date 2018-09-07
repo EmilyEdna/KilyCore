@@ -86,5 +86,9 @@ namespace KilyCore.EntityFrameWork.Model.Repast
         /// 系统版本
         /// </summary>
         public virtual SystemVersionEnum VersionType { get; set; }
+        /// <summary>
+        /// 经纬度
+        /// </summary>
+        public virtual string LngAndLat { get; set; }
     }
 }

@@ -310,6 +310,7 @@ namespace KilyCore.Service.ServiceCore
                     PassWord = t.PassWord,
                     CommunityCode = t.CommunityCode,
                     MerchantName = t.MerchantName,
+                    LngAndLat = t.LngAndLat,
                     DiningType = t.DiningType,
                     DiningTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
                     Phone = t.Phone,

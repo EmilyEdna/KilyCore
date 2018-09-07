@@ -110,5 +110,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 经营范围
         /// </summary>
         public virtual string Scope { get; set; }
+        /// <summary>
+        /// 经纬度
+        /// </summary>
+        public virtual string LngAndLat { get; set; }
     }
 }
