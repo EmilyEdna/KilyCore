@@ -51,7 +51,24 @@
                     success: function (result) {
                         if (result.flag != -1) {
                             controller.SetCookie(result.data);
-                            controller.SetHref("Home");
+                            debugger;
+                            if (result.data.GovtInfo.Flag != null)
+                                controller.SetHref("Home");
+                            else
+                                controller.OpenWindow({
+                                    title: "更新密码",
+                                    type: 2,
+                                    height: "335px",
+                                    skin:"layui-layer-lan",
+                                    width: "300px",
+                                    resize: false,
+                                    maxmin: false,
+                                    url: "/Govt/AccountEidt?Id=" + result.data.Id,
+                                    callBack: function (result) {
+                                        result.$("#Edit").submit();
+                                        controller.SetHref("Home");
+                                    }
+                                })
                         }
                         else {
                             $('.btn-info').click();

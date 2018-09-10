@@ -45,5 +45,10 @@ namespace KilyCore.Service.IServiceCore
         String RemoveAuthor(Guid Id);
         String EditAuthor(RequestGovtRoleAuthor Param);
         #endregion
+
+        #region 政府账号
+        PagedResult<ResponseGovtInfo> GetInfoPage(PageParamList<RequestGovtInfo> pageParam);
+        String EditInfo(RequestGovtInfo Param);
+        #endregion
     }
 }

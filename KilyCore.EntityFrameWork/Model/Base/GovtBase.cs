@@ -26,6 +26,6 @@ namespace KilyCore.EntityFrameWork.Model.Base
         /// <summary>
         /// 政府父Id
         /// </summary>
-        public virtual Guid GovtId { get; set; }
+        public virtual Guid? GovtId { get; set; }
     }
 }

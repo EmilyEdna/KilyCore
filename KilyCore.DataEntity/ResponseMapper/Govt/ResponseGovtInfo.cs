@@ -22,7 +22,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Govt
     public class ResponseGovtInfo
     {
         public Guid Id { get; set; }
-        public Guid GovtId { get; set; }
+        public Guid? GovtId { get; set; }
         public string TableName { get; set; }
         /// <summary>
         /// 账号
@@ -85,5 +85,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Govt
                 return !string.IsNullOrEmpty(TypePath) ? (TypePath.Split(',').Length >= 3 ? TypePath.Split(',')[2] : null) : null;
             }
         }
+        public string Flag { get; set; }
     }
 }

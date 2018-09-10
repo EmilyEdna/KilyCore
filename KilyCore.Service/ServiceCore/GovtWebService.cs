@@ -38,6 +38,12 @@ namespace KilyCore.Service.ServiceCore
         public IList<ResponseGovtMenu> GetGovtMenu()
         {
             IQueryable<GovtMenu> queryable = Kily.Set<GovtMenu>().Where(t => t.Level == MenuEnum.LevelOne).Where(t => t.IsDelete == false).AsNoTracking().AsQueryable().OrderBy(t => t.CreateTime);
+            IQueryable<GovtRoleAuthor> queryables = Kily.Set<GovtRoleAuthor>().Where(t => t.IsDelete == false);
+            if (GovtInfo().AccountType <= GovtAccountEnum.Area)
+                queryables = queryables.Where(t => !t.AuthorName.Contains("乡镇"));
+            else
+                queryables = queryables.Where(t => t.AuthorName.Contains("乡镇"));
+            GovtRoleAuthor Author= queryables.FirstOrDefault();
             var data = queryable.OrderBy(t => t.CreateTime).Select(t => new ResponseGovtMenu()
             {
                 Id = t.Id,
@@ -51,6 +57,7 @@ namespace KilyCore.Service.ServiceCore
               .Where(x => x.ParentId == t.MenuId)
               .Where(x => x.Level != MenuEnum.LevelOne)
               .Where(x => x.IsDelete == false)
+              .Where(x => Author.AuthorMenuPath.Contains(x.Id.ToString()))
               .OrderBy(x => x.CreateTime).Select(x => new ResponseGovtMenu()
               {
                   Id = x.Id,
@@ -79,7 +86,7 @@ namespace KilyCore.Service.ServiceCore
                  {
                      Id = t.Id,
                      GovtId = t.GovtId,
-                     TableName = t.GetType().Name,
+                     TableName = typeof(ResponseGovtInfo).Name,
                      Account = t.Account,
                      Phone = t.Phone,
                      AccountType = t.AccountType,
@@ -89,7 +96,8 @@ namespace KilyCore.Service.ServiceCore
                      DepartName = t.DepartName,
                      PassWord = t.PassWord,
                      DepartId = t.DepartId,
-                     Email = t.Email
+                     Email = t.Email,
+                     Flag=t.UpdateUser
                  }).AsNoTracking().FirstOrDefault();
             return data;
         }

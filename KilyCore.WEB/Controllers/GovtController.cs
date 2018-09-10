@@ -20,5 +20,9 @@ namespace KilyCore.WEB.Controllers
         {
             return View();
         }
+        public IActionResult AccountEidt()
+        {
+            return View();
+        }
     }
 }

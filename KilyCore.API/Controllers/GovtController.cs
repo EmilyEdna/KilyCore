@@ -66,7 +66,8 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetGovtTree")]
-        public ObjectResultEx GetGovtTree() {
+        public ObjectResultEx GetGovtTree()
+        {
             return ObjectResultEx.Instance(GovtService.GetGovtTree(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
@@ -78,7 +79,8 @@ namespace KilyCore.API.Controllers
         /// <param name="pageParam"></param>
         /// <returns></returns>
         [HttpPost("GetAuthorPage")]
-        public ObjectResultEx GetAuthorPage(PageParamList<RequestGovtRoleAuthor> pageParam) {
+        public ObjectResultEx GetAuthorPage(PageParamList<RequestGovtRoleAuthor> pageParam)
+        {
             return ObjectResultEx.Instance(GovtService.GetAuthorPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -87,7 +89,8 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveAuthor")]
-        public ObjectResultEx RemoveAuthor(SimlpeParam<Guid> Param) {
+        public ObjectResultEx RemoveAuthor(SimlpeParam<Guid> Param)
+        {
             return ObjectResultEx.Instance(GovtService.RemoveAuthor(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -96,8 +99,32 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("EditAuthor")]
-        public ObjectResultEx EditAuthor(RequestGovtRoleAuthor Param) {
+        public ObjectResultEx EditAuthor(RequestGovtRoleAuthor Param)
+        {
             return ObjectResultEx.Instance(GovtService.EditAuthor(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region 政府账号
+        /// <summary>
+        /// 账号分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetInfoPage")]
+        public ObjectResultEx GetInfoPage(PageParamList<RequestGovtInfo> pageParam)
+        {
+            return ObjectResultEx.Instance(GovtService.GetInfoPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑账号
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditInfo")]
+        public ObjectResultEx EditInfo(RequestGovtInfo Param)
+        {
+            return ObjectResultEx.Instance(GovtService.EditInfo(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

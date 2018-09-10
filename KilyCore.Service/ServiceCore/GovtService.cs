@@ -3,6 +3,7 @@ using KilyCore.DataEntity.ResponseMapper.Govt;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.EntityFrameWork.Model.Govt;
 using KilyCore.EntityFrameWork.ModelEnum;
+using KilyCore.Extension.AttributeExtension;
 using KilyCore.Extension.AutoMapperExtension;
 using KilyCore.Repositories.BaseRepository;
 using KilyCore.Service.ConstMessage;
@@ -11,6 +12,7 @@ using KilyCore.Service.QueryExtend;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
@@ -74,7 +76,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public ResponseGovtMenu GetGovtMenuDetail(Guid Id)
         {
-            var data = Kily.Set<ResponseGovtMenu>().Where(t => t.Id == Id).AsNoTracking().Select(t => new ResponseGovtMenu()
+            var data = Kily.Set<GovtMenu>().Where(t => t.Id == Id).AsNoTracking().Select(t => new ResponseGovtMenu()
             {
                 Id = t.Id,
                 ParentId = t.ParentId,
@@ -206,6 +208,42 @@ namespace KilyCore.Service.ServiceCore
         {
             GovtRoleAuthor author = Param.MapToEntity<GovtRoleAuthor>();
             return Insert(author) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        #endregion
+
+        #region 政府账号
+        /// <summary>
+        /// 账号分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseGovtInfo> GetInfoPage(PageParamList<RequestGovtInfo> pageParam)
+        {
+            IQueryable<GovtInfo> queryable = Kily.Set<GovtInfo>().Where(t => t.IsDelete == false);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.DepartName))
+                queryable = queryable.Where(t => t.DepartName.Contains(pageParam.QueryParam.DepartName));
+            var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseGovtInfo()
+            {
+                Id=t.Id,
+                DepartName=t.DepartName,
+                Account=t.Account,
+                AccountTypeName=AttrExtension.GetSingleDescription<GovtAccountEnum,DescriptionAttribute>(t.AccountType),
+                TrueName=t.TrueName,
+                Phone=t.Phone,
+                Email=t.Email,
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑账号
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditInfo(RequestGovtInfo Param)
+        {
+            Param.PassWord = "123456";
+            GovtInfo Info = Param.MapToEntity<GovtInfo>();
+            return Insert(Info) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         #endregion
     }

@@ -33,29 +33,30 @@ namespace KilyCore.Extension.ResultExtension
         {
             String data = string.Empty;
             String Json = string.Empty;
-            if (result is ObjectResultEx)
-            {
-                data = (result as ObjectResultEx).Value.ToString();
-                Json = JsonConvert.SerializeObject((result as ObjectResultEx).Value);
-            }
+
             if (result is EmptyResultEx)
             {
-                data = (result as EmptyResultEx).Value.ToString();
+                data = (result as EmptyResultEx).Value == null ? "" : (result as EmptyResultEx).Value.ToString();
                 Json = JsonConvert.SerializeObject((result as EmptyResultEx).Value);
+            }
+            if (result is ObjectResultEx)
+            {
+                data = (result as ObjectResultEx).Value == null ? "" : (result as ObjectResultEx).Value.ToString();
+                Json = JsonConvert.SerializeObject((result as ObjectResultEx).Value);
             }
             if (result is ContentResultEx)
             {
-                data = (result as ContentResultEx).Value.ToString();
+                data = (result as ContentResultEx).Value == null ? "" : (result as ContentResultEx).Value.ToString();
                 Json = JsonConvert.SerializeObject((result as ContentResultEx).Value);
             }
             if (result is StatusCodeResultEx)
             {
-                data = (result as StatusCodeResultEx).Value.ToString();
+                data = (result as StatusCodeResultEx).Value == null ? "" : (result as StatusCodeResultEx).Value.ToString();
                 Json = JsonConvert.SerializeObject((result as StatusCodeResultEx).Value);
             }
             if (result is JsonResultEx)
             {
-                data = (result as JsonResultEx).Value.ToString();
+                data = (result as JsonResultEx).Value == null ? "" : (result as JsonResultEx).Value.ToString();
                 Json = JsonConvert.SerializeObject((result as JsonResultEx).Value);
             }
             if (context.Request.Headers["PC"].Equals("PC"))

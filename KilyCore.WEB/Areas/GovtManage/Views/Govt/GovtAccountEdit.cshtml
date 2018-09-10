@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewData["Title"] = "账号编辑";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                controller.ValidateConfirm("#Edit");
+            },
+            //事件
+            InitEvents: function () {
+            }
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="orm-horizontal" method="post" action="Govt/EditInfo" id="Edit">
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">账号名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="Account" data-msg-required="请输入账号" />
+                    </td>
+                    <th><label class="control-label">账号类型</label></th>
+                    <td class="has-warning">
+                        <select type="select" name="AccountType" class="form-control">
+                            <option value="20">市级账号</option>
+                            <option value="30">区县账号</option>
+                            <option value="40">乡镇账号</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
