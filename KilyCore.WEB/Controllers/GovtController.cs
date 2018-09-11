@@ -20,7 +20,7 @@ namespace KilyCore.WEB.Controllers
         {
             return View();
         }
-        public IActionResult AccountEidt()
+        public IActionResult AccountEdit()
         {
             return View();
         }

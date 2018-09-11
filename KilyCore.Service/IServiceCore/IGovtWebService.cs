@@ -32,6 +32,7 @@ namespace KilyCore.Service.IServiceCore
 
         #region 登录
         ResponseGovtInfo GovtLogin(RequestGovtInfo Param);
+        String EditPwd(RequestGovtInfo Param);
         #endregion
     }
 }

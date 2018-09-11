@@ -4,6 +4,7 @@ using KilyCore.EntityFrameWork.Model.Govt;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AttributeExtension;
 using KilyCore.Repositories.BaseRepository;
+using KilyCore.Service.ConstMessage;
 using KilyCore.Service.IServiceCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -43,7 +44,7 @@ namespace KilyCore.Service.ServiceCore
                 queryables = queryables.Where(t => !t.AuthorName.Contains("乡镇"));
             else
                 queryables = queryables.Where(t => t.AuthorName.Contains("乡镇"));
-            GovtRoleAuthor Author= queryables.FirstOrDefault();
+            GovtRoleAuthor Author = queryables.FirstOrDefault();
             var data = queryable.OrderBy(t => t.CreateTime).Select(t => new ResponseGovtMenu()
             {
                 Id = t.Id,
@@ -97,9 +98,20 @@ namespace KilyCore.Service.ServiceCore
                      PassWord = t.PassWord,
                      DepartId = t.DepartId,
                      Email = t.Email,
-                     Flag=t.UpdateUser
+                     Flag = t.UpdateUser
                  }).AsNoTracking().FirstOrDefault();
             return data;
+        }
+        /// <summary>
+        /// 第一次登录更新密码
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditPwd(RequestGovtInfo Param)
+        {
+            GovtInfo info = Kily.Set<GovtInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
+            info.PassWord = Param.PassWord;
+            return UpdateField(info, "PassWord") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         #endregion
     }

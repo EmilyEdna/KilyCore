@@ -515,6 +515,7 @@ controller.ValidateConfirm = function (element, option) {
             var $submitForm = $(form);
             var url = $submitForm.attr("action");
             var method = $submitForm.prop("method");
+            var async = $submitForm.attr("async") == undefined ? true : false;
             var data = $submitForm.SerializeJson();
             if (option.AddParam)
                 data = option.AddParam(data);
@@ -522,6 +523,7 @@ controller.ValidateConfirm = function (element, option) {
                 url: url,
                 data: data,
                 type: method,
+                async: async,
                 success: function (data) {
                     if (window.source != undefined)
                         window.source.options.$table.refresh();

@@ -51,22 +51,25 @@
                     success: function (result) {
                         if (result.flag != -1) {
                             controller.SetCookie(result.data);
-                            debugger;
                             if (result.data.GovtInfo.Flag != null)
                                 controller.SetHref("Home");
                             else
                                 controller.OpenWindow({
                                     title: "更新密码",
                                     type: 2,
-                                    height: "335px",
-                                    skin:"layui-layer-lan",
+                                    height: "270px",
+                                    skin: "layui-layer-lan",
                                     width: "300px",
                                     resize: false,
                                     maxmin: false,
-                                    url: "/Govt/AccountEidt?Id=" + result.data.Id,
+                                    url: "/Govt/AccountEdit?Id=" + result.data.GovtInfo.Id,
                                     callBack: function (result) {
-                                        result.$("#Edit").submit();
-                                        controller.SetHref("Home");
+                                        if (result.$("#pwd1").val() != result.$("#pwd2").val()) {
+                                            controller.Msg("两次输入的密码不一致");
+                                        } else {
+                                            result.$("#Edit").submit();
+                                            controller.SetHref("Home");
+                                        }
                                     }
                                 })
                         }

@@ -61,6 +61,16 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(VerificationExtension.LoginOut(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 第一次登录更新密码
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditPwd")]
+        public ObjectResultEx EditPwd(RequestGovtInfo Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.EditPwd(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
     }
 }
