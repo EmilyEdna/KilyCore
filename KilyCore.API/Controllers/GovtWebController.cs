@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using KilyCore.Configure;
+using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.Govt;
+using KilyCore.DataEntity.RequestMapper.Repast;
 using KilyCore.Extension.ResultExtension;
 using KilyCore.Extension.SessionExtension;
 using KilyCore.Extension.Token;
+using KilyCore.Service.QueryExtend;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -70,6 +73,29 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx EditPwd(RequestGovtInfo Param)
         {
             return ObjectResultEx.Instance(GovtWebService.EditPwd(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region 企业监管
+        /// <summary>
+        /// 监管企业分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetCompanyPage")]
+        public ObjectResultEx GetCompanyPage(PageParamList<RequestEnterprise> pageParam)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetCompanyPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 监管餐饮分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetMerchantPage")]
+        public ObjectResultEx GetMerchantPage(PageParamList<RequestMerchant> pageParam)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetMerchantPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

@@ -1,6 +1,11 @@
 ﻿using KilyCore.Configure;
+using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.Govt;
+using KilyCore.DataEntity.RequestMapper.Repast;
+using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.Govt;
+using KilyCore.DataEntity.ResponseMapper.Repast;
+using KilyCore.Service.QueryExtend;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,7 +29,7 @@ namespace KilyCore.Service.IServiceCore
     /// <summary>
     /// 政府监管前台后台业务逻辑接口
     /// </summary>
-    public interface IGovtWebService:IService
+    public interface IGovtWebService : IService
     {
         #region 获取全局集团菜单
         IList<ResponseGovtMenu> GetGovtMenu();
@@ -33,6 +38,11 @@ namespace KilyCore.Service.IServiceCore
         #region 登录
         ResponseGovtInfo GovtLogin(RequestGovtInfo Param);
         String EditPwd(RequestGovtInfo Param);
+        #endregion
+
+        #region 企业监管
+        PagedResult<ResponseEnterprise> GetCompanyPage(PageParamList<RequestEnterprise> pageParam);
+        PagedResult<ResponseMerchant> GetMerchantPage(PageParamList<RequestMerchant> pageParam);
         #endregion
     }
 }

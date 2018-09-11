@@ -1,11 +1,18 @@
-﻿using KilyCore.DataEntity.RequestMapper.Govt;
+﻿using KilyCore.DataEntity.RequestMapper.Enterprise;
+using KilyCore.DataEntity.RequestMapper.Govt;
+using KilyCore.DataEntity.RequestMapper.Repast;
+using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.Govt;
+using KilyCore.DataEntity.ResponseMapper.Repast;
+using KilyCore.EntityFrameWork.Model.Enterprise;
 using KilyCore.EntityFrameWork.Model.Govt;
+using KilyCore.EntityFrameWork.Model.Repast;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AttributeExtension;
 using KilyCore.Repositories.BaseRepository;
 using KilyCore.Service.ConstMessage;
 using KilyCore.Service.IServiceCore;
+using KilyCore.Service.QueryExtend;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -31,6 +38,26 @@ namespace KilyCore.Service.ServiceCore
 {
     public class GovtWebService : Repository, IGovtWebService
     {
+        #region 获取机构管理区域
+        /// <summary>
+        /// 获取机构管理区域
+        /// </summary>
+        /// <returns></returns>
+        public IList<string> GetDepartArea()
+        {
+            String Area = Kily.Set<GovtInstitution>().Where(t => t.IsDelete == false).Where(t => t.Id == GovtInfo().DepartId).Select(t => t.ManageArea).FirstOrDefault();
+            if (!string.IsNullOrEmpty(Area))
+            {
+                if (Area.Contains(","))
+                    return Area.Split(",").ToList();
+                else
+                    return Area.Split("").ToList();
+            }
+            else
+                return null;
+        }
+        #endregion
+
         #region 获取全局集团菜单
         /// <summary>
         /// 获取导航菜单
@@ -112,6 +139,81 @@ namespace KilyCore.Service.ServiceCore
             GovtInfo info = Kily.Set<GovtInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
             info.PassWord = Param.PassWord;
             return UpdateField(info, "PassWord") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        #endregion
+
+        #region 企业监管
+        /// <summary>
+        /// 监管企业分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterprise> GetCompanyPage(PageParamList<RequestEnterprise> pageParam)
+        {
+            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>()
+                 .Where(t => t.CompanyType == pageParam.QueryParam.CompanyType)
+                 .Where(t => t.AuditType == AuditEnum.AuditSuccess)
+                 .OrderByDescending(t => t.CreateTime);
+            if (GovtInfo().AccountType <= GovtAccountEnum.Area)
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().TypePath));
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
+            {
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        queryable = queryable.Where(t => t.TypePath.Contains(item));
+                    }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+            }
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.CompanyName))
+                queryable = queryable.Where(t => t.CompanyName.Contains(pageParam.QueryParam.CompanyName));
+            var data = queryable.Select(t => new ResponseEnterprise()
+            {
+                CompanyName = t.CompanyName,
+                CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
+                CommunityCode = t.CommunityCode,
+                CompanyPhone = t.CompanyPhone,
+                CompanyAddress = t.CompanyAddress
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 监管餐饮分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseMerchant> GetMerchantPage(PageParamList<RequestMerchant> pageParam)
+        {
+            IQueryable<RepastInfo> queryable = Kily.Set<RepastInfo>()
+                .Where(t => t.DiningType == pageParam.QueryParam.DiningType)
+                .Where(t => t.AuditType == AuditEnum.AuditSuccess)
+                .OrderByDescending(t => t.CreateTime);
+            if (GovtInfo().AccountType <= GovtAccountEnum.Area)
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().TypePath));
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
+            {
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        queryable = queryable.Where(t => t.TypePath.Contains(item));
+                    }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+            }
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.MerchantName))
+                queryable = queryable.Where(t => t.MerchantName.Contains(pageParam.QueryParam.MerchantName));
+            var data = queryable.Select(t => new ResponseMerchant()
+            {
+                MerchantName = t.MerchantName,
+                DiningTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
+                CommunityCode = t.CommunityCode,
+                Phone = t.Phone,
+                Address = t.Address
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
         }
         #endregion
     }
