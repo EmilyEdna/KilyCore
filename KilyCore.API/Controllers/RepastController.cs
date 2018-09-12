@@ -37,7 +37,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetMerchantDetail")]
-        public ObjectResultEx GetMerchantDetail(SimlpeParam<Guid> Param)
+        public ObjectResultEx GetMerchantDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(RepastService.GetMerchantDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -79,7 +79,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveMenu")]
-        public ObjectResultEx RemoveMenu(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveMenu(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(RepastService.RemoveMenu(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -89,7 +89,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetDiningMenuDetail")]
-        public ObjectResultEx GetDiningMenuDetail(SimlpeParam<Guid> Param)
+        public ObjectResultEx GetDiningMenuDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(RepastService.GetDiningMenuDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -140,7 +140,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveAuthorRole")]
-        public ObjectResultEx RemoveAuthorRole(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveAuthorRole(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(RepastService.RemoveAuthorRole(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -191,7 +191,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("GetDiningIdentDetail")]
-        public ObjectResultEx GetDiningIdentDetail(SimlpeParam<Guid> Param)
+        public ObjectResultEx GetDiningIdentDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(RepastService.GetDiningIdentDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -224,7 +224,7 @@ namespace KilyCore.API.Controllers
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("RegistRepastAccount")]
-        public ObjectResultEx RegistRepastAccount(SimlpeParam<RequestMerchant> Param)
+        public ObjectResultEx RegistRepastAccount(SimpleParam<RequestMerchant> Param)
         {
             return ObjectResultEx.Instance(RepastService.RegistRepastAccount(Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }

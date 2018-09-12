@@ -33,7 +33,7 @@ namespace KilyCore.Service.QueryExtend
     /// 单个值查询
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class SimlpeParam<T>
+    public class SimpleParam<T>
     {
         public T Id { get; set; }
         public T Parameter { get; set; }

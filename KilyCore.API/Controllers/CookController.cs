@@ -30,7 +30,7 @@ namespace KilyCore.API.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPost("GetCookMenuDetail")]
-        public ObjectResultEx GetCookMenuDetail(SimlpeParam<Guid> Param)
+        public ObjectResultEx GetCookMenuDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(CookService.GetCookMenuDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -49,7 +49,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Id"></param>
         [HttpPost("RemoveCookMenu")]
-        public ObjectResultEx RemoveCookMenu(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveCookMenu(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(CookService.RemoveCookMenu(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -104,7 +104,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveAuthorRole")]
-        public ObjectResultEx RemoveAuthorRole(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveAuthorRole(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(CookService.RemoveAuthorRole(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -126,7 +126,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetCookInfoDetail")]
-        public ObjectResultEx GetCookInfoDetail(SimlpeParam<Guid> Param)
+        public ObjectResultEx GetCookInfoDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(CookService.GetCookInfoDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -159,7 +159,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("StartUse")]
-        public ObjectResultEx StartUse(SimlpeParam<Guid> Param)
+        public ObjectResultEx StartUse(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(CookService.StartUse(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -169,7 +169,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("BlockUp")]
-        public ObjectResultEx BlockUp(SimlpeParam<Guid> Param)
+        public ObjectResultEx BlockUp(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(CookService.BlockUp(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -179,7 +179,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("CheckPayment")]
-        public ObjectResultEx CheckPayment(SimlpeParam<Guid> Param)
+        public ObjectResultEx CheckPayment(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(CookService.CheckPayment(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }

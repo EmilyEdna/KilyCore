@@ -41,6 +41,10 @@ namespace KilyCore.EntityFrameWork.Model.Govt
         /// </summary>
         public virtual string ManageArea { get; set; }
         /// <summary>
+        /// 管理区域名称
+        /// </summary>
+        public virtual string ManageAreaName { get; set; }
+        /// <summary>
         /// 备注
         /// </summary>
         public virtual string Remark { get; set; }

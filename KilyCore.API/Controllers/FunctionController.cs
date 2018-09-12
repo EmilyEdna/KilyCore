@@ -33,7 +33,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetAreaPriceDetail")]
-        public ObjectResultEx GetAreaPriceDetail(SimlpeParam<Guid> Param)
+        public ObjectResultEx GetAreaPriceDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(FunctionService.GetAreaPriceDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -53,7 +53,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemovePrice")]
-        public ObjectResultEx RemovePrice(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemovePrice(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(FunctionService.RemovePrice(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -63,7 +63,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetAddressList")]
-        public ObjectResultEx GetAddressList(SimlpeParam<int> Param)
+        public ObjectResultEx GetAddressList(SimpleParam<int> Param)
         {
             return ObjectResultEx.Instance(FunctionService.GetAddressList(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -105,7 +105,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveTag")]
-        public ObjectResultEx RemoveTag(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveTag(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(FunctionService.RemoveTag(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -115,7 +115,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetAcceptUser")]
-        public ObjectResultEx GetAcceptUser(SimlpeParam<int> Param)
+        public ObjectResultEx GetAcceptUser(SimpleParam<int> Param)
         {
             return ObjectResultEx.Instance(FunctionService.GetAcceptUser(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -134,7 +134,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("AcceptTag")]
-        public ObjectResultEx AcceptTag(SimlpeParam<Guid> Param)
+        public ObjectResultEx AcceptTag(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(FunctionService.AcceptTag(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -156,7 +156,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetDicDetail")]
-        public ObjectResultEx GetDicDetail(SimlpeParam<Guid> Param)
+        public ObjectResultEx GetDicDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(FunctionService.GetDicDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -177,7 +177,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Value"></param>
         /// <returns></returns>
         [HttpPost("RemoveDic")]
-        public ObjectResultEx RemoveDic(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveDic(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(FunctionService.RemoveDic(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -210,7 +210,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Value"></param>
         /// <returns></returns>
         [HttpPost("IsEnable")]
-        public ObjectResultEx IsEnable(SimlpeParam<Guid> Key, SimlpeParam<bool> Value)
+        public ObjectResultEx IsEnable(SimpleParam<Guid> Key, SimpleParam<bool> Value)
         {
             return ObjectResultEx.Instance(FunctionService.IsEnable(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -220,7 +220,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetAreaVersion")]
-        public ObjectResultEx GetAreaVersion(SimlpeParam<String> Key, SimlpeParam<int> Value)
+        public ObjectResultEx GetAreaVersion(SimpleParam<String> Key, SimpleParam<int> Value)
         {
             return ObjectResultEx.Instance(FunctionService.GetAreaVersion(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -230,7 +230,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("GetAreaDicDetail")]
-        public ObjectResultEx GetAreaDicDetail(SimlpeParam<Guid> Param)
+        public ObjectResultEx GetAreaDicDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(FunctionService.GetAreaDicDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }

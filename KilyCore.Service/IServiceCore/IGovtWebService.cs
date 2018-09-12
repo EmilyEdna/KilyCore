@@ -44,5 +44,15 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseEnterprise> GetCompanyPage(PageParamList<RequestEnterprise> pageParam);
         PagedResult<ResponseMerchant> GetMerchantPage(PageParamList<RequestMerchant> pageParam);
         #endregion
+
+        #region 部门信息
+        PagedResult<ResponseGovtInstitution> GetInsPage(PageParamList<RequestGovtInstitution> pageParam);
+        String RemoveIns(Guid Id);
+        String EditIns(RequestGovtInstitution Param);
+        PagedResult<ResponseGovtInfo> GetGovtInfoPage(PageParamList<RequestGovtInfo> pageParam);
+        String RemoveGovtInfo(Guid Id);
+        ResponseGovtInfo GetGovtInfoDetail(Guid Id);
+        String EditUser(RequestGovtInfo Param);
+        #endregion
     }
 }

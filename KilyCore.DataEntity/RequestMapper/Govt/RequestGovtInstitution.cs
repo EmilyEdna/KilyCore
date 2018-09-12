@@ -39,6 +39,10 @@ namespace KilyCore.DataEntity.RequestMapper.Govt
         /// </summary>
         public virtual string Remark { get; set; }
         /// <summary>
+        /// 管理区域名称
+        /// </summary>
+        public string ManageAreaName { get; set; }
+        /// <summary>
         /// 所属区域
         /// </summary>
         public string TypePath

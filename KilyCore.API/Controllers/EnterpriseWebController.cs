@@ -26,7 +26,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetSellerList")]
-        public ObjectResultEx GetSellerList(SimlpeParam<int> Param)
+        public ObjectResultEx GetSellerList(SimpleParam<int> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetSellerList(Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -45,7 +45,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetSellerInEnterprise")]
-        public ObjectResultEx GetSellerInEnterprise(SimlpeParam<String> Param)
+        public ObjectResultEx GetSellerInEnterprise(SimpleParam<String> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetSellerInEnterprise(Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -78,7 +78,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetEnterpriseInfo")]
-        public ObjectResultEx GetEnterpriseInfo(SimlpeParam<Guid> Param)
+        public ObjectResultEx GetEnterpriseInfo(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetEnterpriseInfo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -142,7 +142,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("GetUserDetail")]
-        public ObjectResultEx GetUserDetail(SimlpeParam<Guid> Param)
+        public ObjectResultEx GetUserDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetUserDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -152,7 +152,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveUser")]
-        public ObjectResultEx RemoveUser(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveUser(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveUser(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -201,7 +201,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveRole")]
-        public ObjectResultEx RemoveRole(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveRole(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveRole(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -256,7 +256,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveDic")]
-        public ObjectResultEx RemoveDic(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveDic(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveDic(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -266,7 +266,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetDicDetail")]
-        public ObjectResultEx GetDicDetail(SimlpeParam<Guid> Param)
+        public ObjectResultEx GetDicDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetDicDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -339,7 +339,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("AuditContinuedAndLevel")]
-        public ObjectResultEx AuditContinuedAndLevel(SimlpeParam<Guid> Key, SimlpeParam<bool> Param)
+        public ObjectResultEx AuditContinuedAndLevel(SimpleParam<Guid> Key, SimpleParam<bool> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.AuditContinuedAndLevel(Key.Id, Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -361,7 +361,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetFileDetail")]
-        public ObjectResultEx GetFileDetail(SimlpeParam<Guid> Param)
+        public ObjectResultEx GetFileDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetFileDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -371,7 +371,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveFile")]
-        public ObjectResultEx RemoveFile(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveFile(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveFile(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -405,7 +405,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetGrowDetail")]
-        public ObjectResultEx GetGrowDetail(SimlpeParam<Guid> Param)
+        public ObjectResultEx GetGrowDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetGrowDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -425,7 +425,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveGrow")]
-        public ObjectResultEx RemoveGrow(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveGrow(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveGrow(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -467,7 +467,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemovePlanting")]
-        public ObjectResultEx RemovePlanting(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemovePlanting(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemovePlanting(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -499,7 +499,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveDrug")]
-        public ObjectResultEx RemoveDrug(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveDrug(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveDrug(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -550,7 +550,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveEnv")]
-        public ObjectResultEx RemoveEnv(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveEnv(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveEnv(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -560,7 +560,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveEnvAttach")]
-        public ObjectResultEx RemoveEnvAttach(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveEnvAttach(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveEnvAttach(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -592,12 +592,12 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveNote")]
-        public ObjectResultEx RemoveNote(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveNote(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveNote(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         [HttpPost("GetNoteDetail")]
-        public ObjectResultEx GetNoteDetail(SimlpeParam<Guid> Param)
+        public ObjectResultEx GetNoteDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetNoteDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -629,7 +629,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveAgeUp")]
-        public ObjectResultEx RemoveAgeUp(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveAgeUp(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveAgeUp(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -662,7 +662,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveTag")]
-        public ObjectResultEx RemoveTag(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveTag(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveTag(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -682,7 +682,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveApplyTag")]
-        public ObjectResultEx RemoveApplyTag(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveApplyTag(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveApplyTag(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -702,7 +702,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetPaymentDetail")]
-        public ObjectResultEx GetPaymentDetail(SimlpeParam<Guid> Param)
+        public ObjectResultEx GetPaymentDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetPaymentDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -722,7 +722,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("AcceptVeinTarget")]
-        public ObjectResultEx AcceptVeinTarget(SimlpeParam<Guid> Param)
+        public ObjectResultEx AcceptVeinTarget(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.AcceptVeinTarget(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -732,7 +732,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveVeinTarget")]
-        public ObjectResultEx RemoveVeinTarget(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveVeinTarget(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveVeinTarget(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -742,7 +742,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetTagList")]
-        public ObjectResultEx GetTagList(SimlpeParam<int> Param)
+        public ObjectResultEx GetTagList(SimpleParam<int> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetTagList(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -774,7 +774,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveSeller")]
-        public ObjectResultEx RemoveSeller(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveSeller(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveSeller(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -794,7 +794,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetSellerDetail")]
-        public ObjectResultEx GetSellerDetail(SimlpeParam<Guid> Param)
+        public ObjectResultEx GetSellerDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetSellerDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -826,7 +826,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveMaterial")]
-        public ObjectResultEx RemoveMaterial(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveMaterial(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveMaterial(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -857,7 +857,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveStock")]
-        public ObjectResultEx RemoveStock(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveStock(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveStock(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -887,7 +887,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveStockAttach")]
-        public ObjectResultEx RemoveStockAttach(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveStockAttach(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveStockAttach(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -988,7 +988,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveDevice")]
-        public ObjectResultEx RemoveDevice(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveDevice(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveDevice(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -998,7 +998,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveDeviceClean")]
-        public ObjectResultEx RemoveDeviceClean(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveDeviceClean(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveDeviceClean(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1008,7 +1008,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveDeviceFix")]
-        public ObjectResultEx RemoveDeviceFix(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveDeviceFix(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveDeviceFix(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1030,7 +1030,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveTarget")]
-        public ObjectResultEx RemoveTarget(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveTarget(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveTarget(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1071,7 +1071,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveSeries")]
-        public ObjectResultEx RemoveSeries(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveSeries(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveSeries(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1121,7 +1121,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveProBatch")]
-        public ObjectResultEx RemoveProBatch(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveProBatch(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveProBatch(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1141,7 +1141,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("GetProBatchAttachList")]
-        public ObjectResultEx GetProBatchAttachList(SimlpeParam<Guid> Param)
+        public ObjectResultEx GetProBatchAttachList(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetProBatchAttachList(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1192,7 +1192,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveFac")]
-        public ObjectResultEx RemoveFac(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveFac(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveFac(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1222,7 +1222,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveFacAttach")]
-        public ObjectResultEx RemoveFacAttach(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveFacAttach(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveFacAttach(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1246,7 +1246,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveGoods")]
-        public ObjectResultEx RemoveGoods(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveGoods(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveGoods(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1266,7 +1266,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("GetGoodsDetail")]
-        public ObjectResultEx GetGoodsDetail(SimlpeParam<Guid> Param)
+        public ObjectResultEx GetGoodsDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetGoodsDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1317,7 +1317,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveGoodsStock")]
-        public ObjectResultEx RemoveGoodsStock(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveGoodsStock(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveGoodsStock(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1367,7 +1367,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveGoodsStockAttach")]
-        public ObjectResultEx RemoveGoodsStockAttach(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveGoodsStockAttach(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveGoodsStockAttach(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1377,7 +1377,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetCodeSerialNo")]
-        public ObjectResultEx GetCodeSerialNo(SimlpeParam<Guid> Param)
+        public ObjectResultEx GetCodeSerialNo(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetCodeSerialNo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1420,7 +1420,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveCheckMaterial")]
-        public ObjectResultEx RemoveCheckMaterial(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveCheckMaterial(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveCheckMaterial(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1450,7 +1450,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveCheckGoods")]
-        public ObjectResultEx RemoveCheckGoods(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveCheckGoods(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveCheckGoods(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1490,7 +1490,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("GetInferiorExpriredDetail")]
-        public ObjectResultEx GetInferiorExpriredDetail(SimlpeParam<Guid> Param)
+        public ObjectResultEx GetInferiorExpriredDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetInferiorExpriredDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1500,7 +1500,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveInferiorExprired")]
-        public ObjectResultEx RemoveInferiorExprired(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveInferiorExprired(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveInferiorExprired(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1532,7 +1532,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("GetRecoverDetail")]
-        public ObjectResultEx GetRecoverDetail(SimlpeParam<Guid> Param)
+        public ObjectResultEx GetRecoverDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetRecoverDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1552,7 +1552,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveRecover")]
-        public ObjectResultEx RemoveRecover(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveRecover(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveRecover(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1586,7 +1586,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("GetGoodsPackageDetail")]
-        public ObjectResultEx GetGoodsPackageDetail(SimlpeParam<Guid> Param)
+        public ObjectResultEx GetGoodsPackageDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetGoodsPackageDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1596,7 +1596,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveGoodsPackge")]
-        public ObjectResultEx RemoveGoodsPackge(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveGoodsPackge(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveGoodsPackge(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1606,7 +1606,7 @@ namespace KilyCore.API.Controllers
         /// <param name="StockOutNo"></param>
         /// <returns></returns>
         [HttpPost("GetPackageCode")]
-        public ObjectResultEx GetPackageCode(SimlpeParam<String> Param)
+        public ObjectResultEx GetPackageCode(SimpleParam<String> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetPackageCode(Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1638,7 +1638,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveLogistics")]
-        public ObjectResultEx RemoveLogistics(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveLogistics(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveLogistics(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1648,7 +1648,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("CheckLogistics")]
-        public ObjectResultEx CheckLogistics(SimlpeParam<Guid> Param)
+        public ObjectResultEx CheckLogistics(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.CheckLogistics(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1680,7 +1680,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveBuyer")]
-        public ObjectResultEx RemoveBuyer(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveBuyer(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveBuyer(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1694,7 +1694,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Value"></param>
         /// <returns></returns>
         [HttpPost("AliPay")]
-        public ObjectResultEx AliPay(SimlpeParam<int> Key, SimlpeParam<int?> Value)
+        public ObjectResultEx AliPay(SimpleParam<int> Key, SimpleParam<int?> Value)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.AliPay(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1705,7 +1705,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Value"></param>
         /// <returns></returns>
         [HttpPost("WxPay")]
-        public ObjectResultEx WxPay(SimlpeParam<int> Key, SimlpeParam<int?> Value)
+        public ObjectResultEx WxPay(SimpleParam<int> Key, SimpleParam<int?> Value)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.WxPay(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1718,7 +1718,7 @@ namespace KilyCore.API.Controllers
         /// <returns></returns>
         [HttpPost("ExportMaterialInStockFile")]
         [AllowAnonymous]
-        public ObjectResultEx ExportMaterialInStockFile(SimlpeParam<String> Param)
+        public ObjectResultEx ExportMaterialInStockFile(SimpleParam<String> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.ExportMaterialInStockFile(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1729,7 +1729,7 @@ namespace KilyCore.API.Controllers
         /// <returns></returns>
         [HttpPost("ExportMaterialOutStockFile")]
         [AllowAnonymous]
-        public ObjectResultEx ExportMaterialOutStockFile(SimlpeParam<String> Param)
+        public ObjectResultEx ExportMaterialOutStockFile(SimpleParam<String> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.ExportMaterialOutStockFile(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1740,7 +1740,7 @@ namespace KilyCore.API.Controllers
         /// <returns></returns>
         [HttpPost("ExportProInStockFile")]
         [AllowAnonymous]
-        public ObjectResultEx ExportProInStockFile(SimlpeParam<String> Param)
+        public ObjectResultEx ExportProInStockFile(SimpleParam<String> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.ExportProInStockFile(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1751,7 +1751,7 @@ namespace KilyCore.API.Controllers
         /// <returns></returns>
         [HttpPost("ExportProOutStockFile")]
         [AllowAnonymous]
-        public ObjectResultEx ExportProOutStockFile(SimlpeParam<String> Param)
+        public ObjectResultEx ExportProOutStockFile(SimpleParam<String> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.ExportProOutStockFile(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }

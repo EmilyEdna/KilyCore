@@ -85,6 +85,9 @@ namespace KilyCore.DataEntity.ResponseMapper.Govt
                 return !string.IsNullOrEmpty(TypePath) ? (TypePath.Split(',').Length >= 3 ? TypePath.Split(',')[2] : null) : null;
             }
         }
+        /// <summary>
+        /// 判断是否第一次登录系统
+        /// </summary>
         public string Flag { get; set; }
     }
 }

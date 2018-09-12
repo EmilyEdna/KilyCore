@@ -34,7 +34,7 @@ namespace KilyCore.API.Controllers
         /// <param name="param"></param>
         /// <returns></returns>
         [HttpPost("GetEnterpriseMenuDetail")]
-        public ObjectResultEx GetEnterpriseMenuDetail(SimlpeParam<Guid> Param)
+        public ObjectResultEx GetEnterpriseMenuDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseService.GetEnterpriseMenuDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -63,7 +63,7 @@ namespace KilyCore.API.Controllers
         /// <param name="param"></param>
         /// <returns></returns>
         [HttpPost("RemoveEnterpriseMenu")]
-        public ObjectResultEx RemoveEnterpriseMenu(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveEnterpriseMenu(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseService.RemoveEnterpriseMenu(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -126,7 +126,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveEnterpriseRoleAuthor")]
-        public ObjectResultEx RemoveEnterpriseRoleAuthor(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveEnterpriseRoleAuthor(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseService.RemoveEnterpriseRoleAuthor(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -167,7 +167,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetCompanyDetail")]
-        public ObjectResultEx GetCompanyDetail(SimlpeParam<Guid> Param)
+        public ObjectResultEx GetCompanyDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseService.GetCompanyDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -234,7 +234,7 @@ namespace KilyCore.API.Controllers
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("RegistCompanyAccount")]
-        public ObjectResultEx RegistCompanyAccount(SimlpeParam<RequestEnterprise> Param)
+        public ObjectResultEx RegistCompanyAccount(SimpleParam<RequestEnterprise> Param)
         {
             return ObjectResultEx.Instance(EnterpriseService.RegistCompanyAccount(Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -325,7 +325,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("AuditGoodSuccess")]
-        public ObjectResultEx AuditGoodSuccess(SimlpeParam<Guid> Param)
+        public ObjectResultEx AuditGoodSuccess(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseService.AuditGoodSuccess(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }

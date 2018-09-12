@@ -98,5 +98,43 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(GovtWebService.GetMerchantPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+
+        #region 部门信息
+        [HttpPost("GetInsPage")]
+        public ObjectResultEx GetInsPage(PageParamList<RequestGovtInstitution> pageParam)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetInsPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        [HttpPost("RemoveIns")]
+        public ObjectResultEx RemoveIns(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.RemoveIns(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        [HttpPost("EditIns")]
+        public ObjectResultEx EditIns(RequestGovtInstitution Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.EditIns(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        [HttpPost("GetGovtInfoPage")]
+        public ObjectResultEx GetGovtInfoPage(PageParamList<RequestGovtInfo> pageParam)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetGovtInfoPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        [HttpPost("RemoveGovtInfo")]
+        public ObjectResultEx RemoveGovtInfo(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.RemoveGovtInfo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        [HttpPost("GetGovtInfoDetail")]
+        public ObjectResultEx GetGovtInfoDetail(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetGovtInfoDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        [HttpPost("EditUser")]
+        public ObjectResultEx EditUser(RequestGovtInfo Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.EditUser(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }

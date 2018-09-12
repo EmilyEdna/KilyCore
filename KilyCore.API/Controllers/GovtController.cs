@@ -35,7 +35,7 @@ namespace KilyCore.API.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPost("GetGovtMenuDetail")]
-        public ObjectResultEx GetGovtMenuDetail(SimlpeParam<Guid> Param)
+        public ObjectResultEx GetGovtMenuDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(GovtService.GetGovtMenuDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -44,7 +44,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Id"></param>
         [HttpPost("RemoveGovtMenu")]
-        public ObjectResultEx RemoveGovtMenu(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveGovtMenu(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(GovtService.RemoveGovtMenu(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -89,7 +89,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveAuthor")]
-        public ObjectResultEx RemoveAuthor(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveAuthor(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(GovtService.RemoveAuthor(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }

@@ -9,6 +9,7 @@ using KilyCore.EntityFrameWork.Model.Govt;
 using KilyCore.EntityFrameWork.Model.Repast;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AttributeExtension;
+using KilyCore.Extension.AutoMapperExtension;
 using KilyCore.Repositories.BaseRepository;
 using KilyCore.Service.ConstMessage;
 using KilyCore.Service.IServiceCore;
@@ -214,6 +215,121 @@ namespace KilyCore.Service.ServiceCore
                 Address = t.Address
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
+        }
+        #endregion
+
+        #region 部门信息
+        /// <summary>
+        /// 机构分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseGovtInstitution> GetInsPage(PageParamList<RequestGovtInstitution> pageParam)
+        {
+            IQueryable<GovtInstitution> queryable = Kily.Set<GovtInstitution>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.InstitutionName))
+                queryable = queryable.Where(t => t.InstitutionName.Contains(pageParam.QueryParam.InstitutionName));
+            if (GovtInfo().AccountType == GovtAccountEnum.City)
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
+            if (GovtInfo().AccountType == GovtAccountEnum.Area)
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            var data = queryable.Select(t => new ResponseGovtInstitution()
+            {
+                Id = t.Id,
+                InstitutionName = t.InstitutionName,
+                ChargeUser = t.ChargeUser,
+                ManageAreaName = t.ManageAreaName
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 删除机构
+        /// </summary>
+        /// <returns></returns>
+        public string RemoveIns(Guid Id)
+        {
+            return Remove<GovtInstitution>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 编辑机构
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditIns(RequestGovtInstitution Param)
+        {
+            GovtInstitution govt = Param.MapToEntity<GovtInstitution>();
+            return Insert(govt) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 政府用户分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseGovtInfo> GetGovtInfoPage(PageParamList<RequestGovtInfo> pageParam)
+        {
+            IQueryable<GovtInfo> queryable = Kily.Set<GovtInfo>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.DepartName))
+                queryable = queryable.Where(t => t.DepartName.Contains(pageParam.QueryParam.DepartName));
+            if (GovtInfo().AccountType == GovtAccountEnum.City)
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
+            if (GovtInfo().AccountType == GovtAccountEnum.Area)
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            if (GovtInfo().AccountType == GovtAccountEnum.Town)
+                queryable = queryable.Where(t => t.Id == GovtInfo().Id);
+            var data = queryable.Select(t => new ResponseGovtInfo()
+            {
+                Id=t.Id,
+                Account=t.Account,
+                DepartName=t.DepartName,
+                TrueName=t.TrueName,
+                Phone=t.Phone,
+                Email=t.Email
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 删除政府用户
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveGovtInfo(Guid Id)
+        {
+            return Remove<GovtInfo>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 政府用户详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseGovtInfo GetGovtInfoDetail(Guid Id)
+        {
+            var data = Kily.Set<GovtInfo>().Select(t => new ResponseGovtInfo()
+            {
+                Id = t.Id,
+                Account = t.Account,
+                AccountType = t.AccountType,
+                DepartId = t.DepartId,
+                Email = t.Email,
+                GovtId = t.GovtId,
+                PassWord = t.PassWord,
+                Phone = t.Phone,
+                TrueName = t.TrueName,
+                TypePath = t.TypePath
+            }).FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 编辑政府用户
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditUser(RequestGovtInfo Param)
+        {
+            GovtInfo Info = Param.MapToEntity<GovtInfo>();
+            if (Param.Id != Guid.Empty)
+                return Update(Info, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            else
+                return Insert(Info) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         #endregion
     }

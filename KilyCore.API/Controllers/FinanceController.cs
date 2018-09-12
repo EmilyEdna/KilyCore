@@ -31,7 +31,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("StartUse")]
-        public ObjectResultEx StartUse(SimlpeParam<Guid> Param)
+        public ObjectResultEx StartUse(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(FinanceService.StartUse(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -41,7 +41,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("BlockUp")]
-        public ObjectResultEx BlockUp(SimlpeParam<Guid> Param)
+        public ObjectResultEx BlockUp(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(FinanceService.BlockUp(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -84,7 +84,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Value"></param>
         /// <returns></returns>
         [HttpPost("AuditIndetEnterprisePay")]
-        public ObjectResultEx AuditIndetEnterprisePay(SimlpeParam<Guid> Key, SimlpeParam<bool> Value)
+        public ObjectResultEx AuditIndetEnterprisePay(SimpleParam<Guid> Key, SimpleParam<bool> Value)
         {
             return ObjectResultEx.Instance(FinanceService.AuditIndetEnterprisePay(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -107,7 +107,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Value"></param>
         /// <returns></returns>
         [HttpPost("AuditIndetFoodPay")]
-        public ObjectResultEx AuditIndetFoodPay(SimlpeParam<Guid> Key, SimlpeParam<bool> Value)
+        public ObjectResultEx AuditIndetFoodPay(SimpleParam<Guid> Key, SimpleParam<bool> Value)
         {
             return ObjectResultEx.Instance(FinanceService.AuditIndetFoodPay(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -120,7 +120,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("WatchCertificate")]
-        public ObjectResultEx WatchCertificate(SimlpeParam<Guid> Key, SimlpeParam<string> Value)
+        public ObjectResultEx WatchCertificate(SimpleParam<Guid> Key, SimpleParam<string> Value)
         {
             return ObjectResultEx.Instance(FinanceService.WatchCertificate(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }

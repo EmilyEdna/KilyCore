@@ -26,7 +26,7 @@ namespace KilyCore.API.Controllers
         /// <returns></returns>
         [HttpPost("RegistCookAccount")]
         [AllowAnonymous]
-        public ObjectResultEx RegistCookAccount(SimlpeParam<RequestCookInfo> Param)
+        public ObjectResultEx RegistCookAccount(SimpleParam<RequestCookInfo> Param)
         {
             return ObjectResultEx.Instance(CookWebService.RegistCookAccount(Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -93,7 +93,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetCookVipDetail")]
-        public ObjectResultEx GetCookVipDetail(SimlpeParam<Guid> Param)
+        public ObjectResultEx GetCookVipDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(CookWebService.GetCookVipDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -168,7 +168,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("GetBanquetDetail")]
-        public ObjectResultEx GetBanquetDetail(SimlpeParam<Guid> Param)
+        public ObjectResultEx GetBanquetDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(CookWebService.GetBanquetDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -178,7 +178,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveBanquet")]
-        public ObjectResultEx RemoveBanquet(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveBanquet(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(CookWebService.RemoveBanquet(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -211,7 +211,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveHelper")]
-        public ObjectResultEx RemoveHelper(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveHelper(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(CookWebService.RemoveHelper(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -242,7 +242,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveFood")]
-        public ObjectResultEx RemoveFood(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveFood(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(CookWebService.RemoveFood(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -294,7 +294,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetAgreeDetail")]
-        public ObjectResultEx GetAgreeDetail(SimlpeParam<Guid> Param)
+        public ObjectResultEx GetAgreeDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(CookWebService.GetAgreeDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -304,7 +304,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveAgree")]
-        public ObjectResultEx RemoveAgree(SimlpeParam<Guid> Param)
+        public ObjectResultEx RemoveAgree(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(CookWebService.RemoveAgree(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }

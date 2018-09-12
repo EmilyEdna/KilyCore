@@ -38,6 +38,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Govt
         /// 备注
         /// </summary>
         public virtual string Remark { get; set; }
+        /// <summary>
+        /// 管理区域名称
+        /// </summary>
+        public string ManageAreaName { get; set; }
         public string TypePath { get; set; }
         public string Province
         {
