@@ -5,6 +5,7 @@ using KilyCore.DataEntity.RequestMapper.Repast;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.Govt;
 using KilyCore.DataEntity.ResponseMapper.Repast;
+using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.Service.QueryExtend;
 using System;
 using System.Collections.Generic;
@@ -48,11 +49,17 @@ namespace KilyCore.Service.IServiceCore
         #region 部门信息
         PagedResult<ResponseGovtInstitution> GetInsPage(PageParamList<RequestGovtInstitution> pageParam);
         String RemoveIns(Guid Id);
+        ResponseGovtInstitution GetInsDetail(Guid Id);
         String EditIns(RequestGovtInstitution Param);
         PagedResult<ResponseGovtInfo> GetGovtInfoPage(PageParamList<RequestGovtInfo> pageParam);
         String RemoveGovtInfo(Guid Id);
         ResponseGovtInfo GetGovtInfoDetail(Guid Id);
         String EditUser(RequestGovtInfo Param);
+        #endregion
+
+        #region 管辖区域
+         IList<ResponseArea> GetArea(Guid Id);
+        IList<ResponseTown> GetTown(Guid Id);
         #endregion
     }
 }

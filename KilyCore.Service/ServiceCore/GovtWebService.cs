@@ -4,9 +4,11 @@ using KilyCore.DataEntity.RequestMapper.Repast;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.Govt;
 using KilyCore.DataEntity.ResponseMapper.Repast;
+using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.EntityFrameWork.Model.Enterprise;
 using KilyCore.EntityFrameWork.Model.Govt;
 using KilyCore.EntityFrameWork.Model.Repast;
+using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AttributeExtension;
 using KilyCore.Extension.AutoMapperExtension;
@@ -44,9 +46,14 @@ namespace KilyCore.Service.ServiceCore
         /// 获取机构管理区域
         /// </summary>
         /// <returns></returns>
-        public IList<string> GetDepartArea()
+        public IList<string> GetDepartArea(Guid? Id = null)
         {
-            String Area = Kily.Set<GovtInstitution>().Where(t => t.IsDelete == false).Where(t => t.Id == GovtInfo().DepartId).Select(t => t.ManageArea).FirstOrDefault();
+            IQueryable<GovtInstitution> queryable = Kily.Set<GovtInstitution>().Where(t => t.IsDelete == false);
+            if (Id != null)
+                queryable = queryable.Where(t => t.Id == Id);
+            else
+                queryable = queryable.Where(t => t.Id == GovtInfo().DepartId);
+            String Area = queryable.Select(t => t.ManageArea).FirstOrDefault();
             if (!string.IsNullOrEmpty(Area))
             {
                 if (Area.Contains(","))
@@ -243,6 +250,26 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         /// <summary>
+        /// 获取机构详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseGovtInstitution GetInsDetail(Guid Id)
+        {
+            var data = Kily.Set<GovtInstitution>().Where(t => t.Id == Id).Select(t => new ResponseGovtInstitution()
+            {
+                Id = t.Id,
+                InstitutionName = t.InstitutionName,
+                ChargeUser = t.ChargeUser,
+                GovtId = t.GovtId,
+                ManageArea = t.ManageArea,
+                Remark = t.Remark,
+                TypePath = t.TypePath,
+                ManageAreaName = t.ManageAreaName
+            }).FirstOrDefault();
+            return data;
+        }
+        /// <summary>
         /// 删除机构
         /// </summary>
         /// <returns></returns>
@@ -258,7 +285,10 @@ namespace KilyCore.Service.ServiceCore
         public string EditIns(RequestGovtInstitution Param)
         {
             GovtInstitution govt = Param.MapToEntity<GovtInstitution>();
-            return Insert(govt) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            if (Param.Id == Guid.Empty)
+                return Insert(govt) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+                return Update(govt, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         /// <summary>
         /// 政府用户分页
@@ -278,12 +308,12 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.Id == GovtInfo().Id);
             var data = queryable.Select(t => new ResponseGovtInfo()
             {
-                Id=t.Id,
-                Account=t.Account,
-                DepartName=t.DepartName,
-                TrueName=t.TrueName,
-                Phone=t.Phone,
-                Email=t.Email
+                Id = t.Id,
+                Account = t.Account,
+                DepartName = t.DepartName,
+                TrueName = t.TrueName,
+                Phone = t.Phone,
+                Email = t.Email
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -330,6 +360,65 @@ namespace KilyCore.Service.ServiceCore
                 return Update(Info, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
             else
                 return Insert(Info) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        #endregion
+
+        #region 管辖区域
+        /// <summary>
+        /// 当前登录账号是市级账号则查询该市下所有区县
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public IList<ResponseArea> GetArea(Guid Id)
+        {
+            int CityCode = Kily.Set<SystemCity>().Where(t => t.Id == Id).Select(t => t.Code).FirstOrDefault();
+            var data = Kily.Set<SystemArea>().Where(t => t.CityCode == CityCode).Select(t => new ResponseArea()
+            {
+                Id = t.Id,
+                AreaName = t.Name
+            }).AsNoTracking().ToList();
+            return data;
+        }
+        /// <summary>
+        /// 当前登录账号是区县级账号则查询该市下所有乡镇
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public IList<ResponseTown> GetTown(Guid Id)
+        {
+            IQueryable<SystemArea> queryable = Kily.Set<SystemArea>();
+            IQueryable<SystemTown> queryables = Kily.Set<SystemTown>();
+            IList<string> Areas = GetDepartArea(Id);
+            //当录入账号是市级账号时先查询机构表中是否纯在该账号已经分配的区域，然后在查询该区域下所有的乡镇
+            if (Areas != null)
+            {
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        queryable = queryable.Where(t => t.Id.ToString() == item);
+                    }
+                else
+                    queryable = queryable.Where(t => t.Id.ToString() == Areas.FirstOrDefault());
+
+                IList<int> AreaCodes = queryable.Select(t => t.Code).ToList();
+                var data = queryables.Where(t => AreaCodes.Contains(t.AreaCode)).Select(t => new ResponseTown()
+                {
+                    Id = t.Id,
+                    TownName = t.Name
+                }).AsNoTracking().ToList();
+                return data;
+            }
+            //当录入账号是区县账号时直接查询自生账号下所有的乡镇
+            else
+            {
+                int AreaCode = queryable.Where(t => t.Id == Id).Select(t => t.Code).FirstOrDefault();
+                var data = queryables.Where(t => t.AreaCode == AreaCode).Select(t => new ResponseTown()
+                {
+                    Id = t.Id,
+                    TownName = t.Name
+                }).AsNoTracking().ToList();
+                return data;
+            }
         }
         #endregion
     }

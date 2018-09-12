@@ -100,40 +100,107 @@ namespace KilyCore.API.Controllers
         #endregion
 
         #region 部门信息
+        /// <summary>
+        /// 机构分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
         [HttpPost("GetInsPage")]
         public ObjectResultEx GetInsPage(PageParamList<RequestGovtInstitution> pageParam)
         {
             return ObjectResultEx.Instance(GovtWebService.GetInsPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 删除机构
+        /// </summary>
+        /// <returns></returns>
         [HttpPost("RemoveIns")]
         public ObjectResultEx RemoveIns(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(GovtWebService.RemoveIns(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 获取机构详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetInsDetail")]
+        public ObjectResultEx GetInsDetail(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetInsDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑机构
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
         [HttpPost("EditIns")]
         public ObjectResultEx EditIns(RequestGovtInstitution Param)
         {
             return ObjectResultEx.Instance(GovtWebService.EditIns(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 政府用户分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
         [HttpPost("GetGovtInfoPage")]
         public ObjectResultEx GetGovtInfoPage(PageParamList<RequestGovtInfo> pageParam)
         {
             return ObjectResultEx.Instance(GovtWebService.GetGovtInfoPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 删除政府用户
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         [HttpPost("RemoveGovtInfo")]
         public ObjectResultEx RemoveGovtInfo(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(GovtWebService.RemoveGovtInfo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 政府用户详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         [HttpPost("GetGovtInfoDetail")]
         public ObjectResultEx GetGovtInfoDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(GovtWebService.GetGovtInfoDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 编辑政府用户
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
         [HttpPost("EditUser")]
         public ObjectResultEx EditUser(RequestGovtInfo Param)
         {
             return ObjectResultEx.Instance(GovtWebService.EditUser(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region 管辖区域
+        /// <summary>
+        /// 当前登录账号是市级账号则查询该市下所有区县
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetArea")]
+        public ObjectResultEx GetArea(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetArea(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 当前登录账号是区县级账号则查询该市下所有乡镇
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetTown")]
+        public ObjectResultEx GetTown(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetTown(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

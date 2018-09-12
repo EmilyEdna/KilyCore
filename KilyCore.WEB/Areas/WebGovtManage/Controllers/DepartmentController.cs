@@ -13,7 +13,15 @@ namespace KilyCore.WEB.Areas.WebGovtManage.Controllers
         {
             return View();
         }
+        public IActionResult InstitutionDepartmentEdit()
+        {
+            return View();
+        }
         public IActionResult UserDepartment()
+        {
+            return View();
+        }
+        public IActionResult UserDepartmentEdit()
         {
             return View();
         }
