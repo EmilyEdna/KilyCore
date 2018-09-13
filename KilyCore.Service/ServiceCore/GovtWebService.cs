@@ -243,10 +243,29 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.Select(t => new ResponseGovtInstitution()
             {
                 Id = t.Id,
+                GovtId=t.GovtId,
                 InstitutionName = t.InstitutionName,
                 ChargeUser = t.ChargeUser,
                 ManageAreaName = t.ManageAreaName
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 机构列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseGovtInstitution> GetInsList()
+        {
+           IQueryable<GovtInstitution> queryable =  Kily.Set<GovtInstitution>().AsNoTracking();
+            if (GovtInfo().AccountType == GovtAccountEnum.City)
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
+            if (GovtInfo().AccountType == GovtAccountEnum.Area)
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            var data = queryable.Select(t => new ResponseGovtInstitution()
+            {
+                Id = t.Id,
+                InstitutionName = t.InstitutionName
+            }).AsNoTracking().ToList();
             return data;
         }
         /// <summary>
@@ -285,6 +304,7 @@ namespace KilyCore.Service.ServiceCore
         public string EditIns(RequestGovtInstitution Param)
         {
             GovtInstitution govt = Param.MapToEntity<GovtInstitution>();
+            govt.TypePath = GovtInfo().TypePath;
             if (Param.Id == Guid.Empty)
                 return Insert(govt) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
             else
@@ -312,6 +332,7 @@ namespace KilyCore.Service.ServiceCore
                 Account = t.Account,
                 DepartName = t.DepartName,
                 TrueName = t.TrueName,
+                AccountType = t.AccountType,
                 Phone = t.Phone,
                 Email = t.Email
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -333,12 +354,13 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public ResponseGovtInfo GetGovtInfoDetail(Guid Id)
         {
-            var data = Kily.Set<GovtInfo>().Select(t => new ResponseGovtInfo()
+            var data = Kily.Set<GovtInfo>().Where(t=>t.Id==Id).Select(t => new ResponseGovtInfo()
             {
                 Id = t.Id,
                 Account = t.Account,
                 AccountType = t.AccountType,
                 DepartId = t.DepartId,
+                DepartName = t.DepartName,
                 Email = t.Email,
                 GovtId = t.GovtId,
                 PassWord = t.PassWord,
@@ -359,7 +381,13 @@ namespace KilyCore.Service.ServiceCore
             if (Param.Id != Guid.Empty)
                 return Update(Info, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
             else
+            {
+                if (GovtInfo().AccountType == GovtAccountEnum.City)
+                    Info.AccountType = GovtAccountEnum.Area;
+                else if (GovtInfo().AccountType == GovtAccountEnum.Area)
+                    Info.AccountType = GovtAccountEnum.Town;
                 return Insert(Info) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            }
         }
         #endregion
 

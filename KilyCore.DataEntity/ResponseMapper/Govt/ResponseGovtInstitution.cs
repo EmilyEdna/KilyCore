@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 #region << 版 本 注 释 >>
 /*----------------------------------------------------------------
@@ -42,6 +42,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Govt
         /// 管理区域名称
         /// </summary>
         public string ManageAreaName { get; set; }
+        public string[] ManageAreaList => !string.IsNullOrEmpty(ManageArea) ? ManageArea.Split(',') : null;
         public string TypePath { get; set; }
         public string Province
         {

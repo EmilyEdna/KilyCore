@@ -51,7 +51,7 @@
                     success: function (result) {
                         if (result.flag != -1) {
                             controller.SetCookie(result.data);
-                            if (result.data.GovtInfo.Flag != null)
+                            if (result.data.GovtAdmin.Flag != null)
                                 controller.SetHref("Home");
                             else
                                 controller.OpenWindow({
@@ -62,7 +62,7 @@
                                     width: "300px",
                                     resize: false,
                                     maxmin: false,
-                                    url: "/Govt/AccountEdit?Id=" + result.data.GovtInfo.Id,
+                                    url: "/Govt/AccountEdit?Id=" + result.data.GovtAdmin.Id,
                                     callBack: function (result) {
                                         if (result.$("#pwd1").val() != result.$("#pwd2").val()) {
                                             controller.Msg("两次输入的密码不一致");

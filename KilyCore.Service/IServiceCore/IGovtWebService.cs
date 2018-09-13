@@ -48,6 +48,7 @@ namespace KilyCore.Service.IServiceCore
 
         #region 部门信息
         PagedResult<ResponseGovtInstitution> GetInsPage(PageParamList<RequestGovtInstitution> pageParam);
+        IList<ResponseGovtInstitution> GetInsList();
         String RemoveIns(Guid Id);
         ResponseGovtInstitution GetInsDetail(Guid Id);
         String EditIns(RequestGovtInstitution Param);

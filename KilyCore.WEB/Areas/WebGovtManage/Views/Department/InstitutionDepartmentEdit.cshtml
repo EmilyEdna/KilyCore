@@ -9,13 +9,13 @@
         //配置
         var options = {
             Init: function () {
-                this.InitDom();
                 this.InitEvents();
+                this.InitDom();
             },
             //元素
             InitDom: function () {
                 var Guid = controller.GetParam("Id");
-
+                $("#GovtId").val(GovtInfo.Id);
                 if (Guid != null && Guid != "")
                     controller.ajax({
                         url: "GovtWeb/GetInsDetail",
@@ -24,15 +24,12 @@
                         async: false,
                         success: function (result) {
                             controller.SetCtrlValue("#Edit", result.data);
-                            $("#Helper").selectpicker('val', result.data.Helper);
+                            $("#ManageArea").selectpicker('val', result.data.ManageAreaList);
                         }
                     });
             },
             //事件
             InitEvents: function () {
-                $("#ManageArea").on('changed.bs.select', function () {
-                    $('input[name="ManageArea"]').val($(this).val());
-                });
                 //当登录的用户账号角色为市级账号时默认查询改账号下所有的区县
                 if (GovtInfo.AccountType == 20)
                     controller.Select({
@@ -43,7 +40,7 @@
                         callBack: function (data) {
                             var html = '';
                             $.each(data, function (i, obj) {
-                                html += '<option data-value="' + obj.Id + '">' + obj.Name + '</option>';
+                                html += '<option value="' + obj.Id + '">' + obj.AreaName + '</option>';
                             });
                             $("#ManageArea").html(html);
                         }
@@ -58,11 +55,22 @@
                         callBack: function (data) {
                             var html = '';
                             $.each(data, function (i, obj) {
-                                html += '<option data-value="' + obj.Id + '">' + obj.Name + '</option>';
+                                html += '<option value="' + obj.Id + '">' + obj.TownName + '</option>';
                             });
                             $("#ManageArea").html(html);
                         }
                     });
+                $("#ManageArea").on('changed.bs.select', function () {
+                    var selector = $(this).find("option:selected");
+                    debugger;
+                    var array = [];
+                    for (var i = 0; i < selector.length; i++) {
+                        array.push($(selector[i]).text());
+                    }
+                    $('input[name="ManageArea"]').val($(this).val());
+                    $("input[name='ManageAreaName']").val(array);
+                });
+                controller.ValidateConfirm("#Edit");
             },
         };
         //初始化
@@ -74,8 +82,10 @@
 <div class="ibox float-e-margins">
     <div class="ibox-content">
         <form class="form-horizontal" method="post" action="GovtWeb/EditIns" id="Edit">
-            <input type="hidden" name="CookId" />
+            <input type="hidden" name="Id" />
+            <input type="hidden" name="GovtId" id="GovtId" />
             <input type="hidden" name="TypePath" />
+            <input type="hidden" name="ManageAreaName" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">机构名称</label></th>
@@ -88,8 +98,8 @@
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">机构名称</label></th>
-                    <td class="has-warning">
+                    <th><label class="control-label">管理区域</label></th>
+                    <td class="has-warning" colspan="3">
                         <select type="select" class="selectpicker form-control" id="ManageArea" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
                     </td>
                 </tr>

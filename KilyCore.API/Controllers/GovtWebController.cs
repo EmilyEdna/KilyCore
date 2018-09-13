@@ -40,12 +40,12 @@ namespace KilyCore.API.Controllers
             try
             {
                 string Code = HttpContext.Session.GetSession<string>("ValidateCode").Trim();
-                var GovtInfo = GovtWebService.GovtLogin(Param);
-                if (GovtInfo != null && Code.Equals(Param.ValidateCode.Trim()))
+                var GovtAdmin = GovtWebService.GovtLogin(Param);
+                if (GovtAdmin != null && Code.Equals(Param.ValidateCode.Trim()))
                 {
                     CookieInfo cookie = new CookieInfo();
-                    VerificationExtension.WriteToken(cookie, GovtInfo);
-                    return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ResponseCookieInfo.RSASysKey, GovtInfo }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
+                    VerificationExtension.WriteToken(cookie, GovtAdmin);
+                    return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ResponseCookieInfo.RSASysKey, GovtAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
                 }
                 else
                     return ObjectResultEx.Instance(null, -1, "登录失败或账户冻结", HttpCode.NoAuth);
@@ -109,6 +109,15 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetInsPage(PageParamList<RequestGovtInstitution> pageParam)
         {
             return ObjectResultEx.Instance(GovtWebService.GetInsPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 机构列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetInsList")]
+        public ObjectResultEx GetInsList()
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetInsList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 删除机构

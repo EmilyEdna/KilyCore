@@ -21,7 +21,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "GovtWeb/GetInsPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit"});
+                this.$table = controller.Table("#tableList", { url: "GovtWeb/GetInsPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
             },
             //事件
             InitEvents: function () {
@@ -94,8 +94,8 @@
                         controller.OpenWindow({
                             title: "机构详情",
                             type: 2,
-                            height: "400px",
-                            width: "600px",
+                            height: "500px",
+                            width: "800px",
                             url: "WebGovtManage/Department/InstitutionDepartmentEdit?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();

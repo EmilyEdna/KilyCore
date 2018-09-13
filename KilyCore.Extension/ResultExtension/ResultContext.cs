@@ -61,7 +61,7 @@ namespace KilyCore.Extension.ResultExtension
             }
             if (context.Request.Headers["PC"].Equals("PC"))
             {
-                if (data.Contains("CookAdmin") || data.Contains("SysAdmin") || data.Contains("ComAdmin") || data.Contains("RepAdmin") || data.Contains("GovtInfo"))
+                if (data.Contains("CookAdmin") || data.Contains("SysAdmin") || data.Contains("ComAdmin") || data.Contains("RepAdmin") || data.Contains("GovtAdmin"))
                     return JsonConvert.DeserializeObject(Json.Replace("\"PassWord\":\"admin\",", ""));
                 else
                     return null;

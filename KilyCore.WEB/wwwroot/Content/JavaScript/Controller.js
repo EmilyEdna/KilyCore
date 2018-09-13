@@ -91,7 +91,7 @@ controller.SetCookie = function (option) {
     else if (obj.CookAdmin != undefined)
         localStorage.Cooker = JSON.stringify(obj.CookAdmin);//保存厨师用户信息
     else
-        localStorage.Govt = JSON.stringify(obj.GovtInfo);//保存监管用户信息
+        localStorage.Govt = JSON.stringify(obj.GovtAdmin);//保存监管用户信息
 }
 /*
  *删除Cookie
