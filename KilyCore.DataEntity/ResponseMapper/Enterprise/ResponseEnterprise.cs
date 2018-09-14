@@ -56,7 +56,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
             get
             {
                 if (!string.IsNullOrEmpty(Honor))
-                    return Honor.Split("|").ToList();
+                    return Honor.Split(",").ToList();
                 else return null;
             }
         }
@@ -89,5 +89,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string SafeNo { get; set; }
         public string SafeCompany { get; set; }
         public string Scope { get; set; }
+        public string VideoAddress { get; set; }
     }
 }

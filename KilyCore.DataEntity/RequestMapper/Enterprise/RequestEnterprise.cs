@@ -41,6 +41,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public string CompanyPhone { get; set; }
         public string NetAddress { get; set; }
         public string Discription { get; set; }
+        public string VideoAddress { get; set; }
         public string Certification { get; set; }
         public string HonorCertification { get; set; }
         public AuditEnum AuditType { get; set; }

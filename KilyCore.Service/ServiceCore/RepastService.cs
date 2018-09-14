@@ -85,6 +85,7 @@ namespace KilyCore.Service.ServiceCore
                 Certification = t.Certification,
                 ImplUser = t.ImplUser,
                 AllowUnit = t.AllowUnit,
+                Honor=t.HonorCertification,
                 VersionTypeName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.VersionType),
                 AuditInfo = Kily.Set<SystemAudit>()
                     .Where(x => x.IsDelete == false)

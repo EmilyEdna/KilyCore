@@ -2,6 +2,7 @@
 using KilyCore.EntityFrameWork.ModelEnum;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 /// <summary>
 /// 作者：刘泽华
@@ -29,6 +30,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         public Guid? DingRoleId { get; set; }
         public string TypePath { get; set; }
         public string IdCard { get; set; }
+        public string Honor { get; set; }
         public string Province
         {
             get
@@ -55,6 +57,15 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
             get
             {
                 return !string.IsNullOrEmpty(TypePath) ? (TypePath.Split(',').Length >= 4 ? (TypePath.Split(',')[3]) : null) : null;
+            }
+        }
+        public IList<string> HonorCertification
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(Honor))
+                    return Honor.Split(",").ToList();
+                else return null;
             }
         }
         public string Certification { get; set; }

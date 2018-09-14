@@ -23,6 +23,7 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
         public string IdCard { get; set; }
         public MerchantEnum DiningType { get; set; }
         public string Phone { get; set; }
+        public string HonorCertification { get; set; }
         public Guid? DingRoleId { get; set; }
         public AuditEnum AuditType { get; set; }
         public SystemVersionEnum VersionType { get; set; }

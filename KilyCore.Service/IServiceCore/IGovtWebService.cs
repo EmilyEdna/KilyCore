@@ -44,6 +44,8 @@ namespace KilyCore.Service.IServiceCore
         #region 企业监管
         PagedResult<ResponseEnterprise> GetCompanyPage(PageParamList<RequestEnterprise> pageParam);
         PagedResult<ResponseMerchant> GetMerchantPage(PageParamList<RequestMerchant> pageParam);
+        ResponseEnterprise GetCompanyDetail(Guid Id);
+        ResponseMerchant GetRepastDetail(Guid Id);
         #endregion
 
         #region 部门信息

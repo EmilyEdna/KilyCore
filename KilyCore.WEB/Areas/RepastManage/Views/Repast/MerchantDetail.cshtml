@@ -60,6 +60,7 @@
                         options.GetTown();
                         controller.SetCtrlValue("#MerchantDetail", result.data);
                         options.BindAuditInfo(result.data.AuditInfo);
+                        options.BindHonor(result.data.HonorCertification);
                     }
                 });
             },
@@ -127,6 +128,20 @@
                     }
                 });
             },
+            //绑定荣誉证书
+            BindHonor: function (data) {
+                if (data != null) {
+                    var html = '';
+                    $.each(data, function (i, obj) {
+                        html += '<img src="' + obj + '" class="img-preview-sm" title="点击放大"/>';
+                    });
+                    $("#tab-2").find(".ibox-content").html(html);
+                    if (data.length > 4)
+                        $("#tab-2").find(".ibox-content").find("img").css({ width: "184px", padding: "1px" });
+                    else
+                        $("#tab-2").find(".ibox-content").find("img").css({ width: "186px", padding: "1px" });
+                }
+            },
             //绑定审核信息
             BindAuditInfo: function (data) {
                 var html = '';
@@ -162,6 +177,9 @@
         <ul class="nav nav-tabs">
             <li class="active">
                 <a data-toggle="tab" href="#tab-1" aria-expanded="true"> 基本资料</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-2" aria-expanded="false">荣誉证书</a>
             </li>
             <li>
                 <a data-toggle="tab" href="#tab-3" aria-expanded="false">审核详情</a>
@@ -251,6 +269,10 @@
                         </td>
                     </tr>
                 </table>
+            </div>
+            <div id="tab-2" class="tab-pane">
+                <div class="ibox-content">
+                </div>
             </div>
             <div id="tab-3" class="tab-pane">
                 <table class="table table-bordered m-t-sm">

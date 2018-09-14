@@ -32,5 +32,17 @@ namespace KilyCore.WEB.Areas.WebGovtManage.Controllers
         public IActionResult RepastSupervise() {
             return View();
         }
+        public IActionResult RepastSuperviseDetail()
+        {
+            return View();
+        }
+        public IActionResult CompanySuperviseDetail()
+        {
+            return View();
+        }
+        public IActionResult DistributionSupervise()
+        {
+            return View();
+        }
     }
 }

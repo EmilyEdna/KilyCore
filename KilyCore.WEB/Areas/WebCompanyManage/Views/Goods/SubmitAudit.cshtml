@@ -19,6 +19,16 @@
                 $("#Id").val(Guid);
                 controller.Editor(".summernote", { width: 750 });
             },
+            //设置文件值
+            SetFileValue: function (data, elememt) {
+                var files = $(elememt).val();
+                if (files != null && files != "" && files != undefined) {
+                    files += "," + data;
+                    $(elememt).val(files);
+                } else {
+                    $(elememt).val(data);
+                }
+            },
             //事件
             InitEvents: function () {
                 //文件上传
@@ -29,7 +39,7 @@
                     node: '.image-box',
                     success: function (result) {
                         controller.Alter(result.msg);
-                        $("#ImgUrl").val(result.data);
+                        options.SetFileValue(result.data, "#ImgUrl");
                     }
                 });
                 //验证

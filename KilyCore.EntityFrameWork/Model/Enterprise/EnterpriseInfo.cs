@@ -31,6 +31,10 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual string CompanyAccount { get; set; }
         /// <summary>
+        /// 视频地址
+        /// </summary>
+        public virtual string VideoAddress { get; set; }
+        /// <summary>
         /// 所属区域
         /// </summary>
         public virtual string TypePath { get; set; }

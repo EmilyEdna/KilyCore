@@ -90,5 +90,9 @@ namespace KilyCore.EntityFrameWork.Model.Repast
         /// 经纬度
         /// </summary>
         public virtual string LngAndLat { get; set; }
+        /// <summary>
+        /// 荣誉证书
+        /// </summary>
+        public virtual string HonorCertification { get; set; }
     }
 }

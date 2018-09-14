@@ -167,6 +167,16 @@
                     }
                 });
             },
+            //设置文件值
+            SetFileValue: function (data, elememt) {
+                var files = $(elememt).val();
+                if (files != null && files != "" && files != undefined) {
+                    files += "," + data;
+                    $(elememt).val(files);
+                } else {
+                    $(elememt).val(data);
+                }
+            },
             //文件上传
             UploadFiles: function () {
                 //文件上传-执照
@@ -188,7 +198,7 @@
                     node: '#Img2',
                     success: function (result) {
                         controller.Alter(result.msg);
-                        $("#HonorCertification").val(result.data);
+                        options.SetFileValue(result.data, '#HonorCertification');
                     }
                 });
                 //文件上传-身份证
@@ -199,7 +209,7 @@
                     node: '#Img3',
                     success: function (result) {
                         controller.Alter(result.msg);
-                        $("#IdCard").val(result.data);
+                        options.SetFileValue(result.data, '#IdCard');
                     }
                 });
             },
@@ -217,7 +227,7 @@
                         $("#uploadCertification").css({ display: "none" });
                     }
                 });
-                 //坐标选区
+                //坐标选区
                 $("input[name='LngAndLat']").on('click', function () {
                     controller.OpenWindow({
                         title: "坐标选取",
@@ -247,7 +257,7 @@
     <div class="ibox-content">
         <form class="form-horizontal" method="post" action="EnterpriseWeb/EditEnterprise" id="Edit">
             <input type="hidden" name="Id" />
-            <input  type="hidden" name="NatureAgent"/>
+            <input type="hidden" name="NatureAgent" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">企业性质</label></th>
@@ -359,8 +369,12 @@
                 </tr>
                 <tr>
                     <th><label class="control-label">经营范围</label></th>
-                    <td class="has-warning" colspan="3">
+                    <td class="has-warning">
                         <input type="text" class="form-control" name="Scope" placeholder="多项用逗号隔开">
+                    </td>
+                    <th><label class="control-label">视频地址</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="VideoAddress">
                     </td>
                 </tr>
                 <tr>

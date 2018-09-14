@@ -21,21 +21,11 @@
             },
             //事件
             InitEvents: function () {
-                $("#tab-4").find("img").on('click', function () {
+                $("#tab-3,#tab-4").find("img").on('click', function () {
                     var option = {
-                        title: "荣誉证书",
+                        title: "相关证书",
                         data: [{
-                            alt: "荣誉证书",
-                            src: $(this).attr("src")
-                        }]
-                    };
-                    controller.Photos(option);
-                });
-                $("#tab-3").find("img").on('click', function () {
-                    var option = {
-                        title: "营业执照",
-                        data: [{
-                            alt: "营业执照",
+                            alt: "相关证书",
                             src: $(this).attr("src")
                         }]
                     };

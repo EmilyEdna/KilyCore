@@ -343,6 +343,7 @@ namespace KilyCore.Service.ServiceCore
                      CompanyPhone = t.CompanyPhone,
                      NetAddress = t.NetAddress,
                      Discription = t.Discription,
+                     VideoAddress=t.VideoAddress,
                      Certification = t.Certification,
                      Honor = t.HonorCertification,
                      AuditDetails = Kily.Set<SystemAudit>().Where(x => x.IsDelete == false).

@@ -163,7 +163,7 @@ namespace KilyCore.Service.ServiceCore
                  .Where(t => t.AuditType == AuditEnum.AuditSuccess)
                  .OrderByDescending(t => t.CreateTime);
             if (GovtInfo().AccountType <= GovtAccountEnum.Area)
-                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().TypePath));
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
             IList<string> Areas = GetDepartArea();
             if (Areas != null)
             {
@@ -179,6 +179,7 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.CompanyName.Contains(pageParam.QueryParam.CompanyName));
             var data = queryable.Select(t => new ResponseEnterprise()
             {
+                Id = t.Id,
                 CompanyName = t.CompanyName,
                 CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
                 CommunityCode = t.CommunityCode,
@@ -199,7 +200,7 @@ namespace KilyCore.Service.ServiceCore
                 .Where(t => t.AuditType == AuditEnum.AuditSuccess)
                 .OrderByDescending(t => t.CreateTime);
             if (GovtInfo().AccountType <= GovtAccountEnum.Area)
-                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().TypePath));
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
             IList<string> Areas = GetDepartArea();
             if (Areas != null)
             {
@@ -215,12 +216,65 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.MerchantName.Contains(pageParam.QueryParam.MerchantName));
             var data = queryable.Select(t => new ResponseMerchant()
             {
+                Id = t.Id,
                 MerchantName = t.MerchantName,
                 DiningTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
                 CommunityCode = t.CommunityCode,
                 Phone = t.Phone,
                 Address = t.Address
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 企业详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseEnterprise GetCompanyDetail(Guid Id)
+        {
+            var data = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Id).Select(t => new ResponseEnterprise()
+            {
+                Id = t.Id,
+                CompanyName = t.CompanyName,
+                CompanyAddress = t.CompanyAddress,
+                CommunityCode = t.CommunityCode,
+                CompanyPhone = t.CompanyPhone,
+                Certification = t.Certification,
+                CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
+                Scope = t.Scope,
+                VideoAddress=t.VideoAddress,
+                ProductionAddress = t.ProductionAddress,
+                SellerAddress = t.SellerAddress,
+                NatureAgent = t.NatureAgent,
+                NetAddress = t.NetAddress,
+                IdCard = t.IdCard,
+                Honor = t.HonorCertification,
+                Discription=t.Discription
+            }).AsNoTracking().FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 商家详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseMerchant GetRepastDetail(Guid Id)
+        {
+            var data = Kily.Set<RepastInfo>().Where(t => t.Id == Id).Select(t => new ResponseMerchant()
+            {
+                Id=t.Id,
+                MerchantName=t.MerchantName,
+                CommunityCode=t.CommunityCode,
+                Certification=t.Certification,
+                IdCard=t.IdCard,
+                Address=t.Address,
+                DiningTypeName= AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
+                Email=t.Email,
+                ImplUser=t.ImplUser,
+                Phone=t.Phone,
+                Honor=t.HonorCertification,
+                Remark=t.Remark,
+            }).AsNoTracking().FirstOrDefault();
             return data;
         }
         #endregion
@@ -243,7 +297,7 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.Select(t => new ResponseGovtInstitution()
             {
                 Id = t.Id,
-                GovtId=t.GovtId,
+                GovtId = t.GovtId,
                 InstitutionName = t.InstitutionName,
                 ChargeUser = t.ChargeUser,
                 ManageAreaName = t.ManageAreaName
@@ -256,7 +310,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public IList<ResponseGovtInstitution> GetInsList()
         {
-           IQueryable<GovtInstitution> queryable =  Kily.Set<GovtInstitution>().AsNoTracking();
+            IQueryable<GovtInstitution> queryable = Kily.Set<GovtInstitution>().AsNoTracking();
             if (GovtInfo().AccountType == GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
             if (GovtInfo().AccountType == GovtAccountEnum.Area)
@@ -354,7 +408,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public ResponseGovtInfo GetGovtInfoDetail(Guid Id)
         {
-            var data = Kily.Set<GovtInfo>().Where(t=>t.Id==Id).Select(t => new ResponseGovtInfo()
+            var data = Kily.Set<GovtInfo>().Where(t => t.Id == Id).Select(t => new ResponseGovtInfo()
             {
                 Id = t.Id,
                 Account = t.Account,

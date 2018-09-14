@@ -167,6 +167,16 @@
                     }
                 });
             },
+            //设置文件值
+            SetFileValue: function (data, elememt) {
+                var files = $(elememt).val();
+                if (files != null && files != "" && files != undefined) {
+                    files += "," + data;
+                    $(elememt).val(files);
+                } else {
+                    $(elememt).val(data);
+                }
+            },
             //文件上传
             UploadFiles: function () {
                 //文件上传-执照
@@ -180,6 +190,17 @@
                         $("#Certification").val(result.data);
                     }
                 });
+                //文件上传-证书
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-2",
+                    maxNum: 3,
+                    node: '#Img2',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, '#HonorCertification');
+                    }
+                });
                 //文件上传-身份证
                 controller.Upload({
                     url: "File/UploadImg",
@@ -188,7 +209,7 @@
                     node: '#Img3',
                     success: function (result) {
                         controller.Alter(result.msg);
-                        $("#IdCard").val(result.data);
+                        options.SetFileValue(result.data, '#IdCard');
                     }
                 });
             },
@@ -332,6 +353,18 @@
                             </section>
                         </div>
                         <input type="hidden" id="Certification" name="Certification" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">荣誉证书</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear" id="Img2">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" id="upload-input-2" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                        <input type="hidden" id="HonorCertification" name="HonorCertification" />
                     </td>
                 </tr>
                 <tr id="uploadIdCard">
