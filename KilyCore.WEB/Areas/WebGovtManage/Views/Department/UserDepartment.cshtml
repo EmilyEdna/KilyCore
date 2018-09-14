@@ -53,11 +53,12 @@
                 });
                 //导出Excel
                 $("#export").on('click', function () {
-                    if (options.IdListIn == null) {
+                    debugger;
+                    if (options.IdList == null) {
                         controller.Msg("请选择需要导出的数据!");
                         return;
                     };
-                    var data = Array.from(options.IdListIn);
+                    var data = Array.from(options.IdList);
                     if (data.length == 0) {
                         controller.Msg("请选择需要导出的数据!");
                         return;
@@ -70,6 +71,7 @@
                 //入库绑定复选框事件
                 $('#tableList').on('uncheck.bs.table check.bs.table check-all.bs.table uncheck-all.bs.table', function (event, rows) {
                     options.IdList = controller.TableEvent(event.type, rows, 1);
+                    debugger;
                 });
             },
             //行为

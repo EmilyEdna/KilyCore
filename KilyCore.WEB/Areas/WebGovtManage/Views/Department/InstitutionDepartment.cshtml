@@ -39,11 +39,11 @@
                 });
                 //导出Excel
                 $("#export").on('click', function () {
-                    if (options.IdListIn == null) {
+                    if (options.IdList == null) {
                         controller.Msg("请选择需要导出的数据!");
                         return;
                     };
-                    var data = Array.from(options.IdListIn);
+                    var data = Array.from(options.IdList);
                     if (data.length == 0) {
                         controller.Msg("请选择需要导出的数据!");
                         return;
