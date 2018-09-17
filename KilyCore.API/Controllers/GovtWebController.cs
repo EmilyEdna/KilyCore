@@ -212,6 +212,15 @@ namespace KilyCore.API.Controllers
 
         #region 管辖区域
         /// <summary>
+        /// 获取分配的区域
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetDistributArea")]
+        public ObjectResultEx GetDistributArea()
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetDistributArea(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 当前登录账号是市级账号则查询该市下所有区县
         /// </summary>
         /// <param name="Id"></param>

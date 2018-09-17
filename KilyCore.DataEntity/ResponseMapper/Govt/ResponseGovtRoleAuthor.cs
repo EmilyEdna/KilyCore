@@ -34,4 +34,11 @@ namespace KilyCore.DataEntity.ResponseMapper.Govt
             }
         }
     }
+    public class ResponseGovtDistribut {
+        public string Name { get; set; }
+        public string LngAndLat { get; set; }
+        public string Address { get; set; }
+        public string Lng => !string.IsNullOrEmpty(LngAndLat) ? LngAndLat.Split(",")[0] : null;
+        public string Lat => !string.IsNullOrEmpty(LngAndLat) ? LngAndLat.Split(",")[1] : null;
+    }
 }

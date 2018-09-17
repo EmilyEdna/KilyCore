@@ -61,6 +61,7 @@ namespace KilyCore.Service.IServiceCore
         #endregion
 
         #region 管辖区域
+        IList<ResponseGovtDistribut> GetDistributArea();
          IList<ResponseArea> GetArea(Guid Id);
         IList<ResponseTown> GetTown(Guid Id);
         #endregion

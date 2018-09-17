@@ -1,8 +1,66 @@
 ﻿
 @{
-    ViewData["Title"] = "DistributionSupervise";
+    ViewData["Title"] = "分布图";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
-
-<h2>DistributionSupervise</h2>
-
+@section css{
+    <style>
+        .ibox {
+            width: 100%;
+            height: 100%;
+            border: #ccc solid 1px;
+            margin: auto auto;
+        }
+    </style>
+}
+@section script{
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=rEU7BdGnB0kKyIjUiONnUHlw"></script>
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                options.Map = new BMap.Map("Map");//在百度地图容器中创建一个地图
+                options.Map.centerAndZoom(new BMap.Point(104.068881, 30.661984), 11);//设定地图的中心点和坐标并将地图显示在地图容器中
+                options.Map.enableScrollWheelZoom();//启用地图滚轮放大缩小
+                controller.ajax({
+                    url: "GovtWeb/GetDistributArea",
+                    data: {},
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        $.each(result.data, function (i, obj) {
+                            var marker = new BMap.Marker(new BMap.Point(obj.Lng, obj.Lat));
+                            options.Map.addOverlay(marker);               // 将标注添加到地图中
+                            options.AddClickHandler(obj.Name, obj.Address, marker);
+                        });
+                    }
+                });
+            },
+            AddClickHandler: function (content,path, marker) {
+                marker.addEventListener("click", function (e) {
+                    var p = e.target;
+                    var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+                    var infoWindow = new BMap.InfoWindow("地址:"+path, {
+                        width: 100,
+                        height: 50,
+                        title: content,
+                    });  // 创建信息窗口对象
+                    options.Map.openInfoWindow(infoWindow, point); //开启信息窗口
+                });
+            },
+            //事件
+            InitEvents: function () {
+            }
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox" id="Map"></div>

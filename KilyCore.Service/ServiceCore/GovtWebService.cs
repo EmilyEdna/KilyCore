@@ -242,14 +242,14 @@ namespace KilyCore.Service.ServiceCore
                 Certification = t.Certification,
                 CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
                 Scope = t.Scope,
-                VideoAddress=t.VideoAddress,
+                VideoAddress = t.VideoAddress,
                 ProductionAddress = t.ProductionAddress,
                 SellerAddress = t.SellerAddress,
                 NatureAgent = t.NatureAgent,
                 NetAddress = t.NetAddress,
                 IdCard = t.IdCard,
                 Honor = t.HonorCertification,
-                Discription=t.Discription
+                Discription = t.Discription
             }).AsNoTracking().FirstOrDefault();
             return data;
         }
@@ -260,20 +260,21 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public ResponseMerchant GetRepastDetail(Guid Id)
         {
-            var data = Kily.Set<RepastInfo>().Where(t => t.Id == Id).Select(t => new ResponseMerchant()
+            var data = Kily.Set<RepastInfo>().Where(t => t.Id == Id).GroupJoin(Kily.Set<RepastVideo>(), t => t.Id, x => x.InfoId, (t, x) => new ResponseMerchant()
             {
-                Id=t.Id,
-                MerchantName=t.MerchantName,
-                CommunityCode=t.CommunityCode,
-                Certification=t.Certification,
-                IdCard=t.IdCard,
-                Address=t.Address,
-                DiningTypeName= AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
-                Email=t.Email,
-                ImplUser=t.ImplUser,
-                Phone=t.Phone,
-                Honor=t.HonorCertification,
-                Remark=t.Remark,
+                Id = t.Id,
+                MerchantName = t.MerchantName,
+                CommunityCode = t.CommunityCode,
+                Certification = t.Certification,
+                IdCard = t.IdCard,
+                Address = t.Address,
+                DiningTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
+                Email = t.Email,
+                ImplUser = t.ImplUser,
+                Phone = t.Phone,
+                Honor = t.HonorCertification,
+                Remark = t.Remark,
+                Account = x.FirstOrDefault().VideoAddress
             }).AsNoTracking().FirstOrDefault();
             return data;
         }
@@ -446,6 +447,49 @@ namespace KilyCore.Service.ServiceCore
         #endregion
 
         #region 管辖区域
+        /// <summary>
+        /// 获取分配的区域
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseGovtDistribut> GetDistributArea()
+        {
+            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess);
+            IQueryable<RepastInfo> queryables = Kily.Set<RepastInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess);
+            if (GovtInfo().AccountType <= GovtAccountEnum.Area)
+            {
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
+                queryables = queryables.Where(t => t.TypePath.Contains(GovtInfo().City));
+            }
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
+            {
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        queryable = queryable.Where(t => t.TypePath.Contains(item));
+                        queryables = queryables.Where(t => t.TypePath.Contains(item));
+                    }
+                else
+                {
+                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    queryables = queryables.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                }
+            }
+            var data = queryable.Select(t => new ResponseGovtDistribut()
+            {
+                Name = t.CompanyName,
+                LngAndLat = t.LngAndLat,
+                Address=t.CompanyAddress,
+            }).ToList();
+            var temp = queryables.Select(t => new ResponseGovtDistribut()
+            {
+                Name = t.MerchantName,
+                LngAndLat = t.LngAndLat,
+                Address=t.Address
+            }).ToList();
+            data.AddRange(temp);
+            return data;
+        }
         /// <summary>
         /// 当前登录账号是市级账号则查询该市下所有区县
         /// </summary>

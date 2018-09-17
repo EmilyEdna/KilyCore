@@ -22,6 +22,8 @@
                     type: "post",
                     success: function (result) {
                         controller.SetCtrlValue("#Edit", result.data);
+                        var url = "../../WebMerchantManage/Function/MerchantMonitorPlay?addr=" + result.data.Account;
+                        $("#play").attr("src", url);
                         options.BindHonor(result.data.HonorCertification);
                     }
                 });
@@ -53,6 +55,9 @@
             },
             //事件
             InitEvents: function () {
+                $("#four").click(function () {
+                    $("#play").contents().find(".vcp-player").css("margin", "0 auto");
+                });
             },
         };
         //初始化
@@ -75,7 +80,7 @@
                 <a data-toggle="tab" href="#tab-3" aria-expanded="false">荣誉证书</a>
             </li>
             <li>
-                <a data-toggle="tab" href="#tab-4" aria-expanded="false">视频监控</a>
+                <a data-toggle="tab" href="#tab-4" aria-expanded="false" id="four">视频监控</a>
             </li>
         </ul>
         <div class="tab-content">
@@ -136,7 +141,7 @@
             </div>
             <div id="tab-4" class="tab-pane">
                 <div class="ibox-content">
-                    <iframe src="~/WebMerchantManage/Function/MerchantMonitorPlay?addr=23123" class="J_iframe" name="iframe0" style="width:600px;height:400px" frameborder="0" seamless scrolling="no"></iframe>
+                    <iframe id="play" class="J_iframe" src="" name="iframe" style="width:750px;height:400px" frameborder="0" seamless scrolling="no" align="middle"></iframe>
                 </div>
             </div>
         </div>
