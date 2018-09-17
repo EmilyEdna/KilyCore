@@ -2235,6 +2235,7 @@ namespace KilyCore.Service.ServiceCore
                 Attach = Attach.Where(t => t.CompanyId == CompanyUser().Id);
             var data = Attach.Join(Stock, t => t.MaterialStockId, y => y.Id, (t, y) => new { t, y }).Join(queryable, o => o.y.BatchNo, p => p.BatchNo, (o, p) => new ResponseEnterpriseMaterial()
             {
+                Id=p.Id,
                 BatchNo = p.BatchNo,
                 MaterName = p.MaterName
             }).ToList();
@@ -2896,6 +2897,7 @@ namespace KilyCore.Service.ServiceCore
                         ProBatch = o.BatchNo,
                         GoodsId = p.x.Id,
                         Manager = p.t.Manager,
+                        MaterialId = o.MaterialId,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
                     }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -2911,6 +2913,7 @@ namespace KilyCore.Service.ServiceCore
                         ProBatch = o.BatchNo,
                         GoodsId = p.x.Id,
                         Manager = p.t.Manager,
+                        MaterialId=o.MaterialId,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
                     }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -2925,6 +2928,7 @@ namespace KilyCore.Service.ServiceCore
                         InStockNum = p.t.InStockNum,
                         ProBatch = o.BatchNo,
                         GoodsId = p.x.Id,
+                        MaterialId = o.MaterialId,
                         Manager = p.t.Manager,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
@@ -2945,6 +2949,7 @@ namespace KilyCore.Service.ServiceCore
                         InStockNum = p.t.InStockNum,
                         ProBatch = o.BatchNo,
                         GoodsId = p.x.Id,
+                        MaterialId = o.MaterialId,
                         Manager = p.t.Manager,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
@@ -2960,6 +2965,7 @@ namespace KilyCore.Service.ServiceCore
                         InStockNum = p.t.InStockNum,
                         ProBatch = o.BatchNo,
                         GoodsId = p.x.Id,
+                        MaterialId = o.MaterialId,
                         Manager = p.t.Manager,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
@@ -2975,6 +2981,7 @@ namespace KilyCore.Service.ServiceCore
                         InStockNum = p.t.InStockNum,
                         ProBatch = o.BatchNo,
                         GoodsId = p.x.Id,
+                        MaterialId = o.MaterialId,
                         Manager = p.t.Manager,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()

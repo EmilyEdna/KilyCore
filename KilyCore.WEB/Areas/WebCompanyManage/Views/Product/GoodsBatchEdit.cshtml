@@ -86,7 +86,7 @@
                     success: function (result) {
                         var html = '';
                         $.each(result.data, function (i, obj) {
-                            html += '<option>' + obj.MaterName + '</option>';
+                            html += '<option value="' + obj.Id + '">' + obj.MaterName + '</option>';
                         });
                         $("#MaterialName").html(html);
                     }

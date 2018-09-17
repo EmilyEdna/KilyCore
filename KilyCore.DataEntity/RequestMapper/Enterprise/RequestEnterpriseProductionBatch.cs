@@ -27,7 +27,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public string SeriesName { get; set; }
         public DateTime? StartTime { get; set; }
         public string DeviceName { get; set; }
-        public string MaterId { get; set; }
+        public string MaterialId { get; set; }
         public string Manager { get; set; }
         public Guid? FacId { get; set; }
     }

@@ -479,13 +479,13 @@ namespace KilyCore.Service.ServiceCore
             {
                 Name = t.CompanyName,
                 LngAndLat = t.LngAndLat,
-                Address=t.CompanyAddress,
+                Address = t.CompanyAddress,
             }).ToList();
             var temp = queryables.Select(t => new ResponseGovtDistribut()
             {
                 Name = t.MerchantName,
                 LngAndLat = t.LngAndLat,
-                Address=t.Address
+                Address = t.Address
             }).ToList();
             data.AddRange(temp);
             return data;
@@ -546,6 +546,91 @@ namespace KilyCore.Service.ServiceCore
                 return data;
             }
         }
+        #endregion
+
+        #region 产品监管
+        public PagedResult<ResponseEnterpriseGoods> GetWorkPage(PageParamList<RequestEnterpriseGoods> pageParam)
+        {
+            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.CompanyType == CompanyEnum.Production).Where(t => t.AuditType == AuditEnum.AuditSuccess);
+            if (GovtInfo().AccountType <= GovtAccountEnum.Area)
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
+            {
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        queryable = queryable.Where(t => t.TypePath.Contains(item));
+                    }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+            }
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.ProductName))
+                goods = goods.Where(t => t.ProductName.Contains(pageParam.QueryParam.ProductName));
+            var data = goods.Join(queryable, t => t.CompanyId, x => x.Id, (t, x) => new ResponseEnterpriseGoods()
+            {
+                Id = t.Id,
+                ProductName = t.ProductName,
+                ProductType = t.ProductType,
+                ExpiredDate = t.ExpiredDate,
+                Spec = t.Spec,
+                Unit = x.ProductionAddress,
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        public Object GetWorkDetail()
+        {
+            IQueryable<EnterpriseGoodsStockAttach> GoodsStockAttach = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<EnterpriseGoodsStock> GoodStock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<EnterpriseGoods> Goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<EnterpriseProductionBatch> ProductionBatch = Kily.Set<EnterpriseProductionBatch>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseMaterialStockAttach> MaterialStockAttach = Kily.Set<EnterpriseMaterialStockAttach>().Where(t => t.IsDelete == false).AsNoTracking();
+            IQueryable<EnterpriseMaterialStock> MaterialStock = Kily.Set<EnterpriseMaterialStock>().Where(t => t.IsDelete == false).AsNoTracking();
+            IQueryable<EnterpriseMaterial> Material = Kily.Set<EnterpriseMaterial>().Where(t => t.IsDelete == false).AsNoTracking();
+            IQueryable<EnterpriseProductSeries> ProductSeries = Kily.Set<EnterpriseProductSeries>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseCheckMaterial> CheckMaterial = Kily.Set<EnterpriseCheckMaterial>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseCheckGoods> CheckGoods = Kily.Set<EnterpriseCheckGoods>().Where(t => t.IsDelete == false);
+            //产品的查询
+            var GoodsData = GoodsStockAttach.Join(GoodStock, a => a.StockId, b => b.Id, (a, b) => new { a, b })
+                 .Join(ProductionBatch, c => c.b.BatchId, d => d.Id, (c, d) => new { c, d })
+                 .Join(Goods, e => e.c.b.GoodsId, f => f.Id, (e, f) => new { e, f })
+                 .Join(CheckGoods, g => g.e.c.b.CheckGoodsId, h => h.Id, (g, h) => new { g, h })
+                 .Join(ProductSeries, i => i.g.f.ProductSeriesId, j => j.Id, (i, j) => new { i, j })
+                 .AsNoTracking();
+            //原材料的查询
+            var MaterialsData = MaterialStockAttach.Join(MaterialStock, a => a.MaterialStockId, b => b.Id, (a, b) => new { a, b })
+                 .Join(Material, c => c.b.BatchNo, d => d.BatchNo, (c, d) => new { c, d })
+                 .Join(CheckMaterial, e => e.c.b.CheckMaterialId, f => f.Id, (e, f) => new { e, f }).AsNoTracking();
+            var GoodData = GoodsData.Select(t => new
+            {
+                GoodsNmae = t.i.g.f.ProductName,
+                ExpiredDay = t.i.g.f.ExpiredDate,
+                t.i.g.f.Spec,
+                t.j.Standard,
+                t.i.g.e.d.DeviceName,
+                OutNo = t.i.g.e.c.a.GoodsBatchNo,
+                t.i.g.e.c.a.OutStockTime,
+                t.i.g.e.c.a.Seller,
+                t.i.g.e.c.a.OutStockUser,
+                t.i.g.e.c.b.Manager,
+                t.i.g.e.c.b.ProductTime,
+                InNo = t.i.g.e.c.b.GoodsBatchNo,
+                t.i.g.e.d.MaterialId,
+                t.i.h.CheckUint,
+                t.i.h.CheckUser,
+                t.i.h.CheckResult,
+                t.i.h.CheckReport
+            }).FirstOrDefault();
+            MaterialsData.Where(t=>GoodData.MaterialId.Contains(t.e.d.Id.ToString())).Select(t => new
+            {
+                t.f.CheckUint,
+                t.f.CheckUser,
+                t.f.CheckResult,
+                t.f.CheckReport
+            }).FirstOrDefault();
+        }
+
         #endregion
     }
 }
