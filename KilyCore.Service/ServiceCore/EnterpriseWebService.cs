@@ -241,7 +241,8 @@ namespace KilyCore.Service.ServiceCore
                     var data = queryable.ToList();
                     return data;
                 }
-                else {
+                else
+                {
                     IQueryable<EnterpriseRoleAuthorWeb> queryables = Kily.Set<EnterpriseRoleAuthorWeb>().Where(t => t.IsDelete == false);
                     queryables = queryables.Where(t => t.Id == CompanyInfo().EnterpriseRoleId).AsNoTracking();
                     EnterpriseRoleAuthorWeb Author = queryables.FirstOrDefault();
@@ -355,8 +356,8 @@ namespace KilyCore.Service.ServiceCore
                     AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(x.FirstOrDefault() != null ? x.FirstOrDefault().AuditType : 0),
                     VersionName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.Version),
                     Version = t.Version,
-                    VideoAddress=t.VideoAddress,
-                    LngAndLat =t.LngAndLat,
+                    VideoAddress = t.VideoAddress,
+                    LngAndLat = t.LngAndLat,
                     PassWord = t.PassWord,
                     TypePath = t.TypePath,
                     Certification = t.Certification,
@@ -367,8 +368,8 @@ namespace KilyCore.Service.ServiceCore
                     SellerAddress = t.SellerAddress,
                     IdCard = t.IdCard,
                     SafeNo = t.SafeNo,
-                    Scope=t.Scope,
-                    TagCodeNum=t.TagCodeNum,
+                    Scope = t.Scope,
+                    TagCodeNum = t.TagCodeNum,
                     SafeCompany = t.SafeCompany
                 }).FirstOrDefault();
             return data;
@@ -411,7 +412,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 info.TagCodeNum = ServiceMessage.TEST;
                 if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
-                    AliPayModel.Money = ConfigMoney.PlantAndCultureTest  * Convert.ToInt32(Param.ContractYear);
+                    AliPayModel.Money = ConfigMoney.PlantAndCultureTest * Convert.ToInt32(Param.ContractYear);
                 if (info.CompanyType == CompanyEnum.Production)
                     AliPayModel.Money = ConfigMoney.ProductionTest * Convert.ToInt32(Param.ContractYear);
                 if (info.CompanyType == CompanyEnum.Circulation)
@@ -2235,7 +2236,7 @@ namespace KilyCore.Service.ServiceCore
                 Attach = Attach.Where(t => t.CompanyId == CompanyUser().Id);
             var data = Attach.Join(Stock, t => t.MaterialStockId, y => y.Id, (t, y) => new { t, y }).Join(queryable, o => o.y.BatchNo, p => p.BatchNo, (o, p) => new ResponseEnterpriseMaterial()
             {
-                Id=p.Id,
+                Id = p.Id,
                 BatchNo = p.BatchNo,
                 MaterName = p.MaterName
             }).ToList();
@@ -2897,7 +2898,6 @@ namespace KilyCore.Service.ServiceCore
                         ProBatch = o.BatchNo,
                         GoodsId = p.x.Id,
                         Manager = p.t.Manager,
-                        MaterialId = o.MaterialId,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
                     }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -2913,7 +2913,7 @@ namespace KilyCore.Service.ServiceCore
                         ProBatch = o.BatchNo,
                         GoodsId = p.x.Id,
                         Manager = p.t.Manager,
-                        MaterialId=o.MaterialId,
+                        MaterialId = o.MaterialId,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
                     }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -2928,7 +2928,6 @@ namespace KilyCore.Service.ServiceCore
                         InStockNum = p.t.InStockNum,
                         ProBatch = o.BatchNo,
                         GoodsId = p.x.Id,
-                        MaterialId = o.MaterialId,
                         Manager = p.t.Manager,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
@@ -2949,7 +2948,6 @@ namespace KilyCore.Service.ServiceCore
                         InStockNum = p.t.InStockNum,
                         ProBatch = o.BatchNo,
                         GoodsId = p.x.Id,
-                        MaterialId = o.MaterialId,
                         Manager = p.t.Manager,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
@@ -2981,7 +2979,6 @@ namespace KilyCore.Service.ServiceCore
                         InStockNum = p.t.InStockNum,
                         ProBatch = o.BatchNo,
                         GoodsId = p.x.Id,
-                        MaterialId = o.MaterialId,
                         Manager = p.t.Manager,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
@@ -3152,6 +3149,70 @@ namespace KilyCore.Service.ServiceCore
             {
                 GoodsBatchNo = t.GoodsBatchNo
             }).ToList();
+        }
+        #endregion
+        #region 仓库类型
+        /// <summary>
+        /// 仓库类型分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseStockType> GetStockTypePage(PageParamList<RequestEnterpriseStockType> pageParam)
+        {
+            IQueryable<EnterpriseStockType> queryable = Kily.Set<EnterpriseStockType>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.StockName))
+                queryable = queryable.Where(t => t.StockName.Contains(pageParam.QueryParam.StockName));
+            var data = queryable.Select(t => new ResponseEnterpriseStockType()
+            {
+                Id = t.Id,
+                StockName = t.StockName,
+                SaveH2 = t.SaveH2,
+                SaveTemp = t.SaveTemp,
+                SaveType = t.SaveType,
+                StockNo = t.StockNo
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 仓库类型列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseEnterpriseStockType> GetStockTypeList()
+        {
+            IQueryable<EnterpriseStockType> queryable = Kily.Set<EnterpriseStockType>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.Select(t => new ResponseEnterpriseStockType()
+            {
+                Id = t.Id,
+                StockName = t.StockName
+            }).ToList();
+            return data;
+        }
+        /// <summary>
+        /// 删除仓库类型
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveStockType(Guid Id)
+        {
+            return Delete<EnterpriseStockType>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 编辑仓库类型
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditStockType(RequestEnterpriseStockType Param)
+        {
+            EnterpriseStockType stockType = Param.MapToEntity<EnterpriseStockType>();
+            return Insert(stockType) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         #endregion
         #endregion

@@ -1391,6 +1391,47 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.GetStockOutNoList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 仓库类型
+        /// <summary>
+        /// 仓库类型分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetStockTypePage")]
+        public ObjectResultEx GetStockTypePage(PageParamList<RequestEnterpriseStockType> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetStockTypePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 仓库类型列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetStockTypeList")]
+        public ObjectResultEx GetStockTypeList()
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetStockTypeList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除仓库类型
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveStockType")]
+        public ObjectResultEx RemoveStockType(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveStockType(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑仓库类型
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditStockType")]
+        public ObjectResultEx EditStockType(RequestEnterpriseStockType Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditStockType(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
         #endregion
         #region 品质管理
         #region 原料产品质检

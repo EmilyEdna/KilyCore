@@ -17,5 +17,13 @@ namespace KilyCore.WEB.Areas.WebGovtManage.Controllers
         {
             return View();
         }
+        public IActionResult WorkSuperviseDetail()
+        {
+            return View();
+        }
+        public IActionResult EdibleSuperviseDetail()
+        {
+            return View();
+        }
     }
 }

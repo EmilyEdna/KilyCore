@@ -44,5 +44,15 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
             return View();
         }
         #endregion
+        #region 苍老管理
+        public IActionResult StockManage()
+        {
+            return View();
+        }
+        public IActionResult StockManageEdit()
+        {
+            return View();
+        }
+        #endregion
     }
 }

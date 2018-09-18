@@ -39,7 +39,8 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// 生产批次
         /// </summary>
         public string ProBatch { get; set; }
-        public DateTime  ProductTime { get; set; }
+        public DateTime ProductTime { get; set; }
+        public Guid? StockTypeId { get; set; }
         public string MaterialId { get; set; }
         public string MaterialName
         {

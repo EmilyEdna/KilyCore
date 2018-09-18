@@ -23,6 +23,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
     {
         public Guid Id { get; set; }
         public Guid CompanyId { get; set; }
+        public Guid? StockTypeId { get; set; }
         public string GoodsBatchNo { get; set; }
         public Guid GoodsId { get; set; }
         public string GoodsName { get; set; }

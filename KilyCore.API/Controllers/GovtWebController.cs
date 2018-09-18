@@ -241,5 +241,28 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(GovtWebService.GetTown(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+
+        #region 产品监管
+        /// <summary>
+        /// 加工产品分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetWorkPage")]
+        public ObjectResultEx GetWorkPage(PageParamList<RequestEnterpriseGoods> pageParam)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetWorkPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 加工产品详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetWorkDetail")]
+        public ObjectResultEx GetWorkDetail(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetWorkDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }

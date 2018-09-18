@@ -76,5 +76,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 备注
         /// </summary>
         public virtual string Remark { get; set; }
+        /// <summary>
+        /// 仓库类型Id
+        /// </summary>
+        public virtual Guid? StockTypeId { get; set; }
     }
 }

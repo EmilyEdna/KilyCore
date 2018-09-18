@@ -220,6 +220,12 @@ namespace KilyCore.Service.IServiceCore
         long GetCodeSerialNo(Guid Id);
         IList<ResponseEnterpriseGoodsStockAttach> GetStockOutNoList();
         #endregion
+        #region 仓库类型
+        PagedResult<ResponseEnterpriseStockType> GetStockTypePage(PageParamList<RequestEnterpriseStockType> pageParam);
+        IList<ResponseEnterpriseStockType> GetStockTypeList();
+        String RemoveStockType(Guid Id);
+        String EditStockType(RequestEnterpriseStockType Param);
+        #endregion
         #endregion
         #region 品质管理
         #region 原料产品质检

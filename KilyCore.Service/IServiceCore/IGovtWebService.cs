@@ -65,5 +65,10 @@ namespace KilyCore.Service.IServiceCore
          IList<ResponseArea> GetArea(Guid Id);
         IList<ResponseTown> GetTown(Guid Id);
         #endregion
+
+        #region 产品监管
+        PagedResult<ResponseEnterpriseGoods> GetWorkPage(PageParamList<RequestEnterpriseGoods> pageParam);
+         Object GetWorkDetail(Guid Id);
+        #endregion
     }
 }

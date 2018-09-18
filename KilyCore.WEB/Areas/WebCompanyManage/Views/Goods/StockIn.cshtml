@@ -23,6 +23,20 @@
             },
             //获取产品下拉
             GetGoodsList: function () {
+                //仓库类型
+                controller.ajax({
+                    url: "EnterpriseWeb/GetStockTypeList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option value="0">===请选择===</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.StockName + '</option>';
+                        });
+                        $("#StockTypeId").html(html);
+                    }
+                });
                 //产品下拉
                 controller.ajax({
                     url: "EnterpriseWeb/GetGoodsList",
@@ -156,15 +170,19 @@
                             <option value="其他入库">其他入库</option>
                         </select>
                     </td>
-                    <th><label class="control-label">绑定二维码</label></th>
-                    <td class="has-warning">
-                        <button id="bind" class="btn btn-info form-control" type="button">绑定二维码标签</button>
-                    </td>
-                </tr>
-                <tr>
                     <th><label class="control-label">产品质检</label></th>
                     <td class="has-warning">
                         <select type="select" class="form-control" name="CheckGoodsId" id="CheckGoodsId"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">仓库类型</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="StockTypeId" id="StockTypeId"></select>
+                    </td>
+                    <th><label class="control-label">绑定二维码</label></th>
+                    <td class="has-warning">
+                        <button id="bind" class="btn btn-info form-control" type="button">绑定二维码标签</button>
                     </td>
                 </tr>
             </table>
