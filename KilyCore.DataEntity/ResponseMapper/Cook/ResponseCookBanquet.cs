@@ -101,9 +101,11 @@ namespace KilyCore.DataEntity.ResponseMapper.Cook
         /// 过期时间
         /// </summary>
         public string ExpiredTime => HoldTime.HasValue ? HoldTime.Value.AddDays(Convert.ToInt32(HoldDay)).ToString() : null;
+        public int UserCount => !string.IsNullOrEmpty(Helper) ? Helper.Split(",").Length : 0;
         public string Province => !string.IsNullOrEmpty(TypePath) ? (TypePath.Split(',').Length >= 1 ? TypePath.Split(',')[0] : null) : null;
         public string City => !string.IsNullOrEmpty(TypePath) ? (TypePath.Split(',').Length >= 2 ? TypePath.Split(',')[1] : null) : null;
         public string Area => !string.IsNullOrEmpty(TypePath) ? (TypePath.Split(',').Length >= 3 ? TypePath.Split(',')[2] : null) : null;
         public string Town => !string.IsNullOrEmpty(TypePath) ? (TypePath.Split(',').Length >= 4 ? (TypePath.Split(',')[3]) : null) : null;
+        public IList<ResponseCookHelper> Helpers { get; set; }
     }
 }

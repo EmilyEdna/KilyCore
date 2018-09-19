@@ -1,10 +1,13 @@
-﻿using KilyCore.DataEntity.RequestMapper.Enterprise;
+﻿using KilyCore.DataEntity.RequestMapper.Cook;
+using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.Govt;
 using KilyCore.DataEntity.RequestMapper.Repast;
+using KilyCore.DataEntity.ResponseMapper.Cook;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.Govt;
 using KilyCore.DataEntity.ResponseMapper.Repast;
 using KilyCore.DataEntity.ResponseMapper.System;
+using KilyCore.EntityFrameWork.Model.Cook;
 using KilyCore.EntityFrameWork.Model.Enterprise;
 using KilyCore.EntityFrameWork.Model.Govt;
 using KilyCore.EntityFrameWork.Model.Repast;
@@ -195,10 +198,14 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseMerchant> GetMerchantPage(PageParamList<RequestMerchant> pageParam)
         {
+
             IQueryable<RepastInfo> queryable = Kily.Set<RepastInfo>()
-                .Where(t => t.DiningType == pageParam.QueryParam.DiningType)
                 .Where(t => t.AuditType == AuditEnum.AuditSuccess)
                 .OrderByDescending(t => t.CreateTime);
+            if (pageParam.QueryParam.DiningType <= MerchantEnum.UnitCanteen)
+                queryable = queryable.Where(t => t.DiningType == pageParam.QueryParam.DiningType);
+            else
+                queryable = queryable.Where(t => t.DiningType > MerchantEnum.UnitCanteen);
             if (GovtInfo().AccountType <= GovtAccountEnum.Area)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
             IList<string> Areas = GetDepartArea();
@@ -221,7 +228,8 @@ namespace KilyCore.Service.ServiceCore
                 DiningTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
                 CommunityCode = t.CommunityCode,
                 Phone = t.Phone,
-                Address = t.Address
+                Address = t.Address,
+                ImplUser = t.ImplUser
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -686,6 +694,159 @@ namespace KilyCore.Service.ServiceCore
                 MaterialData.Supplier,
                 MaterialProductTime = MaterialData.ProductTime
             };
+        }
+        /// <summary>
+        /// 食用品分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseGoods> GetEdiblePage(PageParamList<RequestEnterpriseGoods> pageParam)
+        {
+            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.CompanyType <= CompanyEnum.Culture).Where(t => t.AuditType == AuditEnum.AuditSuccess);
+            if (GovtInfo().AccountType <= GovtAccountEnum.Area)
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
+            {
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        queryable = queryable.Where(t => t.TypePath.Contains(item));
+                    }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+            }
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.ProductName))
+                goods = goods.Where(t => t.ProductName.Contains(pageParam.QueryParam.ProductName));
+            var data = goods.Join(queryable, t => t.CompanyId, x => x.Id, (t, x) => new ResponseEnterpriseGoods()
+            {
+                Id = t.Id,
+                ProductName = t.ProductName,
+                ProductType = t.ProductType,
+                ExpiredDate = t.ExpiredDate,
+                Spec = t.Spec,
+                Unit = x.ProductionAddress,
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 食用品详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public Object GetEdibleDetail(Guid Id)
+        {
+            IQueryable<EnterpriseGoodsStockAttach> GoodsStockAttach = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<EnterpriseGoodsStock> GoodStock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<EnterpriseGoods> Goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<EnterpriseStockType> StockType = Kily.Set<EnterpriseStockType>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseCheckGoods> CheckGoods = Kily.Set<EnterpriseCheckGoods>().Where(t => t.IsDelete == false);
+            //产品的查询
+            var GoodsData = GoodsStockAttach.Join(GoodStock, a => a.StockId, b => b.Id, (a, b) => new { a, b })
+                .Join(Goods, c => c.b.GoodsId, d => d.Id, (c, d) => new { c, d })
+                .Join(StockType, e => e.c.b.StockTypeId, f => f.Id, (e, f) => new { e, f })
+                .GroupJoin(CheckGoods, g => g.e.c.b.CheckGoodsId, h => h.Id, (g, h) => new { g, h })
+                .Where(t => t.g.e.d.Id == Id).AsNoTracking();
+            return GoodsData.Select(t => new
+            {
+                t.h.FirstOrDefault().CheckUint,
+                t.h.FirstOrDefault().CheckUser,
+                t.h.FirstOrDefault().CheckResult,
+                t.h.FirstOrDefault().CheckReport,
+                t.g.f.StockName,
+                t.g.f.SaveType,
+                t.g.f.SaveH2,
+                t.g.f.SaveTemp,
+                t.g.e.d.ExpiredDate,
+                t.g.e.d.ProductName,
+                t.g.e.d.ProductType,
+                t.g.e.d.Spec,
+                t.g.e.c.b.ProductTime,
+                t.g.e.c.b.Manager,
+                t.g.e.c.a.OutStockTime,
+                t.g.e.c.a.OutStockUser
+            }).FirstOrDefault();
+        }
+        #endregion
+
+        #region 餐饮监管
+        /// <summary>
+        /// 群宴报备分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseCookBanquet> GetBanquetPage(PageParamList<RequestCookBanquet> pageParam)
+        {
+            IQueryable<CookBanquet> queryable = Kily.Set<CookBanquet>().OrderByDescending(t => t.CreateTime);
+            if (GovtInfo().AccountType <= GovtAccountEnum.Area)
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
+            {
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        queryable = queryable.Where(t => t.TypePath.Contains(item));
+                    }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+            }
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.HoldType))
+                queryable = queryable.Where(t => t.HoldType.Contains(pageParam.QueryParam.HoldType));
+            var data = queryable.Select(t => new ResponseCookBanquet()
+            {
+                Id = t.Id,
+                CookId = t.CookId,
+                HoldName = t.HoldName,
+                Phone = t.Phone,
+                Address = t.Address,
+                HoldDay = t.HoldDay,
+                HoldTime = t.HoldTime,
+                HoldType = t.HoldType,
+                Stauts = t.Stauts,
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 群宴报备详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseCookBanquet GetBanquetDetail(Guid Id)
+        {
+            IQueryable<CookBanquet> queryable = Kily.Set<CookBanquet>().Where(t => t.Id == Id);
+            var data = queryable.Select(t => new ResponseCookBanquet()
+            {
+                HoldName = t.HoldName,
+                Phone = t.Phone,
+                Address = t.Address,
+                Facility = t.Facility,
+                Poisonous = t.Poisonous,
+                Processing = t.Processing,
+                Ingredients = t.Ingredients,
+                ResultImg = t.ResultImg,
+                Helpers = Kily.Set<CookHelper>().Where(x => x.CookId == t.CookId && t.Helper.Contains(x.HelperName))
+                 .Select(x => new ResponseCookHelper()
+                 {
+                     HelperName = x.HelperName,
+                     Phone = x.Phone,
+                     ExpiredDate = x.ExpiredDate,
+                     HealthCard = x.HealthCard
+                 }).AsNoTracking().ToList()
+            }).AsNoTracking().FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 审核群宴
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string EditCookBanquet(Guid Id)
+        {
+            CookBanquet cook = Kily.Set<CookBanquet>().Where(t => t.Id == Id).FirstOrDefault();
+            cook.Stauts = "完成";
+            return UpdateField(cook, "Stauts") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         #endregion
     }

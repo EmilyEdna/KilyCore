@@ -1,0 +1,155 @@
+﻿
+@{
+    ViewData["Title"] = "群宴详情";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+    <style>
+        th {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        td {
+            text-align: center;
+            vertical-align: middle;
+        }
+    </style>
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                //取详情
+                controller.ajax({
+                    url: "GovtWeb/GetBanquetDetail",
+                    data: { Id: controller.GetParam("Id") },
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        controller.SetCtrlValue("#Edit", result.data);
+                        options.BindHelper(result.data.Helpers);
+                    }
+                });
+                //查看大图
+                $("img").on('click', function () {
+                    var option = {
+                        title: "相关图片",
+                        data: [{
+                            alt: "相关图片",
+                            src: $(this).attr("src")
+                        }]
+                    };
+                    controller.Photos(option);
+                });
+            },
+            //绑定审核信息
+            BindHelper: function (data) {
+                var html = '';
+                $.each(data, function (i, obj) {
+                    html += '<tr><td class="text-warning">' + obj.HelperName + '</td>';
+                    html += '<tr><td class="text-warning">' + obj.Phone + '</td>';
+                    html += '<tr><td class="text-warning">' + obj.ExpiredDate + '</td>';
+                    html += '<tr><td class="text-warning"><img class="photo" src="' + obj.HealthCard + '" style="width:48px;height:32px;""></td>';
+                })
+                $("#HelperInfo").html(html);
+            },
+            //事件
+            InitEvents: function () {
+            },
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+
+    </script>
+}
+<form class="form-horizontal" method="post" id="Edit">
+    <div class="tabs-container">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a data-toggle="tab" href="#tab-1" aria-expanded="true"> 基本信息</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-2" aria-expanded="false">帮厨信息</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="tab-1" class="tab-pane active">
+                <table class="table table-hover table-bordered m-t-sm">
+                    <tr>
+                        <th><label class="control-label">举办者</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="HoldName" readonly="readonly" />
+                        </td>
+                        <th><label class="control-label">联系电话</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="Phone" readonly="readonly" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label class="control-label">举办地址</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="Address" readonly="readonly" />
+                        </td>
+                        <th><label class="control-label">食材</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="Ingredients" readonly="readonly" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label class="control-label">卫生设施</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="Processing" readonly="readonly" />
+                        </td>
+                        <th><label class="control-label">有毒害品</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="Poisonous" readonly="readonly" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label class="control-label">质检结果</label></th>
+                        <td class="has-warning" colspan="3">
+                            <img class="img-preview" src="" type="image" name="ResultImg" style="display:block;margin:auto" title="点击放大" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="tab-2" class="tab-pane">
+                <table class="table table-bordered m-t-sm">
+                    <thead>
+                        <tr>
+                            <th>
+                                <span class="text-navy fa fa-user">厨师姓名</span>
+                            </th>
+                            <th>
+                                <span class="text-navy fa fa-phone">联系电话</span>
+                            </th>
+                            <th>
+                                <span class="text-navy fa fa-calendar">到期时间</span>
+                            </th>
+                            <th>
+                                <span class="text-navy fa fa-image">健康证</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="HelperInfo"></tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="4" class="text-danger">
+                                没有更多记录...
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>

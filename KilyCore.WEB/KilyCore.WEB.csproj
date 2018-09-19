@@ -52,6 +52,15 @@
     <Content Update="Areas\WebGovtManage\Views\Product\WorkSupervise.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Areas\WebGovtManage\Views\Restaurant\BanquetSupervise.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\WebGovtManage\Views\Restaurant\SamllSuperviseDetail.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\WebGovtManage\Views\Restaurant\UnitSupervise.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Cook\Home.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

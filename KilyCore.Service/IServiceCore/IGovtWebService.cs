@@ -1,7 +1,9 @@
 ﻿using KilyCore.Configure;
+using KilyCore.DataEntity.RequestMapper.Cook;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.Govt;
 using KilyCore.DataEntity.RequestMapper.Repast;
+using KilyCore.DataEntity.ResponseMapper.Cook;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.Govt;
 using KilyCore.DataEntity.ResponseMapper.Repast;
@@ -62,13 +64,21 @@ namespace KilyCore.Service.IServiceCore
 
         #region 管辖区域
         IList<ResponseGovtDistribut> GetDistributArea();
-         IList<ResponseArea> GetArea(Guid Id);
+        IList<ResponseArea> GetArea(Guid Id);
         IList<ResponseTown> GetTown(Guid Id);
         #endregion
 
         #region 产品监管
         PagedResult<ResponseEnterpriseGoods> GetWorkPage(PageParamList<RequestEnterpriseGoods> pageParam);
-         Object GetWorkDetail(Guid Id);
+        Object GetWorkDetail(Guid Id);
+        PagedResult<ResponseEnterpriseGoods> GetEdiblePage(PageParamList<RequestEnterpriseGoods> pageParam);
+        Object GetEdibleDetail(Guid Id);
+        #endregion
+
+        #region 餐饮监管
+        PagedResult<ResponseCookBanquet> GetBanquetPage(PageParamList<RequestCookBanquet> pageParam);
+        ResponseCookBanquet GetBanquetDetail(Guid Id);
+        String EditCookBanquet(Guid Id);
         #endregion
     }
 }

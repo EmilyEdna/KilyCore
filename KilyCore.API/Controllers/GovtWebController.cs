@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using KilyCore.Configure;
+using KilyCore.DataEntity.RequestMapper.Cook;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.Govt;
 using KilyCore.DataEntity.RequestMapper.Repast;
@@ -262,6 +263,59 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetWorkDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(GovtWebService.GetWorkDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 食用品分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetEdiblePage")]
+        public ObjectResultEx GetEdiblePage(PageParamList<RequestEnterpriseGoods> pageParam)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetEdiblePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 食用品详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetEdibleDetail")]
+        public ObjectResultEx GetEdibleDetail(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetEdibleDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region 餐饮监管
+        /// <summary>
+        /// 群宴报备分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetBanquetPage")]
+        public ObjectResultEx GetBanquetPage(PageParamList<RequestCookBanquet> pageParam)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetBanquetPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 群宴报备详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetBanquetDetail")]
+        public ObjectResultEx GetBanquetDetail(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetBanquetDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 审核群宴
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("EditCookBanquet")]
+        public ObjectResultEx EditCookBanquet(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.EditCookBanquet(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }
