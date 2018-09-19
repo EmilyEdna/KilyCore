@@ -80,5 +80,12 @@ namespace KilyCore.Service.IServiceCore
         ResponseCookBanquet GetBanquetDetail(Guid Id);
         String EditCookBanquet(Guid Id);
         #endregion
+
+        #region 风险预警
+        PagedResult<ResponseGovtRisk> GetWaringRiskPage(PageParamList<RequestGovtRisk> pageParam);
+        String EditWaringRisk(RequestGovtRisk Param);
+        String ReportWaringRisk(Guid Id);
+        String RemoveWaringRisk(Guid Id);
+        #endregion
     }
 }

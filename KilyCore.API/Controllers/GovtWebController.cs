@@ -318,5 +318,48 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(GovtWebService.EditCookBanquet(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+
+        #region 风险预警
+        /// <summary>
+        /// 预警信息分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetWaringRiskPage")]
+        public ObjectResultEx GetWaringRiskPage(PageParamList<RequestGovtRisk> pageParam)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetWaringRiskPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑预警信息
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditWaringRisk")]
+        public ObjectResultEx EditWaringRisk(RequestGovtRisk Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.EditWaringRisk(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 发布广播
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("ReportWaringRisk")]
+        public ObjectResultEx ReportWaringRisk(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.ReportWaringRisk(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除信息
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveWaringRisk")]
+        public ObjectResultEx RemoveWaringRisk(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.RemoveWaringRisk(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }

@@ -29,5 +29,9 @@ namespace KilyCore.WEB.Areas.WebGovtManage.Controllers
         {
             return View();
         }
+        public IActionResult UnitSuperviseDetail()
+        {
+            return View();
+        }
     }
 }

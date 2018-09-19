@@ -49,13 +49,9 @@ namespace KilyCore.Service.ServiceCore
         /// 获取机构管理区域
         /// </summary>
         /// <returns></returns>
-        public IList<string> GetDepartArea(Guid? Id = null)
+        public IList<string> GetDepartArea()
         {
-            IQueryable<GovtInstitution> queryable = Kily.Set<GovtInstitution>().Where(t => t.IsDelete == false);
-            if (Id != null)
-                queryable = queryable.Where(t => t.Id == Id);
-            else
-                queryable = queryable.Where(t => t.Id == GovtInfo().DepartId);
+            IQueryable<GovtInstitution> queryable = Kily.Set<GovtInstitution>().Where(t => t.IsDelete == false).Where(t => t.Id == GovtInfo().DepartId);
             String Area = queryable.Select(t => t.ManageArea).FirstOrDefault();
             if (!string.IsNullOrEmpty(Area))
             {
@@ -165,7 +161,7 @@ namespace KilyCore.Service.ServiceCore
                  .Where(t => t.CompanyType == pageParam.QueryParam.CompanyType)
                  .Where(t => t.AuditType == AuditEnum.AuditSuccess)
                  .OrderByDescending(t => t.CreateTime);
-            if (GovtInfo().AccountType <= GovtAccountEnum.Area)
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
             IList<string> Areas = GetDepartArea();
             if (Areas != null)
@@ -178,6 +174,8 @@ namespace KilyCore.Service.ServiceCore
                 else
                     queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
             }
+            else
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
             if (!string.IsNullOrEmpty(pageParam.QueryParam.CompanyName))
                 queryable = queryable.Where(t => t.CompanyName.Contains(pageParam.QueryParam.CompanyName));
             var data = queryable.Select(t => new ResponseEnterprise()
@@ -206,7 +204,7 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.DiningType == pageParam.QueryParam.DiningType);
             else
                 queryable = queryable.Where(t => t.DiningType > MerchantEnum.UnitCanteen);
-            if (GovtInfo().AccountType <= GovtAccountEnum.Area)
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
             IList<string> Areas = GetDepartArea();
             if (Areas != null)
@@ -219,6 +217,8 @@ namespace KilyCore.Service.ServiceCore
                 else
                     queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
             }
+            else
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
             if (!string.IsNullOrEmpty(pageParam.QueryParam.MerchantName))
                 queryable = queryable.Where(t => t.MerchantName.Contains(pageParam.QueryParam.MerchantName));
             var data = queryable.Select(t => new ResponseMerchant()
@@ -228,6 +228,7 @@ namespace KilyCore.Service.ServiceCore
                 DiningTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
                 CommunityCode = t.CommunityCode,
                 Phone = t.Phone,
+                AllowUnit = t.AllowUnit,
                 Address = t.Address,
                 ImplUser = t.ImplUser
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -280,6 +281,7 @@ namespace KilyCore.Service.ServiceCore
                 Email = t.Email,
                 ImplUser = t.ImplUser,
                 Phone = t.Phone,
+                AllowUnit = t.AllowUnit,
                 Honor = t.HonorCertification,
                 Remark = t.Remark,
                 Account = x.FirstOrDefault().VideoAddress
@@ -522,7 +524,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<SystemArea> queryable = Kily.Set<SystemArea>();
             IQueryable<SystemTown> queryables = Kily.Set<SystemTown>();
-            IList<string> Areas = GetDepartArea(Id);
+            IList<string> Areas = GetDepartArea();
             //当录入账号是市级账号时先查询机构表中是否纯在该账号已经分配的区域，然后在查询该区域下所有的乡镇
             if (Areas != null)
             {
@@ -566,7 +568,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.CompanyType == CompanyEnum.Production).Where(t => t.AuditType == AuditEnum.AuditSuccess);
-            if (GovtInfo().AccountType <= GovtAccountEnum.Area)
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
             IList<string> Areas = GetDepartArea();
             if (Areas != null)
@@ -579,6 +581,8 @@ namespace KilyCore.Service.ServiceCore
                 else
                     queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
             }
+            else
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
             if (!string.IsNullOrEmpty(pageParam.QueryParam.ProductName))
                 goods = goods.Where(t => t.ProductName.Contains(pageParam.QueryParam.ProductName));
             var data = goods.Join(queryable, t => t.CompanyId, x => x.Id, (t, x) => new ResponseEnterpriseGoods()
@@ -704,7 +708,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.CompanyType <= CompanyEnum.Culture).Where(t => t.AuditType == AuditEnum.AuditSuccess);
-            if (GovtInfo().AccountType <= GovtAccountEnum.Area)
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
             IList<string> Areas = GetDepartArea();
             if (Areas != null)
@@ -717,6 +721,8 @@ namespace KilyCore.Service.ServiceCore
                 else
                     queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
             }
+            else
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
             if (!string.IsNullOrEmpty(pageParam.QueryParam.ProductName))
                 goods = goods.Where(t => t.ProductName.Contains(pageParam.QueryParam.ProductName));
             var data = goods.Join(queryable, t => t.CompanyId, x => x.Id, (t, x) => new ResponseEnterpriseGoods()
@@ -779,7 +785,7 @@ namespace KilyCore.Service.ServiceCore
         public PagedResult<ResponseCookBanquet> GetBanquetPage(PageParamList<RequestCookBanquet> pageParam)
         {
             IQueryable<CookBanquet> queryable = Kily.Set<CookBanquet>().OrderByDescending(t => t.CreateTime);
-            if (GovtInfo().AccountType <= GovtAccountEnum.Area)
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
             IList<string> Areas = GetDepartArea();
             if (Areas != null)
@@ -792,6 +798,8 @@ namespace KilyCore.Service.ServiceCore
                 else
                     queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
             }
+            else
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
             if (!string.IsNullOrEmpty(pageParam.QueryParam.HoldType))
                 queryable = queryable.Where(t => t.HoldType.Contains(pageParam.QueryParam.HoldType));
             var data = queryable.Select(t => new ResponseCookBanquet()
@@ -847,6 +855,75 @@ namespace KilyCore.Service.ServiceCore
             CookBanquet cook = Kily.Set<CookBanquet>().Where(t => t.Id == Id).FirstOrDefault();
             cook.Stauts = "完成";
             return UpdateField(cook, "Stauts") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        #endregion
+
+        #region 风险预警
+        /// <summary>
+        /// 预警信息分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseGovtRisk> GetWaringRiskPage(PageParamList<RequestGovtRisk> pageParam)
+        {
+            IQueryable<GovtRisk> queryable = Kily.Set<GovtRisk>().OrderByDescending(t => t.CreateTime);
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
+            {
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        queryable = queryable.Where(t => t.TypePath.Contains(item));
+                    }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+            }
+            else
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.EventName))
+                queryable = queryable.Where(t => t.EventName.Contains(pageParam.QueryParam.EventName));
+            var data = queryable.Select(t => new ResponseGovtRisk()
+            {
+                Id = t.Id,
+                EventName = t.EventName,
+                TradeType = t.TradeType,
+                WaringLv = t.WaringLv,
+                ReleaseTime = t.ReleaseTime,
+                ReportPlay=t.ReportPlay,
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑预警信息
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditWaringRisk(RequestGovtRisk Param)
+        {
+            GovtRisk risk = Param.MapToEntity<GovtRisk>();
+            return Insert(risk) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 发布广播
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string ReportWaringRisk(Guid Id)
+        {
+            GovtRisk risk = Kily.Set<GovtRisk>().Where(t => t.Id == Id).FirstOrDefault();
+            risk.ReportPlay = true;
+            return UpdateField(risk, "ReportPlay") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        /// <summary>
+        /// 删除信息
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveWaringRisk(Guid Id)
+        {
+            return Remove<GovtRisk>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         #endregion
     }

@@ -30,7 +30,6 @@
                 }
                 options.Guid = controller.GetParam("Id");
                 $("input[name='GovtId']").val(GovtInfo.Id);
-
                 $("#DepartId").on('change', function () {
                     $("input[name='DepartName']").val($(this).find("option:selected").text());
                 });
@@ -114,7 +113,8 @@
                             controller.SetCtrlValue("#Edit", result.data);
                             options.SetArea();
                             controller.SetCtrlValue("#Edit", result.data);
-                            if (GovtInfo.AccountType == result.data.AccountType) {
+                            if (GovtInfo.AccountType == 20)
+                            {
                                 $("#area").attr("disabled", true);
                             }
                         }

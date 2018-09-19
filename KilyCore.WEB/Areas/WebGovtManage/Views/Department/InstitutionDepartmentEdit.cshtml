@@ -62,7 +62,6 @@
                     });
                 $("#ManageArea").on('changed.bs.select', function () {
                     var selector = $(this).find("option:selected");
-                    debugger;
                     var array = [];
                     for (var i = 0; i < selector.length; i++) {
                         array.push($(selector[i]).text());
