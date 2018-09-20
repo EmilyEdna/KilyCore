@@ -333,6 +333,9 @@ namespace KilyCore.Service.ServiceCore
                  {
                      Id = t.Id,
                      CompanyName = t.CompanyName,
+                     CardExpiredDate=t.CardExpiredDate,
+                     SafeOffer=t.SafeOffer,
+                     OfferLv=t.OfferLv,
                      CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
                      CompanyAccount = t.CompanyAccount,
                      TypePath = t.TypePath,

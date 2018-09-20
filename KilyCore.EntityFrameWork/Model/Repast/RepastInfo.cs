@@ -94,5 +94,17 @@ namespace KilyCore.EntityFrameWork.Model.Repast
         /// 荣誉证书
         /// </summary>
         public virtual string HonorCertification { get; set; }
+        /// <summary>
+        /// 证件到期时间
+        /// </summary>
+        public virtual DateTime? CardExpiredDate { get; set; }
+        /// <summary>
+        /// 安全员
+        /// </summary>
+        public virtual string SafeOffer { get; set; }
+        /// <summary>
+        /// 安全员等级
+        /// </summary>
+        public virtual string OfferLv { get; set; }
     }
 }

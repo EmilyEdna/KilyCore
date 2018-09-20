@@ -75,5 +75,8 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         public string AllowUnit { get; set; }
         public AuditEnum AuditType { get; set; }
         public string AuditTypeName { get; set; }
+        public DateTime? CardExpiredDate { get; set; }
+        public string SafeOffer { get; set; }
+        public string OfferLv { get; set; }
     }
 }

@@ -15,6 +15,8 @@
             },
             //元素
             InitDom: function () {
+
+                controller.LayDate({ elem: "input[name='CardExpiredDate']" });
                 options.GetProvince();
                 options.GetCityByProvince();
                 options.GetAreaByCity();
@@ -332,9 +334,23 @@
                     </td>
                 </tr>
                 <tr>
+                    <th><label class="control-label">安全员</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SafeOffer">
+                    </td>
+                    <th><label class="control-label">安全等级</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="OfferLv">
+                    </td>
+                </tr>
+                <tr>
                     <th><label class="control-label">经度纬度</label></th>
-                    <td class="has-warning" colspan="3">
+                    <td class="has-warning">
                         <input type="text" class="form-control" name="LngAndLat" placeholder="点击获取" readonly>
+                    </td>
+                    <th><label class="control-label">证件到期</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="CardExpiredDate">
                     </td>
                 </tr>
                 <tr>

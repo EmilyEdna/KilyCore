@@ -16,6 +16,7 @@ namespace KilyCore.EntityFrameWork.EntityMapping.Enterprise
         {
             builder.ToTable(typeof(EnterpriseInfo).Name);
             builder.HasKey(t => t.Id);
+            builder.Property(t => t.CardExpiredDate).HasColumnType(typeof(DateTime).Name);
             builder.Property(t => t.CompanyAccount).IsRequired();
             builder.Property(t => t.PassWord).IsRequired();
             builder.Property(t => t.CompanyName).IsRequired();

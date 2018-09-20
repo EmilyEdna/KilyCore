@@ -15,6 +15,7 @@
             },
             //元素
             InitDom: function () {
+                controller.LayDate({ elem: "input[name='CardExpiredDate']" });
                 options.GetProvince();
                 options.GetCityByProvince();
                 options.GetAreaByCity();
@@ -305,7 +306,7 @@
                     </td>
                     <th><label class="control-label">企业电话</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control required" name="CompanyPhone" data-msg-required="请输入企业电话" placeholder="格式：028-12345678或者13012345678" readonly>
+                        <input type="text" class="form-control required" name="CompanyPhone" data-msg-required="请输入企业电话" placeholder="格式：028-12345678或者13012345678">
                     </td>
                 </tr>
                 <tr>
@@ -378,9 +379,23 @@
                     </td>
                 </tr>
                 <tr>
+                    <th><label class="control-label">安全员</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SafeOffer">
+                    </td>
+                    <th><label class="control-label">安全等级</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="OfferLv">
+                    </td>
+                </tr>
+                <tr>
                     <th><label class="control-label">经度纬度</label></th>
-                    <td class="has-warning" colspan="3">
+                    <td class="has-warning">
                         <input type="text" class="form-control" name="LngAndLat" placeholder="点击获取" readonly>
+                    </td>
+                    <th><label class="control-label">证件到期</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="CardExpiredDate">
                     </td>
                 </tr>
                 <tr>

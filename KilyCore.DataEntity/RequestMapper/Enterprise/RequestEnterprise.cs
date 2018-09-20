@@ -29,8 +29,8 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         {
             get
             {
-                if (!string.IsNullOrEmpty(Province) || !string.IsNullOrEmpty(City) || !string.IsNullOrEmpty(Area)|| !string.IsNullOrEmpty(Town))
-                    return Province + "," + City + "," + Area+","+Town;
+                if (!string.IsNullOrEmpty(Province) || !string.IsNullOrEmpty(City) || !string.IsNullOrEmpty(Area) || !string.IsNullOrEmpty(Town))
+                    return Province + "," + City + "," + Area + "," + Town;
                 else return null;
             }
         }
@@ -51,5 +51,8 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public string SafeNo { get; set; }
         public string SafeCompany { get; set; }
         public string Scope { get; set; }
+        public DateTime? CardExpiredDate { get; set; }
+        public string SafeOffer { get; set; }
+        public string OfferLv { get; set; }
     }
 }

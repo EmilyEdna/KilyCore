@@ -44,5 +44,8 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
         }
         public string Certification { get; set; }
         public string ImplUser { get; set; }
+        public DateTime? CardExpiredDate { get; set; }
+        public string SafeOffer { get; set; }
+        public string OfferLv { get; set; }
     }
 }

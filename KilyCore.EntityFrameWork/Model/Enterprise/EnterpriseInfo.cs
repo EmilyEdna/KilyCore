@@ -118,5 +118,17 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 经纬度
         /// </summary>
         public virtual string LngAndLat { get; set; }
+        /// <summary>
+        /// 证件到期时间
+        /// </summary>
+        public virtual DateTime? CardExpiredDate { get; set; }
+        /// <summary>
+        /// 安全员
+        /// </summary>
+        public virtual string SafeOffer { get; set; }
+        /// <summary>
+        /// 安全员等级
+        /// </summary>
+        public virtual string OfferLv { get; set; }
     }
 }

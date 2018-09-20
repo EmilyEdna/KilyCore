@@ -360,6 +360,25 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.RemoveWaringRisk(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 事件分布图
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetRiskCount")]
+        public ObjectResultEx GetRiskCount()
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetRiskCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取市名称
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetCity")]
+        public ObjectResultEx GetCity(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetCity(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
     }
 }

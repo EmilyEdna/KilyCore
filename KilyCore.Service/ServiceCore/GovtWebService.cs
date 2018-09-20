@@ -891,7 +891,7 @@ namespace KilyCore.Service.ServiceCore
                 TradeType = t.TradeType,
                 WaringLv = t.WaringLv,
                 ReleaseTime = t.ReleaseTime,
-                ReportPlay=t.ReportPlay,
+                ReportPlay = t.ReportPlay,
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -924,6 +924,39 @@ namespace KilyCore.Service.ServiceCore
         public string RemoveWaringRisk(Guid Id)
         {
             return Remove<GovtRisk>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 获取事件数
+        /// </summary>
+        /// <returns></returns>
+        public int GetRiskCount()
+        {
+            IQueryable<GovtRisk> queryable = Kily.Set<GovtRisk>().Where(t => t.ReportPlay == true);
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
+            {
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        queryable = queryable.Where(t => t.TypePath.Contains(item));
+                    }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+            }
+            else
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            return queryable.Count();
+        }
+        /// <summary>
+        /// 获取市名称
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string GetCity(Guid Id)
+        {
+          return  Kily.Set<SystemCity>().Where(t => t.Id == Id).Select(t => t.Name).FirstOrDefault();
         }
         #endregion
     }

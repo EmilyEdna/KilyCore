@@ -86,6 +86,8 @@ namespace KilyCore.Service.IServiceCore
         String EditWaringRisk(RequestGovtRisk Param);
         String ReportWaringRisk(Guid Id);
         String RemoveWaringRisk(Guid Id);
+        int GetRiskCount();
+        String GetCity(Guid Id);
         #endregion
     }
 }

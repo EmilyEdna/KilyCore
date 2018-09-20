@@ -19,6 +19,7 @@ namespace KilyCore.EntityFrameWork.EntityMapping.Dining
             builder.Property(t => t.Account).IsRequired();
             builder.Property(t => t.PassWord).IsRequired();
             builder.Property(t => t.MerchantName).IsRequired();
+            builder.Property(t => t.CardExpiredDate).HasColumnType(typeof(DateTime).Name);
         }
     }
 }

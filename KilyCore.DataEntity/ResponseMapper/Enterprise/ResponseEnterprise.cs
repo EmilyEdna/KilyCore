@@ -14,6 +14,9 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
     {
         public Guid Id { get; set; }
         public Guid? CompanyId { get; set; }
+        public DateTime? CardExpiredDate { get; set; }
+        public string SafeOffer { get; set; }
+        public string OfferLv { get; set; }
         public string LngAndLat { get; set; }
         public string CompanyName { get; set; }
         public CompanyEnum CompanyType { get; set; }
