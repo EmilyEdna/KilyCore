@@ -914,6 +914,14 @@ namespace KilyCore.Service.ServiceCore
         {
             GovtRisk risk = Kily.Set<GovtRisk>().Where(t => t.Id == Id).FirstOrDefault();
             risk.ReportPlay = true;
+            SystemMessage message = new SystemMessage
+            {
+                TypePath = GovtInfo().TypePath,
+                ReleaseTime = DateTime.Now,
+                MsgName = risk.EventName,
+                MsgContent = risk.Remark
+            };
+            Insert(message);
             return UpdateField(risk, "ReportPlay") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         /// <summary>
@@ -956,7 +964,80 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string GetCity(Guid Id)
         {
-          return  Kily.Set<SystemCity>().Where(t => t.Id == Id).Select(t => t.Name).FirstOrDefault();
+            return Kily.Set<SystemCity>().Where(t => t.Id == Id).Select(t => t.Name).FirstOrDefault();
+        }
+        /// <summary>
+        /// 企业证件到期分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public Object GetCardPage(PageParamList<RequestGovtRiskCompany> pageParam)
+        {
+            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<RepastInfo> queryables = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.CompanyName))
+            {
+                queryable = queryable.Where(t => t.CompanyName.Contains(pageParam.QueryParam.CompanyName));
+                queryables = queryables.Where(t => t.MerchantName.Contains(pageParam.QueryParam.CompanyName));
+            }
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+            {
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
+                queryables = queryables.Where(t => t.TypePath.Contains(GovtInfo().City));
+            }
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
+            {
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        queryable = queryable.Where(t => t.TypePath.Contains(item));
+                        queryables = queryables.Where(t => t.TypePath.Contains(item));
+                    }
+                else
+                {
+                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    queryables = queryables.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                }
+            }
+            else
+            {
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                queryables = queryables.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            }
+            var Enterprise = queryable.Select(t => new
+            {
+                t.Id,
+                Name = t.CompanyName,
+                CompanyType = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
+                t.CardExpiredDate
+            }).AsNoTracking().ToList();
+            var Repast = queryables.Select(t => new
+            {
+                t.Id,
+                Name = t.MerchantName,
+                CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
+                t.CardExpiredDate
+            }).AsNoTracking().ToList();
+            Enterprise.AddRange(Repast);
+            return Enterprise.ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+        }
+        /// <summary>
+        /// 证件到期提醒
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string ReportCardWaring(Guid Id)
+        {
+            SystemMessage message = new SystemMessage
+            {
+                CompanyId=Id,
+                TypePath = GovtInfo().TypePath,
+                ReleaseTime = DateTime.Now,
+                MsgName = "证件到期提醒",
+                MsgContent = "您的证件日期即将到期，请尽快续期",
+            };
+            return Insert(message) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         #endregion
     }

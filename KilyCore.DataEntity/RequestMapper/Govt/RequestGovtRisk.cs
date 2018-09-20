@@ -63,4 +63,8 @@ namespace KilyCore.DataEntity.RequestMapper.Govt
         /// </summary>
         public bool ReportPlay { get; set; }
     }
+    public class RequestGovtRiskCompany
+    {
+        public string CompanyName { get; set; }
+    }
 }

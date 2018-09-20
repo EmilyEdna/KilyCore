@@ -379,6 +379,26 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetCity(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 企业证件到期分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetCardPage")]
+        public ObjectResultEx GetCardPage(PageParamList<RequestGovtRiskCompany> pageParam)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetCardPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 证件提醒
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("ReportCardWaring")]
+        public ObjectResultEx ReportCardWaring(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.ReportCardWaring(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
     }
 }
