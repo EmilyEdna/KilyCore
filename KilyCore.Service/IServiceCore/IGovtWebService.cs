@@ -91,5 +91,12 @@ namespace KilyCore.Service.IServiceCore
         Object GetCardPage(PageParamList<RequestGovtRiskCompany> pageParam);
         String ReportCardWaring(Guid Id,String Key);
         #endregion
+
+        #region 执法检查
+        PagedResult<ResponseGovtNetPatrol> GetNetPatrolPage(PageParamList<RequestGovtNetPatrol> pageParam);
+        String EditPatrol(RequestGovtNetPatrol Param);
+        String RemovePatrol(Guid Id);
+        String EditNetPatrol(RequestGovtMsg Param);
+        #endregion
     }
 }

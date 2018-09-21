@@ -65,6 +65,14 @@
                 },
                 TableEvents: {
                     "click .detail": function (event, val, row, index) {
+                        //追加抽查次数
+                        controller.ajax({
+                            url: "GovtWeb/EditPatrol",
+                            data: { CompanyId: row.Id, TradeType: row.CompanyTypeName, CompanyName: row.CompanyName, TypePath: GovtInfo.TypePath },
+                            async: false,
+                            type: "post",
+                            success: function (result) { }
+                        });
                         controller.OpenWindow({
                             title: "企业详情",
                             type: 2,

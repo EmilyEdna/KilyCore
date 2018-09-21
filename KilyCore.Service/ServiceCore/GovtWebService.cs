@@ -920,7 +920,7 @@ namespace KilyCore.Service.ServiceCore
                 ReleaseTime = DateTime.Now,
                 MsgName = risk.EventName,
                 MsgContent = risk.Remark,
-                TrageType=risk.TradeType
+                TrageType = risk.TradeType
             };
             Insert(message);
             return UpdateField(risk, "ReportPlay") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
@@ -1028,16 +1028,106 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public string ReportCardWaring(Guid Id,string Key)
+        public string ReportCardWaring(Guid Id, string Key)
         {
             SystemMessage message = new SystemMessage
             {
-                CompanyId=Id,
+                CompanyId = Id,
                 TypePath = GovtInfo().TypePath,
                 ReleaseTime = DateTime.Now,
-                TrageType= Key,
+                TrageType = Key,
                 MsgName = "证件到期提醒",
                 MsgContent = "您的证件日期即将到期，请尽快续期",
+            };
+            return Insert(message) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        #endregion
+
+        #region 执法检查
+        /// <summary>
+        /// 网上执法分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseGovtNetPatrol> GetNetPatrolPage(PageParamList<RequestGovtNetPatrol> pageParam)
+        {
+            IQueryable<GovtNetPatrol> queryable = Kily.Set<GovtNetPatrol>().OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.CompanyName))
+                queryable = queryable.Where(t => t.CompanyName.Contains(pageParam.QueryParam.CompanyName));
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
+            {
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        queryable = queryable.Where(t => t.TypePath.Contains(item));
+                    }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+            }
+            else
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            var data = queryable.Select(t => new ResponseGovtNetPatrol()
+            {
+                Id = t.Id,
+                CompanyId = t.CompanyId,
+                CompanyName = t.CompanyName,
+                BulletinNum = t.BulletinNum,
+                PotrolNum = t.PotrolNum,
+                TradeType = t.TradeType,
+                QualifiedNum = t.QualifiedNum
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 添加网上执法
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditPatrol(RequestGovtNetPatrol Param)
+        {
+            int Count = Kily.Set<GovtNetPatrol>().Where(t => t.CompanyId == Param.CompanyId)
+                 .Where(t => t.TradeType.Equals(Param.TradeType))
+                 .Where(t => t.CompanyName.Equals(Param.CompanyName))
+                 .AsNoTracking().Select(t => t.Id).Count();
+            GovtNetPatrol govtNet = Param.MapToEntity<GovtNetPatrol>();
+            if (Count == 0)
+                return Insert(govtNet) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+            {
+                govtNet.PotrolNum += 1;
+                return UpdateField(govtNet, "PotrolNum") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            }
+        }
+        /// <summary>
+        /// 删除网上执法
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemovePatrol(Guid Id)
+        {
+            return Remove<GovtNetPatrol>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 通报批评
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditNetPatrol(RequestGovtMsg Param)
+        {
+            GovtNetPatrol govtNet = Kily.Set<GovtNetPatrol>().Where(t => t.Id == Param.Id).AsNoTracking().FirstOrDefault();
+            govtNet.BulletinNum += 1;
+            UpdateField(govtNet, "BulletinNum");
+            SystemMessage message = new SystemMessage
+            {
+                CompanyId = govtNet.CompanyId,
+                MsgContent = Param.Content,
+                MsgName = Param.Title,
+                ReleaseTime = DateTime.Now,
+                TrageType = govtNet.TradeType,
+                TypePath = govtNet.TypePath
             };
             return Insert(message) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }

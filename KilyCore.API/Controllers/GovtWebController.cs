@@ -395,9 +395,52 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("ReportCardWaring")]
-        public ObjectResultEx ReportCardWaring(SimpleParam<Guid> Param,SimpleParam<String> Key)
+        public ObjectResultEx ReportCardWaring(SimpleParam<Guid> Param, SimpleParam<String> Key)
         {
             return ObjectResultEx.Instance(GovtWebService.ReportCardWaring(Param.Id, Key.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region 执法检查
+        /// <summary>
+        /// 网上执法分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetNetPatrolPage")]
+        public ObjectResultEx GetNetPatrolPage(PageParamList<RequestGovtNetPatrol> pageParam)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetNetPatrolPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 添加网上执法
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditPatrol")]
+        public ObjectResultEx EditPatrol(RequestGovtNetPatrol Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.EditPatrol(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除网上执法
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemovePatrol")]
+        public ObjectResultEx RemovePatrol(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.RemovePatrol(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 通报批评
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditNetPatrol")]
+        public ObjectResultEx EditNetPatrol(RequestGovtMsg Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.EditNetPatrol(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }
