@@ -1119,7 +1119,7 @@ namespace KilyCore.Service.ServiceCore
                 ContractType = t.ContractType,
                 IsPay = t.IsPay,
                 TryOut = t.TryOut,
-                ActualPrice=t.ActualPrice,
+                ActualPrice = t.ActualPrice,
                 VersionTypeName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.VersionType),
                 PayTypeName = AttrExtension.GetSingleDescription<PayEnum, DescriptionAttribute>(t.PayType)
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -1130,13 +1130,13 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public string EditContract(Guid Id,decimal Money)
+        public string EditContract(Guid Id, decimal Money)
         {
             SystemStayContract Contract = Kily.Set<SystemStayContract>().Where(t => t.IsDelete == false).Where(t => t.Id == Id).FirstOrDefault();
             Contract.IsPay = true;
             Contract.TryOut = null;
             Contract.ActualPrice = Money;
-            List<String> Fieds = new List<string> { "IsPay", "TryOut" , "ActualPrice" };
+            List<String> Fieds = new List<string> { "IsPay", "TryOut", "ActualPrice" };
             return UpdateField<SystemStayContract>(Contract, null, Fieds) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         /// <summary>
@@ -1228,8 +1228,39 @@ namespace KilyCore.Service.ServiceCore
             SystemStayContract contract = Kily.Set<SystemStayContract>().Where(t => t.Id == Param.Id).FirstOrDefault();
             contract.PayTicket = Param.PayTicket;
             contract.PayType = Param.PayType;
-            List<String> Fields = new List<String>() {"PayTicket","PayType"};
+            List<String> Fields = new List<String>() { "PayTicket", "PayType" };
             return UpdateField(contract, null, Fields) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        #endregion
+
+        #region 消息盒子
+        /// <summary>
+        /// 消息盒子
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseSystemMessage> GetMsgPage(PageParamList<Object> pageParam)
+        {
+            IQueryable<SystemMessage> queryable = Kily.Set<SystemMessage>().OrderByDescending(t => t.CreateTime);
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.Id == CompanyInfo().Id || t.TypePath.Contains(CompanyInfo().Area))
+                    .Where(t => t.TrageType.Equals(CompanyInfo().CompanyTypeName));
+            else if (CompanyUser() != null)
+                queryable = queryable.Where(t => t.Id == CompanyUser().Id || t.TypePath.Contains(CompanyUser().Area))
+                     .Where(t => t.TrageType.Equals(CompanyUser().CompanyTypeName));
+            else if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.Id == MerchantInfo().Id || t.TypePath.Contains(MerchantInfo().Area))
+                     .Where(t => t.TrageType.Equals(MerchantInfo().DiningTypeName));
+            else if (MerchantUser() != null)
+                queryable = queryable.Where(t => t.Id == MerchantUser().Id || t.TypePath.Contains(MerchantUser().Area))
+                     .Where(t => t.TrageType.Equals(MerchantUser().DiningTypeName));
+            var data = queryable.Select(t => new ResponseSystemMessage()
+            {
+                MsgName = t.MsgName,
+                MsgContent = t.MsgContent,
+                ReleaseTime = t.ReleaseTime
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
         }
         #endregion
     }

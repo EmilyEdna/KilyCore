@@ -40,5 +40,9 @@ namespace KilyCore.DataEntity.ResponseMapper.System
         /// 所属区域
         /// </summary>
         public string TypePath { get; set; }
+        /// <summary>
+        /// 行业类型
+        /// </summary>
+        public string TrageType { get; set; }
     }
 }

@@ -919,7 +919,8 @@ namespace KilyCore.Service.ServiceCore
                 TypePath = GovtInfo().TypePath,
                 ReleaseTime = DateTime.Now,
                 MsgName = risk.EventName,
-                MsgContent = risk.Remark
+                MsgContent = risk.Remark,
+                TrageType=risk.TradeType
             };
             Insert(message);
             return UpdateField(risk, "ReportPlay") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
@@ -1027,13 +1028,14 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public string ReportCardWaring(Guid Id)
+        public string ReportCardWaring(Guid Id,string Key)
         {
             SystemMessage message = new SystemMessage
             {
                 CompanyId=Id,
                 TypePath = GovtInfo().TypePath,
                 ReleaseTime = DateTime.Now,
+                TrageType= Key,
                 MsgName = "证件到期提醒",
                 MsgContent = "您的证件日期即将到期，请尽快续期",
             };

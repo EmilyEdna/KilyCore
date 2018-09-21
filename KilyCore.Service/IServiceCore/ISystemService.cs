@@ -84,5 +84,8 @@ namespace KilyCore.Service.IServiceCore
          String WxPay(int Money);
          String EditPay(RequestStayContract Param);
         #endregion
+        #region 消息盒子
+        PagedResult<ResponseSystemMessage> GetMsgPage(PageParamList<Object> pageParam);
+        #endregion
     }
 }

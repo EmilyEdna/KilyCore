@@ -39,7 +39,7 @@
                             if (bool) {
                                 controller.ajax({
                                     url: "GovtWeb/ReportCardWaring",
-                                    data: { Id: row.Id },
+                                    data: { Id: row.Id, Parameter: row.CompanyType },
                                     type: 'post',
                                     success: function (result) {
                                         options.$table.refresh();
@@ -88,7 +88,7 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="CompanyName" data-halign="center" data-align="center" data-valign="middle">企业名称</th>
+                                <th data-field="Name" data-halign="center" data-align="center" data-valign="middle">企业名称</th>
                                 <th data-field="CompanyType" data-halign="center" data-align="center" data-valign="middle">所属行业</th>
                                 <th data-field="CardExpiredDate" data-halign="center" data-align="center" data-valign="middle">到期日期</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>

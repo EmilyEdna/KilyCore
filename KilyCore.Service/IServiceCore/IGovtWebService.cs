@@ -89,7 +89,7 @@ namespace KilyCore.Service.IServiceCore
         int GetRiskCount();
         String GetCity(Guid Id);
         Object GetCardPage(PageParamList<RequestGovtRiskCompany> pageParam);
-        String ReportCardWaring(Guid Id);
+        String ReportCardWaring(Guid Id,String Key);
         #endregion
     }
 }

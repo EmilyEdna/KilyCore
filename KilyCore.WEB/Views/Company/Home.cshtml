@@ -74,7 +74,27 @@
                 });
             },
             //事件
-            InitEvents: function () { },
+            InitEvents: function () {
+                 //获取消息
+                controller.ajax({
+                    url: "System/GetMsgPage",
+                    data: { pageNumber: 1, pageSize: 15 },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '';
+                        $.each(result.data.rows, function (i, obj) {
+                            html += '<li><a href="javascript:void(0);"><div class="row"><section>';
+                            html += ' <dl> <i class="fa fa-comment fa-fw"></i>' + obj.MsgName + '</dl>';
+                            html += '<article class="text text-warning">' + obj.MsgContent + '</article>';
+                            html += ' <span class="pull-right small">发布时间：' + obj.ReleaseTime + '</span>';
+                            html += '</section></div></a></li><li class="divider"></li>';
+                        });
+                        $(".dropdown-alerts").html(html);
+                        $(".label-primary").html(result.data.total);
+                    }
+                });
+            },
             //行为
             action: {}
         };
@@ -131,80 +151,13 @@
                 <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                     <div class="navbar-header">
                         <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
-                        <!--搜索表单-->
-                        <form role="search" class="navbar-form-custom" method="post" style="width:50%">
-                            <div class="form-group input-group">
-                                <input type="text" placeholder="请输入您需要查找的内容 …" class="form-control" name="top-search" id="top-search">
-                                <span class="input-group-addon btn btn-primary"><i class="fa fa-search"></i>搜索</span>
-                            </div>
-                        </form>
                     </div>
                     <ul class="nav navbar-top-links navbar-right">
                         <li class="dropdown">
                             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                <i class="fa fa-envelope"></i> <span class="label label-warning">0</span>
+                                <i class="fa fa-bell"></i> <span class="label label-primary"></span>
                             </a>
-                            <ul class="dropdown-menu dropdown-messages">
-                                <li class="m-t-xs">
-                                    <div class="dropdown-messages-box">
-                                        <a href="profile.html" class="pull-left">
-                                            <img alt="image" class="img-circle" src="~/Content/HPlus/img/a6.jpg">
-                                        </a>
-                                        <div class="media-body">
-                                            <small class="pull-right">测试</small>
-                                            <strong>测试</strong> 测试
-                                            <br>
-                                            <small class="text-muted">测试</small>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="text-center link-block">
-                                        <a class="J_menuItem" href="mailbox.html">
-                                            <i class="fa fa-envelope"></i> <strong> 查看所有消息</strong>
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                <i class="fa fa-bell"></i> <span class="label label-primary">0</span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-alerts">
-                                <li>
-                                    <a href="mailbox.html">
-                                        <div>
-                                            <i class="fa fa-envelope fa-fw"></i> 您有0条未读消息
-                                            <span class="pull-right text-muted small">0分钟前</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <a href="profile.html">
-                                        <div>
-                                            <i class="fa fa-qq fa-fw"></i> 0条新回复
-                                            <span class="pull-right text-muted small">0分钟钱</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="text-center link-block">
-                                        <a class="J_menuItem" href="notifications.html">
-                                            <strong>查看所有 </strong>
-                                            <i class="fa fa-angle-right"></i>
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="dropdown hidden-xs">
-                            <a class="right-sidebar-toggle" aria-expanded="false">
-                                <i class="fa fa-tasks"></i> 主题
-                            </a>
+                            <ul class="dropdown-menu dropdown-alerts"></ul>
                         </li>
                     </ul>
                 </nav>
@@ -251,130 +204,6 @@
             </div>
         </div>
         <!--右侧部分结束-->
-        <!--右侧边栏开始-->
-        <div id="right-sidebar">
-            <div class="sidebar-container">
-                <ul class="nav nav-tabs navs-3">
-                    <li class="active">
-                        <a data-toggle="tab" href="#tab-1">
-                            <i class="fa fa-gear"></i> 主题
-                        </a>
-                    </li>
-                    <li class="">
-                        <a data-toggle="tab" href="#tab-2">
-                            通知
-                        </a>
-                    </li>
-                    <li>
-                        <a data-toggle="tab" href="#tab-3">
-                            项目进度
-                        </a>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <div id="tab-1" class="tab-pane active">
-                        <div class="sidebar-title">
-                            <h3> <i class="fa fa-comments-o"></i> 主题设置</h3>
-                            <small><i class="fa fa-tim"></i> 你可以从这里选择和预览主题的布局和样式，这些设置会被保存在本地，下次打开的时候会直接应用这些设置。</small>
-                        </div>
-                        <div class="skin-setttings">
-                            <div class="title">主题设置</div>
-                            <div class="setings-item">
-                                <span>收起左侧菜单</span>
-                                <div class="switch">
-                                    <div class="onoffswitch">
-                                        <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox" id="collapsemenu">
-                                        <label class="onoffswitch-label" for="collapsemenu">
-                                            <span class="onoffswitch-inner"></span>
-                                            <span class="onoffswitch-switch"></span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="setings-item">
-                                <span>固定顶部</span>
-                                <div class="switch">
-                                    <div class="onoffswitch">
-                                        <input type="checkbox" name="fixednavbar" class="onoffswitch-checkbox" id="fixednavbar">
-                                        <label class="onoffswitch-label" for="fixednavbar">
-                                            <span class="onoffswitch-inner"></span>
-                                            <span class="onoffswitch-switch"></span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="setings-item">
-                                <span>
-                                    固定宽度
-                                </span>
-                                <div class="switch">
-                                    <div class="onoffswitch">
-                                        <input type="checkbox" name="boxedlayout" class="onoffswitch-checkbox" id="boxedlayout">
-                                        <label class="onoffswitch-label" for="boxedlayout">
-                                            <span class="onoffswitch-inner"></span>
-                                            <span class="onoffswitch-switch"></span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="title">皮肤选择</div>
-                            <div class="setings-item default-skin nb">
-                                <span class="skin-name ">
-                                    <a href="#" class="s-skin-0">
-                                        默认皮肤
-                                    </a>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="tab-2" class="tab-pane">
-                        <div class="sidebar-title">
-                            <h3> <i class="fa fa-comments-o"></i> 最新通知</h3>
-                            <small><i class="fa fa-tim"></i> 您当前有0条未读信息</small>
-                        </div>
-                        <div>
-                            <div class="sidebar-message">
-                                <a href="#">
-                                    <div class="pull-left text-center">
-                                        <img alt="image" class="img-circle message-avatar" src="~/Content/HPlus/img/a6.jpg">
-                                        <div class="m-t-xs">
-                                            <i class="fa fa-star text-warning"></i>
-                                            <i class="fa fa-star text-warning"></i>
-                                        </div>
-                                    </div>
-                                    <div class="media-body">
-                                        据天津日报报道：瑞海公司董事长于学伟，副董事长董社轩等10人在13日上午已被控制。
-                                        <br>
-                                        <small class="text-muted">今天 4:21</small>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="tab-3" class="tab-pane">
-                        <div class="sidebar-title">
-                            <h3> <i class="fa fa-cube"></i> 最新任务</h3>
-                            <small><i class="fa fa-tim"></i> 您当前有0个任务，0个已完成</small>
-                        </div>
-                        <ul class="sidebar-list">
-                            <li>
-                                <a href="#">
-                                    <div class="small pull-right m-t-xs">9小时以后</div>
-                                    <h4>市场调研</h4> 按要求接收教材；
-
-                                    <div class="small">已完成： 50%</div>
-                                    <div class="progress progress-mini">
-                                        <div style="width: 50%;" class="progress-bar progress-bar-warning"></div>
-                                    </div>
-                                    <div class="small text-muted m-t-xs">项目截止： 4:00 - 2015.10.01</div>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--右侧边栏结束-->
     </div>
 
     <script src="~/Content/BootStrap/Script/bootstrap.js"></script>

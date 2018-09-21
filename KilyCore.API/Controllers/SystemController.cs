@@ -521,5 +521,17 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(SystemService.EditPay(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 消息盒子
+        /// <summary>
+        /// 消息盒子分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetMsgPage")]
+        public ObjectResultEx GetMsgPage(PageParamList<Object> pageParam)
+        {
+            return ObjectResultEx.Instance(SystemService.GetMsgPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }

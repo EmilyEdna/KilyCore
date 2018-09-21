@@ -44,5 +44,9 @@ namespace KilyCore.EntityFrameWork.Model.System
         /// 所属区域
         /// </summary>
         public virtual string TypePath { get; set; }
+        /// <summary>
+        /// 行业类型
+        /// </summary>
+        public virtual string TrageType { get; set; }
     }
 }

@@ -395,9 +395,9 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("ReportCardWaring")]
-        public ObjectResultEx ReportCardWaring(SimpleParam<Guid> Param)
+        public ObjectResultEx ReportCardWaring(SimpleParam<Guid> Param,SimpleParam<String> Key)
         {
-            return ObjectResultEx.Instance(GovtWebService.ReportCardWaring(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(GovtWebService.ReportCardWaring(Param.Id, Key.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }
