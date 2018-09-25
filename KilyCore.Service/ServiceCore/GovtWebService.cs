@@ -1044,6 +1044,7 @@ namespace KilyCore.Service.ServiceCore
         #endregion
 
         #region 执法检查
+        #region 网上执法
         /// <summary>
         /// 网上执法分页
         /// </summary>
@@ -1088,17 +1089,20 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string EditPatrol(RequestGovtNetPatrol Param)
         {
-            int Count = Kily.Set<GovtNetPatrol>().Where(t => t.CompanyId == Param.CompanyId)
+            GovtNetPatrol patrol = Kily.Set<GovtNetPatrol>().Where(t => t.CompanyId == Param.CompanyId)
                  .Where(t => t.TradeType.Equals(Param.TradeType))
                  .Where(t => t.CompanyName.Equals(Param.CompanyName))
-                 .AsNoTracking().Select(t => t.Id).Count();
+                 .AsNoTracking().FirstOrDefault();
             GovtNetPatrol govtNet = Param.MapToEntity<GovtNetPatrol>();
-            if (Count == 0)
+            if (patrol == null)
+            {
+                govtNet.PotrolNum = 1;
                 return Insert(govtNet) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            }
             else
             {
-                govtNet.PotrolNum += 1;
-                return UpdateField(govtNet, "PotrolNum") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+                patrol.PotrolNum += 1;
+                return UpdateField(patrol, "PotrolNum") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
             }
         }
         /// <summary>
@@ -1131,6 +1135,135 @@ namespace KilyCore.Service.ServiceCore
             };
             return Insert(message) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
+        #endregion
+        #region 执法类目
+        /// <summary>
+        /// 执法类目分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseGovtPatrolCategory> GetCategoryPage(PageParamList<RequestGovtPatrolCategory> pageParam)
+        {
+            IQueryable<GovtPatrolCategory> queryable = Kily.Set<GovtPatrolCategory>().OrderByDescending(t => t.CreateTime).Where(t => t.TypePath.Contains(GovtInfo().City));
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.CategoryName))
+                queryable = queryable.Where(t => t.CategoryName.Contains(pageParam.QueryParam.CategoryName));
+            var data = queryable.Select(t => new ResponseGovtPatrolCategory()
+            {
+                Id = t.Id,
+                CategoryName = t.CategoryName,
+                CategoryType = t.CategoryType,
+                Remark = t.Remark
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑类目
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditCategory(RequestGovtPatrolCategory Param)
+        {
+            GovtPatrolCategory category = Param.MapToEntity<GovtPatrolCategory>();
+            if (Param.Id == Guid.Empty)
+                return Insert(category) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+                return Update(category, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        /// <summary>
+        /// 类目详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseGovtPatrolCategory GetCategoryDetail(Guid Id)
+        {
+            var data = Kily.Set<GovtPatrolCategory>().Where(t => t.Id == Id).Select(t => new ResponseGovtPatrolCategory()
+            {
+                Id = t.Id,
+                GovtId = t.GovtId,
+                CategoryName = t.CategoryName,
+                Template = t.Template,
+                CategoryType = t.CategoryType,
+                Grade = t.Grade,
+                Remark = t.Remark,
+                TypePath = t.TypePath
+            }).AsNoTracking().FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 删除类目
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveCategory(Guid Id)
+        {
+            return Remove<GovtPatrolCategory>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 题库分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseGovtPatrolCategoryAttach> GetCategoryAttachPage(PageParamList<RequestGovtPatrolCategoryAttach> pageParam)
+        {
+            IQueryable<GovtPatrolCategoryAttach> queryable = Kily.Set<GovtPatrolCategoryAttach>()
+                .Where(t => t.PatralCategoryId == pageParam.QueryParam.PatralCategoryId)
+                .OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.QuestionTitle))
+                queryable = queryable.Where(t => t.QuestionTitle.Contains(pageParam.QueryParam.QuestionTitle));
+            var data = queryable.Select(t => new ResponseGovtPatrolCategoryAttach()
+            {
+                Id = t.Id,
+                QuestionTitle = t.QuestionTitle,
+                SelectTypeName = AttrExtension.GetSingleDescription<ElementEnum, DescriptionAttribute>(t.SelectType),
+                Score = t.Score,
+                Type = t.Type
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑题库
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditCategoryAttach(RequestGovtPatrolCategoryAttach Param)
+        {
+            GovtPatrolCategoryAttach category = Param.MapToEntity<GovtPatrolCategoryAttach>();
+            if (Param.Id == Guid.Empty)
+                return Insert(category) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+                return Update(category, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        /// <summary>
+        /// 题库详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseGovtPatrolCategoryAttach GetCategoryAttachDetail(Guid Id)
+        {
+            var data = Kily.Set<GovtPatrolCategoryAttach>().Where(t => t.Id == Id).Select(t => new ResponseGovtPatrolCategoryAttach()
+            {
+                Id = t.Id,
+                GovtId = t.GovtId,
+                QuestionTitle = t.QuestionTitle,
+                SelectType = t.SelectType,
+                Type = t.Type,
+                PatralCategoryId = t.PatralCategoryId,
+                Answer = t.Answer,
+                AnswerScore = t.AnswerScore,
+                Score = t.Score
+            }).AsNoTracking().FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 删除题库
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveCategoryAttach(Guid Id)
+        {
+            return Remove<GovtPatrolCategoryAttach>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
         #endregion
     }
 }

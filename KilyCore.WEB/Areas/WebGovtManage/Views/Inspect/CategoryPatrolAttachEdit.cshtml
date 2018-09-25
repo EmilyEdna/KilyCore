@@ -1,0 +1,96 @@
+﻿
+@{
+    ViewData["Title"] = "编辑题库";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#GovtId").val(GovtInfo.Id);
+                var Id = controller.GetParam("Id");
+                $("#PatralCategoryId").val(controller.GetParam("PId"));
+                if (Id != null && Id != "" && Id != undefined) {
+                    controller.ajax({
+                        url: "GovtWeb/GetCategoryAttachDetail",
+                        data: { Id: Id },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                        }
+                    });
+                }
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="GovtWeb/EditCategoryAttach" id="Edit">
+            <input type="hidden" name="Id" id="Id" />
+            <input type="hidden" name="GovtId" id="GovtId" />
+            <input type="hidden" name="PatralCategoryId" id="PatralCategoryId" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">问题标题</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="QuestionTitle" />
+                    </td>
+                    <th><label class="control-label">选择类型</label></th>
+                    <td class="has-warning">
+                        <select type="select" name="SelectType" class="form-control">
+                            <option value="10">单行文本</option>
+                            <option value="20">多行文本</option>
+                            <option value="30">下拉选择</option>
+                            <option value="40">单选</option>
+                            <option value="50">多选</option>
+                            <option value="60">单选+其他(文本框)</option>
+                            <option value="70">多选+其他(文本框)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">选项类型</label></th>
+                    <td class="has-warning">
+                        <select type="select" name="Type" class="form-control">
+                            <option value="一般项">一般项</option>
+                            <option value="重点项">重点项</option>
+                        </select>
+                    </td>
+                    <th><label class="control-label">分值</label></th>
+                    <td class="has-warning">
+                        <input class="form-control" name="Score" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">答案</label></th>
+                    <td class="has-warning">
+                        <input class="form-control" name="Answer" />
+                    </td>
+                    <th><label class="control-label">答案分值</label></th>
+                    <td class="has-warning">
+                        <input class="form-control" name="AnswerScore" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

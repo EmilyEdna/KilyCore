@@ -443,5 +443,88 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(GovtWebService.EditNetPatrol(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+
+        #region 执法类目
+        /// <summary>
+        /// 执法类目分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetCategoryPage")]
+        public ObjectResultEx GetCategoryPage(PageParamList<RequestGovtPatrolCategory> pageParam)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetCategoryPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑类目
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditCategory")]
+        public ObjectResultEx EditCategory(RequestGovtPatrolCategory Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.EditCategory(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 类目详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetCategoryDetail")]
+        public ObjectResultEx GetCategoryDetail(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetCategoryDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除类目
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveCategory")]
+        public ObjectResultEx RemoveCategory(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.RemoveCategory(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 题库分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetCategoryAttachPage")]
+        public ObjectResultEx GetCategoryAttachPage(PageParamList<RequestGovtPatrolCategoryAttach> pageParam)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetCategoryAttachPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑题库
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditCategoryAttach")]
+        public ObjectResultEx EditCategoryAttach(RequestGovtPatrolCategoryAttach Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.EditCategoryAttach(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 题库详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetCategoryAttachDetail")]
+        public ObjectResultEx GetCategoryAttachDetail(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetCategoryAttachDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除题库
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveCategoryAttach")]
+        public ObjectResultEx RemoveCategoryAttach(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.RemoveCategoryAttach(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }

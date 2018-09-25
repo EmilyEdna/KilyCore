@@ -37,7 +37,8 @@
                 //显示登录
                 $(".text-muted").prepend(Govt.TrueName);
                 $(".font-bold").prepend(Govt.Account);
-
+                if (Govt.TypePath == null || Govt.TypePath == "")
+                    controller.Alter("请前往部门信息用户管理完善账户信息！", "系统提示");
             },
             //获取树
             GetMenu: function () {

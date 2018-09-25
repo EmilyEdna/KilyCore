@@ -21,7 +21,19 @@ namespace KilyCore.WEB.Areas.WebGovtManage.Controllers
         {
             return View();
         }
+        public IActionResult CategoryPatrolAttach()
+        {
+            return View();
+        }
         public IActionResult NetPatrolEdit()
+        {
+            return View();
+        }
+        public IActionResult CategoryPatrolEdit()
+        {
+            return View();
+        }
+        public IActionResult CategoryPatrolAttachEdit()
         {
             return View();
         }

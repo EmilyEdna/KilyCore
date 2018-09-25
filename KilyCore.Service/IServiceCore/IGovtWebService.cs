@@ -89,14 +89,26 @@ namespace KilyCore.Service.IServiceCore
         int GetRiskCount();
         String GetCity(Guid Id);
         Object GetCardPage(PageParamList<RequestGovtRiskCompany> pageParam);
-        String ReportCardWaring(Guid Id,String Key);
+        String ReportCardWaring(Guid Id, String Key);
         #endregion
 
         #region 执法检查
+        #region 网上执法
         PagedResult<ResponseGovtNetPatrol> GetNetPatrolPage(PageParamList<RequestGovtNetPatrol> pageParam);
         String EditPatrol(RequestGovtNetPatrol Param);
         String RemovePatrol(Guid Id);
         String EditNetPatrol(RequestGovtMsg Param);
+        #endregion
+        #region 执法类目
+        PagedResult<ResponseGovtPatrolCategory> GetCategoryPage(PageParamList<RequestGovtPatrolCategory> pageParam);
+        String EditCategory(RequestGovtPatrolCategory Param);
+        ResponseGovtPatrolCategory GetCategoryDetail(Guid Id);
+        String RemoveCategory(Guid Id);
+        PagedResult<ResponseGovtPatrolCategoryAttach> GetCategoryAttachPage(PageParamList<RequestGovtPatrolCategoryAttach> pageParam);
+        String EditCategoryAttach(RequestGovtPatrolCategoryAttach Param);
+        ResponseGovtPatrolCategoryAttach GetCategoryAttachDetail(Guid Id);
+        String RemoveCategoryAttach(Guid Id);
+        #endregion
         #endregion
     }
 }
