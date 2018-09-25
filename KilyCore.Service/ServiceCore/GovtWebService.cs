@@ -1264,6 +1264,36 @@ namespace KilyCore.Service.ServiceCore
             return Remove<GovtPatrolCategoryAttach>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         #endregion
+        #region 移动执法
+        public PagedResult<ResponseGovtMovePatrol> GetMovePatralPage(PageParamList<RequestGovtMovePatrol> pageParam)
+        {
+            IQueryable<GovtMovePatrol> queryable = Kily.Set<GovtMovePatrol>().Where(t => t.GovtId == GovtInfo().Id).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.CompanyName))
+                queryable = queryable.Where(t => t.CompanyName.Contains(pageParam.QueryParam.CompanyName));
+            var data = queryable.Select(t => new ResponseGovtMovePatrol()
+            {
+                Id = t.Id,
+                GovtId = t.GovtId,
+                CompanyName = t.CompanyName,
+                CategoryName = t.CategoryName,
+                PatrolUser = t.PatrolUser,
+                PatrolTime = t.PatrolTime
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        public string RemoveMovePatral(Guid Id)
+        {
+            return Remove<GovtMovePatrol>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        public string EditMovePatrol(RequestGovtMovePatrol Param)
+        {
+            GovtPatrolCategory category = Kily.Set<GovtPatrolCategory>().Where(t => t.Id == Param.CategoryId).FirstOrDefault();
+            Param.AnswerList.Split(",").ToList().ForEach(t =>
+            {
+                var s = Guid.Parse(t.Split("|")[0]);
+            });
+        }
+        #endregion
         #endregion
     }
 }

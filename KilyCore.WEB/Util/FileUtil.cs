@@ -210,6 +210,7 @@ namespace KilyCore.WEB.Util
             String Path = Param.Path;
             if (String.IsNullOrEmpty(Path))
                 return null;
+            //针对富文本图片删除
             if (Path.Contains("img"))
             {
                 Regex regImg = new Regex(@"<img\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""']?[\s\t\r\n]*(?<imgUrl>[^\s\t\r\n""'<>]*)[^<>]*?/?[\s\t\r\n]*>", RegexOptions.IgnoreCase);
