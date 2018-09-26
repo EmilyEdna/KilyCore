@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewData["Title"] = "MovePatrolEdit";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var Id = controller.GetParam("Id");
+                $("#Id").val(Id);
+                controller.ajax({
+                    url: "GovtWeb/GetGovtMovePatrolDetail",
+                    data: { Id: Id },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        if (result.data != null)
+                            $("#Content").html(result.data.PatrolTable);
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                //编辑
+                $("#Edit").on("click", function () {
+                    var html = $("#Content").html();
+                    if (html != "" && html != null) {
+                        var Editor = controller.Editor(".summernote", { width: 1150, height: 600 });
+                        Editor.summernote('code', html);
+                        $("#Content").html("");
+                    }
+                });
+                //验证
+                controller.ValidateConfirm("#Form");
+                //导出word
+                $("#Export").on("click", function () {
+                   
+                });
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" id="Form" method="post" action="GovtWeb/EditMovePatrol">
+            <input type="hidden" name="Id" id="Id" />
+            <input type="hidden" name="PatrolTable" />
+            <div class="btn-group">
+                <button type="button" class="btn btn-default" id="Edit"><i class="fa fa-edit"></i>编辑</button>
+                <button type="button" class="btn btn-default" id="Export"><i class="fa fa-file-word-o fa-fw"></i>导出Word</button>
+            </div>
+            <div class="row">
+                <div class="col-sm-12" id="Content">
+                </div>
+            </div>
+            <div class="summernote" name="PatrolTable"></div>
+        </form>
+    </div>
+</div>

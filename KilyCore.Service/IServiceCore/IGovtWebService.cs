@@ -109,6 +109,12 @@ namespace KilyCore.Service.IServiceCore
         ResponseGovtPatrolCategoryAttach GetCategoryAttachDetail(Guid Id);
         String RemoveCategoryAttach(Guid Id);
         #endregion
+        #region 移动执法
+        PagedResult<ResponseGovtMovePatrol> GetMovePatralPage(PageParamList<RequestGovtMovePatrol> pageParam);
+        String RemoveMovePatral(Guid Id);
+        String EditMovePatrol(RequestGovtMovePatrol Param);
+        ResponseGovtMovePatrol GetGovtMovePatrolDetail(Guid Id);
+        #endregion
         #endregion
     }
 }

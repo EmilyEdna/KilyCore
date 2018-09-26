@@ -526,5 +526,48 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(GovtWebService.RemoveCategoryAttach(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+
+        #region 移动执法
+        /// <summary>
+        /// 移动执法分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetMovePatralPage")]
+        public ObjectResultEx GetMovePatralPage(PageParamList<RequestGovtMovePatrol> pageParam)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetMovePatralPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除移动执法记录
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveMovePatral")]
+        public ObjectResultEx RemoveMovePatral(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.RemoveMovePatral(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑移动执法
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditMovePatrol")]
+        public ObjectResultEx EditMovePatrol(RequestGovtMovePatrol Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.EditMovePatrol(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取移动执法表
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetGovtMovePatrolDetail")]
+        public ObjectResultEx GetGovtMovePatrolDetail(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetGovtMovePatrolDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }
