@@ -20,7 +20,7 @@ namespace KilyCore.DataEntity.ResponseMapper.System
         public string TableName { get; set; }
         public bool OpenNet { get; set; }
         public string Chapter { get; set; }
-        public  string Addrees { get; set; }
+        public  string Address { get; set; }
         public string CommunityCode { get; set; }
         /// <summary>
         /// 所属区域

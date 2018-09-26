@@ -1288,10 +1288,52 @@ namespace KilyCore.Service.ServiceCore
         public string EditMovePatrol(RequestGovtMovePatrol Param)
         {
             GovtPatrolCategory category = Kily.Set<GovtPatrolCategory>().Where(t => t.Id == Param.CategoryId).FirstOrDefault();
+            StringBuilder Sb = new StringBuilder();
+            Sb.Append($@"<center>{category.Grade}</center>");
+            Sb.Append(@"<table cellpadding='2' width='98%' cellspacing='0' border='1' bordercolor='#000000'>");
+            Sb.Append(@"<tr style='text-align:center;line-height:28px;font-size:15px;'><th>序号</th><th>检查项</th><th>结果</th><th>分值</th></tr>");
+            double TotalScore = 0;
+            int EleIndex = 0;
             Param.AnswerList.Split(",").ToList().ForEach(t =>
             {
-                var s = Guid.Parse(t.Split("|")[0]);
+                var AnswerList = t.Split("|").ToList();
+                Guid CategoryAttachId = Guid.Parse(AnswerList[0]);
+                ResponseGovtPatrolCategoryAttach CategoryAttach = Kily.Set<GovtPatrolCategoryAttach>()
+                .Where(x => x.Id == CategoryAttachId).Select(x => new ResponseGovtPatrolCategoryAttach()
+                {
+                    QuestionTitle = x.QuestionTitle,
+                    Answer = x.Answer,
+                    AnswerScore = x.AnswerScore
+                }).FirstOrDefault();
+                int index = CategoryAttach.Answer.Split("|").ToList().FindIndex(p => p.Equals(AnswerList[1]));
+                string Score = CategoryAttach.AnswerScore.Split("|").ToList().ElementAtOrDefault(index);
+                Sb.Append($@"<tr style='font-size:13px;'><td align='center'>{++EleIndex}</td><td>{CategoryAttach.QuestionTitle}</td><td align='center'>{AnswerList[1]}</td><td align='center'>{Score}</td></tr>");
+                TotalScore += Convert.ToDouble(Score);
             });
+            Sb.Append($@"<tr><td align='center' style='font-size:13px;'>得分总和</td><td colspan='3' style='font-size:13px;'>{TotalScore}分</td></tr>");
+            Sb.Append(@"<tr><td colspan='4' style='font-size:13px;'><center>现场照片</center>");
+            Param.ImgList.Split(",").ToList().ForEach(t =>
+            {
+                Sb.Append($@"<center><a href='http://www.cfdacx.com{t}' target='_blank'><img src='http://www.cfdacx.com{t}' style='width:100%;max-width:456px;'></a></center>");
+            });
+            if (!string.IsNullOrEmpty(Param.Sound))
+            {
+                Sb.Append($@"<tr><td colspan='4' style='font-size:13px;'><iframe style='height: 80px; width:800px;overflow:hidden' src='' frameborder='0' scrolling='no'></iframe></td></tr>");
+            }
+            Sb.Append($@"<tr><td colspan='4' style='font-size:13px;'>检查备注：{Param.CheckRemark}</td></tr>");
+            Sb.Append($@"<tr><td colspan='4' style='font-size:13px;'>备注：{category.Remark}</td></tr>");
+            Sb.Append(@"</table>");
+            Param.PatrolTable = category.Template.Replace("{companyName}", Param.CompanyName)
+                .Replace("{companyAddress}", Param.CompanyAddress)
+                .Replace("{personName}", Param.PersonName)
+                .Replace("{companyPhone}", Param.CompanyPhone)
+                .Replace("{companyCode}", Param.CompanyPhone)
+                .Replace("{companySign}", Param.CompanySign)
+                .Replace("{CheckTime}", Param.PatrolTime.ToString())
+                .Replace("{CheckPerson}", Param.PatrolUser)
+                .Replace("{CheckItemList}", Sb.ToString());
+            GovtMovePatrol GovtMove = Param.MapToEntity<GovtMovePatrol>();
+            return Insert(GovtMove) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         #endregion
         #endregion

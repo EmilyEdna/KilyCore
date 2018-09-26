@@ -321,7 +321,7 @@ namespace KilyCore.Service.ServiceCore
                      OpenNet = t.OpenNet,
                      Chapter = t.Chapter,
                      CommunityCode = t.CommunityCode,
-                     Addrees = t.Addrees
+                     Address = t.Addrees
                  }).FirstOrDefault();
         }
         /// <summary>
@@ -358,7 +358,7 @@ namespace KilyCore.Service.ServiceCore
                 CommunityCode = t.CommunityCode,
                 TrueName = t.TrueName,
                 Chapter = t.Chapter,
-                Addrees = t.Addrees
+                Address = t.Addrees
             }).ToList();
             ResponseAdmin admin = Kily.Set<SystemAdmin>().Where(t => t.IsDelete == false)
             .Where(t => t.AccountType <= AccountEnum.Country).Select(t => new ResponseAdmin()
@@ -367,7 +367,7 @@ namespace KilyCore.Service.ServiceCore
                 CommunityCode = t.CommunityCode,
                 TrueName = t.TrueName,
                 Chapter = t.Chapter,
-                Addrees = t.Addrees
+                Address = t.Addrees
             }).FirstOrDefault();
             data.Add(admin);
             return data;
@@ -556,7 +556,7 @@ namespace KilyCore.Service.ServiceCore
                Email = t.Email,
                AccountType = t.AccountType,
                RoleAuthorType = t.RoleAuthorType,
-               Addrees = t.Addrees,
+               Address = t.Addrees,
                CommunityCode = t.CommunityCode,
                TableName = typeof(ResponseAdmin).Name
            }).FirstOrDefault();
