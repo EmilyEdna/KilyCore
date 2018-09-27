@@ -1332,7 +1332,7 @@ namespace KilyCore.Service.ServiceCore
                 Sb.Append(@"<tr><td colspan='4' style='font-size:13px;'><center>现场照片</center>");
                 Param.ImgList.Split(",").ToList().ForEach(t =>
                 {
-                    Sb.Append($@"<center><a href='http://www.cfdacx.com{t}' target='_blank'><img src='http://www.cfdacx.com{t}' style='width:100%;max-width:456px;'></a></center>");
+                    Sb.Append($@"<center><img src='http://www.cfdacx.com{t}' style='width:100%;max-width:456px;'></center>");
                 });
                 if (!string.IsNullOrEmpty(Param.Sound))
                 {

@@ -6,6 +6,8 @@
 @section css{
 }
 @section script{
+    <script src="~/Content/Word/FileSaver.js"></script>
+    <script src="~/Content/Word/jquery.wordexport.js"></script>
     <script>
         //配置
         var options = {
@@ -43,7 +45,11 @@
                 controller.ValidateConfirm("#Form");
                 //导出word
                 $("#Export").on("click", function () {
-                   
+                    var html = $("#Content").html();
+                    if (html != "" && html != null)
+                        $("#Content").wordExport("执法记录表");
+                    else
+                        controller.Alter("请先保存");
                 });
             },
             //行为
