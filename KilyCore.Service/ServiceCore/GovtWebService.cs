@@ -1374,5 +1374,168 @@ namespace KilyCore.Service.ServiceCore
         }
         #endregion
         #endregion
+
+        #region 应急培训
+        #region 培训通知
+        /// <summary>
+        /// 通知分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseGovtTrainNotice> GetTrainNoticePage(PageParamList<RequestGovtTrainNotice> pageParam)
+        {
+            IQueryable<GovtTrainNotice> queryable = Kily.Set<GovtTrainNotice>().Where(t => t.GovtId == GovtInfo().Id).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.TrainTitle))
+                queryable = queryable.Where(t => t.TrainTitle.Contains(pageParam.QueryParam.TrainTitle));
+            var data = queryable.Select(t => new ResponseGovtTrainNotice()
+            {
+                Id = t.Id,
+                TrainTitle = t.TrainTitle,
+                TrainPlace = t.TrainPlace,
+                TrainTime = t.TrainTime,
+                CompanyType = t.CompanyType
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑通知
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditNotice(RequestGovtTrainNotice Param)
+        {
+            GovtTrainNotice notice = Param.MapToEntity<GovtTrainNotice>();
+            if (Param.Id == Guid.Empty)
+                return Insert(notice) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+                return Update(notice, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+
+        }
+        /// <summary>
+        /// 删除通知
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveNotice(Guid Id)
+        {
+            return Remove<GovtTrainNotice>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 通知详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseGovtTrainNotice GetTrainNoticeDetail(Guid Id)
+        {
+            var data = Kily.Set<GovtTrainNotice>().Where(t => t.Id == Id).Select(t => new ResponseGovtTrainNotice()
+            {
+                Id = t.Id,
+                GovtId = t.GovtId,
+                CompanyType = t.CompanyType,
+                TrainTime = t.TrainTime,
+                TrainPlace = t.TrainPlace,
+                Remark = t.Remark,
+                TrainTitle = t.TrainTitle
+            }).FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 推送通知
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string ReportTrainNotice(Guid Id)
+        {
+            GovtTrainNotice notice = Kily.Set<GovtTrainNotice>().Where(t => t.Id == Id).FirstOrDefault();
+            SystemMessage message = new SystemMessage
+            {
+                MsgName = notice.TrainTitle,
+                MsgContent = notice.Remark,
+                ReleaseTime = DateTime.Now,
+                TrageType = notice.CompanyType,
+                TypePath = GovtInfo().TypePath
+            };
+            return Insert(message) ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
+        }
+        #endregion
+        #region 培训报道
+        /// <summary>
+        /// 报道分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseGovtTrainReport> GetTrainReportPage(PageParamList<RequestGovtTrainReport> pageParam)
+        {
+            IQueryable<GovtTrainReport> queryable = Kily.Set<GovtTrainReport>().Where(t => t.GovtId == GovtInfo().Id).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.InfoTitle))
+                queryable = queryable.Where(t => t.InfoTitle.Contains(pageParam.QueryParam.InfoTitle));
+            var data = queryable.Select(t => new ResponseGovtTrainReport()
+            {
+                Id = t.Id,
+                InfoTitle = t.InfoTitle,
+                CompanyType = t.CompanyType,
+                InfoContent = t.InfoContent
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑报道
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditTrainReport(RequestGovtTrainReport Param)
+        {
+            GovtTrainReport report = Param.MapToEntity<GovtTrainReport>();
+            if (Param.Id == Guid.Empty)
+                return Insert(report) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+                return Update(report, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        /// <summary>
+        /// 删除报道
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveReport(Guid Id)
+        {
+            return Remove<GovtTrainReport>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 报道详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseGovtTrainReport GetTrainReportDetail(Guid Id)
+        {
+            var data = Kily.Set<GovtTrainReport>().Where(t => t.Id == Id).Select(t => new ResponseGovtTrainReport()
+            {
+                Id=t.Id,
+                GovtId=t.GovtId,
+                CompanyType=t.CompanyType,
+                InfoContent=t.InfoContent,
+                InfoTitle=t.InfoTitle
+            }).FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 推送报道
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string ReportTrainReport(Guid Id)
+        {
+            GovtTrainReport report= Kily.Set<GovtTrainReport>().Where(t => t.Id == Id).FirstOrDefault();
+            SystemMessage message = new SystemMessage
+            {
+                MsgName = report.InfoTitle,
+                MsgContent = report.InfoContent,
+                ReleaseTime = DateTime.Now,
+                TrageType = report.CompanyType,
+                TypePath = GovtInfo().TypePath
+            };
+            return Insert(message) ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
+        }
+        #endregion
+        #endregion
     }
 }

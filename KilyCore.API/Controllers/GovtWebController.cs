@@ -569,5 +569,112 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(GovtWebService.GetGovtMovePatrolDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+
+        #region 应急培训
+        #region 培训通知
+        /// <summary>
+        /// 通知分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetTrainNoticePage")]
+        public ObjectResultEx GetTrainNoticePage(PageParamList<RequestGovtTrainNotice> pageParam)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetTrainNoticePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑通知
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditNotice")]
+        public ObjectResultEx EditNotice(RequestGovtTrainNotice Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.EditNotice(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除通知
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveNotice")]
+        public ObjectResultEx RemoveNotice(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.RemoveNotice(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 通知详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetTrainNoticeDetail")]
+        public ObjectResultEx GetTrainNoticeDetail(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetTrainNoticeDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 推送通知
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("ReportTrainNotice")]
+        public ObjectResultEx ReportTrainNotice(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.ReportTrainNotice(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #region 培训报道
+        /// <summary>
+        /// 报道分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetTrainReportPage")]
+        public ObjectResultEx GetTrainReportPage(PageParamList<RequestGovtTrainReport> pageParam)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetTrainReportPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑报道
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditTrainReport")]
+        public ObjectResultEx EditTrainReport(RequestGovtTrainReport Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.EditTrainReport(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除报道
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveReport")]
+        public ObjectResultEx RemoveReport(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.RemoveReport(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 报道详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetTrainReportDetail")]
+        public ObjectResultEx GetTrainReportDetail(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetTrainReportDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 推送报道
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("ReportTrainReport")]
+        public ObjectResultEx ReportTrainReport(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.ReportTrainReport(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #endregion
     }
 }

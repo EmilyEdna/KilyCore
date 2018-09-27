@@ -116,5 +116,22 @@ namespace KilyCore.Service.IServiceCore
         ResponseGovtMovePatrol GetGovtMovePatrolDetail(Guid Id);
         #endregion
         #endregion
+
+        #region 应急培训
+        #region 培训通知
+        PagedResult<ResponseGovtTrainNotice> GetTrainNoticePage(PageParamList<RequestGovtTrainNotice> pageParam);
+        String EditNotice(RequestGovtTrainNotice Param);
+        String RemoveNotice(Guid Id);
+        ResponseGovtTrainNotice GetTrainNoticeDetail(Guid Id);
+        String ReportTrainNotice(Guid Id);
+        #endregion
+        #region 培训报道
+        PagedResult<ResponseGovtTrainReport> GetTrainReportPage(PageParamList<RequestGovtTrainReport> pageParam);
+        String EditTrainReport(RequestGovtTrainReport Param);
+        String RemoveReport(Guid Id);
+        ResponseGovtTrainReport GetTrainReportDetail(Guid Id);
+        String ReportTrainReport(Guid Id);
+        #endregion
+        #endregion
     }
 }
