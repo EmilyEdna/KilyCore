@@ -1509,11 +1509,11 @@ namespace KilyCore.Service.ServiceCore
         {
             var data = Kily.Set<GovtTrainReport>().Where(t => t.Id == Id).Select(t => new ResponseGovtTrainReport()
             {
-                Id=t.Id,
-                GovtId=t.GovtId,
-                CompanyType=t.CompanyType,
-                InfoContent=t.InfoContent,
-                InfoTitle=t.InfoTitle
+                Id = t.Id,
+                GovtId = t.GovtId,
+                CompanyType = t.CompanyType,
+                InfoContent = t.InfoContent,
+                InfoTitle = t.InfoTitle
             }).FirstOrDefault();
             return data;
         }
@@ -1524,7 +1524,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string ReportTrainReport(Guid Id)
         {
-            GovtTrainReport report= Kily.Set<GovtTrainReport>().Where(t => t.Id == Id).FirstOrDefault();
+            GovtTrainReport report = Kily.Set<GovtTrainReport>().Where(t => t.Id == Id).FirstOrDefault();
             SystemMessage message = new SystemMessage
             {
                 MsgName = report.InfoTitle,
@@ -1536,6 +1536,102 @@ namespace KilyCore.Service.ServiceCore
             return Insert(message) ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
         }
         #endregion
+        #endregion
+
+        #region 投诉信息
+        /// <summary>
+        /// 投诉信息分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseGovtComplain> GetComplainPage(PageParamList<RequestGovtComplain> pageParam)
+        {
+            IQueryable<GovtComplain> queryable = Kily.Set<GovtComplain>().OrderByDescending(t => t.CreateTime);
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
+            {
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        queryable = queryable.Where(t => t.TypePath.Contains(item));
+                    }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+            }
+            else
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.ComplainContent))
+                queryable = queryable.Where(t => t.ComplainContent.Contains(pageParam.QueryParam.ComplainContent));
+            var data = queryable.Select(t => new ResponseGovtComplain
+            {
+                Id = t.Id,
+                CompanyName = t.CompanyName,
+                Status = t.Status,
+                CompanyType = t.CompanyType,
+                ComplainContent = t.ComplainContent,
+                ComplainTime = t.ComplainTime,
+                ComplainUserPhone = t.ComplainUserPhone,
+                ProductName = t.ProductName,
+                ComplainUser = t.ComplainUser,
+                HandlerContent = t.HandlerContent
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 删除投诉
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveComplain(Guid Id)
+        {
+            return Remove<GovtComplain>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 编辑投诉
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditComplain(RequestGovtComplain Param)
+        {
+            GovtComplain complain = Param.MapToEntity<GovtComplain>();
+            complain.Status = "待处理";
+            return Insert(complain) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 推送投诉
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string ReportComplain(Guid Id)
+        {
+            GovtComplain complain = Kily.Set<GovtComplain>().Where(t => t.Id == Id).FirstOrDefault();
+            SystemMessage message = new SystemMessage
+            {
+                CompanyId = complain.CompanyId,
+                MsgName = complain.ProductName,
+                MsgContent = complain.ComplainContent,
+                ReleaseTime = DateTime.Now,
+                TrageType = complain.CompanyType,
+                TypePath = complain.TypePath
+            };
+            return Insert(message) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 处理投诉
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string ReportComplainInfo(Guid Id, string Param)
+        {
+            GovtComplain complain = Kily.Set<GovtComplain>().Where(t => t.Id == Id).FirstOrDefault();
+            complain.HandlerContent = Param;
+            complain.Status = "已处理";
+            List<String> Fields = new List<String>{ "HandlerContent","Status"};
+            return UpdateField(complain, null, Fields) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
         #endregion
     }
 }

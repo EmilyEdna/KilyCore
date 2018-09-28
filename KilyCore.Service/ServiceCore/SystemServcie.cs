@@ -1243,16 +1243,16 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<SystemMessage> queryable = Kily.Set<SystemMessage>().OrderByDescending(t => t.CreateTime);
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.Id == CompanyInfo().Id || t.TypePath.Contains(CompanyInfo().Area))
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || t.TypePath.Contains(CompanyInfo().Area))
                     .Where(t => t.TrageType.Equals(CompanyInfo().CompanyTypeName));
             else if (CompanyUser() != null)
-                queryable = queryable.Where(t => t.Id == CompanyUser().Id || t.TypePath.Contains(CompanyUser().Area))
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id || t.TypePath.Contains(CompanyUser().Area))
                      .Where(t => t.TrageType.Equals(CompanyUser().CompanyTypeName));
             else if (MerchantInfo() != null)
-                queryable = queryable.Where(t => t.Id == MerchantInfo().Id || t.TypePath.Contains(MerchantInfo().Area))
+                queryable = queryable.Where(t => t.CompanyId == MerchantInfo().Id || t.TypePath.Contains(MerchantInfo().Area))
                      .Where(t => t.TrageType.Equals(MerchantInfo().DiningTypeName));
             else if (MerchantUser() != null)
-                queryable = queryable.Where(t => t.Id == MerchantUser().Id || t.TypePath.Contains(MerchantUser().Area))
+                queryable = queryable.Where(t => t.CompanyId == MerchantUser().Id || t.TypePath.Contains(MerchantUser().Area))
                      .Where(t => t.TrageType.Equals(MerchantUser().DiningTypeName));
             var data = queryable.Select(t => new ResponseSystemMessage()
             {

@@ -676,5 +676,60 @@ namespace KilyCore.API.Controllers
         }
         #endregion
         #endregion
+
+        #region 投诉信息
+        /// <summary>
+        /// 投诉信息分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetComplainPage")]
+        public ObjectResultEx GetComplainPage(PageParamList<RequestGovtComplain> pageParam)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetComplainPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除投诉
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveComplain")]
+        public ObjectResultEx RemoveComplain(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.RemoveComplain(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑投诉
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditComplain")]
+        public ObjectResultEx EditComplain(RequestGovtComplain Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.EditComplain(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 推送投诉
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("ReportComplain")]
+        public ObjectResultEx ReportComplain(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.ReportComplain(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+
+        }
+        /// <summary>
+        /// 处理投诉
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("ReportComplainInfo")]
+        public ObjectResultEx ReportComplainInfo(SimpleParam<Guid> Key, SimpleParam<String> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.ReportComplainInfo(Key.Id, Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }

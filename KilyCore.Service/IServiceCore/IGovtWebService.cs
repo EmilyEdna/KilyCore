@@ -133,5 +133,13 @@ namespace KilyCore.Service.IServiceCore
         String ReportTrainReport(Guid Id);
         #endregion
         #endregion
+
+        #region 投诉信息
+        PagedResult<ResponseGovtComplain> GetComplainPage(PageParamList<RequestGovtComplain> pageParam);
+        String RemoveComplain(Guid Id);
+        String EditComplain(RequestGovtComplain Param);
+        String ReportComplain(Guid Id);
+        String ReportComplainInfo(Guid Id, string Param);
+        #endregion
     }
 }
