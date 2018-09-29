@@ -4,6 +4,8 @@
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
+    <script src="~/Content/ExportPlugin/Script/xlsx.core.min.js"></script>
+    <script src="~/Content/ExportPlugin/Script/tableExport.js"></script>
     <script>
         //配置
         var options = {
@@ -27,36 +29,19 @@
             InitEvents: function () {
                 //导出Excel
                 $("#export").on('click', function () {
-                    if (options.IdList == null) {
-                        controller.Msg("请选择需要导出的数据!");
-                        return;
-                    };
-                    var data = Array.from(options.IdList);
-                    if (data.length == 0) {
-                        controller.Msg("请选择需要导出的数据!");
-                        return;
-                    }
-                    $("#Ids").val(data);
-                    $("#ApiUrl").val("GovtWeb/ExportEnterprise")
-                    $("#Excel").submit();
-                });
-                options.IdList = null;
-                //入库绑定复选框事件
-                $('#tableList').on('uncheck.bs.table check.bs.table check-all.bs.table uncheck-all.bs.table', function (event, rows) {
-                    options.IdList = controller.TableEvent(event.type, rows, 1);
+                    $("#tableList").tableExport({
+                        fileName: "单位食堂",
+                        ignoreColumn: ["Handler"],
+                        type: "excel",
+                        mso: {
+                            fileFormat: "xlsx",
+                            worksheetName: "数据",
+                        }
+                    });
                 });
             },
             //行为
             action: {
-                CheckFormatter: function (val, row, index) {
-                    if (options.IdList != null) {
-                        //集合先转数组
-                        if ($.inArray(row.Id, Array.from(options.IdListIn)) != -1)
-                            return {
-                                checked: true
-                            }
-                    }
-                },
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary detail"><i class="fa fa-pencil-square-o"></i>详情</button>');
@@ -87,10 +72,6 @@
 @section css{
 
 }
-<form method="post" action="/File/ExportExcel" id="Excel">
-    <input type="hidden" name="Ids" id="Ids" />
-    <input type="hidden" name="ApiUrl" id="ApiUrl" />
-</form>
 <div class="container-fluid">
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
@@ -120,13 +101,12 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="Stutas" data-checkbox="true" data-halign="center" data-align="center" data-valign="middle" data-formatter="options.action.CheckFormatter"></th>
                                 <th data-field="MerchantName" data-halign="center" data-align="center" data-valign="middle">食堂名称</th>
                                 <th data-field="DiningTypeName" data-halign="center" data-align="center" data-valign="middle">商家类型</th>
                                 <th data-field="CommunityCode" data-halign="center" data-align="center" data-valign="middle">信用代码</th>
                                 <th data-field="Phone" data-halign="center" data-align="center" data-valign="middle">食堂电话</th>
                                 <th data-field="AllowUnit" data-halign="center" data-align="center" data-valign="middle">所属单位</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th data-field="Handler" data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>
                     </table>

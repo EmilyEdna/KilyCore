@@ -75,7 +75,7 @@
             var blob = new Blob([fileContent], {
                 type: "application/msword;charset=utf-8"
             });
-            saveAs(blob, fileName + ".doc");
+            saveAs(blob, fileName + ".docx");
         };
     })(jQuery);
 } else {
