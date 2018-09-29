@@ -1,5 +1,6 @@
 ﻿using KilyCore.DataEntity.RequestMapper.Function;
 using KilyCore.DataEntity.ResponseMapper.Function;
+using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.EntityFrameWork.Model.Enterprise;
 using KilyCore.EntityFrameWork.Model.Function;
 using KilyCore.EntityFrameWork.Model.Repast;
@@ -510,10 +511,10 @@ namespace KilyCore.Service.ServiceCore
         public string RecordAreaDic(RequestAreaDictionary Param)
         {
             FunctionAreaDictionary dictionary = Param.MapToEntity<FunctionAreaDictionary>();
-            if (Param.Id==Guid.Empty)
-            return Insert<FunctionAreaDictionary>(dictionary) ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
+            if (Param.Id == Guid.Empty)
+                return Insert<FunctionAreaDictionary>(dictionary) ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
             else
-                return Update<FunctionAreaDictionary, RequestAreaDictionary>(dictionary,Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+                return Update<FunctionAreaDictionary, RequestAreaDictionary>(dictionary, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         /// <summary>
         /// 启用或禁用
@@ -576,9 +577,9 @@ namespace KilyCore.Service.ServiceCore
         {
             return Kily.Set<FunctionAreaDictionary>().Where(t => t.DictionaryId == Id).Select(t => new ResponseAreaDic()
             {
-                Id=t.Id,
-                ProvinceId=t.ProvinceId,
-                ProvinceName = string.Join(",",Kily.Set<SystemProvince>().Where(x=>t.ProvinceId.Contains(x.Id.ToString())).Select(x=>x.Name).ToList()),
+                Id = t.Id,
+                ProvinceId = t.ProvinceId,
+                ProvinceName = string.Join(",", Kily.Set<SystemProvince>().Where(x => t.ProvinceId.Contains(x.Id.ToString())).Select(x => x.Name).ToList()),
                 DictionaryId = t.DictionaryId,
             }).FirstOrDefault();
         }
@@ -757,6 +758,39 @@ namespace KilyCore.Service.ServiceCore
                 BarData = new List<DataBar> { bar1, bar2, bar3, bar4, bar5 }
             };
             return dataCount;
+        }
+        #endregion
+        #region 系统消息
+        /// <summary>
+        /// 消息中心
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseSystemMessage> GetMsgPage(PageParamList<Object> pageParam)
+        {
+            IQueryable<SystemMessage> queryable = Kily.Set<SystemMessage>().OrderByDescending(t => t.CreateTime);
+            if (UserInfo().AccountType == AccountEnum.Province)
+                queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().Province));
+            if (UserInfo().AccountType == AccountEnum.City)
+                queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().City));
+            if (UserInfo().AccountType == AccountEnum.Area)
+                queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().Area));
+            var data = queryable.Select(t => new ResponseSystemMessage()
+            {
+                Id = t.Id,
+                MsgName = t.MsgName,
+                MsgContent = t.MsgContent
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 删除消息
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveMsg(Guid Id)
+        {
+            return Remove<SystemMessage>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         #endregion
     }

@@ -20,6 +20,7 @@ namespace KilyCore.DataEntity.ResponseMapper.System
 {
     public class ResponseSystemMessage
     {
+        public Guid Id { get; set; }
         /// <summary>
         /// 企业的Id
         /// </summary>

@@ -1,6 +1,7 @@
 ﻿using KilyCore.Configure;
 using KilyCore.DataEntity.RequestMapper.Function;
 using KilyCore.DataEntity.ResponseMapper.Function;
+using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.Service.QueryExtend;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace KilyCore.Service.IServiceCore
     /// <summary>
     /// 实用功能业务逻辑接口
     /// </summary>
-    public interface IFunctionService: IService
+    public interface IFunctionService : IService
     {
         #region 区域价目
         PagedResult<ResponseAreaPrice> GetAreaPricePage(PageParamList<RequestAreaPrice> pageParam);
@@ -48,6 +49,10 @@ namespace KilyCore.Service.IServiceCore
         #region 数据统计
         ResponseDataCount GetPieData();
         ResponseDataCount GetBarData();
+        #endregion
+        #region 系统消息
+        PagedResult<ResponseSystemMessage> GetMsgPage(PageParamList<Object> pageParam);
+        String RemoveMsg(Guid Id);
         #endregion
     }
 }

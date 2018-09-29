@@ -255,5 +255,27 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(FunctionService.GetBarData(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 系统消息
+        /// <summary>
+        /// 消息中心
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetMsgPage")]
+        public ObjectResultEx GetMsgPage(PageParamList<Object> pageParam)
+        {
+            return ObjectResultEx.Instance(FunctionService.GetMsgPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除消息
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveMsg")]
+        public ObjectResultEx RemoveMsg(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(FunctionService.RemoveMsg(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }
