@@ -254,6 +254,15 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(FunctionService.GetBarData(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 获取首页企业统计
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetStatistics")]
+        public ObjectResultEx GetStatistics()
+        {
+            return ObjectResultEx.Instance(FunctionService.GetStatistics(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 系统消息
         /// <summary>

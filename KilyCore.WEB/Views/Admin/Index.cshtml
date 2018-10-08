@@ -31,6 +31,26 @@
                     success: function (result) {
                         controller.Echarts("#echarts-bar-chart", result.data);
                     }
+                }); 
+                controller.ajax({
+                    url: "Function/GetStatistics",
+                    data: {},
+                    async: false,
+                    success: function (result) {
+                        var html = '';
+                        $.each(result.data.Temp, function (i, obj) {
+                            html += "<tr>";
+                            html += "<td>" + obj.ProvinceName + "</td>";
+                            html += "<td>" + result.data.PlantCount[i] + "</td>";
+                            html += "<td>" + result.data.ProCount[i] + "</td>";
+                            html += "<td>" + result.data.MoveCount[i] + "</td>";
+                            html += "<td>" + result.data.FoodCount[i] + "</td>";
+                            html += "<td>" + result.data.UnitCount[i] + "</td>";
+                            html += "<td>" + result.data.SmallCount[i] + "</td>";
+                            html += "</tr>";
+                        });
+                        $("tbody").html(html);
+                    }
                 });
             },
             InitEvents: function () {
@@ -59,42 +79,73 @@
         });
     </script>
 }
-<div class="row">
-    <div class="col-sm-6">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>饼状图</h5>
-                <div class="ibox-tools">
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
-                    <a class="close-link">
-                        <i class="fa fa-times"></i>
-                    </a>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>饼状图</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="echarts" id="echarts-pie-chart"></div>
                 </div>
             </div>
-            <div class="ibox-content">
-                <div class="echarts" id="echarts-pie-chart"></div>
+        </div>
+        <div class="col-sm-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>柱状图</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="echarts" id="echarts-bar-chart"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>区域信息一览</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>区域名称</th>
+                                <th>种养企业</th>
+                                <th>生产企业</th>
+                                <th>流通企业</th>
+                                <th>餐饮企业</th>
+                                <th>单位食堂</th>
+                                <th>三小商家</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-sm-6">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>柱状图</h5>
-                <div class="ibox-tools">
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
-                    <a class="close-link">
-                        <i class="fa fa-times"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="ibox-content">
-                <div class="echarts" id="echarts-bar-chart"></div>
-            </div>
-        </div>
-    </div>
-</div>
 

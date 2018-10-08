@@ -49,6 +49,7 @@ namespace KilyCore.Service.IServiceCore
         #region 数据统计
         ResponseDataCount GetPieData();
         ResponseDataCount GetBarData();
+        Object GetStatistics();
         #endregion
         #region 系统消息
         PagedResult<ResponseSystemMessage> GetMsgPage(PageParamList<Object> pageParam);

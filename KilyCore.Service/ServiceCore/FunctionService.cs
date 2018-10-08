@@ -759,6 +759,68 @@ namespace KilyCore.Service.ServiceCore
             };
             return dataCount;
         }
+        /// <summary>
+        /// 获取首页企业统计
+        /// </summary>
+        /// <returns></returns>
+        public Object GetStatistics()
+        {
+            IQueryable<EnterpriseInfo> enterprises = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false && t.AuditType == AuditEnum.AuditSuccess);
+            IQueryable<RepastInfo> repasts = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false && t.AuditType == AuditEnum.AuditSuccess);
+            List<ResponseProvince> Temp = null;
+            List<int> PlantCount = new List<int>();
+            List<int> ProCount = new List<int>();
+            List<int> MoveCount = new List<int>();
+            List<int> FoodCount = new List<int>();
+            List<int> UnitCount = new List<int>();
+            List<int> SmallCount = new List<int>();
+            if (UserInfo().AccountType <= AccountEnum.Country)
+                Temp = Kily.Set<SystemProvince>().Select(t => new ResponseProvince
+                {
+                    Id = t.Id,
+                    ProvinceName = t.Name,
+                }).ToList();
+            else if (UserInfo().AccountType == AccountEnum.Province)
+            {
+                int Code = Kily.Set<SystemProvince>().Where(t => t.Id.ToString() == UserInfo().Province).Select(t => t.Code).FirstOrDefault();
+                Temp = Kily.Set<SystemCity>().Where(t => t.ProvinceCode == Code).Select(t => new ResponseProvince
+                {
+                    Id = t.Id,
+                    ProvinceName = t.Name,
+                }).ToList();
+            }
+            else if (UserInfo().AccountType == AccountEnum.City)
+            {
+                int Code = Kily.Set<SystemCity>().Where(t => t.Id.ToString() == UserInfo().City).Select(t => t.Code).FirstOrDefault();
+                Temp = Kily.Set<SystemArea>().Where(t => t.CityCode == Code).Select(t => new ResponseProvince
+                {
+                    Id = t.Id,
+                    ProvinceName = t.Name,
+                }).ToList();
+            }
+            else if (UserInfo().AccountType == AccountEnum.Area)
+            {
+                int Code = Kily.Set<SystemCity>().Where(t => t.Id.ToString() == UserInfo().Area).Select(t => t.Code).FirstOrDefault();
+                Temp = Kily.Set<SystemTown>().Where(t => t.AreaCode == Code).Select(t => new ResponseProvince
+                {
+                    Id = t.Id,
+                    ProvinceName = t.Name,
+                }).ToList();
+            }
+            else
+                return null;
+            Temp.ForEach(x =>
+            {
+                PlantCount.Add(enterprises.Where(t => t.CompanyType <= CompanyEnum.Culture).Where(t => t.TypePath.Contains(x.Id.ToString())).Count());
+                ProCount.Add(enterprises.Where(t => t.CompanyType == CompanyEnum.Production).Where(t => t.TypePath.Contains(x.Id.ToString())).Count());
+                MoveCount.Add(enterprises.Where(t => t.CompanyType == CompanyEnum.Circulation).Where(t => t.TypePath.Contains(x.Id.ToString())).Count());
+                FoodCount.Add(repasts.Where(t => t.DiningType == MerchantEnum.Normal).Where(t => t.TypePath.Contains(x.Id.ToString())).Count());
+                UnitCount.Add(repasts.Where(t => t.DiningType == MerchantEnum.UnitCanteen).Where(t => t.TypePath.Contains(x.Id.ToString())).Count());
+                SmallCount.Add(repasts.Where(t => t.DiningType > MerchantEnum.UnitCanteen).Where(t => t.TypePath.Contains(x.Id.ToString())).Count());
+            });
+            Object obj = new { Temp, PlantCount, ProCount, MoveCount, FoodCount, UnitCount, SmallCount };
+            return obj;
+        }
         #endregion
         #region 系统消息
         /// <summary>
