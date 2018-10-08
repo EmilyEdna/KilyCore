@@ -5,6 +5,7 @@ using KilyCore.DataEntity.RequestMapper.Govt;
 using KilyCore.DataEntity.RequestMapper.Repast;
 using KilyCore.DataEntity.ResponseMapper.Cook;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
+using KilyCore.DataEntity.ResponseMapper.Function;
 using KilyCore.DataEntity.ResponseMapper.Govt;
 using KilyCore.DataEntity.ResponseMapper.Repast;
 using KilyCore.DataEntity.ResponseMapper.System;
@@ -140,6 +141,12 @@ namespace KilyCore.Service.IServiceCore
         String EditComplain(RequestGovtComplain Param);
         String ReportComplain(Guid Id);
         String ReportComplainInfo(Guid Id, string Param);
+        #endregion
+
+        #region 数据统计
+         ResponseDataCount GetPieDataForCompany();
+        ResponseDataCount GetPieDataForProduct();
+        Object GetIndexStatistics();
         #endregion
     }
 }

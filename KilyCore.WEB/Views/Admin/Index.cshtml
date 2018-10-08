@@ -20,7 +20,7 @@
                     type: "post",
                     async: false,
                     success: function (result) {
-                        controller.Echarts("#pie", result.data);
+                        controller.Echarts("#echarts-pie-chart", result.data);
                     }
                 });
                 controller.ajax({
@@ -29,11 +29,30 @@
                     type: "post",
                     async: false,
                     success: function (result) {
-                        controller.Echarts("#bar", result.data);
+                        controller.Echarts("#echarts-bar-chart", result.data);
                     }
                 });
             },
-            InitEvents: function () { }
+            InitEvents: function () {
+                //显示或隐藏
+                $(".collapse-link").on('click', function () {
+                    var ibox = $(this.closest('div.ibox'));
+                    var i = $(this).find("i");
+                    var content = ibox.find("div.ibox-content");
+                    content.slideToggle(200);
+                    i.toggleClass("fa-chevron-up").toggleClass("fa-chevron-down");
+                    ibox.toggleClass("").toggleClass("border-bottom");
+                    setTimeout(function () {
+                        ibox.resize();
+                        ibox.find("[id^=map-]").resize();
+                    }, 50);
+                });
+                //关闭
+                $(".close-link").click(function () {
+                    var ibox = $(this).closest("div.ibox");
+                    ibox.hide()
+                });
+            }
         }
         $(document).ready(function () {
             options.Init();
@@ -41,9 +60,41 @@
     </script>
 }
 <div class="row">
-    <div class="col-sm-6" id="pie" style="height:400px;">
+    <div class="col-sm-6">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>饼状图</h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="echarts" id="echarts-pie-chart"></div>
+            </div>
+        </div>
     </div>
-    <div class="col-sm-6" id="bar" style="height:400px;">
+    <div class="col-sm-6">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>柱状图</h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="echarts" id="echarts-bar-chart"></div>
+            </div>
+        </div>
     </div>
 </div>
 

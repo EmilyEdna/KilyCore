@@ -4,6 +4,7 @@ using KilyCore.DataEntity.RequestMapper.Govt;
 using KilyCore.DataEntity.RequestMapper.Repast;
 using KilyCore.DataEntity.ResponseMapper.Cook;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
+using KilyCore.DataEntity.ResponseMapper.Function;
 using KilyCore.DataEntity.ResponseMapper.Govt;
 using KilyCore.DataEntity.ResponseMapper.Repast;
 using KilyCore.DataEntity.ResponseMapper.System;
@@ -1629,8 +1630,171 @@ namespace KilyCore.Service.ServiceCore
             GovtComplain complain = Kily.Set<GovtComplain>().Where(t => t.Id == Id).FirstOrDefault();
             complain.HandlerContent = Param;
             complain.Status = "已处理";
-            List<String> Fields = new List<String>{ "HandlerContent","Status"};
+            List<String> Fields = new List<String> { "HandlerContent", "Status" };
             return UpdateField(complain, null, Fields) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        #endregion
+
+        #region 数据统计
+        /// <summary>
+        /// 获取公司统计
+        /// </summary>
+        /// <returns></returns>
+        public ResponseDataCount GetPieDataForCompany()
+        {
+            IQueryable<EnterpriseInfo> Enterprise = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess);
+            IQueryable<RepastInfo> Merchant = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess);
+            IList<DataPie> InSideData = null;
+            IList<DataPie> OutSideData = null;
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+            {
+                //外环
+                Merchant = Merchant.Where(t => t.TypePath.Contains(GovtInfo().City));
+                //内环
+                Enterprise = Enterprise.Where(t => t.TypePath.Contains(GovtInfo().City));
+            }
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
+            {
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        //外环
+                        Merchant = Merchant.Where(t => t.TypePath.Contains(item));
+                        //内环
+                        Enterprise = Enterprise.Where(t => t.TypePath.Contains(item));
+                    }
+                else
+                {
+                    //外环
+                    Merchant = Merchant.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    //内环
+                    Enterprise = Enterprise.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                }
+            }
+            else
+            {
+                //外环
+                Merchant = Merchant.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                //内环
+                Enterprise = Enterprise.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            }
+            OutSideData = Merchant.GroupBy(t => t.DiningType).Select(t => new DataPie
+            {
+                value = t.Count(),
+                name = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.Key)
+            }).ToList();
+            InSideData = Enterprise.GroupBy(t => t.CompanyType).Select(t => new DataPie
+            {
+                value = t.Count(),
+                name = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.Key)
+            }).ToList();
+            List<String> title = new List<String>() { "种植企业", "养殖企业", "生产企业", "流通企业", "其他企业", "餐饮企业", "单位食堂", "小经营店", "小作坊", "小摊贩" };
+            ResponseDataCount dataCount = new ResponseDataCount()
+            {
+                Name = "数据统计",
+                Type = true,
+                DataTitle = title,
+                InSideData = InSideData,
+                OutSideData = OutSideData
+            };
+            return dataCount;
+        }
+        /// <summary>
+        /// 获取产品统计
+        /// </summary>
+        /// <returns></returns>
+        public ResponseDataCount GetPieDataForProduct()
+        {
+            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess);
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
+            {
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        queryable = queryable.Where(t => t.TypePath.Contains(item));
+                    }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+            }
+            else
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            IList<DataPie> OutSideData = null;
+            OutSideData = goods.Join(queryable, t => t.CompanyId, x => x.Id, (t, x) => new { x.CompanyType }).GroupBy(t => t.CompanyType).Select(t => new DataPie
+            {
+                value = t.Count(),
+                name = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.Key)
+            }).ToList();
+            List<String> title = new List<String>() { "种植产品", "养殖产品", "加工产品" };
+            ResponseDataCount dataCount = new ResponseDataCount()
+            {
+                Name = "数据统计",
+                Type = true,
+                DataTitle = title,
+                InSideData = null,
+                OutSideData = OutSideData
+            };
+            return dataCount;
+        }
+        /// <summary>
+        /// 获取区域信息
+        /// </summary>
+        /// <returns></returns>
+        public Object GetIndexStatistics()
+        {
+            List<ResponseProvince> Temp = null;
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+            {
+                var Code = Kily.Set<SystemCity>().Where(t => t.Id.ToString() == GovtInfo().City).Select(t => t.Code).FirstOrDefault();
+                Temp = Kily.Set<SystemArea>().Where(t => t.CityCode == Code).Select(t => new ResponseProvince
+                {
+                    ProvinceName = t.Name,
+                    Id = t.Id
+                }).ToList();
+            }
+            else if (GovtInfo().AccountType == GovtAccountEnum.Area)
+            {
+                var Code = Kily.Set<SystemArea>().Where(t => t.Id.ToString() == GovtInfo().Area).Select(t => t.Code).FirstOrDefault();
+                Temp = Kily.Set<SystemTown>().Where(t =>t.AreaCode== Code).Select(t => new ResponseProvince
+                {
+                    ProvinceName = t.Name,
+                    Id = t.Id
+                }).ToList();
+            }
+            else
+                return null;
+            List<int> ComCount = new List<int>();
+            List<int> SmallComCount = new List<int>();
+            List<int> CookCount = new List<int>();
+            List<int> RiskCount = new List<int>();
+            List<int> PotrolCount = new List<int>();
+            List<int> BulletinCount = new List<int>();
+            List<int> CompCount = new List<int>();
+            Temp.ForEach(x =>
+            {
+                ComCount.Add(Kily.Set<RepastInfo>()
+               .Where(t => t.TypePath.Contains(x.Id.ToString()) && t.IsDelete == false && t.AuditType == AuditEnum.AuditSuccess)
+               .Where(t => t.DiningType <= MerchantEnum.UnitCanteen)
+               .Select(t => t.Id).Count() +
+               Kily.Set<EnterpriseInfo>()
+               .Where(t => t.TypePath.Contains(x.Id.ToString()))
+               .Where(t => t.IsDelete == false && t.AuditType == AuditEnum.AuditSuccess)
+               .Select(t => t.Id).Count());
+                SmallComCount.Add(Kily.Set<RepastInfo>()
+               .Where(t => t.TypePath.Contains(x.Id.ToString()) && t.IsDelete == false && t.AuditType == AuditEnum.AuditSuccess)
+               .Where(t => t.DiningType > MerchantEnum.UnitCanteen).Select(t => t.Id).Count());
+                CookCount.Add(Kily.Set<CookBanquet>().Where(t => t.TypePath.Contains(x.Id.ToString())).Select(t => t.Id).Count());
+                RiskCount.Add(Kily.Set<GovtRisk>().Where(t => t.TypePath.Contains(x.Id.ToString())).Select(t => t.Id).Count());
+                PotrolCount.Add(Kily.Set<GovtNetPatrol>().Where(t => t.TypePath.Contains(x.Id.ToString())).Sum(t => t.PotrolNum));
+                BulletinCount.Add(Kily.Set<GovtNetPatrol>().Where(t => t.TypePath.Contains(x.Id.ToString())).Sum(t => t.BulletinNum));
+                CompCount.Add(Kily.Set<GovtComplain>().Where(t => t.TypePath.Contains(x.Id.ToString())).Select(t => t.Id).Count());
+            });
+            Object obj = new { Temp, ComCount, SmallComCount, CookCount, RiskCount, PotrolCount, BulletinCount, CompCount };
+            return obj;
         }
         #endregion
     }

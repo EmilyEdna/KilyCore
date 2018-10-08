@@ -731,5 +731,34 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(GovtWebService.ReportComplainInfo(Key.Id, Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+
+        #region 数据统计
+        /// <summary>
+        /// 获取公司统计
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetPieDataForCompany")]
+        public ObjectResultEx GetPieDataForCompany()
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetPieDataForCompany(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取产品统计
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetPieDataForProduct")]
+        public ObjectResultEx GetPieDataForProduct()
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetPieDataForProduct(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取区域信息
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetIndexStatistics")]
+        public ObjectResultEx GetIndexStatistics() {
+            return ObjectResultEx.Instance(GovtWebService.GetIndexStatistics(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }

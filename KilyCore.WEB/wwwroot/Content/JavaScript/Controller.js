@@ -977,7 +977,7 @@ controller.Echarts = function (element, option) {
             },
             series: [
                 {
-                    name: '未审核统计',
+                    name: (option.Name == null ? '未审核统计' : option.Name),
                     type: 'pie',
                     selectedMode: 'single',
                     radius: [0, '30%'],
@@ -1021,7 +1021,7 @@ controller.Echarts = function (element, option) {
                     data: option.InSideData
                 },
                 {
-                    name: '已审核统计',
+                    name: (option.Name == null ? '已审核统计' : option.Name),
                     type: 'pie',
                     radius: ['40%', '55%'],
                     label: {

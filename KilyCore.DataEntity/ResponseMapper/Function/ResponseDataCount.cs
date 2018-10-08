@@ -20,7 +20,11 @@ namespace KilyCore.DataEntity.ResponseMapper.Function
 {
     public class ResponseDataCount
     {
+        /// <summary>
+        /// 表示统计图类型 true表示饼状 false表示柱状
+        /// </summary>
         public bool Type { get; set; }
+        public string Name { get; set; }
         public IList<String> DataTitle { get; set; }
         public IList<DataPie> InSideData { get; set; }
         public IList<DataPie> OutSideData { get; set; }
