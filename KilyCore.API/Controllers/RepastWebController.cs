@@ -580,9 +580,9 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetInStorageList")]
-        public ObjectResultEx GetInStorageList()
+        public ObjectResultEx GetInStorageList(SimpleParam<String> Param)
         {
-            return ObjectResultEx.Instance(RepastWebService.GetInStorageList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.GetInStorageList(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
 
@@ -682,6 +682,84 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx RemoveDuck(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(RepastWebService.RemoveDuck(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region 消毒管理
+        /// <summary>
+        /// 消毒分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetDisinfectPage")]
+        public ObjectResultEx GetDisinfectPage(PageParamList<RequestRepastDisinfect> pageParam) {
+            return ObjectResultEx.Instance(RepastWebService.GetDisinfectPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑消毒
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditDisinfect")]
+        public ObjectResultEx EditDisinfect(RequestRepastDisinfect Param) {
+            return ObjectResultEx.Instance(RepastWebService.EditDisinfect(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除消毒
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveDisinfect")]
+        public ObjectResultEx RemoveDisinfect(SimpleParam<Guid> Param) {
+            return ObjectResultEx.Instance(RepastWebService.RemoveDisinfect(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取消毒详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetDisinfectDetail")]
+        public ObjectResultEx GetDisinfectDetail(SimpleParam<Guid> Param) {
+            return ObjectResultEx.Instance(RepastWebService.GetDisinfectDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region 添加剂管理
+        /// <summary>
+        /// 添加剂分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetAdditivePage")]
+        public ObjectResultEx GetAdditivePage(PageParamList<RequestRepastAdditive> pageParam) {
+            return ObjectResultEx.Instance(RepastWebService.GetAdditivePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑添加剂
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditAdditive")]
+        public ObjectResultEx EditAdditive(RequestRepastAdditive Param) {
+            return ObjectResultEx.Instance(RepastWebService.EditAdditive(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除添加剂
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveAdditive")]
+        public ObjectResultEx RemoveAdditive(SimpleParam<Guid> Param) {
+            return ObjectResultEx.Instance(RepastWebService.RemoveAdditive(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取添加剂详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetAdditiveDetail")]
+        public ObjectResultEx GetAdditiveDetail(SimpleParam<Guid> Param) {
+            return ObjectResultEx.Instance(RepastWebService.GetAdditiveDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #endregion

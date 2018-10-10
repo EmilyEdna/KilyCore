@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "原料溯源";
+    ViewData["Title"] = "添加剂分页";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
@@ -21,17 +21,17 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "RepastWeb/GetStuffPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
+                this.$table = controller.Table("#tableList", { url: "RepastWeb/GetAdditivePage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
             },
             //事件
             InitEvents: function () {
                 $("#add").on('click', function () {
                     controller.OpenWindow({
-                        title: "新增原料溯源信息",
+                        title: "新增添加剂信息",
                         type: 2,
-                        height: "600px",
+                        height: "400px",
                         width: "800px",
-                        url: "WebMerchantManage/Source/MerchantStuffEdit",
+                        url: "WebMerchantManage/Source/MerchantAdditiveEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
                         }
@@ -51,7 +51,7 @@
                         controller.Confirm("确认删除？", function (bool) {
                             if (bool) {
                                 controller.ajax({
-                                    url: "RepastWeb/RemoveStuff",
+                                    url: "RepastWeb/RemoveAdditive",
                                     data: { Id: row.Id },
                                     type: 'post',
                                     success: function (result) {
@@ -63,11 +63,11 @@
                     },
                     "click .edit": function (event, val, row, index) {
                         controller.OpenWindow({
-                            title: "编辑原料溯源信息",
+                            title: "编辑添加剂信息",
                             type: 2,
-                            height: "600px",
+                            height: "400px",
                             width: "800px",
-                            url: "WebMerchantManage/Source/MerchantStuffEdit?Id=" + row.Id,
+                            url: "WebMerchantManage/Source/MerchantAdditiveEdit?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }
@@ -89,7 +89,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>原料溯源</h5>
+                <h5>添加剂信息</h5>
             </div>
             <div class="ibox-content">
                 <div class="row">
@@ -101,7 +101,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input type="text" placeholder="原料名称" class="input-sm form-control" name="MaterialName">
+                                <input type="text" placeholder="添加剂名称" class="input-sm form-control" name="AdditiveName">
                                 <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
                                     <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
@@ -114,11 +114,10 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="MaterialName" data-halign="center" data-align="center" data-valign="middle">原料名称</th>
-                                <th data-field="MaterialType" data-halign="center" data-align="center" data-valign="middle">原料类型</th>
-                                <th data-field="Supplier" data-halign="center" data-align="center" data-valign="middle">供应商</th>
-                                <th data-field="ExpiredDay" data-halign="center" data-align="center" data-valign="middle">保质期</th>
-                                <th data-field="Phone" data-halign="center" data-align="center" data-valign="middle">电话</th>
+                                <th data-field="AdditiveName" data-halign="center" data-align="center" data-valign="middle">添加剂名称</th>
+                                <th data-field="SupplierName" data-halign="center" data-align="center" data-valign="middle">供应商</th>
+                                <th data-field="SupplierTime" data-halign="center" data-align="center" data-valign="middle">生产时间</th>
+                                <th data-field="UsePerson" data-halign="center" data-align="center" data-valign="middle">使用人</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>

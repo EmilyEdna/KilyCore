@@ -760,5 +760,48 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(GovtWebService.GetIndexStatistics(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+
+        #region 责任协议
+        /// <summary>
+        /// 协议分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetAgreePage")]
+        public ObjectResultEx GetAgreePage(PageParamList<RequestGovtAgree> pageParam)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetAgreePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑协议
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditAgree")]
+        public ObjectResultEx EditAgree(RequestGovtAgree Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.EditAgree(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 协议详情
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetAgreeDetail")]
+        public ObjectResultEx GetAgreeDetail(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetAgreeDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除协议
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveAgree")]
+        public ObjectResultEx RemoveAgree(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.RemoveAgree(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }

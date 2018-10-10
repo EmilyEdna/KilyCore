@@ -1,4 +1,4 @@
-﻿using KilyCore.EntityFrameWork.Model.Cook;
+﻿using KilyCore.EntityFrameWork.Model.Govt;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -7,27 +7,26 @@ using System.Text;
 
 #region << 版 本 注 释 >>
 /*----------------------------------------------------------------
-* 类 名 称 ：CookHelperMap
+* 类 名 称 ：GovtAgreeMap
 * 类 描 述 ：
-* 命名空间 ：KilyCore.EntityFrameWork.EntityMapping.Cook
+* 命名空间 ：KilyCore.EntityFrameWork.EntityMapping.Govt
 * 机器名称 ：EMILY 
 * CLR 版本 ：4.0.30319.42000
 * 作    者 ：$刘泽华$
-* 创建时间 ：2018/8/29 11:03:58
+* 创建时间 ：2018/10/10 13:07:17
 *******************************************************************
 * Copyright @ $刘泽华$ 2018. All rights reserved.
 *******************************************************************
 //----------------------------------------------------------------*/
 #endregion
-namespace KilyCore.EntityFrameWork.EntityMapping.Cook
+namespace KilyCore.EntityFrameWork.EntityMapping.Govt
 {
-    public class CookHelperMap : IEntityTypeConfiguration<CookHelper>
+    public class GovtAgreeMap : IEntityTypeConfiguration<GovtAgree>
     {
-        public void Configure(EntityTypeBuilder<CookHelper> builder)
+        public void Configure(EntityTypeBuilder<GovtAgree> builder)
         {
-            builder.ToTable(typeof(CookHelper).Name);
+            builder.ToTable(typeof(GovtAgree).Name);
             builder.HasKey(t => t.Id);
-            builder.Property(t => t.ExpiredDate).HasColumnType(typeof(DateTime).Name);
         }
     }
 }

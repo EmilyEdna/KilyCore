@@ -439,57 +439,5 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         #endregion
-
-        #region 责任协议
-        /// <summary>
-        /// 协议分页
-        /// </summary>
-        /// <param name="pageParam"></param>
-        /// <returns></returns>
-        public PagedResult<ResponseCookAgree> GetAgreePage(PageParamList<RequestCookAgree> pageParam)
-        {
-            IQueryable<CookAgree> queryable = Kily.Set<CookAgree>().Where(t => t.CookId == CookInfo().Id).OrderByDescending(t => t.CreateTime);
-            if (!string.IsNullOrEmpty(pageParam.QueryParam.Title))
-                queryable = queryable.Where(t => t.Title.Contains(pageParam.QueryParam.Title));
-            var data = queryable.Select(t => new ResponseCookAgree()
-            {
-                Id = t.Id,
-                Title = t.Title
-            }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
-            return data;
-        }
-        /// <summary>
-        /// 编辑协议
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditAgree(RequestCookAgree Param)
-        {
-            CookAgree agree = Param.MapToEntity<CookAgree>();
-            return Insert(agree) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
-        }
-        /// <summary>
-        /// 协议详情
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public ResponseCookAgree GetAgreeDetail(Guid Id)
-        {
-            return Kily.Set<CookAgree>().Where(t => t.Id == Id).Select(t => new ResponseCookAgree()
-            {
-                Title=t.Title,
-                AgreeConent=t.AgreeConent,
-            }).AsNoTracking().FirstOrDefault();
-        }
-        /// <summary>
-        /// 删除协议
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public string RemoveAgree(Guid Id)
-        {
-            return Remove<CookAgree>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
-        }
-        #endregion
     }
 }

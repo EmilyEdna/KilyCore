@@ -1,0 +1,117 @@
+﻿
+@{
+    ViewData["Title"] = "编辑消毒剂";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#InfoId").val(RepastUser.Id);
+                var Guid = controller.GetParam("Id");
+                options.BindData(Guid);
+            },
+            //数据绑定
+            BindData: function (Guid) {
+                //获取原料列表
+                controller.ajax({
+                    url: "RepastWeb/GetInStorageList",
+                    data: { Id: "消毒剂" },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择消毒剂==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option data-value="' + obj.Id + '" value="' + obj.IngredientName + '">' + obj.IngredientName + '</option>';
+                        });
+                        $("#DisinfectName").html(html);
+                    }
+                });
+                //获取详情
+                if (Guid != null && Guid != undefined && Guid != "")
+                    controller.ajax({
+                        url: "RepastWeb/GetDisinfectDetail",
+                        data: { Id: Guid },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                        }
+                    });
+            },
+            //事件
+            InitEvents: function () {
+                //原料下拉事件
+                $("#AdditiveName").on('change', function () {
+                    var Id = $(this).find("option:selected").data().value;
+                    controller.ajax({
+                        url: "RepastWeb/GetInStorageDetail",
+                        data: { Id: Id },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                        }
+                    });
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="RepastWeb/EditDisinfect" id="Edit">
+            <input type="hidden" id="Id" name="Id" />
+            <input type="hidden" class="form-control" name="InfoId" id="InfoId" />
+            <input name="Remark" type="hidden" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">消毒剂名称</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="DisinfectName" id="DisinfectName"></select>
+                    </td>
+                    <th><label class="control-label">消毒时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="DisinfectTime" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">生产商</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SupplierName" readonly />
+                    </td>
+                    <th><label class="control-label">供应时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SupplierTime" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">食用计量</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Metering" />
+                    </td>
+                    <th><label class="control-label">使用人</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="UsePerson" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

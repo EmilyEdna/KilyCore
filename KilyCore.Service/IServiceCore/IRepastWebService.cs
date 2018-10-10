@@ -130,6 +130,18 @@ namespace KilyCore.Service.IServiceCore
         String EditDuck(RequestRepastDuck Param);
         String RemoveDuck(Guid Id);
         #endregion
+        #region 消毒管理
+        PagedResult<ResponseRepastDisinfect> GetDisinfectPage(PageParamList<RequestRepastDisinfect> pageParam);
+        String EditDisinfect(RequestRepastDisinfect Param);
+        String RemoveDisinfect(Guid Id);
+        ResponseRepastDisinfect GetDisinfectDetail(Guid Id);
+        #endregion
+        #region 添加剂管理
+        PagedResult<ResponseRepastAdditive> GetAdditivePage(PageParamList<RequestRepastAdditive> pageParam);
+        String EditAdditive(RequestRepastAdditive Param);
+        String RemoveAdditive(Guid Id);
+        ResponseRepastAdditive GetAdditiveDetail(Guid Id);
+        #endregion
         #endregion
         #region 仓库管理
         #region 原料仓库-入库
@@ -137,7 +149,7 @@ namespace KilyCore.Service.IServiceCore
         String EditInStorage(RequestRepastInStorage Param);
         String RemoveInStorage(Guid Id);
         ResponseRepastInStorage GetInStorageDetail(Guid Id);
-        IList<ResponseRepastInStorage> GetInStorageList();
+        IList<ResponseRepastInStorage> GetInStorageList(string Param);
         #endregion
         #region 原料仓库-出库
         PagedResult<ResponseRepastOutStorage> GetOutStoragePage(PageParamList<RequestRepastOutStorage> pageParam);

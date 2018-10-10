@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "MerchantStuffEdit";
+    ViewData["Title"] = "编辑原料";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section css{
@@ -34,7 +34,7 @@
                 //获取原料列表
                 controller.ajax({
                     url: "RepastWeb/GetInStorageList",
-                    data: {},
+                    data: { Id: "原料" },
                     type: "post",
                     async: false,
                     success: function (result) {

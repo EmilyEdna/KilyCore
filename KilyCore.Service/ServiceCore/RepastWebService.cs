@@ -1434,6 +1434,146 @@ namespace KilyCore.Service.ServiceCore
             return Remove<RepastDuck>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         #endregion
+
+        #region 消毒管理
+        /// <summary>
+        /// 消毒分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRepastDisinfect> GetDisinfectPage(PageParamList<RequestRepastDisinfect> pageParam)
+        {
+            IQueryable<RepastDisinfect> queryable = Kily.Set<RepastDisinfect>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.DisinfectName))
+                queryable = queryable.Where(t => t.DisinfectName.Contains(pageParam.QueryParam.DisinfectName));
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data = queryable.Select(t => new ResponseRepastDisinfect()
+            {
+                Id = t.Id,
+                DisinfectName = t.DisinfectName,
+                SupplierName = t.SupplierName,
+                UsePerson = t.UsePerson,
+                SupplierTime = t.SupplierTime
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑消毒
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditDisinfect(RequestRepastDisinfect Param)
+        {
+            RepastDisinfect disinfect = Param.MapToEntity<RepastDisinfect>();
+            if (Param.Id == Guid.Empty)
+                return Insert(disinfect) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+                return Update(disinfect, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        /// <summary>
+        /// 删除消毒
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveDisinfect(Guid Id)
+        {
+            return Delete<RepastDisinfect>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 获取消毒详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseRepastDisinfect GetDisinfectDetail(Guid Id)
+        {
+            var data = Kily.Set<RepastDisinfect>().Where(t => t.Id == Id).Select(t => new ResponseRepastDisinfect()
+            {
+                Id = t.Id,
+                InfoId = t.InfoId,
+                DisinfectName = t.DisinfectName,
+                DisinfectTime = t.DisinfectTime,
+                SupplierTime = t.SupplierTime,
+                Metering = t.Metering,
+                SupplierName = t.SupplierName,
+                UsePerson = t.UsePerson
+            }).FirstOrDefault();
+            return data;
+        }
+        #endregion
+
+        #region 添加剂管理
+        /// <summary>
+        /// 添加剂分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRepastAdditive> GetAdditivePage(PageParamList<RequestRepastAdditive> pageParam)
+        {
+            IQueryable<RepastAdditive> queryable = Kily.Set<RepastAdditive>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.AdditiveName))
+                queryable = queryable.Where(t => t.AdditiveName.Contains(pageParam.QueryParam.AdditiveName));
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data = queryable.Select(t => new ResponseRepastAdditive()
+            {
+                Id = t.Id,
+                AdditiveName = t.AdditiveName,
+                SupplierName = t.SupplierName,
+                UsePerson = t.UsePerson,
+                SupplierTime = t.SupplierTime
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑添加剂
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditAdditive(RequestRepastAdditive Param)
+        {
+            RepastAdditive additive = Param.MapToEntity<RepastAdditive>();
+            if (Param.Id == Guid.Empty)
+                return Insert(additive) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+                return Update(additive, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        /// <summary>
+        /// 删除添加剂
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveAdditive(Guid Id)
+        {
+            return Delete<RepastAdditive>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 获取添加剂详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseRepastAdditive GetAdditiveDetail(Guid Id)
+        {
+            var data = Kily.Set<RepastAdditive>().Where(t => t.Id == Id).Select(t => new ResponseRepastAdditive()
+            {
+                Id = t.Id,
+                InfoId = t.InfoId,
+                AdditiveName = t.AdditiveName,
+                Function = t.Function,
+                ProFood = t.ProFood,
+                UseTime = t.UseTime,
+                SupplierTime = t.SupplierTime,
+                Metering = t.Metering,
+                SupplierName = t.SupplierName,
+                UsePerson = t.UsePerson
+            }).FirstOrDefault();
+            return data;
+        }
+        #endregion
         #endregion
 
         #region 仓库管理
@@ -1469,13 +1609,15 @@ namespace KilyCore.Service.ServiceCore
         /// 仓库原料列表
         /// </summary>
         /// <returns></returns>
-        public IList<ResponseRepastInStorage> GetInStorageList()
+        public IList<ResponseRepastInStorage> GetInStorageList(string Param)
         {
-            var data = Kily.Set<RepastInStorage>().Where(t => t.IsDelete == false).Select(t => new ResponseRepastInStorage()
-            {
-                Id = t.Id,
-                IngredientName = t.IngredientName,
-            }).AsNoTracking().ToList();
+            var data = Kily.Set<RepastInStorage>().Where(t => t.IsDelete == false)
+                .Where(t => t.MaterType.Equals(Param))
+                .Select(t => new ResponseRepastInStorage()
+                {
+                    Id = t.Id,
+                    IngredientName = t.IngredientName,
+                }).AsNoTracking().ToList();
             return data;
         }
         /// <summary>

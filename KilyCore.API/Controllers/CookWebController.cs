@@ -266,48 +266,5 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(CookWebService.GetFoodList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
-
-        #region 责任协议
-        /// <summary>
-        /// 协议分页
-        /// </summary>
-        /// <param name="pageParam"></param>
-        /// <returns></returns>
-        [HttpPost("GetAgreePage")]
-        public ObjectResultEx GetAgreePage(PageParamList<RequestCookAgree> pageParam)
-        {
-            return ObjectResultEx.Instance(CookWebService.GetAgreePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }
-        /// <summary>
-        /// 编辑协议
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        [HttpPost("EditAgree")]
-        public ObjectResultEx EditAgree(RequestCookAgree Param)
-        {
-            return ObjectResultEx.Instance(CookWebService.EditAgree(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }
-        /// <summary>
-        /// 协议详情
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        [HttpPost("GetAgreeDetail")]
-        public ObjectResultEx GetAgreeDetail(SimpleParam<Guid> Param)
-        {
-            return ObjectResultEx.Instance(CookWebService.GetAgreeDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }
-        /// <summary>
-        /// 删除协议
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        [HttpPost("RemoveAgree")]
-        public ObjectResultEx RemoveAgree(SimpleParam<Guid> Param)
-        {
-            return ObjectResultEx.Instance(CookWebService.RemoveAgree(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }
-        #endregion
     }
 }

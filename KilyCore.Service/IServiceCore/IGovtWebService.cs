@@ -148,5 +148,12 @@ namespace KilyCore.Service.IServiceCore
         ResponseDataCount GetPieDataForProduct();
         Object GetIndexStatistics();
         #endregion
+
+        #region 责任协议
+        PagedResult<ResponseGovtAgree> GetAgreePage(PageParamList<RequestGovtAgree> pageParam);
+        String EditAgree(RequestGovtAgree Param);
+        ResponseGovtAgree GetAgreeDetail(Guid Id);
+        String RemoveAgree(Guid Id);
+        #endregion
     }
 }

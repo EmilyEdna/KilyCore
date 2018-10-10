@@ -33,5 +33,13 @@ namespace KilyCore.WEB.Areas.WebGovtManage.Controllers
         {
             return View();
         }
+        public IActionResult GovtAgree()
+        {
+            return View();
+        }
+        public IActionResult GovtAgreeEdit()
+        {
+            return View();
+        }
     }
 }

@@ -1797,5 +1797,57 @@ namespace KilyCore.Service.ServiceCore
             return obj;
         }
         #endregion
+
+        #region 责任协议
+        /// <summary>
+        /// 协议分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseGovtAgree> GetAgreePage(PageParamList<RequestGovtAgree> pageParam)
+        {
+            IQueryable<GovtAgree> queryable = Kily.Set<GovtAgree>().Where(t =>t.GovtId==GovtInfo().Id).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.Title))
+                queryable = queryable.Where(t => t.Title.Contains(pageParam.QueryParam.Title));
+            var data = queryable.Select(t => new ResponseGovtAgree()
+            {
+                Id = t.Id,
+                Title = t.Title
+            }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑协议
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditAgree(RequestGovtAgree Param)
+        {
+            GovtAgree agree = Param.MapToEntity<GovtAgree>();
+            return Insert(agree) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 协议详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseGovtAgree GetAgreeDetail(Guid Id)
+        {
+            return Kily.Set<GovtAgree>().Where(t => t.Id == Id).Select(t => new ResponseGovtAgree()
+            {
+                Title = t.Title,
+                AgreeConent = t.AgreeConent,
+            }).AsNoTracking().FirstOrDefault();
+        }
+        /// <summary>
+        /// 删除协议
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveAgree(Guid Id)
+        {
+            return Remove<GovtAgree>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
     }
 }

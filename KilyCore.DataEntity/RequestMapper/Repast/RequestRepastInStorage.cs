@@ -31,6 +31,10 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
         /// </summary>
         public string IngredientName { get; set; }
         /// <summary>
+        /// 物料类型
+        /// </summary>
+        public string MaterType { get; set; }
+        /// <summary>
         /// 入口数量
         /// </summary>
         public int InStorageNum { get; set; }

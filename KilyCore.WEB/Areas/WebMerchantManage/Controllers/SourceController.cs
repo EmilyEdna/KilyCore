@@ -49,5 +49,25 @@ namespace KilyCore.WEB.Areas.WebMerchantManage.Controllers
             return View();
         }
         #endregion
+        #region 消毒
+        public IActionResult MerchantDisinfect()
+        {
+            return View();
+        }
+        public IActionResult MerchantDisinfectEdit()
+        {
+            return View();
+        }
+        #endregion
+        #region 添加剂
+        public IActionResult MerchantAdditive()
+        {
+            return View();
+        }
+        public IActionResult MerchantAdditiveEdit()
+        {
+            return View();
+        }
+        #endregion
     }
 }

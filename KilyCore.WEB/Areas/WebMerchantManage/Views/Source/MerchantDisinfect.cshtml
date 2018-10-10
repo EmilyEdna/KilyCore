@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "责任协议";
+    ViewData["Title"] = "消毒信息";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
@@ -21,17 +21,17 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "CookWeb/GetAgreePage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
+                this.$table = controller.Table("#tableList", { url: "RepastWeb/GetDisinfectPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
             },
             //事件
             InitEvents: function () {
                 $("#add").on('click', function () {
                     controller.OpenWindow({
-                        title: "新增责任协议",
+                        title: "新增消毒信息",
                         type: 2,
-                        height: "500px",
+                        height: "400px",
                         width: "800px",
-                        url: "WebCookManage/Report/CookAgreeEdit",
+                        url: "WebMerchantManage/Source/MerchantDisinfectEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
                         }
@@ -42,29 +42,16 @@
             action: {
                 TableFormatter: function (val, row, index) {
                     var action = [];
-                    action.push('<button class="btn btn-sm btn-primary del"><i class="fa  fa-trash-o"></i>删除</button>');
-                    action.push('<button class="btn btn-sm btn-primary detail"><i class="fa  fa-eye"></i>详情</button>');
+                    action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
+                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
-                    "click .detail": function (event, val, row, index) {
-                        controller.OpenWindow({
-                            title: "协议详情",
-                            type: 2,
-                            height: "500px",
-                            width: "800px",
-                            btn: ["取消"],
-                            url: "WebCookManage/Report/CookAgreeEdit?Id=" + row.Id,
-                            callBack: function (result) {
-                                result.popClose();
-                            }
-                        });
-                    },
                     "click .del": function (event, val, row, index) {
                         controller.Confirm("确认删除？", function (bool) {
                             if (bool) {
                                 controller.ajax({
-                                    url: "CookWeb/RemoveAgree",
+                                    url: "RepastWeb/RemoveDisinfect",
                                     data: { Id: row.Id },
                                     type: 'post',
                                     success: function (result) {
@@ -73,6 +60,18 @@
                                 });
                             }
                         });
+                    },
+                    "click .edit": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "编辑消毒信息",
+                            type: 2,
+                            height: "400px",
+                            width: "800px",
+                            url: "WebMerchantManage/Source/MerchantDisinfectEdit?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
                     }
                 }//表单事件结束
             }//行为结束
@@ -90,7 +89,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>协议列表</h5>
+                <h5>消毒剂信息</h5>
             </div>
             <div class="ibox-content">
                 <div class="row">
@@ -102,7 +101,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input type="text" placeholder="责任标题" class="input-sm form-control" name="Title">
+                                <input type="text" placeholder="消毒剂名称" class="input-sm form-control" name="DisinfectName">
                                 <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
                                     <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
@@ -115,7 +114,10 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="Title" data-halign="center" data-align="center" data-valign="middle">责任标题</th>
+                                <th data-field="DisinfectName" data-halign="center" data-align="center" data-valign="middle">消毒剂名称</th>
+                                <th data-field="SupplierName" data-halign="center" data-align="center" data-valign="middle">供应商</th>
+                                <th data-field="SupplierTime" data-halign="center" data-align="center" data-valign="middle">生产时间</th>
+                                <th data-field="UsePerson" data-halign="center" data-align="center" data-valign="middle">使用人</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>

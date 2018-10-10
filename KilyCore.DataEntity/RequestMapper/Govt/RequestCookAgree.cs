@@ -4,7 +4,7 @@ using System.Text;
 
 #region << 版 本 注 释 >>
 /*----------------------------------------------------------------
-* 类 名 称 ：RequestCookAgree
+* 类 名 称 ：RequestGovtAgree
 * 类 描 述 ：
 * 命名空间 ：KilyCore.DataEntity.RequestMapper.Cook
 * 机器名称 ：EMILY 
@@ -16,9 +16,9 @@ using System.Text;
 *******************************************************************
 //----------------------------------------------------------------*/
 #endregion
-namespace KilyCore.DataEntity.RequestMapper.Cook
+namespace KilyCore.DataEntity.RequestMapper.Govt
 {
-    public class RequestCookAgree
+    public class RequestGovtAgree
     {
         public Guid Id { get; set; }
         /// <summary>

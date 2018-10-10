@@ -25,14 +25,6 @@ namespace KilyCore.WEB.Areas.WebCookManage.Controllers
         {
             return View();
         }
-        public IActionResult CookAgree()
-        {
-            return View();
-        }
-        public IActionResult CookAgreeEdit()
-        {
-            return View();
-        }
         public IActionResult CookFood()
         {
             return View();

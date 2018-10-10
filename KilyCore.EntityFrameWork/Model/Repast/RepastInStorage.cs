@@ -33,6 +33,10 @@ namespace KilyCore.EntityFrameWork.Model.Repast
         /// </summary>
         public virtual string IngredientName { get; set; }
         /// <summary>
+        /// 物料类型
+        /// </summary>
+        public virtual string MaterType { get; set; }
+        /// <summary>
         /// 入库数量
         /// </summary>
         public virtual int InStorageNum { get; set; }

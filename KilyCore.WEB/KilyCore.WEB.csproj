@@ -55,10 +55,28 @@
     <Content Update="Areas\WebGovtManage\Views\Restaurant\BanquetSupervise.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Areas\WebGovtManage\Views\Restaurant\GovtAgree.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\WebGovtManage\Views\Restaurant\GovtAgreeEdit.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Areas\WebGovtManage\Views\Restaurant\SamllSuperviseDetail.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Areas\WebGovtManage\Views\Restaurant\UnitSupervise.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\WebMerchantManage\Views\Source\MerchantDisinfect.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\WebMerchantManage\Views\Source\MerchantAdditive.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\WebMerchantManage\Views\Source\MerchantDisinfectEdit.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\WebMerchantManage\Views\Source\MerchantAdditiveEdit.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Cook\Home.cshtml">

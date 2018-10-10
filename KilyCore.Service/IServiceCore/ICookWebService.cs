@@ -69,12 +69,5 @@ namespace KilyCore.Service.IServiceCore
         String EditFood(RequestCookFood Param);
         IList<ResponseCookFood> GetFoodList();
         #endregion
-
-        #region 责任协议
-        PagedResult<ResponseCookAgree> GetAgreePage(PageParamList<RequestCookAgree> pageParam);
-        String EditAgree(RequestCookAgree Param);
-        ResponseCookAgree GetAgreeDetail(Guid Id);
-        String RemoveAgree(Guid Id);
-        #endregion
     }
 }
