@@ -281,6 +281,9 @@ namespace KilyCore.Service.ServiceCore
         public string EditBanquet(RequestCookBanquet Param)
         {
             CookBanquet banquet = Param.MapToEntity<CookBanquet>();
+            banquet.Ingredients.Split(",").ToList().ForEach(x => {
+                Delete<CookFood>(t => t.FoodName.Equals(x));
+            });
             return Insert(banquet) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         /// <summary>
@@ -431,7 +434,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public IList<ResponseCookFood> GetFoodList()
         {
-            var data = Kily.Set<CookFood>().Where(t => t.CookId == CookInfo().Id).OrderByDescending(t => t.CreateTime).Select(t => new ResponseCookFood()
+            var data = Kily.Set<CookFood>().Where(t=>t.IsDelete==false).Where(t => t.CookId == CookInfo().Id).OrderByDescending(t => t.CreateTime).Select(t => new ResponseCookFood()
             {
                 Id = t.Id,
                 FoodName = t.FoodName
