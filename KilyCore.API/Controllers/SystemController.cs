@@ -146,7 +146,7 @@ namespace KilyCore.API.Controllers
             {
                 string Code = HttpContext.Session.GetSession<string>("ValidateCode").Trim();
                 ResponseAdmin SysAdmin = SystemService.SystemLogin(LoginValidate);
-                if (SysAdmin != null && Code.Equals(LoginValidate.ValidateCode.Trim()))
+                if (SysAdmin != null && Code.ToUpper().Equals(LoginValidate.ValidateCode.Trim().ToUpper()))
                 {
                     CookieInfo cookie = new CookieInfo();
                     VerificationExtension.WriteToken(cookie, SysAdmin);

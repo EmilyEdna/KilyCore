@@ -250,7 +250,7 @@ namespace KilyCore.API.Controllers
             {
                 string Code = HttpContext.Session.GetSession<string>("ValidateCode").Trim();
                 var ComAdmin = EnterpriseService.EnterpriseLogin(LoginValidate);
-                if (ComAdmin != null && Code.Equals(LoginValidate.ValidateCode.Trim()))
+                if (ComAdmin != null && Code.ToUpper().Equals(LoginValidate.ValidateCode.Trim().ToUpper()))
                 {
                     CookieInfo cookie = new CookieInfo();
                     VerificationExtension.WriteToken(cookie, ComAdmin);

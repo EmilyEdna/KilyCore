@@ -42,7 +42,7 @@ namespace KilyCore.API.Controllers
             {
                 string Code = HttpContext.Session.GetSession<string>("ValidateCode").Trim();
                 var GovtAdmin = GovtWebService.GovtLogin(Param);
-                if (GovtAdmin != null && Code.Equals(Param.ValidateCode.Trim()))
+                if (GovtAdmin != null && Code.ToUpper().Equals(Param.ValidateCode.Trim().ToUpper()))
                 {
                     CookieInfo cookie = new CookieInfo();
                     VerificationExtension.WriteToken(cookie, GovtAdmin);

@@ -43,7 +43,7 @@ namespace KilyCore.API.Controllers
             {
                 string Code = HttpContext.Session.GetSession<string>("ValidateCode").Trim();
                 var CookAdmin = CookWebService.CookLogin(LoginValidate);
-                if (CookAdmin != null && Code.Equals(LoginValidate.ValidateCode.Trim()))
+                if (CookAdmin != null && Code.ToUpper().Equals(LoginValidate.ValidateCode.Trim().ToUpper()))
                 {
                     CookieInfo cookie = new CookieInfo();
                     VerificationExtension.WriteToken(cookie, CookAdmin);
