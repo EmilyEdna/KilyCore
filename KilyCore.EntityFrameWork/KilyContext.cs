@@ -35,9 +35,9 @@ namespace KilyCore.EntityFrameWork
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (Configer.DataProvider.ToUpper().Equals("MYSQL"))
-                optionsBuilder.UseLazyLoadingProxies().UseMySql(Configer.ConnentionString);
+                optionsBuilder.UseMySql(Configer.ConnentionString);
             else if (Configer.DataProvider.ToUpper().Equals("SQLSERVER"))
-                optionsBuilder.UseLazyLoadingProxies().UseSqlServer(Configer.ConnentionString);
+                optionsBuilder.UseSqlServer(Configer.ConnentionString);
             optionsBuilder.EnableSensitiveDataLogging();
         }
     }
