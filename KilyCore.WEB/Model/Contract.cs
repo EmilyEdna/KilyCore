@@ -96,6 +96,7 @@ namespace KilyCore.WEB.Model
         public static String AddressSelf { get; set; }
         public static String Chapter { get; set; }
         public static String Host { get; set; }
+        public static String WebHost { get; set; }
     }
     public class ExcelModel
     {
@@ -104,5 +105,11 @@ namespace KilyCore.WEB.Model
         public String ApiUrl { get; set; }
         [JsonIgnore]
         public String TimeSpan { get => ((Int64)(new TimeSpan(DateTime.UtcNow.Ticks - (new DateTime(1970, 1, 1, 0, 0, 0).Ticks)).TotalMilliseconds)).ToString(); }
+    }
+    public class ScanCodeModel
+    {
+        public Guid Id { get; set; }
+        public Int64 SCode { get; set; }
+        public Int64 ECode { get; set; }
     }
 }

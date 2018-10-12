@@ -60,7 +60,7 @@
                     success: function (result) {
                         var html = '<option value="0">===请选择===</option>';
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '">' + obj.SeriesName + '</option>';
+                            html += '<option value="' + obj.Id + '">' + obj.BatchNo + '</option>';
                         });
                         $("#BatchId").html(html);
                     }
@@ -108,7 +108,14 @@
                             width: "700px",
                             url: "WebCompanyManage/Goods/BindTarget?Id=" + flag,
                             callBack: function (result) {
-                                result.$("#Edit").submit();
+                                var num = $("input[name='InStockNum']").val();
+                                if (num != "" && num != null) {
+                                    if (result.$("#TagType").val() != 3) {
+                                        var total = Number(result.$("#End").val()) - Number(result.$("#Star").val())
+                                        num > total ? controller.Msg("入库数量大于绑定二维码数量") : result.$("#Edit").submit();
+                                    } else
+                                        result.$("#Edit").submit();
+                                }
                             }
                         });
                 });

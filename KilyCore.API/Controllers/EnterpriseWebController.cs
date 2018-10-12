@@ -756,6 +756,17 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetScanCodePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 获取扫码详情
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpGet("GetScanCodeDetail")]
+        public ObjectResultEx GetScanCodeDetail(SimpleParam<Guid> Key, SimpleParam<Int64> Param) {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetScanCodeDetail(Key.Id,Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 厂商管理
         /// <summary>
@@ -1339,7 +1350,11 @@ namespace KilyCore.API.Controllers
         [HttpPost("BindTarget")]
         public ObjectResultEx BindTarget(RequestEnterpriseTagAttach Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.BindTarget(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            var data = EnterpriseWebService.BindTarget(Param);
+            if (!data.Contains("新增"))
+                return ObjectResultEx.Instance(data, 1, RetrunMessge.SUCCESS, HttpCode.FAIL);
+            else
+                return ObjectResultEx.Instance(data, 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 产品出库分页

@@ -91,5 +91,16 @@ namespace KilyCore.WEB.Controllers
             var bytes = FileUtil.ExportExcel(dt, "报表");
             return File(bytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "报表单.xlsx");
         }
+        /// <summary>
+        /// 生成二维码地址
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public FileResult ExportTxt(ScanCodeModel data)
+        {
+            byte[] bytes = FileUtil.ExportTxt(data, Environment.WebRootPath);
+            return File(bytes, "text/plain", "二维码链接地址.txt"); //welcome.txt是客户端保存的名字
+        }
     }
 }

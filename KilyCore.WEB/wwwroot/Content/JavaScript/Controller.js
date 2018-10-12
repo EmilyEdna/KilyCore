@@ -525,6 +525,10 @@ controller.ValidateConfirm = function (element, option) {
                 type: method,
                 async: async,
                 success: function (data) {
+                    if (data.HttpCode != 10) {
+                        controller.Alter(data.data);
+                        return;
+                    }
                     if (window.source != undefined)
                         window.source.options.$table.refresh();
                     if (controller.CheckJsonFormat(data.data)) {

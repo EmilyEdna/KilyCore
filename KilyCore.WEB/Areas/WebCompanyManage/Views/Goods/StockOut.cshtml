@@ -58,7 +58,7 @@
                     type: "post",
                     async: false,
                     success: function (result) {
-                        $("input[name='CodeSerialNo']").val(result.data);
+                        $("input[name='CodeStarSerialNo']").val(result.data);
                     }
                 });
             },
@@ -117,7 +117,7 @@
                 </tr>
                 <tr>
                     <th><label class="control-label">追溯开始号段</label></th>
-                    <td class="has-warning">
+                    <td class="has-warning" colspan="3">
                         <input type="text"  class="form-control" name="CodeStarSerialNo" readonly/>
                     </td>
                 </tr>

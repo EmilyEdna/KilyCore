@@ -38,9 +38,12 @@
                 },
                 TableEvents: {
                     "click .sea": function (event, val, row, index) {
-                        debugger;
                         var arr = [];
                         var datas = [];
+                        if (row.ImgUr == null) {
+                            controller.Msg("未上传图片");
+                            return;
+                        }
                         if (row.ImgUrl != "")
                             arr = row.ImgUrl.split(",");
                         $.each(arr, function (i, obj) {
@@ -53,13 +56,16 @@
                         controller.Photos({ title: "产品图片", data: datas });
                     },
                     "click .watch": function (event, val, row, index) {
-                        controller.Prompt({ formType: 2, value: row.Remark, title: "备注", btn: ['取消'] }, function () { controller.Close();});
+                        controller.Prompt({ formType: 2, value: row.Remark, title: "备注"}, function ()
+                        {
+                            controller.Close();
+                        });
                     },
                     "click .audit": function (event, val, row, index) {
                         controller.Confirm("确认审核？", function (bool) {
                             if (bool) {
                                 controller.ajax({
-                                    url: "System/AuditGoodSuccess",
+                                    url: "Enterprise/AuditGoodSuccess",
                                     data: { Id: row.GoodsId },
                                     type: 'post',
                                     success: function (result) {

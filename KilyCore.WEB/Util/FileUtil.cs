@@ -62,6 +62,7 @@ namespace KilyCore.WEB.Util
         /// <param name="Version"></param>
         /// <param name="WebRootPath"></param>
         /// <returns></returns>
+        [Obsolete]
         public static IList<byte[]> CreatePDFBytes(Contract Params, String WebRootPath)
         {
             IDictionary<Object, Object> Map = new Dictionary<Object, Object>();
@@ -102,6 +103,7 @@ namespace KilyCore.WEB.Util
         /// </summary>
         /// <param name="Lbyte"></param>
         /// <returns></returns>
+        [Obsolete]
         public static byte[] SavePDF(IList<byte[]> Lbyte)
         {
             Document document = new Document();
@@ -133,7 +135,7 @@ namespace KilyCore.WEB.Util
             String TemplatePath = WebRootPath + @"/Template/Template.html";
             StreamReader reader = new StreamReader(TemplatePath, Encoding.UTF8);
             String HTMLContent = reader.ReadToEnd();
-            if (help.ContractType == 1&& help.AuthorCompany=="超级管理员")
+            if (help.ContractType == 1 && help.AuthorCompany == "超级管理员")
                 HTMLContent = HTMLContent.Replace("{CompanySelf}", Configer.CompanySelf)
                     .Replace("{CodeSelf}", Configer.CodeSelf)
                     .Replace("{AddressSelf}", Configer.AddressSelf)
@@ -232,6 +234,33 @@ namespace KilyCore.WEB.Util
                     File.Delete(WebRootPath + Path);
             }
             return null;
+        }
+        /// <summary>
+        /// 导出二维码地址
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="WebRootPath"></param>
+        /// <returns></returns>
+        public static byte[] ExportTxt(ScanCodeModel model, String WebRootPath)
+        {
+            Int64 region = model.ECode - model.SCode;
+            IList<String> Address = new List<String>();
+            for (long i = region; i > 0; i--)
+            {
+                Address.Add(string.Format(Configer.WebHost, model.Id, model.SCode + i));
+            }
+            string Content = String.Join("\r\n", Address);
+            var FileName = WebRootPath + @"\Template\ScanLink.txt";
+            using (StreamWriter str = File.CreateText(FileName))
+            {
+                str.WriteLine(Content);
+            }
+            using (FileStream Fs = new FileStream(FileName, FileMode.Open, FileAccess.Read))
+            {
+                byte[] bytes = new byte[Fs.Length];
+                Fs.Read(bytes, 0, (int)Fs.Length);
+                return bytes;
+            }
         }
         /// <summary>
         /// 导出Excel-EPPLUS

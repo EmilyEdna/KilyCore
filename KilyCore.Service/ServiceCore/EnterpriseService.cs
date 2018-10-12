@@ -828,7 +828,7 @@ namespace KilyCore.Service.ServiceCore
                 AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.x.AuditType),
                 ImgUrl=p.ImgUrl,
                 Remark =p.Remark
-            }).AsNoTracking().ToPagedResult(pageParam.pageNumber,pageParam.pageSize);
+            }).Distinct().AsNoTracking().ToPagedResult(pageParam.pageNumber,pageParam.pageSize);
             return data;
         }
         /// <summary>

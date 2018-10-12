@@ -18,7 +18,6 @@
                 $("#CompanyId").val(CompanyInfo.Id);
                 var Guid = controller.GetParam("Id");
                 $("#GoodsId").val(Guid);
-
             },
             //事件
             InitEvents: function () {
@@ -79,11 +78,11 @@
                 <tr>
                     <th><label class="control-label">开始号段</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="StarSerialNo" placeholder="纹理二维码请输入前11位/普通二维码输入前14位" title="纹理二维码请输入前11位/普通二维码输入前14位"/>
+                        <input type="text" class="form-control" name="StarSerialNo" id="Star" placeholder="纹理二维码请输入前11位/普通二维码输入前14位" title="纹理二维码请输入前11位/普通二维码输入前14位" />
                     </td>
                     <th><label class="control-label">结束号段</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="EndSerialNo"  placeholder="纹理二维码请输入前11位/普通二维码输入前14位" title="纹理二维码请输入前11位/普通二维码输入前14位"/>
+                        <input type="text" class="form-control" name="EndSerialNo" id="End" placeholder="纹理二维码请输入前11位/普通二维码输入前14位" title="纹理二维码请输入前11位/普通二维码输入前14位" />
                     </td>
                 </tr>
             </table>

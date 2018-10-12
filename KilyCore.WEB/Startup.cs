@@ -60,6 +60,7 @@ namespace KilyCore.WEB
             Configer.AddressSelf = Configuration["Company:Address"];
             Configer.Chapter = Configuration["Company:Chapter"];
             Configer.Host = Configuration["Host:ApiHost"];
+            Configer.WebHost = Configuration["Host:WebHost"];
         }
     }
 }
