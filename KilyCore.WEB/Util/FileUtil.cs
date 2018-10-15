@@ -249,6 +249,7 @@ namespace KilyCore.WEB.Util
             {
                 Address.Add(string.Format(Configer.WebHost, model.Id, model.SCode + i));
             }
+            Address.Add(string.Format(Configer.WebHost, model.Id, model.SCode));
             string Content = String.Join("\r\n", Address);
             var FileName = WebRootPath + @"\Template\ScanLink.txt";
             using (StreamWriter str = File.CreateText(FileName))

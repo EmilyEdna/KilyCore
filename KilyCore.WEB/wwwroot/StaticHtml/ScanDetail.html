@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>商品详情</title>
+    <link href="../Content/BootStrap/Css/bootstrap.css" rel="stylesheet" />
+    <link href="Style/ScanDetail.css" rel="stylesheet" />
+    <script src="../Content/JavaScript/jquery.min.js"></script>
+    <script src="../Content/BootStrap/Script/bootstrap.js"></script>
+</head>
+<body>
+    <div class="row">
+        <div class=" col-sm-12 col-xs-12 head">
+            <img src="Style/ScanDetailImg/Logo.png" class="pull-left">
+            <h1>中食药监管查询平台</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="content">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h6>商品信息</h6>
+                </div>
+                <div class="panel-body">
+                    <div class="col-xs-6 col-sm-6">
+                        <img class="img-responsive" src="http://pic34.photophoto.cn/20150103/0030015284991808_b.jpg" />
+                        <a href="javascript:;" class="btn btn-default">购买</a>
+                    </div>
+                    <div class="col-xs-6 col-sm-6">
+                        <strong>商品名称：</strong>
+                        <p>配置就</p>
+                        <br /> <br />
+                        <strong>商品类型：</strong>
+                        <p>配置就</p>
+                        <br /> <br />
+                        <strong>保质期：</strong>
+                        <p>配置就</p>
+                        <br /> <br />
+                        <strong>生产时间：</strong>
+                        <p>配置就</p>
+                        <br /> <br />
+                        <strong>生产企业：</strong>
+                        <p>配置就</p>
+                    </div>
+                    <div class="col-sm-12 col-xs-12">
+                        <button class="btn btn-default col-sm-12 col-sm-12 OnClick" id="Soc"></button>
+                    </div>
+                    <div id="Content">
+                        <div class="col-sm-12 col-sm-12">
+                            <span class="title col-sm-12 col-sm-12">
+                                ●详细信息●
+                            </span>
+                            <hr style="margin-top:5%;border:solid 1px #000000" />
+                            <strong class="detail_t">生产设备：</strong><b class="detail_b">生产设备</b>
+                            <br /><br />
+                            <strong class="detail_t">商品介绍：</strong><b class="detail_b">生产设备</b>
+                        </div>
+                        <div class="Content_Grow">
+                            <div class="col-sm-12 col-sm-12">
+                                <span class="title col-sm-12 col-sm-12">
+                                    ●成长日记●
+                                </span>
+                                <hr style="margin-top:5%;border:solid 1px #000000" />
+                                <strong class="detail_t">育苗名称：</strong><b class="detail_b">生产设备</b>
+                                <br /><br />
+                                <strong class="detail_t">种植时间：</strong><b class="detail_b">生产设备</b>
+                            </div>
+                            <div class="col-sm-12 col-sm-12">
+                                <span class="title col-sm-12 col-sm-12">
+                                    ●相关证书●
+                                </span>
+                                <hr style="border:solid 1px #808080" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                        <div class="feed-back">
+                            <img src="Style/ScanDetailImg/Back.png" />
+                        </div>
+                        <div class="info">
+                            <span class="btn btn-default" style="background-image:url(Style/ScanDetailImg/ProductInfo.png);background-repeat:no-repeat"></span>
+                            <span class="btn btn-default" style="background-image:url(Style/ScanDetailImg/Validate.png);background-repeat:no-repeat"></span>
+                            <span class="btn btn-default" style="background-image:url(Style/ScanDetailImg/Transport.png);background-repeat:no-repeat"></span>
+                            <span class="btn btn-default" style="background-image:url(Style/ScanDetailImg/Company.png);background-repeat:no-repeat"></span>
+                            <span class="btn btn-default" style="background-image:url(Style/ScanDetailImg/Govt.png);background-repeat:no-repeat"></span>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var option = {
+            Init: function () {
+                option.InitDom();
+                option.InitEvent();
+            },
+            InitDom: function () {
+                $.ajax({
+                    url: "http://localhost:50039/api/EnterpriseWeb/GetScanCodeDetail",
+                    type: "get",
+                    dataType: "json",
+                    data: { TimeSpan: new Date().getTime(), Id: option.GetParam("Id"), Parameter: option.GetParam("Code") },
+                    async: false,
+                    success: function (result) { }
+                });
+            },
+            InitEvent: function () {
+                $("#Soc").on("click", function () {
+                    $(this).hasClass("OnClick") ? $(this).removeClass("OnClick").addClass("NorClick") : $(this).removeClass("NorClick").addClass("OnClick")
+                });
+            },
+            GetParam: function (Param) {
+                var reg = new RegExp("(^|&)" + Param + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+                var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+                if (r != null) return decodeURI(r[2]); return null; //返回参数值
+            }
+        };
+        $(document).ready(function () {
+            option.Init();
+        });
+    </script>
+</body>
+</html>
