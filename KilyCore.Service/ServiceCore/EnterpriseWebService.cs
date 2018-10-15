@@ -2007,6 +2007,7 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseMaterial> materials = Kily.Set<EnterpriseMaterial>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseCheckMaterial> checkMaterials = Kily.Set<EnterpriseCheckMaterial>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseTagAttach> attaches = Kily.Set<EnterpriseTagAttach>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseInfo> enterpriseInfos = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
             var mater = materials.Join(checkMaterials, z => z.Id, c => c.MaterId, (z, c) => new ResponseEnterpriseScanCodeMaterial
             {
                 Id = z.Id,
@@ -2035,29 +2036,34 @@ namespace KilyCore.Service.ServiceCore
             }).Join(checkGoods, e => e.CheckGoodsId, r => r.Id, (e, r) => new { e, r.CheckReport, r.CheckResult })
            .Join(batches, t => t.e.BatchId, y => y.Id, (t, y) => new { t, y.BatchNo, y.DeviceName, y.MaterialId })
            .Join(attaches, u => u.t.e.GoodsId, i => i.GoodsId, (u, i) => new { u, i.StarSerialNo, i.EndSerialNo })
-           .Join(note, f => f.u.t.e.GrowNoteId, g => g.Id, (f, g) => new ResponseEnterpriseScanCode()
+           .Join(note, f => f.u.t.e.GrowNoteId, g => g.Id, (f, g) => new { f, g.GrowName, g.PlantTime, g.Paper })
+           .Join(enterpriseInfos, x => x.f.u.t.e.CompanyId, p => p.Id, (x, p) => new ResponseEnterpriseScanCode
            {
-               Id = f.u.t.e.Id,
-               CompanyId = f.u.t.e.CompanyId,
-               ProductName = f.u.t.e.ProductName,
-               ProductType = f.u.t.e.ProductType,
-               ExpiredDate = f.u.t.e.ExpiredDate,
-               Remark = f.u.t.e.Remark,
-               ImgUrl = f.u.t.e.ImgUrl,
-               Explanation = f.u.t.e.Explanation,
-               ProductTime = f.u.t.e.ProductTime,
-               BatchNo = f.u.BatchNo,
-               DeviceName = f.u.DeviceName,
-               GrowName = g.GrowName,
-               PlantTime = g.PlantTime,
-               Paper = g.Paper,
-               ProductCheckResult = f.u.t.CheckResult,
-               ProductCheckReport = f.u.t.CheckReport,
-               StarSerialNo = f.StarSerialNo,
-               EndSerialNo = f.EndSerialNo,
-               Materials = mater.Where(t => f.u.MaterialId.Contains(t.Id.ToString())).ToList()
-           })
-           .Where(t=>t.Id==Id).Where(t=>t.StarSerialNo<=Code&&t.EndSerialNo>=Code)
+               Id = x.f.u.t.e.Id,
+               CompanyId = x.f.u.t.e.CompanyId,
+               ProductName = x.f.u.t.e.ProductName,
+               ProductType = x.f.u.t.e.ProductType,
+               ExpiredDate = x.f.u.t.e.ExpiredDate,
+               Remark = x.f.u.t.e.Remark,
+               ImgUrl = x.f.u.t.e.ImgUrl,
+               Explanation = x.f.u.t.e.Explanation,
+               ProductTime = x.f.u.t.e.ProductTime,
+               BatchNo = x.f.u.BatchNo,
+               DeviceName = x.f.u.DeviceName,
+               ProductCheckResult = x.f.u.t.CheckResult,
+               ProductCheckReport = x.f.u.t.CheckReport,
+               StarSerialNo = x.f.StarSerialNo,
+               EndSerialNo = x.f.EndSerialNo,
+               GrowName = x.GrowName,
+               PlantTime = x.PlantTime,
+               Paper = x.Paper,
+               NetAddress=p.NetAddress,
+               CompanyAddress=p.CompanyAddress,
+               CompanyName=p.CompanyName,
+               Discription=p.Discription,
+               LngAndLat=p.LngAndLat,
+               Materials = mater.Where(t => x.f.u.MaterialId.Contains(t.Id.ToString())).ToList()
+           }).Where(t=>t.Id==Id).Where(t=>t.StarSerialNo<=Code&&t.EndSerialNo>=Code)
            .GroupBy(t => new { t.StarSerialNo, t.EndSerialNo }).Select(t => new ResponseEnterpriseScanCode()
            {
                Id = t.FirstOrDefault().Id,
@@ -2078,6 +2084,11 @@ namespace KilyCore.Service.ServiceCore
                ProductCheckReport = t.FirstOrDefault().ProductCheckReport,
                StarSerialNo = t.FirstOrDefault().StarSerialNo,
                EndSerialNo = t.FirstOrDefault().EndSerialNo,
+               NetAddress = t.FirstOrDefault().NetAddress,
+               CompanyAddress = t.FirstOrDefault().CompanyAddress,
+               CompanyName = t.FirstOrDefault().CompanyName,
+               Discription = t.FirstOrDefault().Discription,
+               LngAndLat = t.FirstOrDefault().LngAndLat,
                Materials = t.FirstOrDefault().Materials
            }).AsNoTracking().FirstOrDefault();
             return data;

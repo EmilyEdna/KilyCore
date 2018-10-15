@@ -87,6 +87,27 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// </summary>
         public long EndSerialNo { get; set; }
         public IList<ResponseEnterpriseScanCodeMaterial> Materials { get; set; }
+        /// <summary>
+        /// 公司名称
+        /// </summary>
+        public string CompanyName { get; set; }
+        /// <summary>
+        /// 企业地址
+        /// </summary>
+        public string CompanyAddress { get; set; }
+        /// <summary>
+        /// 经纬度
+        /// </summary>
+        public string LngAndLat { get; set; }
+        /// <summary>
+        /// 企业介绍
+        /// </summary>
+        public string Discription { get; set; }
+        /// <summary>
+        /// 网址
+        /// </summary>
+        public string NetAddress { get; set; }
+
     }
     public class ResponseEnterpriseScanCodeMaterial {
         public Guid Id { get; set; }
