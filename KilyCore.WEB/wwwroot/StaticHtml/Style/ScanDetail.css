@@ -89,18 +89,22 @@
 
 .feed-back {
     position: fixed;
-    bottom: 5%;
-    right: 2%;
+    bottom: 10%;
+    right: 5%;
     z-index: 999;
 }
 
 .info {
+    position: fixed;
     font-size: 35px;
-    letter-spacing: 70px
+    letter-spacing: 70px;
+    z-index: 999;
+    bottom: 3%;
 }
+
     .info span {
         font-size: 35px;
-        width:120px;
-        height:81px;
-        border-radius:12px;
+        width: 120px;
+        height: 81px;
+        border-radius: 12px;
     }

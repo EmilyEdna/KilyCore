@@ -596,10 +596,23 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveNote(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 日记详情
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
         [HttpPost("GetNoteDetail")]
         public ObjectResultEx GetNoteDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetNoteDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 日记列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetNoteList")]
+        public ObjectResultEx GetNoteList() {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetNoteList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 成长流程
@@ -1739,6 +1752,14 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx RemoveBuyer(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveBuyer(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 进货列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetBuyerList")]
+        public ObjectResultEx GetBuyerList() {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetBuyerList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #endregion

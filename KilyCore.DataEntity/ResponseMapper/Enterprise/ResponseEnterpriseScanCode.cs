@@ -107,7 +107,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// 网址
         /// </summary>
         public string NetAddress { get; set; }
-
     }
     public class ResponseEnterpriseScanCodeMaterial {
         public Guid Id { get; set; }

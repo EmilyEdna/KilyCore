@@ -1460,6 +1460,24 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         /// <summary>
+        /// 日记列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseEnterpriseNote> GetNoteList()
+        {
+            IQueryable<EnterpriseNote> queryable = Kily.Set<EnterpriseNote>().Where(t => t.IsDelete == false).AsNoTracking();
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.Select(t => new ResponseEnterpriseNote()
+            {
+                Id = t.Id,
+                NoteName = t.NoteName
+            }).ToList();
+            return data;
+        }
+        /// <summary>
         /// 编辑日记
         /// </summary>
         /// <param name="Param"></param>
@@ -1806,189 +1824,26 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess);
             IQueryable<EnterpriseGoodsStock> stocks = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false);
-            IQueryable<EnterpriseCheckGoods> checkGoods = Kily.Set<EnterpriseCheckGoods>().Where(t => t.IsDelete == false);
-            IQueryable<EnterpriseProductionBatch> batches = Kily.Set<EnterpriseProductionBatch>().Where(t => t.IsDelete == false);
-            IQueryable<EnterpriseNote> notes = Kily.Set<EnterpriseNote>().Where(t => t.IsDelete == false);
-            IQueryable<EnterpriseGrowInfo> infos = Kily.Set<EnterpriseGrowInfo>().Where(t => t.IsDelete == false);
-            IQueryable<EnterpriseMaterial> materials = Kily.Set<EnterpriseMaterial>().Where(t => t.IsDelete == false);
-            IQueryable<EnterpriseCheckMaterial> checkMaterials = Kily.Set<EnterpriseCheckMaterial>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseTagAttach> attaches = Kily.Set<EnterpriseTagAttach>().Where(t => t.IsDelete == false);
-            var mater = materials.Join(checkMaterials, z => z.Id, c => c.MaterId, (z, c) => new ResponseEnterpriseScanCodeMaterial
-            {
-                Id = z.Id,
-                MaterName = z.MaterName,
-                Supplier = z.Supplier,
-                Standard = z.Standard,
-                MaterCheckResult = c.CheckResult,
-                MaterCheckReport = c.CheckReport
-            }).AsNoTracking();
             if (!string.IsNullOrEmpty(pageParam.QueryParam.ProductName))
                 goods = goods.Where(t => t.ProductName.Contains(pageParam.QueryParam.ProductName));
             if (CompanyInfo() != null)
                 goods = goods.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 goods = goods.Where(t => t.CompanyId == CompanyUser().Id);
-            var Temp = goods.Join(stocks, q => q.Id, w => w.GoodsId, (q, w) => new
-            {
-                q.CompanyId,
-                q.ProductName,
-                q.ProductType,
-                q.ExpiredDate,
-                w.Id,
-                w.Remark,
-                w.ImgUrl,
-                w.Explanation,
-                w.ProductTime,
-                w.CheckGoodsId,
-                w.BatchId,
-                w.GoodsId,
-                w.GrowNoteId
-            }).Join(checkGoods, e => e.CheckGoodsId, r => r.Id, (e, r) => new { e, r.CheckReport, r.CheckResult })
-           .Join(batches, t => t.e.BatchId, y => y.Id, (t, y) => new { t, y.BatchNo, y.DeviceName, y.MaterialId })
-           .Join(attaches, u => u.t.e.GoodsId, i => i.GoodsId, (u, i) => new { u, i.StarSerialNo, i.EndSerialNo }).AsNoTracking();
-            if (CompanyInfo() != null)
-            {
-                if (CompanyInfo().CompanyType == CompanyEnum.Plant || CompanyInfo().CompanyType == CompanyEnum.Culture)
-                {
-                    var note = notes.Join(infos, o => o.BatchNo, p => p.BatchNo, (o, p) => new { o.Id, p.GrowName, p.PlantTime, p.Paper }).AsNoTracking();
-                    var data = Temp.Join(note, f => f.u.t.e.GrowNoteId, g => g.Id, (f, g) => new ResponseEnterpriseScanCode()
-                    {
-                        Id = f.u.t.e.Id,
-                        CompanyId = f.u.t.e.CompanyId,
-                        ProductName = f.u.t.e.ProductName,
-                        ProductType = f.u.t.e.ProductType,
-                        ExpiredDate = f.u.t.e.ExpiredDate,
-                        Remark = f.u.t.e.Remark,
-                        ImgUrl = f.u.t.e.ImgUrl,
-                        Explanation = f.u.t.e.Explanation,
-                        ProductTime = f.u.t.e.ProductTime,
-                        BatchNo = f.u.BatchNo,
-                        DeviceName = f.u.DeviceName,
-                        GrowName = g.GrowName,
-                        PlantTime = g.PlantTime,
-                        Paper = g.Paper,
-                        ProductCheckResult = f.u.t.CheckResult,
-                        ProductCheckReport = f.u.t.CheckReport,
-                        StarSerialNo = f.StarSerialNo,
-                        EndSerialNo = f.EndSerialNo,
-                        Materials = mater.Where(t => f.u.MaterialId.Contains(t.Id.ToString())).ToList()
-                    }).AsNoTracking();
-                    var resultData = data.GroupBy(t => new { t.StarSerialNo, t.EndSerialNo }).Select(t => new ResponseEnterpriseScanCode()
-                    {
-                        Id = t.FirstOrDefault().Id,
-                        CompanyId = t.FirstOrDefault().CompanyId,
-                        ProductName = t.FirstOrDefault().ProductName,
-                        ProductType = t.FirstOrDefault().ProductType,
-                        ExpiredDate = t.FirstOrDefault().ExpiredDate,
-                        Remark = t.FirstOrDefault().Remark,
-                        ImgUrl = t.FirstOrDefault().ImgUrl,
-                        Explanation = t.FirstOrDefault().Explanation,
-                        ProductTime = t.FirstOrDefault().ProductTime,
-                        BatchNo = t.FirstOrDefault().BatchNo,
-                        DeviceName = t.FirstOrDefault().DeviceName,
-                        GrowName = t.FirstOrDefault().GrowName,
-                        PlantTime = t.FirstOrDefault().PlantTime,
-                        Paper = t.FirstOrDefault().Paper,
-                        ProductCheckResult = t.FirstOrDefault().ProductCheckResult,
-                        ProductCheckReport = t.FirstOrDefault().ProductCheckReport,
-                        StarSerialNo = t.FirstOrDefault().StarSerialNo,
-                        EndSerialNo = t.FirstOrDefault().EndSerialNo,
-                        Materials = t.FirstOrDefault().Materials
-                    }).AsNoTracking(); ;
-                    return resultData.ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
-                }
-            }
-            else
-            {
-                if (CompanyUser().CompanyType == CompanyEnum.Plant || CompanyUser().CompanyType == CompanyEnum.Culture)
-                {
-                    var note = notes.Join(infos, o => o.BatchNo, p => p.BatchNo, (o, p) => new { o.Id, p.GrowName, p.PlantTime, p.Paper }).AsNoTracking();
-                    var data = Temp.Join(note, f => f.u.t.e.GrowNoteId, g => g.Id, (f, g) => new ResponseEnterpriseScanCode()
-                    {
-                        Id = f.u.t.e.Id,
-                        CompanyId = f.u.t.e.CompanyId,
-                        ProductName = f.u.t.e.ProductName,
-                        ProductType = f.u.t.e.ProductType,
-                        ExpiredDate = f.u.t.e.ExpiredDate,
-                        Remark = f.u.t.e.Remark,
-                        ImgUrl = f.u.t.e.ImgUrl,
-                        Explanation = f.u.t.e.Explanation,
-                        ProductTime = f.u.t.e.ProductTime,
-                        BatchNo = f.u.BatchNo,
-                        DeviceName = f.u.DeviceName,
-                        GrowName = g.GrowName,
-                        PlantTime = g.PlantTime,
-                        Paper = g.Paper,
-                        ProductCheckResult = f.u.t.CheckResult,
-                        ProductCheckReport = f.u.t.CheckReport,
-                        StarSerialNo = f.StarSerialNo,
-                        EndSerialNo = f.EndSerialNo,
-                        Materials = mater.Where(t => f.u.MaterialId.Contains(t.Id.ToString())).ToList()
-                    }).AsNoTracking();
-                    var resultData = data.GroupBy(t => new { t.StarSerialNo, t.EndSerialNo }).Select(t => new ResponseEnterpriseScanCode()
-                    {
-                        Id = t.FirstOrDefault().Id,
-                        CompanyId = t.FirstOrDefault().CompanyId,
-                        ProductName = t.FirstOrDefault().ProductName,
-                        ProductType = t.FirstOrDefault().ProductType,
-                        ExpiredDate = t.FirstOrDefault().ExpiredDate,
-                        Remark = t.FirstOrDefault().Remark,
-                        ImgUrl = t.FirstOrDefault().ImgUrl,
-                        Explanation = t.FirstOrDefault().Explanation,
-                        ProductTime = t.FirstOrDefault().ProductTime,
-                        BatchNo = t.FirstOrDefault().BatchNo,
-                        DeviceName = t.FirstOrDefault().DeviceName,
-                        GrowName = t.FirstOrDefault().GrowName,
-                        PlantTime = t.FirstOrDefault().PlantTime,
-                        Paper = t.FirstOrDefault().Paper,
-                        ProductCheckResult = t.FirstOrDefault().ProductCheckResult,
-                        ProductCheckReport = t.FirstOrDefault().ProductCheckReport,
-                        StarSerialNo = t.FirstOrDefault().StarSerialNo,
-                        EndSerialNo = t.FirstOrDefault().EndSerialNo,
-                        Materials = t.FirstOrDefault().Materials
-                    }).AsNoTracking(); ;
-                    return resultData.ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
-                }
-            }
-            var AllData = Temp.Select(f => new ResponseEnterpriseScanCode()
-            {
-                Id = f.u.t.e.Id,
-                CompanyId = f.u.t.e.CompanyId,
-                ProductName = f.u.t.e.ProductName,
-                ProductType = f.u.t.e.ProductType,
-                ExpiredDate = f.u.t.e.ExpiredDate,
-                Remark = f.u.t.e.Remark,
-                ImgUrl = f.u.t.e.ImgUrl,
-                Explanation = f.u.t.e.Explanation,
-                ProductTime = f.u.t.e.ProductTime,
-                BatchNo = f.u.BatchNo,
-                DeviceName = f.u.DeviceName,
-                ProductCheckResult = f.u.t.CheckResult,
-                ProductCheckReport = f.u.t.CheckReport,
-                StarSerialNo = f.StarSerialNo,
-                EndSerialNo = f.EndSerialNo,
-                Materials = mater.Where(t => f.u.MaterialId.Contains(t.Id.ToString())).ToList()
-            }).AsNoTracking().GroupBy(t => new { t.StarSerialNo, t.EndSerialNo })
-            .Select(t => new ResponseEnterpriseScanCode()
-            {
-                Id = t.FirstOrDefault().Id,
-                CompanyId = t.FirstOrDefault().CompanyId,
-                ProductName = t.FirstOrDefault().ProductName,
-                ProductType = t.FirstOrDefault().ProductType,
-                ExpiredDate = t.FirstOrDefault().ExpiredDate,
-                Remark = t.FirstOrDefault().Remark,
-                ImgUrl = t.FirstOrDefault().ImgUrl,
-                Explanation = t.FirstOrDefault().Explanation,
-                ProductTime = t.FirstOrDefault().ProductTime,
-                BatchNo = t.FirstOrDefault().BatchNo,
-                DeviceName = t.FirstOrDefault().DeviceName,
-                ProductCheckResult = t.FirstOrDefault().ProductCheckResult,
-                ProductCheckReport = t.FirstOrDefault().ProductCheckReport,
-                StarSerialNo = t.FirstOrDefault().StarSerialNo,
-                EndSerialNo = t.FirstOrDefault().EndSerialNo,
-                Materials = t.FirstOrDefault().Materials
-            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
-            return AllData;
+
+            var data = goods.Join(stocks, t => t.Id, x => x.GoodsId, (t, x) => new { t, x })
+                  .Join(attaches, y => y.t.Id, z => z.GoodsId, (y, z) => new ResponseEnterpriseScanCode()
+                  {
+                      Id = y.x.Id,
+                      ProductName = y.t.ProductName,
+                      ExpiredDate = y.t.ExpiredDate,
+                      StarSerialNo = z.StarSerialNo,
+                      EndSerialNo = z.EndSerialNo,
+                      ProductType = y.t.ProductType,
+                      BatchNo=y.x.GoodsBatchNo
+                  }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
         }
         /// <summary>
         /// 获取扫码详情
@@ -2017,80 +1872,39 @@ namespace KilyCore.Service.ServiceCore
                 MaterCheckResult = c.CheckResult,
                 MaterCheckReport = c.CheckReport
             }).AsNoTracking();
-            var note = notes.Join(infos, o => o.BatchNo, p => p.BatchNo, (o, p) => new { o.Id, p.GrowName, p.PlantTime, p.Paper }).AsNoTracking();
-            var data = goods.Join(stocks, q => q.Id, w => w.GoodsId, (q, w) => new
-            {
-                q.CompanyId,
-                q.ProductName,
-                q.ProductType,
-                q.ExpiredDate,
-                w.Id,
-                w.Remark,
-                w.ImgUrl,
-                w.Explanation,
-                w.ProductTime,
-                w.CheckGoodsId,
-                w.BatchId,
-                w.GoodsId,
-                w.GrowNoteId
-            }).Join(checkGoods, e => e.CheckGoodsId, r => r.Id, (e, r) => new { e, r.CheckReport, r.CheckResult })
-           .Join(batches, t => t.e.BatchId, y => y.Id, (t, y) => new { t, y.BatchNo, y.DeviceName, y.MaterialId })
-           .Join(attaches, u => u.t.e.GoodsId, i => i.GoodsId, (u, i) => new { u, i.StarSerialNo, i.EndSerialNo })
-           .Join(note, f => f.u.t.e.GrowNoteId, g => g.Id, (f, g) => new { f, g.GrowName, g.PlantTime, g.Paper })
-           .Join(enterpriseInfos, x => x.f.u.t.e.CompanyId, p => p.Id, (x, p) => new ResponseEnterpriseScanCode
-           {
-               Id = x.f.u.t.e.Id,
-               CompanyId = x.f.u.t.e.CompanyId,
-               ProductName = x.f.u.t.e.ProductName,
-               ProductType = x.f.u.t.e.ProductType,
-               ExpiredDate = x.f.u.t.e.ExpiredDate,
-               Remark = x.f.u.t.e.Remark,
-               ImgUrl = x.f.u.t.e.ImgUrl,
-               Explanation = x.f.u.t.e.Explanation,
-               ProductTime = x.f.u.t.e.ProductTime,
-               BatchNo = x.f.u.BatchNo,
-               DeviceName = x.f.u.DeviceName,
-               ProductCheckResult = x.f.u.t.CheckResult,
-               ProductCheckReport = x.f.u.t.CheckReport,
-               StarSerialNo = x.f.StarSerialNo,
-               EndSerialNo = x.f.EndSerialNo,
-               GrowName = x.GrowName,
-               PlantTime = x.PlantTime,
-               Paper = x.Paper,
-               NetAddress=p.NetAddress,
-               CompanyAddress=p.CompanyAddress,
-               CompanyName=p.CompanyName,
-               Discription=p.Discription,
-               LngAndLat=p.LngAndLat,
-               Materials = mater.Where(t => x.f.u.MaterialId.Contains(t.Id.ToString())).ToList()
-           }).Where(t=>t.Id==Id).Where(t=>t.StarSerialNo<=Code&&t.EndSerialNo>=Code)
-           .GroupBy(t => new { t.StarSerialNo, t.EndSerialNo }).Select(t => new ResponseEnterpriseScanCode()
-           {
-               Id = t.FirstOrDefault().Id,
-               CompanyId = t.FirstOrDefault().CompanyId,
-               ProductName = t.FirstOrDefault().ProductName,
-               ProductType = t.FirstOrDefault().ProductType,
-               ExpiredDate = t.FirstOrDefault().ExpiredDate,
-               Remark = t.FirstOrDefault().Remark,
-               ImgUrl = t.FirstOrDefault().ImgUrl,
-               Explanation = t.FirstOrDefault().Explanation,
-               ProductTime = t.FirstOrDefault().ProductTime,
-               BatchNo = t.FirstOrDefault().BatchNo,
-               DeviceName = t.FirstOrDefault().DeviceName,
-               GrowName = t.FirstOrDefault().GrowName,
-               PlantTime = t.FirstOrDefault().PlantTime,
-               Paper = t.FirstOrDefault().Paper,
-               ProductCheckResult = t.FirstOrDefault().ProductCheckResult,
-               ProductCheckReport = t.FirstOrDefault().ProductCheckReport,
-               StarSerialNo = t.FirstOrDefault().StarSerialNo,
-               EndSerialNo = t.FirstOrDefault().EndSerialNo,
-               NetAddress = t.FirstOrDefault().NetAddress,
-               CompanyAddress = t.FirstOrDefault().CompanyAddress,
-               CompanyName = t.FirstOrDefault().CompanyName,
-               Discription = t.FirstOrDefault().Discription,
-               LngAndLat = t.FirstOrDefault().LngAndLat,
-               Materials = t.FirstOrDefault().Materials
-           }).AsNoTracking().FirstOrDefault();
+            ResponseEnterpriseScanCode data = goods.Join(stocks, t => t.Id, x => x.GoodsId, (t, x) => new { t, x })
+                .Join(checkGoods, y => y.x.CheckGoodsId, z => z.Id, (y, z) => new { y, z })
+                .Join(batches, m => m.y.x.BatchId, n => n.Id, (m, n) => new { m, n })
+                .Join(enterpriseInfos, f => f.m.y.t.CompanyId, k => k.Id, (f, k) => new { f, k })
+                .Join(attaches, p => p.f.m.y.x.GoodsId, j => j.GoodsId, (p, j) => new { p, j })
+             .GroupJoin(notes, s => s.p.f.m.y.x.GrowNoteId, q => q.Id, (s, q) => new { s, q })
+             .GroupJoin(infos, i => i.q.FirstOrDefault().BatchNo, u => u.BatchNo, (i, u) => new { i, u })
+             .Where(t => t.i.s.p.f.m.y.x.Id == Id).Where(t => t.i.s.j.StarSerialNo <= Code && t.i.s.j.EndSerialNo >= Code)
+             .Select(t => new ResponseEnterpriseScanCode()
+             {
+                 ProductName = t.i.s.p.f.m.y.t.ProductName,
+                 ProductType = t.i.s.p.f.m.y.t.ProductType,
+                 ExpiredDate = t.i.s.p.f.m.y.t.ExpiredDate,
+                 Remark = t.i.s.p.f.m.y.x.Remark,
+                 ImgUrl = t.i.s.p.f.m.y.x.ImgUrl,
+                 ProductTime = t.i.s.p.f.m.y.x.ProductTime,
+                 Explanation = t.i.s.p.f.m.y.x.Explanation,
+                 BatchNo = t.i.s.p.f.n.BatchNo,
+                 DeviceName = t.i.s.p.f.n.DeviceName,
+                 ProductCheckResult = t.i.s.p.f.m.z.CheckResult,
+                 ProductCheckReport = t.i.s.p.f.m.z.CheckReport,
+                 StarSerialNo = t.i.s.j.StarSerialNo,
+                 EndSerialNo = t.i.s.j.EndSerialNo,
+                 NetAddress = t.i.s.p.k.NetAddress,
+                 CompanyAddress = t.i.s.p.k.CompanyAddress,
+                 CompanyName = t.i.s.p.k.CompanyName,
+                 Discription = t.i.s.p.k.Discription,
+                 LngAndLat = t.i.s.p.k.LngAndLat,
+                 GrowName = t.u.FirstOrDefault() != null ? t.u.FirstOrDefault().GrowName : null,
+                 PlantTime = t.u.FirstOrDefault() != null ? t.u.FirstOrDefault().PlantTime : DateTime.Today,
+                 Paper = t.u.FirstOrDefault() != null ? t.u.FirstOrDefault().Paper : null,
+                 Materials = mater.Where(x => t.i.s.p.f.n.MaterialId.Contains(x.Id.ToString())).ToList()
+             }).FirstOrDefault();
             return data;
         }
         #endregion
@@ -3087,7 +2901,7 @@ namespace KilyCore.Service.ServiceCore
                         MaterialList = Material.ToList()
                     }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
                 if (CompanyInfo().CompanyType == CompanyEnum.Circulation)
-                    return Temp.Join(Buyer, p => p.t.GetBuyId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
+                    return Temp.Join(Buyer, p => p.t.BuyId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
                     {
                         Id = p.t.Id,
                         CompanyId = p.t.CompanyId,
@@ -3138,7 +2952,7 @@ namespace KilyCore.Service.ServiceCore
                         MaterialList = Material.ToList()
                     }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
                 if (CompanyUser().CompanyType == CompanyEnum.Circulation)
-                    return Temp.Join(Buyer, p => p.t.GetBuyId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
+                    return Temp.Join(Buyer, p => p.t.BuyId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
                     {
                         Id = p.t.Id,
                         CompanyId = p.t.CompanyId,
@@ -3885,6 +3699,24 @@ namespace KilyCore.Service.ServiceCore
         public string RemoveBuyer(Guid Id)
         {
             return Delete<EnterpriseBuyer>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 进货列表
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseEnterpriseBuyer> GetBuyerList()
+        {
+            IQueryable<EnterpriseBuyer> queryable = Kily.Set<EnterpriseBuyer>().Where(t => t.IsDelete == false).AsNoTracking();
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.Select(t => new ResponseEnterpriseBuyer()
+            {
+                Id = t.Id,
+                BatchNo = t.BatchNo
+            }).ToList();
+            return data;
         }
         #endregion
         #endregion

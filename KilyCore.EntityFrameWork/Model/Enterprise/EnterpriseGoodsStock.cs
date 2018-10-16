@@ -51,7 +51,7 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// <summary>
         /// 进货表Id--流通企业
         /// </summary>
-        public virtual Guid? GetBuyId { get; set; }
+        public virtual Guid? BuyId { get; set; }
         /// <summary>
         /// 负责人
         /// </summary>

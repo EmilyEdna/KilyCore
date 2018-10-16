@@ -110,6 +110,7 @@ namespace KilyCore.Service.IServiceCore
         String EditNote(RequestEnterpriseNote Param);
         String RemoveNote(Guid Id);
         ResponseEnterpriseNote GetNoteDetail(Guid Id);
+        IList<ResponseEnterpriseNote> GetNoteList();
         #endregion
         #region 成长流程
         PagedResult<ResponseEnterpriseAgeUp> GetAgeUpPage(PageParamList<RequestEnterpriseAgeUp> pageParam);
@@ -270,6 +271,7 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseEnterpriseBuyer> GetBuyerPage(PageParamList<RequestEnterpriseBuyer> pageParam);
         String EditBuyer(RequestEnterpriseBuyer Param);
         String RemoveBuyer(Guid Id);
+        IList<ResponseEnterpriseBuyer> GetBuyerList();
         #endregion
         #endregion
         #region 微信和支付宝调用

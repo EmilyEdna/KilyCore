@@ -42,6 +42,14 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// </summary>
         public string Remark { get; set; }
         public string Explanation { get; set; }
+        /// <summary>
+        /// 成长日记表Id--种养殖企业
+        /// </summary>
+        public Guid? GrowNoteId { get; set; }
+        /// <summary>
+        /// 进货表Id--流通企业
+        /// </summary>
+        public Guid? BuyId { get; set; }
     }
     public class RequestEnterpriseGoodsStockAttach
     {

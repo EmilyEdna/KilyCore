@@ -93,6 +93,34 @@
                         $("#CheckGoodsId").html(html);
                     }
                 });
+                //成长日记
+                controller.ajax({
+                    url: "EnterpriseWeb/GetNoteList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.NoteName + '</option>';
+                        });
+                        $("#GrowNoteId").html(html);
+                    }
+                });
+                //进货列表
+                controller.ajax({
+                    url: "EnterpriseWeb/GetBuyerList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.BatchNo + '</option>';
+                        });
+                        $("#BuyId").html(html);
+                    }
+                });
             },
             //绑定二维码
             BindTarget: function () {
@@ -180,6 +208,16 @@
                     <th><label class="control-label">产品质检</label></th>
                     <td class="has-warning">
                         <select type="select" class="form-control" name="CheckGoodsId" id="CheckGoodsId"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">成长日记</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="GrowNoteId" id="GrowNoteId"></select>
+                    </td>
+                    <th><label class="control-label">进货批次</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="BuyId" id="BuyId"></select>
                     </td>
                 </tr>
                 <tr>
