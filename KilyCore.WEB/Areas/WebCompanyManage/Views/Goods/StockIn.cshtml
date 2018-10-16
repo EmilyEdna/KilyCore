@@ -134,7 +134,7 @@
                             type: 2,
                             height: "400px",
                             width: "700px",
-                            url: "WebCompanyManage/Goods/BindTarget?Id=" + flag,
+                            url: "WebCompanyManage/Goods/BindTarget?Id=" + flag + "&No=" + $("#GoodsBatchNo").val(),
                             callBack: function (result) {
                                 var num = $("input[name='InStockNum']").val();
                                 if (num != "" && num != null) {

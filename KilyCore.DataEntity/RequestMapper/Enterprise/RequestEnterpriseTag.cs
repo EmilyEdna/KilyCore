@@ -32,5 +32,6 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public  Int64 StarSerialNo { get; set; }
         public  Int64 EndSerialNo { get; set; }
         public  int UseNum { get; set; }
+        public string StockNo { get; set; }
     }
 }

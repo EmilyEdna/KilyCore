@@ -17,7 +17,9 @@
             InitDom: function () {
                 $("#CompanyId").val(CompanyInfo.Id);
                 var Guid = controller.GetParam("Id");
+                var StockNo= controller.GetParam("No");
                 $("#GoodsId").val(Guid);
+                $("#StockNo").val(StockNo);
             },
             //事件
             InitEvents: function () {
@@ -58,6 +60,7 @@
             <input type="hidden" name="CompanyId" id="CompanyId" />
             <input type="hidden" name="GoodsId" id="GoodsId" />
             <input type="hidden" name="TagBatchNo" id="TagBatchNo" />
+            <input type="hidden" name="StockNo" id="StockNo" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">二维码类型</label></th>

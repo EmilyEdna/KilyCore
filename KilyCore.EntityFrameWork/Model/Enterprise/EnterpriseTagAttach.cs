@@ -41,5 +41,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 标签类型 1:表示纹理二维码。2:表示一物一码。3:表示一品一码。
         /// </summary>
         public virtual string TagType { get; set; }
+        /// <summary>
+        /// 入库批次
+        /// </summary>
+        public virtual string StockNo { get; set; }
     }
 }

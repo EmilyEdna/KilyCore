@@ -1825,6 +1825,8 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess);
             IQueryable<EnterpriseGoodsStock> stocks = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseTagAttach> attaches = Kily.Set<EnterpriseTagAttach>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseProductionBatch> Batch = Kily.Set<EnterpriseProductionBatch>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseGoodsStockAttach> stockAttaches = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.ProductName))
                 goods = goods.Where(t => t.ProductName.Contains(pageParam.QueryParam.ProductName));
             if (CompanyInfo() != null)
@@ -1833,16 +1835,21 @@ namespace KilyCore.Service.ServiceCore
                 goods = goods.Where(t => t.CompanyId == CompanyUser().Id);
 
             var data = goods.Join(stocks, t => t.Id, x => x.GoodsId, (t, x) => new { t, x })
-                  .Join(attaches, y => y.t.Id, z => z.GoodsId, (y, z) => new ResponseEnterpriseScanCode()
+                  .Join(attaches, y => y.x.GoodsBatchNo, z => z.StockNo, (y, z) => new { y, z })
+                  .Join(Batch, m => m.y.x.BatchId, n => n.Id, (m, n) => new { m, n })
+                  .Join(stockAttaches,q=>q.m.y.x.Id,p=>p.StockId,(q,p)=> new {q,p})
+                  .Where(t=>t.q.m.y.x.GoodsId==t.q.m.z.GoodsId)
+                  .Select(t => new ResponseEnterpriseScanCode()
                   {
-                      Id = y.x.Id,
-                      ProductName = y.t.ProductName,
-                      ExpiredDate = y.t.ExpiredDate,
-                      StarSerialNo = z.StarSerialNo,
-                      EndSerialNo = z.EndSerialNo,
-                      ProductType = y.t.ProductType,
-                      BatchNo=y.x.GoodsBatchNo
-                  }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                      Id = t.q.m.y.x.Id,
+                      ProductName = t.q.m.y.t.ProductName,
+                      ExpiredDate = t.q.m.y.t.ExpiredDate,
+                      StarSerialNo = t.q.m.z.StarSerialNo,
+                      EndSerialNo = t.q.m.z.EndSerialNo,
+                      ProductType = t.q.m.y.t.ProductType,
+                      BatchNo = t.q.n.BatchNo
+                  })
+                  .ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
         /// <summary>
@@ -1855,6 +1862,9 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess);
             IQueryable<EnterpriseGoodsStock> stocks = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseGoodsStockAttach> outStock = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseGoodsPackage> Package = Kily.Set<EnterpriseGoodsPackage>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseLogistics> Trans = Kily.Set<EnterpriseLogistics>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseCheckGoods> checkGoods = Kily.Set<EnterpriseCheckGoods>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseProductionBatch> batches = Kily.Set<EnterpriseProductionBatch>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseNote> notes = Kily.Set<EnterpriseNote>().Where(t => t.IsDelete == false);
@@ -1872,39 +1882,121 @@ namespace KilyCore.Service.ServiceCore
                 MaterCheckResult = c.CheckResult,
                 MaterCheckReport = c.CheckReport
             }).AsNoTracking();
-            ResponseEnterpriseScanCode data = goods.Join(stocks, t => t.Id, x => x.GoodsId, (t, x) => new { t, x })
+            var growInfo = notes.Join(infos, t => t.BatchNo, x => x.BatchNo, (t, x) => new EnterpriseGrowInfo()
+            {
+                Id = t.Id,
+                GrowName = x.GrowName,
+                PlantTime = x.PlantTime,
+                Paper = x.Paper
+            }).AsNoTracking();
+            var Logistics = Package.Join(Trans, y => y.PackageNo, z => z.PackageNo, (y, z) => new EnterpriseLogistics()
+            {
+                WayBill = z.WayBill,
+                PackageNo = z.PackageNo,
+                TransportWay = z.TransportWay,
+                Address = z.Address,
+                Traffic = z.Traffic,
+                SendGoodsNum = y.ProductOutStockNo
+            }).AsNoTracking();
+            IQueryable<ResponseEnterpriseScanCode> queryable = goods.Join(stocks, t => t.Id, x => x.GoodsId, (t, x) => new { t, x })
                 .Join(checkGoods, y => y.x.CheckGoodsId, z => z.Id, (y, z) => new { y, z })
                 .Join(batches, m => m.y.x.BatchId, n => n.Id, (m, n) => new { m, n })
                 .Join(enterpriseInfos, f => f.m.y.t.CompanyId, k => k.Id, (f, k) => new { f, k })
                 .Join(attaches, p => p.f.m.y.x.GoodsId, j => j.GoodsId, (p, j) => new { p, j })
-             .GroupJoin(notes, s => s.p.f.m.y.x.GrowNoteId, q => q.Id, (s, q) => new { s, q })
-             .GroupJoin(infos, i => i.q.FirstOrDefault().BatchNo, u => u.BatchNo, (i, u) => new { i, u })
-             .Where(t => t.i.s.p.f.m.y.x.Id == Id).Where(t => t.i.s.j.StarSerialNo <= Code && t.i.s.j.EndSerialNo >= Code)
-             .Select(t => new ResponseEnterpriseScanCode()
-             {
-                 ProductName = t.i.s.p.f.m.y.t.ProductName,
-                 ProductType = t.i.s.p.f.m.y.t.ProductType,
-                 ExpiredDate = t.i.s.p.f.m.y.t.ExpiredDate,
-                 Remark = t.i.s.p.f.m.y.x.Remark,
-                 ImgUrl = t.i.s.p.f.m.y.x.ImgUrl,
-                 ProductTime = t.i.s.p.f.m.y.x.ProductTime,
-                 Explanation = t.i.s.p.f.m.y.x.Explanation,
-                 BatchNo = t.i.s.p.f.n.BatchNo,
-                 DeviceName = t.i.s.p.f.n.DeviceName,
-                 ProductCheckResult = t.i.s.p.f.m.z.CheckResult,
-                 ProductCheckReport = t.i.s.p.f.m.z.CheckReport,
-                 StarSerialNo = t.i.s.j.StarSerialNo,
-                 EndSerialNo = t.i.s.j.EndSerialNo,
-                 NetAddress = t.i.s.p.k.NetAddress,
-                 CompanyAddress = t.i.s.p.k.CompanyAddress,
-                 CompanyName = t.i.s.p.k.CompanyName,
-                 Discription = t.i.s.p.k.Discription,
-                 LngAndLat = t.i.s.p.k.LngAndLat,
-                 GrowName = t.u.FirstOrDefault() != null ? t.u.FirstOrDefault().GrowName : null,
-                 PlantTime = t.u.FirstOrDefault() != null ? t.u.FirstOrDefault().PlantTime : DateTime.Today,
-                 Paper = t.u.FirstOrDefault() != null ? t.u.FirstOrDefault().Paper : null,
-                 Materials = mater.Where(x => t.i.s.p.f.n.MaterialId.Contains(x.Id.ToString())).ToList()
-             }).FirstOrDefault();
+                .Join(outStock, i => i.p.f.m.y.x.Id, u => u.StockId, (i, u) => new { i, u })
+                .Where(t => t.i.p.f.m.y.x.Id == Id).Where(t => t.i.j.StarSerialNo <= Code && t.i.j.EndSerialNo >= Code)
+                 .Select(t => new ResponseEnterpriseScanCode()
+                 {
+                     Id= t.i.p.f.m.y.x.Id,
+                     OutStockBatchNo = t.u.GoodsBatchNo,
+                     ProductName = t.i.p.f.m.y.t.ProductName,
+                     ProductType = t.i.p.f.m.y.t.ProductType,
+                     ExpiredDate = t.i.p.f.m.y.t.ExpiredDate,
+                     Remark = t.i.p.f.m.y.x.Remark,
+                     ImgUrl = t.i.p.f.m.y.x.ImgUrl,
+                     ProductTime = t.i.p.f.m.y.x.ProductTime,
+                     Explanation = t.i.p.f.m.y.x.Explanation,
+                     BatchNo = t.i.p.f.n.BatchNo,
+                     DeviceName = t.i.p.f.n.DeviceName,
+                     ProductCheckResult = t.i.p.f.m.z.CheckResult,
+                     ProductCheckReport = t.i.p.f.m.z.CheckReport,
+                     StarSerialNo = t.i.j.StarSerialNo,
+                     EndSerialNo = t.i.j.EndSerialNo,
+                     NetAddress = t.i.p.k.NetAddress,
+                     CompanyAddress = t.i.p.k.CompanyAddress,
+                     CompanyName = t.i.p.k.CompanyName,
+                     Discription = t.i.p.k.Discription,
+                     LngAndLat = t.i.p.k.LngAndLat,
+                     GrowNoteId= t.i.p.f.m.y.x.GrowNoteId,
+                     Materials = mater.Where(x => t.i.p.f.n.MaterialId.Contains(x.Id.ToString())).ToList()
+                 }).AsNoTracking();
+              var s = queryable.ToList();
+            if (growInfo.ToList().Count != 0)
+            {
+                var pp = queryable.Join(growInfo, t => t.GrowNoteId, x => x.Id, (t, x) => new { t, x }).FirstOrDefault();
+            }
+                //queryable = queryable.Join(growInfo, t => t.GrowNoteId, x => x.Id, (t, x) => new ResponseEnterpriseScanCode
+                //{
+                //    Id=t.Id,
+                //    OutStockBatchNo = t.OutStockBatchNo,
+                //    ProductName = t.ProductName,
+                //    ProductType = t.ProductType,
+                //    ExpiredDate = t.ExpiredDate,
+                //    Remark = t.Remark,
+                //    ImgUrl = t.ImgUrl,
+                //    ProductTime = t.ProductTime,
+                //    Explanation = t.Explanation,
+                //    BatchNo = t.BatchNo,
+                //    DeviceName = t.DeviceName,
+                //    ProductCheckResult = t.ProductCheckResult,
+                //    ProductCheckReport = t.ProductCheckReport,
+                //    StarSerialNo = t.StarSerialNo,
+                //    EndSerialNo = t.EndSerialNo,
+                //    NetAddress = t.NetAddress,
+                //    CompanyAddress = t.CompanyAddress,
+                //    CompanyName = t.CompanyName,
+                //    Discription = t.Discription,
+                //    LngAndLat = t.LngAndLat,
+                //    GrowNoteId = t.GrowNoteId,
+                //    Paper = x.Paper,
+                //    PlantTime = x.PlantTime,
+                //    GrowName = x.GrowName,
+                //    Materials = t.Materials
+                //}).AsNoTracking();
+            if (Logistics.ToList().Count != 0)
+                queryable = queryable.Join(Logistics, t => t.OutStockBatchNo, x => x.SendGoodsNum, (t, x) => new ResponseEnterpriseScanCode()
+                {
+                    Id=t.Id,
+                    ProductName = t.ProductName,
+                    ProductType = t.ProductType,
+                    ExpiredDate = t.ExpiredDate,
+                    Remark = t.Remark,
+                    ImgUrl = t.ImgUrl,
+                    ProductTime = t.ProductTime,
+                    Explanation = t.Explanation,
+                    BatchNo = t.BatchNo,
+                    DeviceName = t.DeviceName,
+                    ProductCheckResult = t.ProductCheckResult,
+                    ProductCheckReport = t.ProductCheckReport,
+                    StarSerialNo = t.StarSerialNo,
+                    EndSerialNo = t.EndSerialNo,
+                    NetAddress = t.NetAddress,
+                    CompanyAddress = t.CompanyAddress,
+                    CompanyName = t.CompanyName,
+                    Discription = t.Discription,
+                    LngAndLat = t.LngAndLat,
+                    GrowNoteId = t.GrowNoteId,
+                    Paper = t.Paper,
+                    PlantTime = t.PlantTime,
+                    GrowName = t.GrowName,
+                    PackageNo = x.PackageNo,
+                    Address = x.Address,
+                    Traffic = x.Traffic,
+                    TransportWay = x.TransportWay,
+                    WayBill = x.WayBill,
+                    Materials = t.Materials
+                }).AsNoTracking();
+            var data = queryable.FirstOrDefault();
             return data;
         }
         #endregion

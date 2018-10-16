@@ -107,8 +107,31 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// 网址
         /// </summary>
         public string NetAddress { get; set; }
+        /// <summary>
+        /// 物流单号
+        /// </summary>
+        public string WayBill { get; set; }
+        /// <summary>
+        /// 包装编号
+        /// </summary>
+        public string PackageNo { get; set; }
+        /// <summary>
+        /// 地址
+        /// </summary>
+        public string Address { get; set; }
+        /// <summary>
+        /// 运输方式
+        /// </summary>
+        public string TransportWay { get; set; }
+        /// <summary>
+        /// 交通工具
+        /// </summary>
+        public string Traffic { get; set; }
+        public Guid? GrowNoteId { get; set; }
+        public string OutStockBatchNo { get; set; }
     }
-    public class ResponseEnterpriseScanCodeMaterial {
+    public class ResponseEnterpriseScanCodeMaterial
+    {
         public Guid Id { get; set; }
         public string MaterName { get; set; }
         public string Supplier { get; set; }
