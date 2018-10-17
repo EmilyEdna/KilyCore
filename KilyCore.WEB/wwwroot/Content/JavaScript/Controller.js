@@ -341,7 +341,6 @@ controller.OpenWindow = function (option) {
                 },
                 data: defaultOptions.data
             };
-
             if (iframeWin.start)
                 iframeWin.start();
         },

@@ -704,6 +704,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("EditComplain")]
+        [AllowAnonymous]
         public ObjectResultEx EditComplain(RequestGovtComplain Param)
         {
             return ObjectResultEx.Instance(GovtWebService.EditComplain(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);

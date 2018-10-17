@@ -127,6 +127,11 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// 交通工具
         /// </summary>
         public string Traffic { get; set; }
+        /// <summary>
+        /// 公司类型
+        /// </summary>
+        public string CompanyType { get; set; }
+        public string TypePath { get; set; }
         public Guid? GrowNoteId { get; set; }
         public string OutStockBatchNo { get; set; }
     }

@@ -1598,6 +1598,7 @@ namespace KilyCore.Service.ServiceCore
         {
             GovtComplain complain = Param.MapToEntity<GovtComplain>();
             complain.Status = "待处理";
+            complain.ComplainTime = DateTime.Now;
             return Insert(complain) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         /// <summary>
