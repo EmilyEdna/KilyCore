@@ -292,6 +292,9 @@
                                 data: $(data).find("form").SerializeJson(),
                                 success: function (result) {
                                     layer.msg(result.msg);
+                                    setTimeout(function () {
+                                        layer.closeAll();
+                                    }, 500)
                                 }
                             })
                         }
