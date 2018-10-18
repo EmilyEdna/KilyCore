@@ -5,10 +5,11 @@
 }
 @section css{
     <style>
-        th{
+        th {
             text-align: center;
             vertical-align: middle;
         }
+
         td {
             text-align: center;
             vertical-align: middle;
@@ -63,11 +64,11 @@
                 $.each(data, function (i, obj) {
                     html += '<tr><td class="text-warning">' + obj.AuditName + '</td>';
                     html += '<td class="text-warning">' + obj.CreateTime + '</td>';
-                    if (obj.AuditSuggestion.length<8)
+                    if (obj.AuditSuggestion.length < 8)
                         html += '<td class="text-warning">' + obj.AuditSuggestion + '</td>';
                     else
                         html += '<td class="text-warning"><lable title="' + obj.AuditSuggestion + '">' + obj.AuditSuggestion.substring(0, 8) + '..</lable></td>';
-                    if (obj.AuditType==10)
+                    if (obj.AuditType == 10)
                         html += '<td class="text-warning">审核未通过</td></tr>';
                     if (obj.AuditType == 20)
                         html += '<td class="text-warning">等待审核</td></tr>';
@@ -96,8 +97,14 @@
                         if (obj != null)
                             html += "<img src='" + obj + "' class='img-preview-sm'  title='点击放大' style='width:251px;height:300px;padding:5px'/>";
                     if ((field.indexOf("_X") < 0 && field.indexOf("_M") < 0 && field.indexOf("_Y") < 0) && (field.indexOf("Img") >= 0))
-                        if (obj != null)
-                            html += "<img src='" + obj + "' class='img-preview-sm'  title='点击放大' style='width:251px;height:300px;padding:5px'/>";
+                        if (obj != null) {
+                            if (obj.indexOf(",") > 0)
+                                for (var i = 0; i < obj.split(",").length; i++) {
+                                    html += "<img src='" + obj.split(",")[i] + "' class='img-preview-sm'  title='点击放大' style='width:251px;height:300px;padding:5px'/>";
+                                }
+                            else
+                                html += "<img src='" + obj + "' class='img-preview-sm'  title='点击放大' style='width:251px;height:300px;padding:5px'/>";
+                        }
                 });
                 $(".ibox-content").html(html);
             },
@@ -216,8 +223,7 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody id="AuditInfo">
-                    </tbody>
+                    <tbody id="AuditInfo"></tbody>
                     <tfoot>
                         <tr>
                             <th colspan="4" class="text-danger">

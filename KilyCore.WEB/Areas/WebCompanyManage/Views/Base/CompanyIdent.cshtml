@@ -25,13 +25,14 @@
             },
             //判断公司类型
             CheckType: function () {
-                if (CompanyInfo.CompanyType == 10)
+                var Type = Number(CompanyInfo.CompanyType);
+                if (Type == 10)
                     $("#one1").css("display", "block");
-                if (CompanyInfo.CompanyType == 20)
+                if (Type == 20)
                     $("#one2").css("display", "block");
-                if (CompanyInfo.CompanyType == 30)
+                if (Type == 30)
                     $("#one3").css("display", "block");
-                if (CompanyInfo.CompanyType == 40)
+                if (Type == 40)
                     $("#one4").css("display", "block");
             },
             //设置文件值
@@ -105,7 +106,7 @@
                 controller.Upload({
                     url: "File/UploadImg",
                     element: "#upload-input-5",
-                    maxNum: 1,
+                    maxNum: 5,
                     node: '#Img5',
                     success: function (result) {
                         controller.Alter(result.msg);
@@ -263,10 +264,10 @@
                 <a data-toggle="tab" href="#tab-4" aria-expanded="false">养殖企业</a>
             </li>
             <li style="display:none" id="one3">
-                <a data-toggle="tab" href="#tab-5" aria-expanded="false">流通企业</a>
+                <a data-toggle="tab" href="#tab-5" aria-expanded="false">生产企业</a>
             </li>
             <li style="display:none" id="one4">
-                <a data-toggle="tab" href="#tab-6" aria-expanded="false">生产企业</a>
+                <a data-toggle="tab" href="#tab-6" aria-expanded="false">流通企业</a>
             </li>
             <li>
                 <a id="save">保存内容</a>
@@ -562,6 +563,63 @@
             </div>
             <div id="tab-5" class="tab-pane">
                 <div class="panel-body">
+                    <!--药品GMP检测-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">药品GMP检测</label>
+                        <div class="col-sm-8">
+                            <div class="upload-box">
+                                <div class="image-box clear" id="Img3-1">
+                                    <section class="upload-section">
+                                        <div class="upload-btn"></div>
+                                        <input type="file" name="Files" id="upload-input-3-1" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="hidden" id="ImgDrugs" name="ImgDrugs" />
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--生产检测-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">生产检测</label>
+                        <div class="col-sm-8">
+                            <div class="upload-box">
+                                <div class="image-box clear" id="Img3-2">
+                                    <section class="upload-section">
+                                        <div class="upload-btn"></div>
+                                        <input type="file" name="Files" id="upload-input-3-2" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="hidden" id="ImgProduction" name="ImgProduction" />
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--卫生检测-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">卫生检测</label>
+                        <div class="col-sm-8">
+                            <div class="upload-box">
+                                <div class="image-box clear" id="Img3-3">
+                                    <section class="upload-section">
+                                        <div class="upload-btn"></div>
+                                        <input type="file" name="Files" id="upload-input-3-3" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="hidden" id="ImgHygiene" name="ImgHygiene" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-6" class="tab-pane">
+                <div class="panel-body">
                     <!--药品GSP检测-->
                     <div class="form-group">
                         <label class="col-sm-2 control-label">药品GSP检测</label>
@@ -631,63 +689,6 @@
                         </div>
                         <div class="col-sm-2">
                             <input type="hidden" id="ImgImportExport" name="ImgImportExport" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="tab-6" class="tab-pane">
-                <div class="panel-body">
-                    <!--药品GMP检测-->
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">药品GMP检测</label>
-                        <div class="col-sm-8">
-                            <div class="upload-box">
-                                <div class="image-box clear" id="Img3-1">
-                                    <section class="upload-section">
-                                        <div class="upload-btn"></div>
-                                        <input type="file" name="Files" id="upload-input-3-1" class="upload-input" value="" accept="image/*" multiple="multiple" />
-                                    </section>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-2">
-                            <input type="hidden" id="ImgDrugs" name="ImgDrugs" />
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <!--生产检测-->
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">生产检测</label>
-                        <div class="col-sm-8">
-                            <div class="upload-box">
-                                <div class="image-box clear" id="Img3-2">
-                                    <section class="upload-section">
-                                        <div class="upload-btn"></div>
-                                        <input type="file" name="Files" id="upload-input-3-2" class="upload-input" value="" accept="image/*" multiple="multiple" />
-                                    </section>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-2">
-                            <input type="hidden" id="ImgProduction" name="ImgProduction" />
-                        </div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <!--卫生检测-->
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">卫生检测</label>
-                        <div class="col-sm-8">
-                            <div class="upload-box">
-                                <div class="image-box clear" id="Img3-3">
-                                    <section class="upload-section">
-                                        <div class="upload-btn"></div>
-                                        <input type="file" name="Files" id="upload-input-3-3" class="upload-input" value="" accept="image/*" multiple="multiple" />
-                                    </section>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-2">
-                            <input type="hidden" id="ImgHygiene" name="ImgHygiene" />
                         </div>
                     </div>
                 </div>
