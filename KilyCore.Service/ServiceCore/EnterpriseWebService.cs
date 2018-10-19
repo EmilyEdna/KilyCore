@@ -1825,7 +1825,6 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess);
             IQueryable<EnterpriseGoodsStock> stocks = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseTagAttach> attaches = Kily.Set<EnterpriseTagAttach>().Where(t => t.IsDelete == false);
-            IQueryable<EnterpriseProductionBatch> Batch = Kily.Set<EnterpriseProductionBatch>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseGoodsStockAttach> stockAttaches = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.ProductName))
                 goods = goods.Where(t => t.ProductName.Contains(pageParam.QueryParam.ProductName));
@@ -1836,18 +1835,17 @@ namespace KilyCore.Service.ServiceCore
 
             var data = goods.Join(stocks, t => t.Id, x => x.GoodsId, (t, x) => new { t, x })
                   .Join(attaches, y => y.x.GoodsBatchNo, z => z.StockNo, (y, z) => new { y, z })
-                  .Join(Batch, m => m.y.x.BatchId, n => n.Id, (m, n) => new { m, n })
-                  .Join(stockAttaches, q => q.m.y.x.Id, p => p.StockId, (q, p) => new { q, p })
-                  .Where(t => t.q.m.y.x.GoodsId == t.q.m.z.GoodsId)
+                  .Join(stockAttaches, q => q.y.x.Id, p => p.StockId, (q, p) => new { q, p })
+                  .Where(t => t.q.y.x.GoodsId == t.q.z.GoodsId)
                   .Select(t => new ResponseEnterpriseScanCode()
                   {
-                      Id = t.q.m.y.x.Id,
-                      ProductName = t.q.m.y.t.ProductName,
-                      ExpiredDate = t.q.m.y.t.ExpiredDate,
-                      StarSerialNo = t.q.m.z.StarSerialNo,
-                      EndSerialNo = t.q.m.z.EndSerialNo,
-                      ProductType = t.q.m.y.t.ProductType,
-                      BatchNo = t.q.n.BatchNo
+                      Id = t.q.y.x.Id,
+                      ProductName = t.q.y.t.ProductName,
+                      ExpiredDate = t.q.y.t.ExpiredDate,
+                      StarSerialNo = t.q.z.StarSerialNo,
+                      EndSerialNo = t.q.z.EndSerialNo,
+                      ProductType = t.q.y.t.ProductType,
+                      BatchNo =t.p.GoodsBatchNo
                   })
                   .ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -1898,31 +1896,35 @@ namespace KilyCore.Service.ServiceCore
                 Traffic = z.Traffic,
                 SendGoodsNum = y.ProductOutStockNo
             }).AsNoTracking().ToList();
+            var Batchs = stocks.Join(batches, t => t.BatchId, x => x.Id, (t, x) => new EnterpriseProductionBatch()
+            {
+                Id=t.Id,
+                BatchNo=x.BatchNo,
+                DeviceName=x.DeviceName,
+                MaterialId=x.MaterialId
+            }).AsNoTracking().ToList();
             ResponseEnterpriseScanCode queryable = goods.Join(stocks, t => t.Id, x => x.GoodsId, (t, x) => new { t, x })
                 .Join(checkGoods, y => y.x.CheckGoodsId, z => z.Id, (y, z) => new { y, z })
-                .Join(batches, m => m.y.x.BatchId, n => n.Id, (m, n) => new { m, n })
-                .Join(enterpriseInfos, f => f.m.y.t.CompanyId, k => k.Id, (f, k) => new { f, k })
-                .Join(attaches, p => p.f.m.y.x.GoodsId, j => j.GoodsId, (p, j) => new { p, j })
-                .Join(outStock, i => i.p.f.m.y.x.Id, u => u.StockId, (i, u) => new { i, u })
-                .Where(t => t.i.p.f.m.y.x.Id == Id).Where(t => t.i.j.StarSerialNo <= Code && t.i.j.EndSerialNo >= Code)
+                .Join(enterpriseInfos, f => f.y.t.CompanyId, k => k.Id, (f, k) => new { f, k })
+                .Join(attaches, p => p.f.y.x.GoodsId, j => j.GoodsId, (p, j) => new { p, j })
+                .Join(outStock, i => i.p.f.y.x.Id, u => u.StockId, (i, u) => new { i, u })
+                .Where(t => t.i.p.f.y.x.Id == Id).Where(t => t.i.j.StarSerialNo <= Code && t.i.j.EndSerialNo >= Code)
                  .Select(t => new ResponseEnterpriseScanCode()
                  {
-                     Id = t.i.p.f.m.y.x.Id,
+                     Id = t.i.p.f.y.x.Id,
                      CompanyType=AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.i.p.k.CompanyType),
                      TypePath= t.i.p.k.TypePath,
-                     CompanyId = t.i.p.f.m.y.t.CompanyId,
+                     CompanyId = t.i.p.f.y.t.CompanyId,
                      OutStockBatchNo = t.u.GoodsBatchNo,
-                     ProductName = t.i.p.f.m.y.t.ProductName,
-                     ProductType = t.i.p.f.m.y.t.ProductType,
-                     ExpiredDate = t.i.p.f.m.y.t.ExpiredDate,
-                     Remark = t.i.p.f.m.y.x.Remark,
-                     ImgUrl = t.i.p.f.m.y.x.ImgUrl,
-                     ProductTime = t.i.p.f.m.y.x.ProductTime,
-                     Explanation = t.i.p.f.m.y.x.Explanation,
-                     BatchNo = t.i.p.f.n.BatchNo,
-                     DeviceName = t.i.p.f.n.DeviceName,
-                     ProductCheckResult = t.i.p.f.m.z.CheckResult,
-                     ProductCheckReport = t.i.p.f.m.z.CheckReport,
+                     ProductName = t.i.p.f.y.t.ProductName,
+                     ProductType = t.i.p.f.y.t.ProductType,
+                     ExpiredDate = t.i.p.f.y.t.ExpiredDate,
+                     Remark = t.i.p.f.y.x.Remark,
+                     ImgUrl = t.i.p.f.y.x.ImgUrl,
+                     ProductTime = t.i.p.f.y.x.ProductTime,
+                     Explanation = t.i.p.f.y.x.Explanation,
+                     ProductCheckResult = t.i.p.f.z.CheckResult,
+                     ProductCheckReport = t.i.p.f.z.CheckReport,
                      StarSerialNo = t.i.j.StarSerialNo,
                      EndSerialNo = t.i.j.EndSerialNo,
                      NetAddress = t.i.p.k.NetAddress,
@@ -1930,9 +1932,23 @@ namespace KilyCore.Service.ServiceCore
                      CompanyName = t.i.p.k.CompanyName,
                      Discription = t.i.p.k.Discription,
                      LngAndLat = t.i.p.k.LngAndLat,
-                     GrowNoteId = t.i.p.f.m.y.x.GrowNoteId,
-                     Materials = mater.Where(x => t.i.p.f.n.MaterialId.Contains(x.Id.ToString())).ToList()
+                     GrowNoteId = t.i.p.f.y.x.GrowNoteId
                  }).FirstOrDefault();
+            if (Batchs.Count != 0)
+            {
+                ResponseEnterpriseProductionBatch data = Batchs.Where(t => t.Id == queryable.Id).Select(t => new ResponseEnterpriseProductionBatch()
+                {
+                    DeviceName = t.DeviceName,
+                    BatchNo = t.BatchNo,
+                    MaterialId = t.MaterialId
+                }).FirstOrDefault();
+                if (data != null)
+                {
+                    queryable.BatchNo = data.BatchNo;
+                    queryable.DeviceName = data.DeviceName;
+                    queryable.Materials = mater.Where(t => data.MaterialId.Contains(t.Id.ToString())).ToList();
+                }
+            }
             if (growInfo.Count != 0)
             {
                 ResponseEnterpriseGrowInfo data = growInfo.Where(t => t.Id == queryable.GrowNoteId).Select(t => new ResponseEnterpriseGrowInfo
