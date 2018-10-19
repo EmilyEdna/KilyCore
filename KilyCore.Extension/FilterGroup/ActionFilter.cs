@@ -45,7 +45,7 @@ namespace KilyCore.Extension.FilterGroup
             {
                var PhoneCode = request.Form["Parameter[PhoneCode]"].ToString();
                 var SessionCode = context.HttpContext.Session.GetSession<string>("PhoneCode");
-                if (!string.IsNullOrEmpty(SessionCode))
+                if (string.IsNullOrEmpty(SessionCode))
                     context.Result = ObjectResultEx.Instance("请输入验证码", 1, RetrunMessge.SUCCESS, HttpCode.FAIL);
                 if (!SessionCode.Trim().Equals(PhoneCode))
                     context.Result =ObjectResultEx.Instance("请输入正确的验证码", 1, RetrunMessge.SUCCESS, HttpCode.FAIL);
