@@ -241,7 +241,7 @@ namespace KilyCore.API.Controllers
             {
                 string Code = HttpContext.Session.GetSession<string>("ValidateCode").Trim();
                 var RepAdmin = RepastService.MerchantLogin(LoginValidate);
-                if (RepAdmin != null && Code.Equals(LoginValidate.ValidateCode.Trim()))
+                if (RepAdmin != null && Code.ToUpper().Equals(LoginValidate.ValidateCode.Trim().ToUpper()))
                 {
                     CookieInfo cookie = new CookieInfo();
                     VerificationExtension.WriteToken(cookie, RepAdmin);
