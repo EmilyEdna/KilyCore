@@ -549,6 +549,7 @@ namespace KilyCore.Service.ServiceCore
                     queryable = queryable.Where(t => t.DicName.Contains("流通"));
                 if ((CompanyEnum)Param == CompanyEnum.Other)
                     queryable = queryable.Where(t => t.DicName.Contains("其他"));
+                queryable = queryable.Where(t => t.DicName.Contains("餐饮") && !t.DicName.Contains("单位"));
             }
             else
             {
@@ -556,6 +557,11 @@ namespace KilyCore.Service.ServiceCore
                     queryable = queryable.Where(t => t.DicName.Contains("餐饮"));
                 if ((MerchantEnum)Param == MerchantEnum.UnitCanteen)
                     queryable = queryable.Where(t => t.DicName.Contains("单位"));
+                queryable = queryable.Where(t => !t.DicName.Contains("生产")
+                  && !t.DicName.Contains("种植")
+                  && !t.DicName.Contains("流通")
+                  && !t.DicName.Contains("养殖")
+                  && !t.DicName.Contains("其他"));
             }
             var data = Kily.Set<FunctionAreaDictionary>().Where(t => t.ProvinceId.Contains(TypePath)).Where(t => t.IsDelete == false)
                   .Join(queryable, t => t.DictionaryId, x => x.Id, (t, x) => new ResponseAreaDictionary()

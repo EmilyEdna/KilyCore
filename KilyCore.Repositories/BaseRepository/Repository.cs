@@ -54,8 +54,10 @@ namespace KilyCore.Repositories.BaseRepository
                     props.Where(t => t.Name.Equals("DeleteUser")).FirstOrDefault().SetValue(Entity, MerchantUser().InfoId.ToString());
                 else if (CookInfo() != null)
                     props.Where(t => t.Name.Equals("DeleteUser")).FirstOrDefault().SetValue(Entity, CookInfo().Id.ToString());
-                else
+                else if (GovtInfo() != null)
                     props.Where(t => t.Name.Equals("DeleteUser")).FirstOrDefault().SetValue(Entity, GovtInfo().Id.ToString());
+                else
+                    props.Where(t => t.Name.Equals("DeleteUser")).FirstOrDefault().SetValue(Entity, null);
                 Kily.Entry<TEntity>(Entity).State = EntityState.Modified;
                 this.SaveChages();
                 return true;
@@ -91,8 +93,10 @@ namespace KilyCore.Repositories.BaseRepository
                     props.Where(t => t.Name.Equals("CreateUser")).FirstOrDefault().SetValue(Entity, MerchantUser().InfoId.ToString());
                 else if (CookInfo() != null)
                     props.Where(t => t.Name.Equals("CreateUser")).FirstOrDefault().SetValue(Entity, CookInfo().Id.ToString());
-                else
+                else if (GovtInfo() != null)
                     props.Where(t => t.Name.Equals("CreateUser")).FirstOrDefault().SetValue(Entity, GovtInfo().Id.ToString());
+                else
+                    props.Where(t => t.Name.Equals("CreateUser")).FirstOrDefault().SetValue(Entity, null);
                 Kily.Entry<TEntity>(Entity).State = EntityState.Added;
                 this.SaveChages();
                 return true;
@@ -130,8 +134,10 @@ namespace KilyCore.Repositories.BaseRepository
                     EntityProp.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, MerchantUser().InfoId.ToString());
                 else if (CookInfo() != null)
                     EntityProp.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, CookInfo().Id.ToString());
-                else
+                else if (GovtInfo() != null)
                     EntityProp.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, GovtInfo().Id.ToString());
+                else
+                    EntityProp.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, null);
                 foreach (var Prop in EntityProp)
                 {
                     Kily.Entry<TEntity>(Entity).Property(Prop.Name).IsModified = true;//更新的时间和更新人
@@ -183,8 +189,10 @@ namespace KilyCore.Repositories.BaseRepository
                         EntityProps.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, MerchantUser().InfoId.ToString());
                     else if (CookInfo() != null)
                         EntityProps.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, CookInfo().Id.ToString());
-                    else
+                     else if (GovtInfo() != null)
                         EntityProps.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, GovtInfo().Id.ToString());
+                    else
+                        EntityProps.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, null);
                     foreach (var Prop in EntityProps)
                     {
                         Kily.Entry<TEntity>(Entity).Property(Prop.Name).IsModified = true;//更新的时间和更新人
@@ -212,8 +220,10 @@ namespace KilyCore.Repositories.BaseRepository
                         EntityProps.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, MerchantUser().InfoId.ToString());
                     else if (CookInfo() != null)
                         EntityProps.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, CookInfo().Id.ToString());
-                    else
+                    else if (GovtInfo() != null)
                         EntityProps.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, GovtInfo().Id.ToString());
+                    else
+                        EntityProps.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, null);
                     foreach (var Prop in EntityProps)
                     {
                         Kily.Entry<TEntity>(Entity).Property(Prop.Name).IsModified = true;//更新的时间和更新人

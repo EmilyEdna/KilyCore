@@ -54,7 +54,7 @@
                             type: 2,
                             height: "450px",
                             width: "700px",
-                            url: "SysManage/Logistics/PackageEdit?Id=" + row.Id,
+                            url: "WebCompanyManage/Logistics/PackageEdit?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }
@@ -66,7 +66,7 @@
                             type: 2,
                             height: "450px",
                             width: "700px",
-                            url: "SysManage/Logistics/SendGoodsEdit?GoodsName=" + row.ProductName + "&No=" + row.PackageNo,
+                            url: "WebCompanyManage/Logistics/SendGoodsEdit?GoodsName=" + row.ProductName + "&No=" + row.PackageNo,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }

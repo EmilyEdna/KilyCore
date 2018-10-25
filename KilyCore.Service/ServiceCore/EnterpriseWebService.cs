@@ -104,12 +104,11 @@ namespace KilyCore.Service.ServiceCore
         public IList<ResponseEnterpriseSeller> GetSellerInEnterprise(string Param)
         {
             IQueryable<EnterpriseSeller> Seller = Kily.Set<EnterpriseSeller>().Where(t => t.IsDelete == false).Where(t => t.SellerType == SellerEnum.Sale);
-            IQueryable<EnterpriseInfo> Info = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
             if (!string.IsNullOrEmpty(Param))
                 Seller = Seller.Where(t => t.SupplierName.Contains(Param));
-            var data = Seller.GroupJoin(Info, t => t.SupplierName, x => x.CompanyName, (t, x) => new ResponseEnterpriseSeller()
+            var data = Seller.Select(t=> new ResponseEnterpriseSeller()
             {
-                Id = x.FirstOrDefault().Id,
+                Id = t.Id,
                 SupplierName = t.SupplierName,
                 Address = t.Address
             }).ToList();
@@ -3081,11 +3080,18 @@ namespace KilyCore.Service.ServiceCore
                     return "请先签收";
                 data.UseNum += Count;
                 if (data.UseNum - data.TotalNo < 0)
+                {
                     return "纹理二维码数量不足";
-                if (Param.StarSerialNo - (data.StarSerialNo + SumCount) < 0)
+                }
+                else if (Param.StarSerialNo - (data.StarSerialNo + SumCount) < 0)
+                {
                     return $"号段不匹配！新的起始号段为{data.StarSerialNo + SumCount }";
-                UpdateField<EnterpriseVeinTag>(data, "UseNum");
-                return Insert<EnterpriseTagAttach>(TagAttach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+                }
+                else
+                {
+                    UpdateField<EnterpriseVeinTag>(data, "UseNum");
+                    return Insert<EnterpriseTagAttach>(TagAttach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+                }
             }
             else
             {
@@ -3099,16 +3105,23 @@ namespace KilyCore.Service.ServiceCore
                 data.UseNum += Count;
                 data.TotalNo = data.TotalNo - Count;
                 if (data.TotalNo < 0)
+                {
                     return "当前批次号段不足！";
-                if (Param.StarSerialNo - (data.StarSerialNo + SumCount) < 0)
+                }
+                else if (Param.StarSerialNo - (data.StarSerialNo + SumCount) < 0)
+                {
                     return $"号段不匹配！新的起始号段为{data.StarSerialNo + SumCount }";
-                IList<string> fields = new List<string>
+                }
+                else
+                {
+                    IList<string> fields = new List<string>
                 {
                     "UseNum",
                     "TotalNo"
                 };
-                UpdateField<EnterpriseTag>(data, null, fields);
-                return Insert<EnterpriseTagAttach>(TagAttach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+                    UpdateField<EnterpriseTag>(data, null, fields);
+                    return Insert<EnterpriseTagAttach>(TagAttach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+                }
             }
         }
         /// <summary>
