@@ -23,7 +23,7 @@ namespace KilyCore.Extension.SendMessage
     {
         public static string SendPhoneMsg(String Phone, String Contents = null, IList<String> Phones = null)
         {
-            String Address = "http://utf8.api.smschinese.cn/?Uid=cdyancheng&Key=ed5350884ae88ea84dc2&smsMob={0}&smsText={1}";
+            String Address = "http://utf8.api.smschinese.cn/?Uid=cdyancheng&Key=ed8350884ae88ea84dc2&smsMob={0}&smsText={1}";
             if (Phones != null)
                 Address = string.Format(Address, string.Join(",", Phones), Contents);
             else
