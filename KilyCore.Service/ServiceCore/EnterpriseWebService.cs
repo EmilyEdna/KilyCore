@@ -2389,7 +2389,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string RemoveDeviceClean(Guid Id)
         {
-            return Delete<EnterpriseDeviceClean>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+            return Remove<EnterpriseDeviceClean>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         /// <summary>
         /// 编辑设备清洗
@@ -2425,7 +2425,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string RemoveDeviceFix(Guid Id)
         {
-            return Delete<EnterpriseDeviceFix>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+            return Remove<EnterpriseDeviceFix>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         /// <summary>
         /// 编辑设备维护
