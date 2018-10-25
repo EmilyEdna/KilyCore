@@ -58,7 +58,8 @@
                         type: "post",
                         async: false,
                         success: function (result) {
-                            controller.SetCtrlValue("#Edit", result.data);
+                            $("input[name='SupplierName']").val(result.data.Supplier);
+                            $("input[name='SupplierTime']").val(result.data.SuppTime);
                         }
                     });
                 });

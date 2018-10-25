@@ -45,7 +45,7 @@
                     success: function (result) {
                         var html = '<option>==请选择==</option>'
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '">' + obj.TrueName + '</option>'
+                            html += '<option>' + obj.TrueName + '</option>'
                         });
                         $("select[name='Purchase']").html(html);
                     }

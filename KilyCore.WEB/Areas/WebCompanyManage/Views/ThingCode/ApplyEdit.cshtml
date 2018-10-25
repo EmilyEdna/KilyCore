@@ -89,7 +89,8 @@
                     node: '.image-box',
                     success: function (result) {
                         controller.Alter(result.msg);
-                        options.SetFileValue(result.data, "#PaytTcket");
+                        debugger;
+                        options.SetFileValue(result.data, "#PaytTicket");
                     }
                 });
                 //验证
@@ -170,7 +171,7 @@
                             <text title="未付款">未付款</text>
                         </label>
                         <label class="radio-inline">
-                            <input type="radio" name="TagType" value="true" style="margin-top:3px" />
+                            <input type="radio" name="IsPay" value="true" style="margin-top:3px" />
                             <text title="已付款">已付款</text>
                         </label>
                     </td>

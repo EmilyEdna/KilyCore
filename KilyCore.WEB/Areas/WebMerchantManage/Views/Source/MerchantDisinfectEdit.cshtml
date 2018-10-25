@@ -50,7 +50,7 @@
             //事件
             InitEvents: function () {
                 //原料下拉事件
-                $("#AdditiveName").on('change', function () {
+                $("#DisinfectName").on('change', function () {
                     var Id = $(this).find("option:selected").data().value;
                     controller.ajax({
                         url: "RepastWeb/GetInStorageDetail",
@@ -58,7 +58,8 @@
                         type: "post",
                         async: false,
                         success: function (result) {
-                            controller.SetCtrlValue("#Edit", result.data);
+                            $("input[name='SupplierName']").val(result.data.Supplier);
+                            $("input[name='SupplierTime']").val(result.data.SuppTime);
                         }
                     });
                 });

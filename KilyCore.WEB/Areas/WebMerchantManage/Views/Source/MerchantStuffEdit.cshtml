@@ -71,6 +71,7 @@
                         async: false,
                         success: function (result) {
                             controller.SetCtrlValue("#Edit", result.data);
+                            $("#Id").val("");
                         }
                     });
                 });

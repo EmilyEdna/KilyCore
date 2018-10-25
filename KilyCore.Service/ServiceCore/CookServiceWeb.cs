@@ -434,7 +434,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public IList<ResponseCookFood> GetFoodList()
         {
-            var data = Kily.Set<CookFood>().Where(t=>t.IsDelete==false).Where(t => t.CookId == CookInfo().Id).OrderByDescending(t => t.CreateTime).Select(t => new ResponseCookFood()
+            var data = Kily.Set<CookFood>().Where(t => t.CookId == CookInfo().Id).OrderByDescending(t => t.CreateTime).Select(t => new ResponseCookFood()
             {
                 Id = t.Id,
                 FoodName = t.FoodName
