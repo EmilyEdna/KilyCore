@@ -313,9 +313,9 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("EditCookBanquet")]
-        public ObjectResultEx EditCookBanquet(SimpleParam<Guid> Param)
+        public ObjectResultEx EditCookBanquet(SimpleParam<Guid> Key,SimpleParam<String> Param)
         {
-            return ObjectResultEx.Instance(GovtWebService.EditCookBanquet(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(GovtWebService.EditCookBanquet(Key.Id,Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
 

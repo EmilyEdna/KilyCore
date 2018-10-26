@@ -79,7 +79,7 @@ namespace KilyCore.Service.IServiceCore
         #region 餐饮监管
         PagedResult<ResponseCookBanquet> GetBanquetPage(PageParamList<RequestCookBanquet> pageParam);
         ResponseCookBanquet GetBanquetDetail(Guid Id);
-        String EditCookBanquet(Guid Id);
+        String EditCookBanquet(Guid Id,String Param);
         #endregion
 
         #region 风险预警
@@ -140,7 +140,7 @@ namespace KilyCore.Service.IServiceCore
         String RemoveComplain(Guid Id);
         String EditComplain(RequestGovtComplain Param);
         String ReportComplain(Guid Id);
-        String ReportComplainInfo(Guid Id, string Param);
+        String ReportComplainInfo(Guid Id, String Param);
         #endregion
 
         #region 数据统计

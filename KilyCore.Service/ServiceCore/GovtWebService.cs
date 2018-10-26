@@ -851,10 +851,10 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public string EditCookBanquet(Guid Id)
+        public string EditCookBanquet(Guid Id,string Param)
         {
             CookBanquet cook = Kily.Set<CookBanquet>().Where(t => t.Id == Id).FirstOrDefault();
-            cook.Stauts = "完成";
+            cook.Stauts = Param;
             return UpdateField(cook, "Stauts") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         #endregion

@@ -269,7 +269,8 @@ namespace KilyCore.Service.ServiceCore
                 HoldTime = t.HoldTime,
                 CreateTime = t.CreateTime,
                 HoldName = t.HoldName,
-                Address = t.Address
+                Address = t.Address,
+                Stauts= t.Stauts
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }

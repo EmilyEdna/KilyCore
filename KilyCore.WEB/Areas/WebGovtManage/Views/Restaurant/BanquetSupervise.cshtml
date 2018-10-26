@@ -46,6 +46,7 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>批复</button>');
+                    action.push('<button class="btn btn-sm btn-primary save"><i class="fa fa-pencil-square-o"></i>归档</button>');
                     action.push('<button class="btn btn-sm btn-primary detail"><i class="fa fa-pencil-square-o"></i>详情</button>');
                     return action.join("&nbsp;")
                 },
@@ -63,11 +64,25 @@
                         })
                     },
                     "click .edit": function (event, val, row, index) {
-                        controller.Confirm("确认完成？", function (bool) {
+                        controller.Confirm("确认批复？", function (bool) {
                             if (bool) {
                                 controller.ajax({
                                     url: "GovtWeb/EditCookBanquet",
-                                    data: { Id: row.Id },
+                                    data: { Id: row.Id, Parameter: "待检查"},
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    "click .save": function (event, val, row, index) {
+                        controller.Confirm("确认归档？", function (bool) {
+                            if (bool) {
+                                controller.ajax({
+                                    url: "GovtWeb/EditCookBanquet",
+                                    data: { Id: row.Id, Parameter: "已归档" },
                                     type: 'post',
                                     success: function (result) {
                                         options.$table.refresh();
