@@ -87,5 +87,11 @@ namespace KilyCore.Service.IServiceCore
         #region 消息盒子
         PagedResult<ResponseSystemMessage> GetMsgPage(PageParamList<Object> pageParam);
         #endregion
+        #region 新闻资讯
+        PagedResult<ResponseSystemNews> GetNewsPage(PageParamList<RequestSystemNews> pageParam);
+        String EditNews(RequestSystemNews Param);
+        ResponseSystemNews GetNewsDetail(Guid Id);
+        String RemoveNews(Guid Id);
+        #endregion
     }
 }

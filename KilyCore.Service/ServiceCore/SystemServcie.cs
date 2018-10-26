@@ -1263,5 +1263,70 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         #endregion
+
+        #region 新闻资讯
+        /// <summary>
+        /// 新闻分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseSystemNews> GetNewsPage(PageParamList<RequestSystemNews> pageParam)
+        {
+            IQueryable<SystemNews> queryable = Kily.Set<SystemNews>().OrderByDescending(t => t.CreateTime);
+            if ((int)pageParam.QueryParam.NewsType >= 10 && (int)pageParam.QueryParam.NewsType <= 50)
+                queryable = queryable.Where(t => t.NewsType == pageParam.QueryParam.NewsType);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.Title))
+                queryable = queryable.Where(t => t.Title == pageParam.QueryParam.Title);
+            var data = queryable.Select(t => new ResponseSystemNews()
+            {
+                Id = t.Id,
+                Title = t.Title,
+                SubTitle = t.SubTitle,
+                NewsTypeName = AttrExtension.GetSingleDescription<NewsEnum, DescriptionAttribute>(t.NewsType),
+                ReleaseDate = t.ReleaseDate
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑新闻
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditNews(RequestSystemNews Param)
+        {
+            SystemNews news = Param.MapToEntity<SystemNews>();
+            if (Param.Id == Guid.Empty)
+                return Insert(news) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+                return Update(news, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        /// <summary>
+        /// 新闻详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseSystemNews GetNewsDetail(Guid Id)
+        {
+            var data = Kily.Set<SystemNews>().Where(t => t.Id == Id).Select(t => new ResponseSystemNews()
+            {
+                Id = t.Id,
+                Title = t.Title,
+                SubTitle = t.SubTitle,
+                ReleaseDate = t.ReleaseDate,
+                NewsType = t.NewsType,
+                NewsContent = t.NewsContent
+            }).FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 删除新闻
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveNews(Guid Id)
+        {
+            return Remove<SystemNews>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
     }
 }

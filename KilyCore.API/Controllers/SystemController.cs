@@ -533,5 +533,47 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(SystemService.GetMsgPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 新闻资讯
+        /// <summary>
+        /// 新闻分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetNewsPage")]
+        public ObjectResultEx GetNewsPage(PageParamList<RequestSystemNews> pageParam)
+        {
+            return ObjectResultEx.Instance(SystemService.GetNewsPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑新闻
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditNews")]
+        public ObjectResultEx EditNews(RequestSystemNews Param)
+        {
+            return ObjectResultEx.Instance(SystemService.EditNews(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 新闻详情
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetNewsDetail")]
+        public ObjectResultEx GetNewsDetail(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(SystemService.GetNewsDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除新闻
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveNews")]
+        public ObjectResultEx RemoveNews(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(SystemService.RemoveNews(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }
