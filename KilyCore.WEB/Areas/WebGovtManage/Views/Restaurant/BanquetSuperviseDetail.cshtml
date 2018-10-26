@@ -53,11 +53,13 @@
             BindHelper: function (data) {
                 var html = '';
                 $.each(data, function (i, obj) {
-                    html += '<tr><td class="text-warning">' + obj.HelperName + '</td>';
-                    html += '<tr><td class="text-warning">' + obj.Phone + '</td>';
-                    html += '<tr><td class="text-warning">' + obj.ExpiredDate + '</td>';
-                    html += '<tr><td class="text-warning"><img class="photo" src="' + obj.HealthCard + '" style="width:48px;height:32px;""></td>';
-                })
+                    html += '<tr>';
+                    html += '<td class="text-warning">' + obj.HelperName + '</td>';
+                    html += '<td class="text-warning">' + obj.Phone + '</td>';
+                    html += '<td class="text-warning">' + obj.ExpiredDate + '</td>';
+                    html += '<td class="text-warning"><img class="photo" src="' + obj.HealthCard + '" style="width:48px;height:32px;""></td>';
+                    html += '</tr>';
+                });
                 $("#HelperInfo").html(html);
             },
             //事件
