@@ -540,6 +540,7 @@ namespace KilyCore.API.Controllers
         /// <param name="pageParam"></param>
         /// <returns></returns>
         [HttpPost("GetNewsPage")]
+        [AllowAnonymous]
         public ObjectResultEx GetNewsPage(PageParamList<RequestSystemNews> pageParam)
         {
             return ObjectResultEx.Instance(SystemService.GetNewsPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
@@ -560,6 +561,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetNewsDetail")]
+        [AllowAnonymous]
         public ObjectResultEx GetNewsDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(SystemService.GetNewsDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
