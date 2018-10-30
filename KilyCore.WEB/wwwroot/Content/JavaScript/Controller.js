@@ -539,7 +539,7 @@ controller.ValidateConfirm = function (element, option) {
                         }//微信
                         else {
                             {
-                                $("#QRCode").css({ "display": "block" });
+                                $("#QRCode").css({ "display": "block" }).html("");
                                 controller.QRCode("#QRCode", { text: obj.PayContent });
                                 return;
                             }
