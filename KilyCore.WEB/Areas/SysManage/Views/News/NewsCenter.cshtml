@@ -59,7 +59,7 @@
                             width: "800px",
                             url: "SysManage/News/NewsCenterEdit?Id=" + row.Id,
                             callBack: function (result) {
-                                result.popClose();
+                                result.$("#Edit").submit();
                             }
                         });
                     },
