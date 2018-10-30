@@ -1283,7 +1283,8 @@ namespace KilyCore.Service.ServiceCore
                 Title = t.Title,
                 SubTitle = t.SubTitle,
                 NewsTypeName = AttrExtension.GetSingleDescription<NewsEnum, DescriptionAttribute>(t.NewsType),
-                ReleaseDate = t.ReleaseDate
+                ReleaseDate = t.ReleaseDate,
+                NewsType=t.NewsType
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
