@@ -61,5 +61,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Cook
         /// 质检报告
         /// </summary>
         public string Report { get; set; }
+        /// <summary>
+        /// 是否使用
+        /// </summary>
+        public bool? IsUse { get; set; }
+        public string Ingredients => FoodName +"_"+ Id;
     }
 }

@@ -33,13 +33,15 @@ namespace KilyCore.Repositories.BaseRepository
         /// </summary>
         /// <param name="exp"></param>
         /// <returns></returns>
-        public virtual bool Delete<TEntity>(Expression<Func<TEntity, bool>> exp) where TEntity : class, new()
+        public virtual bool Delete<TEntity>(Expression<Func<TEntity, bool>> exp,string FieldName=null,object Data=null) where TEntity : class, new()
         {
             try
             {
                 TEntity Entity = Kily.Set<TEntity>().Where(exp).FirstOrDefault();
                 RemovePath(Entity);
                 List<PropertyInfo> props = Entity.GetType().GetProperties().Where(t => t.Name.Contains("Delete")).ToList();
+                if(!string.IsNullOrEmpty(FieldName))
+                    Entity.GetType().GetProperties().Where(t => t.Name.Equals(FieldName)).FirstOrDefault().SetValue(Entity, Data);
                 props.Where(t => t.Name.Equals("IsDelete")).FirstOrDefault().SetValue(Entity, true);
                 props.Where(t => t.Name.Equals("DeleteTime")).FirstOrDefault().SetValue(Entity, DateTime.Now);
                 if (UserInfo() != null)

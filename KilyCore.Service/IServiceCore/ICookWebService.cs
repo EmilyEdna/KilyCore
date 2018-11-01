@@ -67,7 +67,7 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseCookFood> GetFoodPage(PageParamList<RequestCookFood> pageParam);
         String RemoveFood(Guid Id);
         String EditFood(RequestCookFood Param);
-        IList<ResponseCookFood> GetFoodList();
+        IList<ResponseCookFood> GetFoodList(Guid Param);
         #endregion
     }
 }

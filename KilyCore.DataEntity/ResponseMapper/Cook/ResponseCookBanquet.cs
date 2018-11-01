@@ -107,5 +107,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Cook
         public string Area => !string.IsNullOrEmpty(TypePath) ? (TypePath.Split(',').Length >= 3 ? TypePath.Split(',')[2] : null) : null;
         public string Town => !string.IsNullOrEmpty(TypePath) ? (TypePath.Split(',').Length >= 4 ? (TypePath.Split(',')[3]) : null) : null;
         public IList<ResponseCookHelper> Helpers { get; set; }
+        public IList<ResponseCookFood> Foods { get; set; }
     }
 }

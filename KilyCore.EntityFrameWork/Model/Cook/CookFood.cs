@@ -60,5 +60,9 @@ namespace KilyCore.EntityFrameWork.Model.Cook
         /// 质检报告
         /// </summary>
         public virtual string Report { get; set; }
+        /// <summary>
+        /// 是否使用过
+        /// </summary>
+        public virtual bool? IsUse { get; set; }
     }
 }

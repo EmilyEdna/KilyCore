@@ -45,7 +45,8 @@
             action: {
                 TableFormatter: function (val, row, index) {
                     var action = [];
-                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>批复</button>');
+                    if (row.Stauts == "待批复")
+                        action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>批复</button>');
                     action.push('<button class="btn btn-sm btn-primary save"><i class="fa fa-pencil-square-o"></i>归档</button>');
                     action.push('<button class="btn btn-sm btn-primary detail"><i class="fa fa-pencil-square-o"></i>详情</button>');
                     return action.join("&nbsp;")
@@ -53,7 +54,7 @@
                 TableEvents: {
                     "click .detail": function (event, val, row, index) {
                         controller.OpenWindow({
-                            title: "三小商家详情",
+                            title: "群宴详情",
                             type: 2,
                             height: "400px",
                             width: "800px",
@@ -68,7 +69,7 @@
                             if (bool) {
                                 controller.ajax({
                                     url: "GovtWeb/EditCookBanquet",
-                                    data: { Id: row.Id, Parameter: "待检查"},
+                                    data: { Id: row.Id, Parameter: "待检查" },
                                     type: 'post',
                                     success: function (result) {
                                         options.$table.refresh();

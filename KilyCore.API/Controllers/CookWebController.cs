@@ -261,9 +261,9 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetFoodList")]
-        public ObjectResultEx GetFoodList()
+        public ObjectResultEx GetFoodList(SimpleParam<Guid> Param)
         {
-            return ObjectResultEx.Instance(CookWebService.GetFoodList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(CookWebService.GetFoodList(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

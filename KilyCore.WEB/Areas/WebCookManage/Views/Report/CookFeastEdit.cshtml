@@ -19,8 +19,8 @@
                 options.GetCityByProvince();
                 options.GetAreaByCity();
                 options.GetTownByArea();
-                options.BindList();
                 var id = controller.GetParam("Id");
+                options.BindList(id);
                 if (id != null && id != undefined)
                     //获取详情
                     controller.ajax({
@@ -42,7 +42,7 @@
                     });
             },
             //绑定下拉列表
-            BindList: function () {
+            BindList: function (Id) {
                 //帮厨
                 controller.Select({
                     arrelemnt: ['#Helper'],
@@ -64,10 +64,11 @@
                     arrelemnt: ['#Ingredients'],
                     url: 'CookWeb/GetFoodList',
                     flag: false,
+                    data: {Id:Id},
                     callBack: function (data) {
                         var html = '';
                         $.each(data, function (i, obj) {
-                            html += '<option>' + obj.FoodName + '</option>';
+                            html += '<option>' + obj.Ingredients + '</option>';
                         });
                         $("#Ingredients").html(html);
                     }

@@ -59,7 +59,7 @@ namespace KilyCore.Service.ServiceCore
         public ResponseCookInfo CookLogin(RequestValidate LoginValidate)
         {
             IQueryable<CookVip> queryable = Kily.Set<CookVip>()
-                .Where(t => t.Account.Equals(LoginValidate.Account)||t.Phone.Equals(LoginValidate.Account))
+                .Where(t => t.Account.Equals(LoginValidate.Account) || t.Phone.Equals(LoginValidate.Account))
                 .Where(t => t.PassWord.Equals(LoginValidate.PassWord))
                 .Where(t => t.IsDelete == false);
             IQueryable<CookInfo> queryables = Kily.Set<CookInfo>();
@@ -69,7 +69,7 @@ namespace KilyCore.Service.ServiceCore
                 CookId = t.Id,
                 Sexlab = x.FirstOrDefault().Sexlab,
                 Account = t.Account,
-                PassWord=t.PassWord,
+                PassWord = t.PassWord,
                 Address = x.FirstOrDefault().Address,
                 Birthday = x.FirstOrDefault().Birthday,
                 CardOffice = x.FirstOrDefault().CardOffice,
@@ -270,7 +270,7 @@ namespace KilyCore.Service.ServiceCore
                 CreateTime = t.CreateTime,
                 HoldName = t.HoldName,
                 Address = t.Address,
-                Stauts= t.Stauts
+                Stauts = t.Stauts
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -282,8 +282,10 @@ namespace KilyCore.Service.ServiceCore
         public string EditBanquet(RequestCookBanquet Param)
         {
             CookBanquet banquet = Param.MapToEntity<CookBanquet>();
-            banquet.Ingredients.Split(",").ToList().ForEach(x => {
-                Delete<CookFood>(t => t.FoodName.Equals(x));
+            banquet.Ingredients.Split(",").ToList().ForEach(x =>
+            {
+                var Name = x.Split("_")[0];
+                Delete<CookFood>(t => t.FoodName.Equals(Name), "IsUse", true);
             });
             return Insert(banquet) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
@@ -344,7 +346,7 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 HelperName = t.HelperName,
                 TypePath = t.TypePath,
-                ExpiredDate=t.ExpiredDate,
+                ExpiredDate = t.ExpiredDate,
                 HealthCard = t.HealthCard,
                 Phone = t.Phone
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -433,9 +435,14 @@ namespace KilyCore.Service.ServiceCore
         /// 食材列表
         /// </summary>
         /// <returns></returns>
-        public IList<ResponseCookFood> GetFoodList()
+        public IList<ResponseCookFood> GetFoodList(Guid Param)
         {
-            var data = Kily.Set<CookFood>().Where(t => t.CookId == CookInfo().Id).OrderByDescending(t => t.CreateTime).Select(t => new ResponseCookFood()
+            IQueryable<CookFood> queryable = Kily.Set<CookFood>().Where(t => t.CookId == CookInfo().Id).OrderByDescending(t => t.CreateTime);
+            if (Param != Guid.Empty)//传入详情
+                queryable = queryable.Where(t => t.IsUse == true);
+            else
+                queryable = queryable.Where(t => t.IsUse == false);
+            var data = queryable.Select(t => new ResponseCookFood()
             {
                 Id = t.Id,
                 FoodName = t.FoodName

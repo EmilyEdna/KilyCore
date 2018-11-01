@@ -549,7 +549,7 @@ namespace KilyCore.Service.ServiceCore
                     queryable = queryable.Where(t => t.DicName.Contains("流通"));
                 if ((CompanyEnum)Param == CompanyEnum.Other)
                     queryable = queryable.Where(t => t.DicName.Contains("其他"));
-                queryable = queryable.Where(t => t.DicName.Contains("餐饮") && !t.DicName.Contains("单位"));
+                queryable = queryable.Where(t => !t.DicName.Contains("餐饮") && !t.DicName.Contains("单位"));
             }
             else
             {

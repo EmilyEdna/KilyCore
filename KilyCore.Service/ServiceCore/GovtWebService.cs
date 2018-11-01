@@ -842,7 +842,14 @@ namespace KilyCore.Service.ServiceCore
                      Phone = x.Phone,
                      ExpiredDate = x.ExpiredDate,
                      HealthCard = x.HealthCard
-                 }).AsNoTracking().ToList()
+                 }).AsNoTracking().ToList(),
+                Foods =Kily.Set<CookFood>().Where(x=>t.Ingredients.Contains(x.Id.ToString()))
+                .Select(x=> new ResponseCookFood() {
+                    Supplier=x.Supplier,
+                    Phone=x.Phone,
+                    BuyTime=x.BuyTime,
+                    BuyUser=x.BuyUser
+                }).AsNoTracking().ToList()
             }).AsNoTracking().FirstOrDefault();
             return data;
         }

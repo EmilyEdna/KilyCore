@@ -34,7 +34,9 @@
                     type: "post",
                     success: function (result) {
                         controller.SetCtrlValue("#Edit", result.data);
+                        $("input[name='Ingredients']").val(result.data.Ingredients.split("_")[0]);
                         options.BindHelper(result.data.Helpers);
+                        options.BindFood(result.data.Foods);
                     }
                 });
                 //查看大图
@@ -49,7 +51,7 @@
                     controller.Photos(option);
                 });
             },
-            //绑定审核信息
+            //绑定厨师
             BindHelper: function (data) {
                 var html = '';
                 $.each(data, function (i, obj) {
@@ -61,6 +63,19 @@
                     html += '</tr>';
                 });
                 $("#HelperInfo").html(html);
+            },
+            //绑定食物
+            BindFood: function (data) {
+                var html = '';
+                $.each(data, function (i, obj) {
+                    html += '<tr>';
+                    html += '<td class="text-warning">' + obj.Supplier + '</td>';
+                    html += '<td class="text-warning">' + obj.Phone + '</td>';
+                    html += '<td class="text-warning">' + obj.BuyUser + '</td>';
+                    html += '<td class="text-warning">' + obj.BuyTime + '</td>';
+                    html += '</tr>';
+                });
+                $("#FoodInfo").html(html);
             },
             //事件
             InitEvents: function () {
@@ -80,7 +95,10 @@
                 <a data-toggle="tab" href="#tab-1" aria-expanded="true"> 基本信息</a>
             </li>
             <li>
-                <a data-toggle="tab" href="#tab-2" aria-expanded="false">帮厨信息</a>
+                <a data-toggle="tab" href="#tab-2" aria-expanded="false">食材信息</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-3" aria-expanded="false">帮厨信息</a>
             </li>
         </ul>
         <div class="tab-content">
@@ -125,6 +143,34 @@
                 </table>
             </div>
             <div id="tab-2" class="tab-pane">
+                <table class="table table-bordered m-t-sm">
+                    <thead>
+                        <tr>
+                            <th>
+                                <span class="text-navy fa fa-user">供应商</span>
+                            </th>
+                            <th>
+                                <span class="text-navy fa fa-phone">联系电话</span>
+                            </th>
+                            <th>
+                                <span class="text-navy fa fa-user">采购人</span>
+                            </th>
+                            <th>
+                                <span class="text-navy fa fa-calendar">采购时间</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="FoodInfo"></tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="4" class="text-danger">
+                                没有更多记录...
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div id="tab-3" class="tab-pane">
                 <table class="table table-bordered m-t-sm">
                     <thead>
                         <tr>
