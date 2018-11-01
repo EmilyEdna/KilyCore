@@ -345,6 +345,30 @@ namespace KilyCore.Service.ServiceCore
             return Update<RepastInfo, RequestMerchant>(info, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         /// <summary>
+        /// 修改账号密码
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditMerchantAccount(RequestMerchant Param)
+        {
+            RepastInfo info = Kily.Set<RepastInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
+            info.Account = Param.Account;
+            info.PassWord = Param.PassWord;
+            List<String> Fields = new List<String>() { "Account", "PassWord" };
+            return UpdateField(info, null, Fields) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        /// <summary>
+        /// 修改所属区域
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditMerchantArea(RequestMerchant Param)
+        {
+            RepastInfo info = Kily.Set<RepastInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
+            info.TypePath = Param.TypePath;
+            return UpdateField(info, "TypePath") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        /// <summary>
         /// 保存合同
         /// </summary>
         /// <returns></returns>
@@ -423,6 +447,35 @@ namespace KilyCore.Service.ServiceCore
                 contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(contract.ContractYear));
                 return Insert<SystemStayContract>(contract) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
             }
+        }
+        /// <summary>
+        /// 获取合同状态
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseAudit> GetContractAudit(PageParamList<RequestAudit> pageParam)
+        {
+            var Info = MerchantInfo();
+            var Contract = Kily.Set<SystemStayContract>()
+                .Where(t => t.CompanyId == Info.Id && t.CompanyName.Equals(Info.MerchantName))
+                .Select(t => new ResponseStayContract()
+                {
+                    TableName = t.GetType().Name,
+                    Id = t.Id
+                }).FirstOrDefault();
+            if (Contract == null)
+                return null;
+            var data = Kily.Set<SystemAudit>().Where(t => t.IsDelete == false)
+               .Where(t => t.TableId == Contract.Id && t.TableName.Contains(Contract.TableName))
+               .Select(t => new ResponseAudit()
+               {
+                   Id = t.Id,
+                   AuditName = t.AuditName,
+                   AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
+                   AuditSuggestion = t.AuditSuggestion,
+                   CreateTime = t.CreateTime
+               }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
         }
         #endregion
         #region 商家认证
@@ -2176,6 +2229,55 @@ namespace KilyCore.Service.ServiceCore
                 出库时间 = t.OutStockTime,
                 负责人 = t.OutUser,
             }).ToList<Object>();
+            return data;
+        }
+        #endregion
+
+        #region 数据统计
+        /// <summary>
+        /// 数据统计
+        /// </summary>
+        /// <returns></returns>
+        public Object GetDataCount()
+        {
+            int Supplier = 0;
+            int Video = 0;
+            int Dish = 0;
+            int User = 0;
+            int Stuff = 0;
+            int Info = 0;
+            IQueryable<RepastSupplier> S1 = Kily.Set<RepastSupplier>().Where(t => t.IsDelete == false);
+            IQueryable<RepastVideo> S2 = Kily.Set<RepastVideo>().Where(t => t.IsDelete == false);
+            IQueryable<RepastDish> S3 = Kily.Set<RepastDish>().Where(t => t.IsDelete == false);
+            IQueryable<RepastInfoUser> S4 = Kily.Set<RepastInfoUser>().Where(t => t.IsDelete == false);
+            IQueryable<RepastStuff> S5 = Kily.Set<RepastStuff>().Where(t => t.IsDelete == false);
+            IQueryable<RepastInfo> S6 = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false);
+            if (MerchantInfo() != null)
+            {
+                Supplier = S1.Where(t => t.InfoId == MerchantInfo().Id).Count();
+                Video = S2.Where(t => t.InfoId == MerchantInfo().Id).Count();
+                Dish = S3.Where(t => t.InfoId == MerchantInfo().Id).Count();
+                User = User = S4.Where(t => t.InfoId == MerchantInfo().Id).Count();
+                Stuff = S5.Where(t => t.InfoId == MerchantInfo().Id).Count();
+                Info = S6.Where(t => t.InfoId == MerchantInfo().Id).Count();
+            }
+            else {
+                Supplier = S1.Where(t => t.InfoId == MerchantUser().Id).Count();
+                Video = S2.Where(t => t.InfoId == MerchantUser().Id).Count();
+                Dish = S3.Where(t => t.InfoId == MerchantUser().Id).Count();
+                User = User = S4.Where(t => t.InfoId == MerchantUser().Id).Count();
+                Stuff = S5.Where(t => t.InfoId == MerchantUser().Id).Count();
+                Info = S6.Where(t => t.InfoId == MerchantUser().Id).Count();
+            }
+            Object data = new
+            {
+                Supplier,
+                Video,
+                Dish,
+                User,
+                Stuff,
+                Info
+            };
             return data;
         }
         #endregion

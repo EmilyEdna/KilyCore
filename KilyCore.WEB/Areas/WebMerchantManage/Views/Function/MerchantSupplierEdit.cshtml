@@ -20,6 +20,9 @@
             },
             //事件
             InitEvents: function () {
+                $("input[type='radio']").click(function () {
+                    Number($(this).val()) == 1 ? $("#test").text("营业执照") : $("#test").text("身份证");
+                })
                 //卫生许可证
                 controller.Upload({
                     url: "File/UploadImg",
@@ -35,7 +38,7 @@
                 controller.Upload({
                     url: "File/UploadImg",
                     element: "#ui2",
-                    maxNum: 1,
+                    maxNum: 2,
                     node: '#Img2',
                     success: function (result) {
                         controller.Alter(result.msg);
@@ -109,7 +112,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">营业执照</label></th>
+                    <th><label class="control-label" id="test">营业执照</label></th>
                     <td class="has-warning" colspan="3">
                         <div class="image-box clear" id="Img2">
                             <section class="upload-section">

@@ -87,6 +87,36 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastWebService.SaveContract(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditMerchantAccount")]
+        public ObjectResultEx EditMerchantAccount(RequestMerchant Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.EditMerchantAccount(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 修改区域
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditMerchantArea")]
+        public ObjectResultEx EditMerchantArea(RequestMerchant Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.EditMerchantArea(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取合同审核记录
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetContractAudit")]
+        public ObjectResultEx GetContractAudit(PageParamList<RequestAudit> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetContractAudit(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 商家认证
         /// <summary>
@@ -692,7 +722,8 @@ namespace KilyCore.API.Controllers
         /// <param name="pageParam"></param>
         /// <returns></returns>
         [HttpPost("GetDisinfectPage")]
-        public ObjectResultEx GetDisinfectPage(PageParamList<RequestRepastDisinfect> pageParam) {
+        public ObjectResultEx GetDisinfectPage(PageParamList<RequestRepastDisinfect> pageParam)
+        {
             return ObjectResultEx.Instance(RepastWebService.GetDisinfectPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -701,7 +732,8 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("EditDisinfect")]
-        public ObjectResultEx EditDisinfect(RequestRepastDisinfect Param) {
+        public ObjectResultEx EditDisinfect(RequestRepastDisinfect Param)
+        {
             return ObjectResultEx.Instance(RepastWebService.EditDisinfect(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -710,7 +742,8 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveDisinfect")]
-        public ObjectResultEx RemoveDisinfect(SimpleParam<Guid> Param) {
+        public ObjectResultEx RemoveDisinfect(SimpleParam<Guid> Param)
+        {
             return ObjectResultEx.Instance(RepastWebService.RemoveDisinfect(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -719,7 +752,8 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("GetDisinfectDetail")]
-        public ObjectResultEx GetDisinfectDetail(SimpleParam<Guid> Param) {
+        public ObjectResultEx GetDisinfectDetail(SimpleParam<Guid> Param)
+        {
             return ObjectResultEx.Instance(RepastWebService.GetDisinfectDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
@@ -731,7 +765,8 @@ namespace KilyCore.API.Controllers
         /// <param name="pageParam"></param>
         /// <returns></returns>
         [HttpPost("GetAdditivePage")]
-        public ObjectResultEx GetAdditivePage(PageParamList<RequestRepastAdditive> pageParam) {
+        public ObjectResultEx GetAdditivePage(PageParamList<RequestRepastAdditive> pageParam)
+        {
             return ObjectResultEx.Instance(RepastWebService.GetAdditivePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -740,7 +775,8 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("EditAdditive")]
-        public ObjectResultEx EditAdditive(RequestRepastAdditive Param) {
+        public ObjectResultEx EditAdditive(RequestRepastAdditive Param)
+        {
             return ObjectResultEx.Instance(RepastWebService.EditAdditive(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -749,7 +785,8 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("RemoveAdditive")]
-        public ObjectResultEx RemoveAdditive(SimpleParam<Guid> Param) {
+        public ObjectResultEx RemoveAdditive(SimpleParam<Guid> Param)
+        {
             return ObjectResultEx.Instance(RepastWebService.RemoveAdditive(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -758,7 +795,8 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("GetAdditiveDetail")]
-        public ObjectResultEx GetAdditiveDetail(SimpleParam<Guid> Param) {
+        public ObjectResultEx GetAdditiveDetail(SimpleParam<Guid> Param)
+        {
             return ObjectResultEx.Instance(RepastWebService.GetAdditiveDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
@@ -1054,6 +1092,18 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx ExportGoodsOutStockFile(SimpleParam<String> Param)
         {
             return ObjectResultEx.Instance(RepastWebService.ExportGoodsOutStockFile(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region 数据统计
+        /// <summary>
+        /// 数据统计
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetDataCount")]
+        public ObjectResultEx GetDataCount()
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetDataCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

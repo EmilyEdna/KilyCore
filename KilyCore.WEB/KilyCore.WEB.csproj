@@ -67,6 +67,12 @@
     <Content Update="Areas\WebGovtManage\Views\Restaurant\UnitSupervise.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Areas\WebMerchantManage\Views\RepastBasic\MerchantAudit.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\WebMerchantManage\Views\RepastBasic\MerchantInfoEditArea.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Areas\WebMerchantManage\Views\Source\MerchantDisinfect.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

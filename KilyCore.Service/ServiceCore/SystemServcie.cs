@@ -358,7 +358,9 @@ namespace KilyCore.Service.ServiceCore
                 CommunityCode = t.CommunityCode,
                 TrueName = t.TrueName,
                 Chapter = t.Chapter,
-                Address = t.Addrees
+                Address = t.Addrees,
+                BankCard = t.BankCard,
+                BankName=t.BankName
             }).ToList();
             ResponseAdmin admin = Kily.Set<SystemAdmin>().Where(t => t.IsDelete == false)
             .Where(t => t.AccountType <= AccountEnum.Country).Select(t => new ResponseAdmin()
@@ -367,7 +369,9 @@ namespace KilyCore.Service.ServiceCore
                 CommunityCode = t.CommunityCode,
                 TrueName = t.TrueName,
                 Chapter = t.Chapter,
-                Address = t.Addrees
+                Address = t.Addrees,
+                BankCard = t.BankCard,
+                BankName = t.BankName
             }).FirstOrDefault();
             data.Add(admin);
             return data;
@@ -1284,8 +1288,8 @@ namespace KilyCore.Service.ServiceCore
                 SubTitle = t.SubTitle,
                 NewsTypeName = AttrExtension.GetSingleDescription<NewsEnum, DescriptionAttribute>(t.NewsType),
                 ReleaseDate = t.ReleaseDate,
-                NewsType=t.NewsType,
-                NewsContent=t.NewsContent
+                NewsType = t.NewsType,
+                NewsContent = t.NewsContent
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }

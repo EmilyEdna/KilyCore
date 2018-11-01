@@ -28,6 +28,17 @@
                         }
                     }
                 });
+                controller.ajax({
+                    url: "RepastWeb/GetDataCount",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        $.each(result.data, function (obj, i) {
+                            $("[name='" + obj + "']", $("tbody")).text(i);
+                        })
+                    }
+                })
             },
             InitEvent: function () {
                 //查看图片
@@ -80,6 +91,45 @@
 <form id="Edit">
     <div class="wrapper wrapper-content">
         <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>数据统计</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content" style="background-color:#f8f8f8;">
+                        <table class="table table-hover no-margins">
+                            <thead>
+                                <tr>
+                                    <th>供应商数</th>
+                                    <th>监控数</th>
+                                    <th>菜品数</th>
+                                    <th>人员数</th>
+                                    <th>原料溯源数</th>
+                                    <th>集团客户数</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td name="Supplier"></td>
+                                    <td name="Video"></td>
+                                    <td name="Dish"></td>
+                                    <td name="User"></td>
+                                    <td name="Stuff"></td>
+                                    <td name="Info"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
             <div class="col-sm-6">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
@@ -93,7 +143,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="ibox-content" style="background-color:#b6b2b2;">
+                    <div class="ibox-content" style="background-color:#f8f8f8;;">
                         <table class="table table-hover no-margins">
                             <tr>
                                 <th><label class="control-label">商家账号</label></th>
@@ -172,7 +222,7 @@
                             </a>
                         </div>
                     </div>
-                    <div class="ibox-content" style="background-color:#b6b2b2;">
+                    <div class="ibox-content" style="background-color:#f8f8f8;">
                         <ul class="todo-list m-t small-list ui-sortable">
                             <li>
                                 <img class="img-preview" src="" type="image" name="Certification" style="display:block;margin:auto" title="点击放大企业证书" />

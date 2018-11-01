@@ -39,7 +39,10 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseMerchant> GetMerchantInfoPage(PageParamList<RequestMerchant> pageParam);
         ResponseMerchant GetMerchantDetail(Guid Id);
         String EditMerchant(RequestMerchant Param);
+        String EditMerchantAccount(RequestMerchant Param);
+        String EditMerchantArea(RequestMerchant Param);
         String SaveContract(RequestStayContract Param);
+        PagedResult<ResponseAudit> GetContractAudit(PageParamList<RequestAudit> pageParam);
         #endregion
         #region 商家认证
         String EditMerchantIdent(RequestRepastIdent Param);
@@ -187,6 +190,9 @@ namespace KilyCore.Service.IServiceCore
          IList<Object> ExportStuffOutStockFile(String Param);
          IList<Object> ExportGoodsInStockFile(String Param);
          IList<Object> ExportGoodsOutStockFile(String Param);
+        #endregion
+        #region 数据统计
+        Object GetDataCount();
         #endregion
     }
 }

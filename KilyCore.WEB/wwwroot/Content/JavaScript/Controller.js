@@ -528,8 +528,9 @@ controller.ValidateConfirm = function (element, option) {
                         controller.Alter(data.data);
                         return;
                     }
-                    if (window.source != undefined)
-                        window.source.options.$table.refresh();
+                    if (window.source != undefined) 
+                        if (window.source.options.$table != undefined)
+                            window.source.options.$table.refresh();
                     if (controller.CheckJsonFormat(data.data)) {
                         var obj = JSON.parse(data.data);
                         if (obj.PayType)//支付宝

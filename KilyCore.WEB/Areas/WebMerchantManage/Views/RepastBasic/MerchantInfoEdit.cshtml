@@ -17,10 +17,6 @@
             InitDom: function () {
 
                 controller.LayDate({ elem: "input[name='CardExpiredDate']" });
-                options.GetProvince();
-                options.GetCityByProvince();
-                options.GetAreaByCity();
-                options.GetTownByArea();
                 options.GetCompanyInfo();
                 options.UploadFiles();
             },
@@ -33,139 +29,6 @@
                     async: false,
                     success: function (result) {
                         controller.SetCtrlValue("#Edit", result.data);
-                        options.SetCity();
-                        controller.SetCtrlValue("#Edit", result.data);
-                        options.SetArea();
-                        controller.SetCtrlValue("#Edit", result.data);
-                        options.SetTown();
-                        controller.SetCtrlValue("#Edit", result.data);
-                    }
-                });
-            },
-            //获取省份
-            GetProvince: function () {
-                controller.ajax({
-                    url: "System/GetProvince",
-                    data: {},
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        var html = '<option value="undefined">=请选择=</option>';
-                        $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '" data-id="' + obj.ProvinceId + '">' + obj.ProvinceName + '</option>';
-                        });
-                        $("#province").html(html);
-                    }
-                });
-            },
-            //选中省份后获取城市
-            GetCityByProvince: function () {
-                $("#province").change(function () {
-                    controller.ajax({
-                        url: "System/GetCity",
-                        data: { Id: $(this).find("option:selected").data().id },
-                        type: "post",
-                        async: false,
-                        success: function (result) {
-                            var html = '<option>=请选择=</option>';
-                            $.each(result.data, function (i, obj) {
-                                html += '<option value="' + obj.Id + '" data-id="' + obj.CityId + '">' + obj.CityName + '</option>';
-                            });
-                            $("#city").html(html);
-                        }
-                    });
-                });
-            },
-            //选中城市后获取区域
-            GetAreaByCity: function () {
-                $("#province").change(function () {
-                    var html = '<option>=请选择=</option>';
-                    $("#area").html(html);
-                    $("#town").html(html);
-                });
-                $("#city").change(function () {
-                    controller.ajax({
-                        url: "System/GetArea",
-                        data: { Id: $(this).find("option:selected").data().id },
-                        type: "post",
-                        async: false,
-                        success: function (result) {
-                            var html = '<option>=请选择=</option>';
-                            $.each(result.data, function (i, obj) {
-                                html += '<option value="' + obj.Id + '" data-id="' + obj.AreaId + '">' + obj.AreaName + '</option>';
-                            });
-                            $("#area").html(html);
-                        }
-                    });
-                });
-            },
-            //选中区域后获取乡镇
-            GetTownByArea: function () {
-                $("#city").change(function () {
-                    var html = '<option>=请选择=</option>';
-                    $("#town").html(html);
-                });
-                $("#area").change(function () {
-                    controller.ajax({
-                        url: "System/GetTown",
-                        data: { Id: $(this).find("option:selected").data().id },
-                        type: "post",
-                        async: false,
-                        success: function (result) {
-                            var html = '<option>=请选择=</option>';
-                            $.each(result.data, function (i, obj) {
-                                html += '<option value="' + obj.Id + '" data-id="' + obj.TownId + '">' + obj.TownName + '</option>';
-                            });
-                            $("#town").html(html);
-                        }
-                    });
-                });
-            },
-            //取得详情后获取城市
-            SetCity: function () {
-                controller.ajax({
-                    url: "System/GetCity",
-                    data: { Id: $("#province").find("option:selected").data().id },
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        var html = '<option>=请选择=</option>';
-                        $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '" data-id="' + obj.CityId + '">' + obj.CityName + '</option>';
-                        });
-                        $("#city").html(html);
-                    }
-                });
-            },
-            //取得详情后获取区域
-            SetArea: function () {
-                controller.ajax({
-                    url: "System/GetArea",
-                    data: { Id: $("#city").find("option:selected").data().id },
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        var html = '<option>=请选择=</option>';
-                        $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '" data-id="' + obj.AreaId + '">' + obj.AreaName + '</option>';
-                        });
-                        $("#area").html(html);
-                    }
-                });
-            },
-            //取得详情后获取乡镇
-            SetTown: function () {
-                controller.ajax({
-                    url: "System/GetTown",
-                    data: { Id: $("#area").find("option:selected").data().id },
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        var html = '<option>=请选择=</option>';
-                        $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '" data-id="' + obj.TownId + '">' + obj.TownName + '</option>';
-                        });
-                        $("#town").html(html);
                     }
                 });
             },
@@ -217,6 +80,7 @@
             },
             //事件
             InitEvents: function () {
+                Number($("input[name='DiningType']").val()) != 20 ? $("input[name='AllowUnit']").attr("disabled", "true") : $("input[name='AllowUnit']").attr("disabled", "false");
                 //坐标选区
                 $("input[name='LngAndLat']").on('click', function () {
                     controller.OpenWindow({
@@ -247,27 +111,25 @@
     <div class="ibox-content">
         <form class="form-horizontal" method="post" action="RepastWeb/EditMerchant" id="Edit">
             <input type="hidden" name="Id" />
+            <input type="hidden" name="PassWord" />
+            <input type="hidden" name="Account" />
+            <input type="hidden" name="DiningType" />
+            <input type="hidden" name="TypePath" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">商家名称</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control required" name="MerchantName" data-msg-required="请输入商家名称" readonly>
+                        <input type="text" class="form-control" name="MerchantName" readonly>
                     </td>
                     <th><label class="control-label">商家类型</label></th>
                     <td class="has-warning">
-                        <select name="DiningType" class="form-control" type="select">
-                            <option value="10">餐饮企业</option>
-                            <option value="20">单位食堂</option>
-                            <option value="30">小经营店</option>
-                            <option value="40">小作坊</option>
-                            <option value="50">小摊贩</option>
-                        </select>
+                        <input type="text" name="DiningTypeName" class="form-control" readonly />
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">商家账号</label></th>
+                    <th><label class="control-label">商家邮箱</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control required" name="Account" data-msg-required="请输入商家账号">
+                        <input type="text" class="form-control" name="Email">
                     </td>
                     <th><label class="control-label">经营地址</label></th>
                     <td class="has-warning">
@@ -285,16 +147,6 @@
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">商家邮箱</label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control required IsEmail" name="Email" data-msg-required="请输入商家邮箱">
-                    </td>
-                    <th><label class="control-label">登录密码</label></th>
-                    <td class="has-warning">
-                        <input type="password" class="form-control required" name="PassWord" data-msg-required="请输入登录密码">
-                    </td>
-                </tr>
-                <tr>
                     <th><label class="control-label">法人代表</label></th>
                     <td class="has-warning">
                         <input type="text" class="form-control" name="ImplUser">
@@ -305,42 +157,17 @@
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">所属区域</label></th>
-                    <td colspan="3">
-                        <table style="width:100%">
-                            <tr>
-                                <td class="has-warning" style="width:25%">
-                                    <select type="select" class="form-control" name="Province" id="province">
-                                        <option>=请选择=</option>
-                                    </select>
-                                </td>
-                                <td class="has-warning" style="width:25%">
-                                    <select type="select" class="form-control" name="City" id="city">
-                                        <option>=请选择=</option>
-                                    </select>
-                                </td>
-                                <td class="has-warning" style="width:25%">
-                                    <select type="select" class="form-control" name="Area" id="area">
-                                        <option>=请选择=</option>
-                                    </select>
-                                </td>
-                                <td class="has-warning" style="width:25%">
-                                    <select type="select" class="form-control" name="Town" id="town">
-                                        <option>=请选择=</option>
-                                    </select>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
                     <th><label class="control-label">安全员</label></th>
                     <td class="has-warning">
                         <input type="text" class="form-control" name="SafeOffer">
                     </td>
                     <th><label class="control-label">安全等级</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="OfferLv">
+                        <select type="select" class="form-control" name="OfferLv">
+                            <option value="A级">A级</option>
+                            <option value="B级">B级</option>
+                            <option value="C级">C级</option>
+                        </select>
                     </td>
                 </tr>
                 <tr>

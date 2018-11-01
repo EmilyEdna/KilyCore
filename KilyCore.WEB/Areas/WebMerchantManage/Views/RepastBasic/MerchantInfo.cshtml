@@ -49,8 +49,10 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-plus"></i>完善资料</button>');
-                    if (row.CompanyId == null)
+                    if (row.CompanyId == null) {
                         action.push('<button class="btn btn-sm btn-primary pay"><i class="fa fa-plus"></i>缴费</button>');
+                        action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-plus"></i>缴费状态</button>');
+                    }
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
@@ -73,6 +75,18 @@
                             height: "600px",
                             width: "800px",
                             url: "WebMerchantManage/RepastBasic/Payment?Id=" + row.Id + "&TypePath=" + row.TypePath + "&MerchantName=" + row.MerchantName,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
+                    },
+                    "click .audit": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "合同状态",
+                            type: 2,
+                            height: "600px",
+                            width: "970px",
+                            url: "WebMerchantManage/RepastBasic/MerchantAudit",
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }

@@ -63,6 +63,20 @@
                         }
                     });
                 });
+                //人员下拉
+                controller.ajax({
+                    url: "RepastWeb/GetMerchantList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.TrueName + '">' + obj.TrueName + '</option>';
+                        });
+                        $("#UsePerson").html(html);
+                    }
+                });
                 //验证
                 controller.ValidateConfirm("#Edit");
             },
@@ -109,7 +123,7 @@
                     </td>
                     <th><label class="control-label">使用人</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="UsePerson" />
+                        <select type="select" name="UsePerson" class="form-control" id="UsePerson"></select>
                     </td>
                 </tr>
             </table>

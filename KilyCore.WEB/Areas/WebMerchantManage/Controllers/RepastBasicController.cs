@@ -22,6 +22,10 @@ namespace KilyCore.WEB.Areas.WebMerchantManage.Controllers
         {
             return View();
         }
+        public IActionResult MerchantAudit()
+        {
+            return View();
+        }
         #endregion
         #region 商家认证
         public IActionResult MerchantIdent()
@@ -75,6 +79,16 @@ namespace KilyCore.WEB.Areas.WebMerchantManage.Controllers
             return View();
         }
         public IActionResult MerchantUpdate()
+        {
+            return View();
+        }
+        #endregion
+        #region 修改密码和区域
+        public IActionResult MerchantInfoEditAccount()
+        {
+            return View();
+        }
+        public IActionResult MerchantInfoEditArea()
         {
             return View();
         }

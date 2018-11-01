@@ -1,0 +1,216 @@
+﻿
+@{
+    ViewData["Title"] = "修改密码";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                options.GetProvince();
+                options.GetCityByProvince();
+                options.GetAreaByCity();
+                options.GetTownByArea();
+                controller.ajax({
+                    url: "RepastWeb/GetMerchantDetail",
+                    data: { Id: RepastUser.Id },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        controller.SetCtrlValue("#Edit", result.data);
+                        options.SetCity();
+                        controller.SetCtrlValue("#Edit", result.data);
+                        options.SetArea();
+                        controller.SetCtrlValue("#Edit", result.data);
+                        options.SetTown();
+                        controller.SetCtrlValue("#Edit", result.data);
+                    }
+                });
+            },
+            //获取省份
+            GetProvince: function () {
+                controller.ajax({
+                    url: "System/GetProvince",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option value="undefined">=请选择=</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '" data-id="' + obj.ProvinceId + '">' + obj.ProvinceName + '</option>';
+                        });
+                        $("#province").html(html);
+                    }
+                });
+            },
+            //选中省份后获取城市
+            GetCityByProvince: function () {
+                $("#province").change(function () {
+                    controller.ajax({
+                        url: "System/GetCity",
+                        data: { Id: $(this).find("option:selected").data().id },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            var html = '<option>=请选择=</option>';
+                            $.each(result.data, function (i, obj) {
+                                html += '<option value="' + obj.Id + '" data-id="' + obj.CityId + '">' + obj.CityName + '</option>';
+                            });
+                            $("#city").html(html);
+                        }
+                    });
+                });
+            },
+            //选中城市后获取区域
+            GetAreaByCity: function () {
+                $("#province").change(function () {
+                    var html = '<option>=请选择=</option>';
+                    $("#area").html(html);
+                    $("#town").html(html);
+                });
+                $("#city").change(function () {
+                    controller.ajax({
+                        url: "System/GetArea",
+                        data: { Id: $(this).find("option:selected").data().id },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            var html = '<option>=请选择=</option>';
+                            $.each(result.data, function (i, obj) {
+                                html += '<option value="' + obj.Id + '" data-id="' + obj.AreaId + '">' + obj.AreaName + '</option>';
+                            });
+                            $("#area").html(html);
+                        }
+                    });
+                });
+            },
+            //选中区域后获取乡镇
+            GetTownByArea: function () {
+                $("#city").change(function () {
+                    var html = '<option>=请选择=</option>';
+                    $("#town").html(html);
+                });
+                $("#area").change(function () {
+                    controller.ajax({
+                        url: "System/GetTown",
+                        data: { Id: $(this).find("option:selected").data().id },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            var html = '<option>=请选择=</option>';
+                            $.each(result.data, function (i, obj) {
+                                html += '<option value="' + obj.Id + '" data-id="' + obj.TownId + '">' + obj.TownName + '</option>';
+                            });
+                            $("#town").html(html);
+                        }
+                    });
+                });
+            },
+            //取得详情后获取城市
+            SetCity: function () {
+                controller.ajax({
+                    url: "System/GetCity",
+                    data: { Id: $("#province").find("option:selected").data().id },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>=请选择=</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '" data-id="' + obj.CityId + '">' + obj.CityName + '</option>';
+                        });
+                        $("#city").html(html);
+                    }
+                });
+            },
+            //取得详情后获取区域
+            SetArea: function () {
+                controller.ajax({
+                    url: "System/GetArea",
+                    data: { Id: $("#city").find("option:selected").data().id },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>=请选择=</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '" data-id="' + obj.AreaId + '">' + obj.AreaName + '</option>';
+                        });
+                        $("#area").html(html);
+                    }
+                });
+            },
+            //取得详情后获取乡镇
+            SetTown: function () {
+                controller.ajax({
+                    url: "System/GetTown",
+                    data: { Id: $("#area").find("option:selected").data().id },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>=请选择=</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '" data-id="' + obj.TownId + '">' + obj.TownName + '</option>';
+                        });
+                        $("#town").html(html);
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="RepastWeb/EditMerchantArea" id="Edit">
+            <input type="hidden" name="Id" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">所属区域</label></th>
+                    <td colspan="3">
+                        <table style="width:100%">
+                            <tr>
+                                <td class="has-warning" style="width:25%">
+                                    <select type="select" class="form-control" name="Province" id="province">
+                                        <option>=请选择=</option>
+                                    </select>
+                                </td>
+                                <td class="has-warning" style="width:25%">
+                                    <select type="select" class="form-control" name="City" id="city">
+                                        <option>=请选择=</option>
+                                    </select>
+                                </td>
+                                <td class="has-warning" style="width:25%">
+                                    <select type="select" class="form-control" name="Area" id="area">
+                                        <option>=请选择=</option>
+                                    </select>
+                                </td>
+                                <td class="has-warning" style="width:25%">
+                                    <select type="select" class="form-control" name="Town" id="town">
+                                        <option>=请选择=</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
