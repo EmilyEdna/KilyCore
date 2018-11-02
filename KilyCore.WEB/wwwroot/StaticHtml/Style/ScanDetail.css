@@ -102,9 +102,16 @@
     bottom: 3%;
 }
 
-    .info span {
-        font-size: 35px;
-        width: 120px;
-        height: 81px;
-        border-radius: 12px;
-    }
+.testInfo {
+    position: fixed;
+    z-index: 999;
+    bottom: 3%;
+    font-size: 35px;
+}
+
+.info span {
+    font-size: 35px;
+    width: 120px;
+    height: 81px;
+    border-radius: 12px;
+}

@@ -210,5 +210,8 @@ namespace KilyCore.Service.IServiceCore
          Object GetDisinfectList();
          Object GetAdditiveList();
         #endregion
+        #region 手机端信息
+        Object GetMobileScanInfo(Guid Id);
+        #endregion
     }
 }

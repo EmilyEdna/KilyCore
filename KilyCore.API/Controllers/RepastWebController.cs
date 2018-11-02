@@ -1157,7 +1157,8 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetStuffList")]
-        public ObjectResultEx GetStuffList() {
+        public ObjectResultEx GetStuffList()
+        {
             return ObjectResultEx.Instance(RepastWebService.GetStuffList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -1165,7 +1166,8 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetVideoList")]
-        public ObjectResultEx GetVideoList() {
+        public ObjectResultEx GetVideoList()
+        {
             return ObjectResultEx.Instance(RepastWebService.GetVideoList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -1173,7 +1175,8 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetUserList")]
-        public ObjectResultEx GetUserList() {
+        public ObjectResultEx GetUserList()
+        {
             return ObjectResultEx.Instance(RepastWebService.GetUserList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -1181,7 +1184,8 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetDuckList")]
-        public ObjectResultEx GetDuckList() {
+        public ObjectResultEx GetDuckList()
+        {
             return ObjectResultEx.Instance(RepastWebService.GetDuckList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -1189,7 +1193,8 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetDrawList")]
-        public ObjectResultEx GetDrawList() {
+        public ObjectResultEx GetDrawList()
+        {
             return ObjectResultEx.Instance(RepastWebService.GetDrawList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -1197,7 +1202,8 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetSampleList")]
-        public ObjectResultEx GetSampleList() {
+        public ObjectResultEx GetSampleList()
+        {
             return ObjectResultEx.Instance(RepastWebService.GetSampleList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -1205,7 +1211,8 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetDisinfectList")]
-        public ObjectResultEx GetDisinfectList() {
+        public ObjectResultEx GetDisinfectList()
+        {
             return ObjectResultEx.Instance(RepastWebService.GetDisinfectList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -1213,8 +1220,18 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetAdditiveList")]
-        public ObjectResultEx GetAdditiveList() {
+        public ObjectResultEx GetAdditiveList()
+        {
             return ObjectResultEx.Instance(RepastWebService.GetAdditiveList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region  手机端
+        [HttpGet("GetMobileScanInfo")]
+        [AllowAnonymous]
+        public ObjectResultEx GetMobileScanInfo(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetMobileScanInfo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

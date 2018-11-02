@@ -1,0 +1,318 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>商家信息</title>
+    <link href="../Content/BootStrap/Css/bootstrap.css" rel="stylesheet" />
+    <link href="Style/ScanDetail.css" rel="stylesheet" />
+    <script src="../Content/JavaScript/jquery.min.js"></script>
+    <script src="../Content/BootStrap/Script/bootstrap.js"></script>
+    <script src="../Content/Layer/layer.js"></script>
+    <script src="../Content/JavaScript/jquery.extension.js"></script>
+    <script src="//imgcache.qq.com/open/qcloud/video/vcplayer/TcPlayer-2.2.2.js" charset="utf-8"></script>
+</head>
+<body>
+    <div class="row">
+        <div class=" col-sm-12 col-xs-12 head">
+            <img src="Style/ScanDetailImg/Logo.png" class="pull-left">
+            <h1>中食药餐饮溯源查询</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="content">
+            <div class="panel panel-default">
+                <div id="top1">
+                    <div class="panel-heading">
+                        <h6>商家信息</h6>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-xs-6 col-sm-6">
+                            <img class="img-responsive" src="" data-name="Certification" />
+                        </div>
+                        <div class="col-xs-6 col-sm-6">
+                            <strong>商家名称：</strong>
+                            <p data-name="MerchantName"></p>
+                            <br /> <br />
+                            <strong>商家类型：</strong>
+                            <p data-name="DiningTypeName"></p>
+                            <br /> <br />
+                            <strong>商家电话：</strong>
+                            <p data-name="Phone"></p>
+                            <br /> <br />
+                            <strong>商家地址：</strong>
+                            <p data-name="Address"></p>
+                        </div>
+                        <div class="col-sm-12 col-xs-12">
+                            <button class="btn btn-default col-sm-12 col-sm-12 OnClick Soc"></button>
+                        </div>
+                        <div class="flag">
+                            <div class="col-sm-12 col-sm-12" id="DishInfo">
+                                <span class="title col-sm-12 col-sm-12">
+                                    ●菜品信息●
+                                </span>
+                                <hr style="margin-top:5%;border:solid 1px #000000" />
+                                <strong class="detail_t">菜品名称：</strong><b class="detail_b" data-name="DishName"></b>
+                                <br /><br />
+                                <strong class="detail_t">菜品类型：</strong><b class="detail_b" data-name="DishType"></b>
+                                <br /><br />
+                                <strong class="detail_t">配料：</strong><b class="detail_b" data-name="Batching"></b>
+                                <br /><br />
+                                <strong class="detail_t">调料：</strong><b class="detail_b" data-name="Seasoning"></b>
+                            </div>
+                            <div class="Content_Grow">
+                                <div class="col-sm-12 col-sm-12">
+                                    <span class="title col-sm-12 col-sm-12">
+                                        ●溯源信息●
+                                    </span>
+                                    <hr style="margin-top:5%;border:solid 1px #000000" />
+                                    <strong class="detail_t">原料名称：</strong><b class="detail_b" data-name="MaterialName"></b>
+                                    <br /><br />
+                                    <strong class="detail_t">供应商：</strong><b class="detail_b" data-name="Supplier"></b>
+                                    <br /><br />
+                                    <strong class="detail_t">供应时间：</strong><b class="detail_b" data-name="SuppTime"></b>
+                                    <br /><br />
+                                    <strong class="detail_t">保质期(/天)：</strong><b class="detail_b" data-name="ExpiredDay"></b>
+                                </div>
+                                <div class="col-sm-12 col-sm-12">
+                                    <span class="title col-sm-12 col-sm-12">
+                                        ●相关证书●
+                                    </span>
+                                    <hr style="border:solid 1px #808080" />
+                                    <img class="img-responsive" src="" data-name="QualityReport" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="top2" class="hidden">
+                    <div class="panel-body">
+                        <div class="flag" id="DuckInfo">
+                            <div class="col-sm-12 col-sm-12">
+                                <span class="title col-sm-12 col-sm-12">
+                                    ●废物处理●
+                                </span>
+                                <hr style="margin-top:5%;border:solid 1px #000000" />
+                                <strong class="detail_t">处理方式：</strong><b class="detail_b" data-name="HandleWays"></b>
+                                <br /><br />
+                                <strong class="detail_t">处理人：</strong><b class="detail_b" data-name="HandleUser"></b>
+                                <br /><br />
+                                <strong class="detail_t">电话：</strong><b class="detail_b" data-name="DuckPhone"></b>
+                            </div>
+                        </div>
+                        <div class="flag" id="DrawInfo">
+                            <div class="col-sm-12 col-sm-12">
+                                <span class="title col-sm-12 col-sm-12">
+                                    ●抽样记录●
+                                </span>
+                                <hr style="margin-top:5%;border:solid 1px #000000" />
+                                <strong class="detail_t">抽样单位：</strong><b class="detail_b" data-name="DrawUnit"></b>
+                                <br /><br />
+                                <strong class="detail_t">抽样人：</strong><b class="detail_b" data-name="DrawUser"></b>
+                                <br /><br />
+                                <strong class="detail_t">抽样时间：</strong><b class="detail_b" data-name="DrawTime"></b>
+                                <br /><br />
+                                <strong class="detail_t">电话：</strong><b class="detail_b" data-name="DrawPhone"></b>
+                            </div>
+                        </div>
+                        <div class="flag" id="SampleInfo">
+                            <div class="col-sm-12 col-sm-12">
+                                <span class="title col-sm-12 col-sm-12">
+                                    ●留样记录●
+                                </span>
+                                <hr style="margin-top:5%;border:solid 1px #000000" />
+                                <strong class="detail_t">留样菜品：</strong><b class="detail_b" data-name="DishName"></b>
+                                <br /><br />
+                                <strong class="detail_t">留样人：</strong><b class="detail_b" data-name="OperatUser"></b>
+                                <br /><br />
+                                <strong class="detail_t">留样时间：</strong><b class="detail_b" data-name="SampleTime"></b>
+                                <br /><br />
+                                <strong class="detail_t">电话：</strong><b class="detail_b" data-name="SamplePhone"></b>
+                            </div>
+                        </div>
+                        <div class="flag" id="DisinfectInfo">
+                            <div class="col-sm-12 col-sm-12">
+                                <span class="title col-sm-12 col-sm-12">
+                                    ●消毒记录●
+                                </span>
+                                <hr style="margin-top:5%;border:solid 1px #000000" />
+                                <strong class="detail_t">消毒剂名称：</strong><b class="detail_b" data-name="DisinfectName"></b>
+                                <br /><br />
+                                <strong class="detail_t">使用计量：</strong><b class="detail_b" data-name="Metering"></b>
+                                <br /><br />
+                                <strong class="detail_t">消毒时间：</strong><b class="detail_b" data-name="DisinfectTime"></b>
+                                <br /><br />
+                                <strong class="detail_t">负责人：</strong><b class="detail_b" data-name="UsePerson"></b>
+                            </div>
+                        </div>
+                        <div class="flag" id="AdditiveInfo">
+                            <div class="col-sm-12 col-sm-12">
+                                <span class="title col-sm-12 col-sm-12">
+                                    ●添加剂●
+                                </span>
+                                <hr style="margin-top:5%;border:solid 1px #000000" />
+                                <strong class="detail_t">添加剂名称：</strong><b class="detail_b" data-name="AdditiveName"></b>
+                                <br /><br />
+                                <strong class="detail_t">生产商：</strong><b class="detail_b" data-name="SupplierName"></b>
+                                <br /><br />
+                                <strong class="detail_t">使用计量：</strong><b class="detail_b" data-name="Meterings"></b>
+                                <br /><br />
+                                <strong class="detail_t">制作食品：</strong><b class="detail_b" data-name="ProFood"></b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="top3" class="hidden">
+                    <div class="panel-heading">
+                        <h6>人员信息</h6>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-sm-12 col-sm-12">
+                            <span class="title col-sm-12 col-sm-12">
+                                ●详细信息●
+                            </span>
+                            <hr style="margin-top:5%;border:solid 1px #000000" />
+                            <div id="UserInfo">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="top4" class="hidden">
+                    <div class="panel-heading">
+                        <h6>视频监控</h6>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-sm-12 col-sm-12">
+                            <span class="title col-sm-12 col-sm-12">
+                                ●视频监控●
+                            </span>
+                            <hr style="margin-top:5%;border:solid 1px #000000" />
+                            <div id="video1" style="width:100%; height:auto;"></div>
+                            <br /><br />
+                            <div id="video2" style="width:100%; height:auto;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="top5" class="hidden">
+
+                </div>
+                <div class="panel-footer">
+                    <div class="testInfo">
+                        <span class="btn btn-default btn-lg" style="font-size:36px;" data-selector="#top1">企业查询</span>
+                        <span class="btn btn-default btn-lg" style="font-size:36px;" data-selector="#top2">综合查询</span>
+                        <span class="btn btn-default btn-lg" style="font-size:36px;" data-selector="#top3">人员查询</span>
+                        <span class="btn btn-default btn-lg" style="font-size:36px;" data-selector="#top4">视频监控</span>
+                        <span class="btn btn-default btn-lg" style="font-size:36px;" data-selector="#top5">预警信息</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        //初始化
+        var option = {
+            Init: function () {
+                option.InitDom();
+                option.InitEvent();
+            }, //option.GetParam("Id")
+            InitDom: function () {
+                $.ajax({
+                    url: "http://localhost:50039/api/RepastWeb/GetMobileScanInfo",
+                    type: "get",
+                    dataType: "json",
+                    data: { TimeSpan: new Date().getTime(), Id: "731E7064-922A-40CC-9559-7510B51D1F51" },
+                    async: false,
+                    success: function (result) {
+                        option.BindInfo(".content", result.data.Info);
+                        option.BindList("#DishInfo", result.data.Dish);
+                        option.BindList(".Content_Grow", result.data.Stuff);
+                        option.BindList("#DuckInfo", result.data.Duck);
+                        option.BindList("#DrawInfo", result.data.Draw);
+                        option.BindList("#SampleInfo", result.data.Sample);
+                        option.BindList("#DisinfectInfo", result.data.Disinfect);
+                        option.BindList("#AdditiveInfo", result.data.Additive);
+                        option.BindUser(result.data.User);
+                        option.BindVedio(result.data.Video);
+                    }
+                });
+            },
+            InitEvent: function () {
+                $(".Soc").on("click", function () {
+                    if ($(this).hasClass("OnClick")) {
+                        $(this).removeClass("OnClick").addClass("NorClick");
+                        $(".flag").fadeOut(1000);
+                    }
+                    else {
+                        $(this).removeClass("NorClick").addClass("OnClick");
+                        $(".flag").fadeIn(1000);
+                    }
+                });
+                //tab切换
+                $("span", $(".testInfo")).on('click', function () {
+                    $($(this).data().selector).removeClass("hidden").addClass("show");
+                    for (var i = 0; i < $(this).siblings().length; i++) {
+                        $($($(this).siblings()[i]).data().selector).removeClass("show").addClass("hidden");
+                    }
+                });
+            },
+            GetParam: function (Param) {
+                var reg = new RegExp("(^|&)" + Param + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+                var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+                if (r != null) return decodeURI(r[2]); return null; //返回参数值
+            },
+            BindInfo: function (Element, Param) {
+                for (var key in Param) {
+                    var node = $("[data-name='" + key + "']", $(Element));
+                    var value = Param[key];
+                    if (node.attr("src") != undefined)
+                        node.attr("src", value);
+                    node.text(value);
+                }
+            },
+            BindList: function (Element, Param) {
+                $.each(Param, function (i, obj) {
+                    for (var key in obj) {
+                        var node = $("[data-name='" + key + "']", $(Element));
+                        var value = obj[key];
+                        if (node.attr("src") != undefined)
+                            node.attr("src", value);
+                        node.append(value + "丨");
+                    }
+                });
+            },
+            BindUser: function (Param) {
+                var html = '';
+                $.each(Param, function (i, obj) {
+                    html += '<img src="' + obj.HealthCard + '" style="width:200px;height:200px;" />';
+                    html += ' <br /> <br />';
+                    html += '<strong class="detail_t">人员名称：</strong> <b class="detail_b">' + obj.TrueName + '</b>';
+                    html += ' <br /> <br />';
+                    html += ' <strong class="detail_t">人员电话：</strong> <b class="detail_b">' + obj.UserPhone + '</b>';
+                    html += ' <br /> <br />';
+                });
+                $("#UserInfo").html(html);
+            },
+            BindVedio: function (Param) {
+                 new TcPlayer('video1', {
+                    "m3u8": Param[0].VideoAddress,
+                    "autoplay": true,      //iOS下safari浏览器，以及大部分移动端浏览器是不开放视频自动播放这个能力的
+                    "coverpic": null,
+                    "width": '420',//视频的显示宽度，请尽量使用视频分辨率宽度
+                    "height": '390'//视频的显示高度，请尽量使用视频分辨率高度
+                });
+                 new TcPlayer('video2', {
+                    "m3u8": Param[1].VideoAddress,
+                    "autoplay": true,      //iOS下safari浏览器，以及大部分移动端浏览器是不开放视频自动播放这个能力的
+                    "coverpic": null,
+                    "width": '420',//视频的显示宽度，请尽量使用视频分辨率宽度
+                    "height": '390'//视频的显示高度，请尽量使用视频分辨率高度
+                });
+            }
+        };
+        $(document).ready(function () {
+            option.Init();
+        });
+    </script>
+
+</body>
+</html>
