@@ -57,5 +57,16 @@ namespace KilyCore.WEB.Areas.WebMerchantManage.Controllers
             return View();
         }
         #endregion
+
+        #region 二维码管理
+        public IActionResult MerchantScan()
+        {
+            return View();
+        }
+        public IActionResult MerchantScanEdit()
+        {
+            return View();
+        }
+        #endregion
     }
 }

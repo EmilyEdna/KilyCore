@@ -365,6 +365,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetRiskCount")]
+        [AllowAnonymous]
         public ObjectResultEx GetRiskCount()
         {
             return ObjectResultEx.Instance(GovtWebService.GetRiskCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);

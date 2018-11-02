@@ -1,0 +1,158 @@
+﻿
+@{
+    ViewData["Title"] = "二维码管理";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                //恢复高度
+                $(window).resize(function (e) {
+                    window.setTimeout(function () {
+                        options.$table.bootstrapTable("resetView", { height: $(window).height() - 150 });
+                    }, 200);
+                    e.stopPropagation();
+                });
+                //设置表单
+                this.$table = controller.Table("#tableList", { url: "RepastWeb/GetScanInfoPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
+            },
+            //事件
+            InitEvents: function () {
+                $("#add").on('click', function () {
+                    controller.OpenWindow({
+                        title: "新增二维码",
+                        type: 2,
+                        height: "600px",
+                        width: "800px",
+                        url: "WebMerchantManage/Function/MerchantScanEdit",
+                        callBack: function (result) {
+                            result.$("#Edit").submit();
+                        }
+                    })
+                });
+            },
+            //行为
+            action: {
+                TableFormatter: function (val, row, index) {
+                    var action = [];
+                    action.push('<button class="btn btn-sm btn-primary go"><i class="fa fa-trash-o"></i>上架</button>');
+                    action.push('<button class="btn btn-sm btn-primary dw"><i class="fa fa-trash-o"></i>下架</button>');
+                    action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
+                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
+                    return action.join("&nbsp;")
+                },
+                TableEvents: {
+                    "click .del": function (event, val, row, index) {
+                        controller.Confirm("确认删除？", function (bool) {
+                            if (bool) {
+                                controller.ajax({
+                                    url: "RepastWeb/RemoveScan",
+                                    data: { Id: row.Id },
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    "click .go": function (event, val, row, index) {
+                        controller.Confirm("确认上架？", function (bool) {
+                            if (bool) {
+                                controller.ajax({
+                                    url: "RepastWeb/RemoveScan",
+                                    data: { Id: row.Id, Parameter: true },
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    "click .dw": function (event, val, row, index) {
+                        controller.Confirm("确认下架？", function (bool) {
+                            if (bool) {
+                                controller.ajax({
+                                    url: "RepastWeb/RemoveScan",
+                                    data: { Id: row.Id, Parameter: false },
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    "click .edit": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "编辑二维码",
+                            type: 2,
+                            height: "600px",
+                            width: "800px",
+                            url: "WebMerchantManage/Function/MerchantScanEdit?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
+                    }
+                }//表单事件结束
+            }//行为结束
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+@section css{
+
+}
+<div class="container-fluid">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>二维码管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <form id="Edit">
+                        <div class="col-sm-8 m-b-xs">
+                            <div class="input-group">
+                                <button type="button" class="btn btn-sm btn-white" id="add"><i class="fa fa-plus"></i>新增</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" placeholder="记录名称" class="input-sm form-control" name="RecordName">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
+                                    <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive">
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="RecordName" data-halign="center" data-align="center" data-valign="middle">记录名称</th>
+                                <th data-field="Stutas" data-halign="center" data-align="center" data-valign="middle">上架状态</th>
+                                <th data-field="ShowTime" data-halign="center" data-align="center" data-valign="middle">上架时间</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>

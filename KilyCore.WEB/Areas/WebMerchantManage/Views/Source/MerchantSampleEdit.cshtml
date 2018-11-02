@@ -24,7 +24,7 @@
                     success: function (result) {
                         var html = '<option>==请选择菜品==</option>';
                         $.each(result.data, function (i, obj) {
-                            html += '<option data-value="' + obj.Id + '" value="' + obj.DishName + '">' + obj.DishName + '</option>';
+                            html += '<option data-value="' + obj.Id + '" value="' + obj.Name + '">' + obj.Name + '</option>';
                         });
                         $("#DishName").html(html);
                     }

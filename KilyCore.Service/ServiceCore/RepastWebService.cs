@@ -1254,23 +1254,6 @@ namespace KilyCore.Service.ServiceCore
             else
                 return Update<RepastDish, RequestRepastDish>(dish, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
-        /// <summary>
-        /// 菜品列表
-        /// </summary>
-        /// <returns></returns>
-        public IList<ResponseRepastDish> GetDishList()
-        {
-            IQueryable<RepastDish> queryable = Kily.Set<RepastDish>().Where(t => t.IsDelete == false);
-            if (MerchantInfo() != null)
-                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
-            else
-                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
-            return queryable.Select(t => new ResponseRepastDish()
-            {
-                Id = t.Id,
-                DishName = t.DishName
-            }).ToList();
-        }
         #endregion
 
         #region 溯源追踪
@@ -2261,7 +2244,8 @@ namespace KilyCore.Service.ServiceCore
                 Stuff = S5.Where(t => t.InfoId == MerchantInfo().Id).Count();
                 Info = S6.Where(t => t.InfoId == MerchantInfo().Id).Count();
             }
-            else {
+            else
+            {
                 Supplier = S1.Where(t => t.InfoId == MerchantUser().Id).Count();
                 Video = S2.Where(t => t.InfoId == MerchantUser().Id).Count();
                 Dish = S3.Where(t => t.InfoId == MerchantUser().Id).Count();
@@ -2279,6 +2263,230 @@ namespace KilyCore.Service.ServiceCore
                 Info
             };
             return data;
+        }
+        #endregion
+
+        #region 扫码信息
+        /// <summary>
+        /// 信息分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRepastScanInfo> GetScanInfoPage(PageParamList<RequestRepastScanInfo> pageParam)
+        {
+            IQueryable<RepastScanInfo> queryable = Kily.Set<RepastScanInfo>().OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.RecordName))
+                queryable = queryable.Where(t => t.RecordName.Contains(pageParam.QueryParam.RecordName));
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data = queryable.Select(t => new ResponseRepastScanInfo()
+            {
+                Id = t.Id,
+                RecordName = t.RecordName,
+                ShowTime = t.ShowTime,
+                IsDelete=t.IsDelete
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑信息
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditScanInfo(RequestRepastScanInfo Param)
+        {
+            RepastScanInfo Scan = Param.MapToEntity<RepastScanInfo>();
+            if (Param.Id == Guid.Empty)
+                return Insert(Scan) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+                return Update(Scan, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        /// <summary>
+        /// 删除信息
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string RemoveScan(Guid Id, bool? Param)
+        {
+            if (Param.HasValue)
+            {
+                var Temp = Kily.Set<RepastScanInfo>().Where(t => t.Id == Id).FirstOrDefault();
+                Temp.IsDelete = Param;
+                return UpdateField<RepastScanInfo>(Temp, "IsDelete") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            }
+            else
+            {
+                return Remove<RepastScanInfo>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+            }
+        }
+        /// <summary>
+        /// 信息详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseRepastScanInfo GetScanInfoDetail(Guid Id)
+        {
+            var data = Kily.Set<RepastScanInfo>().Where(t => t.Id == Id).FirstOrDefault().MapToEntity<ResponseRepastScanInfo>();
+            return data;
+        }
+        #endregion
+
+        #region 列表集合
+        /// <summary>
+        /// 菜品列表
+        /// </summary>
+        /// <returns></returns>
+        public Object GetDishList()
+        {
+            IQueryable<RepastDish> queryable = Kily.Set<RepastDish>().Where(t => t.IsDelete == false);
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            return queryable.Select(t => new
+            {
+                t.Id,
+                Name = t.DishName
+            }).ToList();
+        }
+        /// <summary>
+        /// 原料列表
+        /// </summary>
+        /// <returns></returns>
+        public Object GetStuffList()
+        {
+            IQueryable<RepastStuff> queryable = Kily.Set<RepastStuff>().Where(t => t.IsDelete == false);
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            return queryable.Select(t => new
+            {
+                t.Id,
+                Name = t.MaterialName
+            }).ToList();
+        }
+        /// <summary>
+        /// 视频列表
+        /// </summary>
+        /// <returns></returns>
+        public Object GetVideoList()
+        {
+            IQueryable<RepastVideo> queryable = Kily.Set<RepastVideo>().Where(t => t.IsDelete == false);
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            return queryable.Select(t => new
+            {
+                t.Id,
+                Name = t.MonitorAddress
+            }).ToList();
+        }
+        /// <summary>
+        /// 人员列表
+        /// </summary>
+        /// <returns></returns>
+        public Object GetUserList()
+        {
+            IQueryable<RepastInfoUser> queryable = Kily.Set<RepastInfoUser>().Where(t => t.IsDelete == false).AsNoTracking();
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            return queryable.Select(t => new
+            {
+                t.Id,
+                Name = t.TrueName
+            }).ToList();
+        }
+        /// <summary>
+        /// 废物列表
+        /// </summary>
+        /// <returns></returns>
+        public Object GetDuckList()
+        {
+                  IQueryable<RepastDuck> queryable = Kily.Set<RepastDuck>().Where(t => t.IsDelete == false).AsNoTracking();
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            return queryable.Select(t => new
+            {
+                t.Id,
+                Name = t.HandleWays
+            }).ToList();
+        }
+        /// <summary>
+        /// 抽样列表
+        /// </summary>
+        /// <returns></returns>
+        public Object GetDrawList()
+        {
+            IQueryable<RepastDraw> queryable = Kily.Set<RepastDraw>().Where(t => t.IsDelete == false).AsNoTracking();
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            return queryable.Select(t => new
+            {
+                t.Id,
+                Name = t.DrawUnit
+            }).ToList();
+        }
+        /// <summary>
+        /// 留样列表
+        /// </summary>
+        /// <returns></returns>
+        public Object GetSampleList()
+        {
+            IQueryable<RepastSample> queryable = Kily.Set<RepastSample>().Where(t => t.IsDelete == false).AsNoTracking();
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            return queryable.Select(t => new
+            {
+                t.Id,
+                Name = t.DishName
+            }).ToList();
+        }
+        /// <summary>
+        /// 消毒列表
+        /// </summary>
+        /// <returns></returns>
+        public Object GetDisinfectList()
+        {
+            IQueryable<RepastDisinfect> queryable = Kily.Set<RepastDisinfect>().Where(t => t.IsDelete == false).AsNoTracking();
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            return queryable.Select(t => new
+            {
+                t.Id,
+                Name = t.DisinfectName
+            }).ToList();
+        }
+        /// <summary>
+        /// 添加剂列表
+        /// </summary>
+        /// <returns></returns>
+        public Object GetAdditiveList()
+        {
+            IQueryable<RepastAdditive> queryable = Kily.Set<RepastAdditive>().Where(t => t.IsDelete == false).AsNoTracking();
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            return queryable.Select(t => new
+            {
+                t.Id,
+                Name = t.AdditiveName
+            }).ToList();
         }
         #endregion
     }

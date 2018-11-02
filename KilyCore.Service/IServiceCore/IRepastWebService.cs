@@ -109,7 +109,6 @@ namespace KilyCore.Service.IServiceCore
         ResponseRepastDish GetDishDetail(Guid Id);
         String RemoveDish(Guid Id);
         String EditDish(RequestRepastDish Param);
-        IList<ResponseRepastDish> GetDishList();
         #endregion
         #region 溯源追踪
         #region 原料溯源
@@ -193,6 +192,23 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 数据统计
         Object GetDataCount();
+        #endregion
+        #region 扫码信息
+        PagedResult<ResponseRepastScanInfo> GetScanInfoPage(PageParamList<RequestRepastScanInfo> pageParam);
+        String EditScanInfo(RequestRepastScanInfo Param);
+        String RemoveScan(Guid Id, bool? Param);
+        ResponseRepastScanInfo GetScanInfoDetail(Guid Id);
+        #endregion
+        #region 列表信息
+        Object GetDishList();
+        Object GetStuffList();
+        Object GetVideoList();
+         Object GetUserList();
+         Object GetDuckList();
+         Object GetDrawList();
+         Object GetSampleList();
+         Object GetDisinfectList();
+         Object GetAdditiveList();
         #endregion
     }
 }

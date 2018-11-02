@@ -552,15 +552,6 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastWebService.EditDish(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        /// <summary>
-        /// 菜品列表
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost("GetDishList")]
-        public ObjectResultEx GetDishList()
-        {
-            return ObjectResultEx.Instance(RepastWebService.GetDishList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }
         #endregion
 
         #region 溯源追踪
@@ -1104,6 +1095,126 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetDataCount()
         {
             return ObjectResultEx.Instance(RepastWebService.GetDataCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region 扫码信息
+        /// <summary>
+        /// 信息分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetScanInfoPage")]
+        public ObjectResultEx GetScanInfoPage(PageParamList<RequestRepastScanInfo> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetScanInfoPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑信息
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditScanInfo")]
+        public ObjectResultEx EditScanInfo(RequestRepastScanInfo Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.EditScanInfo(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除信息
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveScan")]
+        public ObjectResultEx RemoveScan(SimpleParam<Guid> Key, SimpleParam<bool?> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.RemoveScan(Key.Id, Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 信息详情
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetScanInfoDetail")]
+        public ObjectResultEx GetScanInfoDetail(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetScanInfoDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region 列表集合
+        /// <summary>
+        /// 菜品列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetDishList")]
+        public ObjectResultEx GetDishList()
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetDishList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 原料列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetStuffList")]
+        public ObjectResultEx GetStuffList() {
+            return ObjectResultEx.Instance(RepastWebService.GetStuffList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 视频列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetVideoList")]
+        public ObjectResultEx GetVideoList() {
+            return ObjectResultEx.Instance(RepastWebService.GetVideoList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 人员列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetUserList")]
+        public ObjectResultEx GetUserList() {
+            return ObjectResultEx.Instance(RepastWebService.GetUserList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 废物列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetDuckList")]
+        public ObjectResultEx GetDuckList() {
+            return ObjectResultEx.Instance(RepastWebService.GetDuckList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 抽样列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetDrawList")]
+        public ObjectResultEx GetDrawList() {
+            return ObjectResultEx.Instance(RepastWebService.GetDrawList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 留样列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetSampleList")]
+        public ObjectResultEx GetSampleList() {
+            return ObjectResultEx.Instance(RepastWebService.GetSampleList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 消毒列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetDisinfectList")]
+        public ObjectResultEx GetDisinfectList() {
+            return ObjectResultEx.Instance(RepastWebService.GetDisinfectList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 添加剂列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetAdditiveList")]
+        public ObjectResultEx GetAdditiveList() {
+            return ObjectResultEx.Instance(RepastWebService.GetAdditiveList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }
