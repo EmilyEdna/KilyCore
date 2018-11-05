@@ -37,7 +37,17 @@
                 //显示登录
                 $(".text-muted").prepend(CompanyUser.CompanyName);
                 $(".font-bold").prepend(CompanyUser.CompanyAccount);
-
+                if (CompanyUser.TypePath == null)
+                    controller.OpenWindow({
+                        title: "完善所属区域",
+                        type: 2,
+                        height: "235px",
+                        width: "900px",
+                        url: "WebCompanyManage/Base/CompanyEditArea",
+                        callBack: function (result) {
+                            result.$("#Edit").submit();
+                        }
+                    })
             },
             //获取树
             GetMenu: function () {
@@ -98,6 +108,19 @@
                         $(".label-primary").html(result.data.total);
                     }
                 });
+                //修改密码
+                $("#EditPwd").click(function () {
+                    controller.OpenWindow({
+                        title: "修改登陆信息",
+                        type: 2,
+                        height: "235px",
+                        width: "650px",
+                        url: "WebCompanyManage/Base/CompanyEditAccount",
+                        callBack: function (result) {
+                            result.$("#Edit").submit();
+                        }
+                    })
+                });
             },
             //行为
             action: {}
@@ -128,16 +151,7 @@
                             </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
                                 <li>
-                                    <a class="J_menuItem" href="form_avatar.html">修改头像</a>
-                                </li>
-                                <li>
-                                    <a class="J_menuItem" href="profile.html">个人资料</a>
-                                </li>
-                                <li>
-                                    <a class="J_menuItem" href="contacts.html">联系我们</a>
-                                </li>
-                                <li>
-                                    <a class="J_menuItem" href="mailbox.html">信箱</a>
+                                    <a href="javascript:;" id="EditPwd">修改密码</a>
                                 </li>
                             </ul>
                         </div>

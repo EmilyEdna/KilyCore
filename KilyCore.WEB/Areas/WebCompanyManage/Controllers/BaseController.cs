@@ -124,5 +124,13 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        public IActionResult CompanyEditAccount()
+        {
+            return View();
+        }
+        public IActionResult CompanyEditArea()
+        {
+            return View();
+        }
     }
 }

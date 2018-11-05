@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewData["Title"] = "修改登陆信息";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                controller.ajax({
+                    url: "EnterpriseWeb/GetEnterpriseInfo",
+                    data: { Id: CompanyInfo.Id },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        controller.SetCtrlValue("#Edit", result.data);
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/EditCompanyAccount" id="Edit">
+            <input type="hidden" name="Id" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">商家账号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="CompanyAccount">
+                    </td>
+                    <th><label class="control-label">登录密码</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="PassWord">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

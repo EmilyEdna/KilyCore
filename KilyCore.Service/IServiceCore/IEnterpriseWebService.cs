@@ -34,6 +34,8 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseEnterprise> GetInfoPage(PageParamList<RequestEnterprise> pageParam);
         ResponseEnterprise GetEnterpriseInfo(Guid Id);
         String EditEnterprise(RequestEnterprise param);
+        String EditCompanyAccount(RequestEnterprise Param);
+        String EditCompanyArea(RequestEnterprise Param);
         #endregion
         #region 保存合同和缴费凭证
         String SaveContract(RequestStayContract Param);

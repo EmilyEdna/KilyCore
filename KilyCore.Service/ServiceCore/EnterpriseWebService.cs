@@ -393,6 +393,29 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.UPDATEFAIL;
         }
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditCompanyAccount(RequestEnterprise Param) {
+            EnterpriseInfo info= Kily.Set<EnterpriseInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
+            info.PassWord = Param.PassWord;
+            info.CompanyAccount = Param.CompanyAccount;
+            IList<String> Fields =new List<String>{ "CompanyAccount", "PassWord" };
+            return UpdateField(info, null, Fields) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        /// <summary>
+        /// 修改区域
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditCompanyArea(RequestEnterprise Param)
+        {
+            EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
+            info.TypePath = Param.TypePath;
+            return UpdateField(info, "TypePath") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
         #endregion
 
         #region 保存合同

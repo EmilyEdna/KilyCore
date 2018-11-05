@@ -102,6 +102,24 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseWebService.EditEnterprise(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 修改账号
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditCompanyAccount")]
+        public ObjectResultEx EditCompanyAccount(RequestEnterprise Param) {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditCompanyAccount(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 完善区域
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditCompanyArea")]
+        public ObjectResultEx EditCompanyArea(RequestEnterprise Param) {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditCompanyArea(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 保存合同和缴费凭证
         /// <summary>
