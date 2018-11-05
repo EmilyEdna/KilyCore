@@ -1450,6 +1450,7 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.Select(t => new ResponseEnterpriseEnvironmentAttach()
             {
                 Id = t.Id,
+                BatchNo=t.BatchNo,
                 AirReport = t.AirReport,
                 MetalReport = t.MetalReport,
                 RecordTime = t.RecordTime,
