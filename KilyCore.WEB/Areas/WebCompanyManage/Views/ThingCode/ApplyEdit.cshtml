@@ -17,20 +17,6 @@
             InitDom: function () {
                 $("#BatchNo").val("A" + controller.FormatDate("YYMMDDHHmmss"));
                 $("#CompanyId").val(CompanyInfo.Id);
-                //绑定银行信息
-                controller.ajax({
-                    url: "System/GetBankInfo",
-                    type: "post",
-                    async: false,
-                    data: {},
-                    success: function (result) {
-                        var html = '<option>===请选择===</option>';
-                        $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.BankCard + '" data-value="' + obj.BankName + '">' + obj.TrueName + '</option>'
-                        });
-                        $("select").html(html);
-                    }
-                });
             },
             //设置文件值
             SetFileValue: function (data, elememt) {
@@ -76,11 +62,6 @@
                     else
                         $("#ApplyMoney").val(num * 0.02)//非旗舰版2分钱
                 });
-                $("select").on('change', function () {
-                    var flag = $(this).find("option:selected");
-                    $("#BankCard").val(flag.val());
-                    $("#BankName").val(flag.data().value);
-                });
                 //文件上传
                 controller.Upload({
                     url: "File/UploadImg",
@@ -114,19 +95,17 @@
                 <tr>
                     <th><label class="control-label">收款方</label></th>
                     <td class="has-warning" colspan="3">
-                        <select type="select" class="form-control">
-                            <option>===请选择===</option>
-                        </select>
+                        <input  type="text" class="form-control" value="成都研成科技有限公司" readonly/>
                     </td>
                 </tr>
                 <tr>
                     <th><label class="control-label">银行名称</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" readonly id="BankName" />
+                        <input type="text" class="form-control" readonly  value="中国农业银行股份有限公司成都高新技术产业开发区支行" />
                     </td>
                     <th><label class="control-label">银行卡号</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" readonly id="BankCard" />
+                        <input type="text" class="form-control" readonly value="22808801040014164" />
                     </td>
                 </tr>
                 <tr>

@@ -46,6 +46,7 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 商家认证
         String EditMerchantIdent(RequestRepastIdent Param);
+        PagedResult<ResponseRepastIdent> GetIndentPage(PageParamList<RequestRepastIdent> pageParam);
         #endregion
         #region 权限角色
         String EditRoleAuthor(RequestRoleAuthorWeb Param);

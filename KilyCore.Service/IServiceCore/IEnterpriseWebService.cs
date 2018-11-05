@@ -59,6 +59,7 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 企业认证
         String EditEnterpriseIdent(RequestEnterpriseIdent param);
+        PagedResult<ResponseEnterpriseIdent> GetIndentPage(PageParamList<RequestEnterpriseIdent> pageParam);
         #endregion
         #region 企业字典
         PagedResult<ResponseEnterpriseDictionary> GetDicPage(PageParamList<RequestEnterpriseDictionary> pageParam);

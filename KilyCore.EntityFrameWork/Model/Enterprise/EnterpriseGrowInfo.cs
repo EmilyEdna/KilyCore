@@ -41,5 +41,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 证件
         /// </summary>
         public virtual string Paper { get; set; }
+        /// <summary>
+        /// 供应商
+        /// </summary>
+        public virtual string SupplierName { get; set; }
     }
 }

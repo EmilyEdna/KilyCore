@@ -132,5 +132,9 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        public IActionResult CompanyIdentEdit()
+        {
+            return View();
+        }
     }
 }

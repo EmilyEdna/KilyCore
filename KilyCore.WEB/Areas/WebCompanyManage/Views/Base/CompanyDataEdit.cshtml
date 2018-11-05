@@ -125,6 +125,7 @@
             <input type="hidden" name="TypePath" />
             <input type="hidden" name="CompanyAccount" />
             <input type="hidden" name="PassWord" />
+            <input  type="hidden" name="CompanyType"/>
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">企业性质</label></th>
@@ -146,13 +147,7 @@
                     </td>
                     <th><label class="control-label">企业类型</label></th>
                     <td class="has-warning">
-                        <select name="CompanyType" class="form-control" type="select">
-                            <option value="10">种植企业</option>
-                            <option value="20">养殖企业</option>
-                            <option value="30">生产企业</option>
-                            <option value="40">流通企业</option>
-                            <option value="50">其他企业</option>
-                        </select>
+                      <input  type="text" name="CompanyTypeName" class="form-control" readonly/>
                     </td>
                 </tr>
                 <tr>

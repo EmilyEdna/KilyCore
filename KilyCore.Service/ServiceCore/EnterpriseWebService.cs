@@ -106,7 +106,7 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseSeller> Seller = Kily.Set<EnterpriseSeller>().Where(t => t.IsDelete == false).Where(t => t.SellerType == SellerEnum.Sale);
             if (!string.IsNullOrEmpty(Param))
                 Seller = Seller.Where(t => t.SupplierName.Contains(Param));
-            var data = Seller.Select(t=> new ResponseEnterpriseSeller()
+            var data = Seller.Select(t => new ResponseEnterpriseSeller()
             {
                 Id = t.Id,
                 SupplierName = t.SupplierName,
@@ -398,11 +398,12 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public string EditCompanyAccount(RequestEnterprise Param) {
-            EnterpriseInfo info= Kily.Set<EnterpriseInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
+        public string EditCompanyAccount(RequestEnterprise Param)
+        {
+            EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
             info.PassWord = Param.PassWord;
             info.CompanyAccount = Param.CompanyAccount;
-            IList<String> Fields =new List<String>{ "CompanyAccount", "PassWord" };
+            IList<String> Fields = new List<String> { "CompanyAccount", "PassWord" };
             return UpdateField(info, null, Fields) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         /// <summary>
@@ -481,7 +482,7 @@ namespace KilyCore.Service.ServiceCore
                 contract.TryOut = "/";
                 contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(contract.ContractYear));
                 //银联
-                if (contract.PayType == PayEnum.Unionpay)
+                if (contract.PayType == PayEnum.Unionpay || contract.PayType == PayEnum.AgentPay)
                 {
                     return Insert<SystemStayContract>(contract) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
                 }
@@ -732,6 +733,29 @@ namespace KilyCore.Service.ServiceCore
         #endregion
 
         #region  企业认证
+        /// <summary>
+        /// 认证分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseIdent> GetIndentPage(PageParamList<RequestEnterpriseIdent> pageParam)
+        {
+            IQueryable<EnterpriseIdent> queryable = Kily.Set<EnterpriseIdent>().OrderByDescending(t => t.CreateTime);
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.Select(t => new ResponseEnterpriseIdent()
+            {
+                IdentNo = t.IdentNo,
+                IdentStarName = AttrExtension.GetSingleDescription<IdentEnum, DescriptionAttribute>(t.IdentStar),
+                AuditTypeName=AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
+                IdentYear=t.IdentYear,
+                Representative=t.Representative,
+                SendPerson=t.SendPerson
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
         /// <summary>
         /// 企业认证
         /// </summary>
@@ -1092,6 +1116,10 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.LvName.Contains(pageParam.QueryParam.LvName));
             if (!string.IsNullOrEmpty(pageParam.QueryParam.BatchNo))
                 queryable = queryable.Where(t => t.BatchNo.Contains(pageParam.QueryParam.BatchNo));
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseAgeUp()
             {
                 Id = t.Id,
@@ -1165,7 +1193,8 @@ namespace KilyCore.Service.ServiceCore
                 BuyNum = t.BuyNum,
                 PlantTime = t.PlantTime,
                 Unit = t.Unit,
-                Remark = t.Remark
+                Remark = t.Remark,
+                SupplierName = t.SupplierName
             }).AsNoTracking().FirstOrDefault();
             return data;
         }
@@ -1413,7 +1442,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseEnterpriseEnvironmentAttach> GetEnvAttachPage(PageParamList<RequestEnterpriseEnvironmentAttach> pageParam)
         {
-            IQueryable<EnterpriseEnvironmentAttach> queryable = Kily.Set<EnterpriseEnvironmentAttach>().Where(t => t.IsDelete == false).Where(t => t.EnvId == pageParam.QueryParam.EnvId).AsNoTracking();
+            IQueryable<EnterpriseEnvironmentAttach> queryable = Kily.Set<EnterpriseEnvironmentAttach>().Where(t => t.IsDelete == false).AsNoTracking();
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => t.CreateUser == CompanyInfo().Id.ToString() || GetChildIdList(CompanyInfo().Id).Contains(Guid.Parse(t.CreateUser)));
             else
@@ -1867,7 +1896,7 @@ namespace KilyCore.Service.ServiceCore
                       StarSerialNo = t.q.z.StarSerialNo,
                       EndSerialNo = t.q.z.EndSerialNo,
                       ProductType = t.q.y.t.ProductType,
-                      BatchNo =t.p.GoodsBatchNo
+                      BatchNo = t.p.GoodsBatchNo
                   })
                   .ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -1920,10 +1949,10 @@ namespace KilyCore.Service.ServiceCore
             }).AsNoTracking().ToList();
             var Batchs = stocks.Join(batches, t => t.BatchId, x => x.Id, (t, x) => new EnterpriseProductionBatch()
             {
-                Id=t.Id,
-                BatchNo=x.BatchNo,
-                DeviceName=x.DeviceName,
-                MaterialId=x.MaterialId
+                Id = t.Id,
+                BatchNo = x.BatchNo,
+                DeviceName = x.DeviceName,
+                MaterialId = x.MaterialId
             }).AsNoTracking().ToList();
             ResponseEnterpriseScanCode queryable = goods.Join(stocks, t => t.Id, x => x.GoodsId, (t, x) => new { t, x })
                 .Join(checkGoods, y => y.x.CheckGoodsId, z => z.Id, (y, z) => new { y, z })
@@ -1934,8 +1963,8 @@ namespace KilyCore.Service.ServiceCore
                  .Select(t => new ResponseEnterpriseScanCode()
                  {
                      Id = t.i.p.f.y.x.Id,
-                     CompanyType=AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.i.p.k.CompanyType),
-                     TypePath= t.i.p.k.TypePath,
+                     CompanyType = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.i.p.k.CompanyType),
+                     TypePath = t.i.p.k.TypePath,
                      CompanyId = t.i.p.f.y.t.CompanyId,
                      OutStockBatchNo = t.u.GoodsBatchNo,
                      ProductName = t.i.p.f.y.t.ProductName,
@@ -1985,7 +2014,8 @@ namespace KilyCore.Service.ServiceCore
             }
             if (Logistics.Count != 0)
             {
-                ResponseEnterpriseLogistics data= Logistics.Where(t => t.SendGoodsNum.Equals(queryable.OutStockBatchNo)).Select(t => new ResponseEnterpriseLogistics() {
+                ResponseEnterpriseLogistics data = Logistics.Where(t => t.SendGoodsNum.Equals(queryable.OutStockBatchNo)).Select(t => new ResponseEnterpriseLogistics()
+                {
                     WayBill = t.WayBill,
                     PackageNo = t.PackageNo,
                     TransportWay = t.TransportWay,
@@ -2832,12 +2862,12 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.ProductName))
                 queryable = queryable.Where(t => t.ProductName.Contains(pageParam.QueryParam.ProductName));
-            var data = queryable.OrderByDescending(t => t.CreateTime).Join(queryables, t => t.ProductSeriesId, x => x.Id, (t, x) => new ResponseEnterpriseGoods()
+            var data = queryable.OrderByDescending(t => t.CreateTime).GroupJoin(queryables, t => t.ProductSeriesId, x => x.Id, (t, x) => new ResponseEnterpriseGoods()
             {
                 Id = t.Id,
                 CompanyId = t.CompanyId,
                 Spec = t.Spec,
-                ProductSeriesName = x.SeriesName,
+                ProductSeriesName = x.FirstOrDefault().SeriesName,
                 ExpiredDate = t.ExpiredDate,
                 ProductName = t.ProductName,
                 ProductType = t.ProductType,

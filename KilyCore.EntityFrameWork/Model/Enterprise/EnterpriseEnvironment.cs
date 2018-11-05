@@ -48,9 +48,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
     public class EnterpriseEnvironmentAttach : BaseEntity
     {
         /// <summary>
-        /// 环境主表Id
+        /// 批次号段
         /// </summary>
-        public virtual Guid EnvId { get; set; }
+        public virtual string BatchNo { get; set; }
         /// <summary>
         /// 记录时间
         /// </summary>

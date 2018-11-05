@@ -42,7 +42,10 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
     }
     public class RequestEnterpriseEnvironmentAttach
     {
-        public Guid EnvId { get; set; }
+        /// <summary>
+        /// 批次号段
+        /// </summary>
+        public string BatchNo { get; set; }
         /// <summary>
         /// 记录时间
         /// </summary>

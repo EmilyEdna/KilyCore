@@ -54,6 +54,7 @@
                             controller.SetHref("Home");
                         }
                         else {
+                            controller.Msg(result.msg + ":请检查账户信息是否正确!");
                             $('.btn-info').click();
                         }
                     }

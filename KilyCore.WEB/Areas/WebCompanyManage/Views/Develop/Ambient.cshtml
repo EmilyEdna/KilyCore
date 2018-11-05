@@ -43,7 +43,6 @@
             action: {
                 TableFormatter: function (val, row, index) {
                     var action = [];
-                    action.push('<button class="btn btn-sm btn-primary watch"><i class="fa fa-eye"></i>环境报告</button>')
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
                     return action.join("&nbsp;")
                 },
@@ -61,19 +60,7 @@
                                 });
                             }
                         });
-                    },
-                    "click .watch": function (event, val, row, index) {
-                        controller.OpenWindow({
-                            title: "环境报告",
-                            type: 2,
-                            height: "650px",
-                            width: "1000px",
-                            url: "WebCompanyManage/Develop/AmbientAttach?Id=" + row.Id,
-                            callBack: function (result) {
-                                result.popClose();
-                            }
-                        });
-                    },
+                    }
                 }//表单事件结束
             }//行为结束
         };
@@ -91,7 +78,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>环境检测</h5>
+                <h5>环境监测</h5>
             </div>
             <div class="ibox-content">
                 <div class="row">

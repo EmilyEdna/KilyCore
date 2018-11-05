@@ -19,6 +19,20 @@
                 $("#CompanyId").val(CompanyInfo.Id);
                 $("#BatchNo").val("N" + controller.FormatDate("YYYYMMDDHHmmss"));
                 controller.LayDate({ elem: "#PlantTime", value: controller.FormatDate("YYYY-MM-DD HH:mm:ss") });
+                //厂商
+                controller.ajax({
+                    url: "EnterpriseWeb/GetSellerList",
+                    data: { Parameter: 10 },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>'
+                        $.each(result.data, function (i, obj) {
+                            html += '<option>' + obj.SupplierName + '</option>';
+                        });
+                        $("#Supplier").html(html);
+                    }
+                });
                 options.GetDetail(Guid);
             },
             //设置文件值
@@ -97,12 +111,16 @@
                 </tr>
                 <tr>
                     <th><label class="control-label">播种时间</label></th>
-                    <td class="has-warning" colspan="3">
+                    <td class="has-warning">
                         <input type="text" class="form-control" name="PlantTime" id="PlantTime" />
+                    </td>
+                    <th><label class="control-label">供应商</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="Supplier" id="Supplier"></select>
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">证件</label></th>
+                    <th><label class="control-label">合格证</label></th>
                     <td class="has-warning" colspan="3">
                         <div class="image-box clear">
                             <section class="upload-section">
@@ -115,7 +133,7 @@
                 <tr>
                     <th><label class="control-label">备注</label></th>
                     <td class="has-warning" colspan="3">
-                        <textarea class="form-control" rows="5" maxlength="200"></textarea>
+                        <textarea class="form-control" rows="5" maxlength="200" name="Remark"></textarea>
                     </td>
                 </tr>
             </table>

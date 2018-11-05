@@ -26,7 +26,8 @@
                     success: function (result) {
                         var html = '<option>===请选择===</option>'
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.DicValue + '" data-value="' + obj.DicDescript + '" data-attach="' + obj.AttachInfo + '">' + obj.DicName + '</option>';
+                            if (Number(obj.DicValue) > RepastUser.Version)
+                                html += '<option value="' + obj.DicValue + '" data-value="' + obj.DicDescript + '" data-attach="' + obj.AttachInfo + '">' + obj.DicName + '</option>';
                         });
                         $("#VersionType").html(html);
                     }

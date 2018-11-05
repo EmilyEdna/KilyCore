@@ -418,7 +418,7 @@ namespace KilyCore.Service.ServiceCore
                 contract.TryOut = "/";
                 contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(contract.ContractYear));
                 //银联
-                if (contract.PayType == PayEnum.Unionpay)
+                if (contract.PayType == PayEnum.Unionpay || contract.PayType == PayEnum.AgentPay)
                 {
                     return Insert<SystemStayContract>(contract) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
                 }
@@ -479,6 +479,29 @@ namespace KilyCore.Service.ServiceCore
         }
         #endregion
         #region 商家认证
+        /// <summary>
+        /// 商家认证分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRepastIdent> GetIndentPage(PageParamList<RequestRepastIdent> pageParam)
+        {
+            IQueryable<RepastIdent> queryable = Kily.Set<RepastIdent>().OrderByDescending(t => t.CreateTime);
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data = queryable.Select(t => new ResponseRepastIdent()
+            {
+                IdentNo = t.IdentNo,
+                IdentStarName = AttrExtension.GetSingleDescription<IdentEnum, DescriptionAttribute>(t.IdentStar),
+                AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
+                IdentYear = t.IdentYear,
+                Representative = t.Representative,
+                SendPerson = t.SendPerson
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
         /// <summary>
         /// 商家认证
         /// </summary>
@@ -2502,7 +2525,7 @@ namespace KilyCore.Service.ServiceCore
                 Phone = t.Phone,
                 DiningTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType)
             }).FirstOrDefault();
-            var Dish = Kily.Set<RepastDish>().Where(t => scanInfo.DishIds.Contains(t.Id.ToString())).Select(t => new 
+            var Dish = Kily.Set<RepastDish>().Where(t => scanInfo.DishIds.Contains(t.Id.ToString())).Select(t => new
             {
                 DishName = t.DishName,
                 Batching = t.Batching,
@@ -2510,7 +2533,7 @@ namespace KilyCore.Service.ServiceCore
                 DishType = t.DishType,
                 MainBatch = t.MainBatch
             }).ToList();
-            var Stuff = Kily.Set<RepastStuff>().Where(t => scanInfo.StuffIds.Contains(t.Id.ToString())).Select(t => new 
+            var Stuff = Kily.Set<RepastStuff>().Where(t => scanInfo.StuffIds.Contains(t.Id.ToString())).Select(t => new
             {
                 MaterialName = t.MaterialName,
                 Supplier = t.Supplier,
@@ -2518,7 +2541,7 @@ namespace KilyCore.Service.ServiceCore
                 ExpiredDay = t.ExpiredDay,
                 QualityReport = t.QualityReport
             }).ToList();
-            var Video = Kily.Set<RepastVideo>().Where(t => scanInfo.VideoIds.Contains(t.Id.ToString())).Select(t => new 
+            var Video = Kily.Set<RepastVideo>().Where(t => scanInfo.VideoIds.Contains(t.Id.ToString())).Select(t => new
             {
                 VideoAddress = t.VideoAddress
             }).ToList();
@@ -2534,21 +2557,21 @@ namespace KilyCore.Service.ServiceCore
                 t.HandleUser,
                 DuckPhone = t.Phone
             }).ToList();
-            var Draw = Kily.Set<RepastDraw>().Where(t => scanInfo.DrawIds.Contains(t.Id.ToString())).Select(t => new 
+            var Draw = Kily.Set<RepastDraw>().Where(t => scanInfo.DrawIds.Contains(t.Id.ToString())).Select(t => new
             {
                 DrawUnit = t.DrawUnit,
                 DrawUser = t.DrawUser,
                 DrawTime = t.DrawTime,
                 DrawPhone = t.Phone
             }).ToList();
-            var Sample = Kily.Set<RepastSample>().Where(t => scanInfo.SampleIds.Contains(t.Id.ToString())).Select(t => new 
+            var Sample = Kily.Set<RepastSample>().Where(t => scanInfo.SampleIds.Contains(t.Id.ToString())).Select(t => new
             {
                 DishName = t.DishName,
                 SampleTime = t.SampleTime,
                 OperatUser = t.OperatUser,
                 SamplePhone = t.Phone
             }).ToList();
-            var Disinfect = Kily.Set<RepastDisinfect>().Where(t => scanInfo.DisinfectIds.Contains(t.Id.ToString())).Select(t => new 
+            var Disinfect = Kily.Set<RepastDisinfect>().Where(t => scanInfo.DisinfectIds.Contains(t.Id.ToString())).Select(t => new
             {
                 DisinfectName = t.DisinfectName,
                 Metering = t.Metering,

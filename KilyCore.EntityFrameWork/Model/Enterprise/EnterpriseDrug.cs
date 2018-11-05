@@ -41,5 +41,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 1农药管理2疫苗疫情
         /// </summary>
         public virtual int IsType { get; set; }
+        /// <summary>
+        /// 供应商
+        /// </summary>
+        public virtual string SupplierName { get; set; }
     }
 }

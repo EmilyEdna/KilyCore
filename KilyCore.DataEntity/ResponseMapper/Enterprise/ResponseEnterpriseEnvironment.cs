@@ -44,7 +44,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
     public class ResponseEnterpriseEnvironmentAttach
     {
         public Guid Id { get; set; }
-        public Guid EnvId { get; set; }
+        /// <summary>
+        /// 批次号段
+        /// </summary>
+        public string BatchNo { get; set; }
         /// <summary>
         /// 记录时间
         /// </summary>

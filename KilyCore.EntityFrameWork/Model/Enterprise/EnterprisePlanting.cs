@@ -41,5 +41,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         ///  1表示水肥管理2表示喂养管理
         /// </summary>
         public virtual int IsType { get; set; }
+        /// <summary>
+        /// 供应商
+        /// </summary>
+        public virtual string SupplierName { get; set; }
     }
 }

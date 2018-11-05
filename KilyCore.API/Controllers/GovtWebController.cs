@@ -51,9 +51,9 @@ namespace KilyCore.API.Controllers
                 else
                     return ObjectResultEx.Instance(null, -1, "登录失败或账户冻结", HttpCode.NoAuth);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                return ObjectResultEx.Instance(null, -1, "请输入验证码", HttpCode.FAIL);
             }
         }
         /// <summary>

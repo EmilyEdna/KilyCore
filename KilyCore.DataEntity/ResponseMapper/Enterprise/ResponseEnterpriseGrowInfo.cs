@@ -19,5 +19,9 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string Unit { get; set; }
         public string Remark { get; set; }
         public string Paper { get; set; }
+        /// <summary>
+        /// 供应商
+        /// </summary>
+        public string SupplierName { get; set; }
     }
 }

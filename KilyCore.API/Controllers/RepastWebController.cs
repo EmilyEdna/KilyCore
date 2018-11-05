@@ -129,6 +129,16 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastWebService.EditMerchantIdent(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 企业认证分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetIndentPage")]
+        public ObjectResultEx GetIndentPage(PageParamList<RequestRepastIdent> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetIndentPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 权限角色
         /// <summary>

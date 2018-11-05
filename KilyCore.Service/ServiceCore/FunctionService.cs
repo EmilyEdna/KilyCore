@@ -281,7 +281,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string RecordTag(RequestVeinTag Param)
         {
-            Param.TotalNo = (int)(Param.EndSerialNo - Param.StarSerialNo);
+            Param.TotalNo = (int)(Param.EndSerialNo - Param.StarSerialNo)+1;
             FunctionVeinTag VeinTag = Param.MapToEntity<FunctionVeinTag>();
             return Insert<FunctionVeinTag>(VeinTag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
@@ -293,7 +293,7 @@ namespace KilyCore.Service.ServiceCore
         public string AllotTag(RequestVeinTag Param)
         {
             //计算个数
-            Param.TotalNo = (int)(Param.EndSerialNo - Param.StarSerialNo);
+            Param.TotalNo = (int)(Param.EndSerialNo - Param.StarSerialNo)+1;
             EnterpriseVeinTag Tag = Param.MapToEntity<EnterpriseVeinTag>();
             Tag.CompanyId = Guid.Parse(Param.AcceptUser);
             FunctionVeinTagAttach Attach = Param.MapToEntity<FunctionVeinTagAttach>();
@@ -317,9 +317,13 @@ namespace KilyCore.Service.ServiceCore
             if (UserInfo().AccountType <= AccountEnum.Country)
             {
                 Master.AllotNum += Param.TotalNo;
+                Master.AllotType = Param.AllotType;
+                Master.AcceptUser = Param.AcceptUser;
+                Master.AcceptUserName = Param.AcceptUserName;
                 if (Master.AllotNum > Master.TotalNo)
                     return $"当前纹理二维码配额已用完";
-                UpdateField<FunctionVeinTag>(Master, "AllotNum");
+                IList<String> Fields = new List<String> { "AllotNum", "AcceptUser", "AcceptUserName", "AllotType" };
+                UpdateField<FunctionVeinTag>(Master,null, Fields);
                 if (Param.AllotType == 1)
                     return Insert<EnterpriseVeinTag>(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
                 else
@@ -328,9 +332,14 @@ namespace KilyCore.Service.ServiceCore
             else
             {
                 Customer.AllotNum += Param.TotalNo;
+                Customer.AllotNum += Param.TotalNo;
+                Customer.AllotType = Param.AllotType;
+                Customer.AcceptUser = Param.AcceptUser;
+                Customer.AcceptUserName = Param.AcceptUserName;
                 if (Customer.AllotNum > Customer.TotalNo)
                     return $"当前纹理二维码配额已用完";
-                UpdateField<FunctionVeinTagAttach>(Customer, "AllotNum");
+                IList<String> Fields = new List<String> { "AllotNum", "AcceptUser", "AcceptUserName", "AllotType" };
+                UpdateField<FunctionVeinTagAttach>(Customer, null, Fields);
                 if (Param.AllotType == 1)
                     return Insert<EnterpriseVeinTag>(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
                 else

@@ -16,6 +16,20 @@
             //元素
             InitDom: function () {
                 controller.LayDate({ elem: "#PlantTime" });
+                //厂商
+                controller.ajax({
+                    url: "EnterpriseWeb/GetSellerList",
+                    data: { Parameter: 10 },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>'
+                        $.each(result.data, function (i, obj) {
+                            html += '<option>' + obj.SupplierName + '</option>';
+                        });
+                        $("#Supplier").html(html);
+                    }
+                });
                 options.BindBatch();
             },
             //绑定批次
@@ -98,9 +112,13 @@
                 </tr>
                 <tr>
                     <th><label class="control-label">育苗批次</label></th>
-                    <td class="has-warning" colspan="3">
+                    <td class="has-warning">
                         <input type="text" class="form-control" name="BatchNo" list="BatchNo" />
                         <datalist id="BatchNo"></datalist>
+                    </td>
+                    <th><label class="control-label">供应商</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="Supplier" id="Supplier"></select>
                     </td>
                 </tr>
                 <tr>

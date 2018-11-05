@@ -32,6 +32,10 @@ namespace KilyCore.WEB.Areas.WebMerchantManage.Controllers
         {
             return View();
         }
+        public IActionResult MerchantIdentEdit()
+        {
+            return View();
+        }
         #endregion
         #region 权限角色
         public IActionResult MerchantRole()
