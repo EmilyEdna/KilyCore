@@ -808,6 +808,16 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetScanCodeDetail(SimpleParam<Guid> Key, SimpleParam<Int64> Param) {
             return ObjectResultEx.Instance(EnterpriseWebService.GetScanCodeDetail(Key.Id,Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 查看二维码绑定信息
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetTagAttachPage")]
+        public ObjectResultEx GetTagAttachPage(PageParamList<RequestEnterpriseTagAttach> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetTagAttachPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 厂商管理
         /// <summary>

@@ -42,6 +42,7 @@
             action: {
                 TableFormatter: function (val, row, index) {
                     var action = [];
+                    action.push('<button class="btn btn-sm btn-primary watch"><i class="fa fa-eye"></i>查看绑定信息</button>');
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
                     return action.join("&nbsp;")
                 },
@@ -60,6 +61,18 @@
                             }
                         });
                     },
+                    "click .watch": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "绑定信息",
+                            type: 2,
+                            height: "500px",
+                            width: "800px",
+                            url: "WebCompanyManage/ThingCode/WatchCodeUse?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.popClose();
+                            }
+                        })
+                    }
                 }//表单事件结束
             }//行为结束
         };
@@ -105,7 +118,7 @@
                                 <th data-field="BatchNo" data-halign="center" data-align="center" data-valign="middle">批次编号</th>
                                 <th data-field="StarSerialNo" data-halign="center" data-align="center" data-valign="middle">开始号段</th>
                                 <th data-field="EndSerialNo" data-halign="center" data-align="center" data-valign="middle">结束号段</th>
-                                <th data-field="TotalNo" data-halign="center" data-align="center" data-valign="middle">区间总数</th>
+                                <th data-field="TotalNo" data-halign="center" data-align="center" data-valign="middle">剩余数量</th>
                                 <th data-field="TagTypeName" data-halign="center" data-align="center" data-valign="middle">所属类型</th>
                                 <th data-field="UseNum" data-halign="center" data-align="center" data-valign="middle">绑定数量</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>

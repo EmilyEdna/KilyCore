@@ -307,7 +307,7 @@ controller.OpenWindow = function (option) {
         width: "100px",
         height: "100px",
         url: "",
-        type: 2,
+        type: undefined,
         shade: 0.5,
         data: null,
         skin: 'layui-layer-molv',
@@ -317,10 +317,11 @@ controller.OpenWindow = function (option) {
         scrollbar: false,
         fixed: true,
         resize: true,
+        content: undefined
     }, option || {});
     var options = {
         id: defaultOptions.id,
-        type: 2,
+        type: defaultOptions.type,
         shade: defaultOptions.shade,
         title: defaultOptions.title,
         fixed: defaultOptions.fixed,
@@ -331,28 +332,36 @@ controller.OpenWindow = function (option) {
         scrollbar: defaultOptions.scrollbar,
         maxmin: defaultOptions.maxmin,
         area: [defaultOptions.width, defaultOptions.height],
-        content: WebUrl + defaultOptions.url,
+        content: (defaultOptions.content != undefined ? defaultOptions.content:WebUrl + defaultOptions.url),
         success: function (layero, index) {
-            var iframeWin = top.window[layero.find('iframe')[0]['name']];
-            iframeWin.popup = {
-                source: window,
-                close: function () {
-                    top.layer.close(index);
-                },
-                data: defaultOptions.data
-            };
-            if (iframeWin.start)
-                iframeWin.start();
+            try {
+                var iframeWin = top.window[layero.find('iframe')[0]['name']];
+                iframeWin.popup = {
+                    source: window,
+                    close: function () {
+                        top.layer.close(index);
+                    },
+                    data: defaultOptions.data
+                };
+                if (iframeWin.start)
+                    iframeWin.start();
+            } catch (e) {
+
+            }
         },
         btn: defaultOptions.btn,
         yes: function (index, layero) {
             if (defaultOptions.callBack) {
-                var iframeWin = top.window[layero.find("iframe")[0]['name']];
-                iframeWin.source = window;
-                iframeWin.popClose = function () {
-                    top.layer.close(index);
-                };
-                defaultOptions.callBack(iframeWin);
+                try {
+                    var iframeWin = top.window[layero.find("iframe")[0]['name']];
+                    iframeWin.source = window;
+                    iframeWin.popClose = function () {
+                        top.layer.close(index);
+                    };
+                    defaultOptions.callBack(iframeWin);
+                } catch (e) {
+                    controller.Close();
+                }
             }
         }
     };

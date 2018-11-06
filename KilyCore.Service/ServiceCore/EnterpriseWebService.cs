@@ -749,10 +749,10 @@ namespace KilyCore.Service.ServiceCore
             {
                 IdentNo = t.IdentNo,
                 IdentStarName = AttrExtension.GetSingleDescription<IdentEnum, DescriptionAttribute>(t.IdentStar),
-                AuditTypeName=AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
-                IdentYear=t.IdentYear,
-                Representative=t.Representative,
-                SendPerson=t.SendPerson
+                AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
+                IdentYear = t.IdentYear,
+                Representative = t.Representative,
+                SendPerson = t.SendPerson
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -1450,7 +1450,7 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.Select(t => new ResponseEnterpriseEnvironmentAttach()
             {
                 Id = t.Id,
-                BatchNo=t.BatchNo,
+                BatchNo = t.BatchNo,
                 AirReport = t.AirReport,
                 MetalReport = t.MetalReport,
                 RecordTime = t.RecordTime,
@@ -1645,9 +1645,12 @@ namespace KilyCore.Service.ServiceCore
                 Param.StarSerialNo = TagList.FirstOrDefault().EndSerialNo + 1;
             Param.EndSerialNo = Param.StarSerialNo + Param.TotalNo;
             EnterpriseTag Tag = Param.MapToEntity<EnterpriseTag>();
+            Tag.TotalNo = Tag.TotalNo + 1;
             //生成企业码更新企业信息表的二维码数量
             if (Tag.TagType == TagEnum.OneEnterprise)
             {
+                Tag.TotalNo = 1;
+                Tag.EndSerialNo = Tag.StarSerialNo;
                 var data = queryables.Where(t => t.TagType == TagEnum.OneEnterprise).ToList().Count >= 1 ?
                      "企业只能拥有一个企业二维码!" :
                      (Tag.TotalNo > 1 ? "一个企业只能创建一个企业二维码!" :
@@ -1658,7 +1661,7 @@ namespace KilyCore.Service.ServiceCore
             }
             else
             {
-                info.TagCodeNum -= Param.TotalNo;
+                info.TagCodeNum -= Tag.TotalNo;
                 if (info.TagCodeNum < 0)
                     return $"当前剩余标签数量:{info.TagCodeNum},请升级版本或申请购买数量!";
                 else
@@ -1673,7 +1676,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string RemoveTag(Guid Id)
         {
-            if (Delete<EnterpriseTag>(t => t.Id == Id))
+            if (Remove<EnterpriseTag>(t => t.Id == Id))
                 return ServiceMessage.REMOVESUCCESS;
             else
                 return ServiceMessage.REMOVEFAIL;
@@ -2030,6 +2033,25 @@ namespace KilyCore.Service.ServiceCore
                 queryable.Address = data.Address;
             }
             return queryable;
+        }
+        /// <summary>
+        /// 查看绑定信息
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseTagAttach> GetTagAttachPage(PageParamList<RequestEnterpriseTagAttach> pageParam)
+        {
+            var data = Kily.Set<EnterpriseTagAttach>().Where(t => t.TagId == pageParam.QueryParam.Id)
+                .OrderByDescending(t => t.CreateTime)
+                .Select(t => new ResponseEnterpriseTagAttach()
+                {
+                    StarSerialNo=t.StarSerialNo,
+                    EndSerialNo=t.EndSerialNo,
+                    StockNo=t.StockNo,
+                    UseNum=t.UseNum
+                })
+                .ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
         }
         #endregion
 
@@ -3120,7 +3142,7 @@ namespace KilyCore.Service.ServiceCore
         public string BindTarget(RequestEnterpriseTagAttach Param)
         {
             EnterpriseTagAttach TagAttach = Param.MapToEntity<EnterpriseTagAttach>();
-            int Count = (int)(Param.EndSerialNo - Param.StarSerialNo);
+            int Count = (int)(Param.EndSerialNo - Param.StarSerialNo) + 1;
             TagAttach.UseNum = Count;
             if (string.IsNullOrEmpty(Param.TagBatchNo))
                 return "请选择正确批次";

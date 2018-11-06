@@ -88,5 +88,13 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        public IActionResult WatchCodeUse()
+        {
+            return View();
+        }
+        public IActionResult ScanCodeAttach()
+        {
+            return View();
+        }
     }
 }

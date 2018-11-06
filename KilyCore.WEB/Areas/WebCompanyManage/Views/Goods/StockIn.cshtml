@@ -139,7 +139,7 @@
                                 var num = $("input[name='InStockNum']").val();
                                 if (num != "" && num != null) {
                                     if (result.$("#TagType").val() != 3) {
-                                        var total = Number(result.$("#End").val()) - Number(result.$("#Star").val())
+                                        var total = (Number(result.$("#End").val()) - Number(result.$("#Star").val()))+1;
                                         num > total ? controller.Msg("入库数量大于绑定二维码数量") : result.$("#Edit").submit();
                                     } else
                                         result.$("#Edit").submit();

@@ -40,6 +40,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Areas\FunManage\Views\System\AcceptTagAttachs.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Areas\GovtManage\Views\Govt\GovtRoler.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

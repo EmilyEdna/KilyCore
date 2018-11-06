@@ -43,6 +43,7 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
+                    action.push('<button class="btn btn-sm btn-primary create"><i class="fa fa-pencil-square-o"></i>生成二维码</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
@@ -59,6 +60,23 @@
                                 });
                             }
                         });
+                    },
+                    "click .create": function (event, val, row, index) {
+                        var host = "http://localhost:50070/StaticHtml/ScanDetail.html?Id=" + row.CompanyId;
+                        $("#QRcode").html();
+                        controller.QRCode('#QRcode', { render: "table", text: host });
+                        $("#QRcode").html();
+                        controller.OpenWindow({
+                            title: "企业二维码",
+                            type: 1,
+                            height: "365px",
+                            width: "265px",
+                            content: $("#QRcode").html(),
+                            callBack: function (result) {
+                                result.popClose();
+                            }
+                        })
+                       
                     },
                 }//表单事件结束
             }//行为结束
@@ -104,9 +122,8 @@
                             <tr>
                                 <th data-field="BatchNo" data-halign="center" data-align="center" data-valign="middle">批次编号</th>
                                 <th data-field="EndSerialNo" data-halign="center" data-align="center" data-valign="middle">企业号段</th>
-                                <th data-field="TotalNo" data-halign="center" data-align="center" data-valign="middle">区间总数</th>
+                                <th data-field="TotalNo" data-halign="center" data-align="center" data-valign="middle">数量</th>
                                 <th data-field="TagTypeName" data-halign="center" data-align="center" data-valign="middle">所属类型</th>
-                                <th data-field="UseNum" data-halign="center" data-align="center" data-valign="middle">绑定数量</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>
@@ -116,3 +133,4 @@
         </div>
     </div>
 </div>
+<div style="display:none" id='QRcode'></div>

@@ -80,6 +80,26 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(FunctionService.GetTagPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
+        /// 查看分配企业标签
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetTagToCompanyPage")]
+        public ObjectResultEx GetTagToCompanyPage(PageParamList<RequestVeinTag> pageParam)
+        {
+            return ObjectResultEx.Instance(FunctionService.GetTagToCompanyPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 查看分配营运中心标签
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetTagToAdminPage")]
+        public ObjectResultEx GetTagToAdminPage(PageParamList<RequestVeinTag> pageParam)
+        {
+            return ObjectResultEx.Instance(FunctionService.GetTagToAdminPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 录入标签
         /// </summary>
         /// <param name="Param"></param>

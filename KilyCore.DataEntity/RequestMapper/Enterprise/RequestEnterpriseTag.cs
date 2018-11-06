@@ -12,13 +12,9 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
     {
         public Guid CompanyId { get; set; }
         public string BatchNo { get; set; }
-
         public Int64 StarSerialNo { get; set; }
-
         public Int64 EndSerialNo { get; set; }
-
         public int TotalNo { get; set; }
-
         public TagEnum TagType { get; set; }
     }
     public class RequestEnterpriseTagAttach

@@ -135,6 +135,7 @@ namespace KilyCore.Service.IServiceCore
         Object GetTagList(int type);
         PagedResult<ResponseEnterpriseScanCode> GetScanCodePage(PageParamList<RequestEnterpriseGoods> pageParam);
         ResponseEnterpriseScanCode GetScanCodeDetail(Guid Id, Int64 Code);
+        PagedResult<ResponseEnterpriseTagAttach> GetTagAttachPage(PageParamList<RequestEnterpriseTagAttach> pageParam);
         #endregion
         #region 厂商管理
         PagedResult<ResponseEnterpriseSeller> GetSellerPage(PageParamList<RequestEnterpriseSeller> pageParam);

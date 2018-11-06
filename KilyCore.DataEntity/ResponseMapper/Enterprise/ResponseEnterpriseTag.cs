@@ -20,4 +20,17 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string TagTypeName { get; set; }
         public virtual int? UseNum { get; set; }
     }
+    public class ResponseEnterpriseTagAttach
+    {
+        public Guid Id { get; set; }
+        public Guid CompanyId { get; set; }
+        public string TagType { get; set; }
+        public Guid TagId { get; set; }
+        public Guid GoodsId { get; set; }
+        public string TagBatchNo { get; set; }
+        public Int64 StarSerialNo { get; set; }
+        public Int64 EndSerialNo { get; set; }
+        public int UseNum { get; set; }
+        public string StockNo { get; set; }
+    }
 }

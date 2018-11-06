@@ -250,10 +250,7 @@ namespace KilyCore.Service.ServiceCore
                     StarSerialNo = t.StarSerialNo,
                     EndSerialNo = t.EndSerialNo,
                     TotalNo = t.TotalNo,
-                    AcceptUserName = t.AcceptUserName,
-                    AllotType = t.AllotType,
-                    AllotNum = t.AllotNum,
-                    IsAcceptName = t.IsAccept ? "已签收" : "未签收"
+                    AcceptUser=t.AcceptUser,
                 }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
                 return data;
             }
@@ -266,13 +263,51 @@ namespace KilyCore.Service.ServiceCore
                     StarSerialNo = t.StarSerialNo,
                     EndSerialNo = t.EndSerialNo,
                     TotalNo = t.TotalNo,
-                    AcceptUserName = t.AcceptUserName,
-                    AllotType = t.AllotType,
-                    AllotNum = t.AllotNum,
-                    IsAcceptName = t.IsAccept ? "已签收" : "未签收"
+                    AcceptUser = t.AcceptUser,
                 }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
                 return data;
             }
+        }
+        /// <summary>
+        /// 查看分配企业标签
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseVeinTag> GetTagToCompanyPage(PageParamList<RequestVeinTag> pageParam)
+        {
+            var data = Kily.Set<EnterpriseVeinTag>()
+               .Where(t => t.CompanyId == pageParam.QueryParam.Id)
+               .OrderByDescending(t => t.CreateTime).Select(t => new ResponseVeinTag
+               {
+                   AcceptUserName = t.AcceptUserName,
+                   StarSerialNo = t.StarSerialNo,
+                   EndSerialNo = t.EndSerialNo,
+                   TotalNo = t.TotalNo,
+                   AllotType = t.AllotType,
+                   IsAcceptName = t.IsAccept ? "已签收" : "未签收"
+               })
+               .ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 查看分配营运中心标签
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseVeinTag> GetTagToAdminPage(PageParamList<RequestVeinTag> pageParam)
+        {
+            var data = Kily.Set<FunctionVeinTagAttach>()
+                .Where(t => t.AcceptUser == pageParam.QueryParam.Id.ToString())
+                .OrderByDescending(t => t.CreateTime).Select(t => new ResponseVeinTag()
+                {
+                    AcceptUserName = t.AcceptUserName,
+                    StarSerialNo = t.StarSerialNo,
+                    EndSerialNo = t.EndSerialNo,
+                    TotalNo = t.TotalNo,
+                    AllotType = t.AllotType,
+                    IsAcceptName = t.IsAccept ? "已签收" : "未签收"
+                }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
         }
         /// <summary>
         /// 录入标签
@@ -281,7 +316,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string RecordTag(RequestVeinTag Param)
         {
-            Param.TotalNo = (int)(Param.EndSerialNo - Param.StarSerialNo)+1;
+            Param.TotalNo = (int)(Param.EndSerialNo - Param.StarSerialNo) + 1;
             FunctionVeinTag VeinTag = Param.MapToEntity<FunctionVeinTag>();
             return Insert<FunctionVeinTag>(VeinTag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
@@ -293,7 +328,7 @@ namespace KilyCore.Service.ServiceCore
         public string AllotTag(RequestVeinTag Param)
         {
             //计算个数
-            Param.TotalNo = (int)(Param.EndSerialNo - Param.StarSerialNo)+1;
+            Param.TotalNo = (int)(Param.EndSerialNo - Param.StarSerialNo) + 1;
             EnterpriseVeinTag Tag = Param.MapToEntity<EnterpriseVeinTag>();
             Tag.CompanyId = Guid.Parse(Param.AcceptUser);
             FunctionVeinTagAttach Attach = Param.MapToEntity<FunctionVeinTagAttach>();
@@ -323,7 +358,7 @@ namespace KilyCore.Service.ServiceCore
                 if (Master.AllotNum > Master.TotalNo)
                     return $"当前纹理二维码配额已用完";
                 IList<String> Fields = new List<String> { "AllotNum", "AcceptUser", "AcceptUserName", "AllotType" };
-                UpdateField<FunctionVeinTag>(Master,null, Fields);
+                UpdateField<FunctionVeinTag>(Master, null, Fields);
                 if (Param.AllotType == 1)
                     return Insert<EnterpriseVeinTag>(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
                 else

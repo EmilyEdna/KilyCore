@@ -57,6 +57,8 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
+                    action.push('<button class="btn btn-sm btn-primary com"><i class="fa fa-pencil-square-o"></i>公司签收信息</button>');
+                    action.push('<button class="btn btn-sm btn-primary amd"><i class="fa fa-pencil-square-o"></i>营运中心签收信息</button>');
                     if (SysUserInfo.AccountType > 20)
                         action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>签收</button>');
                     return action.join("&nbsp;")
@@ -75,6 +77,30 @@
                                 });
                             }
                         });
+                    },
+                    "click .com": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "分配公司信息",
+                            type: 2,
+                            height: "600px",
+                            width: "900px",
+                            url: "FunManage/System/AcceptTagAttach?Id=" + row.AcceptUser,
+                            callBack: function (result) {
+                                result.popClose();
+                            }
+                        })
+                    },
+                    "click .amd": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "分配营运中心信息",
+                            type: 2,
+                            height: "600px",
+                            width: "900px",
+                            url: "FunManage/System/AcceptTagAttachs?Id=" + row.AcceptUser,
+                            callBack: function (result) {
+                                result.popClose();
+                            }
+                        })
                     },
                     "click .edit": function (event, val, row, index) {
                         controller.Confirm("确认签收？", function (bool) {
@@ -136,10 +162,6 @@
                                 <th data-field="StarSerialNo" data-halign="center" data-align="center" data-valign="middle">开始号段</th>
                                 <th data-field="EndSerialNo" data-halign="center" data-align="center" data-valign="middle">结束号段</th>
                                 <th data-field="TotalNo" data-halign="center" data-align="center" data-valign="middle">区间总数</th>
-                                <th data-field="AcceptUserName" data-halign="center" data-align="center" data-valign="middle">接收人(公司)</th>
-                                <th data-field="AllotTypeName" data-halign="center" data-align="center" data-valign="middle">分配类型</th>
-                                <th data-field="AllotNum" data-halign="center" data-align="center" data-valign="middle">分配数量</th>
-                                <th data-field="IsAcceptName" data-halign="center" data-align="center" data-valign="middle">是否签收</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>
