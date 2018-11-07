@@ -27,6 +27,7 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
             return View();
         }
         #endregion
+
         #region 产品质检
         /// <summary>
         /// 产品质检
@@ -64,6 +65,9 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         }
         public IActionResult ExpiredEdit()
         {
+            return View();
+        }
+        public IActionResult Expireds() {
             return View();
         }
         #endregion

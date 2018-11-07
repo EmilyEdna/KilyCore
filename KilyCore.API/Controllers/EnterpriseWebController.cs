@@ -1582,6 +1582,16 @@ namespace KilyCore.API.Controllers
         #endregion
         #region 过期不合格处理
         /// <summary>
+        /// 过期数据
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetExpiredPage")]
+        public ObjectResultEx GetExpiredPage(PageParamList<Object> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetExpiredPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 获取分页
         /// </summary>
         /// <param name="pageParam"></param>
@@ -1716,6 +1726,14 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetPackageCode(SimpleParam<String> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetPackageCode(Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 打包批次号
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetPackagesList")]
+        public ObjectResultEx GetPackagesList() {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetPackagesList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 发货收货

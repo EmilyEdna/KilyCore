@@ -15,14 +15,24 @@
             },
             //元素
             InitDom: function () {
-                var No = controller.GetParam("No");
-                var GoodsName = controller.GetParam("GoodsName");
                 $("input[name='CompanyId']").val(CompanyInfo.Id);
-                $("input[name='PackageNo']").val(No);
-                $("input[name='GoodsName']").val(GoodsName);
                 controller.LayDate({ elem: "input[name='SendTime']" });
-                if (No != null && No != "")
-                    $("input[name='SendGoodsNum']").val(1);
+                controller.Select({
+                    document: '.selectpicker',
+                    arrelemnt: ['#PackageNo',],
+                    url: 'EnterpriseWeb/GetPackagesList',
+                    flag: false,
+                    callBack: function (data) {
+                        var html = '';
+                        $.each(data, function (i, obj) {
+                            html += '<option>' + obj.PackageNo + '</option>';
+                        });
+                        $("#PackageNo").html(html);
+                    }
+                });
+                $("#PackageNo").on('changed.bs.select', function () {
+                    $('input[name="PackageNo"]').val($(this).val());
+                });
             },
             //事件
             InitEvents: function () {
@@ -69,7 +79,7 @@
                 <tr>
                     <th><label class="control-label">打包批次</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="PackageNo" readonly />
+                        <select type="select" class="selectpicker form-control" id="PackageNo" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
                     </td>
                     <th><label class="control-label">产品名称</label></th>
                     <td class="has-warning">
@@ -115,7 +125,7 @@
                     </td>
                     <th><label class="control-label">交通工具</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control"  name="Traffic" />
+                        <input type="text" class="form-control" name="Traffic" />
                     </td>
                 </tr>
             </table>

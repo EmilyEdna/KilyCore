@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "纹理标签";
+    ViewData["Title"] = "过期产品";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
@@ -21,21 +21,17 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetVeinTargetPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit"});
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetInferiorExpriredPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { InferiorExprired: 2 } });
             },
             //事件
             InitEvents: function () {
-                $("#apply").on('click', function () {
-                    controller.Msg("具体需求请拨打电话：028-85336372");
-                });
             },
             //行为
             action: {
                 TableFormatter: function (val, row, index) {
                     var action = [];
+                    action.push('<button class="btn btn-sm btn-primary watch"><i class="fa fa-eye"></i>详情</button>');
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
-                    if (!row.IsAccept) 
-                        action.push('<button class="btn btn-sm btn-primary accept"><i class="fa fa-inbox"></i>签收</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
@@ -43,7 +39,7 @@
                         controller.Confirm("确认删除？", function (bool) {
                             if (bool) {
                                 controller.ajax({
-                                    url: "EnterpriseWeb/RemoveTag",
+                                    url: "EnterpriseWeb/RemoveInferiorExprired",
                                     data: { Id: row.Id },
                                     type: 'post',
                                     success: function (result) {
@@ -53,20 +49,18 @@
                             }
                         });
                     },
-                    "click .accept": function (event, val, row, index) {
-                        controller.Confirm("确认签收？", function (bool) {
-                            if (bool) {
-                                controller.ajax({
-                                    url: "EnterpriseWeb/AcceptVeinTarget",
-                                    data: { Id: row.Id },
-                                    type: 'post',
-                                    success: function (result) {
-                                        options.$table.refresh();
-                                    }
-                                });
+                    "click .watch": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "查看详情",
+                            type: 2,
+                            height: "400px",
+                            width: "700px",
+                            url: "WebCompanyManage/Quality/ExpiredEdit?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
                             }
-                        });
-                    },
+                        })
+                    }
                 }//表单事件结束
             }//行为结束
         };
@@ -79,24 +73,22 @@
 @section css{
 
 }
-
 <div class="container-fluid">
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>纹理标签</h5>
+                <h5>过期产品处理</h5>
             </div>
             <div class="ibox-content">
                 <div class="row">
                     <form id="Edit">
                         <div class="col-sm-8 m-b-xs">
                             <div class="input-group">
-                                <button type="button" class="btn btn-sm btn-white" id="apply"><i class="fa fa-book"></i>我要申请</button>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input type="text" placeholder="批次编号" class="input-sm form-control" name="BatchNo"> 
+                                <input type="text" placeholder="" class="input-sm form-control" name="CustomName">
                                 <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
                                     <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
@@ -109,13 +101,12 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="BatchNo" data-halign="center" data-align="center" data-valign="middle">批次编号</th>
-                                <th data-field="StarSerialNo" data-halign="center" data-align="center" data-valign="middle">开始号段</th>
-                                <th data-field="EndSerialNo" data-halign="center" data-align="center" data-valign="middle">结束号段</th>
-                                <th data-field="TotalNo" data-halign="center" data-align="center" data-valign="middle">数量</th>
-                                <th data-field="IsAcceptName" data-halign="center" data-align="center" data-valign="middle">是否签收</th>
-                                <th data-field="AllotTypeName" data-halign="center" data-align="center" data-valign="middle">所属类型</th>
-                                <th data-field="UseNum" data-halign="center" data-align="center" data-valign="middle">绑定数量</th>
+                                <th data-field="CustomName" data-halign="center" data-align="center" data-valign="middle">处理名称</th>
+                                <th data-field="InferName" data-halign="center" data-align="center" data-valign="middle">产品名称</th>
+                                <th data-field="InferType" data-halign="center" data-align="center" data-valign="middle">类型</th>
+                                <th data-field="HandleUser" data-halign="center" data-align="center" data-valign="middle">处理人</th>
+                                <th data-field="HandleWays" data-halign="center" data-align="center" data-valign="middle">处理方式</th>
+                                <th data-field="HandleTime" data-halign="center" data-align="center" data-valign="middle">处理时间</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>

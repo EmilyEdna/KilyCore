@@ -245,6 +245,7 @@ namespace KilyCore.Service.IServiceCore
         IList<ResponseEnterpriseCheckGoods> GetCheckGoodsList();
         #endregion
         #region 过期不合格处理
+        Object GetExpiredPage(PageParamList<Object> pageParam);
         PagedResult<ResponseEnterpriseInferiorExprired> GetInferiorExpriredPage(PageParamList<RequestEnterpriseInferiorExprired> pageParam);
         ResponseEnterpriseInferiorExprired GetInferiorExpriredDetail(Guid Id);
         String RemoveInferiorExprired(Guid Id);
@@ -264,6 +265,7 @@ namespace KilyCore.Service.IServiceCore
         ResponseEnterpriseGoodsPackage GetGoodsPackageDetail(Guid Id);
         String RemoveGoodsPackge(Guid Id);
         long GetPackageCode(String StockOutNo);
+        IList<ResponseEnterpriseGoodsPackage> GetPackagesList();
         #endregion
         #region 发货收货
         PagedResult<ResponseEnterpriseLogistics> GetLogisticsPage(PageParamList<RequestEnterpriseLogistics> pageParam);

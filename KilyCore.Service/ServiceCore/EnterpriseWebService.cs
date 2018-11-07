@@ -2045,10 +2045,10 @@ namespace KilyCore.Service.ServiceCore
                 .OrderByDescending(t => t.CreateTime)
                 .Select(t => new ResponseEnterpriseTagAttach()
                 {
-                    StarSerialNo=t.StarSerialNo,
-                    EndSerialNo=t.EndSerialNo,
-                    StockNo=t.StockNo,
-                    UseNum=t.UseNum
+                    StarSerialNo = t.StarSerialNo,
+                    EndSerialNo = t.EndSerialNo,
+                    StockNo = t.StockNo,
+                    UseNum = t.UseNum
                 })
                 .ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -3174,9 +3174,9 @@ namespace KilyCore.Service.ServiceCore
                 IQueryable<EnterpriseTag> queryable = Kily.Set<EnterpriseTag>().Where(t => t.IsDelete == false).Where(t => t.BatchNo == Param.TagBatchNo);
                 EnterpriseTag data = null;
                 if (TagAttach.TagType.Equals("2"))
-                    data = queryable.Where(t => t.TagType == TagEnum.OneThing).FirstOrDefault();
+                    data = queryable.Where(t => t.TagType == TagEnum.OneThing).AsNoTracking().FirstOrDefault();
                 if (TagAttach.TagType.Equals("3"))
-                    data = queryable.Where(t => t.TagType == TagEnum.OneBrand).FirstOrDefault();
+                    data = queryable.Where(t => t.TagType == TagEnum.OneBrand).AsNoTracking().FirstOrDefault();
                 int SumCount = Kily.Set<EnterpriseTagAttach>().Where(t => t.IsDelete == false).Where(t => t.TagBatchNo == Param.TagBatchNo).Select(t => t.UseNum).Sum();
                 data.UseNum += Count;
                 data.TotalNo = data.TotalNo - Count;
@@ -3242,12 +3242,13 @@ namespace KilyCore.Service.ServiceCore
         {
             if (Param.OutStockNum <= 0)
                 return "出库数量必须大于0";
-            EnterpriseGoodsStock stock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false).Where(t => t.Id == Param.StockId).FirstOrDefault();
+            EnterpriseGoodsStock stock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false)
+                .Where(t => t.Id == Param.StockId).AsNoTracking().FirstOrDefault();
             if (stock.InStockNum < Param.OutStockNum)
                 return "当前库存少于出库量";
             stock.InStockNum -= Param.OutStockNum;
             UpdateField(stock, "InStockNum");
-            Param.CodeEndSerialNo = Param.CodeStarSerialNo + Param.OutStockNum;
+            Param.CodeEndSerialNo = Param.CodeStarSerialNo + Param.OutStockNum - 1;
             EnterpriseGoodsStockAttach Attach = Param.MapToEntity<EnterpriseGoodsStockAttach>();
             return Insert<EnterpriseGoodsStockAttach>(Attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
@@ -3494,6 +3495,32 @@ namespace KilyCore.Service.ServiceCore
         #endregion
         #region 过期不合格处理
         /// <summary>
+        /// 过期数据
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public Object GetExpiredPage(PageParamList<Object> pageParam)
+        {
+            IQueryable<EnterpriseGoods> queryable = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<EnterpriseGoodsStock> queryables = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.Join(queryables, t => t.Id, x => x.GoodsId, (t, x) => new
+            {
+                t.Id,
+                t.ProductType,
+                x.GoodsBatchNo,
+                t.ProductName,
+                t.ExpiredDate,
+                x.ProductTime,
+                ExpiredTime = x.ProductTime.AddDays(Convert.ToInt32(t.ExpiredDate))
+            }).Where(t => DateTime.Now.Subtract(t.ExpiredTime).TotalDays <= 7)
+            .ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
         /// 获取分页
         /// </summary>
         /// <param name="pageParam"></param>
@@ -3681,7 +3708,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string EditGoodsPackage(RequestEnterpriseGoodsPackage Param)
         {
-            Param.CodeEndSerialNo = Param.CodeStarSerialNo + Param.PackageNum;
+            Param.CodeEndSerialNo = Param.CodeStarSerialNo + Param.PackageNum - 1;
             EnterpriseGoodsPackage package = Param.MapToEntity<EnterpriseGoodsPackage>();
             if (Param.Id == Guid.Empty)
                 return Insert(package) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
@@ -3728,12 +3755,29 @@ namespace KilyCore.Service.ServiceCore
             List<EnterpriseGoodsPackage> Package = Kily.Set<EnterpriseGoodsPackage>().Where(t => t.IsDelete == false).Where(t => t.ProductOutStockNo.Equals(StockOutNo)).AsNoTracking().ToList();
             if (Package.Count != 0)
             {
-                return Package.OrderByDescending(t => t.CreateTime).Select(t => t.CodeEndSerialNo).FirstOrDefault();
+                return Package.OrderByDescending(t => t.CreateTime).Select(t => t.CodeEndSerialNo).FirstOrDefault() + 1;
             }
             else
             {
                 return Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false).Where(t => t.GoodsBatchNo.Equals(StockOutNo)).Select(t => t.CodeStarSerialNo).FirstOrDefault();
             }
+        }
+        /// <summary>
+        /// 打包批次号
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseEnterpriseGoodsPackage> GetPackagesList()
+        {
+            IQueryable<EnterpriseGoodsPackage> queryable = Kily.Set<EnterpriseGoodsPackage>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.Select(t => new ResponseEnterpriseGoodsPackage()
+            {
+                PackageNo=t.PackageNo
+            }).ToList();
+            return data;
         }
         #endregion
         #region 发货收货

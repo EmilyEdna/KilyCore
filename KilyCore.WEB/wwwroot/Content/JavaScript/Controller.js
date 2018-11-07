@@ -943,7 +943,7 @@ controller.AutoInput = function (element, option) {
             return defaultsOption.processData(result);
         }
     }
-    $(element).on('click', function () {
+    $(element).on('click change blur', function () {
         var html = '<ul class="dropdown-menu dropdown-menu-right" ></ul>';
         var ul = $(this).parent().find("ul")
         if (ul.length == 0)
