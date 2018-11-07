@@ -72,5 +72,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 交通工具
         /// </summary>
         public virtual string Traffic { get; set; }
+        /// <summary>
+        /// 发货地址
+        /// </summary>
+        public virtual string SendAddress { get; set; }
     }
 }

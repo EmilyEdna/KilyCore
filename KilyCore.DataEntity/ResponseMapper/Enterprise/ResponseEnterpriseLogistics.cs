@@ -22,6 +22,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
     {
         public Guid Id { get; set; }
         public Guid CompanyId { get; set; }
+        public string SendAddress { get; set; }
         /// <summary>
         /// 物流单号
         /// </summary>

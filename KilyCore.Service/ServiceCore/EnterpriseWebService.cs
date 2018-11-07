@@ -3810,6 +3810,7 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 CompanyId = t.CompanyId,
                 GainId = t.GainId,
+                SendAddress=t.SendAddress,
                 GoodsName = t.GoodsName,
                 PackageNo = t.PackageNo,
                 LinkPhone = t.LinkPhone,
