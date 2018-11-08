@@ -427,13 +427,13 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<SystemRoleLevel> queryable = Kily.Set<SystemRoleLevel>().Where(t => t.IsDelete == false).AsNoTracking();
             if (UserInfo().AccountType == AccountEnum.Country)
-                queryable = queryable.Where(t => t.RoleLv >= RoleEnum.LV2).Where(t => t.RoleLv <= RoleEnum.LV3);
+                queryable = queryable.Where(t => t.RoleLv >= RoleEnum.LV2);
             if (UserInfo().AccountType == AccountEnum.Province)
-                queryable = queryable.Where(t => t.RoleLv >= RoleEnum.LV3).Where(t => t.RoleLv <= RoleEnum.LV4);
+                queryable = queryable.Where(t => t.RoleLv >= RoleEnum.LV3);
             if (UserInfo().AccountType == AccountEnum.City)
-                queryable = queryable.Where(t => t.RoleLv >= RoleEnum.LV4).Where(t => t.RoleLv <= RoleEnum.LV5);
+                queryable = queryable.Where(t => t.RoleLv >= RoleEnum.LV4);
             if (UserInfo().AccountType == AccountEnum.Area)
-                queryable = queryable.Where(t => t.RoleLv >= RoleEnum.LV5).Where(t => t.RoleLv <= RoleEnum.LV6);
+                queryable = queryable.Where(t => t.RoleLv >= RoleEnum.LV5);
             if (UserInfo().AccountType == AccountEnum.Village)
                 queryable = queryable.Where(t => t.RoleLv == RoleEnum.LV6);
             var data = queryable.OrderBy(t => t.CreateTime).Select(t => new ResponseRoleLv()
@@ -1007,66 +1007,66 @@ namespace KilyCore.Service.ServiceCore
                 {
                     int Num = Kily.Set<SystemPreson>().Where(t => t.Type.Contains("全国运营")).Count() + 1;
                     if (Num > 100)
-                        Preson.WorkNum = "全国运营" + Num;
-                    if (Num > 10)
                         Preson.WorkNum = "全国运营0" + Num;
-                    if (Num < 10)
+                    if (Num > 10)
                         Preson.WorkNum = "全国运营00" + Num;
+                    if (Num < 10)
+                        Preson.WorkNum = "全国运营000" + Num;
                     Preson.Type = "全国运营";
                 }
                 if (UserInfo().AccountType == AccountEnum.Country)
                 {
                     int Num = Kily.Set<SystemPreson>().Where(t => t.Type.Contains("全国运营")).Count() + 1;
                     if (Num > 100)
-                        Preson.WorkNum = "全国运营" + Num;
-                    if (Num > 10)
                         Preson.WorkNum = "全国运营0" + Num;
-                    if (Num < 10)
+                    if (Num > 10)
                         Preson.WorkNum = "全国运营00" + Num;
+                    if (Num < 10)
+                        Preson.WorkNum = "全国运营000" + Num;
                     Preson.Type = "全国运营";
                 }
                 if (UserInfo().AccountType == AccountEnum.Province)
                 {
                     int Num = Kily.Set<SystemPreson>().Where(t => t.Type.Contains("省级运营")).Count() + 1;
                     if (Num > 100)
-                        Preson.WorkNum = "省级运营" + Num;
-                    if (Num > 10)
                         Preson.WorkNum = "省级运营0" + Num;
-                    if (Num < 10)
+                    if (Num > 10)
                         Preson.WorkNum = "省级运营00" + Num;
+                    if (Num < 10)
+                        Preson.WorkNum = "省级运营000" + Num;
                     Preson.Type = "省级运营";
                 }
                 if (UserInfo().AccountType == AccountEnum.City)
                 {
                     int Num = Kily.Set<SystemPreson>().Where(t => t.Type.Contains("市级运营")).Count() + 1;
                     if (Num > 100)
-                        Preson.WorkNum = "市级运营" + Num;
-                    if (Num > 10)
                         Preson.WorkNum = "市级运营0" + Num;
-                    if (Num < 10)
+                    if (Num > 10)
                         Preson.WorkNum = "市级运营00" + Num;
+                    if (Num < 10)
+                        Preson.WorkNum = "市级运营000" + Num;
                     Preson.Type = "市级运营";
                 }
                 if (UserInfo().AccountType == AccountEnum.Area)
                 {
                     int Num = Kily.Set<SystemPreson>().Where(t => t.Type.Contains("区域运营")).Count() + 1;
                     if (Num > 100)
-                        Preson.WorkNum = "区域运营" + Num;
-                    if (Num > 10)
                         Preson.WorkNum = "区域运营0" + Num;
-                    if (Num < 10)
+                    if (Num > 10)
                         Preson.WorkNum = "区域运营00" + Num;
+                    if (Num < 10)
+                        Preson.WorkNum = "区域运营000" + Num;
                     Preson.Type = "区域运营";
                 }
                 if (UserInfo().AccountType == AccountEnum.Village)
                 {
                     int Num = Kily.Set<SystemPreson>().Where(t => t.Type.Contains("乡镇运营")).Count() + 1;
                     if (Num > 100)
-                        Preson.WorkNum = "乡镇运营" + Num;
-                    if (Num > 10)
                         Preson.WorkNum = "乡镇运营0" + Num;
-                    if (Num < 10)
+                    if (Num > 10)
                         Preson.WorkNum = "乡镇运营00" + Num;
+                    if (Num < 10)
+                        Preson.WorkNum = "乡镇运营000" + Num;
                     Preson.Type = "乡镇运营";
                 }
                 if (Insert<SystemPreson>(Preson))

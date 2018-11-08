@@ -94,7 +94,15 @@
                     </td>
                     <th><label class="control-label">产品类型</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="ProductType" />
+                        <input type="text" class="form-control" name="ProductType" list="datas"/>
+                        <datalist id="datas">
+                            <option value="农产品"></option>
+                            <option value="食品"></option>
+                            <option value="药品"></option>
+                            <option value="化妆品"></option>
+                            <option value="医疗器械"></option>
+                            <option value="其他"></option>
+                        </datalist>
                     </td>
                 </tr>
                 <tr>

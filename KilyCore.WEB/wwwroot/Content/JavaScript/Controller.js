@@ -143,24 +143,27 @@ controller.GetParam = function (option) {
 controller.SetCtrlValue = function (element, option) {
     for (var key in option) {
         var node = $("[name='" + key + "']", $(element));
-        if (node.length > 0) {
-            var type = node.attr("type");
+        for (var i = 0; i < node.length; i++) {
+            var type = $(node[i]).attr("type");
             var value = option[key];
             switch (type) {
                 case "checkbox":
                     if (value == 1)
-                        node.prop("checked", true);
+                        $(node[i]).prop("checked", true);
                     else
-                        node.prop("checked", false);
+                        $(node[i]).prop("checked", false);
                     break;
                 case "select":
-                    node.find("option[value='" + value + "']").attr("selected", true);
+                    $(node[i]).find("option[value='" + value + "']").attr("selected", true);
                     break;
                 case "image":
-                    node.attr("src", value);
+                    if (value.indexOf(",") >= 0)
+                        $(node[i]).attr("src", value.split(",")[0]);
+                    else
+                        $(node[i]).attr("src", value);
                     break;
                 default:
-                    node.val(value);
+                    $(node[i]).val(value);
                     break;
             }
         }
@@ -335,7 +338,7 @@ controller.OpenWindow = function (option) {
         scrollbar: defaultOptions.scrollbar,
         maxmin: defaultOptions.maxmin,
         area: [defaultOptions.width, defaultOptions.height],
-        content: (defaultOptions.content != undefined ? defaultOptions.content:WebUrl + defaultOptions.url),
+        content: (defaultOptions.content != undefined ? defaultOptions.content : WebUrl + defaultOptions.url),
         success: function (layero, index) {
             try {
                 var iframeWin = top.window[layero.find('iframe')[0]['name']];
@@ -540,7 +543,7 @@ controller.ValidateConfirm = function (element, option) {
                         controller.Alter(data.data);
                         return;
                     }
-                    if (window.source != undefined) 
+                    if (window.source != undefined)
                         if (window.source.options.$table != undefined)
                             window.source.options.$table.refresh();
                     if (controller.CheckJsonFormat(data.data)) {

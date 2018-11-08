@@ -329,6 +329,16 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.AuditGoodSuccess(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 产品详情
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetAuditProductDetail")]
+        public ObjectResultEx GetAuditProductDetail(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseService.GetAuditProductDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
     }
 }

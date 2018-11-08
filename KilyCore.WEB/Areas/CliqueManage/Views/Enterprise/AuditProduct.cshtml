@@ -34,6 +34,7 @@
                         action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-pencil-square-o"></i>审核</button>');
                     action.push('<button class="btn btn-sm btn-primary sea"><i class="fa fa-eye"></i>查看图片</button>');
                     action.push('<button class="btn btn-sm btn-primary watch"><i class="fa fa-eye"></i>查看备注</button>');
+                    action.push('<button class="btn btn-sm btn-primary detail"><i class="fa fa-eye"></i>详情</button>');
                     return action.join("&nbsp;");
                 },
                 TableEvents: {
@@ -75,6 +76,18 @@
                             }
                         });
                     },
+                    "click .detail": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "产品详情",
+                            type: 2,
+                            height: "400px",
+                            width: "800px",
+                            url: "CliqueManage/Enterprise/AuditProductDetail?Id=" + row.GoodsId,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
+                    }
                 }//表单事件结束
             }//行为结束
         };

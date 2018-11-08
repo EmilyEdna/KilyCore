@@ -64,6 +64,7 @@ namespace KilyCore.Service.IServiceCore
         #region  产品审核
         PagedResult<ResponseEnterpriseGoodsStock> GetWaitAuditGoodPage(PageParamList<RequestEnterpriseGoodsStock> pageParam);
         String AuditGoodSuccess(Guid Id);
+        Object GetAuditProductDetail(Guid Id);
         #endregion
     }
 }

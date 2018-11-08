@@ -89,6 +89,10 @@ namespace KilyCore.WEB.Areas.CliqueManage.Controllers
         {
             return View();
         }
+        public IActionResult AuditProductDetail()
+        {
+            return View();
+        }
         #endregion
     }
 }

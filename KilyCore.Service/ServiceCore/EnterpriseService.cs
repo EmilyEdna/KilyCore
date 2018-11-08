@@ -842,6 +842,109 @@ namespace KilyCore.Service.ServiceCore
             goods.AuditType = AuditEnum.AuditSuccess;
             return UpdateField(goods, "AuditType") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
+        /// <summary>
+        /// 产品详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public Object GetAuditProductDetail(Guid Id)
+        {
+            IQueryable<EnterpriseGoodsStockAttach> GoodsStockAttach = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<EnterpriseGoodsStock> GoodStock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<EnterpriseGoods> Goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<EnterpriseProductionBatch> ProductionBatch = Kily.Set<EnterpriseProductionBatch>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseStockType> StockType = Kily.Set<EnterpriseStockType>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseMaterialStockAttach> MaterialStockAttach = Kily.Set<EnterpriseMaterialStockAttach>().Where(t => t.IsDelete == false).AsNoTracking();
+            IQueryable<EnterpriseMaterialStock> MaterialStock = Kily.Set<EnterpriseMaterialStock>().Where(t => t.IsDelete == false).AsNoTracking();
+            IQueryable<EnterpriseMaterial> Material = Kily.Set<EnterpriseMaterial>().Where(t => t.IsDelete == false).AsNoTracking();
+            IQueryable<EnterpriseProductSeries> ProductSeries = Kily.Set<EnterpriseProductSeries>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseCheckMaterial> CheckMaterial = Kily.Set<EnterpriseCheckMaterial>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseCheckGoods> CheckGoods = Kily.Set<EnterpriseCheckGoods>().Where(t => t.IsDelete == false);
+            //产品的查询
+            var GoodsData = GoodsStockAttach.Join(GoodStock, a => a.StockId, b => b.Id, (a, b) => new { a, b })
+                 .Join(ProductionBatch, c => c.b.BatchId, d => d.Id, (c, d) => new { c, d })
+                 .Join(Goods, e => e.c.b.GoodsId, f => f.Id, (e, f) => new { e, f })
+                 .GroupJoin(CheckGoods, g => g.e.c.b.CheckGoodsId, h => h.Id, (g, h) => new { g, h })
+                 .Join(ProductSeries, i => i.g.f.ProductSeriesId, j => j.Id, (i, j) => new { i, j })
+                 .Join(StockType, k => k.i.g.e.c.b.StockTypeId, l => l.Id, (k, l) => new { k, l }).Where(t => t.k.i.g.f.Id == Id)
+                 .AsNoTracking();
+            //原材料的查询
+            var MaterialsData = MaterialStockAttach.Join(MaterialStock, a => a.MaterialStockId, b => b.Id, (a, b) => new { a, b })
+                 .Join(Material, c => c.b.BatchNo, d => d.BatchNo, (c, d) => new { c, d })
+                 .GroupJoin(CheckMaterial, e => e.c.b.CheckMaterialId, f => f.Id, (e, f) => new { e, f }).AsNoTracking();
+            var GoodData = GoodsData.Select(t => new
+            {
+                GoodsName = t.k.i.g.f.ProductName,
+                ExpiredDay = t.k.i.g.f.ExpiredDate,
+                t.k.i.g.f.Spec,
+                t.k.i.g.f.ProductType,
+                t.k.j.Standard,
+                t.k.i.g.e.d.DeviceName,
+                OutNo = t.k.i.g.e.c.a.GoodsBatchNo,
+                t.k.i.g.e.c.a.OutStockTime,
+                t.k.i.g.e.c.a.Seller,
+                t.k.i.g.e.c.a.OutStockUser,
+                t.k.i.g.e.c.b.Manager,
+                t.k.i.g.e.c.b.ProductTime,
+                InNo = t.k.i.g.e.c.b.GoodsBatchNo,
+                t.k.i.g.e.d.MaterialId,
+                t.k.i.h.FirstOrDefault().CheckUint,
+                t.k.i.h.FirstOrDefault().CheckUser,
+                t.k.i.h.FirstOrDefault().CheckResult,
+                t.k.i.h.FirstOrDefault().CheckReport,
+                t.l.StockName,
+                t.l.SaveType,
+                t.l.SaveH2,
+                t.l.SaveTemp
+            }).FirstOrDefault();
+            var MaterialData = MaterialsData.Where(t => GoodData.MaterialId.Contains(t.e.d.Id.ToString())).Select(t => new
+            {
+                t.f.FirstOrDefault().CheckUint,
+                t.f.FirstOrDefault().CheckUser,
+                t.f.FirstOrDefault().CheckResult,
+                t.f.FirstOrDefault().CheckReport,
+                t.e.d.Address,
+                t.e.d.ExpiredDay,
+                t.e.d.MaterName,
+                t.e.d.MaterType,
+                t.e.d.Supplier,
+                t.e.c.b.ProductTime
+            }).FirstOrDefault();
+            return new
+            {
+                GoodData.StockName,
+                GoodData.SaveH2,
+                GoodData.SaveType,
+                GoodData.SaveTemp,
+                GoodData.GoodsName,
+                GoodData.ExpiredDay,
+                GoodData.Spec,
+                GoodData.ProductType,
+                GoodData.Standard,
+                GoodData.DeviceName,
+                GoodData.OutNo,
+                GoodData.OutStockTime,
+                GoodData.Seller,
+                GoodData.OutStockUser,
+                GoodData.Manager,
+                GoodProductTime = GoodData.ProductTime,
+                GoodData.InNo,
+                GoodCheckUint = GoodData.CheckUint,
+                GoodCheckUser = GoodData.CheckUser,
+                GoodCheckResult = GoodData.CheckResult,
+                GoodCheckReport = GoodData.CheckReport,
+                MaterialCheckUint = MaterialData.CheckUint,
+                MaterialCheckUser = MaterialData.CheckUser,
+                MaterialCheckResult = MaterialData.CheckResult,
+                MaterialCheckReport = MaterialData.CheckReport,
+                MaterialAddress = MaterialData.Address,
+                MaterialExpiredDay = MaterialData.ExpiredDay,
+                MaterialData.MaterName,
+                MaterialData.MaterType,
+                MaterialData.Supplier,
+                MaterialProductTime = MaterialData.ProductTime
+            };
+        }
         #endregion
     }
 }
