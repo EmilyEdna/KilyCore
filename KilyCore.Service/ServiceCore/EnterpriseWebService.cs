@@ -308,6 +308,64 @@ namespace KilyCore.Service.ServiceCore
         }
         #endregion
 
+
+
+        #region 编辑需要权限的
+        #endregion
+
+        #region 删除需要权限的
+        #endregion
+
+        #region 编辑不需要权限的
+        #region 企业资料
+        /// <summary>
+        /// 更新企业资料
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditEnterprise(RequestEnterprise Param)
+        {
+            Param.AuditType = AuditEnum.WaitAduit;
+            EnterpriseInfo data = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
+            Param.EnterpriseRoleId = data.EnterpriseRoleId;
+            Param.CompanyId = data.CompanyId;
+            EnterpriseInfo Info = Param.MapToEntity<EnterpriseInfo>();
+            if (Update<EnterpriseInfo, RequestEnterprise>(Info, Param))
+                return ServiceMessage.UPDATESUCCESS;
+            else
+                return ServiceMessage.UPDATEFAIL;
+        }
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditCompanyAccount(RequestEnterprise Param)
+        {
+            EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
+            info.PassWord = Param.PassWord;
+            info.CompanyAccount = Param.CompanyAccount;
+            IList<String> Fields = new List<String> { "CompanyAccount", "PassWord" };
+            return UpdateField(info, null, Fields) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        /// <summary>
+        /// 修改区域
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditCompanyArea(RequestEnterprise Param)
+        {
+            EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
+            info.TypePath = Param.TypePath;
+            return UpdateField(info, "TypePath") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        #endregion
+        #endregion
+
+        #region 删除不需要权限的
+        #endregion
+
+
         #region 基础管理
         #region 企业资料
         /// <summary>
@@ -375,47 +433,6 @@ namespace KilyCore.Service.ServiceCore
                     SafeCompany = t.SafeCompany
                 }).FirstOrDefault();
             return data;
-        }
-        /// <summary>
-        /// 更新企业资料
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditEnterprise(RequestEnterprise Param)
-        {
-            Param.AuditType = AuditEnum.WaitAduit;
-            EnterpriseInfo data = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
-            Param.EnterpriseRoleId = data.EnterpriseRoleId;
-            Param.CompanyId = data.CompanyId;
-            EnterpriseInfo Info = Param.MapToEntity<EnterpriseInfo>();
-            if (Update<EnterpriseInfo, RequestEnterprise>(Info, Param))
-                return ServiceMessage.UPDATESUCCESS;
-            else
-                return ServiceMessage.UPDATEFAIL;
-        }
-        /// <summary>
-        /// 修改密码
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditCompanyAccount(RequestEnterprise Param)
-        {
-            EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
-            info.PassWord = Param.PassWord;
-            info.CompanyAccount = Param.CompanyAccount;
-            IList<String> Fields = new List<String> { "CompanyAccount", "PassWord" };
-            return UpdateField(info, null, Fields) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
-        }
-        /// <summary>
-        /// 修改区域
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditCompanyArea(RequestEnterprise Param)
-        {
-            EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
-            info.TypePath = Param.TypePath;
-            return UpdateField(info, "TypePath") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         #endregion
 
@@ -3775,7 +3792,7 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseGoodsPackage()
             {
-                PackageNo=t.PackageNo
+                PackageNo = t.PackageNo
             }).ToList();
             return data;
         }
@@ -3791,26 +3808,16 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseLogistics> queryable = Kily.Set<EnterpriseLogistics>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.GoodsName))
                 queryable = queryable.Where(t => t.GoodsName.Contains(pageParam.QueryParam.GoodsName));
-            if (pageParam.QueryParam.SendType)
-            {
-                if (CompanyInfo() != null)
-                    queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
-                else
-                    queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
-            }
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
-            {
-                if (CompanyInfo() != null)
-                    queryable = queryable.Where(t => t.GainId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
-                else
-                    queryable = queryable.Where(t => t.GainId == CompanyUser().Id);
-            }
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseLogistics()
             {
                 Id = t.Id,
                 CompanyId = t.CompanyId,
                 GainId = t.GainId,
-                SendAddress=t.SendAddress,
+                SendAddress = t.SendAddress,
                 GoodsName = t.GoodsName,
                 PackageNo = t.PackageNo,
                 LinkPhone = t.LinkPhone,
@@ -3821,8 +3828,19 @@ namespace KilyCore.Service.ServiceCore
                 SendTime = t.SendTime,
                 Flag = t.Flag,
                 Traffic = t.Traffic,
-                TransportWay = t.TransportWay
+                TransportWay = t.TransportWay,
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 发货详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public RequestEnterpriseLogistics GetSendDetail(Guid Id)
+        {
+            var data = Kily.Set<EnterpriseLogistics>().Where(t => t.Id == Id)
+                 .AsNoTracking().FirstOrDefault().MapToEntity<RequestEnterpriseLogistics>();
             return data;
         }
         /// <summary>
@@ -3849,9 +3867,14 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public string CheckLogistics(Guid Id)
+        public string CheckLogistics(RequestEnterpriseLogistics Param)
         {
-            EnterpriseLogistics logistics = Kily.Set<EnterpriseLogistics>().Where(t => t.Id == Id).FirstOrDefault();
+            var Temp = Kily.Set<EnterpriseSeller>().Where(t => t.IsDelete == false)
+                .Where(t => t.SellerType == SellerEnum.Sale)
+                .Where(t => t.LinkPhone.Equals(Param.LinkPhone)).AsNoTracking().FirstOrDefault();
+            if (Temp == null)
+                return "请勿串货";
+            EnterpriseLogistics logistics = Kily.Set<EnterpriseLogistics>().Where(t => t.Id == Param.Id).FirstOrDefault();
             logistics.Flag = true;
             return UpdateField(logistics, "Flag") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }

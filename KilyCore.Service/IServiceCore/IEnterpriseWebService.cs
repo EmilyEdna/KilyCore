@@ -270,8 +270,9 @@ namespace KilyCore.Service.IServiceCore
         #region 发货收货
         PagedResult<ResponseEnterpriseLogistics> GetLogisticsPage(PageParamList<RequestEnterpriseLogistics> pageParam);
         String EditLogistics(RequestEnterpriseLogistics Param);
+        RequestEnterpriseLogistics GetSendDetail(Guid Id);
         String RemoveLogistics(Guid Id);
-        String CheckLogistics(Guid Id);
+        String CheckLogistics(RequestEnterpriseLogistics Param);
         #endregion
         #region 进货管理
         PagedResult<ResponseEnterpriseBuyer> GetBuyerPage(PageParamList<RequestEnterpriseBuyer> pageParam);

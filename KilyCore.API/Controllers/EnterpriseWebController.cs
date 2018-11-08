@@ -6,6 +6,7 @@ using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.Function;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.Extension.ResultExtension;
+using KilyCore.Extension.SessionExtension;
 using KilyCore.Service.QueryExtend;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -108,7 +109,8 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("EditCompanyAccount")]
-        public ObjectResultEx EditCompanyAccount(RequestEnterprise Param) {
+        public ObjectResultEx EditCompanyAccount(RequestEnterprise Param)
+        {
             return ObjectResultEx.Instance(EnterpriseWebService.EditCompanyAccount(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -117,7 +119,8 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("EditCompanyArea")]
-        public ObjectResultEx EditCompanyArea(RequestEnterprise Param) {
+        public ObjectResultEx EditCompanyArea(RequestEnterprise Param)
+        {
             return ObjectResultEx.Instance(EnterpriseWebService.EditCompanyArea(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
@@ -639,7 +642,8 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetNoteList")]
-        public ObjectResultEx GetNoteList() {
+        public ObjectResultEx GetNoteList()
+        {
             return ObjectResultEx.Instance(EnterpriseWebService.GetNoteList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
@@ -805,8 +809,9 @@ namespace KilyCore.API.Controllers
         /// <returns></returns>
         [AllowAnonymous]
         [HttpGet("GetScanCodeDetail")]
-        public ObjectResultEx GetScanCodeDetail(SimpleParam<Guid> Key, SimpleParam<Int64> Param) {
-            return ObjectResultEx.Instance(EnterpriseWebService.GetScanCodeDetail(Key.Id,Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        public ObjectResultEx GetScanCodeDetail(SimpleParam<Guid> Key, SimpleParam<Int64> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetScanCodeDetail(Key.Id, Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 查看二维码绑定信息
@@ -1732,7 +1737,8 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetPackagesList")]
-        public ObjectResultEx GetPackagesList() {
+        public ObjectResultEx GetPackagesList()
+        {
             return ObjectResultEx.Instance(EnterpriseWebService.GetPackagesList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
@@ -1758,6 +1764,17 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.EditLogistics(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
+        /// 发货详情
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetSendDetail")]
+        [AllowAnonymous]
+        public ObjectResultEx GetSendDetail(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetSendDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 删除发货
         /// </summary>
         /// <param name="Id"></param>
@@ -1773,9 +1790,15 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("CheckLogistics")]
-        public ObjectResultEx CheckLogistics(SimpleParam<Guid> Param)
+        [AllowAnonymous]
+        public ObjectResultEx CheckLogistics(RequestEnterpriseLogistics Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.CheckLogistics(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            if (string.IsNullOrEmpty(Param.PackageNo))
+                return ObjectResultEx.Instance(null, -1, "验证码不能为空", HttpCode.FAIL);
+            string Code = HttpContext.Session.GetSession<string>("PhoneCode").Trim();
+            if (!Code.Equals(Param.PackageNo))
+                return ObjectResultEx.Instance(null, -1, "请检查验证码", HttpCode.FAIL);
+            return ObjectResultEx.Instance(EnterpriseWebService.CheckLogistics(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 进货管理
@@ -1814,7 +1837,8 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetBuyerList")]
-        public ObjectResultEx GetBuyerList() {
+        public ObjectResultEx GetBuyerList()
+        {
             return ObjectResultEx.Instance(EnterpriseWebService.GetBuyerList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion

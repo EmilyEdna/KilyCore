@@ -21,7 +21,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetLogisticsPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { SendType: true } });
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetLogisticsPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
             },
             //事件
             InitEvents: function () {
@@ -41,8 +41,9 @@
             //行为
             action: {
                 TableFormatter: function (val, row, index) {
-                    var action = [];
+                    var action = []; 
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
+                    action.push('<button class="btn btn-sm btn-primary code"><i class="fa fa-barcode"></i>二维码</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
@@ -59,6 +60,21 @@
                                 });
                             }
                         });
+                    },
+                    "click .code": function (event, val, row, index) {
+                        var host = "http://localhost:50070/StaticHtml/ScanGoods.html?Id=" + row.Id;
+                        $("#QRcode").html("");
+                        controller.QRCode('#QRcode', { render: "table", text: host });
+                        controller.OpenWindow({
+                            title: "发货二维码",
+                            type: 1,
+                            height: "365px",
+                            width: "265px",
+                            content: $("#QRcode").html(),
+                            callBack: function (result) {
+                                result.popClose();
+                            }
+                        })
                     },
                 }//表单事件结束
             }//行为结束
@@ -123,3 +139,4 @@
         </div>
     </div>
 </div>
+<div style="display:none" id='QRcode'></div>

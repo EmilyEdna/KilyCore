@@ -21,35 +21,11 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetLogisticsPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { SendType: false } });
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetLogisticsPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit"});
             },
             //事件
             InitEvents: function () {
             },
-            //行为
-            action: {
-                TableFormatter: function (val, row, index) {
-                    var action = [];
-                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-check-circle"></i>确认</button>');
-                    return action.join("&nbsp;")
-                },
-                TableEvents: {
-                    "click .edit": function (event, val, row, index) {
-                        controller.Confirm("确认收货？", function (bool) {
-                            if (bool) {
-                                controller.ajax({
-                                    url: "EnterpriseWeb/CheckLogistics",
-                                    data: { Id: row.Id },
-                                    type: 'post',
-                                    success: function (result) {
-                                        options.$table.refresh();
-                                    }
-                                });
-                            }
-                        });
-                    },
-                }//表单事件结束
-            }//行为结束
         };
         //初始化
         $(document).ready(function () {
@@ -101,7 +77,6 @@
                                 <th data-field="TransportWay" data-halign="center" data-align="center" data-valign="middle">运输方式</th>
                                 <th data-field="Traffic" data-halign="center" data-align="center" data-valign="middle">交通工具</th>
                                 <th data-field="SendAddress" data-halign="center" data-align="center" data-valign="middle">发货地址</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>
                     </table>

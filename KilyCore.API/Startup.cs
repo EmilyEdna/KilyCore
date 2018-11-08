@@ -67,8 +67,8 @@ namespace KilyCore.API
             //添加Session
             services.AddSession(t =>
             {
-                //Session 1分钟后过期
-                t.IdleTimeout = TimeSpan.FromMinutes(1);
+                //Session 5分钟后过期
+                t.IdleTimeout = TimeSpan.FromMinutes(5);
              });
             IServiceProvider IocProviderService = Engine.ServiceProvider(services);
             //持久化任务

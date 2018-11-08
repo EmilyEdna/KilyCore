@@ -62,10 +62,9 @@
                         });
                     },
                     "click .create": function (event, val, row, index) {
-                        var host = "http://localhost:50070/StaticHtml/ScanDetail.html?Id=" + row.CompanyId;
-                        $("#QRcode").html();
+                        var host = "http://localhost:50070/StaticHtml/ScanCompany.html?Id=" + row.CompanyId;
+                        $("#QRcode").html("");
                         controller.QRCode('#QRcode', { render: "table", text: host });
-                        $("#QRcode").html();
                         controller.OpenWindow({
                             title: "企业二维码",
                             type: 1,
@@ -76,7 +75,6 @@
                                 result.popClose();
                             }
                         })
-                       
                     },
                 }//表单事件结束
             }//行为结束

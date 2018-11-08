@@ -63,7 +63,6 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// 是否收货
         /// </summary>
         public bool Flag { get; set; }
-        public bool SendType { get; set; }
         /// <summary>
         /// 运输方式
         /// </summary>

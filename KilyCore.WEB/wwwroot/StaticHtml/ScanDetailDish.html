@@ -213,7 +213,7 @@
                     url: "http://localhost:50039/api/RepastWeb/GetMobileScanInfo",
                     type: "get",
                     dataType: "json",
-                    data: { TimeSpan: new Date().getTime(), Id: "731E7064-922A-40CC-9559-7510B51D1F51" },
+                    data: { TimeSpan: new Date().getTime(), Id: option.GetParam("Id") },
                     async: false,
                     success: function (result) {
                         option.BindInfo(".content", result.data.Info);
