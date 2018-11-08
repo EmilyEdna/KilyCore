@@ -308,14 +308,6 @@ namespace KilyCore.Service.ServiceCore
         }
         #endregion
 
-
-
-        #region 编辑需要权限的
-        #endregion
-
-        #region 删除需要权限的
-        #endregion
-
         #region 编辑不需要权限的
         #region 企业资料
         /// <summary>
@@ -323,7 +315,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public string EditEnterprise(RequestEnterprise Param)
+        public string SaveEnterprise(RequestEnterprise Param)
         {
             Param.AuditType = AuditEnum.WaitAduit;
             EnterpriseInfo data = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
@@ -340,7 +332,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public string EditCompanyAccount(RequestEnterprise Param)
+        public string SaveCompanyAccount(RequestEnterprise Param)
         {
             EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
             info.PassWord = Param.PassWord;
@@ -353,18 +345,343 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public string EditCompanyArea(RequestEnterprise Param)
+        public string SaveCompanyArea(RequestEnterprise Param)
         {
             EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
             info.TypePath = Param.TypePath;
             return UpdateField(info, "TypePath") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         #endregion
+
+        #region 人员管理
+        /// <summary>
+        /// 编辑子账户
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveUser(RequestEnterpriseUser Param)
+        {
+            EnterpriseUser User = Param.MapToObj<RequestEnterpriseUser, EnterpriseUser>();
+            if (CompanyInfo() != null)
+                User.TypePath = CompanyInfo().TypePath;
+            else
+                User.TypePath = CompanyUser().TypePath;
+            if (Param.Id != Guid.Empty)
+            {
+                if (Update<EnterpriseUser, RequestEnterpriseUser>(User, Param))
+                    return ServiceMessage.UPDATESUCCESS;
+                else
+                    return ServiceMessage.UPDATEFAIL;
+            }
+            else
+            {
+                if (Insert<EnterpriseUser>(User))
+                    return ServiceMessage.INSERTSUCCESS;
+                else
+                    return ServiceMessage.INSERTFAIL;
+            }
+        }
+        #endregion
+
+        #region 权限角色
+        /// <summary>
+        /// 新增账户
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveRoleAuthor(RequestRoleAuthorWeb Param)
+        {
+            EnterpriseRoleAuthorWeb Author = Param.MapToEntity<EnterpriseRoleAuthorWeb>();
+            if (Insert<EnterpriseRoleAuthorWeb>(Author))
+                return ServiceMessage.INSERTSUCCESS;
+            else
+                return ServiceMessage.INSERTFAIL;
+        }
+        #endregion
+
+        #region 集团账户
+        /// <summary>
+        /// 编辑子账户
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveChildInfo(RequestEnterprise Param)
+        {
+            if (CompanyInfo() != null)
+            {
+                if (CompanyInfo().CompanyId != null)
+                    return "无权限创建，仅限总公司使用!";
+                EnterpriseInfo info = Param.MapToEntity<EnterpriseInfo>();
+                info.AuditType = AuditEnum.WaitAduit;
+                info.CompanyType = CompanyEnum.Other;
+                info.NatureAgent = 1;
+                info.TagCodeNum = 0;
+                return Insert(info) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            }
+            return "无权限创建!";
+        }
+        #endregion
+
+        #region 企业字典
+        /// <summary>
+        /// 编辑字典
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveDic(RequestEnterpriseDictionary Param)
+        {
+            EnterpriseDictionary dictionary = Param.MapToEntity<EnterpriseDictionary>();
+            if (Param.Id != Guid.Empty)
+            {
+                return Update<EnterpriseDictionary, RequestEnterpriseDictionary>(dictionary, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            }
+            else
+            {
+                return Insert<EnterpriseDictionary>(dictionary) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            }
+        }
+        #endregion
+
+        #region 升级续费
+        /// <summary>
+        /// 编辑续费
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveContinued(RequestEnterpriseContinued Param)
+        {
+            EnterpriseContinued continued = Param.MapToEntity<EnterpriseContinued>();
+            continued.AuditType = AuditEnum.WaitAduit;
+            return Insert<EnterpriseContinued>(continued) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 编辑升级
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveUpLevel(RequestEnterpriseUpLevel Param)
+        {
+            EnterpriseUpLevel level = Param.MapToEntity<EnterpriseUpLevel>();
+            level.AuditType = AuditEnum.WaitAduit;
+            return Insert<EnterpriseUpLevel>(level) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        #endregion
+
+        #region  内部文件
+        /// <summary>
+        /// 编辑文件
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveFile(RequestEnterpriseInsideFile Param)
+        {
+            EnterpriseInsideFile insideFile = Param.MapToEntity<EnterpriseInsideFile>();
+            if (Param.Id == Guid.Empty)
+                return Insert<EnterpriseInsideFile>(insideFile) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+                return Update<EnterpriseInsideFile, RequestEnterpriseInsideFile>(insideFile, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        #endregion
+
+        #region 设备管理
+        /// <summary>
+        /// 编辑设备
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveDevice(RequestEnterpriseDevice Param)
+        {
+            EnterpriseDevice device = Param.MapToEntity<EnterpriseDevice>();
+            return Insert<EnterpriseDevice>(device) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 编辑设备清洗
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveDeviceClean(RequestEnterpriseDeviceClean Param)
+        {
+            EnterpriseDeviceClean Clean = Param.MapToObj<RequestEnterpriseDeviceClean, EnterpriseDeviceClean>();
+            return Insert<EnterpriseDeviceClean>(Clean) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 编辑设备维护
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveDeviceFix(RequestEnterpriseDeviceFix Param)
+        {
+            EnterpriseDeviceFix Fix = Param.MapToObj<RequestEnterpriseDeviceFix, EnterpriseDeviceFix>();
+            return Insert<EnterpriseDeviceFix>(Fix) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        #endregion
+
+        #region 设施管理
+        /// <summary>
+        /// 编辑设施
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveFac(RequestEnterpriseFacilities Param)
+        {
+            EnterpriseFacilities facilities = Param.MapToEntity<EnterpriseFacilities>();
+            return Insert(facilities) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 编辑设施附加
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveFacAttach(RequestEnterpriseFacilitiesAttach Param)
+        {
+            EnterpriseFacilitiesAttach attach = Param.MapToEntity<EnterpriseFacilitiesAttach>();
+            return Insert<EnterpriseFacilitiesAttach>(attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        #endregion
+
+        #region 关键点控制
+        /// <summary>
+        /// 编辑指标
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveTarget(RequestEnterpriseTarget Param)
+        {
+            EnterpriseTarget target = Param.MapToEntity<EnterpriseTarget>();
+            return Insert<EnterpriseTarget>(target) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        #endregion
         #endregion
 
         #region 删除不需要权限的
+        #region 人员管理
+        /// <summary>
+        /// 删除子账号
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string DeleteUser(Guid Id)
+        {
+            if (Delete(ExpressionExtension.GetExpression<EnterpriseUser>("Id", Id, ExpressionEnum.Equals)))
+                return ServiceMessage.REMOVESUCCESS;
+            else
+                return ServiceMessage.REMOVEFAIL;
+        }
         #endregion
 
+        #region 权限角色
+        /// <summary>
+        /// 删除账户
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string DeleteRole(Guid Id)
+        {
+            if (Remove<EnterpriseRoleAuthorWeb>(t => t.Id == Id))
+                return ServiceMessage.REMOVESUCCESS;
+            else
+                return ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+
+        #region 企业字典
+        /// <summary>
+        /// 删除码表
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string DeleteDic(Guid Id)
+        {
+            return Remove<EnterpriseDictionary>(ExpressionExtension.GetExpression<EnterpriseDictionary>("Id", Id, ExpressionEnum.Equals)) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+
+        #region 内部文件
+        /// <summary>
+        /// 删除文件
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string DeleteFile(Guid Id)
+        {
+            return Remove<EnterpriseInsideFile>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+
+        #region 厂商管理
+        /// <summary>
+        /// 删除厂商
+        /// </summary>
+        /// <param name="Id"></param>
+        public string DeleteSeller(Guid Id)
+        {
+            return Delete<EnterpriseSeller>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+
+        #region 设备管理
+        /// <summary>
+        /// 删除设备
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string DeleteDevice(Guid Id)
+        {
+            return Delete<EnterpriseDevice>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 删除清洗记录
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string DeleteDeviceClean(Guid Id)
+        {
+            return Remove<EnterpriseDeviceClean>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 删除维护记录
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string DeleteDeviceFix(Guid Id)
+        {
+            return Remove<EnterpriseDeviceFix>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+
+        #region 设施管理
+        /// <summary>
+        /// 删除设施
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string DeleteFac(Guid Id)
+        {
+            return Delete<EnterpriseFacilities>(t => t.Id == Id) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 删除设施附加
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string DeleteFacAttach(Guid Id)
+        {
+            return Remove<EnterpriseFacilitiesAttach>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+
+        #region 关键点控制
+        /// <summary>
+        /// 删除指标
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string DeleteTarget(Guid Id)
+        {
+            return Delete<EnterpriseTarget>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+        #endregion
 
         #region 基础管理
         #region 企业资料
@@ -574,33 +891,6 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         /// <summary>
-        /// 编辑子账户
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditUser(RequestEnterpriseUser Param)
-        {
-            EnterpriseUser User = Param.MapToObj<RequestEnterpriseUser, EnterpriseUser>();
-            if (CompanyInfo() != null)
-                User.TypePath = CompanyInfo().TypePath;
-            else
-                User.TypePath = CompanyUser().TypePath;
-            if (Param.Id != Guid.Empty)
-            {
-                if (Update<EnterpriseUser, RequestEnterpriseUser>(User, Param))
-                    return ServiceMessage.UPDATESUCCESS;
-                else
-                    return ServiceMessage.UPDATEFAIL;
-            }
-            else
-            {
-                if (Insert<EnterpriseUser>(User))
-                    return ServiceMessage.INSERTSUCCESS;
-                else
-                    return ServiceMessage.INSERTFAIL;
-            }
-        }
-        /// <summary>
         /// 获取子账户详情
         /// </summary>
         /// <param name="Id"></param>
@@ -625,18 +915,6 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         /// <summary>
-        /// 删除子账号
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public string RemoveUser(Guid Id)
-        {
-            if (Delete(ExpressionExtension.GetExpression<EnterpriseUser>("Id", Id, ExpressionEnum.Equals)))
-                return ServiceMessage.REMOVESUCCESS;
-            else
-                return ServiceMessage.REMOVEFAIL;
-        }
-        /// <summary>
         /// 集团账户权限列表
         /// </summary>
         /// <returns></returns>
@@ -658,19 +936,6 @@ namespace KilyCore.Service.ServiceCore
 
         #region 权限角色
         /// <summary>
-        /// 新增账户
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditRoleAuthor(RequestRoleAuthorWeb Param)
-        {
-            EnterpriseRoleAuthorWeb Author = Param.MapToEntity<EnterpriseRoleAuthorWeb>();
-            if (Insert<EnterpriseRoleAuthorWeb>(Author))
-                return ServiceMessage.INSERTSUCCESS;
-            else
-                return ServiceMessage.INSERTFAIL;
-        }
-        /// <summary>
         /// 账户分页列表
         /// </summary>
         /// <param name="pageParam"></param>
@@ -691,18 +956,6 @@ namespace KilyCore.Service.ServiceCore
                 AuthorMenuPath = t.AuthorMenuPath
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
-        }
-        /// <summary>
-        /// 删除账户
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public string RemoveRole(Guid Id)
-        {
-            if (Remove<EnterpriseRoleAuthorWeb>(t => t.Id == Id))
-                return ServiceMessage.REMOVESUCCESS;
-            else
-                return ServiceMessage.REMOVEFAIL;
         }
         #endregion
 
@@ -726,26 +979,6 @@ namespace KilyCore.Service.ServiceCore
                     CompanyAddress = t.CompanyAddress,
                 }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
-        }
-        /// <summary>
-        /// 编辑子账户
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditChildInfo(RequestEnterprise Param)
-        {
-            if (CompanyInfo() != null)
-            {
-                if (CompanyInfo().CompanyId != null)
-                    return "无权限创建，仅限总公司使用!";
-                EnterpriseInfo info = Param.MapToEntity<EnterpriseInfo>();
-                info.AuditType = AuditEnum.WaitAduit;
-                info.CompanyType = CompanyEnum.Other;
-                info.NatureAgent = 1;
-                info.TagCodeNum = 0;
-                return Insert(info) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
-            }
-            return "无权限创建!";
         }
         #endregion
 
@@ -778,7 +1011,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="param"></param>
         /// <returns></returns>
-        public string EditEnterpriseIdent(RequestEnterpriseIdent param)
+        public string SaveEnterpriseIdent(RequestEnterpriseIdent param)
         {
             param.Id = Guid.NewGuid();
             param.IdentId = param.Id;
@@ -856,15 +1089,6 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         /// <summary>
-        /// 删除码表
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public string RemoveDic(Guid Id)
-        {
-            return Remove<EnterpriseDictionary>(ExpressionExtension.GetExpression<EnterpriseDictionary>("Id", Id, ExpressionEnum.Equals)) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
-        }
-        /// <summary>
         /// 字典详情
         /// </summary>
         /// <param name="Id"></param>
@@ -881,23 +1105,6 @@ namespace KilyCore.Service.ServiceCore
                 Remark = t.Remark
             }).FirstOrDefault();
             return data;
-        }
-        /// <summary>
-        /// 编辑字典
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditDic(RequestEnterpriseDictionary Param)
-        {
-            EnterpriseDictionary dictionary = Param.MapToEntity<EnterpriseDictionary>();
-            if (Param.Id != Guid.Empty)
-            {
-                return Update<EnterpriseDictionary, RequestEnterpriseDictionary>(dictionary, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
-            }
-            else
-            {
-                return Insert<EnterpriseDictionary>(dictionary) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
-            }
         }
         #endregion
 
@@ -920,28 +1127,6 @@ namespace KilyCore.Service.ServiceCore
                 VersionType = t.VersionType
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
-        }
-        /// <summary>
-        /// 编辑续费
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditContinued(RequestEnterpriseContinued Param)
-        {
-            EnterpriseContinued continued = Param.MapToEntity<EnterpriseContinued>();
-            continued.AuditType = AuditEnum.WaitAduit;
-            return Insert<EnterpriseContinued>(continued) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
-        }
-        /// <summary>
-        /// 编辑升级
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditUpLevel(RequestEnterpriseUpLevel Param)
-        {
-            EnterpriseUpLevel level = Param.MapToEntity<EnterpriseUpLevel>();
-            level.AuditType = AuditEnum.WaitAduit;
-            return Insert<EnterpriseUpLevel>(level) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         /// <summary>
         /// 续费记录
@@ -1093,28 +1278,6 @@ namespace KilyCore.Service.ServiceCore
                 FileContent = t.FileContent
             }).AsNoTracking().FirstOrDefault();
             return data;
-        }
-        /// <summary>
-        /// 删除文件
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public string RemoveFile(Guid Id)
-        {
-            return Remove<EnterpriseInsideFile>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
-        }
-        /// <summary>
-        /// 编辑文件
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditFile(RequestEnterpriseInsideFile Param)
-        {
-            EnterpriseInsideFile insideFile = Param.MapToEntity<EnterpriseInsideFile>();
-            if (Param.Id == Guid.Empty)
-                return Insert<EnterpriseInsideFile>(insideFile) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
-            else
-                return Update<EnterpriseInsideFile, RequestEnterpriseInsideFile>(insideFile, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         #endregion
         #endregion
@@ -2108,14 +2271,6 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         /// <summary>
-        /// 删除厂商
-        /// </summary>
-        /// <param name="Id"></param>
-        public string RemoveSeller(Guid Id)
-        {
-            return Delete<EnterpriseSeller>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
-        }
-        /// <summary>
         /// 编辑厂商
         /// </summary>
         /// <param name="Param"></param>
@@ -2421,25 +2576,6 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         /// <summary>
-        /// 编辑设备
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditDevice(RequestEnterpriseDevice Param)
-        {
-            EnterpriseDevice device = Param.MapToEntity<EnterpriseDevice>();
-            return Insert<EnterpriseDevice>(device) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
-        }
-        /// <summary>
-        /// 删除设备
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public string RemoveDevice(Guid Id)
-        {
-            return Delete<EnterpriseDevice>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
-        }
-        /// <summary>
         /// 设备列表
         /// </summary>
         /// <returns></returns>
@@ -2475,25 +2611,6 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         /// <summary>
-        /// 删除清洗记录
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public string RemoveDeviceClean(Guid Id)
-        {
-            return Remove<EnterpriseDeviceClean>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
-        }
-        /// <summary>
-        /// 编辑设备清洗
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EidtDeviceClean(RequestEnterpriseDeviceClean Param)
-        {
-            EnterpriseDeviceClean Clean = Param.MapToObj<RequestEnterpriseDeviceClean, EnterpriseDeviceClean>();
-            return Insert<EnterpriseDeviceClean>(Clean) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
-        }
-        /// <summary>
         /// 设备维护分页
         /// </summary>
         /// <param name="pageParam"></param>
@@ -2510,25 +2627,8 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
-        /// <summary>
-        /// 删除维护记录
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public string RemoveDeviceFix(Guid Id)
-        {
-            return Remove<EnterpriseDeviceFix>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
-        }
-        /// <summary>
-        /// 编辑设备维护
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EidtDeviceFix(RequestEnterpriseDeviceFix Param)
-        {
-            EnterpriseDeviceFix Fix = Param.MapToObj<RequestEnterpriseDeviceFix, EnterpriseDeviceFix>();
-            return Insert<EnterpriseDeviceFix>(Fix) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
-        }
+
+
         #endregion
         #region 产品系列
         /// <summary>
@@ -2618,25 +2718,6 @@ namespace KilyCore.Service.ServiceCore
                 TargetUnit = t.TargetUnit
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
-        }
-        /// <summary>
-        /// 编辑指标
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditTarget(RequestEnterpriseTarget Param)
-        {
-            EnterpriseTarget target = Param.MapToEntity<EnterpriseTarget>();
-            return Insert<EnterpriseTarget>(target) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
-        }
-        /// <summary>
-        /// 删除指标
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public string RemoveTarget(Guid Id)
-        {
-            return Delete<EnterpriseTarget>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         /// <summary>
         /// 获取指标列表
@@ -2829,25 +2910,6 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         /// <summary>
-        /// 编辑设施
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditFac(RequestEnterpriseFacilities Param)
-        {
-            EnterpriseFacilities facilities = Param.MapToEntity<EnterpriseFacilities>();
-            return Insert(facilities) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
-        }
-        /// <summary>
-        /// 删除设施
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public string RemoveFac(Guid Id)
-        {
-            return Delete<EnterpriseFacilities>(t => t.Id == Id) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
-        }
-        /// <summary>
         /// 设施附加分页
         /// </summary>
         /// <param name="pageParam"></param>
@@ -2862,25 +2924,6 @@ namespace KilyCore.Service.ServiceCore
                 CleanTime = t.CleanTime
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
-        }
-        /// <summary>
-        /// 编辑设施附加
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditFacAttach(RequestEnterpriseFacilitiesAttach Param)
-        {
-            EnterpriseFacilitiesAttach attach = Param.MapToEntity<EnterpriseFacilitiesAttach>();
-            return Insert<EnterpriseFacilitiesAttach>(attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
-        }
-        /// <summary>
-        /// 删除设施附加
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public string RemoveFacAttach(Guid Id)
-        {
-            return Remove<EnterpriseFacilitiesAttach>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         #endregion
         #endregion

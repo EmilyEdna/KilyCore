@@ -271,6 +271,287 @@ namespace KilyCore.Service.ServiceCore
         }
         #endregion
 
+        #region 编辑不需要权限的
+        #region 商家资料
+        /// <summary>
+        /// 编辑商家资料
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveMerchant(RequestMerchant Param)
+        {
+            Param.AuditType = AuditEnum.WaitAduit;
+            RepastInfo data = Kily.Set<RepastInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
+            Param.DingRoleId = data.DingRoleId;
+            Param.InfoId = data.InfoId;
+            RepastInfo info = Param.MapToEntity<RepastInfo>();
+            return Update<RepastInfo, RequestMerchant>(info, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        /// <summary>
+        /// 修改账号密码
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveMerchantAccount(RequestMerchant Param)
+        {
+            RepastInfo info = Kily.Set<RepastInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
+            info.Account = Param.Account;
+            info.PassWord = Param.PassWord;
+            List<String> Fields = new List<String>() { "Account", "PassWord" };
+            return UpdateField(info, null, Fields) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        /// <summary>
+        /// 修改所属区域
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveMerchantArea(RequestMerchant Param)
+        {
+            RepastInfo info = Kily.Set<RepastInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
+            info.TypePath = Param.TypePath;
+            return UpdateField(info, "TypePath") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        #endregion
+        #region 商家认证
+        /// <summary>
+        /// 商家认证
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveMerchantIdent(RequestRepastIdent Param)
+        {
+            Param.Id = Guid.NewGuid();
+            Param.IdentId = Param.Id;
+            Param.AuditType = AuditEnum.WaitAduit;
+            Param.IdentEndTime = Param.IdentStartTime.AddYears(Param.IdentYear);
+            RepastIdent ident = Param.MapToEntity<RepastIdent>();
+            RepastIdentAttach attach = Param.MapToEntity<RepastIdentAttach>();
+            return Insert<RepastIdent>(ident, false) && Insert<RepastIdentAttach>(attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        #endregion
+        #region 权限角色
+        /// <summary>
+        /// 新增账户
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveRoleAuthor(RequestRoleAuthorWeb Param)
+        {
+            RepastRoleAuthorWeb Author = Param.MapToEntity<RepastRoleAuthorWeb>();
+            if (Insert<RepastRoleAuthorWeb>(Author))
+                return ServiceMessage.INSERTSUCCESS;
+            else
+                return ServiceMessage.INSERTFAIL;
+        }
+        #endregion
+        #region 人员管理
+        /// <summary>
+        /// 编辑子账户
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveUser(RequestMerchantUser Param)
+        {
+            RepastInfoUser User = Param.MapToObj<RequestMerchantUser, RepastInfoUser>();
+            if (MerchantInfo() != null)
+                User.TypePath = MerchantInfo().TypePath;
+            else
+                User.TypePath = MerchantUser().TypePath;
+            if (Param.Id != Guid.Empty)
+            {
+                if (Update<RepastInfoUser, RequestMerchantUser>(User, Param))
+                    return ServiceMessage.UPDATESUCCESS;
+                else
+                    return ServiceMessage.UPDATEFAIL;
+            }
+            else
+            {
+                if (Insert<RepastInfoUser>(User))
+                    return ServiceMessage.INSERTSUCCESS;
+                else
+                    return ServiceMessage.INSERTFAIL;
+            }
+        }
+        #endregion
+        #region 集团账户
+        /// <summary>
+        /// 编辑子账户
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveChildInfo(RequestMerchant Param)
+        {
+            if (MerchantInfo() != null)
+            {
+                if (MerchantInfo().InfoId != null)
+                    return "无权限创建，仅限总公司使用!";
+                RepastInfo info = Param.MapToEntity<RepastInfo>();
+                info.AuditType = AuditEnum.WaitAduit;
+                info.DiningType = MerchantEnum.Normal;
+                return Insert(info) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            }
+            return "无权限创建!";
+        }
+        #endregion
+        #region 餐饮字典
+        /// <summary>
+        /// 编辑字典
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveDic(RequestRepastDictionary Param)
+        {
+            RepastDictionary dictionary = Param.MapToEntity<RepastDictionary>();
+            if (Param.Id != Guid.Empty)
+            {
+                return Update<RepastDictionary, RequestRepastDictionary>(dictionary, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            }
+            else
+            {
+                return Insert<RepastDictionary>(dictionary) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            }
+        }
+        #endregion
+        #region 升级续费
+        /// <summary>
+        /// 编辑续费
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveContinued(RequestRepastContinued Param)
+        {
+            RepastContinued continued = Param.MapToEntity<RepastContinued>();
+            continued.AuditType = AuditEnum.WaitAduit;
+            return Insert<RepastContinued>(continued) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 编辑升级
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveUpLevel(RequestRepastUpLevel Param)
+        {
+            RepastUpLevel level = Param.MapToEntity<RepastUpLevel>();
+            level.AuditType = AuditEnum.WaitAduit;
+            return Insert<RepastUpLevel>(level) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        #endregion
+        #region 供应商
+        /// <summary>
+        /// 编辑供应商
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveSupplier(RequestRepastSupplier Param)
+        {
+            RepastSupplier supplier = Param.MapToEntity<RepastSupplier>();
+            return Insert(supplier) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        #endregion
+        #region 实时监控
+        /// <summary>
+        /// 编辑视频
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveVideo(RequestRepastVideo Param)
+        {
+            RepastVideo video = Param.MapToEntity<RepastVideo>();
+            return Insert(video) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        #endregion
+        #region 菜品管理
+        /// <summary>
+        /// 编辑菜品
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveDish(RequestRepastDish Param)
+        {
+            RepastDish dish = Param.MapToEntity<RepastDish>();
+            if (Param.Id == Guid.Empty)
+                return Insert<RepastDish>(dish) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+                return Update<RepastDish, RequestRepastDish>(dish, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        #endregion
+        #endregion
+
+        #region 删除不需要权限的
+        #region 权限角色
+        /// <summary>
+        /// 删除账户
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string DeleteRole(Guid Id)
+        {
+            if (Remove<RepastRoleAuthorWeb>(t => t.Id == Id))
+                return ServiceMessage.REMOVESUCCESS;
+            else
+                return ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+        #region 人员管理
+        /// <summary>
+        /// 删除子账号
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string DeleteUser(Guid Id)
+        {
+            if (Delete(ExpressionExtension.GetExpression<RepastInfoUser>("Id", Id, ExpressionEnum.Equals)))
+                return ServiceMessage.REMOVESUCCESS;
+            else
+                return ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+        #region 餐饮字典
+        /// <summary>
+        /// 删除码表
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string DeleteDic(Guid Id)
+        {
+            return Remove<RepastDictionary>(ExpressionExtension.GetExpression<RepastDictionary>("Id", Id, ExpressionEnum.Equals)) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+        #region 供应商
+        /// <summary>
+        /// 删除供应商
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string DeleteSupplier(Guid Id)
+        {
+            return Delete(ExpressionExtension.GetExpression<RepastSupplier>("Id", Id, ExpressionEnum.Equals)) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+        #region 实时监控
+        /// <summary>
+        /// 删除视频
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string DeleteVideo(Guid Id)
+        {
+            return Remove<RepastVideo>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+        #region 菜品管理
+        /// <summary>
+        /// 删除菜品
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string DeleteDish(Guid Id)
+        {
+            return Delete(ExpressionExtension.GetExpression<RepastDish>("Id", Id, ExpressionEnum.Equals)) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+        #endregion
+
         #region 基础管理
         #region 商家资料
         /// <summary>
@@ -329,44 +610,6 @@ namespace KilyCore.Service.ServiceCore
                     Remark = t.Remark
                 }).FirstOrDefault();
             return data;
-        }
-        /// <summary>
-        /// 编辑商家资料
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditMerchant(RequestMerchant Param)
-        {
-            Param.AuditType = AuditEnum.WaitAduit;
-            RepastInfo data = Kily.Set<RepastInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
-            Param.DingRoleId = data.DingRoleId;
-            Param.InfoId = data.InfoId;
-            RepastInfo info = Param.MapToEntity<RepastInfo>();
-            return Update<RepastInfo, RequestMerchant>(info, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
-        }
-        /// <summary>
-        /// 修改账号密码
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditMerchantAccount(RequestMerchant Param)
-        {
-            RepastInfo info = Kily.Set<RepastInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
-            info.Account = Param.Account;
-            info.PassWord = Param.PassWord;
-            List<String> Fields = new List<String>() { "Account", "PassWord" };
-            return UpdateField(info, null, Fields) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
-        }
-        /// <summary>
-        /// 修改所属区域
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditMerchantArea(RequestMerchant Param)
-        {
-            RepastInfo info = Kily.Set<RepastInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
-            info.TypePath = Param.TypePath;
-            return UpdateField(info, "TypePath") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         /// <summary>
         /// 保存合同
@@ -502,36 +745,8 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
-        /// <summary>
-        /// 商家认证
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditMerchantIdent(RequestRepastIdent Param)
-        {
-            Param.Id = Guid.NewGuid();
-            Param.IdentId = Param.Id;
-            Param.AuditType = AuditEnum.WaitAduit;
-            Param.IdentEndTime = Param.IdentStartTime.AddYears(Param.IdentYear);
-            RepastIdent ident = Param.MapToEntity<RepastIdent>();
-            RepastIdentAttach attach = Param.MapToEntity<RepastIdentAttach>();
-            return Insert<RepastIdent>(ident, false) && Insert<RepastIdentAttach>(attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
-        }
         #endregion
         #region 权限角色
-        /// <summary>
-        /// 新增账户
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditRoleAuthor(RequestRoleAuthorWeb Param)
-        {
-            RepastRoleAuthorWeb Author = Param.MapToEntity<RepastRoleAuthorWeb>();
-            if (Insert<RepastRoleAuthorWeb>(Author))
-                return ServiceMessage.INSERTSUCCESS;
-            else
-                return ServiceMessage.INSERTFAIL;
-        }
         /// <summary>
         /// 账户分页列表
         /// </summary>
@@ -553,18 +768,6 @@ namespace KilyCore.Service.ServiceCore
                 AuthorMenuPath = t.AuthorMenuPath
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
-        }
-        /// <summary>
-        /// 删除账户
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public string RemoveRole(Guid Id)
-        {
-            if (Remove<RepastRoleAuthorWeb>(t => t.Id == Id))
-                return ServiceMessage.REMOVESUCCESS;
-            else
-                return ServiceMessage.REMOVEFAIL;
         }
         /// <summary>
         /// 集团账户权限列表
@@ -612,33 +815,6 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         /// <summary>
-        /// 编辑子账户
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditUser(RequestMerchantUser Param)
-        {
-            RepastInfoUser User = Param.MapToObj<RequestMerchantUser, RepastInfoUser>();
-            if (MerchantInfo() != null)
-                User.TypePath = MerchantInfo().TypePath;
-            else
-                User.TypePath = MerchantUser().TypePath;
-            if (Param.Id != Guid.Empty)
-            {
-                if (Update<RepastInfoUser, RequestMerchantUser>(User, Param))
-                    return ServiceMessage.UPDATESUCCESS;
-                else
-                    return ServiceMessage.UPDATEFAIL;
-            }
-            else
-            {
-                if (Insert<RepastInfoUser>(User))
-                    return ServiceMessage.INSERTSUCCESS;
-                else
-                    return ServiceMessage.INSERTFAIL;
-            }
-        }
-        /// <summary>
         /// 获取子账户详情
         /// </summary>
         /// <param name="Id"></param>
@@ -661,18 +837,6 @@ namespace KilyCore.Service.ServiceCore
                 PassWord = t.PassWord
             }).AsNoTracking().FirstOrDefault();
             return data;
-        }
-        /// <summary>
-        /// 删除子账号
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public string RemoveUser(Guid Id)
-        {
-            if (Delete(ExpressionExtension.GetExpression<RepastInfoUser>("Id", Id, ExpressionEnum.Equals)))
-                return ServiceMessage.REMOVESUCCESS;
-            else
-                return ServiceMessage.REMOVEFAIL;
         }
         /// <summary>
         /// 人员列表
@@ -713,24 +877,6 @@ namespace KilyCore.Service.ServiceCore
                }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
-        /// <summary>
-        /// 编辑子账户
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditChildInfo(RequestMerchant Param)
-        {
-            if (MerchantInfo() != null)
-            {
-                if (MerchantInfo().InfoId != null)
-                    return "无权限创建，仅限总公司使用!";
-                RepastInfo info = Param.MapToEntity<RepastInfo>();
-                info.AuditType = AuditEnum.WaitAduit;
-                info.DiningType = MerchantEnum.Normal;
-                return Insert(info) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
-            }
-            return "无权限创建!";
-        }
         #endregion
         #region 餐饮字典
         /// <summary>
@@ -759,15 +905,6 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         /// <summary>
-        /// 删除码表
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public string RemoveDic(Guid Id)
-        {
-            return Remove<RepastDictionary>(ExpressionExtension.GetExpression<RepastDictionary>("Id", Id, ExpressionEnum.Equals)) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
-        }
-        /// <summary>
         /// 字典详情
         /// </summary>
         /// <param name="Id"></param>
@@ -785,23 +922,7 @@ namespace KilyCore.Service.ServiceCore
             }).FirstOrDefault();
             return data;
         }
-        /// <summary>
-        /// 编辑字典
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditDic(RequestRepastDictionary Param)
-        {
-            RepastDictionary dictionary = Param.MapToEntity<RepastDictionary>();
-            if (Param.Id != Guid.Empty)
-            {
-                return Update<RepastDictionary, RequestRepastDictionary>(dictionary, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
-            }
-            else
-            {
-                return Insert<RepastDictionary>(dictionary) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
-            }
-        }
+
         #endregion
         #region 升级续费
         /// <summary>
@@ -822,28 +943,6 @@ namespace KilyCore.Service.ServiceCore
                 VersionType = t.VersionType
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
-        }
-        /// <summary>
-        /// 编辑续费
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditContinued(RequestRepastContinued Param)
-        {
-            RepastContinued continued = Param.MapToEntity<RepastContinued>();
-            continued.AuditType = AuditEnum.WaitAduit;
-            return Insert<RepastContinued>(continued) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
-        }
-        /// <summary>
-        /// 编辑升级
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditUpLevel(RequestRepastUpLevel Param)
-        {
-            RepastUpLevel level = Param.MapToEntity<RepastUpLevel>();
-            level.AuditType = AuditEnum.WaitAduit;
-            return Insert<RepastUpLevel>(level) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         /// <summary>
         /// 续费记录
@@ -977,25 +1076,6 @@ namespace KilyCore.Service.ServiceCore
                 RunCard = t.RunCard
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
-        }
-        /// <summary>
-        /// 删除供应商
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public string RemoveSupplier(Guid Id)
-        {
-            return Delete(ExpressionExtension.GetExpression<RepastSupplier>("Id", Id, ExpressionEnum.Equals)) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
-        }
-        /// <summary>
-        /// 编辑供应商
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditSupplier(RequestRepastSupplier Param)
-        {
-            RepastSupplier supplier = Param.MapToEntity<RepastSupplier>();
-            return Insert(supplier) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         /// <summary>
         /// 供应商列表
@@ -1185,25 +1265,6 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
-        /// <summary>
-        /// 编辑视频
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditVideo(RequestRepastVideo Param)
-        {
-            RepastVideo video = Param.MapToEntity<RepastVideo>();
-            return Insert(video) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
-        }
-        /// <summary>
-        /// 删除视频
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public string RemoveVideo(Guid Id)
-        {
-            return Remove<RepastVideo>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
-        }
         #endregion
         #endregion
 
@@ -1254,28 +1315,6 @@ namespace KilyCore.Service.ServiceCore
                 Taste = t.Taste
             }).FirstOrDefault();
             return data;
-        }
-        /// <summary>
-        /// 删除菜品
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public string RemoveDish(Guid Id)
-        {
-            return Delete(ExpressionExtension.GetExpression<RepastDish>("Id", Id, ExpressionEnum.Equals)) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
-        }
-        /// <summary>
-        /// 编辑菜品
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditDish(RequestRepastDish Param)
-        {
-            RepastDish dish = Param.MapToEntity<RepastDish>();
-            if (Param.Id == Guid.Empty)
-                return Insert<RepastDish>(dish) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
-            else
-                return Update<RepastDish, RequestRepastDish>(dish, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         #endregion
 

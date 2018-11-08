@@ -54,7 +54,7 @@
                 TableEvents: {
                     "click .del": function (event, val, row, index) {
                         controller.ajax({
-                            url: "RepastWeb/RemoveRole",
+                            url: "RepastWeb/DeleteRole",
                             data: { Id: row.Id },
                             type: "post",
                             success: function (result)
@@ -122,7 +122,7 @@
         </div>
         <div id="tab-2" class="tab-pane">
             <div class="panel-body">
-                <form method="post" class="form-horizontal" action="RepastWeb/EditRoleAuthor" id="Edit">
+                <form method="post" class="form-horizontal" action="RepastWeb/SaveRoleAuthor" id="Edit">
                     <!--名称-->
                     <div class="form-group">
                         <label class="col-sm-2 control-label">请输入角色账户名称</label>

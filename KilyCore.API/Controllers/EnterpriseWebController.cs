@@ -98,30 +98,30 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditEnterprise")]
-        public ObjectResultEx EditEnterprise(RequestEnterprise Param)
+        [HttpPost("SaveEnterprise")]
+        public ObjectResultEx SaveEnterprise(RequestEnterprise Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.EditEnterprise(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.SaveEnterprise(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 修改账号
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditCompanyAccount")]
-        public ObjectResultEx EditCompanyAccount(RequestEnterprise Param)
+        [HttpPost("SaveCompanyAccount")]
+        public ObjectResultEx SaveCompanyAccount(RequestEnterprise Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.EditCompanyAccount(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.SaveCompanyAccount(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 完善区域
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditCompanyArea")]
-        public ObjectResultEx EditCompanyArea(RequestEnterprise Param)
+        [HttpPost("SaveCompanyArea")]
+        public ObjectResultEx SaveCompanyArea(RequestEnterprise Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.EditCompanyArea(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.SaveCompanyArea(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 保存合同和缴费凭证
@@ -152,10 +152,10 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditUser")]
-        public ObjectResultEx EditUser(RequestEnterpriseUser Param)
+        [HttpPost("SaveUser")]
+        public ObjectResultEx SaveUser(RequestEnterpriseUser Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.EditUser(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.SaveUser(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 获取用户详情
@@ -172,10 +172,10 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("RemoveUser")]
-        public ObjectResultEx RemoveUser(SimpleParam<Guid> Param)
+        [HttpPost("DeleteUser")]
+        public ObjectResultEx DeleteUser(SimpleParam<Guid> Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.RemoveUser(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.DeleteUser(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 集团账户权限列表
@@ -201,10 +201,10 @@ namespace KilyCore.API.Controllers
         /// 新增账户
         /// </summary>
         /// <returns></returns>
-        [HttpPost("EditRoleAuthor")]
-        public ObjectResultEx EditRoleAuthor(RequestRoleAuthorWeb Param)
+        [HttpPost("SaveRoleAuthor")]
+        public ObjectResultEx SaveRoleAuthor(RequestRoleAuthorWeb Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.EditRoleAuthor(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.SaveRoleAuthor(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 账户分页列表
@@ -221,10 +221,10 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("RemoveRole")]
-        public ObjectResultEx RemoveRole(SimpleParam<Guid> Param)
+        [HttpPost("DeleteRole")]
+        public ObjectResultEx DeleteRole(SimpleParam<Guid> Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.RemoveRole(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.DeleteRole(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 集团账户
@@ -243,10 +243,10 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditChildInfo")]
-        public ObjectResultEx EditChildInfo(RequestEnterprise Param)
+        [HttpPost("SaveChildInfo")]
+        public ObjectResultEx SaveChildInfo(RequestEnterprise Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.EditChildInfo(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.SaveChildInfo(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 企业认证
@@ -254,10 +254,10 @@ namespace KilyCore.API.Controllers
         /// 企业认证
         /// </summary>
         /// <returns></returns>
-        [HttpPost("EditEnterpriseIdent")]
-        public ObjectResultEx EditEnterpriseIdent(RequestEnterpriseIdent Param)
+        [HttpPost("SaveEnterpriseIdent")]
+        public ObjectResultEx SaveEnterpriseIdent(RequestEnterpriseIdent Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.EditEnterpriseIdent(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.SaveEnterpriseIdent(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 认证分页
@@ -286,10 +286,10 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("RemoveDic")]
-        public ObjectResultEx RemoveDic(SimpleParam<Guid> Param)
+        [HttpPost("DeleteDic")]
+        public ObjectResultEx DeleteDic(SimpleParam<Guid> Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.RemoveDic(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.DeleteDic(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 字典详情
@@ -306,10 +306,10 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditDic")]
-        public ObjectResultEx EditDic(RequestEnterpriseDictionary Param)
+        [HttpPost("SaveDic")]
+        public ObjectResultEx SaveDic(RequestEnterpriseDictionary Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.EditDic(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.SaveDic(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 升级续费
@@ -328,20 +328,20 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditContinued")]
-        public ObjectResultEx EditContinued(RequestEnterpriseContinued Param)
+        [HttpPost("SaveContinued")]
+        public ObjectResultEx SaveContinued(RequestEnterpriseContinued Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.EditContinued(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.SaveContinued(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 编辑升级
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditUpLevel")]
-        public ObjectResultEx EditUpLevel(RequestEnterpriseUpLevel Param)
+        [HttpPost("SaveUpLevel")]
+        public ObjectResultEx SaveUpLevel(RequestEnterpriseUpLevel Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.EditUpLevel(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.SaveUpLevel(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 续费记录
@@ -401,20 +401,20 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("RemoveFile")]
-        public ObjectResultEx RemoveFile(SimpleParam<Guid> Param)
+        [HttpPost("DeleteFile")]
+        public ObjectResultEx DeleteFile(SimpleParam<Guid> Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.RemoveFile(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.DeleteFile(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 编辑文件
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditFile")]
-        public ObjectResultEx EditFile(RequestEnterpriseInsideFile Param)
+        [HttpPost("SaveFile")]
+        public ObjectResultEx SaveFile(RequestEnterpriseInsideFile Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.EditFile(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.SaveFile(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #endregion
@@ -840,10 +840,10 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("RemoveSeller")]
-        public ObjectResultEx RemoveSeller(SimpleParam<Guid> Param)
+        [HttpPost("DeleteSeller")]
+        public ObjectResultEx DeleteSeller(SimpleParam<Guid> Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.RemoveSeller(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.DeleteSeller(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 编辑厂商
@@ -1024,60 +1024,60 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditDevice")]
-        public ObjectResultEx EditDevice(RequestEnterpriseDevice Param)
+        [HttpPost("SaveDevice")]
+        public ObjectResultEx SaveDevice(RequestEnterpriseDevice Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.EditDevice(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.SaveDevice(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 编辑设备清洗
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EidtDeviceClean")]
-        public ObjectResultEx EidtDeviceClean(RequestEnterpriseDeviceClean Param)
+        [HttpPost("SaveDeviceClean")]
+        public ObjectResultEx SaveDeviceClean(RequestEnterpriseDeviceClean Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.EidtDeviceClean(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.SaveDeviceClean(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 编辑设备维护
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EidtDeviceFix")]
-        public ObjectResultEx EidtDeviceFix(RequestEnterpriseDeviceFix Param)
+        [HttpPost("SaveDeviceFix")]
+        public ObjectResultEx SaveDeviceFix(RequestEnterpriseDeviceFix Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.EidtDeviceFix(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.SaveDeviceFix(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 删除设备
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        [HttpPost("RemoveDevice")]
-        public ObjectResultEx RemoveDevice(SimpleParam<Guid> Param)
+        [HttpPost("DeleteDevice")]
+        public ObjectResultEx DeleteDevice(SimpleParam<Guid> Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.RemoveDevice(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.DeleteDevice(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 删除清洗记录
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        [HttpPost("RemoveDeviceClean")]
-        public ObjectResultEx RemoveDeviceClean(SimpleParam<Guid> Param)
+        [HttpPost("DeleteDeviceClean")]
+        public ObjectResultEx DeleteDeviceClean(SimpleParam<Guid> Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.RemoveDeviceClean(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.DeleteDeviceClean(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 删除维护记录
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        [HttpPost("RemoveDeviceFix")]
-        public ObjectResultEx RemoveDeviceFix(SimpleParam<Guid> Param)
+        [HttpPost("DeleteDeviceFix")]
+        public ObjectResultEx DeleteDeviceFix(SimpleParam<Guid> Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.RemoveDeviceFix(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.DeleteDeviceFix(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 指标把控
@@ -1096,10 +1096,10 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        [HttpPost("RemoveTarget")]
-        public ObjectResultEx RemoveTarget(SimpleParam<Guid> Param)
+        [HttpPost("DeleteTarget")]
+        public ObjectResultEx DeleteTarget(SimpleParam<Guid> Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.RemoveTarget(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.DeleteTarget(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 获取指标列表
@@ -1115,10 +1115,10 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditTarget")]
-        public ObjectResultEx EditTarget(RequestEnterpriseTarget Param)
+        [HttpPost("SaveTarget")]
+        public ObjectResultEx SaveTarget(RequestEnterpriseTarget Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.EditTarget(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.SaveTarget(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 产品系列
@@ -1248,20 +1248,20 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditFac")]
-        public ObjectResultEx EditFac(RequestEnterpriseFacilities Param)
+        [HttpPost("SaveFac")]
+        public ObjectResultEx SaveFac(RequestEnterpriseFacilities Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.EditFac(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.SaveFac(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 删除设施
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        [HttpPost("RemoveFac")]
-        public ObjectResultEx RemoveFac(SimpleParam<Guid> Param)
+        [HttpPost("DeleteFac")]
+        public ObjectResultEx DeleteFac(SimpleParam<Guid> Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.RemoveFac(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.DeleteFac(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 设施附加分页
@@ -1278,20 +1278,20 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditFacAttach")]
-        public ObjectResultEx EditFacAttach(RequestEnterpriseFacilitiesAttach Param)
+        [HttpPost("SaveFacAttach")]
+        public ObjectResultEx SaveFacAttach(RequestEnterpriseFacilitiesAttach Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.EditFacAttach(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.SaveFacAttach(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 删除设施附加
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        [HttpPost("RemoveFacAttach")]
-        public ObjectResultEx RemoveFacAttach(SimpleParam<Guid> Param)
+        [HttpPost("DeleteFacAttach")]
+        public ObjectResultEx DeleteFacAttach(SimpleParam<Guid> Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.RemoveFacAttach(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.DeleteFacAttach(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #endregion

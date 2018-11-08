@@ -33,44 +33,44 @@ namespace KilyCore.Service.IServiceCore
         #region 企业信息
         PagedResult<ResponseEnterprise> GetInfoPage(PageParamList<RequestEnterprise> pageParam);
         ResponseEnterprise GetEnterpriseInfo(Guid Id);
-        String EditEnterprise(RequestEnterprise param);
-        String EditCompanyAccount(RequestEnterprise Param);
-        String EditCompanyArea(RequestEnterprise Param);
+        String SaveEnterprise(RequestEnterprise param);
+        String SaveCompanyAccount(RequestEnterprise Param);
+        String SaveCompanyArea(RequestEnterprise Param);
         #endregion
         #region 保存合同和缴费凭证
         String SaveContract(RequestStayContract Param);
         #endregion
         #region 人员管理
         PagedResult<ResponseEnterpriseUser> GetUserPage(PageParamList<RequestEnterpriseUser> pageParam);
-        String EditUser(RequestEnterpriseUser Param);
-        String RemoveUser(Guid Id);
+        String SaveUser(RequestEnterpriseUser Param);
+        String DeleteUser(Guid Id);
         ResponseEnterpriseUser GetUserDetail(Guid Id);
         IList<ResponseRoleAuthorWeb> GetRoleAuthorList();
         IList<ResponseEnterpriseUser> GetUserList();
         #endregion
         #region 权限角色
-        String EditRoleAuthor(RequestRoleAuthorWeb Param);
+        String SaveRoleAuthor(RequestRoleAuthorWeb Param);
         PagedResult<ResponseRoleAuthorWeb> GetRoleAuthorPage(PageParamList<RequestRoleAuthorWeb> pageParam);
-        String RemoveRole(Guid Id);
+        String DeleteRole(Guid Id);
         #endregion
         #region 集团账户
         PagedResult<ResponseEnterprise> GetChildInfo(PageParamList<RequestEnterprise> pageParam);
-        String EditChildInfo(RequestEnterprise Param);
+        String SaveChildInfo(RequestEnterprise Param);
         #endregion
         #region 企业认证
-        String EditEnterpriseIdent(RequestEnterpriseIdent param);
+        String SaveEnterpriseIdent(RequestEnterpriseIdent param);
         PagedResult<ResponseEnterpriseIdent> GetIndentPage(PageParamList<RequestEnterpriseIdent> pageParam);
         #endregion
         #region 企业字典
         PagedResult<ResponseEnterpriseDictionary> GetDicPage(PageParamList<RequestEnterpriseDictionary> pageParam);
-        String RemoveDic(Guid Id);
+        String DeleteDic(Guid Id);
         ResponseEnterpriseDictionary GetDicDetail(Guid Id);
-        String EditDic(RequestEnterpriseDictionary Param);
+        String SaveDic(RequestEnterpriseDictionary Param);
         #endregion
         #region 升级续费
         PagedResult<ResponseEnterpriseLevelUp> GetLvPage(PageParamList<RequestEnterpriseLevelUp> pageParam);
-        String EditContinued(RequestEnterpriseContinued Param);
-        String EditUpLevel(RequestEnterpriseUpLevel Param);
+        String SaveContinued(RequestEnterpriseContinued Param);
+        String SaveUpLevel(RequestEnterpriseUpLevel Param);
         PagedResult<ResponseEnterpriseContinued> GetContinuedPage(PageParamList<RequestEnterpriseContinued> pageParam);
         PagedResult<ResponseEnterpriseUpLevel> GetUpLevelPage(PageParamList<RequestEnterpriseUpLevel> pageParam);
         String AuditContinuedAndLevel(Guid Id, bool Param);
@@ -78,8 +78,8 @@ namespace KilyCore.Service.IServiceCore
         #region 内部文件
         PagedResult<ResponseEnterpriseInsideFile> GetFilePage(PageParamList<RequestEnterpriseInsideFile> pageParam);
         ResponseEnterpriseInsideFile GetFileDetail(Guid Id);
-        String RemoveFile(Guid Id);
-        String EditFile(RequestEnterpriseInsideFile Param);
+        String DeleteFile(Guid Id);
+        String SaveFile(RequestEnterpriseInsideFile Param);
         #endregion
         #endregion
         #region 成长档案
@@ -139,7 +139,7 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 厂商管理
         PagedResult<ResponseEnterpriseSeller> GetSellerPage(PageParamList<RequestEnterpriseSeller> pageParam);
-        String RemoveSeller(Guid Id);
+        String DeleteSeller(Guid Id);
         String EditSeller(RequestEnterpriseSeller Param);
         ResponseEnterpriseSeller GetSellerDetail(Guid Id);
         #endregion
@@ -168,17 +168,17 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseEnterpriseDeviceClean> GetDeviceCleanPage(PageParamList<RequestEnterpriseDeviceClean> pageParam);
         PagedResult<ResponseEnterpriseDeviceFix> GetDeviceFixPage(PageParamList<RequestEnterpriseDeviceFix> pageParam);
         IList<ResponseEnterpriseDevice> GetDeviceList();
-        String EditDevice(RequestEnterpriseDevice Param);
-        String EidtDeviceClean(RequestEnterpriseDeviceClean Param);
-        String EidtDeviceFix(RequestEnterpriseDeviceFix Param);
-        String RemoveDevice(Guid Id);
-        String RemoveDeviceClean(Guid Id);
-        String RemoveDeviceFix(Guid Id);
+        String SaveDevice(RequestEnterpriseDevice Param);
+        String SaveDeviceClean(RequestEnterpriseDeviceClean Param);
+        String SaveDeviceFix(RequestEnterpriseDeviceFix Param);
+        String DeleteDevice(Guid Id);
+        String DeleteDeviceClean(Guid Id);
+        String DeleteDeviceFix(Guid Id);
         #endregion
         #region 指标把控
         PagedResult<ResponseEnterpriseTarget> GetTargetPage(PageParamList<RequestEnterpriseTarget> pageParam);
-        String RemoveTarget(Guid Id);
-        String EditTarget(RequestEnterpriseTarget Param);
+        String DeleteTarget(Guid Id);
+        String SaveTarget(RequestEnterpriseTarget Param);
         IList<ResponseEnterpriseTarget> GetTargetList();
         #endregion
         #region 产品系列
@@ -198,11 +198,11 @@ namespace KilyCore.Service.IServiceCore
         #region 设施管理
         IList<ResponseEnterpriseFacilities> GetFacList();
         PagedResult<ResponseEnterpriseFacilities> GetFacPage(PageParamList<RequestEnterpriseFacilities> pageParam);
-        String EditFac(RequestEnterpriseFacilities Param);
-        String RemoveFac(Guid Id);
+        String SaveFac(RequestEnterpriseFacilities Param);
+        String DeleteFac(Guid Id);
         PagedResult<ResponseEnterpriseFacilitiesAttach> GetFacAttachPage(PageParamList<RequestEnterpriseFacilitiesAttach> pageParam);
-        String EditFacAttach(RequestEnterpriseFacilitiesAttach Param);
-        String RemoveFacAttach(Guid Id);
+        String SaveFacAttach(RequestEnterpriseFacilitiesAttach Param);
+        String DeleteFacAttach(Guid Id);
         #endregion
         #endregion
         #region 产品管理

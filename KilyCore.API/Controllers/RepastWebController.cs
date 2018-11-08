@@ -72,10 +72,10 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditMerchant")]
-        public ObjectResultEx EditMerchant(RequestMerchant Param)
+        [HttpPost("SaveMerchant")]
+        public ObjectResultEx SaveMerchant(RequestMerchant Param)
         {
-            return ObjectResultEx.Instance(RepastWebService.EditMerchant(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.SaveMerchant(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 保存合同
@@ -92,20 +92,20 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditMerchantAccount")]
-        public ObjectResultEx EditMerchantAccount(RequestMerchant Param)
+        [HttpPost("SaveMerchantAccount")]
+        public ObjectResultEx SaveMerchantAccount(RequestMerchant Param)
         {
-            return ObjectResultEx.Instance(RepastWebService.EditMerchantAccount(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.SaveMerchantAccount(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 修改区域
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditMerchantArea")]
-        public ObjectResultEx EditMerchantArea(RequestMerchant Param)
+        [HttpPost("SaveMerchantArea")]
+        public ObjectResultEx SaveMerchantArea(RequestMerchant Param)
         {
-            return ObjectResultEx.Instance(RepastWebService.EditMerchantArea(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.SaveMerchantArea(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 获取合同审核记录
@@ -124,10 +124,10 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditMerchantIdent")]
-        public ObjectResultEx EditMerchantIdent(RequestRepastIdent Param)
+        [HttpPost("SaveMerchantIdent")]
+        public ObjectResultEx SaveMerchantIdent(RequestRepastIdent Param)
         {
-            return ObjectResultEx.Instance(RepastWebService.EditMerchantIdent(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.SaveMerchantIdent(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 企业认证分页
@@ -146,10 +146,10 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditRoleAuthor")]
-        public ObjectResultEx EditRoleAuthor(RequestRoleAuthorWeb Param)
+        [HttpPost("SaveRoleAuthor")]
+        public ObjectResultEx SaveRoleAuthor(RequestRoleAuthorWeb Param)
         {
-            return ObjectResultEx.Instance(RepastWebService.EditRoleAuthor(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.SaveRoleAuthor(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 账户分页列表
@@ -166,10 +166,10 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        [HttpPost("RemoveRole")]
-        public ObjectResultEx RemoveRole(SimpleParam<Guid> Param)
+        [HttpPost("DeleteRole")]
+        public ObjectResultEx DeleteRole(SimpleParam<Guid> Param)
         {
-            return ObjectResultEx.Instance(RepastWebService.RemoveRole(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.DeleteRole(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 获取权限角色
@@ -197,10 +197,10 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditUser")]
-        public ObjectResultEx EditUser(RequestMerchantUser Param)
+        [HttpPost("SaveUser")]
+        public ObjectResultEx SaveUser(RequestMerchantUser Param)
         {
-            return ObjectResultEx.Instance(RepastWebService.EditUser(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.SaveUser(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 获取子账户详情
@@ -217,10 +217,10 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        [HttpPost("RemoveUser")]
-        public ObjectResultEx RemoveUser(SimpleParam<Guid> Param)
+        [HttpPost("DeleteUser")]
+        public ObjectResultEx DeleteUser(SimpleParam<Guid> Param)
         {
-            return ObjectResultEx.Instance(RepastWebService.RemoveUser(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.DeleteUser(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 人员列表
@@ -248,10 +248,10 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditChildInfo")]
-        public ObjectResultEx EditChildInfo(RequestMerchant Param)
+        [HttpPost("SaveChildInfo")]
+        public ObjectResultEx SaveChildInfo(RequestMerchant Param)
         {
-            return ObjectResultEx.Instance(RepastWebService.EditChildInfo(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.SaveChildInfo(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 餐饮字典
@@ -270,10 +270,10 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        [HttpPost("RemoveDic")]
-        public ObjectResultEx RemoveDic(SimpleParam<Guid> Param)
+        [HttpPost("DeleteDic")]
+        public ObjectResultEx DeleteDic(SimpleParam<Guid> Param)
         {
-            return ObjectResultEx.Instance(RepastWebService.RemoveDic(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.DeleteDic(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 字典详情
@@ -290,10 +290,10 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditDic")]
-        public ObjectResultEx EditDic(RequestRepastDictionary Param)
+        [HttpPost("SaveDic")]
+        public ObjectResultEx SaveDic(RequestRepastDictionary Param)
         {
-            return ObjectResultEx.Instance(RepastWebService.EditDic(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.SaveDic(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 升级续费
@@ -312,20 +312,20 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditContinued")]
-        public ObjectResultEx EditContinued(RequestRepastContinued Param)
+        [HttpPost("SaveContinued")]
+        public ObjectResultEx SaveContinued(RequestRepastContinued Param)
         {
-            return ObjectResultEx.Instance(RepastWebService.EditContinued(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.SaveContinued(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 编辑升级
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditUpLevel")]
-        public ObjectResultEx EditUpLevel(RequestRepastUpLevel Param)
+        [HttpPost("SaveUpLevel")]
+        public ObjectResultEx SaveUpLevel(RequestRepastUpLevel Param)
         {
-            return ObjectResultEx.Instance(RepastWebService.EditUpLevel(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.SaveUpLevel(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 续费记录
@@ -378,20 +378,20 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        [HttpPost("RemoveSupplier")]
-        public ObjectResultEx RemoveSupplier(SimpleParam<Guid> Param)
+        [HttpPost("DeleteSupplier")]
+        public ObjectResultEx DeleteSupplier(SimpleParam<Guid> Param)
         {
-            return ObjectResultEx.Instance(RepastWebService.RemoveSupplier(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.DeleteSupplier(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 编辑供应商
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditSupplier")]
-        public ObjectResultEx EditSupplier(RequestRepastSupplier Param)
+        [HttpPost("SaveSupplier")]
+        public ObjectResultEx SaveSupplier(RequestRepastSupplier Param)
         {
-            return ObjectResultEx.Instance(RepastWebService.EditSupplier(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.SaveSupplier(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 供应商列表
@@ -503,20 +503,20 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditVideo")]
-        public ObjectResultEx EditVideo(RequestRepastVideo Param)
+        [HttpPost("SaveVideo")]
+        public ObjectResultEx SaveVideo(RequestRepastVideo Param)
         {
-            return ObjectResultEx.Instance(RepastWebService.EditVideo(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.SaveVideo(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 删除视频
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        [HttpPost("RemoveVideo")]
-        public ObjectResultEx RemoveVideo(SimpleParam<Guid> Param)
+        [HttpPost("DeleteVideo")]
+        public ObjectResultEx DeleteVideo(SimpleParam<Guid> Param)
         {
-            return ObjectResultEx.Instance(RepastWebService.RemoveVideo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.DeleteVideo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #endregion
@@ -547,20 +547,20 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        [HttpPost("RemoveDish")]
-        public ObjectResultEx RemoveDish(SimpleParam<Guid> Param)
+        [HttpPost("DeleteDish")]
+        public ObjectResultEx DeleteDish(SimpleParam<Guid> Param)
         {
-            return ObjectResultEx.Instance(RepastWebService.RemoveDish(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.DeleteDish(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 编辑菜品
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditDish")]
-        public ObjectResultEx EditDish(RequestRepastDish Param)
+        [HttpPost("SaveDish")]
+        public ObjectResultEx SaveDish(RequestRepastDish Param)
         {
-            return ObjectResultEx.Instance(RepastWebService.EditDish(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.SaveDish(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
 

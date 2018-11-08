@@ -51,7 +51,7 @@
                         controller.Confirm("确认删除？", function (bool) {
                             if (bool) {
                                 controller.ajax({
-                                    url: "RepastWeb/RemoveUser",
+                                    url: "RepastWeb/DeleteUser",
                                     data: { Id: row.Id },
                                     type: 'post',
                                     success: function (result) {

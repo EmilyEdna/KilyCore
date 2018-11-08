@@ -64,13 +64,13 @@
                     },
                     "click .edit": function (event, val, row, index) {
                         controller.OpenWindow({
-                            title: "环境报告",
+                            title: "育苗信息",
                             type: 2,
                             height: "600px",
                             width: "800px",
                             url: "WebCompanyManage/Develop/GrowEdit?Id=" + row.Id,
                             callBack: function (result) {
-                                result.popClose();
+                                result.$("#Edit").submit();
                             }
                         });
                     },

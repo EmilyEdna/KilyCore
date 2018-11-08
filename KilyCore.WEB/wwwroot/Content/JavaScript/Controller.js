@@ -46,8 +46,11 @@ controller.ajax = function (option) {
             xhr.setRequestHeader("SysKey", controller.GetCookie().SysKey == undefined ? "" : controller.GetCookie().SysKey);
         },
         error: function (xhr, msg) {
+            debugger;
             if (xhr.status == 401)
                 controller.Confirm("您还未登录系统，请先登录", function (flag) { controller.SetHref("Login") });
+            if (xhr.status == 403)
+                controller.Confirm("您无权限操作！", function (flag) { });
             else if (xhr.status == 404)
                 controller.Confirm("页面未找到!", function (flag) { });
             else if (xhr.status == 500)

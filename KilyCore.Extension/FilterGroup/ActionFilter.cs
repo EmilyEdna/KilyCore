@@ -41,7 +41,8 @@ namespace KilyCore.Extension.FilterGroup
         public void OnActionExecuting(ActionExecutingContext context)
         {
             var request = context.HttpContext.Request;
-            if (request.Path.ToString().Contains("Regist"))
+            var RequestPath = request.Path.ToString();
+            if (RequestPath.Contains("Regist"))
             {
                var PhoneCode = request.Form["Parameter[PhoneCode]"].ToString();
                 var SessionCode = context.HttpContext.Session.GetSession<string>("PhoneCode");
@@ -50,6 +51,28 @@ namespace KilyCore.Extension.FilterGroup
                 if (!SessionCode.Trim().Equals(PhoneCode))
                     context.Result =ObjectResultEx.Instance("请输入正确的验证码", 1, RetrunMessge.SUCCESS, HttpCode.FAIL);
                 context.HttpContext.Session.DeleteSession("PhoneCode");
+            }
+            if (RequestPath.Contains("EnterpriseWeb/Edit") || RequestPath.Contains("EnterpriseWeb/Remove"))
+            {
+                if (RequestPath.Contains("Edit"))
+                {
+                    if (string.IsNullOrEmpty(request.Form["Id"].ToString()))
+                    {
+                        return;
+                    }
+                }
+                context.Result = new StatusCodeResult(403);
+            }
+            if (RequestPath.Contains("RepastWeb/Edit") || RequestPath.Contains("RepastWeb/Remove"))
+            {
+                if (RequestPath.Contains("Edit"))
+                {
+                    if (string.IsNullOrEmpty(request.Form["Id"].ToString()))
+                    {
+                        return;
+                    }
+                }
+                context.Result = new StatusCodeResult(403);
             }
             if (context.Filters.Any(t => (t as AllowAnonymousFilter) != null))
                 return;

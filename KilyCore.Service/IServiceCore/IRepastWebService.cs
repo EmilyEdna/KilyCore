@@ -38,43 +38,43 @@ namespace KilyCore.Service.IServiceCore
         #region 商家资料
         PagedResult<ResponseMerchant> GetMerchantInfoPage(PageParamList<RequestMerchant> pageParam);
         ResponseMerchant GetMerchantDetail(Guid Id);
-        String EditMerchant(RequestMerchant Param);
-        String EditMerchantAccount(RequestMerchant Param);
-        String EditMerchantArea(RequestMerchant Param);
+        String SaveMerchant(RequestMerchant Param);
+        String SaveMerchantAccount(RequestMerchant Param);
+        String SaveMerchantArea(RequestMerchant Param);
         String SaveContract(RequestStayContract Param);
         PagedResult<ResponseAudit> GetContractAudit(PageParamList<RequestAudit> pageParam);
         #endregion
         #region 商家认证
-        String EditMerchantIdent(RequestRepastIdent Param);
+        String SaveMerchantIdent(RequestRepastIdent Param);
         PagedResult<ResponseRepastIdent> GetIndentPage(PageParamList<RequestRepastIdent> pageParam);
         #endregion
         #region 权限角色
-        String EditRoleAuthor(RequestRoleAuthorWeb Param);
+        String SaveRoleAuthor(RequestRoleAuthorWeb Param);
         PagedResult<ResponseRoleAuthorWeb> GetRoleAuthorPage(PageParamList<RequestRoleAuthorWeb> pageParam);
-        String RemoveRole(Guid Id);
+        String DeleteRole(Guid Id);
         IList<ResponseRoleAuthorWeb> GetRoleAuthorList();
         #endregion
         #region 人员管理
         PagedResult<ResponseMerchantUser> GetMerchantUserPage(PageParamList<RequestMerchantUser> pageParam);
-        String EditUser(RequestMerchantUser Param);
+        String SaveUser(RequestMerchantUser Param);
         ResponseMerchantUser GetUserDetail(Guid Id);
-        String RemoveUser(Guid Id);
+        String DeleteUser(Guid Id);
         IList<ResponseMerchantUser> GetMerchantList();
         #endregion
         #region 集团账户
         PagedResult<ResponseMerchant> GetChildInfoPage(PageParamList<RequestMerchant> pageParam);
-        String EditChildInfo(RequestMerchant Param);
+        String SaveChildInfo(RequestMerchant Param);
         #endregion
         #region 餐饮字典
         PagedResult<ResponseRepastDictionary> GetDicPage(PageParamList<RequestRepastDictionary> pageParam);
-        String RemoveDic(Guid Id);
+        String DeleteDic(Guid Id);
         ResponseRepastDictionary GetDicDetail(Guid Id);
-        String EditDic(RequestRepastDictionary Param);
+        String SaveDic(RequestRepastDictionary Param);
         #endregion
         #region 升级续费
         PagedResult<ResponseRepastLevelUp> GetLvPage(PageParamList<RequestRepastLevelUp> pageParam);
-        String EditContinued(RequestRepastContinued Param);
-        String EditUpLevel(RequestRepastUpLevel Param);
+        String SaveContinued(RequestRepastContinued Param);
+        String SaveUpLevel(RequestRepastUpLevel Param);
         PagedResult<ResponseRepastContinued> GetContinuedPage(PageParamList<RequestRepastContinued> pageParam);
         PagedResult<ResponseRepastUpLevel> GetUpLevelPage(PageParamList<RequestRepastUpLevel> pageParam);
         String AuditContinuedAndLevel(Guid Id, bool Param);
@@ -83,8 +83,8 @@ namespace KilyCore.Service.IServiceCore
         #region 功能管理
         #region 供应商
         PagedResult<ResponseRepastSupplier> GetSupplierPage(PageParamList<RequestRepastSupplier> pageParam);
-        String RemoveSupplier(Guid Id);
-        String EditSupplier(RequestRepastSupplier Param);
+        String DeleteSupplier(Guid Id);
+        String SaveSupplier(RequestRepastSupplier Param);
         IList<ResponseRepastSupplier> GetSupplierList();
         #endregion
         #region 进货台账
@@ -101,15 +101,15 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 实时监控
         PagedResult<ResponseRepastVideo> GetVideoPage(PageParamList<RequestRepastVideo> pageParam);
-        String EditVideo(RequestRepastVideo Param);
-        String RemoveVideo(Guid Id);
+        String SaveVideo(RequestRepastVideo Param);
+        String DeleteVideo(Guid Id);
         #endregion
         #endregion
         #region 菜品管理
         PagedResult<ResponseRepastDish> GetDishPage(PageParamList<RequestRepastDish> pageParam);
         ResponseRepastDish GetDishDetail(Guid Id);
-        String RemoveDish(Guid Id);
-        String EditDish(RequestRepastDish Param);
+        String DeleteDish(Guid Id);
+        String SaveDish(RequestRepastDish Param);
         #endregion
         #region 溯源追踪
         #region 原料溯源

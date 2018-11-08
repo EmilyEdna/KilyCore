@@ -64,7 +64,7 @@
                         controller.Confirm("确认删除？", function (bool) {
                             if (bool) {
                                 controller.ajax({
-                                    url: "EnterpriseWeb/RemoveDeviceClean",
+                                    url: "EnterpriseWeb/DeleteDeviceClean",
                                     data: { Id: row.Id },
                                     type: 'post',
                                     success: function (result) {
@@ -131,7 +131,7 @@
         </div>
         <div id="tab-2" class="tab-pane">
             <div class="panel-body">
-                <form method="post" class="form-horizontal" action="EnterpriseWeb/EidtDeviceClean" id="Edit">
+                <form method="post" class="form-horizontal" action="EnterpriseWeb/SaveDeviceClean" id="Edit">
                     <input  type="hidden" id="DeviceId" name="DeviceId"/>
                     <!--方式-->
                     <div class="form-group">

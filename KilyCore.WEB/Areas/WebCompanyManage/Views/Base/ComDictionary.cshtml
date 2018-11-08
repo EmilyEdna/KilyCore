@@ -51,7 +51,7 @@
                         controller.Confirm("确认删除？", function (bool) {
                             if (bool) {
                                 controller.ajax({
-                                    url: "EnterpriseWeb/RemoveDic",
+                                    url: "EnterpriseWeb/DeleteDic",
                                     data: { Id: row.Id },
                                     type: 'post',
                                     success: function (result) {
