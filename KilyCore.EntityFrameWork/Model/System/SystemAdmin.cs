@@ -69,7 +69,7 @@ namespace KilyCore.EntityFrameWork.Model.System
         /// <summary>
         /// 详细地址
         /// </summary>
-        public virtual string Addrees { get; set; }
+        public virtual string Address { get; set; }
         /// <summary>
         /// 电子章
         /// </summary>

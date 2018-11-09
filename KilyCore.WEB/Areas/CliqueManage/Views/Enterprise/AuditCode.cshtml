@@ -55,8 +55,8 @@
                 TableEvents: {
                     "click .audit": function (event, val, row, index) {
                         controller.OpenWindow({
-                            title: "认证审核",
-                            type: 1,
+                            title: "二维码审核",
+                            type: 2,
                             height: "260px",
                             width: "400px",
                             url: "CliqueManage/Enterprise/AuditCodeTag?Id=" + row.Id + "&TableName=" + row.TableName,
@@ -68,7 +68,7 @@
                     "click .watch": function (event, val, row, index) {
                         controller.OpenWindow({
                             title: "审核详情",
-                            type: 1,
+                            type: 2,
                             height: "400px",
                             width: "700px",
                             url: "CliqueManage/Enterprise/AuditCodeDetail?Id=" + row.Id + "&TableName=" + row.TableName,

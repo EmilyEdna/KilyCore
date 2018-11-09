@@ -267,13 +267,13 @@ namespace KilyCore.Service.ServiceCore
             if (UserInfo().AccountType == AccountEnum.Country)
                 queryable = queryable.Where(t => t.AccountType >= AccountEnum.Country);
             if (UserInfo().AccountType == AccountEnum.Province)
-                queryable = queryable.Where(t => t.AccountType >= AccountEnum.Province);
+                queryable = queryable.Where(t => t.AccountType >= AccountEnum.Province).Where(t=>t.TypePath.Contains(pageParam.QueryParam.Province));
             if (UserInfo().AccountType == AccountEnum.City)
-                queryable = queryable.Where(t => t.AccountType >= AccountEnum.City);
+                queryable = queryable.Where(t => t.AccountType >= AccountEnum.City).Where(t => t.TypePath.Contains(pageParam.QueryParam.City));
             if (UserInfo().AccountType == AccountEnum.Area)
-                queryable = queryable.Where(t => t.AccountType >= AccountEnum.Area);
+                queryable = queryable.Where(t => t.AccountType >= AccountEnum.Area).Where(t => t.TypePath.Contains(pageParam.QueryParam.Area));
             if (UserInfo().AccountType == AccountEnum.Village)
-                queryable = queryable.Where(t => t.AccountType >= AccountEnum.Village);
+                queryable = queryable.Where(t => t.AccountType >= AccountEnum.Village).Where(t => t.TypePath.Contains(pageParam.QueryParam.Town));
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseAdmin()
             {
                 Id = t.Id,
@@ -321,7 +321,7 @@ namespace KilyCore.Service.ServiceCore
                      OpenNet = t.OpenNet,
                      Chapter = t.Chapter,
                      CommunityCode = t.CommunityCode,
-                     Address = t.Addrees
+                     Address = t.Address
                  }).FirstOrDefault();
         }
         /// <summary>
@@ -358,7 +358,7 @@ namespace KilyCore.Service.ServiceCore
                 CommunityCode = t.CommunityCode,
                 TrueName = t.TrueName,
                 Chapter = t.Chapter,
-                Address = t.Addrees,
+                Address = t.Address,
                 BankCard = t.BankCard,
                 BankName=t.BankName
             }).ToList();
@@ -369,7 +369,7 @@ namespace KilyCore.Service.ServiceCore
                 CommunityCode = t.CommunityCode,
                 TrueName = t.TrueName,
                 Chapter = t.Chapter,
-                Address = t.Addrees,
+                Address = t.Address,
                 BankCard = t.BankCard,
                 BankName = t.BankName
             }).FirstOrDefault();
@@ -461,13 +461,13 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.AuthorName))
                 queryable = queryable.Where(t => t.AuthorName.Contains(pageParam.QueryParam.AuthorName));
             if (UserInfo().AccountType == AccountEnum.Country)
-                query = query.Where(t => t.RoleLv >= RoleEnum.LV2).Where(t => t.RoleLv <= RoleEnum.LV3);
+                query = query.Where(t => t.RoleLv >= RoleEnum.LV2);
             if (UserInfo().AccountType == AccountEnum.Province)
-                query = query.Where(t => t.RoleLv >= RoleEnum.LV3).Where(t => t.RoleLv <= RoleEnum.LV4);
+                query = query.Where(t => t.RoleLv >= RoleEnum.LV3);
             if (UserInfo().AccountType == AccountEnum.City)
-                query = query.Where(t => t.RoleLv >= RoleEnum.LV4).Where(t => t.RoleLv <= RoleEnum.LV5);
+                query = query.Where(t => t.RoleLv >= RoleEnum.LV4);
             if (UserInfo().AccountType == AccountEnum.Area)
-                query = query.Where(t => t.RoleLv >= RoleEnum.LV5).Where(t => t.RoleLv <= RoleEnum.LV6);
+                query = query.Where(t => t.RoleLv >= RoleEnum.LV5);
             if (UserInfo().AccountType == AccountEnum.Village)
                 query = query.Where(t => t.RoleLv == RoleEnum.LV6);
             //得到权限等级的id集合
@@ -560,7 +560,7 @@ namespace KilyCore.Service.ServiceCore
                Email = t.Email,
                AccountType = t.AccountType,
                RoleAuthorType = t.RoleAuthorType,
-               Address = t.Addrees,
+               Address = t.Address,
                CommunityCode = t.CommunityCode,
                TableName = typeof(ResponseAdmin).Name
            }).FirstOrDefault();

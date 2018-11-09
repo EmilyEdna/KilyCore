@@ -157,10 +157,12 @@ controller.SetCtrlValue = function (element, option) {
                     $(node[i]).find("option[value='" + value + "']").attr("selected", true);
                     break;
                 case "image":
-                    if (value.indexOf(",") >= 0)
-                        $(node[i]).attr("src", value.split(",")[0]);
-                    else
-                        $(node[i]).attr("src", value);
+                    if (value != null) {
+                        if (value.indexOf(",") >= 0)
+                            $(node[i]).attr("src", value.split(",")[0]);
+                        else
+                            $(node[i]).attr("src", value);
+                    }
                     break;
                 default:
                     $(node[i]).val(value);

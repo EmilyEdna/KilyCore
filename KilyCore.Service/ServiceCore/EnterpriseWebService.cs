@@ -3076,7 +3076,7 @@ namespace KilyCore.Service.ServiceCore
                 Stock = Stock.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
                 var Temp = Stock.OrderByDescending(t => t.CreateTime).Join(Goods, t => t.GoodsId, x => x.Id, (t, x) => new { t, x }).AsNoTracking();
                 if (CompanyInfo().CompanyType == CompanyEnum.Plant || CompanyInfo().CompanyType == CompanyEnum.Culture)
-                    return Temp.Join(Note, p => p.t.GrowNoteId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
+                    return Temp.GroupJoin(Note, p => p.t.GrowNoteId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
                     {
                         Id = p.t.Id,
                         CompanyId = p.t.CompanyId,
@@ -3084,14 +3084,14 @@ namespace KilyCore.Service.ServiceCore
                         GoodsBatchNo = p.t.GoodsBatchNo,
                         StockType = p.t.StockType,
                         InStockNum = p.t.InStockNum,
-                        ProBatch = o.BatchNo,
+                        ProBatch = o.FirstOrDefault().BatchNo,
                         GoodsId = p.x.Id,
                         Manager = p.t.Manager,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
                     }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
                 if (CompanyInfo().CompanyType == CompanyEnum.Production)
-                    return Temp.Join(Batch, p => p.t.BatchId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
+                    return Temp.GroupJoin(Batch, p => p.t.BatchId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
                     {
                         Id = p.t.Id,
                         CompanyId = p.t.CompanyId,
@@ -3099,15 +3099,15 @@ namespace KilyCore.Service.ServiceCore
                         GoodsBatchNo = p.t.GoodsBatchNo,
                         StockType = p.t.StockType,
                         InStockNum = p.t.InStockNum,
-                        ProBatch = o.BatchNo,
+                        ProBatch = o.FirstOrDefault().BatchNo,
                         GoodsId = p.x.Id,
                         Manager = p.t.Manager,
-                        MaterialId = o.MaterialId,
+                        MaterialId = o.FirstOrDefault().MaterialId,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
                     }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
                 if (CompanyInfo().CompanyType == CompanyEnum.Circulation)
-                    return Temp.Join(Buyer, p => p.t.BuyId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
+                    return Temp.GroupJoin(Buyer, p => p.t.BuyId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
                     {
                         Id = p.t.Id,
                         CompanyId = p.t.CompanyId,
@@ -3115,7 +3115,7 @@ namespace KilyCore.Service.ServiceCore
                         GoodsBatchNo = p.t.GoodsBatchNo,
                         StockType = p.t.StockType,
                         InStockNum = p.t.InStockNum,
-                        ProBatch = o.BatchNo,
+                        ProBatch = o.FirstOrDefault().BatchNo,
                         GoodsId = p.x.Id,
                         Manager = p.t.Manager,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
@@ -3127,7 +3127,7 @@ namespace KilyCore.Service.ServiceCore
                 Stock = Stock.Where(t => t.CompanyId == CompanyUser().Id);
                 var Temp = Stock.OrderByDescending(t => t.CreateTime).Join(Goods, t => t.GoodsId, x => x.Id, (t, x) => new { t, x }).AsNoTracking();
                 if (CompanyUser().CompanyType == CompanyEnum.Plant || CompanyUser().CompanyType == CompanyEnum.Culture)
-                    return Temp.Join(Note, p => p.t.GrowNoteId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
+                    return Temp.GroupJoin(Note, p => p.t.GrowNoteId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
                     {
                         Id = p.t.Id,
                         CompanyId = p.t.CompanyId,
@@ -3135,14 +3135,14 @@ namespace KilyCore.Service.ServiceCore
                         GoodsBatchNo = p.t.GoodsBatchNo,
                         StockType = p.t.StockType,
                         InStockNum = p.t.InStockNum,
-                        ProBatch = o.BatchNo,
+                        ProBatch = o.FirstOrDefault().BatchNo,
                         GoodsId = p.x.Id,
                         Manager = p.t.Manager,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
                     }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
                 if (CompanyUser().CompanyType == CompanyEnum.Production)
-                    return Temp.Join(Batch, p => p.t.BatchId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
+                    return Temp.GroupJoin(Batch, p => p.t.BatchId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
                     {
                         Id = p.t.Id,
                         CompanyId = p.t.CompanyId,
@@ -3150,15 +3150,15 @@ namespace KilyCore.Service.ServiceCore
                         GoodsBatchNo = p.t.GoodsBatchNo,
                         StockType = p.t.StockType,
                         InStockNum = p.t.InStockNum,
-                        ProBatch = o.BatchNo,
+                        ProBatch = o.FirstOrDefault().BatchNo,
                         GoodsId = p.x.Id,
-                        MaterialId = o.MaterialId,
+                        MaterialId = o.FirstOrDefault().MaterialId,
                         Manager = p.t.Manager,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
                     }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
                 if (CompanyUser().CompanyType == CompanyEnum.Circulation)
-                    return Temp.Join(Buyer, p => p.t.BuyId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
+                    return Temp.GroupJoin(Buyer, p => p.t.BuyId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
                     {
                         Id = p.t.Id,
                         CompanyId = p.t.CompanyId,
@@ -3166,7 +3166,7 @@ namespace KilyCore.Service.ServiceCore
                         GoodsBatchNo = p.t.GoodsBatchNo,
                         StockType = p.t.StockType,
                         InStockNum = p.t.InStockNum,
-                        ProBatch = o.BatchNo,
+                        ProBatch = o.FirstOrDefault().BatchNo,
                         GoodsId = p.x.Id,
                         Manager = p.t.Manager,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),

@@ -54,8 +54,8 @@
                 TableEvents: {
                     "click .audit": function (event, val, row, index) {
                         controller.OpenWindow({
-                            title: "认证审核",
-                            type: 1,
+                            title: "缴费审核",
+                            type: 2,
                             height: "260px",
                             width: "400px",
                             url: "MoneyManage/Finance/GoodsPayAudit?Id=" + row.Id + "&TableName=" + row.TableName,

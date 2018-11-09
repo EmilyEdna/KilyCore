@@ -127,6 +127,7 @@
                         data: { Id: options.Guid },
                         async: false,
                         success: function (result) {
+                            debugger;
                             controller.SetCtrlValue("#Edit", result.data);
                             options.SetCity();
                             controller.SetCtrlValue("#Edit", result.data);

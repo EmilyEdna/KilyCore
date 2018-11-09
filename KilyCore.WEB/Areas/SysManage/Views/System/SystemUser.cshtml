@@ -19,8 +19,22 @@
                     }, 200);
                     e.stopPropagation();
                 });
+                options.InitParam = {
+                    Province: undefined,
+                    City: undefined,
+                    Area: undefined,
+                    Town: undefined
+                };
+                if (SysUserInfo.AccountType == 30)
+                    options.InitParam.Province = SysUserInfo.Province;
+                if (SysUserInfo.AccountType == 40)
+                    options.InitParam.City = SysUserInfo.City;
+                if (SysUserInfo.AccountType == 50)
+                    options.InitParam.Area = SysUserInfo.Area;
+                if (SysUserInfo.AccountType == 60)
+                    options.InitParam.Town = SysUserInfo.Town;
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "System/GetAdminPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Admin" });
+                this.$table = controller.Table("#tableList", { url: "System/GetAdminPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Admin", param: options.InitParam });
             },
             //事件
             InitEvents: function () {
