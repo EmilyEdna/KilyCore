@@ -22,7 +22,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "GovtWeb/GetEdiblePage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
+                this.$table = controller.Table("#tableList", { url: "GovtWeb/GetEdiblePage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { ProductType:"农产品,食品"} });
             },
             //事件
             InitEvents: function () {

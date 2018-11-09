@@ -19,16 +19,15 @@
             },
             //元素
             InitDom: function () {
+                options.Guid = controller.GetParam("Id");
                 //表示新增
                 if (options.Guid == null || options.Guid == undefined || options.Guid == "") {
-                    if (GovtInfo.AccountType == 20) {
+                    if (GovtInfo.AccountType == 20) 
                         $("#AccountType").find("option:contains('区县账号')").attr("selected", true);
-                        $("#town").attr("disabled", true);
-                    }
                     if (GovtInfo.AccountType == 30)
                         $("#AccountType").find("option:contains('乡镇账号')").attr("selected", true);
+                    $("#Allow").css({ "display": "none" });
                 }
-                options.Guid = controller.GetParam("Id");
                 $("input[name='GovtId']").val(GovtInfo.Id);
                 $("#DepartId").on('change', function () {
                     $("input[name='DepartName']").val($(this).find("option:selected").text());
@@ -81,7 +80,6 @@
                 $("#province").change(function () {
                     var html = '<option>=请选择=</option>';
                     $("#area").html(html);
-                    $("#town").html(html);
                 });
                 $("#city").change(function () {
                     controller.ajax({
@@ -237,23 +235,23 @@
                         </select>
                     </td>
                 </tr>
-                <tr>
+                <tr id="Allow">
                     <th><label class="control-label">所属区域</label></th>
                     <td colspan="3">
                         <table style="width:100%">
                             <tr>
                                 <td class="has-warning" style="width:33.3%">
-                                    <select type="select" class="form-control" name="Province" id="province">
+                                    <select type="select" class="form-control" name="Province" id="province" disabled>
                                         <option>=请选择=</option>
                                     </select>
                                 </td>
                                 <td class="has-warning" style="width:33.3%">
-                                    <select type="select" class="form-control" name="City" id="city">
+                                    <select type="select" class="form-control" name="City" id="city" disabled>
                                         <option>=请选择=</option>
                                     </select>
                                 </td>
                                 <td class="has-warning" style="width:33.3%">
-                                    <select type="select" class="form-control" name="Area" id="area">
+                                    <select type="select" class="form-control" name="Area" id="area" disabled>
                                         <option>=请选择=</option>
                                     </select>
                                 </td>

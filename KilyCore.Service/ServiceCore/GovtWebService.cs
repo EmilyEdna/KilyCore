@@ -444,6 +444,7 @@ namespace KilyCore.Service.ServiceCore
         public string EditUser(RequestGovtInfo Param)
         {
             GovtInfo Info = Param.MapToEntity<GovtInfo>();
+            Info.TypePath = GovtInfo().TypePath;
             if (Param.Id != Guid.Empty)
                 return Update(Info, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
             else
@@ -567,7 +568,8 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseEnterpriseGoods> GetWorkPage(PageParamList<RequestEnterpriseGoods> pageParam)
         {
-            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false)
+                .Where(t => pageParam.QueryParam.ProductType.Contains(t.ProductType));
             IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.CompanyType == CompanyEnum.Production).Where(t => t.AuditType == AuditEnum.AuditSuccess);
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
@@ -707,7 +709,8 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseEnterpriseGoods> GetEdiblePage(PageParamList<RequestEnterpriseGoods> pageParam)
         {
-            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false)
+                .Where(t => pageParam.QueryParam.ProductType.Contains(t.ProductType));
             IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.CompanyType <= CompanyEnum.Culture).Where(t => t.AuditType == AuditEnum.AuditSuccess);
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
@@ -843,12 +846,13 @@ namespace KilyCore.Service.ServiceCore
                      ExpiredDate = x.ExpiredDate,
                      HealthCard = x.HealthCard
                  }).AsNoTracking().ToList(),
-                Foods =Kily.Set<CookFood>().Where(x=>t.Ingredients.Contains(x.Id.ToString()))
-                .Select(x=> new ResponseCookFood() {
-                    Supplier=x.Supplier,
-                    Phone=x.Phone,
-                    BuyTime=x.BuyTime,
-                    BuyUser=x.BuyUser
+                Foods = Kily.Set<CookFood>().Where(x => t.Ingredients.Contains(x.Id.ToString()))
+                .Select(x => new ResponseCookFood()
+                {
+                    Supplier = x.Supplier,
+                    Phone = x.Phone,
+                    BuyTime = x.BuyTime,
+                    BuyUser = x.BuyUser
                 }).AsNoTracking().ToList()
             }).AsNoTracking().FirstOrDefault();
             return data;
@@ -858,7 +862,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public string EditCookBanquet(Guid Id,string Param)
+        public string EditCookBanquet(Guid Id, string Param)
         {
             CookBanquet cook = Kily.Set<CookBanquet>().Where(t => t.Id == Id).FirstOrDefault();
             cook.Stauts = Param;
@@ -1731,11 +1735,11 @@ namespace KilyCore.Service.ServiceCore
             }
             else
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
-            IList<DataPie> OutSideData = null;
-            OutSideData = goods.Join(queryable, t => t.CompanyId, x => x.Id, (t, x) => new { x.CompanyType }).GroupBy(t => t.CompanyType).Select(t => new DataPie
+            IList<DataPie> InSideData = null;
+            InSideData = goods.Join(queryable, t => t.CompanyId, x => x.Id, (t, x) => new { x.CompanyType }).GroupBy(t => t.CompanyType).Select(t => new DataPie
             {
                 value = t.Count(),
-                name = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.Key)
+                name = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.Key)
             }).ToList();
             List<String> title = new List<String>() { "种植产品", "养殖产品", "加工产品" };
             ResponseDataCount dataCount = new ResponseDataCount()
@@ -1743,8 +1747,8 @@ namespace KilyCore.Service.ServiceCore
                 Name = "数据统计",
                 Type = true,
                 DataTitle = title,
-                InSideData = null,
-                OutSideData = OutSideData
+                InSideData = InSideData,
+                OutSideData = null
             };
             return dataCount;
         }
@@ -1767,7 +1771,7 @@ namespace KilyCore.Service.ServiceCore
             else if (GovtInfo().AccountType == GovtAccountEnum.Area)
             {
                 var Code = Kily.Set<SystemArea>().Where(t => t.Id.ToString() == GovtInfo().Area).Select(t => t.Code).FirstOrDefault();
-                Temp = Kily.Set<SystemTown>().Where(t =>t.AreaCode== Code).Select(t => new ResponseProvince
+                Temp = Kily.Set<SystemTown>().Where(t => t.AreaCode == Code).Select(t => new ResponseProvince
                 {
                     ProvinceName = t.Name,
                     Id = t.Id
@@ -1814,7 +1818,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseGovtAgree> GetAgreePage(PageParamList<RequestGovtAgree> pageParam)
         {
-            IQueryable<GovtAgree> queryable = Kily.Set<GovtAgree>().Where(t =>t.GovtId==GovtInfo().Id).OrderByDescending(t => t.CreateTime);
+            IQueryable<GovtAgree> queryable = Kily.Set<GovtAgree>().Where(t => t.GovtId == GovtInfo().Id).OrderByDescending(t => t.CreateTime);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.Title))
                 queryable = queryable.Where(t => t.Title.Contains(pageParam.QueryParam.Title));
             var data = queryable.Select(t => new ResponseGovtAgree()

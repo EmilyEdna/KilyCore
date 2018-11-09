@@ -50,6 +50,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// 进货表Id--流通企业
         /// </summary>
         public Guid? BuyId { get; set; }
+        public string TempPath { get; set; }
     }
     public class RequestEnterpriseGoodsStockAttach
     {

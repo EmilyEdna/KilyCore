@@ -22,7 +22,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "GovtWeb/GetWorkPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
+                this.$table = controller.Table("#tableList", { url: "GovtWeb/GetWorkPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { ProductType: "药品,化妆品,医疗器械,其他" } });
             },
             //事件
             InitEvents: function () {

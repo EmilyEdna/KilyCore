@@ -2,6 +2,7 @@
 using KilyCore.DataEntity.ResponseMapper.Govt;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.EntityFrameWork.Model.Govt;
+using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AttributeExtension;
 using KilyCore.Extension.AutoMapperExtension;
@@ -224,15 +225,27 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.DepartName.Contains(pageParam.QueryParam.DepartName));
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseGovtInfo()
             {
-                Id=t.Id,
-                DepartName=t.DepartName,
-                Account=t.Account,
-                AccountTypeName=AttrExtension.GetSingleDescription<GovtAccountEnum,DescriptionAttribute>(t.AccountType),
-                TrueName=t.TrueName,
-                Phone=t.Phone,
-                Email=t.Email,
-            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
-            return data;
+                Id = t.Id,
+                DepartName = t.DepartName,
+                Account = t.Account,
+                AccountTypeName = AttrExtension.GetSingleDescription<GovtAccountEnum, DescriptionAttribute>(t.AccountType),
+                TrueName = t.TrueName,
+                Phone = t.Phone,
+                Email = t.Email,
+                TypePath=t.TypePath
+            }).ToList();
+            data.ForEach(t => {
+                t.TableName = Kily.Set<SystemProvince>()
+                .Where(x => x.Id.ToString() == t.Province)
+                .Select(x => x.Name).AsNoTracking().FirstOrDefault() + "," +
+                Kily.Set<SystemCity>()
+                .Where(x => x.Id.ToString() == t.City)
+                .Select(x => x.Name).AsNoTracking().FirstOrDefault() + "," +
+                  Kily.Set<SystemArea>()
+                .Where(x => x.Id.ToString() == t.Area)
+                .Select(x => x.Name).AsNoTracking().FirstOrDefault();
+            });
+            return data.ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
         }
         /// <summary>
         /// 编辑账号

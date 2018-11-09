@@ -60,7 +60,7 @@ namespace KilyCore.Extension.ApplicationService.DependencyIdentity
         /// <param name="builder"></param>
         protected void Register(ContainerBuilder builder)
         {
-            //注入请求上下文
+            //注入请求上下文为了使用PaySharp
             builder.RegisterType<HttpContextAccessor>().As<IHttpContextAccessor>().SingleInstance();
             //数据库注入
             Context.ToList().ForEach(t =>
