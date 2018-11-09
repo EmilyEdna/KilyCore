@@ -24,6 +24,9 @@
         <button type="button" onclick="options.ClearMarker()">清除坐标点</button>
         <input type="text" name="lng" id="lng" placeholder="精度显示" readonly />
         <input type="text" name="lat" id="lat" placeholder="纬度显示" readonly />
+        <br />
+        <input type="text" id="Address" placeholder="输入地址获取坐标" />
+        <button type="button" onclick="options.GetAddress()">获取坐标</button>
     </form>
 </body>
 </html>
@@ -58,7 +61,24 @@
         ClearMarker: function () {
             Map.clearOverlays();//清空点
             document.getElementById("Edit").reset();
+        },
+        GetAddress: function () {
+            $.ajax({
+                url: "http://api.map.baidu.com/geocoder/v2/?address=" + $("#Address").val() + "&output=json&ak=rEU7BdGnB0kKyIjUiONnUHlw",
+                type: "get",
+                async: false,
+                dataType: "jsonp",
+                success: function (result) {
+                    debugger;
+                    options.marker = new BMap.Marker(new BMap.Point(result.result.location.lng, result.result.location.lat));
+                    Map.addOverlay(options.marker);
+                    $("#lng").val(result.result.location.lng);
+                    $("#lat").val(result.result.location.lat);
+                }
+            });
         }
     }
-    options.Init();
+    $(document).ready(function () {
+        options.Init();
+    });
 </script>
