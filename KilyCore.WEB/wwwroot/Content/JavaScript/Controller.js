@@ -164,6 +164,9 @@ controller.SetCtrlValue = function (element, option) {
                             $(node[i]).attr("src", value);
                     }
                     break;
+                case "radio":
+                    if ($(node[i]).val() == value)
+                        $(node[i]).attr("checked", "true");
                 default:
                     $(node[i]).val(value);
                     break;

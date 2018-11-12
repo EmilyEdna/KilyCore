@@ -746,6 +746,7 @@ namespace KilyCore.Service.ServiceCore
                     IdCard = t.IdCard,
                     SafeNo = t.SafeNo,
                     Scope = t.Scope,
+                    NatureAgent=t.NatureAgent,
                     TagCodeNum = t.TagCodeNum,
                     SafeCompany = t.SafeCompany
                 }).FirstOrDefault();

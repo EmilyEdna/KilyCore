@@ -79,6 +79,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetEnterpriseInfo")]
+        [AllowAnonymous]
         public ObjectResultEx GetEnterpriseInfo(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetEnterpriseInfo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
