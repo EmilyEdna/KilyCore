@@ -16,6 +16,7 @@
             //元素
             InitDom: function () {
                 controller.LayDate({ elem: "input[name='CardExpiredDate']" });
+                options.Editor = controller.Editor(".summernote", { width: 760 });
                 options.GetCompanyInfo();
                 options.UploadFiles();
             },
@@ -28,6 +29,7 @@
                     async: false,
                     success: function (result) {
                         controller.SetCtrlValue("#Edit", result.data);
+                        options.Editor.summernote('code', result.data.Discription);
                     }
                 });
             },
@@ -125,7 +127,7 @@
             <input type="hidden" name="TypePath" />
             <input type="hidden" name="CompanyAccount" />
             <input type="hidden" name="PassWord" />
-            <input  type="hidden" name="CompanyType"/>
+            <input type="hidden" name="CompanyType" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">企业性质</label></th>
@@ -147,7 +149,7 @@
                     </td>
                     <th><label class="control-label">企业类型</label></th>
                     <td class="has-warning">
-                      <input  type="text" name="CompanyTypeName" class="form-control" readonly/>
+                        <input type="text" name="CompanyTypeName" class="form-control" readonly />
                     </td>
                 </tr>
                 <tr>
@@ -207,7 +209,11 @@
                     </td>
                     <th><label class="control-label">安全等级</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="OfferLv">
+                        <select type="select" class="form-control" name="OfferLv">
+                            <option value="A级">A级</option>
+                            <option value="B级">B级</option>
+                            <option value="C级">C级</option>
+                        </select>
                     </td>
                 </tr>
                 <tr>
@@ -223,7 +229,8 @@
                 <tr>
                     <th><label class="control-label">企业介绍</label></th>
                     <td class="has-warning" colspan="3">
-                        <textarea class="form-control" name="Discription" rows="4" maxlength="300"></textarea>
+                        <div class="summernote" name="Discription"></div>
+                        <input type="hidden" name="Discription" />
                     </td>
                 </tr>
                 <tr id="uploadCertification">

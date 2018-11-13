@@ -29,7 +29,7 @@ namespace KilyCore.DataEntity.ResponseMapper.System
         /// </summary>
         public string Title { get; set; }
         /// <summary>
-        /// 副标题
+        /// 来源
         /// </summary>
         public string SubTitle { get; set; }
         /// <summary>

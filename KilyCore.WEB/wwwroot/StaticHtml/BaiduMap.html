@@ -69,7 +69,6 @@
                 async: false,
                 dataType: "jsonp",
                 success: function (result) {
-                    debugger;
                     options.marker = new BMap.Marker(new BMap.Point(result.result.location.lng, result.result.location.lat));
                     Map.addOverlay(options.marker);
                     $("#lng").val(result.result.location.lng);

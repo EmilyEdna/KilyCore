@@ -46,7 +46,6 @@ controller.ajax = function (option) {
             xhr.setRequestHeader("SysKey", controller.GetCookie().SysKey == undefined ? "" : controller.GetCookie().SysKey);
         },
         error: function (xhr, msg) {
-            debugger;
             if (xhr.status == 401)
                 controller.Confirm("您还未登录系统，请先登录", function (flag) { controller.SetHref("Login") });
             if (xhr.status == 403)
@@ -535,6 +534,7 @@ controller.ValidateConfirm = function (element, option) {
             var url = $submitForm.attr("action");
             var method = $submitForm.prop("method");
             var async = $submitForm.attr("async") == undefined ? true : false;
+            controller.RemoveDisabled(form);
             var data = $submitForm.SerializeJson();
             if (option.AddParam)
                 data = option.AddParam(data);
@@ -574,6 +574,17 @@ controller.ValidateConfirm = function (element, option) {
             });
         }
     }, option));
+}
+/**
+ * 取消下拉禁用
+ * @param {any} element
+ */
+controller.RemoveDisabled = function (element) {
+    $(element).find("select").each(function () {
+        if (parseInt($(this).val()) != -1) {
+            $(this).attr("disabled", false);
+        }
+    });
 }
 /**
  * 验证表单

@@ -28,9 +28,9 @@ namespace KilyCore.DataEntity.RequestMapper.System
         /// </summary>
         public  string Title { get; set; }
         /// <summary>
-        /// 副标题
+        /// 来源
         /// </summary>
-        public  string SubTitle { get; set; }
+        public string SubTitle { get; set; }
         /// <summary>
         /// 发布时间
         /// </summary>

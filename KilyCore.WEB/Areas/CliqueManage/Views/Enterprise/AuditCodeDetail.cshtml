@@ -50,7 +50,6 @@
                 $.each(data, function (i, obj) {
                     html += '<tr><td class="text-warning">' + obj.AuditName + '</td>';
                     html += '<td class="text-warning">' + obj.CreateTime + '</td>';
-                    debugger;
                     if (obj.AuditSuggestion.length < 8)
                         html += '<td class="text-warning">' + obj.AuditSuggestion + '</td>';
                     else

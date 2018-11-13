@@ -25,7 +25,6 @@
             //事件
             InitEvents: function () {
                 $("li").find("a").on('click', function () {
-                    debugger;
                     if ($(this).attr("href") == "#tab-1")
                         this.$table = controller.Table("#tableListSet", { async: false, url: "RepastWeb/GetInStockPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#InStock" });
                     else

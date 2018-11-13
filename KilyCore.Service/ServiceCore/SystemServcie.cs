@@ -382,7 +382,8 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public IList<ResponseAdmin> GetBankInfo()
         {
-            IQueryable<SystemAdmin> queryable = Kily.Set<SystemAdmin>().Where(t => t.IsDelete == false);
+            IQueryable<SystemAdmin> queryable = Kily.Set<SystemAdmin>().Where(t => t.IsDelete == false)
+                .Where(t=>t.AccountType!=AccountEnum.Admin);
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => t.TypePath.Contains(CompanyInfo().Province)
                 || t.TypePath.Contains(CompanyInfo().City)

@@ -30,7 +30,7 @@ namespace KilyCore.EntityFrameWork.Model.System
         /// </summary>
         public virtual string Title { get; set; }
         /// <summary>
-        /// 副标题
+        /// 来源
         /// </summary>
         public virtual string SubTitle { get; set; }
         /// <summary>

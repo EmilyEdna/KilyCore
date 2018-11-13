@@ -18,6 +18,7 @@
                 this.GetTownByArea();
                 this.GetAuthor();
                 this.GetDetail();
+                this.InitArea();
             },
             //元素
             InitDom: function () {
@@ -59,7 +60,7 @@
             },
             //选中城市后获取区域
             GetAreaByCity: function () {
-                $("#province").change(function () { 
+                $("#province").change(function () {
                     var html = '<option>=请选择=</option>';
                     $("#area").html(html);
                     $("#town").html(html);
@@ -80,12 +81,12 @@
                     });
                 });
             },
-           //选中区域后获取乡镇
-            GetTownByArea: function () { 
+            //选中区域后获取乡镇
+            GetTownByArea: function () {
                 $("#city").change(function () {
                     var html = '<option>=请选择=</option>';
                     $("#town").html(html);
-                }); 
+                });
                 $("#area").change(function () {
                     controller.ajax({
                         url: "System/GetTown",
@@ -127,7 +128,6 @@
                         data: { Id: options.Guid },
                         async: false,
                         success: function (result) {
-                            debugger;
                             controller.SetCtrlValue("#Edit", result.data);
                             options.SetCity();
                             controller.SetCtrlValue("#Edit", result.data);
@@ -172,7 +172,7 @@
                 });
             },
             //取得详情后获取乡镇
-            SetTown: function () { 
+            SetTown: function () {
                 controller.ajax({
                     url: "System/GetTown",
                     data: { Id: $("#area").find("option:selected").data().id },
@@ -204,6 +204,24 @@
                 //验证
                 controller.ValidateConfirm("#Edit");
             },
+            InitArea: function () {
+                if (SysUserInfo.AccountType == 30) {
+                    $("#province").attr("disabled", true).find("option[value='" + SysUserInfo.Province + "']").attr("selected", true);
+                }
+                if (SysUserInfo.AccountType == 40) {
+                    $("#province").attr("disabled", true).find("option[value='" + SysUserInfo.Province + "']").attr("selected", true);
+                    options.SetCity();
+                    $("#city").attr("disabled", true).find("option[value='" + SysUserInfo.City + "']").attr("selected", true);
+                }
+                if (SysUserInfo.AccountType == 50) {
+                    $("#province").attr("disabled", true).find("option[value='" + SysUserInfo.Province + "']").attr("selected", true);
+                    options.SetCity();
+                    $("#city").attr("disabled", true).find("option[value='" + SysUserInfo.City + "']").attr("selected", true);
+                    options.SetArea();
+                    $("#area").attr("disabled", true).find("option[value='" + SysUserInfo.Area + "']").attr("selected", true);
+                    options.SetTown();
+                }
+            },
             //行为
             action: {}
         };
@@ -215,7 +233,7 @@
 }
 <div class="ibox float-e-margins">
     <div class="ibox-content">
-        <form class="form-horizontal" method="post" action="System/EditAdmin" id="Edit">
+        <form class="form-horizontal" method="post" action="System/EditAdmin" id="Edit" async="false">
             <input type="hidden" name="Id" />
             <input type="hidden" name="OpenNet" value="false" />
             <input type="hidden" name="Chapter" id="Chapter" />
@@ -269,6 +287,7 @@
                                     <select type="select" class="form-control" name="Province" id="province">
                                         <option>=请选择=</option>
                                     </select>
+                                    <input type="hidden" name="Province" />
                                 </td>
                                 <td class="has-warning" style="width:25%">
                                     <select type="select" class="form-control" name="City" id="city">
@@ -314,7 +333,7 @@
                             <section class="upload-section">
                                 <div class="upload-btn"></div>
                                 <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
-                                <img type="image" class="img-preview" src="" name="Chapter" style="position:relative;left:200px;top:-170px;"/>
+                                <img type="image" class="img-preview" src="" name="Chapter" style="position:relative;left:200px;top:-170px;" />
                             </section>
                         </div>
                     </td>
