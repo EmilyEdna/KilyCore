@@ -953,21 +953,24 @@ namespace KilyCore.Service.ServiceCore
         public int GetRiskCount()
         {
             IQueryable<GovtRisk> queryable = Kily.Set<GovtRisk>().Where(t => t.ReportPlay == true);
-            if (GovtInfo().AccountType <= GovtAccountEnum.City)
-                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
-            IList<string> Areas = GetDepartArea();
-            if (Areas != null)
+            if (GovtInfo() != null)
             {
-                if (Areas.Count > 1)
-                    foreach (var item in Areas)
-                    {
-                        queryable = queryable.Where(t => t.TypePath.Contains(item));
-                    }
+                if (GovtInfo().AccountType <= GovtAccountEnum.City)
+                    queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                        foreach (var item in Areas)
+                        {
+                            queryable = queryable.Where(t => t.TypePath.Contains(item));
+                        }
+                    else
+                        queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                }
                 else
-                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
             }
-            else
-                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
             return queryable.Count();
         }
         /// <summary>
