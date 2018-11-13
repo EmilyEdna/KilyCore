@@ -306,6 +306,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetProvince")]
+        [AllowAnonymous]
         public ObjectResultEx GetProvince()
         {
             return ObjectResultEx.Instance(SystemService.GetProvince(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
@@ -315,6 +316,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetCity")]
+        [AllowAnonymous]
         public ObjectResultEx GetCity(SimpleParam<int> Param)
         {
             return ObjectResultEx.Instance(SystemService.GetCity(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
@@ -324,6 +326,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetArea")]
+        [AllowAnonymous]
         public ObjectResultEx GetArea(SimpleParam<int> Param)
         {
             return ObjectResultEx.Instance(SystemService.GetArea(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
@@ -334,6 +337,7 @@ namespace KilyCore.API.Controllers
         /// <param name="param"></param>
         /// <returns></returns>
         [HttpPost("GetTown")]
+        [AllowAnonymous]
         public ObjectResultEx GetTown(SimpleParam<int> param)
         {
             return ObjectResultEx.Instance(SystemService.GetTown(param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
