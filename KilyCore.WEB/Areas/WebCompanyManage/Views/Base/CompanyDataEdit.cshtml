@@ -83,12 +83,10 @@
             InitEvents: function () {
                 $('input:radio[name="NatureAgent"]').on('change', function () {
                     if ($(this).val() == 1) {
-                        $("input:hidden[name='NatureAgent']").val("1");
                         $("#uploadIdCard").css({ display: "none" });
                         $("#uploadCertification").css({ display: "block", display: "table-row" });
                     }
                     else {
-                        $("input:hidden[name='NatureAgent']").val("2");
                         $("#uploadIdCard").css({ display: "block", display: "table-row" });
                         $("#uploadCertification").css({ display: "none" });
                     }
@@ -121,9 +119,8 @@
 }
 <div class="ibox float-e-margins">
     <div class="ibox-content">
-        <form class="form-horizontal" method="post" action="EnterpriseWeb/SaveEnterprise" id="Edit">
+        <form class="form-horizontal" method="get" action="EnterpriseWeb/SaveEnterprise" id="Edit">
             <input type="hidden" name="Id" />
-            <input type="hidden" name="NatureAgent" />
             <input type="hidden" name="TypePath" />
             <input type="hidden" name="CompanyAccount" />
             <input type="hidden" name="PassWord" />

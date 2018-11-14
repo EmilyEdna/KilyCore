@@ -17,6 +17,7 @@
             InitDom: function () {
 
                 controller.LayDate({ elem: "input[name='CardExpiredDate']" });
+                options.Editor = controller.Editor(".summernote", { width: 760 });
                 options.GetCompanyInfo();
                 options.UploadFiles();
             },
@@ -29,6 +30,7 @@
                     async: false,
                     success: function (result) {
                         controller.SetCtrlValue("#Edit", result.data);
+                        options.Editor.summernote('code', result.data.Remark);
                     }
                 });
             },
@@ -183,7 +185,8 @@
                 <tr>
                     <th><label class="control-label">商家介绍</label></th>
                     <td class="has-warning" colspan="3">
-                        <textarea class="form-control" name="Remark" rows="4" maxlength="300"></textarea>
+                        <div class="summernote" name="Remark"></div>
+                        <input type="hidden" name="Remark" />
                     </td>
                 </tr>
                 <tr id="uploadCertification">

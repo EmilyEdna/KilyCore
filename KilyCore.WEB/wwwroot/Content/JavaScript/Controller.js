@@ -533,7 +533,7 @@ controller.ValidateConfirm = function (element, option) {
             var $submitForm = $(form);
             var url = $submitForm.attr("action");
             var method = $submitForm.prop("method");
-            var async = $submitForm.attr("async") == undefined ? true : false;
+            var async = $submitForm.attr("async") == undefined ? false : true;
             controller.RemoveDisabled(form);
             var data = $submitForm.SerializeJson();
             if (option.AddParam)
