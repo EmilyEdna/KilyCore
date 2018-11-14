@@ -294,6 +294,7 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 数据统计
         Object GetDataCount();
+        ResponseDataCount GetPieCount();
         #endregion
     }
 }

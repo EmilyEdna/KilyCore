@@ -2259,7 +2259,8 @@ namespace KilyCore.Service.ServiceCore
                 Log.Correct += 1;
                 UpdateField(Log, "Correct");
             }
-            else {
+            else
+            {
                 Log.Error += 1;
                 UpdateField(Log, "Error" +
                     "");
@@ -4313,6 +4314,54 @@ namespace KilyCore.Service.ServiceCore
             int Info = infos.Sum(t => t.ScanNum);
             Object obj = new { Series, Goods, Supplier, Sale, Inferior, Exprired, Recover, Batch, Note, Buy, TagClass, TagThing, Info };
             return obj;
+        }
+        /// <summary>
+        /// 产量统计
+        /// </summary>
+        /// <returns></returns>
+        public ResponseDataCount GetPieCount()
+        {
+            IQueryable<EnterpriseGoodsStock> queryable = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false).AsNoTracking();
+            IQueryable<EnterpriseGoodsStockAttach> queryables = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false).AsNoTracking();
+         
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            int WeekDataCount = queryable.Where(t => t.ProductTime > DateTime.Now.AddDays(-7))
+                .Where(t => t.ProductTime < DateTime.Now)
+                .Join(queryables, t => t.Id, x => x.StockId, (t, x) => new
+                {
+                    Total = t.InStockNum + x.OutStockNum,
+                }).Sum(t => t.Total);
+            int MonthDataCount = queryable.Where(t => t.ProductTime > DateTime.Now.AddMonths(-1))
+              .Where(t => t.ProductTime < DateTime.Now)
+              .Join(queryables, t => t.Id, x => x.StockId, (t, x) => new
+              {
+                  Total = t.InStockNum + x.OutStockNum,
+              }).Sum(t => t.Total);
+            int YearDataCount = queryable.Where(t => t.ProductTime > DateTime.Now.AddYears(-1))
+                .Where(t => t.ProductTime < DateTime.Now)
+                .Join(queryables, t => t.Id, x => x.StockId, (t, x) => new
+                {
+                    Total = t.InStockNum + x.OutStockNum,
+                }).Sum(t => t.Total);
+            IList<DataPie> OutSideData = new List<DataPie>
+            {
+                new DataPie { value = WeekDataCount, name = "周产量" },
+                new DataPie { value = MonthDataCount, name = "月产量" },
+                new DataPie { value = YearDataCount, name = "年产量" }
+            };
+            List<String> title = new List<String>() { "周产量", "月产量", "年产量" };
+            ResponseDataCount dataCount = new ResponseDataCount()
+            {
+                Name = "数据统计",
+                Type = true,
+                DataTitle = title,
+                InSideData = null,
+                OutSideData = OutSideData
+            };
+            return dataCount;
         }
         #endregion
     }

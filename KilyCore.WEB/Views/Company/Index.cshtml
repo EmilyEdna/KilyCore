@@ -38,7 +38,16 @@
                             $("[name='" + obj + "']", $("tbody")).text(i);
                         })
                     }
-                })
+                });
+                controller.ajax({
+                    url: "EnterpriseWeb/GetPieCount",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        controller.Echarts("#echarts-pie-chart", result.data);
+                    }
+                });
             },
             InitEvent: function () {
                 //查看图片
@@ -114,7 +123,7 @@
                                     <th>经销商数量</th>
                                     <th>不合格产品数量</th>
                                     <th>过期产品数量</th>
-                                    <th>召回通知数量</th>
+                                    <th>产品召唤数量</th>
                                     <th>生产批次总数</th>
                                     <th>成长日记总数</th>
                                     <th>进货批次总数</th>
@@ -141,6 +150,24 @@
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>产量统计</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="echarts" id="echarts-pie-chart"></div>
                     </div>
                 </div>
             </div>

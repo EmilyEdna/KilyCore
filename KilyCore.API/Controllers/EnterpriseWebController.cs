@@ -1934,6 +1934,15 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetDataCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 产量统计
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetPieCount")]
+        public ObjectResultEx GetPieCount()
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetPieCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
     }
 }
