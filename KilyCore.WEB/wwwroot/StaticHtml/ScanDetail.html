@@ -9,6 +9,7 @@
     <script src="../Content/BootStrap/Script/bootstrap.js"></script>
     <script src="../Content/Layer/layer.js"></script>
     <script src="http://api.map.baidu.com/api?v=2.0&ak=rEU7BdGnB0kKyIjUiONnUHlw"></script>
+    <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 </head>
 <body>
     <div class="row">
@@ -236,8 +237,9 @@
         //初始化
         var option = {
             Init: function () {
-                option.InitDom();
-                option.InitEvent();
+                //option.InitDom();
+                //option.InitEvent();
+                option.InitPosition();
             },
             InitDom: function () {
                 $.ajax({
@@ -300,6 +302,36 @@
                     });
                 });
             },
+            InitPosition: function () {
+                var datas = {
+                    TimeSpan: new Date().getTime(),
+                    ScanCode: option.GetParam("Code"),
+                    ScanAddress: null,
+                    ScanIP: returnCitySN.cip,
+                    ScanPackageNo: $("[data-name='PackageNo']", $(".content")).text(),
+                    ScanGoodsName: $("[data-name='ProductName']", $(".content")).text(),
+                };
+                $.ajax({
+                    url: "http://api.map.baidu.com/location/ip?ak=rEU7BdGnB0kKyIjUiONnUHlw&ip=" + datas.ScanIP + "&coor=bd09ll",
+                    async: false,
+                    type: "get",
+                    dataType: "jsonp",
+                    success: function (result) {
+                        datas.ScanAddress = result.content.address;
+                        option.AppendScanInfo(datas);
+                    }
+                });
+            },
+            AppendScanInfo: function (Param) {
+                $.ajax({
+                    url: "http://localhost:50039/api/EnterpriseWeb/EditScanInfo",
+                    data: Param,
+                    dataType: "json",
+                    type: "post",
+                    async: false,
+                    success: function (result) {}
+                });
+            },
             GetParam: function (Param) {
                 var reg = new RegExp("(^|&)" + Param + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
                 var r = window.location.search.substr(1).match(reg);  //匹配目标参数
@@ -342,7 +374,7 @@
                     html += '<strong class="detail_t">原料名称：</strong><b class="detail_b">' + data.MaterName + '</b><br /><br />';
                     html += '<strong class="detail_t">供应商：</strong><b class="detail_b">' + data.Supplier + '</b><br /><br />';
                     html += '<strong class="detail_t">检测结果：</strong><b class="detail_b">' + data.MaterCheckResult + '</b><br /><br />'
-                    html += '<img class="img-responsive" src="' + data.MaterCheckReport + '"/>';
+                    html += '<img class="img-responsive" src="' + data.MaterCheckReport + '" />';
                 });
                 $("section").html(html);
             }

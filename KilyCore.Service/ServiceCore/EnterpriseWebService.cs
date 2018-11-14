@@ -2234,6 +2234,39 @@ namespace KilyCore.Service.ServiceCore
                 .ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+        /// <summary>
+        /// 新增扫码记录
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditScanInfo(RequestEnterpriseScanCodeInfo Param)
+        {
+            EnterpriseScanCodeInfo CodeInfo = Param.MapToEntity<EnterpriseScanCodeInfo>();
+            EnterpriseScanCodeInfo Code = Kily.Set<EnterpriseScanCodeInfo>()
+                .Where(t => t.ScanPackageNo.Equals(CodeInfo.ScanPackageNo))
+                .Where(t => t.ScanGoodsName.Equals(CodeInfo.ScanGoodsName))
+                .AsNoTracking().FirstOrDefault();
+            if (Code != null)
+            {
+                Code.ScanNum += 1;
+                UpdateField(Code, "ScanNum");
+            }
+            EnterpriseLogistics Log = Kily.Set<EnterpriseLogistics>().Where(t => t.PackageNo == CodeInfo.ScanPackageNo)
+                .Where(t => t.Address.Contains(CodeInfo.ScanAddress))
+                .Where(t => t.IsDelete == false).AsNoTracking().FirstOrDefault();
+            if (Log != null)
+            {
+                Log.Correct += 1;
+                UpdateField(Log, "Correct");
+            }
+            else {
+                Log.Error += 1;
+                UpdateField(Log, "Error" +
+                    "");
+            }
+            Code.ScanNum += 1;
+            return Insert(Code) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
         #endregion
 
         #region 厂商管理
@@ -4277,7 +4310,7 @@ namespace KilyCore.Service.ServiceCore
             int Buy = buyers.Select(t => t.BatchNo).Count();
             int TagClass = tagAttaches.Where(t => t.TagType == "2").Select(t => t.Id).Count();
             int TagThing = tagAttaches.Where(t => t.TagType == "3").Select(t => t.Id).Count();
-            int  Info = infos.Sum(t => t.ScanNum);
+            int Info = infos.Sum(t => t.ScanNum);
             Object obj = new { Series, Goods, Supplier, Sale, Inferior, Exprired, Recover, Batch, Note, Buy, TagClass, TagThing, Info };
             return obj;
         }
