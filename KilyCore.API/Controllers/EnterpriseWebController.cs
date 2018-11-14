@@ -99,8 +99,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpGet("SaveEnterprise")]
-        [AllowAnonymous]
+        [HttpPost("SaveEnterprise")]
         public ObjectResultEx SaveEnterprise(RequestEnterprise Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.SaveEnterprise(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);

@@ -33,9 +33,6 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
                     return Province + "," + City + "," + Area + "," + Town;
                 else return null;
             }
-            set {
-                TypePath = value;
-            }
         }
         public string CommunityCode { get; set; }
         public string CompanyAddress { get; set; }

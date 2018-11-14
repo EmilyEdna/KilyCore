@@ -41,10 +41,6 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
                     return Province + "," + City + "," + Area + "," + Town;
                 else return null;
             }
-            set
-            {
-                TypePath = value;
-            }
         }
         public string Certification { get; set; }
         public string ImplUser { get; set; }
