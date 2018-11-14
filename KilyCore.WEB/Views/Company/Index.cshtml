@@ -28,6 +28,17 @@
                         }
                     }
                 });
+                controller.ajax({
+                    url: "EnterpriseWeb/GetDataCount",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        $.each(result.data, function (obj, i) {
+                            $("[name='" + obj + "']", $("tbody")).text(i);
+                        })
+                    }
+                })
             },
             InitEvent: function () {
                 //查看图片
@@ -80,6 +91,59 @@
 <form id="Edit">
     <div class="wrapper wrapper-content">
         <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>数据统计</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content" style="background-color:#f8f8f8;">
+                        <table class="table table-hover no-margins">
+                            <thead>
+                                <tr>
+                                    <th>产品系列</th>
+                                    <th>产品种类</th>
+                                    <th>供应商数量</th>
+                                    <th>经销商数量</th>
+                                    <th>不合格产品数量</th>
+                                    <th>过期产品数量</th>
+                                    <th>召回通知数量</th>
+                                    <th>生产批次总数</th>
+                                    <th>成长日记总数</th>
+                                    <th>进货批次总数</th>
+                                    <th>一品一码</th>
+                                    <th>一物一码</th>
+                                    <th>扫码次数</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td name="Series"></td>
+                                    <td name="Goods"></td>
+                                    <td name="Supplier"></td>
+                                    <td name="Sale"></td>
+                                    <td name="Inferior"></td>
+                                    <td name="Exprired"></td>
+                                    <td name="Recover"></td>
+                                    <td name="Batch"></td>
+                                    <td name="Note"></td>
+                                    <td name="Buy"></td>
+                                    <td name="TagClass"></td>
+                                    <td name="TagThing"></td>
+                                    <td name="Info"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
             <div class="col-sm-6">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">

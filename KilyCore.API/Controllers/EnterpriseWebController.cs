@@ -1914,5 +1914,16 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.ExportProOutStockFile(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 数据统计
+        /// <summary>
+        /// 数据统计
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetDataCount")]
+        public ObjectResultEx GetDataCount()
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetDataCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }

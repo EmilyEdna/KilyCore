@@ -746,7 +746,7 @@ namespace KilyCore.Service.ServiceCore
                     IdCard = t.IdCard,
                     SafeNo = t.SafeNo,
                     Scope = t.Scope,
-                    NatureAgent=t.NatureAgent,
+                    NatureAgent = t.NatureAgent,
                     TagCodeNum = t.TagCodeNum,
                     SafeCompany = t.SafeCompany
                 }).FirstOrDefault();
@@ -3873,6 +3873,7 @@ namespace KilyCore.Service.ServiceCore
                 Flag = t.Flag,
                 Traffic = t.Traffic,
                 TransportWay = t.TransportWay,
+                CorrectError = t.Error / (t.Error + t.Correct)
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -4218,6 +4219,67 @@ namespace KilyCore.Service.ServiceCore
                 出库类型 = t.OutStockType
             }).ToList<Object>();
             return data;
+        }
+        #endregion
+
+        #region 数据统计
+        /// <summary>
+        /// 数据统计
+        /// </summary>
+        /// <returns></returns>
+        public Object GetDataCount()
+        {
+            IQueryable<EnterpriseProductSeries> series = Kily.Set<EnterpriseProductSeries>().Where(t => t.IsDelete == false).AsNoTracking();
+            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).AsNoTracking();
+            IQueryable<EnterpriseSeller> sellers = Kily.Set<EnterpriseSeller>().Where(t => t.IsDelete == false).AsNoTracking();
+            IQueryable<EnterpriseInferiorExprired> exprireds = Kily.Set<EnterpriseInferiorExprired>().Where(t => t.IsDelete == false).AsNoTracking();
+            IQueryable<EnterpriseRecover> recovers = Kily.Set<EnterpriseRecover>().Where(t => t.IsDelete == false).AsNoTracking();
+            IQueryable<EnterpriseProductionBatch> batches = Kily.Set<EnterpriseProductionBatch>().Where(t => t.IsDelete == false).AsNoTracking();
+            IQueryable<EnterpriseNote> notes = Kily.Set<EnterpriseNote>().Where(t => t.IsDelete == false).AsNoTracking();
+            IQueryable<EnterpriseBuyer> buyers = Kily.Set<EnterpriseBuyer>().Where(t => t.IsDelete == false).AsNoTracking();
+            IQueryable<EnterpriseTagAttach> tagAttaches = Kily.Set<EnterpriseTagAttach>().Where(t => t.IsDelete == false).AsNoTracking();
+            IQueryable<EnterpriseScanCodeInfo> infos = Kily.Set<EnterpriseScanCodeInfo>().Where(t => t.IsDelete == false).AsNoTracking();
+            if (CompanyInfo() != null)
+            {
+                series = series.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
+                goods = goods.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
+                sellers = sellers.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
+                exprireds = exprireds.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
+                recovers = recovers.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
+                batches = batches.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
+                notes = notes.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
+                buyers = buyers.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
+                tagAttaches = tagAttaches.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
+                infos = infos.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
+            }
+            else
+            {
+                series = series.Where(t => t.CompanyId == CompanyUser().Id);
+                goods = goods.Where(t => t.CompanyId == CompanyUser().Id);
+                sellers = sellers.Where(t => t.CompanyId == CompanyUser().Id);
+                exprireds = exprireds.Where(t => t.CompanyId == CompanyUser().Id);
+                recovers = recovers.Where(t => t.CompanyId == CompanyUser().Id);
+                batches = batches.Where(t => t.CompanyId == CompanyUser().Id);
+                notes = notes.Where(t => t.CompanyId == CompanyUser().Id);
+                buyers = buyers.Where(t => t.CompanyId == CompanyUser().Id);
+                tagAttaches = tagAttaches.Where(t => t.CompanyId == CompanyUser().Id);
+                infos = infos.Where(t => t.CompanyId == CompanyUser().Id);
+            }
+            int Series = series.Select(t => t.Id).Count();
+            int Goods = goods.GroupBy(t => t.ProductSeriesId).AsNoTracking().Count();
+            int Supplier = sellers.Where(t => t.SellerType == SellerEnum.Supplier).Select(t => t.Id).Count();
+            int Sale = sellers.Where(t => t.SellerType == SellerEnum.Sale).Select(t => t.Id).Count();
+            int Inferior = exprireds.Where(t => t.InferiorExprired == 1).Select(t => t.Id).Count();
+            int Exprired = exprireds.Where(t => t.InferiorExprired == 2).Select(t => t.Id).Count();
+            int Recover = recovers.Select(t => t.Id).Count();
+            int Batch = batches.Select(t => t.BatchNo).Count();
+            int Note = notes.Select(t => t.BatchNo).Count();
+            int Buy = buyers.Select(t => t.BatchNo).Count();
+            int TagClass = tagAttaches.Where(t => t.TagType == "2").Select(t => t.Id).Count();
+            int TagThing = tagAttaches.Where(t => t.TagType == "3").Select(t => t.Id).Count();
+            int  Info = infos.Sum(t => t.ScanNum);
+            Object obj = new { Series, Goods, Supplier, Sale, Inferior, Exprired, Recover, Batch, Note, Buy, TagClass, TagThing, Info };
+            return obj;
         }
         #endregion
     }

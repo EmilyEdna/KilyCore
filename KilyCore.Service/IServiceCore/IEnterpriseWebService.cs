@@ -291,5 +291,8 @@ namespace KilyCore.Service.IServiceCore
         IList<Object> ExportProInStockFile(String Param);
         IList<Object> ExportProOutStockFile(String Param);
         #endregion
+        #region 数据统计
+        Object GetDataCount();
+        #endregion
     }
 }

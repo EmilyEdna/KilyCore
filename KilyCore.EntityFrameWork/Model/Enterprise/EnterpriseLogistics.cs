@@ -22,7 +22,7 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
     /// <summary>
     /// 企业物流表
     /// </summary>
-    public class EnterpriseLogistics:EnterpriseBase
+    public class EnterpriseLogistics : EnterpriseBase
     {
         /// <summary>
         /// 物流单号
@@ -76,5 +76,13 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 发货地址
         /// </summary>
         public virtual string SendAddress { get; set; }
+        /// <summary>
+        /// 正确
+        /// </summary>
+        public virtual double Correct { get; set; }
+        /// <summary>
+        /// 错误
+        /// </summary>
+        public virtual double Error{ get; set; }
     }
 }
