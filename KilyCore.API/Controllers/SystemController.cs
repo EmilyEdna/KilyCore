@@ -581,5 +581,25 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(SystemService.RemoveNews(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 数据报表
+        /// <summary>
+        /// 二维码统计
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetCodeCountCenter")]
+        public ObjectResultEx GetCodeCountCenter()
+        {
+            return ObjectResultEx.Instance(SystemService.GetCodeCountCenter(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 入住企业统计
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetCompanyCountCenter")]
+        public ObjectResultEx GetCompanyCountCenter()
+        {
+            return ObjectResultEx.Instance(SystemService.GetCompanyCountCenter(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }

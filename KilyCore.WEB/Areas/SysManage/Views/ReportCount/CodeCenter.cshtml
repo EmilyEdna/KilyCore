@@ -1,0 +1,137 @@
+﻿
+@{
+    ViewData["Title"] = "二维码统计";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script src="~/Content/ExportPlugin/Script/xlsx.core.min.js"></script>
+    <script src="~/Content/ExportPlugin/Script/tableExport.js"></script>
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.Inithom();
+                this.InitEvents();
+            },
+            //元素
+            Inithom: function () {
+                controller.ajax({
+                    url: "System/GetCodeCountCenter",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '';
+                        $.each(result.data, function (i, data) {
+                            html += '<tr><td align="center" valign="middle">' + data.AreaName + '</td>';
+                            html += '<td align="center" valign="middle">' + data.HistoryVeinCount + '</td>';
+                            html += '<td align="center" valign="middle">' + data.NowVeinCount + '</td>';
+                            html += '<td align="center" valign="middle">' + data.VienSum + '</td>';
+                            html += '<td align="center" valign="middle">' + data.HistoryThingCount + '</td>';
+                            html += '<td align="center" valign="middle">' + data.NowThingCount + '</td>';
+                            html += '<td align="center" valign="middle">' + data.ThingSum + '</td>';
+                            html += '<td align="center" valign="middle">' + data.HistoryClassCount + '</td>';
+                            html += '<td align="center" valign="middle">' + data.NowClassCount + '</td>';
+                            html += '<td align="center" valign="middle">' + data.ClassSum + '</td>';
+                            html += '<td align="center" valign="middle">' + data.HistoryCompanyCount + '</td>';
+                            html += '<td align="center" valign="middle">' + data.NowCompanyCount + '</td>';
+                            html += '<td align="center" valign="middle">' + data.CompanySum + '</td>';
+                            html += '<td align="center" valign="middle">' + data.MonthSum + '</td>';
+                            html += '<td align="center" valign="middle">' + data.Total + '</td></tr>';
+                        });
+                        $("tbody").html(html);
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                //导出Excel
+                $("#export2003").on('click', function () {
+                    $("#tableList").tableExport({
+                        fileName: "二维码统计",
+                        ignoreColumn: ["Handler"],
+                        type: "excel",
+                        mso: {
+                            worksheetName: "二维码统计",
+                        }
+                    });
+                });
+                //导出Excel
+                $("#export2007").on('click', function () {
+                    $("#tableList").tableExport({
+                        fileName: "二维码统计",
+                        ignoreColumn: ["Handler"],
+                        type: "excel",
+                        mso: {
+                            fileFormat: "xlsx",
+                            worksheetName: "二维码统计",
+                        }
+                    });
+                });
+            },
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+@section css{
+    <style>
+        th {
+            text-align: center;
+            vertical-align: central;
+        }
+    </style>
+}
+<div class="container-fluid">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>二维码统计</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <form id="Edit">
+                        <div class="col-sm-12 m-b-xs">
+                            <div class="input-group">
+                                <button type="button" class="btn btn-sm btn-white" id="export2003"><i class="fa fa-file-excel-o"></i>导出Excel2003</button>
+                                <button type="button" class="btn btn-sm btn-white" id="export2007"><i class="fa fa-file-excel-o"></i>导出Excel2007</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="table-responsive m-t-sm">
+                <table id="tableList" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" align="center" valign="middle">区域</th>
+                            <th colspan="3" align="center" valign="middle">  纹理二维码数量</th>
+                            <th colspan="3" align="center" valign="middle">一物一码</th>
+                            <th colspan="3" align="center" valign="middle">一品一码</th>
+                            <th colspan="3" align="center" valign="middle">一企一码</th>
+                            <th rowspan="2" align="center" valign="middle">本月新增合计</th>
+                            <th rowspan="2" align="center" valign="middle">总计</th>
+                        </tr>
+                        <tr>
+                            <th align="center" valign="middle">历史累计</th>
+                            <th align="center" valign="middle">本月新增</th>
+                            <th align="center" valign="middle">合计</th>
+                            <th align="center" valign="middle">历史累计</th>
+                            <th align="center" valign="middle">本月新增</th>
+                            <th align="center" valign="middle">合计</th>
+                            <th align="center" valign="middle">历史累计</th>
+                            <th align="center" valign="middle">本月新增</th>
+                            <th align="center" valign="middle">合计</th>
+                            <th align="center" valign="middle">历史累计</th>
+                            <th align="center" valign="middle">本月新增</th>
+                            <th align="center" valign="middle">合计</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

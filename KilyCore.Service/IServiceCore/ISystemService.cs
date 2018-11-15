@@ -93,5 +93,9 @@ namespace KilyCore.Service.IServiceCore
         ResponseSystemNews GetNewsDetail(Guid Id);
         String RemoveNews(Guid Id);
         #endregion
+        #region 数据报表
+        IList<ResponseSystemCodeCount> GetCodeCountCenter();
+        IList<ResponseSystemCompanyCount> GetCompanyCountCenter();
+        #endregion
     }
 }

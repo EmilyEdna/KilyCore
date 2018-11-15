@@ -1954,9 +1954,11 @@ namespace KilyCore.Service.ServiceCore
             {
                 if (string.IsNullOrEmpty(Param.PaytTicket))
                     return "请上传缴费凭证";
-                IList<String> Fieds = new List<String>();
-                Fieds.Add("IsPay");
-                Fieds.Add("PaytTicket");
+                IList<String> Fieds = new List<String>
+                {
+                    "IsPay",
+                    "PaytTicket"
+                };
                 return UpdateField<EnterpriseTagApply>(TagApply, null, Fieds) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
             }
         }

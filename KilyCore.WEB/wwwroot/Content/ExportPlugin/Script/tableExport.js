@@ -657,7 +657,6 @@
                         if (typeof cell !== 'undefined' && cell !== null) {
 
                             var cellValue = parseString(cell, row, col);
-
                             var colspan = getColspan(cell);
                             var rowspan = getRowspan(cell);
 
@@ -749,9 +748,8 @@
                 rowIndex = 0;
                 ranges = [];
                 colNames = GetColumnNames(this);
-
                 // Header
-                docData += '<table><thead>';
+                docData += '<table border="1"><thead>';
                 $hrows = collectHeadRows($table);
                 $($hrows).each(function () {
                     trData = "";
@@ -779,6 +777,18 @@
                                 var tdrowspan = getRowspan(cell);
                                 if (tdrowspan > 0)
                                     trData += ' rowspan="' + tdrowspan + '"';
+
+                                var tdalign = getAlign(cell);
+                                if (tdalign != "")
+                                    trData += ' align="' + tdalign + '"';
+
+                                var tdvalign = getValign(cell);
+                                if (tdvalign != "")
+                                    trData += ' valign="' + tdvalign + '"';
+
+                                var tdstyle = getStyle(cell);
+                                if (tdstyle != "")
+                                    trData += ' style="' + tdstyle + '"';
 
                                 trData += '>' + parseString(cell, row, col) + '</th>';
                             }
@@ -2117,7 +2127,7 @@
 
             return result;
         }
-
+        //获取行合并
         function getColspan(cell) {
             var result = $(cell).data("tableexport-colspan");
             if (typeof result === 'undefined' && $(cell).is("[colspan]"))
@@ -2125,15 +2135,36 @@
 
             return (parseInt(result) || 0);
         }
-
+        //获取列合并
         function getRowspan(cell) {
             var result = $(cell).data("tableexport-rowspan");
             if (typeof result === 'undefined' && $(cell).is("[rowspan]"))
                 result = $(cell).attr('rowspan');
 
             return (parseInt(result) || 0);
-        }
-
+        };
+        //获取水平居中属性
+        function getAlign(cell) {
+            var result = "";
+            if ($(cell).is("[align]"))
+                result = $(cell).attr('align');
+            return result;
+        };
+        //获取垂直居中属性
+        function getValign(cell) {
+            var result = "";
+            if ($(cell).is("[valign]"))
+                result = $(cell).attr('valign');
+            return result;
+        };
+        //获取样式表
+        function getStyle(cell) {
+            var result = "";
+            if ($(cell).is("[style]"))
+                result = $(cell).attr('style');
+            return result;
+        };
+        
         // get computed style property
         function getStyle(target, prop) {
             try {

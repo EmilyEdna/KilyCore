@@ -44,15 +44,6 @@
             },
             //行为
             action: {
-                CheckFormatter: function (val, row, index) {
-                    if (options.IdList != null) {
-                        //集合先转数组
-                        if ($.inArray(row.Id, Array.from(options.IdListIn)) != -1)
-                            return {
-                                checked: true
-                            }
-                    }
-                },
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary detail"><i class="fa fa-pencil-square-o"></i>详情</button>');

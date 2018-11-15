@@ -1,5 +1,9 @@
 ﻿using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.System;
+using KilyCore.EntityFrameWork.Model.Cook;
+using KilyCore.EntityFrameWork.Model.Enterprise;
+using KilyCore.EntityFrameWork.Model.Function;
+using KilyCore.EntityFrameWork.Model.Repast;
 using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AttributeExtension;
@@ -267,7 +271,7 @@ namespace KilyCore.Service.ServiceCore
             if (UserInfo().AccountType == AccountEnum.Country)
                 queryable = queryable.Where(t => t.AccountType >= AccountEnum.Country);
             if (UserInfo().AccountType == AccountEnum.Province)
-                queryable = queryable.Where(t => t.AccountType >= AccountEnum.Province).Where(t=>t.TypePath.Contains(pageParam.QueryParam.Province));
+                queryable = queryable.Where(t => t.AccountType >= AccountEnum.Province).Where(t => t.TypePath.Contains(pageParam.QueryParam.Province));
             if (UserInfo().AccountType == AccountEnum.City)
                 queryable = queryable.Where(t => t.AccountType >= AccountEnum.City).Where(t => t.TypePath.Contains(pageParam.QueryParam.City));
             if (UserInfo().AccountType == AccountEnum.Area)
@@ -360,7 +364,7 @@ namespace KilyCore.Service.ServiceCore
                 Chapter = t.Chapter,
                 Address = t.Address,
                 BankCard = t.BankCard,
-                BankName=t.BankName
+                BankName = t.BankName
             }).ToList();
             ResponseAdmin admin = Kily.Set<SystemAdmin>().Where(t => t.IsDelete == false)
             .Where(t => t.AccountType <= AccountEnum.Country).Select(t => new ResponseAdmin()
@@ -383,7 +387,7 @@ namespace KilyCore.Service.ServiceCore
         public IList<ResponseAdmin> GetBankInfo()
         {
             IQueryable<SystemAdmin> queryable = Kily.Set<SystemAdmin>().Where(t => t.IsDelete == false)
-                .Where(t=>t.AccountType!=AccountEnum.Admin);
+                .Where(t => t.AccountType != AccountEnum.Admin);
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => t.TypePath.Contains(CompanyInfo().Province)
                 || t.TypePath.Contains(CompanyInfo().City)
@@ -1333,6 +1337,115 @@ namespace KilyCore.Service.ServiceCore
         public string RemoveNews(Guid Id)
         {
             return Remove<SystemNews>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+
+        #region 数据报表
+        /// <summary>
+        /// 二维码统计
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseSystemCodeCount> GetCodeCountCenter()
+        {
+            IQueryable<EnterpriseTagApply> queryable = Kily.Set<EnterpriseTagApply>().Where(t => t.IsDelete == false).Where(t => t.IsPay != null && t.IsPay == true);
+            IQueryable<FunctionVeinTag> queryables = Kily.Set<FunctionVeinTag>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseInfo> InfoTemp = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
+            IQueryable<SystemAdmin> AdminTemp = Kily.Set<SystemAdmin>().Where(t => t.IsDelete == false);
+            var ApplyTag = queryable.Join(InfoTemp, t => t.CompanyId, x => x.Id, (t, x) => new { t, x });
+            var ComVein = queryables.Where(t => t.AllotType == 1).Join(InfoTemp, t => t.AcceptUser, x => x.Id.ToString(), (t, x) => new { t, x });
+            var AdmVein = queryables.Where(t => t.AllotType == 2).Join(AdminTemp, t => t.AcceptUser, x => x.Id.ToString(), (t, x) => new { t, x });
+            IList<ResponseSystemCodeCount> CodeCountList = new List<ResponseSystemCodeCount>();
+            Kily.Set<SystemProvince>().Where(t => t.IsDelete == false).AsNoTracking().ToList().ForEach(o =>
+            {
+                var Temp = ApplyTag.Where(t => t.x.TypePath.Contains(o.Id.ToString()));
+                var VempCom = ComVein.Where(t => t.x.TypePath.Contains(o.Id.ToString()));
+                var VempAdm = AdmVein.Where(t => t.x.TypePath.Contains(o.Id.ToString()));
+                //历史累计
+                int HistoryThing = Temp.Where(t => t.t.CreateTime < DateTime.Now.AddDays(-DateTime.Now.Day)).Where(t => t.t.TagType == TagEnum.OneThing).Sum(t => Convert.ToInt32(t.t.ApplyNum));
+                int HistoryBrand = Temp.Where(t => t.t.CreateTime < DateTime.Now.AddDays(-DateTime.Now.Day)).Where(t => t.t.TagType == TagEnum.OneBrand).Sum(t => Convert.ToInt32(t.t.ApplyNum));
+                int HistoryCompany = Temp.Where(t => t.t.CreateTime < DateTime.Now.AddDays(-DateTime.Now.Day)).Where(t => t.t.TagType == TagEnum.OneEnterprise).Sum(t => Convert.ToInt32(t.t.ApplyNum));
+                int HistoryVein = VempCom.Where(t => t.t.CreateTime < DateTime.Now.AddDays(-DateTime.Now.Day)).Sum(t => t.t.AllotNum) + VempAdm.Where(t => t.t.CreateTime < DateTime.Now.AddDays(-DateTime.Now.Day)).Sum(t => t.t.AllotNum);
+                //本月新增
+                int NowThing = Temp.Where(t => t.t.CreateTime >= DateTime.Now.AddDays(-DateTime.Now.Day + 1)).Where(t => t.t.TagType == TagEnum.OneThing).Sum(t => Convert.ToInt32(t.t.ApplyNum));
+                int NowBrand = Temp.Where(t => t.t.CreateTime >= DateTime.Now.AddDays(-DateTime.Now.Day + 1)).Where(t => t.t.TagType == TagEnum.OneBrand).Sum(t => Convert.ToInt32(t.t.ApplyNum));
+                int NowCompany = Temp.Where(t => t.t.CreateTime >= DateTime.Now.AddDays(-DateTime.Now.Day + 1)).Where(t => t.t.TagType == TagEnum.OneEnterprise).Sum(t => Convert.ToInt32(t.t.ApplyNum));
+                int NowVein = VempCom.Where(t => t.t.CreateTime >= DateTime.Now.AddDays(-DateTime.Now.Day + 1)).Sum(t => t.t.AllotNum) + VempAdm.Where(t => t.t.CreateTime >= DateTime.Now.AddDays(-DateTime.Now.Day + 1)).Sum(t => t.t.AllotNum);
+                ResponseSystemCodeCount CodeCount = new ResponseSystemCodeCount
+                {
+                    AreaName = o.Name,
+                    HistoryVeinCount = HistoryVein,
+                    HistoryThingCount = HistoryThing,
+                    HistoryClassCount = HistoryBrand,
+                    HistoryCompanyCount = HistoryCompany,
+                    NowVeinCount = NowVein,
+                    NowThingCount = NowThing,
+                    NowClassCount = NowBrand,
+                    NowCompanyCount = NowCompany
+                };
+                CodeCountList.Add(CodeCount);
+            });
+            return CodeCountList;
+        }
+        /// <summary>
+        /// 入住企业统计
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseSystemCompanyCount> GetCompanyCountCenter()
+        {
+            IQueryable<EnterpriseInfo> Enterprise = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
+            IQueryable<RepastInfo> Merchant = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false);
+            IQueryable<CookInfo> Cook = Kily.Set<CookInfo>().Where(t => t.IsDelete == false);
+            IList<ResponseSystemCompanyCount> CompanyCountList = new List<ResponseSystemCompanyCount>();
+            Kily.Set<SystemProvince>().Where(t => t.IsDelete == false).AsNoTracking().ToList().ForEach(o =>
+            {
+                var ComTemp = Enterprise.Where(t => t.TypePath.Contains(o.Id.ToString()));
+                var MerTemp = Merchant.Where(t => t.TypePath.Contains(o.Id.ToString()));
+                var CookTemp = Cook.Where(t => t.TypePath.Contains(o.Id.ToString()));
+                //历史累计
+                var HistoryPlant = ComTemp.Where(t => t.CreateTime < DateTime.Now.AddDays(-DateTime.Now.Day)).Where(t => t.CompanyType == CompanyEnum.Plant).AsNoTracking().Count();
+                var HistoryCulture = ComTemp.Where(t => t.CreateTime < DateTime.Now.AddDays(-DateTime.Now.Day)).Where(t => t.CompanyType == CompanyEnum.Culture).AsNoTracking().Count();
+                var HistoryProduction = ComTemp.Where(t => t.CreateTime < DateTime.Now.AddDays(-DateTime.Now.Day)).Where(t => t.CompanyType == CompanyEnum.Production).AsNoTracking().Count();
+                var HistoryCirculation = ComTemp.Where(t => t.CreateTime < DateTime.Now.AddDays(-DateTime.Now.Day)).Where(t => t.CompanyType == CompanyEnum.Circulation).AsNoTracking().Count();
+                var HistoryOther = ComTemp.Where(t => t.CreateTime < DateTime.Now.AddDays(-DateTime.Now.Day)).Where(t => t.CompanyType == CompanyEnum.Other).AsNoTracking().Count();
+                var HistoryNormal = MerTemp.Where(t => t.CreateTime < DateTime.Now.AddDays(-DateTime.Now.Day)).Where(t => t.DiningType == MerchantEnum.Normal).AsNoTracking().Count();
+                var HistoryUnitCanteen = MerTemp.Where(t => t.CreateTime < DateTime.Now.AddDays(-DateTime.Now.Day)).Where(t => t.DiningType == MerchantEnum.UnitCanteen).AsNoTracking().Count();
+                var HistorySmall = MerTemp.Where(t => t.CreateTime < DateTime.Now.AddDays(-DateTime.Now.Day)).Where(t => t.DiningType > MerchantEnum.UnitCanteen).AsNoTracking().Count();
+                var HistoryCook = CookTemp.Where(t => t.CreateTime < DateTime.Now.AddDays(-DateTime.Now.Day)).AsNoTracking().Count();
+                //本月新增
+                var NowPlant = ComTemp.Where(t => t.CreateTime >= DateTime.Now.AddDays(-DateTime.Now.Day + 1)).Where(t => t.CompanyType == CompanyEnum.Plant).AsNoTracking().Count();
+                var NowCulture = ComTemp.Where(t => t.CreateTime >= DateTime.Now.AddDays(-DateTime.Now.Day + 1)).Where(t => t.CompanyType == CompanyEnum.Culture).AsNoTracking().Count();
+                var NowProduction = ComTemp.Where(t => t.CreateTime >= DateTime.Now.AddDays(-DateTime.Now.Day + 1)).Where(t => t.CompanyType == CompanyEnum.Production).AsNoTracking().Count();
+                var NowCirculation = ComTemp.Where(t => t.CreateTime >= DateTime.Now.AddDays(-DateTime.Now.Day + 1)).Where(t => t.CompanyType == CompanyEnum.Circulation).AsNoTracking().Count();
+                var NowOther = ComTemp.Where(t => t.CreateTime >= DateTime.Now.AddDays(-DateTime.Now.Day + 1)).Where(t => t.CompanyType == CompanyEnum.Other).AsNoTracking().Count();
+                var NowNormal = MerTemp.Where(t => t.CreateTime >= DateTime.Now.AddDays(-DateTime.Now.Day + 1)).Where(t => t.DiningType == MerchantEnum.Normal).AsNoTracking().Count();
+                var NowUnitCanteen = MerTemp.Where(t => t.CreateTime >= DateTime.Now.AddDays(-DateTime.Now.Day + 1)).Where(t => t.DiningType == MerchantEnum.UnitCanteen).AsNoTracking().Count();
+                var NowSmall = MerTemp.Where(t => t.CreateTime >= DateTime.Now.AddDays(-DateTime.Now.Day + 1)).Where(t => t.DiningType > MerchantEnum.UnitCanteen).AsNoTracking().Count();
+                var NowCook = CookTemp.Where(t => t.CreateTime >= DateTime.Now.AddDays(-DateTime.Now.Day + 1)).AsNoTracking().Count();
+                ResponseSystemCompanyCount CompanyCount = new ResponseSystemCompanyCount
+                {
+                    AreaName=o.Name,
+                    HistoryPlant = HistoryPlant,
+                    HistoryCulture = HistoryCulture,
+                    HistoryProduction = HistoryProduction,
+                    HistoryCirculation = HistoryCirculation,
+                    HistoryOther = HistoryOther,
+                    HistoryNormal = HistoryNormal,
+                    HistoryUnitCanteen = HistoryUnitCanteen,
+                    HistorySmall = HistorySmall,
+                    HistoryCook = HistoryCook,
+                    NowPlant = NowPlant,
+                    NowCulture = NowCulture,
+                    NowProduction = NowProduction,
+                    NowCirculation = NowCirculation,
+                    NowOther = NowOther,
+                    NowNormal = NowNormal,
+                    NowUnitCanteen = NowUnitCanteen,
+                    NowSmall = NowSmall,
+                    NowCook = NowCook
+                };
+                CompanyCountList.Add(CompanyCount);
+            });
+            return CompanyCountList;
         }
         #endregion
     }
