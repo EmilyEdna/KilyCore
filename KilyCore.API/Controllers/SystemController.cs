@@ -600,6 +600,15 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetCompanyCountCenter(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 产品统计
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetProductCountCenter")]
+        public ObjectResultEx GetProductCountCenter()
+        {
+            return ObjectResultEx.Instance(SystemService.GetProductCountCenter(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
     }
 }

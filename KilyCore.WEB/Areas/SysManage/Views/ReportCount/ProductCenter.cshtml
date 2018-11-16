@@ -1,8 +1,151 @@
 ﻿
 @{
-    ViewData["Title"] = "ProductCenter";
+    ViewData["Title"] = "产品统计";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
-
-<h2>ProductCenter</h2>
-
+@section script{
+    <script src="~/Content/ExportPlugin/Script/xlsx.core.min.js"></script>
+    <script src="~/Content/ExportPlugin/Script/tableExport.js"></script>
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.Inithom();
+                this.InitEvents();
+            },
+            //元素
+            Inithom: function () {
+                controller.ajax({
+                    url: "System/GetProductCountCenter",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '';
+                        $.each(result.data, function (i, data) {
+                            html += '<tr><td align="center" valign="middle">' + data.AreaName + '</td>';
+                            html += '<td align="center" valign="middle">' + data.HistoryFarmer + '</td>';
+                            html += '<td align="center" valign="middle">' + data.NowFarmer + '</td>';
+                            html += '<td align="center" valign="middle">' + data.FarmerSum + '</td>';
+                            html += '<td align="center" valign="middle">' + data.HistoryFood + '</td>';
+                            html += '<td align="center" valign="middle">' + data.NowFood + '</td>';
+                            html += '<td align="center" valign="middle">' + data.FoodSum + '</td>';
+                            html += '<td align="center" valign="middle">' + data.HistoryDrug + '</td>';
+                            html += '<td align="center" valign="middle">' + data.NowDrug + '</td>';
+                            html += '<td align="center" valign="middle">' + data.DrugSum + '</td>';
+                            html += '<td align="center" valign="middle">' + data.HistoryCosplay + '</td>';
+                            html += '<td align="center" valign="middle">' + data.NowCosplay + '</td>';
+                            html += '<td align="center" valign="middle">' + data.CosplaySum + '</td>';
+                            html += '<td align="center" valign="middle">' + data.HistoryMachine + '</td>';
+                            html += '<td align="center" valign="middle">' + data.NowMachine + '</td>';
+                            html += '<td align="center" valign="middle">' + data.MachineSum + '</td>';
+                            html += '<td align="center" valign="middle">' + data.HistoryOhter + '</td>';
+                            html += '<td align="center" valign="middle">' + data.NowOhter + '</td>';
+                            html += '<td align="center" valign="middle">' + data.OhterSum + '</td>';
+                            html += '<td align="center" valign="middle">' + data.MonthSum + '</td>';
+                            html += '<td align="center" valign="middle">' + data.Total + '</td></tr>';
+                        });
+                        $("tbody").html(html);
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                //导出Excel
+                $("#export2003").on('click', function () {
+                    $("#tableList").tableExport({
+                        fileName: "产品统计",
+                        ignoreColumn: ["Handler"],
+                        type: "excel",
+                        mso: {
+                            worksheetName: "产品统计",
+                        }
+                    });
+                });
+                //导出Excel
+                $("#export2007").on('click', function () {
+                    $("#tableList").tableExport({
+                        fileName: "产品统计",
+                        ignoreColumn: ["Handler"],
+                        type: "excel",
+                        mso: {
+                            fileFormat: "xlsx",
+                            worksheetName: "产品统计",
+                        }
+                    });
+                });
+            },
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+@section css{
+    <style>
+        th {
+            text-align: center;
+            vertical-align: central;
+        }
+    </style>
+}
+<div class="container-fluid">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>产品统计</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <form id="Edit">
+                        <div class="col-sm-12 m-b-xs">
+                            <div class="input-group">
+                                <button type="button" class="btn btn-sm btn-white" id="export2003"><i class="fa fa-file-excel-o"></i>导出Excel2003</button>
+                                <button type="button" class="btn btn-sm btn-white" id="export2007"><i class="fa fa-file-excel-o"></i>导出Excel2007</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="table-responsive m-t-sm">
+                <table id="tableList" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" align="center" valign="middle">区域</th>
+                            <th colspan="3" align="center" valign="middle">农产品</th>
+                            <th colspan="3" align="center" valign="middle">食品</th>
+                            <th colspan="3" align="center" valign="middle">药品</th>
+                            <th colspan="3" align="center" valign="middle">化妆品</th>
+                            <th colspan="3" align="center" valign="middle">医疗器械</th>
+                            <th colspan="3" align="center" valign="middle">其他</th>
+                            <th rowspan="2" align="center" valign="middle">本月新增合计</th>
+                            <th rowspan="2" align="center" valign="middle">总计</th>
+                        </tr>
+                        <tr>
+                            <th align="center" valign="middle">历史累计</th>
+                            <th align="center" valign="middle">本月新增</th>
+                            <th align="center" valign="middle">合计</th>
+                            <th align="center" valign="middle">历史累计</th>
+                            <th align="center" valign="middle">本月新增</th>
+                            <th align="center" valign="middle">合计</th>
+                            <th align="center" valign="middle">历史累计</th>
+                            <th align="center" valign="middle">本月新增</th>
+                            <th align="center" valign="middle">合计</th>
+                            <th align="center" valign="middle">历史累计</th>
+                            <th align="center" valign="middle">本月新增</th>
+                            <th align="center" valign="middle">合计</th>
+                            <th align="center" valign="middle">历史累计</th>
+                            <th align="center" valign="middle">本月新增</th>
+                            <th align="center" valign="middle">合计</th>
+                            <th align="center" valign="middle">历史累计</th>
+                            <th align="center" valign="middle">本月新增</th>
+                            <th align="center" valign="middle">合计</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

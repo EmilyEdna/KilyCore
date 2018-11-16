@@ -96,6 +96,7 @@ namespace KilyCore.Service.IServiceCore
         #region 数据报表
         IList<ResponseSystemCodeCount> GetCodeCountCenter();
         IList<ResponseSystemCompanyCount> GetCompanyCountCenter();
+        IList<ResponseSystemProductCount> GetProductCountCenter();
         #endregion
     }
 }

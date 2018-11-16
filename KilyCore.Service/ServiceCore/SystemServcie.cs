@@ -1423,7 +1423,7 @@ namespace KilyCore.Service.ServiceCore
                 var NowCook = CookTemp.Where(t => t.CreateTime >= DateTime.Now.AddDays(-DateTime.Now.Day + 1)).AsNoTracking().Count();
                 ResponseSystemCompanyCount CompanyCount = new ResponseSystemCompanyCount
                 {
-                    AreaName=o.Name,
+                    AreaName = o.Name,
                     HistoryPlant = HistoryPlant,
                     HistoryCulture = HistoryCulture,
                     HistoryProduction = HistoryProduction,
@@ -1446,6 +1446,52 @@ namespace KilyCore.Service.ServiceCore
                 CompanyCountList.Add(CompanyCount);
             });
             return CompanyCountList;
+        }
+        /// <summary>
+        /// 产品统计
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseSystemProductCount> GetProductCountCenter()
+        {
+            IQueryable<EnterpriseGoods> queryable = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess);
+            IQueryable<EnterpriseInfo> Enterprise = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
+            IList<ResponseSystemProductCount> ProductCountList = new List<ResponseSystemProductCount>();
+            Kily.Set<SystemProvince>().Where(t => t.IsDelete == false).AsNoTracking().ToList().ForEach(o =>
+            {
+                var Temp = queryable.Join(Enterprise, t => t.CompanyId, x => x.Id, (t, x) => new { t, x }).Where(t => t.x.TypePath.Contains(o.Id.ToString()));
+                //历史累计
+                int HistoryFarmer = Temp.Where(t => t.t.CreateTime < DateTime.Now.AddDays(-DateTime.Now.Day)).Where(t => t.t.ProductType.Equals("农产品")).Count();
+                int HistoryFood = Temp.Where(t => t.t.CreateTime < DateTime.Now.AddDays(-DateTime.Now.Day)).Where(t => t.t.ProductType.Equals("食品")).Count();
+                int HistoryDrug = Temp.Where(t => t.t.CreateTime < DateTime.Now.AddDays(-DateTime.Now.Day)).Where(t => t.t.ProductType.Equals("药品")).Count();
+                int HistoryCosplay = Temp.Where(t => t.t.CreateTime < DateTime.Now.AddDays(-DateTime.Now.Day)).Where(t => t.t.ProductType.Equals("化妆品")).Count();
+                int HistoryMachine = Temp.Where(t => t.t.CreateTime < DateTime.Now.AddDays(-DateTime.Now.Day)).Where(t => t.t.ProductType.Equals("医疗器械")).Count();
+                int HistoryOhter = Temp.Where(t => t.t.CreateTime < DateTime.Now.AddDays(-DateTime.Now.Day)).Where(t => t.t.ProductType.Equals("其他")).Count();
+                //本月新增
+                int NowFarmer = Temp.Where(t => t.t.CreateTime >= DateTime.Now.AddDays(-DateTime.Now.Day + 1)).Where(t => t.t.ProductType.Equals("农产品")).Count();
+                int NowFood = Temp.Where(t => t.t.CreateTime >= DateTime.Now.AddDays(-DateTime.Now.Day + 1)).Where(t => t.t.ProductType.Equals("食品")).Count();
+                int NowDrug = Temp.Where(t => t.t.CreateTime >= DateTime.Now.AddDays(-DateTime.Now.Day + 1)).Where(t => t.t.ProductType.Equals("药品")).Count();
+                int NowCosplay = Temp.Where(t => t.t.CreateTime >= DateTime.Now.AddDays(-DateTime.Now.Day + 1)).Where(t => t.t.ProductType.Equals("化妆品")).Count();
+                int NowMachine = Temp.Where(t => t.t.CreateTime >= DateTime.Now.AddDays(-DateTime.Now.Day + 1)).Where(t => t.t.ProductType.Equals("医疗器械")).Count();
+                int NowOhter = Temp.Where(t => t.t.CreateTime >= DateTime.Now.AddDays(-DateTime.Now.Day + 1)).Where(t => t.t.ProductType.Equals("其他")).Count();
+                ResponseSystemProductCount ProductCount = new ResponseSystemProductCount
+                {
+                    AreaName = o.Name,
+                    HistoryFarmer = HistoryFarmer,
+                    HistoryFood = HistoryFood,
+                    HistoryDrug = HistoryDrug,
+                    HistoryCosplay = HistoryCosplay,
+                    HistoryMachine = HistoryMachine,
+                    HistoryOhter = HistoryOhter,
+                    NowFarmer = NowFarmer,
+                    NowFood = NowFood,
+                    NowDrug = NowDrug,
+                    NowCosplay = NowCosplay,
+                    NowMachine = NowMachine,
+                    NowOhter = NowOhter
+                };
+                ProductCountList.Add(ProductCount);
+            });
+            return ProductCountList;
         }
         #endregion
     }
