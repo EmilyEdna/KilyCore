@@ -31,9 +31,9 @@ body {
     }
 
 .main {
-    height: 300px;
     background: url(../img/rg-bj.png) no-repeat;
     position: relative;
+    background-size:100%;
 }
 
 .rg-box {

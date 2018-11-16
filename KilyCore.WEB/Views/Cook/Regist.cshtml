@@ -23,6 +23,7 @@
             Init: function () {
                 this.InitDom();
                 this.InitEvents();
+                this.InitWinSize();
             },
             InitDom: function () {
                 $(".code").on('click', function () {
@@ -107,6 +108,15 @@
                         });
                     }
                     else { controller.Tips("两次输入的密码不同", "#PassWord_Two", { tips: [2, '#FF0000'] }); }
+                });
+            },
+            InitWinSize: function () {
+                $(".main").css("min-height", $("body").height() - $("header").outerHeight());
+                $(".main").css("top", ($(".main").outerHeight() - $(".main").outerHeight()) / 2 - 20);
+                $(window).resize(function () {
+                    window.setTimeout(function () {
+                        options.InitWinSize();
+                    }, 200);
                 });
             },
         };
