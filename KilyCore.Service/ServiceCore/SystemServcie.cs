@@ -367,7 +367,7 @@ namespace KilyCore.Service.ServiceCore
                 BankName = t.BankName
             }).ToList();
             ResponseAdmin admin = Kily.Set<SystemAdmin>().Where(t => t.IsDelete == false)
-            .Where(t => t.AccountType <= AccountEnum.Country).Select(t => new ResponseAdmin()
+            .Where(t => t.AccountType == AccountEnum.Country).Select(t => new ResponseAdmin()
             {
                 Id = t.Id,
                 CommunityCode = t.CommunityCode,
@@ -1112,10 +1112,13 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().City));
             if (UserInfo().AccountType == AccountEnum.Area)
                 queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().Area));
+            IQueryable<EnterpriseUpLevel> elvs = Kily.Set<EnterpriseUpLevel>().Where(t => t.IsDelete == false);
+            IQueryable<RepastUpLevel> rlvs = Kily.Set<RepastUpLevel>().Where(t => t.IsDelete == false);
             //所属区域下的合同
             var data = queryable.OrderByDescending(t => t.CreateTime).AsNoTracking().Select(t => new ResponseStayContract()
             {
                 Id = t.Id,
+                Record = (pageParam.QueryParam.EnterpriseOrMerchant == 1 ?(elvs.Where(x=>x.CompanyId==t.CompanyId).AsNoTracking().FirstOrDefault() as Object): (rlvs.Where(x => x.InfoId == t.CompanyId).AsNoTracking().FirstOrDefault() as Object)),
                 TotalPrice = t.TotalPrice,
                 CompanyName = t.CompanyName,
                 PayTicket = t.PayTicket,

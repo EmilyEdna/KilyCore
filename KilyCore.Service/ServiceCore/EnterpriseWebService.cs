@@ -819,6 +819,7 @@ namespace KilyCore.Service.ServiceCore
                 //银联
                 if (contract.PayType == PayEnum.Unionpay || contract.PayType == PayEnum.AgentPay)
                 {
+                    contract.TotalPrice = (decimal)AliPayModel.Money;
                     return Insert<SystemStayContract>(contract) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
                 }
                 //支付宝支付
@@ -832,7 +833,7 @@ namespace KilyCore.Service.ServiceCore
                 else
                 {
                     RequestWxPayModel WxPayModel = AliPayModel.MapToEntity<RequestWxPayModel>();
-                    contract.TotalPrice = (decimal)WxPayModel.Money;
+                    contract.TotalPrice = WxPayModel.Money;
                     //Insert<SystemStayContract>(contract);
                     return WxPayCore.Instance.WebPay(WxPayModel);
                 }
@@ -842,6 +843,7 @@ namespace KilyCore.Service.ServiceCore
                 contract.PayType = PayEnum.AgentPay;
                 contract.IsPay = false;
                 contract.TryOut = "30";
+                contract.TotalPrice = (decimal)AliPayModel.Money;
                 contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(contract.ContractYear));
                 return Insert<SystemStayContract>(contract) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
             }
