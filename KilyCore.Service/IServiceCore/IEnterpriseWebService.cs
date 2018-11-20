@@ -256,7 +256,7 @@ namespace KilyCore.Service.IServiceCore
         #region 召回处理
         PagedResult<ResponseEnterpriseRecover> GetRecoverPage(PageParamList<RequestEnterpriseRecover> pageParam);
         ResponseEnterpriseRecover GetRecoverDetail(Guid Id);
-        String EditRecover(RequestEnterpriseRecover Param);
+        String SaveRecover(RequestEnterpriseRecover Param);
         String RemoveRecover(Guid Id);
         #endregion
         #endregion

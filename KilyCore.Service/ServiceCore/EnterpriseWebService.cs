@@ -551,6 +551,22 @@ namespace KilyCore.Service.ServiceCore
             return Insert<EnterpriseTarget>(target) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         #endregion
+
+        #region 产品召回
+        /// <summary>
+        /// 编辑召回
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveRecover(RequestEnterpriseRecover Param)
+        {
+            EnterpriseRecover recover = Param.MapToEntity<EnterpriseRecover>();
+            if (recover.Id == Guid.Empty)
+                return Insert(recover) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+                return Update(recover, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        #endregion
         #endregion
 
         #region 删除不需要权限的
@@ -3077,10 +3093,20 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+           var Temp = queryable.Join(Kily.Set<EnterpriseProductSeries>(), x => x.ProductSeriesId, t => t.Id, (x, t) => new EnterpriseGoods
+           {
+               Id = x.Id,
+               CompanyId = t.Id
+           }).Join(Kily.Set<EnterpriseProductionBatch>(), y => y.CompanyId, p => p.SeriesId, (y, p) => new EnterpriseGoods
+           {
+               Id = y.Id,
+               Spec = p.BatchNo
+           }).AsNoTracking().ToList();
             var data = queryable.Select(t => new ResponseEnterpriseGoods()
             {
                 Id = t.Id,
-                ProductName = t.ProductName
+                ProductName = t.ProductName,
+                Spec = Temp.Where(x => x.Id == t.Id).Select(x => x.Spec).FirstOrDefault()
             }).AsNoTracking().ToList();
             return data;
         }
@@ -3650,6 +3676,15 @@ namespace KilyCore.Service.ServiceCore
         public PagedResult<ResponseEnterpriseInferiorExprired> GetInferiorExpriredPage(PageParamList<RequestEnterpriseInferiorExprired> pageParam)
         {
             IQueryable<EnterpriseInferiorExprired> queryable = Kily.Set<EnterpriseInferiorExprired>().Where(t => t.IsDelete == false).Where(t => t.InferiorExprired == pageParam.QueryParam.InferiorExprired).OrderByDescending(t => t.CreateTime);
+            var Temp = Kily.Set<EnterpriseGoods>().Join(Kily.Set<EnterpriseProductSeries>(), x => x.ProductSeriesId, t => t.Id, (x, t) => new EnterpriseGoods
+            {
+                Id = x.Id,
+                CompanyId = t.Id
+            }).Join(Kily.Set<EnterpriseProductionBatch>(), y => y.CompanyId, p => p.SeriesId, (y, p) => new EnterpriseGoods
+            {
+                Id = y.Id,
+                Spec = p.BatchNo
+            }).AsNoTracking().ToList();
             if (!string.IsNullOrEmpty(pageParam.QueryParam.CustomName))
                 queryable = queryable.Where(t => t.CustomName.Contains(pageParam.QueryParam.CustomName));
             if (CompanyInfo() != null)
@@ -3665,7 +3700,8 @@ namespace KilyCore.Service.ServiceCore
                 HandleUser = t.HandleUser,
                 HandleWays = t.HandleWays,
                 HandleTime = t.HandleTime,
-                HandleReason = t.HandleReason
+                HandleReason = t.HandleReason,
+                BatchNo = pageParam.QueryParam.InferiorExprired != 1 ? null : Temp.Where(x => x.Id == t.InferId).Select(x => x.Spec).FirstOrDefault(),
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -3686,7 +3722,8 @@ namespace KilyCore.Service.ServiceCore
                 HandleUser = t.HandleUser,
                 HandleWays = t.HandleWays,
                 HandleTime = t.HandleTime,
-                HandleReason = t.HandleReason
+                HandleReason = t.HandleReason,
+                InferId = t.InferId
             }).FirstOrDefault();
             return data;
         }
@@ -3762,19 +3799,6 @@ namespace KilyCore.Service.ServiceCore
                 HandleWays = t.HandleWays
             }).FirstOrDefault();
             return data;
-        }
-        /// <summary>
-        /// 编辑召回
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditRecover(RequestEnterpriseRecover Param)
-        {
-            EnterpriseRecover recover = Param.MapToEntity<EnterpriseRecover>();
-            if (recover.Id == Guid.Empty)
-                return Insert(recover) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
-            else
-                return Update(recover, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         /// <summary>
         /// 删除召回

@@ -15,26 +15,12 @@
             },
             //元素
             InitDom: function () {
-                var Guid = controller.GetParam("Id");
                 $("#CompanyId").val(CompanyInfo.Id);
+                $("input[name='InferType']").val(controller.GetParam("Type"));
                 controller.LayDate({ elem: "#HandleTime" });
                 options.GetUsers();
-                options.GetDetail(Guid);
                 options.GetGoodsList();
-            },
-            //取详情
-            GetDetail: function (data) {
-                if (data != "" && data != null && data != undefined) {
-                    controller.ajax({
-                        url: "EnterpriseWeb/GetInferiorExpriredDetail",
-                        data: { Id: data },
-                        type: "post",
-                        async: false,
-                        success: function (result) {
-                            controller.SetCtrlValue("#Edit", result.data);
-                        }
-                    });
-                }
+                $("#InferId").val(controller.GetParam("Id"));
             },
             //获取管理员
             GetUsers: function () {

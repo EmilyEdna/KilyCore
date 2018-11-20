@@ -26,7 +26,7 @@
         InitEvents: function () {
             $("#add").on('click', function () {
                 controller.OpenWindow({
-                    title: "新增质检",
+                    title: "新增产品召回",
                     type: 2,
                     height: "400px",
                     width: "700px",
@@ -41,7 +41,7 @@
         action: {
             TableFormatter: function (val, row, index) {
                 var action = [];
-                action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
+                action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>处理</button>');
                 action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
                 return action.join("&nbsp;")
             },
@@ -62,7 +62,7 @@
                 },
                 "click .edit": function (event, val, row, index) {
                     controller.OpenWindow({
-                        title: "编辑产品召回",
+                        title: "处理产品召回",
                         type: 2,
                         height: "400px",
                         width: "700px",

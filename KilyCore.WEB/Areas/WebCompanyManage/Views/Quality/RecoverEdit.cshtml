@@ -39,7 +39,7 @@
                     $("tr").eq(0).css("display", "none");
                     $("tr").eq(1).css("display", "none")
                 }
-                else { 
+                else {
                     $("tr").eq(2).css("display", "none");
                     $("tr").eq(3).css("display", "none");
                 }
@@ -55,9 +55,23 @@
                     success: function (result) {
                         var html = '<option>===请选择===</option>';
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.TrueName+'">' + obj.TrueName + '</option>';
+                            html += '<option value="' + obj.TrueName + '">' + obj.TrueName + '</option>';
                         });
                         $("#HandleUser").html(html);
+                    }
+                });
+                //产品下拉
+                controller.ajax({
+                    url: "EnterpriseWeb/GetGoodsList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>===请选择===</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option>' + obj.Spec + "(" + obj.ProductName + ')</option>';
+                        });
+                        $("#RecoverGoodsName").html(html);
                     }
                 });
                 //验证
@@ -74,11 +88,21 @@
 }
 <div class="ibox float-e-margins">
     <div class="ibox-content">
-        <form class="form-horizontal" method="post" action="EnterpriseWeb/EditRecover" id="Edit">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/SaveRecover" id="Edit">
             <input type="hidden" name="Id" />
             <input type="hidden" name="CompanyId" id="CompanyId" />
-            <input type="hidden" name="States"  id="States"/>
+            <input type="hidden" name="States" id="States" />
             <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">产品名称</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="RecoverGoodsName" id="RecoverGoodsName"></select>
+                    </td>
+                    <th><label class="control-label">召回原因</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="RecoverReason" />
+                    </td>
+                </tr>
                 <tr>
                     <th><label class="control-label">开始时间</label></th>
                     <td class="has-warning">
@@ -90,23 +114,13 @@
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">产品名称</label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control" name="RecoverGoodsName" />
-                    </td>
-                    <th><label class="control-label">召回原因</label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control" name="RecoverReason" />
-                    </td>
-                </tr>
-                <tr>
                     <th><label class="control-label">召回数量</label></th>
                     <td class="has-warning">
                         <input type="text" class="form-control" name="RecoverNum" />
                     </td>
                     <th><label class="control-label">处理时间</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="HandleTime"  id="HandleTime"/>
+                        <input type="text" class="form-control" name="HandleTime" id="HandleTime" />
                     </td>
                 </tr>
                 <tr>

@@ -58,5 +58,9 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// 处理方式
         /// </summary>
         public string HandleWays { get; set; }
+        /// <summary>
+        /// 批次
+        /// </summary>
+        public string BatchNo { get; set; }
     }
 }

@@ -19,8 +19,8 @@
                 $("#CompanyId").val(CompanyInfo.Id);
                 controller.LayDate({ elem: "#HandleTime" });
                 options.GetUsers();
-                options.GetDetail(Guid);
                 options.GetGoodsList();
+                options.GetDetail(Guid);
             },
             //取详情
             GetDetail: function (data) {

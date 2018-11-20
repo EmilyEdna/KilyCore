@@ -1685,10 +1685,10 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditRecover")]
-        public ObjectResultEx EditRecover(RequestEnterpriseRecover Param)
+        [HttpPost("SaveRecover")]
+        public ObjectResultEx SaveRecover(RequestEnterpriseRecover Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.EditRecover(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.SaveRecover(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 删除召回
