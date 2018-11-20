@@ -134,7 +134,7 @@
                             type: 2,
                             height: "400px",
                             width: "700px",
-                            url: "WebCompanyManage/Goods/BindTarget?Id=" + flag + "&No=" + $("#GoodsBatchNo").val(),
+                            url: "WebCompanyManage/Goods/BindTarget?Id=" + flag + "&No=" + $("#GoodsBatchNo").val() + "&Num=" + $("input[name='InStockNum']").val(),
                             callBack: function (result) {
                                 var num = $("input[name='InStockNum']").val();
                                 if (num != "" && num != null) {
@@ -202,6 +202,7 @@
                     <td class="has-warning">
                         <select class="form-control" name="StockType" type="select">
                             <option value="产品入库">产品入库</option>
+                            <option value="半成品入库">半成品入库</option>
                             <option value="其他入库">其他入库</option>
                         </select>
                     </td>

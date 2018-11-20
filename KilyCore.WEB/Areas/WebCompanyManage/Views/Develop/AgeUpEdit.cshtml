@@ -16,6 +16,7 @@
             //元素
             InitDom: function () {
                 options.BindBatch();
+                $("#CompanyId").val(CompanyInfo.Id);
             },
             //绑定批次
             BindBatch: function () {
@@ -71,6 +72,7 @@
 <div class="ibox float-e-margins">
     <div class="ibox-content">
         <form class="form-horizontal" method="post" action="EnterpriseWeb/EditAgeUp" id="Edit">
+            <input  name="CompanyId" type="hidden" id="CompanyId"/>
             <input type="hidden" class="form-control" name="LvImg" id="LvImg" />
             <table class="table table-hover table-bordered">
                 <tr>

@@ -42,8 +42,8 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual int IsType { get; set; }
         /// <summary>
-        /// 供应商
+        /// 生产商
         /// </summary>
-        public virtual string SupplierName { get; set; }
+        public virtual string Producter { get; set; }
     }
 }

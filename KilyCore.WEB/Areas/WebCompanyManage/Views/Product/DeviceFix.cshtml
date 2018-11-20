@@ -94,10 +94,10 @@
 <div class="tabs-container" style="margin-top:10px;">
     <ul class="nav nav-tabs">
         <li class="active">
-            <a data-toggle="tab" href="#tab-1" aria-expanded="true">维护记录</a>
+            <a data-toggle="tab" href="#tab-1" aria-expanded="true">维修记录</a>
         </li>
         <li>
-            <a data-toggle="tab" href="#tab-2" aria-expanded="false">新增维护</a>
+            <a data-toggle="tab" href="#tab-2" aria-expanded="false">新增维修</a>
         </li>
     </ul>
     <div class="tab-content">
@@ -120,9 +120,9 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="Reason" data-halign="center" data-align="center" data-valign="middle">维护原因</th>
+                                <th data-field="Reason" data-halign="center" data-align="center" data-valign="middle">维修原因</th>
+                                <th data-field="FixTime" data-halign="center" data-align="center" data-valign="middle">维修时间</th>
                                 <th data-field="Manager" data-halign="center" data-align="center" data-valign="middle">负责人</th>
-                                <th data-field="FixTime" data-halign="center" data-align="center" data-valign="middle">维护时间</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>
@@ -137,7 +137,7 @@
                     <input id="CompanyId" name="CompanyId" type="hidden" />
                     <!--方式-->
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">请输入维护原因</label>
+                        <label class="col-sm-2 control-label">请输入维修原因</label>
                         <div class="col-sm-4">
                             <input type="text" class="form-control" name="Reason">
                         </div>
@@ -146,7 +146,7 @@
                     <div class="hr-line-dashed"></div>
                     <!--时间-->
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">请输入维护时间</label>
+                        <label class="col-sm-2 control-label">请输入维修时间</label>
                         <div class="col-sm-4">
                             <input type="text" class="form-control" name="FixTime" id="FixTime">
                         </div>

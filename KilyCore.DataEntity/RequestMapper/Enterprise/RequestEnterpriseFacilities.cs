@@ -56,5 +56,6 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public Guid FacId { get; set; }
         public string DisinfectionName { get; set; }
         public DateTime? CleanTime { get; set; }
+        public string HandlerUser { get; set; }
     }
 }

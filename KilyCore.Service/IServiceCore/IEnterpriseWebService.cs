@@ -133,6 +133,7 @@ namespace KilyCore.Service.IServiceCore
         String AcceptVeinTarget(Guid Id);
         String RemoveVeinTarget(Guid Id);
         Object GetTagList(int type);
+        Object GetCodeNo(int Type, string BatchNo);
         PagedResult<ResponseEnterpriseScanCode> GetScanCodePage(PageParamList<RequestEnterpriseGoods> pageParam);
         ResponseEnterpriseScanCode GetScanCodeDetail(Guid Id, Int64 Code);
         PagedResult<ResponseEnterpriseTagAttach> GetTagAttachPage(PageParamList<RequestEnterpriseTagAttach> pageParam);

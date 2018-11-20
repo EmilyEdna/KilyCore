@@ -19,8 +19,8 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public string BatchNo { get; set; }
         public int IsType { get; set; }
         /// <summary>
-        /// 供应商
+        /// 生产商
         /// </summary>
-        public string SupplierName { get; set; }
+        public string Producter { get; set; }
     }
 }

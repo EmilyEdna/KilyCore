@@ -809,10 +809,11 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseEnterpriseGoodsStock> GetWaitAuditGoodPage(PageParamList<RequestEnterpriseGoodsStock> pageParam)
         {
-            IQueryable<EnterpriseInfo> info = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false)
-                .Where(t=>t.TypePath.Contains(pageParam.QueryParam.TempPath));
+            IQueryable<EnterpriseInfo> info = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseGoodsStock> stocks = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false);
+            if(!string.IsNullOrEmpty(pageParam.QueryParam.TempPath))
+                info=info.Where(t => t.TypePath.Contains(pageParam.QueryParam.TempPath));
             if (!string.IsNullOrEmpty(pageParam.QueryParam.GoodsName))
                 goods = goods.Where(t => t.ProductName.Contains(pageParam.QueryParam.GoodsName));
             var data = goods.Join(info, x => x.CompanyId, y => y.Id, (x, y) => new { x }).Join(stocks, t => t.x.Id, p => p.GoodsId, (t, p) => new ResponseEnterpriseGoodsStock()

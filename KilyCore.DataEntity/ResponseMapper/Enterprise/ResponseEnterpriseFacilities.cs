@@ -56,5 +56,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public Guid Id { get; set; }
         public string DisinfectionName { get; set; }
         public DateTime? CleanTime { get; set; }
+        public string HandlerUser { get; set; }
     }
 }

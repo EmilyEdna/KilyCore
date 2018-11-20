@@ -17,7 +17,7 @@
             InitDom: function () {
                 $("#CompanyId").val(CompanyInfo.Id);
                 var Guid = controller.GetParam("Id");
-                var StockNo= controller.GetParam("No");
+                var StockNo = controller.GetParam("No");
                 $("#GoodsId").val(Guid);
                 $("#StockNo").val(StockNo);
             },
@@ -40,7 +40,22 @@
                     });
                 }).change();
                 $("#TagId").on('change', function () {
-                    $("#TagBatchNo").val($(this).find("option:selected").text())
+                    $("#TagBatchNo").val($(this).find("option:selected").text());
+                    var datas = {
+                        Id: $("#TagType").find("option:selected").val(),
+                        Parameter: $("#TagBatchNo").val()
+                    };
+                    controller.ajax({
+                        url: "EnterpriseWeb/GetCodeNo",
+                        data: datas,
+                        async: false,
+                        type: "post",
+                        success: function (result) {
+                            $("#Star").val(result.data);
+                            var End = Number(result.data) - 1 + Number(controller.GetParam("Num"));
+                            $("#End").val(End);
+                        }
+                    });
                 });
                 //验证
                 controller.ValidateConfirm("#Edit");

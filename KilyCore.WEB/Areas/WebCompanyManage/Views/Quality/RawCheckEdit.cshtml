@@ -16,7 +16,6 @@
             },
             //元素
             InitDom: function () {
-                var Guid = controller.GetParam("Id");
                 $("#CompanyId").val(CompanyInfo.Id);
                 this.GetRaws();
             },
@@ -30,7 +29,7 @@
                     success: function (result) {
                         var html = '<option>==请选择原材料==</option>';
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '">' + obj.MaterName + '</option>';
+                            html += '<option value="' + obj.Id + '">' + obj.BatchNo +'('+ obj.MaterName + ')</option>';
                         });
                         $("#MaterId").html(html);
                     }

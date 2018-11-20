@@ -24,13 +24,13 @@
                     TempPath: undefined,
                 }
                 if (SysUserInfo.AccountType == 30)
-                    options.InitData.TempPath == SysUserInfo.Province;
+                    options.InitData.TempPath = SysUserInfo.Province;
                 if (SysUserInfo.AccountType == 40)
-                    options.InitData.TempPath == SysUserInfo.City;
+                    options.InitData.TempPath = SysUserInfo.City;
                 if (SysUserInfo.AccountType == 50)
-                    options.InitData.TempPath == SysUserInfo.Area;
+                    options.InitData.TempPath = SysUserInfo.Area;
                 if (SysUserInfo.AccountType == 60)
-                    options.InitData.TempPath == SysUserInfo.Town;
+                    options.InitData.TempPath = SysUserInfo.Town;
                 //设置表单
                 this.$table = controller.Table("#tableList", { url: "Enterprise/GetWaitAuditGoodPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: options.InitData });
             },

@@ -53,7 +53,7 @@ namespace KilyCore.Extension.PayCore.AliPay
         {
             return new AlipayGateway(GetMerchantData())
             {
-                GatewayUrl = AliPayModel.GatewayUrlTest
+                GatewayUrl = AliPayModel.GatewayUrl
             };
         }
         /// <summary>

@@ -1823,7 +1823,7 @@ namespace KilyCore.Service.ServiceCore
                 .Where(t => t.CompanyId == Param.CompanyId).Where(t => t.TagType == Param.TagType).OrderByDescending(t => t.CreateTime);
             List<EnterpriseTag> TagList = queryables.ToList();
             if (TagList.Count == 0)
-                Param.StarSerialNo = Convert.ToInt64(Province.Code + "100000000000");
+                Param.StarSerialNo = Convert.ToInt64(Province.Code + "100000000001");
             else
                 Param.StarSerialNo = TagList.FirstOrDefault().EndSerialNo + 1;
             Param.EndSerialNo = Param.StarSerialNo + Param.TotalNo;
@@ -2053,6 +2053,28 @@ namespace KilyCore.Service.ServiceCore
                     Id = t.Id,
                     BatchNo = t.BatchNo,
                 }).AsNoTracking().ToList();
+            }
+        }
+        /// <summary>
+        /// 获取开始标签
+        /// </summary>
+        /// <param name="BatchNo"></param>
+        /// <returns></returns>
+        public Object GetCodeNo(int Type, string BatchNo)
+        {
+            IList<EnterpriseTagAttach> Tags = Kily.Set<EnterpriseTagAttach>().Where(t => t.IsDelete == false).Where(t => t.TagBatchNo == BatchNo).OrderByDescending(t => t.CreateTime).AsNoTracking().ToList();
+            EnterpriseTag Tag = Kily.Set<EnterpriseTag>().Where(t => t.IsDelete == false).Where(t => t.BatchNo == BatchNo).FirstOrDefault();
+            EnterpriseVeinTag VeinTag = Kily.Set<EnterpriseVeinTag>().Where(t => t.IsDelete == false).Where(t => t.BatchNo == BatchNo).FirstOrDefault();
+            if (Tags.Count == 0)
+            {
+                if (Type != 1)
+                    return Tag.StarSerialNo;
+                else
+                    return VeinTag.StarSerialNo;
+            }
+            else
+            {
+                return Tags.FirstOrDefault().EndSerialNo + 1;
             }
         }
         /// <summary>
@@ -2960,7 +2982,8 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 DisinfectionName = t.DisinfectionName,
-                CleanTime = t.CleanTime
+                CleanTime = t.CleanTime,
+                HandlerUser = t.HandlerUser
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -4327,7 +4350,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseGoodsStock> queryable = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false).AsNoTracking();
             IQueryable<EnterpriseGoodsStockAttach> queryables = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false).AsNoTracking();
-         
+
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else

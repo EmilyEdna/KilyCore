@@ -793,6 +793,17 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.GetTagList(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
+        /// 获取开始标签
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetCodeNo")]
+        public ObjectResultEx GetCodeNo(SimpleParam<int> Key, SimpleParam<String> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetCodeNo(Key.Id, Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 扫码管理
         /// </summary>
         /// <param name="pageParam"></param>

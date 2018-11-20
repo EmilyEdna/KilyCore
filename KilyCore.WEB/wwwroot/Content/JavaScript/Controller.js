@@ -728,6 +728,7 @@ controller.LayDate = function (option) {
         theme: 'molv',
         type: 'datetime',
         format: 'yyyy-MM-dd HH:mm:ss',
+        max: controller.GetDate(),
         showBottom: true,
         calendar: true,
         value: null
@@ -1125,4 +1126,11 @@ controller.Echarts = function (element, option) {
         };
         echarts.init($(element)[0], "light").setOption(OptionBar);
     }
+}
+/**
+ * 获取当前时间
+ * */
+controller.GetDate = function () {
+    var Now = new Date();
+    return Now.getFullYear() + "-" + (Now.getMonth() + 1) + "-" + Now.getDate() + " " + Now.getHours() + ":" + Now.getMinutes() + ":" + Now.getSeconds();
 }

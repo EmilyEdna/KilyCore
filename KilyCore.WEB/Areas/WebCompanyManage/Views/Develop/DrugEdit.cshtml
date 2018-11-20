@@ -30,6 +30,19 @@
                         $("#Supplier").html(html);
                     }
                 });
+                controller.ajax({
+                    url: "EnterpriseWeb/GetSellerList",
+                    data: { Parameter: 30 },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>'
+                        $.each(result.data, function (i, obj) {
+                            html += '<option>' + obj.SupplierName + '</option>';
+                        });
+                        $("#Producter").html(html);
+                    }
+                });
                 options.BindBatch();
             },
             //绑定批次
@@ -106,9 +119,9 @@
                     <td class="has-warning">
                         <input type="text" class="form-control" name="PlantTime" id="PlantTime" />
                     </td>
-                    <th><label class="control-label">供应商</label></th>
+                    <th><label class="control-label">生产商</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control required" name="Supplier" data-msg-required="请输入供应商" />
+                        <select type="select" class="form-control" name="Producter" id="Producter"></select>
                     </td>
                 </tr>
                 <tr>

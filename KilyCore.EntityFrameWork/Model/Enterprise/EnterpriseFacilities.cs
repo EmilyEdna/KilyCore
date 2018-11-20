@@ -70,5 +70,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 时间
         /// </summary>
         public virtual DateTime? CleanTime { get; set; } 
+        /// <summary>
+        /// 负责人
+        /// </summary>
+        public virtual string HandlerUser { get; set; }
     }
 }
