@@ -34,9 +34,14 @@
                     type: "post",
                     async: false,
                     success: function (result) {
+                        var titles = [];
+                        var datas = [];
                         $.each(result.data, function (obj, i) {
-                            $("[name='" + obj + "']", $("tbody")).text(i);
-                        })
+                            titles.push(obj);
+                            datas.push(i);
+                        });
+                        var data = { title: titles, data: datas };
+                        controller.EchartsX("#echarts-axis-chart", data);
                     }
                 })
             },
@@ -105,28 +110,7 @@
                         </div>
                     </div>
                     <div class="ibox-content" style="background-color:#f8f8f8;">
-                        <table class="table table-hover no-margins">
-                            <thead>
-                                <tr>
-                                    <th>供应商数</th>
-                                    <th>监控数</th>
-                                    <th>菜品数</th>
-                                    <th>人员数</th>
-                                    <th>原料溯源数</th>
-                                    <th>集团客户数</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td name="Supplier"></td>
-                                    <td name="Video"></td>
-                                    <td name="Dish"></td>
-                                    <td name="User"></td>
-                                    <td name="Stuff"></td>
-                                    <td name="Info"></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="echarts" id="echarts-axis-chart"></div>
                     </div>
                 </div>
             </div>

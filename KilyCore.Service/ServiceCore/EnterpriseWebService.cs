@@ -111,7 +111,7 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 SupplierName = t.SupplierName,
                 Address = t.Address,
-                LinkPhone=t.LinkPhone
+                LinkPhone = t.LinkPhone
             }).ToList();
             return data;
         }
@@ -3094,15 +3094,15 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
-           var Temp = queryable.Join(Kily.Set<EnterpriseProductSeries>(), x => x.ProductSeriesId, t => t.Id, (x, t) => new EnterpriseGoods
-           {
-               Id = x.Id,
-               CompanyId = t.Id
-           }).Join(Kily.Set<EnterpriseProductionBatch>(), y => y.CompanyId, p => p.SeriesId, (y, p) => new EnterpriseGoods
-           {
-               Id = y.Id,
-               Spec = p.BatchNo
-           }).AsNoTracking().ToList();
+            var Temp = queryable.Join(Kily.Set<EnterpriseProductSeries>(), x => x.ProductSeriesId, t => t.Id, (x, t) => new EnterpriseGoods
+            {
+                Id = x.Id,
+                CompanyId = t.Id
+            }).Join(Kily.Set<EnterpriseProductionBatch>(), y => y.CompanyId, p => p.SeriesId, (y, p) => new EnterpriseGoods
+            {
+                Id = y.Id,
+                Spec = p.BatchNo
+            }).AsNoTracking().ToList();
             var data = queryable.Select(t => new ResponseEnterpriseGoods()
             {
                 Id = t.Id,
@@ -3451,7 +3451,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string UpdateStockCheck(RequestEnterpriseGoodsStock Param)
         {
-            EnterpriseGoodsStock Stock= Kily.Set<EnterpriseGoodsStock>().Where(t => t.Id == Param.Id).AsNoTracking().FirstOrDefault();
+            EnterpriseGoodsStock Stock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.Id == Param.Id).AsNoTracking().FirstOrDefault();
             Stock.CheckGoodsId = Param.CheckGoodsId;
             return UpdateField(Stock, "CheckGoodsId") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
@@ -4375,7 +4375,22 @@ namespace KilyCore.Service.ServiceCore
             int TagClass = tagAttaches.Where(t => t.TagType == "2").Select(t => t.Id).Count();
             int TagThing = tagAttaches.Where(t => t.TagType == "3").Select(t => t.Id).Count();
             int Info = infos.Sum(t => t.ScanNum);
-            Object obj = new { Series, Goods, Supplier, Sale, Inferior, Exprired, Recover, Batch, Note, Buy, TagClass, TagThing, Info };
+            Object obj = new
+            {
+                产品系列 = Series,
+                产品种类 = Goods,
+                供应商数量 = Supplier,
+                经销商数量 = Sale,
+                不合格产品数量 = Inferior,
+                过期产品数量 = Exprired,
+                产品召唤数量 = Recover,
+                生产批次总数 = Batch,
+                成长日记总数 = Note,
+                进货批次总数 = Buy,
+                一品一码 = TagClass,
+                一物一码 = TagThing,
+                扫码次数 = Info
+            };
             return obj;
         }
         /// <summary>

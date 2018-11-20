@@ -2318,12 +2318,12 @@ namespace KilyCore.Service.ServiceCore
             }
             Object data = new
             {
-                Supplier,
-                Video,
-                Dish,
-                User,
-                Stuff,
-                Info
+                供应商数 = Supplier,
+                监控数 = Video,
+                菜品数 = Dish,
+                人员数 = User,
+                原料溯源数 = Stuff,
+                集团客户数 = Info
             };
             return data;
         }
