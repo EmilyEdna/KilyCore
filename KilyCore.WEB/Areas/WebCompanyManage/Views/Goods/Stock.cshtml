@@ -106,6 +106,7 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     if (row.InStockNum != undefined) {
+                        action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>添加产品质检</button>');
                         action.push('<button class="btn btn-sm btn-primary out"><i class="fa fa-pencil-square-o"></i>出库</button>');
                         if (row.AuditTypeName != "审核通过")
                             action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-pencil-square-o"></i>提交审核</button>');
@@ -150,6 +151,18 @@
                             height: "450px",
                             width: "700px",
                             url: "WebCompanyManage/Goods/StockOut?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        });
+                    },
+                    "click .edit": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "添加产品质检",
+                            type: 2,
+                            height: "200px",
+                            width: "400px",
+                            url: "WebCompanyManage/Goods/ProCheck?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }

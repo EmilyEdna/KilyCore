@@ -227,6 +227,7 @@ namespace KilyCore.Service.IServiceCore
         String RemoveGoodsStockAttach(Guid Id);
         long GetCodeSerialNo(Guid Id);
         IList<ResponseEnterpriseGoodsStockAttach> GetStockOutNoList();
+        String UpdateStockCheck(RequestEnterpriseGoodsStock Param);
         #endregion
         #region 仓库类型
         PagedResult<ResponseEnterpriseStockType> GetStockTypePage(PageParamList<RequestEnterpriseStockType> pageParam);

@@ -110,7 +110,8 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 SupplierName = t.SupplierName,
-                Address = t.Address
+                Address = t.Address,
+                LinkPhone=t.LinkPhone
             }).ToList();
             return data;
         }
@@ -3442,6 +3443,17 @@ namespace KilyCore.Service.ServiceCore
             {
                 GoodsBatchNo = t.GoodsBatchNo
             }).ToList();
+        }
+        /// <summary>
+        /// 添加产品检测
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string UpdateStockCheck(RequestEnterpriseGoodsStock Param)
+        {
+            EnterpriseGoodsStock Stock= Kily.Set<EnterpriseGoodsStock>().Where(t => t.Id == Param.Id).AsNoTracking().FirstOrDefault();
+            Stock.CheckGoodsId = Param.CheckGoodsId;
+            return UpdateField(Stock, "CheckGoodsId") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         #endregion
         #region 仓库类型

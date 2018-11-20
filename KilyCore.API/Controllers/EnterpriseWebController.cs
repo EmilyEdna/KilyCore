@@ -1483,6 +1483,16 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetStockOutNoList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 添加产品检测
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("UpdateStockCheck")]
+        public ObjectResultEx UpdateStockCheck(RequestEnterpriseGoodsStock Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.UpdateStockCheck(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 仓库类型
         /// <summary>

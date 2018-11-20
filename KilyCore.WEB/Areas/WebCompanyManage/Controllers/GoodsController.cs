@@ -54,5 +54,9 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
             return View();
         }
         #endregion
+        public IActionResult ProCheck()
+        {
+            return View();
+        }
     }
 }

@@ -46,18 +46,30 @@ controller.ajax = function (option) {
             xhr.setRequestHeader("SysKey", controller.GetCookie().SysKey == undefined ? "" : controller.GetCookie().SysKey);
         },
         error: function (xhr, msg) {
-            if (xhr.status == 401)
+            if (xhr.status == 401) {
                 controller.Confirm("您还未登录系统，请先登录", function (flag) { controller.SetHref("Login") });
-            if (xhr.status == 403)
+                return;
+            }
+            if (xhr.status == 403) {
                 controller.Confirm("您无权限操作！", function (flag) { });
-            else if (xhr.status == 404)
+                return;
+            }
+            else if (xhr.status == 404) {
                 controller.Confirm("页面未找到!", function (flag) { });
-            else if (xhr.status == 500)
+                return;
+            }
+            else if (xhr.status == 500) {
                 controller.Confirm("服务器发生错误", function (flag) { });
-            else if (xhr.status == 502)
+                return;
+            }
+            else if (xhr.status == 502) {
                 controller.Confirm("无效的网关", function (flag) { });
-            else if (xhr.status == 0)
+                return;
+            }
+            else if (xhr.status == 0) {
                 controller.Confirm("服务器停止运行", function (flag) { });
+                return;
+            }
             else
                 controller.Confirm(msg, function (flag) { });
         }
@@ -973,10 +985,10 @@ controller.AutoInput = function (element, option) {
             $(this).parent().append(html);
         $(this).InitAuto(options).on('onSetSelectValue', function (event, keyword) {
             $(element).val(keyword.key);
-            var flag = $(element).attr("Flag");
-            var title = $(element).attr("titles");
-            $('input[name="' + flag + '"]').val(keyword.id);
-            $('input[name="' + title + '"]').val(keyword.attach);
+            var field = $(element).data().list.split(",");
+            $('input[name="' + field[0] + '"]').val(keyword.id);
+            $('input[name="' + field[1] + '"]').val(keyword.attach.split(",")[0]);
+            $('input[name="' + field[2] + '"]').val(keyword.attach.split(",")[1]);
         });
     });
 }

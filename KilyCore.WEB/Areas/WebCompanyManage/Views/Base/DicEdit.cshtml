@@ -57,7 +57,11 @@
                 <tr>
                     <th><label class="control-label">字典分类</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control required" name="DicType" data-msg-required="请输入字典分类" />
+                        <select type="select" name="DicType" class="form-control">
+                            <option value="计量单位">计量单位</option>
+                            <option value="指标单位">指标单位</option>
+                            <option value="执行标准">执行标准</option>
+                        </select>
                     </td>
                     <th><label class="control-label">字典名称</label></th>
                     <td class="has-warning">
