@@ -1149,6 +1149,11 @@ controller.EchartsX = function (element, option) {
         title: {
             text: '折线图数据统计'
         },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
         tooltip: {
             trigger: 'axis'
         },

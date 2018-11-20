@@ -96,5 +96,9 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        public IActionResult CompanyCodeView()
+        {
+            return View();
+        }
     }
 }

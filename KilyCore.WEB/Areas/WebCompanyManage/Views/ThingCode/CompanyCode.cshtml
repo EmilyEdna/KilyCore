@@ -62,15 +62,12 @@
                         });
                     },
                     "click .create": function (event, val, row, index) {
-                        var host = "http://localhost:50070/StaticHtml/ScanCompany.html?Id=" + row.CompanyId;
-                        $("#QRcode").html("");
-                        controller.QRCode('#QRcode', { render: "table", text: host });
                         controller.OpenWindow({
                             title: "企业二维码",
-                            type: 1,
-                            height: "365px",
-                            width: "265px",
-                            content: $("#QRcode").html(),
+                            type: 2,
+                            url: "WebCompanyManage/ThingCode/CompanyCodeView?Id=" + row.CompanyId,
+                            height: "400px",
+                            width: "300px",
                             callBack: function (result) {
                                 result.popClose();
                             }
@@ -131,4 +128,3 @@
         </div>
     </div>
 </div>
-<div style="display:none" id='QRcode'></div>

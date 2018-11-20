@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewData["Title"] = "二维码";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var host = "http://localhost:50070/StaticHtml/ScanCompany.html?Id=" + controller.GetParam("Id");
+                controller.QRCode('#QRcode', { text: host });
+            },
+            //事件
+            InitEvents: function () {
+            }
+        }
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+@section css{
+
+}<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div id="QRcode"></div>
+    </div>
+</div>

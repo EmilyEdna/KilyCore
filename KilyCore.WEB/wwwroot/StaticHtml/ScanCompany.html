@@ -114,10 +114,10 @@
     </div>
     <script>
         //初始化
-        var options = {
+        var option = {
             Init: function () {
-                options.InitDom();
-                options.InitEvent();
+                option.InitDom();
+                option.InitEvent();
             },
             InitDom: function () {
                 $.ajax({
@@ -127,8 +127,8 @@
                     data: { TimeSpan: new Date().getTime(), Id: option.GetParam("Id")},
                     async: false,
                     success: function (result) {
-                        options.BindNode(".content", result.data);
-                        options.BindHonor("#ImgContent", result.data.HonorCertification);
+                        option.BindNode(".content", result.data);
+                        option.BindHonor("#ImgContent", result.data.HonorCertification);
                         $("input[type='hidden'][name='CompanyId']").val(result.data.Id); 
                         $("input[type='hidden'][name='CompanyType']").val(result.data.CompanyTypeName);
                         $("input[type='hidden'][name='CompanyName']").val(result.data.CompanyName);
@@ -183,7 +183,7 @@
             },
         };
         $(document).ready(function () {
-            options.Init();
+            option.Init();
         });
     </script>
 </body>
