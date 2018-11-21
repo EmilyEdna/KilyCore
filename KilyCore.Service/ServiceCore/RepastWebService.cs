@@ -2316,15 +2316,7 @@ namespace KilyCore.Service.ServiceCore
                 Stuff = S5.Where(t => t.InfoId == MerchantUser().Id).Count();
                 Info = S6.Where(t => t.InfoId == MerchantUser().Id).Count();
             }
-            Object data = new
-            {
-                供应商数 = Supplier,
-                监控数 = Video,
-                菜品数 = Dish,
-                人员数 = User,
-                原料溯源数 = Stuff,
-                集团客户数 = Info
-            };
+            Object data = new{Supplier,Video,Dish,User,Stuff,Info};
             return data;
         }
         #endregion

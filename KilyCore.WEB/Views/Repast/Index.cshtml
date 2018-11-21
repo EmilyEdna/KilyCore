@@ -34,52 +34,45 @@
                     type: "post",
                     async: false,
                     success: function (result) {
-                        var titles = [];
-                        var datas = [];
                         $.each(result.data, function (obj, i) {
-                            titles.push(obj);
-                            datas.push(i);
+                            $("[name='" + obj + "']", $("tbody")).text(i);
+                        })
+                    },
+                    InitEvent: function () {
+                        //查看图片
+                        $("img").on('click', function () {
+                            var option = {
+                                title: "商家资料",
+                                data: [{
+                                    alt: "商家资料",
+                                    src: $(this).attr("src")
+                                }]
+                            };
+                            controller.Photos(option);
                         });
-                        var data = { title: titles, data: datas };
-                        controller.EchartsX("#echarts-axis-chart", data);
+                        //显示或隐藏
+                        $(".collapse-link").on('click', function () {
+                            var ibox = $(this.closest('div.ibox'));
+                            var i = $(this).find("i");
+                            var content = ibox.find("div.ibox-content");
+                            content.slideToggle(200);
+                            i.toggleClass("fa-chevron-up").toggleClass("fa-chevron-down");
+                            ibox.toggleClass("").toggleClass("border-bottom");
+                            setTimeout(function () {
+                                ibox.resize();
+                                ibox.find("[id^=map-]").resize();
+                            }, 50);
+                        });
+                        //关闭
+                        $(".close-link").click(function () {
+                            var ibox = $(this).closest("div.ibox");
+                            ibox.hide()
+                        });
                     }
-                })
-            },
-            InitEvent: function () {
-                //查看图片
-                $("img").on('click', function () {
-                    var option = {
-                        title: "商家资料",
-                        data: [{
-                            alt: "商家资料",
-                            src: $(this).attr("src")
-                        }]
-                    };
-                    controller.Photos(option);
+                };
+                $(document).ready(function () {
+                    option.Init();
                 });
-                //显示或隐藏
-                $(".collapse-link").on('click', function () {
-                    var ibox = $(this.closest('div.ibox'));
-                    var i = $(this).find("i");
-                    var content = ibox.find("div.ibox-content");
-                    content.slideToggle(200);
-                    i.toggleClass("fa-chevron-up").toggleClass("fa-chevron-down");
-                    ibox.toggleClass("").toggleClass("border-bottom");
-                    setTimeout(function () {
-                        ibox.resize();
-                        ibox.find("[id^=map-]").resize();
-                    }, 50);
-                });
-                //关闭
-                $(".close-link").click(function () {
-                    var ibox = $(this).closest("div.ibox");
-                    ibox.hide()
-                });
-            }
-        };
-        $(document).ready(function () {
-            option.Init();
-        });
     </script>
 }
 @section css{
@@ -110,7 +103,28 @@
                         </div>
                     </div>
                     <div class="ibox-content" style="background-color:#f8f8f8;">
-                        <div class="echarts" id="echarts-axis-chart"></div>
+                        <table class="table table-hover no-margins">
+                            <thead>
+                                <tr>
+                                    <th>供应商数</th>
+                                    <th>监控数</th>
+                                    <th>菜品数</th>
+                                    <th>人员数</th>
+                                    <th>原料溯源数</th>
+                                    <th>集团客户数</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td name="Supplier"></td>
+                                    <td name="Video"></td>
+                                    <td name="Dish"></td>
+                                    <td name="User"></td>
+                                    <td name="Stuff"></td>
+                                    <td name="Info"></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

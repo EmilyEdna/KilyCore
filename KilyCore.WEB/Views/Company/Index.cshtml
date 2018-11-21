@@ -34,15 +34,9 @@
                     type: "post",
                     async: false,
                     success: function (result) {
-                        var titles = [];
-                        var datas = [];
                         $.each(result.data, function (obj, i) {
-                            titles.push(obj);
-                            datas.push(i);
-                        });
-                        var data = { title: titles, data: datas };
-                        controller.EchartsX("#echarts-axis-chart", data);
-                    }
+                            $("[name='" + obj + "']", $("tbody")).text(i);
+                        })
                 });
                 controller.ajax({
                     url: "EnterpriseWeb/GetPieCount",
@@ -119,7 +113,42 @@
                         </div>
                     </div>
                     <div class="ibox-content" style="background-color:#f8f8f8;">
-                        <div class="echarts" id="echarts-axis-chart"></div>
+                        <table class="table table-hover no-margins">
+                            <thead>
+                                <tr>
+                                    <th>产品系列</th>
+                                    <th>产品种类</th>
+                                    <th>供应商数量</th>
+                                    <th>经销商数量</th>
+                                    <th>不合格产品数量</th>
+                                    <th>过期产品数量</th>
+                                    <th>产品召唤数量</th>
+                                    <th>生产批次总数</th>
+                                    <th>成长日记总数</th>
+                                    <th>进货批次总数</th>
+                                    <th>一品一码</th>
+                                    <th>一物一码</th>
+                                    <th>扫码次数</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td name="Series"></td>
+                                    <td name="Goods"></td>
+                                    <td name="Supplier"></td>
+                                    <td name="Sale"></td>
+                                    <td name="Inferior"></td>
+                                    <td name="Exprired"></td>
+                                    <td name="Recover"></td>
+                                    <td name="Batch"></td>
+                                    <td name="Note"></td>
+                                    <td name="Buy"></td>
+                                    <td name="TagClass"></td>
+                                    <td name="TagThing"></td>
+                                    <td name="Info"></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

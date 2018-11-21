@@ -1140,52 +1140,6 @@ controller.Echarts = function (element, option) {
     }
 }
 /**
- * 数据统计图折线
- * @param {any} 元素
- * @param {any} 数据
- */
-controller.EchartsX = function (element, option) {
-    OptionAxis = {
-        title: {
-            text: '折线图数据统计'
-        },
-        toolbox: {
-            feature: {
-                saveAsImage: {}
-            }
-        },
-        tooltip: {
-            trigger: 'axis'
-        },
-        legend: {
-            data: ['数据统计']
-        },
-        grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-        },
-        xAxis: {
-            type: 'category',
-            boundaryGap: false,
-            data: option.title
-        },
-        yAxis: {
-            type: 'value'
-        },
-        series: [
-            {
-                name: '数据统计',
-                type: 'line',
-                stack: '总量',
-                data: option.data
-            }
-        ]
-    }
-    echarts.init($(element)[0], "light").setOption(OptionAxis);
-}
-/**
  * 获取当前时间
  * */
 controller.GetDate = function () {
