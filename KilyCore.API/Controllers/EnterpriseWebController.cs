@@ -1964,6 +1964,15 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetPieCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 批次统计
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetPieCountBatch")]
+        public ObjectResultEx GetPieCountBatch()
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetPieCountBatch(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
     }
 }

@@ -37,42 +37,44 @@
                         $.each(result.data, function (obj, i) {
                             $("[name='" + obj + "']", $("tbody")).text(i);
                         })
-                    },
-                    InitEvent: function () {
-                        //查看图片
-                        $("img").on('click', function () {
-                            var option = {
-                                title: "商家资料",
-                                data: [{
-                                    alt: "商家资料",
-                                    src: $(this).attr("src")
-                                }]
-                            };
-                            controller.Photos(option);
-                        });
-                        //显示或隐藏
-                        $(".collapse-link").on('click', function () {
-                            var ibox = $(this.closest('div.ibox'));
-                            var i = $(this).find("i");
-                            var content = ibox.find("div.ibox-content");
-                            content.slideToggle(200);
-                            i.toggleClass("fa-chevron-up").toggleClass("fa-chevron-down");
-                            ibox.toggleClass("").toggleClass("border-bottom");
-                            setTimeout(function () {
-                                ibox.resize();
-                                ibox.find("[id^=map-]").resize();
-                            }, 50);
-                        });
-                        //关闭
-                        $(".close-link").click(function () {
-                            var ibox = $(this).closest("div.ibox");
-                            ibox.hide()
-                        });
                     }
-                };
-                $(document).ready(function () {
-                    option.Init();
                 });
+            },
+            InitEvent: function () {
+                //查看图片
+                $("img").on('click', function () {
+                    var option = {
+                        title: "商家资料",
+                        data: [{
+                            alt: "商家资料",
+                            src: $(this).attr("src")
+                        }]
+                    };
+                    controller.Photos(option);
+                });
+                //显示或隐藏
+                $(".collapse-link").on('click', function () {
+                    var ibox = $(this.closest('div.ibox'));
+                    var i = $(this).find("i");
+                    var content = ibox.find("div.ibox-content");
+                    content.slideToggle(200);
+                    i.toggleClass("fa-chevron-up").toggleClass("fa-chevron-down");
+                    ibox.toggleClass("").toggleClass("border-bottom");
+                    setTimeout(function () {
+                        ibox.resize();
+                        ibox.find("[id^=map-]").resize();
+                    }, 50);
+                });
+                //关闭
+                $(".close-link").click(function () {
+                    var ibox = $(this).closest("div.ibox");
+                    ibox.hide()
+                });
+            }
+        };
+        $(document).ready(function () {
+            option.Init();
+        });
     </script>
 }
 @section css{
