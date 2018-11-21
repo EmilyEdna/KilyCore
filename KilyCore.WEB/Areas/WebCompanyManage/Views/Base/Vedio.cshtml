@@ -42,8 +42,9 @@
             action: {
                 TableFormatter: function (val, row, index) {
                     var action = [];
-                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>详情</button>');
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
+                    action.push('<button class="btn btn-sm btn-primary wacth"><i class="fa fa-eye"></i>首页显示</button>');
+                    action.push('<button class="btn btn-sm btn-primary sea"><i class="fa fa-eye"></i>视频播放</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
@@ -61,15 +62,31 @@
                             }
                         });
                     },
-                    "click .edit": function (event, val, row, index) {
+                    "click .wacth": function (event, val, row, index) {
+                        controller.Confirm("确实首页显示？", function (bool) {
+                            if (bool) {
+                                controller.ajax({
+                                    url: "EnterpriseWeb/ShowVedio",
+                                    data: { Id: row.Id },
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    "click .sea": function (event, val, row, index) {
                         controller.OpenWindow({
-                            title: "视频详情",
+                            title: "视频播放",
                             type: 2,
-                            height: "445px",
-                            width: "605px",
-                            url: "WebCompanyManage/Base/VedioEdit?Id=" + row.Id,
+                            btn: [],
+                            maxmin: false,
+                            height: "480px",
+                            width: "435px",
+                            url: "StaticHtml/PlayVedio.html?addr=" + row.VedioAddr,
                             callBack: function (result) {
-                                result.$("#Edit").submit();
+                                result.popClose();
                             }
                         })
                     }
@@ -114,10 +131,8 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="VedioAddrOne" data-halign="center" data-align="center" data-valign="middle">视频地址一</th>
-                                <th data-field="VedioAddrTwo" data-halign="center" data-align="center" data-valign="middle">视频地址二</th>
-                                <th data-field="VedioAddrThree" data-halign="center" data-align="center" data-valign="middle">视频地址三</th>
-                                <th data-field="VedioAddrFour" data-halign="center" data-align="center" data-valign="middle">视频地址四</th>
+                                <th data-field="VedioName" data-halign="center" data-align="center" data-valign="middle">视频名称</th>
+                                <th data-field="VedioAddr" data-halign="center" data-align="center" data-valign="middle">视频地址</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>

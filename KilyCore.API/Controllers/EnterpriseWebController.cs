@@ -425,26 +425,19 @@ namespace KilyCore.API.Controllers
         /// <param name="pageParam"></param>
         /// <returns></returns>
         [HttpPost("GetVedioPage")]
-        public ObjectResultEx GetVedioPage(PageParamList<RequestEnterpriseVedio> pageParam) {
+        public ObjectResultEx GetVedioPage(PageParamList<RequestEnterpriseVedio> pageParam)
+        {
             return ObjectResultEx.Instance(EnterpriseWebService.GetVedioPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }
-        /// <summary>
-        /// 视频详情
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        [HttpPost("GetVedioDetail")]
-        public ObjectResultEx GetVedioDetail(SimpleParam<Guid> Param) {
-            return ObjectResultEx.Instance(EnterpriseWebService.GetVedioDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 编辑视频
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("SaveVedio")]
-        public ObjectResultEx SaveVedio(RequestEnterpriseVedio Param) {
-            return ObjectResultEx.Instance(EnterpriseWebService.SaveVedio(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        [HttpPost("EditVedio")]
+        public ObjectResultEx EditVedio(RequestEnterpriseVedio Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditVedio(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 删除视频
@@ -452,8 +445,19 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("DeleteVedio")]
-        public ObjectResultEx DeleteVedio(SimpleParam<Guid> Param) {
+        public ObjectResultEx DeleteVedio(SimpleParam<Guid> Param)
+        {
             return ObjectResultEx.Instance(EnterpriseWebService.DeleteVedio(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 显示视频
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("ShowVedio")]
+        public ObjectResultEx ShowVedio(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.ShowVedio(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #endregion

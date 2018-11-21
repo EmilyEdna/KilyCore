@@ -1309,42 +1309,31 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseEnterpriseVedio> GetVedioPage(PageParamList<RequestEnterpriseVedio> pageParam)
         {
-          IQueryable<EnterpriseVedio>  queryable = Kily.Set<EnterpriseVedio>().OrderByDescending(t => t.CreateTime);
+            IQueryable<EnterpriseVedio> queryable = Kily.Set<EnterpriseVedio>().OrderByDescending(t => t.CreateTime);
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            if (pageParam.QueryParam.IsIndex.HasValue)
+                queryable = queryable.Where(t => t.IsDelete == true);
             var data = queryable.Select(t => new ResponseEnterpriseVedio()
             {
-                Id=t.Id,
-                VedioAddrOne=t.VedioAddrOne,
-                VedioAddrTwo=t.VedioAddrTwo,
-                VedioAddrThree=t.VedioAddrThree,
-                VedioAddrFour=t.VedioAddrFour
+                Id = t.Id,
+                VedioName = t.VedioName,
+                VedioAddr = t.VedioAddr,
+                VedioCover=t.VedioCover
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
-        }
-        /// <summary>
-        /// 视频详情
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public ResponseEnterpriseVedio GetVedioDetail(Guid Id)
-        {
-          return  Kily.Set<EnterpriseVedio>().Where(t => t.Id == Id).FirstOrDefault().MapToEntity<ResponseEnterpriseVedio>();
         }
         /// <summary>
         /// 编辑视频
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public string SaveVedio(RequestEnterpriseVedio Param)
+        public string EditVedio(RequestEnterpriseVedio Param)
         {
             EnterpriseVedio vedio = Param.MapToEntity<EnterpriseVedio>();
-            if (Param.Id != Guid.Empty)
-                return Update(vedio, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
-            else
-                return Insert(vedio) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            return Insert(vedio) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         /// <summary>
         /// 删除视频
@@ -1354,6 +1343,15 @@ namespace KilyCore.Service.ServiceCore
         public string DeleteVedio(Guid Id)
         {
             return Remove<EnterpriseVedio>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 显示视频
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string ShowVedio(Guid Id)
+        {
+            return Delete<EnterpriseVedio>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         #endregion
         #endregion

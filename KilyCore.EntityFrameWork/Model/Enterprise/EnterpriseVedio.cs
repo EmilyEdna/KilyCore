@@ -23,20 +23,16 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
     public class EnterpriseVedio: EnterpriseBase
     {
         /// <summary>
-        /// 视频地址1
+        /// 名称
         /// </summary>
-        public virtual string VedioAddrOne { get; set; }
+        public virtual string VedioName { get; set; }
         /// <summary>
-        /// 视频地址2
+        /// 视频地址
         /// </summary>
-        public virtual string VedioAddrTwo { get; set; }
+        public virtual string VedioAddr { get; set; }
         /// <summary>
         /// 视频地址3
         /// </summary>
-        public virtual string VedioAddrThree { get; set; }
-        /// <summary>
-        /// 视频地址4
-        /// </summary>
-        public virtual string VedioAddrFour { get; set; }
+        public virtual string VedioCover { get; set; }
     }
 }

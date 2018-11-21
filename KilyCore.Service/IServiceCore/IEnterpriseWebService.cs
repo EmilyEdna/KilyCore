@@ -83,9 +83,9 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 视频监控
         PagedResult<ResponseEnterpriseVedio> GetVedioPage(PageParamList<RequestEnterpriseVedio> pageParam);
-        ResponseEnterpriseVedio GetVedioDetail(Guid Id);
-        String SaveVedio(RequestEnterpriseVedio Param);
+        String EditVedio(RequestEnterpriseVedio Param);
         String DeleteVedio(Guid Id);
+        String ShowVedio(Guid Id);
         #endregion
         #endregion
         #region 成长档案

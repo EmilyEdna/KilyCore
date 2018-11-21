@@ -46,8 +46,34 @@
                         controller.Echarts("#echarts-pie-chart-batch", result.data);
                     }
                 });
+                //获取视频
+                controller.ajax({
+                    url: "EnterpriseWeb/GetVedioPage",
+                    data: { pageSize: 4, pageNumber: 1, QueryParam: { IsIndex: true } },
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        $("img").each(function (i, obj) {
+                            $(this).attr("src", result.data.rows[i].VedioCover).attr("title", result.data.rows[i].VedioName).attr("vedio", result.data.rows[i].VedioAddr)
+                        });
+                    }
+                });
             },
             InitEvent: function () {
+                $("img").on('click', function () {
+                    controller.OpenWindow({
+                        title: "视频播放",
+                        type: 2,
+                        btn: [],
+                        maxmin: false,
+                        height: "480px",
+                        width: "435px",
+                        url: "StaticHtml/PlayVedio.html?addr=" + $(this).attr("Vedio") + "&cover=" + $(this).attr("src"),
+                        callBack: function (result) {
+                            result.popClose();
+                        }
+                    });
+                });
                 //显示或隐藏
                 $(".collapse-link").on('click', function () {
                     var ibox = $(this.closest('div.ibox'));
@@ -221,6 +247,78 @@
                     </div>
                     <div class="ibox-content">
                         <div class="echarts" id="echarts-pie-chart-batch"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>视频一</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <img  class="img-thumbnail" title="" src="" vedio=""/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>视频二</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <img class="img-thumbnail" title="" src="" vedio="" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>视频三</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <img class="img-thumbnail" title="" src="" vedio="" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>视频四</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <img class="img-thumbnail" title="" src="" vedio="" />
                     </div>
                 </div>
             </div>

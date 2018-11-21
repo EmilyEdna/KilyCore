@@ -21,20 +21,17 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public Guid Id { get; set; }
         public Guid? CompanyId { get; set; }
         /// <summary>
-        /// 视频地址1
+        /// 名称
         /// </summary>
-        public string VedioAddrOne { get; set; }
+        public string VedioName { get; set; }
         /// <summary>
-        /// 视频地址2
+        /// 视频地址
         /// </summary>
-        public string VedioAddrTwo { get; set; }
+        public string VedioAddr { get; set; }
         /// <summary>
         /// 视频地址3
         /// </summary>
-        public string VedioAddrThree { get; set; }
-        /// <summary>
-        /// 视频地址4
-        /// </summary>
-        public string VedioAddrFour { get; set; }
+        public string VedioCover { get; set; }
+        public bool? IsIndex { get; set; }
     }
 }
