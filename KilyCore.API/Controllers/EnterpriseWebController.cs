@@ -418,6 +418,44 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.SaveFile(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 视频监控
+        /// <summary>
+        /// 视频分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetVedioPage")]
+        public ObjectResultEx GetVedioPage(PageParamList<RequestEnterpriseVedio> pageParam) {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetVedioPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 视频详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetVedioDetail")]
+        public ObjectResultEx GetVedioDetail(SimpleParam<Guid> Param) {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetVedioDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑视频
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("SaveVedio")]
+        public ObjectResultEx SaveVedio(RequestEnterpriseVedio Param) {
+            return ObjectResultEx.Instance(EnterpriseWebService.SaveVedio(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除视频
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("DeleteVedio")]
+        public ObjectResultEx DeleteVedio(SimpleParam<Guid> Param) {
+            return ObjectResultEx.Instance(EnterpriseWebService.DeleteVedio(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
         #endregion
         #region 成长档案
         #region 育苗信息

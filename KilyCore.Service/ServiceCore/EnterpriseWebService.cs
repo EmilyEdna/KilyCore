@@ -1300,6 +1300,62 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         #endregion
+
+        #region 视频监控
+        /// <summary>
+        /// 视频分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseVedio> GetVedioPage(PageParamList<RequestEnterpriseVedio> pageParam)
+        {
+          IQueryable<EnterpriseVedio>  queryable = Kily.Set<EnterpriseVedio>().OrderByDescending(t => t.CreateTime);
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            var data = queryable.Select(t => new ResponseEnterpriseVedio()
+            {
+                Id=t.Id,
+                VedioAddrOne=t.VedioAddrOne,
+                VedioAddrTwo=t.VedioAddrTwo,
+                VedioAddrThree=t.VedioAddrThree,
+                VedioAddrFour=t.VedioAddrFour
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 视频详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseEnterpriseVedio GetVedioDetail(Guid Id)
+        {
+          return  Kily.Set<EnterpriseVedio>().Where(t => t.Id == Id).FirstOrDefault().MapToEntity<ResponseEnterpriseVedio>();
+        }
+        /// <summary>
+        /// 编辑视频
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveVedio(RequestEnterpriseVedio Param)
+        {
+            EnterpriseVedio vedio = Param.MapToEntity<EnterpriseVedio>();
+            if (Param.Id != Guid.Empty)
+                return Update(vedio, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            else
+                return Insert(vedio) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 删除视频
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string DeleteVedio(Guid Id)
+        {
+            return Remove<EnterpriseVedio>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
         #endregion
 
         #region 成长档案

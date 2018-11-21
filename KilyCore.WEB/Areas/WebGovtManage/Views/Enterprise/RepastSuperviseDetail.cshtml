@@ -22,7 +22,7 @@
                     type: "post",
                     success: function (result) {
                         controller.SetCtrlValue("#Edit", result.data);
-                        var url = "../../WebMerchantManage/Function/MerchantMonitorPlay?addr=" + result.data.Account;
+                        var url = "StaticHtml/PlayVedio.html?addr=" + result.data.Account;
                         $("#play").attr("src", url);
                         options.BindHonor(result.data.HonorCertification);
                     }

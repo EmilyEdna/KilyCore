@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "实时监控";
+    ViewData["Title"] = "视频监控";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
@@ -21,17 +21,17 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "RepastWeb/GetVideoPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetVedioPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
             },
             //事件
             InitEvents: function () {
                 $("#add").on('click', function () {
                     controller.OpenWindow({
-                        title: "新增视频",
+                        title: "新增监控视频",
                         type: 2,
-                        height: "400px",
-                        width: "650px",
-                        url: "WebMerchantManage/Function/MerchantMonitorEdit",
+                        height: "440px",
+                        width: "700px",
+                        url: "WebCompanyManage/Base/VedioEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
                         }
@@ -40,48 +40,18 @@
             },
             //行为
             action: {
-                ImgFormatter: function (val, row, index) {
-                    var action = [];
-                    action.push('<img class="photo" src="' + row.CoverPhoto + '" style="width:48px;height:32px;"">')
-                    return action.join("&nbsp;");
-                },
-                ImgEvents: {
-                    "click .photo": function (event, val, row, index) {
-                        var option = {
-                            title: "封面图",
-                            data: [{
-                                alt: "封面图",
-                                src: $(this).attr("src")
-                            }]
-                        };
-                        controller.Photos(option);
-                    }
-                },
                 TableFormatter: function (val, row, index) {
                     var action = [];
-                    action.push('<button class="btn btn-sm btn-primary play"><i class="fa fa-play"></i>播放</button>');
+                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>详情</button>');
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
-                    "click .play": function (event, val, row, index) {
-                        controller.OpenWindow({
-                            title: "视频播放",
-                            type: 2,
-                            maxmin: false,
-                            height: "520px",
-                            width: "435px",
-                            url: "StaticHtml/PlayVedio.html?addr=" + row.VideoAddress + "&cover=" + row.CoverPhoto,
-                            callBack: function (result) {
-                                result.popClose();
-                            }
-                        })
-                    },
                     "click .del": function (event, val, row, index) {
                         controller.Confirm("确认删除？", function (bool) {
                             if (bool) {
                                 controller.ajax({
-                                    url: "RepastWeb/DeleteVideo",
+                                    url: "EnterpriseWeb/DeleteVedio",
                                     data: { Id: row.Id },
                                     type: 'post',
                                     success: function (result) {
@@ -91,6 +61,18 @@
                             }
                         });
                     },
+                    "click .edit": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "视频详情",
+                            type: 2,
+                            height: "445px",
+                            width: "605px",
+                            url: "WebCompanyManage/Base/VedioEdit?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
+                    }
                 }//表单事件结束
             }//行为结束
         };
@@ -112,14 +94,16 @@
             <div class="ibox-content">
                 <div class="row">
                     <form id="Edit">
-                        <div class="col-sm-11 m-b-xs">
+                        <div class="col-sm-8 m-b-xs">
                             <div class="input-group">
                                 <button type="button" class="btn btn-sm btn-white" id="add"><i class="fa fa-plus"></i>新增</button>
                             </div>
                         </div>
-                        <div class="col-sm-1">
+                        <div class="col-sm-4">
                             <div class="input-group">
+                                <input type="text" class="input-sm form-control" disabled>
                                 <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary" disabled><i class="fa fa-search"></i>搜索</button>
                                     <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
                                 </span>
                             </div>
@@ -130,9 +114,10 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="MonitorAddress" data-halign="center" data-align="center" data-valign="middle">监控区域</th>
-                                <th data-field="VideoAddress" data-halign="center" data-align="center" data-valign="middle">视频链接</th>
-                                <th data-formatter="options.action.ImgFormatter" data-events="options.action.ImgEvents" data-halign="center" data-align="center" data-valign="middle">封面图</th>
+                                <th data-field="VedioAddrOne" data-halign="center" data-align="center" data-valign="middle">视频地址一</th>
+                                <th data-field="VedioAddrTwo" data-halign="center" data-align="center" data-valign="middle">视频地址二</th>
+                                <th data-field="VedioAddrThree" data-halign="center" data-align="center" data-valign="middle">视频地址三</th>
+                                <th data-field="VedioAddrFour" data-halign="center" data-align="center" data-valign="middle">视频地址四</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>

@@ -124,15 +124,43 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 编辑账号
+        /// </summary>
+        /// <returns></returns>
         public IActionResult CompanyEditAccount()
         {
             return View();
         }
+        /// <summary>
+        /// 编辑区域
+        /// </summary>
+        /// <returns></returns>
         public IActionResult CompanyEditArea()
         {
             return View();
         }
+        /// <summary>
+        /// 企业认证
+        /// </summary>
+        /// <returns></returns>
         public IActionResult CompanyIdentEdit()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 视频监控
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Vedio()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 编辑视频
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult VedioEdit()
         {
             return View();
         }

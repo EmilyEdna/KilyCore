@@ -81,6 +81,12 @@ namespace KilyCore.Service.IServiceCore
         String DeleteFile(Guid Id);
         String SaveFile(RequestEnterpriseInsideFile Param);
         #endregion
+        #region 视频监控
+        PagedResult<ResponseEnterpriseVedio> GetVedioPage(PageParamList<RequestEnterpriseVedio> pageParam);
+        ResponseEnterpriseVedio GetVedioDetail(Guid Id);
+        String SaveVedio(RequestEnterpriseVedio Param);
+        String DeleteVedio(Guid Id);
+        #endregion
         #endregion
         #region 成长档案
         #region 育苗信息

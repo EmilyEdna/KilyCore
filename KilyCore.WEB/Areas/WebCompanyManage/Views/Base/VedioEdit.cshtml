@@ -1,0 +1,94 @@
+﻿
+@{
+    ViewData["Title"] = "视频编辑";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var Id = controller.GetParam("Id");
+                $("#CompanyId").val(CompanyInfo.Id);
+                if (Id != null)
+                    controller.ajax({
+                        url: "EnterpriseWeb/GetVedioDetail",
+                        data: { Id: Id },
+                        type: 'post',
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                        }
+                    });
+            },
+            //事件
+            InitEvents: function () {
+                $("button").on('click', function () {
+                    controller.OpenWindow({
+                        title: "视频播放",
+                        type: 2,
+                        maxmin: false,
+                        height: "520px",
+                        width: "435px",
+                        url: "StaticHtml/PlayVedio.html?addr=" + $(this).parent().prev().children().val(),
+                        callBack: function (result) {
+                            result.popClose();
+                        }
+                    })
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/SaveVedio" id="Edit">
+            <input type="hidden" name="Id" />
+            <input type="hidden" name="CompanyId" id="CompanyId" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">视频地址一</label></th>
+                    <td class="has-warning" colspan="2">
+                        <input type="text" class="form-control" name="VedioAddrOne" />
+                    </td>
+                    <th><button type="button" class="btn btn-sm btn-default">观看视频</button></th>
+                </tr>
+                <tr>
+                    <th><label class="control-label">视频地址二</label></th>
+                    <td class="has-warning" colspan="2">
+                        <input type="text" class="form-control" name="VedioAddrTwo" />
+                    </td>
+                    <th><button type="button" class="btn btn-sm btn-default">观看视频</button></th>
+                </tr>
+                <tr>
+                    <th><label class="control-label">视频地址三</label></th>
+                    <td class="has-warning" colspan="2">
+                        <input type="text" class="form-control" name="VedioAddrThree" />
+                    </td>
+                    <th><button type="button" class="btn btn-sm btn-default">观看视频</button></th>
+                </tr>
+                <tr>
+                    <th><label class="control-label">视频地址四</label></th>
+                    <td class="has-warning" colspan="2">
+                        <input type="text" class="form-control" name="VedioAddrFour" />
+                    </td>
+                    <th><button type="button" class="btn btn-sm btn-default">观看视频</button></th>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

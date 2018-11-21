@@ -52,10 +52,6 @@ namespace KilyCore.WEB.Areas.WebMerchantManage.Controllers
         {
             return View();
         }
-        public IActionResult MerchantMonitorPlay()
-        {
-            return View();
-        }
         #endregion
 
         #region 二维码管理
