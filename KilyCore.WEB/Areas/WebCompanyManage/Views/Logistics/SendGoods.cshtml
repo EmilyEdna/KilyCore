@@ -62,7 +62,7 @@
                         });
                     },
                     "click .code": function (event, val, row, index) {
-                        var host = "http://localhost:50070/StaticHtml/ScanGoods.html?Id=" + row.Id;
+                        var host = WebUrl+"StaticHtml/ScanGoods.html?Id=" + row.Id;
                         $("#QRcode").html("");
                         controller.QRCode('#QRcode', { render: "table", text: host });
                         controller.OpenWindow({

@@ -13,7 +13,7 @@
             },
             //元素
             InitDom: function () {
-                var host = "http://localhost:50070/StaticHtml/ScanCompany.html?Id=" + controller.GetParam("Id");
+                var host = WebUrl+"StaticHtml/ScanCompany.html?Id=" + controller.GetParam("Id");
                 controller.QRCode('#QRcode', { text: host });
             },
             //事件

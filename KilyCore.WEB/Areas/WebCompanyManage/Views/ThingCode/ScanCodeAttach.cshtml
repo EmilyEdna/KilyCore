@@ -24,7 +24,7 @@
                 }
                 $("tbody").html(html);
                 for (var i = 0; i < count; i++) {
-                    controller.QRCode("#" + i + "_code", { width: 50, height: 50, text: "http://localhost:50070/StaticHtml/ScanDetail.html?Id=Id&Code=" + (Number(controller.GetParam("SCode")) + i) });
+                    controller.QRCode("#" + i + "_code", { width: 50, height: 50, text: WebUrl+"StaticHtml/ScanDetail.html?Id=Id&Code=" + (Number(controller.GetParam("SCode")) + i) });
                 }
             },
             //事件
