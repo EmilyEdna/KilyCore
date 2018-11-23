@@ -22,8 +22,15 @@
             GetSelect: function () {
                 //初始化下拉
                 controller.Select({
-                    document:'.selectpicker',
-                    arrelemnt: ['#Unit','#Standard'],
+                    document:'#Standard',
+                    arrelemnt: ['#Standard'],
+                    data: { Id: "执行标准" },
+                    url: 'EnterpriseWeb/GetDictionaryList'
+                });
+                controller.Select({
+                    document: '#Unit',
+                    arrelemnt: ['#Unit'],
+                    data: { Id: "计量单位" },
                     url: 'EnterpriseWeb/GetDictionaryList'
                 });
                 $("#Unit").on('changed.bs.select', function () {

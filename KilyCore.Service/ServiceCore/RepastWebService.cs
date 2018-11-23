@@ -53,14 +53,14 @@ namespace KilyCore.Service.ServiceCore
         /// 下拉字典类型
         /// </summary>
         /// <returns></returns>
-        public IList<ResponseRepastDictionary> GetDictionaryList()
+        public IList<ResponseRepastDictionary> GetDictionaryList(string Param)
         {
             IQueryable<RepastDictionary> queryable = Kily.Set<RepastDictionary>().Where(t => t.IsDelete == false);
             if (MerchantInfo() != null)
                 queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
             else
                 queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
-            var data = queryable.GroupBy(t => t.DicType)
+            var data = queryable.Where(t => t.DicType == Param).GroupBy(t => t.DicType)
                 .Select(t => new ResponseRepastDictionary()
                 {
                     DicType = t.Key.ToString(),

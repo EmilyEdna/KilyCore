@@ -67,6 +67,7 @@
                 controller.Select({
                     document: '.selectpicker',
                     arrelemnt: ['#Unit'],
+                    data: { Id: "计量单位" },
                     url: 'RepastWeb/GetDictionaryList',
                 });
                 $("#Unit").on('changed.bs.select', function () {

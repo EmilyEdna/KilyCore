@@ -23,6 +23,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public Guid Id { get; set; }
         public Guid CompanyId { get; set; }
         /// <summary>
+        /// 不合格数量
+        /// </summary>
+        public string InferNum { get; set; }
+        /// <summary>
         /// 1：表示不合格处理类型。2：表示过期处理类型。
         /// </summary>
         public int InferiorExprired { get; set; }

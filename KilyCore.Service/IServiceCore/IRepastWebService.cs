@@ -30,7 +30,7 @@ namespace KilyCore.Service.IServiceCore
     public interface IRepastWebService : IService
     {
         #region 获取全局集团菜单
-        IList<ResponseRepastDictionary> GetDictionaryList();
+        IList<ResponseRepastDictionary> GetDictionaryList(String Param);
         IList<ResponseRepastMenu> GetRepastMenu();
         IList<ResponseParentTree> GetRepastWebTree();
         #endregion

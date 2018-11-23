@@ -69,14 +69,14 @@ namespace KilyCore.Service.ServiceCore
         /// 下拉字典类型
         /// </summary>
         /// <returns></returns>
-        public IList<ResponseEnterpriseDictionary> GetDictionaryList()
+        public IList<ResponseEnterpriseDictionary> GetDictionaryList(string Param)
         {
             IQueryable<EnterpriseDictionary> queryable = Kily.Set<EnterpriseDictionary>().Where(t => t.IsDelete == false);
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
-            var data = queryable.GroupBy(t => t.DicType)
+            var data = queryable.Where(t => t.DicType == Param).GroupBy(t => t.DicType)
                 .Select(t => new ResponseEnterpriseDictionary()
                 {
                     DicType = t.Key.ToString(),
@@ -1896,10 +1896,10 @@ namespace KilyCore.Service.ServiceCore
             if (TagList.Count == 0)
                 Param.StarSerialNo = Convert.ToInt64(Province.Code + "100000000001");
             else
-                Param.StarSerialNo = TagList.FirstOrDefault().EndSerialNo + 1;
-            Param.EndSerialNo = Param.StarSerialNo + Param.TotalNo;
+                Param.StarSerialNo = TagList.FirstOrDefault().EndSerialNo+1;
+            Param.EndSerialNo = Param.StarSerialNo + Param.TotalNo-1;
             EnterpriseTag Tag = Param.MapToEntity<EnterpriseTag>();
-            Tag.TotalNo = Tag.TotalNo + 1;
+            Tag.TotalNo = Tag.TotalNo;
             //生成企业码更新企业信息表的二维码数量
             if (Tag.TagType == TagEnum.OneEnterprise)
             {
@@ -3230,6 +3230,7 @@ namespace KilyCore.Service.ServiceCore
                         ProBatch = o.FirstOrDefault().BatchNo,
                         GoodsId = p.x.Id,
                         Manager = p.t.Manager,
+                        CheckGoodsId=p.t.CheckGoodsId,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
                     }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -3245,6 +3246,7 @@ namespace KilyCore.Service.ServiceCore
                         ProBatch = o.FirstOrDefault().BatchNo,
                         GoodsId = p.x.Id,
                         Manager = p.t.Manager,
+                        CheckGoodsId = p.t.CheckGoodsId,
                         MaterialId = o.FirstOrDefault().MaterialId,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
@@ -3260,6 +3262,7 @@ namespace KilyCore.Service.ServiceCore
                         InStockNum = p.t.InStockNum,
                         ProBatch = o.FirstOrDefault().BatchNo,
                         GoodsId = p.x.Id,
+                        CheckGoodsId = p.t.CheckGoodsId,
                         Manager = p.t.Manager,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
@@ -3280,6 +3283,7 @@ namespace KilyCore.Service.ServiceCore
                         InStockNum = p.t.InStockNum,
                         ProBatch = o.FirstOrDefault().BatchNo,
                         GoodsId = p.x.Id,
+                        CheckGoodsId = p.t.CheckGoodsId,
                         Manager = p.t.Manager,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
@@ -3297,6 +3301,7 @@ namespace KilyCore.Service.ServiceCore
                         GoodsId = p.x.Id,
                         MaterialId = o.FirstOrDefault().MaterialId,
                         Manager = p.t.Manager,
+                        CheckGoodsId = p.t.CheckGoodsId,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
                     }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -3312,6 +3317,7 @@ namespace KilyCore.Service.ServiceCore
                         ProBatch = o.FirstOrDefault().BatchNo,
                         GoodsId = p.x.Id,
                         Manager = p.t.Manager,
+                        CheckGoodsId = p.t.CheckGoodsId,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
                     }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -3764,6 +3770,7 @@ namespace KilyCore.Service.ServiceCore
                 InferName = t.InferName,
                 InferType = t.InferType,
                 HandleUser = t.HandleUser,
+                InferNum=t.InferNum,
                 HandleWays = t.HandleWays,
                 HandleTime = t.HandleTime,
                 HandleReason = t.HandleReason,

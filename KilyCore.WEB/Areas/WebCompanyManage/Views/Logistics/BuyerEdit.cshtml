@@ -40,15 +40,6 @@
             },
             //事件
             InitEvents: function () {
-                //初始化下拉字典
-                controller.Select({
-                    document: '.selectpicker',
-                    arrelemnt: ['#Spec'],
-                    url: 'EnterpriseWeb/GetDictionaryList',
-                });
-                $("#Spec").on('changed.bs.select', function () {
-                    $('input[name="Spec"]').val($(this).val());
-                });
                 //验证
                 controller.ValidateConfirm("#Edit");
             },
@@ -109,7 +100,7 @@
                 <tr>
                     <th><label class="control-label">规格</label></th>
                     <td class="has-warning" colspan="3">
-                        <select type="select" class="selectpicker form-control" data-max-options="2" id="Spec" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
+                        <input name="Spec" id="Spec" class="form-control" />
                     </td>
                 </tr>
             </table>

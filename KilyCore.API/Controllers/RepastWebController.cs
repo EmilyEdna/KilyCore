@@ -30,9 +30,9 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetDictionaryList")]
-        public ObjectResultEx GetDictionaryList()
+        public ObjectResultEx GetDictionaryList(SimpleParam<String> Param)
         {
-            return ObjectResultEx.Instance(RepastWebService.GetDictionaryList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.GetDictionaryList(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 获取权限菜单树

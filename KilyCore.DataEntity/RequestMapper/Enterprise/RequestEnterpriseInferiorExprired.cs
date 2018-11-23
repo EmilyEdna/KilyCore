@@ -58,5 +58,9 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// 处理方式
         /// </summary>
         public string HandleWays { get; set; }
+        /// <summary>
+        /// 不合格数量
+        /// </summary>
+        public string InferNum { get; set; }
     }
 }

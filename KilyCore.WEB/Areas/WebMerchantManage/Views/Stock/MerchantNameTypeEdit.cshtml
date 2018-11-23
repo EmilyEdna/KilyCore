@@ -16,18 +16,6 @@
             //元素
             InitDom: function () {
                 $("#InfoId").val(RepastUser.Id);
-                options.GetList();
-            },
-            //获取列表
-            GetList: function () {
-                controller.Select({
-                    document: '.selectpicker',
-                    arrelemnt: ['#Spec'],
-                    url: 'RepastWeb/GetDictionaryList',
-                });
-                $("#Spec").on('changed.bs.select', function () {
-                    $('input[name="Spec"]').val($(this).val());
-                });
             },
             //事件
             InitEvents: function () {
@@ -64,10 +52,9 @@
                 <tr>
                     <th><label class="control-label">规格</label></th>
                     <td class="has-warning" colspan="3">
-                        <select type="select" class="selectpicker form-control" data-max-options="1" id="Spec" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
+                        <input type="text" class="form-control" name="Spec" />
                     </td>
                 </tr>
-                
             </table>
         </form>
     </div>

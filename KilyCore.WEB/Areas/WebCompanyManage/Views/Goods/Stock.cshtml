@@ -106,7 +106,8 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     if (row.InStockNum != undefined) {
-                        action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>添加产品质检</button>');
+                        if (row.CheckGoodsId == null)
+                            action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>添加产品质检</button>');
                         action.push('<button class="btn btn-sm btn-primary out"><i class="fa fa-pencil-square-o"></i>出库</button>');
                         if (row.AuditTypeName != "审核通过")
                             action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-pencil-square-o"></i>提交审核</button>');

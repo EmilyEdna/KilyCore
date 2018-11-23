@@ -26,11 +26,9 @@
                 //初始化下拉
                 controller.Select({
                     document: '.selectpicker',
-                    arrelemnt: ['#Unit', '#Spec'],
+                    arrelemnt: ['#Unit'],
                     url: 'EnterpriseWeb/GetDictionaryList',
-                });
-                $("#Spec").on('changed.bs.select', function () {
-                    $('input[name="Spec"]').val($(this).val());
+                    data: { Id:"计量单位"}
                 });
                 $("#Unit").on('changed.bs.select', function () {
                     $('input[name="Unit"]').val($(this).val());
@@ -116,13 +114,13 @@
                     </td>
                 </tr>
                 <tr>
+                    <th><label class="control-label">规格</label></th>
+                    <td class="has-warning">
+                        <input name="Spec" id="Spec" class="form-control" />
+                    </td>
                     <th><label class="control-label">单位</label></th>
                     <td class="has-warning">
                         <select type="select" class="selectpicker form-control" data-max-options="2" id="Unit" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
-                    </td>
-                    <th><label class="control-label">规格</label></th>
-                    <td class="has-warning">
-                        <select type="select" class="selectpicker form-control" data-max-options="2" id="Spec" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
                     </td>
                 </tr>
             </table>

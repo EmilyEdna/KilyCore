@@ -23,6 +23,7 @@
                 controller.Select({
                     document: '.selectpicker',
                     arrelemnt: ['#Standard'],
+                    data: {Id:"执行标准"},
                     url: 'EnterpriseWeb/GetDictionaryList',
                 });
                 $("#Standard").on('changed.bs.select', function () {

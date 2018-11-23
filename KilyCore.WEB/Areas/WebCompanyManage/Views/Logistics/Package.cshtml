@@ -21,7 +21,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetPackagePage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit"});
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetPackagePage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
             },
             //事件
             InitEvents: function () {
@@ -44,6 +44,7 @@
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
                     action.push('<button class="btn btn-sm btn-primary send"><i class="fa fa-pencil-square-o"></i>发货</button>');
+                    action.push('<button class="btn btn-sm btn-primary code"><i class="fa fa-pencil-square-o"></i>生成二维码</button>');
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
                     return action.join("&nbsp;")
                 },
@@ -86,8 +87,23 @@
                             }
                         });
                     },
-                }//表单事件结束
-            }//行为结束
+                    "click .code": function (event, val, row, index) {
+                        controller.Confirm("确认生成二维码？", function (bool) {
+                            if (bool) {
+                                $("#QRcode").html("");
+                                controller.QRCode("#QRcode", {
+                                    text: "https://www.baidu.com",
+                                    height: 40,
+                                    width:40
+                                })
+                            }
+                        });
+                    },
+                },
+                CodeFormatter: function (val, row, index) {
+                    return "<span id='QRcode'><span>";
+                }
+            }
         };
         //初始化
         $(document).ready(function () {
@@ -134,6 +150,7 @@
                                 <th data-field="CodeStarSerialNo" data-halign="center" data-align="center" data-valign="middle">追溯开始号段</th>
                                 <th data-field="CodeEndSerialNo" data-halign="center" data-align="center" data-valign="middle">追溯结束号段</th>
                                 <th data-field="PackageNum" data-halign="center" data-align="center" data-valign="middle">打包数量</th>
+                                <th data-formatter="options.action.CodeFormatter" data-halign="center" data-align="center" data-valign="middle">二维码</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>

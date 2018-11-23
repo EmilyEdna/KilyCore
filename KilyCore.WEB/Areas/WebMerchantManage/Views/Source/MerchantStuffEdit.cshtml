@@ -26,6 +26,7 @@
                 controller.Select({
                     document: '.selectpicker',
                     arrelemnt: ['#Standard'],
+                    data: { Id: "执行标准" },
                     url: 'RepastWeb/GetDictionaryList',
                 });
                 $("#Standard").on('changed.bs.select', function () {

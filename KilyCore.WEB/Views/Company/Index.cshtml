@@ -54,7 +54,11 @@
                     type: "post",
                     success: function (result) {
                         $("img").each(function (i, obj) {
-                            $(this).attr("src", result.data.rows[i].VedioCover).attr("title", result.data.rows[i].VedioName).attr("vedio", result.data.rows[i].VedioAddr)
+                            if (result.data.rows[i] != undefined) {
+                                $(this).attr("title", result.data.rows[i].VedioName);
+                                $(this).attr("vedio", result.data.rows[i].VedioAddr);
+                                $(this).attr("src", result.data.rows[i].VedioCover);
+                            }
                         });
                     }
                 });
@@ -163,7 +167,7 @@
                                 <tr>
                                     <th>不合格品数量</th>
                                     <th>过期产品数量</th>
-                                    <th>产品召唤数量</th>
+                                    <th>产品召回数量</th>
                                     <th>投诉数量</th>
                                 </tr>
                             </thead>

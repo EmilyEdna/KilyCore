@@ -60,5 +60,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 处理方式
         /// </summary>
         public virtual string HandleWays { get; set; }
+        /// <summary>
+        /// 不合格数量
+        /// </summary>
+        public virtual string InferNum { get; set; }
     }
 }

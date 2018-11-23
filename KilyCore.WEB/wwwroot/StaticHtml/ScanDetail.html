@@ -250,9 +250,9 @@
                     async: false,
                     success: function (result) {
                         option.BindNode(".content", result.data);
-                        option.BaiduMap(result.data.LngAndLat);
                         option.BindSourceCheck(result.data.Materials);
                         option.BindInput("#Edit", result.data);
+                        option.BaiduMap(result.data.LngAndLat);
                     }
                 });
             },
