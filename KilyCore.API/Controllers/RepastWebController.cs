@@ -518,6 +518,16 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastWebService.DeleteVideo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 首页显示
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("ShowVideo")]
+        public ObjectResultEx ShowVideo(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.ShowVideo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #endregion
 

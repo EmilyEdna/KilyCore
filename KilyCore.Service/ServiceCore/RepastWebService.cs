@@ -1198,7 +1198,8 @@ namespace KilyCore.Service.ServiceCore
                 GoodsNum = t.GoodsNum,
                 ToPay = t.ToPay,
                 SellTime = t.SellTime,
-                UnPay = t.UnPay
+                UnPay = t.UnPay,
+                Manager=t.Manager
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -1225,7 +1226,8 @@ namespace KilyCore.Service.ServiceCore
                 GoodsNum = t.GoodsNum,
                 ToPay = t.ToPay,
                 SellTime = t.SellTime,
-                UnPay = t.UnPay
+                UnPay = t.UnPay,
+                Manager=t.Manager,
             }).FirstOrDefault();
             return data;
         }
@@ -1257,6 +1259,8 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
             else
                 queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            if (pageParam.QueryParam.IsIndex.HasValue)
+                queryable = queryable.Where(t => t.IsDelete == true);
             var data = queryable.Select(t => new ResponseRepastVideo()
             {
                 Id = t.Id,
@@ -1265,6 +1269,14 @@ namespace KilyCore.Service.ServiceCore
                 VideoAddress = t.VideoAddress
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
+        }
+        /// <summary>
+        /// 首页显示
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string ShowVideo(Guid Id) {
+            return Delete<RepastVideo>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         #endregion
         #endregion
@@ -1715,7 +1727,7 @@ namespace KilyCore.Service.ServiceCore
                 .Select(t => new ResponseRepastInStorage()
                 {
                     Id = t.Id,
-                    IngredientName = t.IngredientName,
+                    IngredientName = "("+t.BatchNo+")"+t.IngredientName,
                 }).AsNoTracking().ToList();
             return data;
         }
@@ -1761,6 +1773,7 @@ namespace KilyCore.Service.ServiceCore
                 BuyUser = t.BuyUser,
                 InStorageNum = t.InStorageNum,
                 Phone = t.Phone,
+                MaterType=t.MaterType,
                 PrePrice = t.PrePrice,
                 QualityReport = t.QualityReport,
                 Remark = t.Remark,

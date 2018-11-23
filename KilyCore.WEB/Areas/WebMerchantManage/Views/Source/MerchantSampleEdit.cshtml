@@ -29,6 +29,20 @@
                         $("#DishName").html(html);
                     }
                 });
+                //获取负责人
+                controller.ajax({
+                    url: "RepastWeb/GetMerchantList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>'
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.TrueName + '">' + obj.TrueName + '</option>';
+                        });
+                        $("select[name='OperatUser']").html(html);
+                    }
+                });
             },
             //事件
             InitEvents: function () {
@@ -73,7 +87,7 @@
                 <tr>
                     <th><label class="control-label">操作人</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="OperatUser" />
+                        <select type="select" name="OperatUser" class="form-control"></select>
                     </td>
                     <th><label class="control-label">电话</label></th>
                     <td class="has-warning">

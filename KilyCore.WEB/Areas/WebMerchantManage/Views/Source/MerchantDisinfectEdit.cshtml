@@ -17,6 +17,7 @@
             InitDom: function () {
                 $("#InfoId").val(RepastUser.Id);
                 var Guid = controller.GetParam("Id");
+                controller.LayDate({ elem: "input[name='DisinfectTime']" });
                 options.BindData(Guid);
             },
             //数据绑定
@@ -33,6 +34,20 @@
                             html += '<option data-value="' + obj.Id + '" value="' + obj.IngredientName + '">' + obj.IngredientName + '</option>';
                         });
                         $("#DisinfectName").html(html);
+                    }
+                });
+                //人员下拉
+                controller.ajax({
+                    url: "RepastWeb/GetMerchantList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.TrueName + '">' + obj.TrueName + '</option>';
+                        });
+                        $("#UsePerson").html(html);
                     }
                 });
                 //获取详情
@@ -62,20 +77,6 @@
                             $("input[name='SupplierTime']").val(result.data.SuppTime);
                         }
                     });
-                });
-                //人员下拉
-                controller.ajax({
-                    url: "RepastWeb/GetMerchantList",
-                    data: {},
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        var html = '<option>==请选择==</option>';
-                        $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.TrueName + '">' + obj.TrueName + '</option>';
-                        });
-                        $("#UsePerson").html(html);
-                    }
                 });
                 //验证
                 controller.ValidateConfirm("#Edit");

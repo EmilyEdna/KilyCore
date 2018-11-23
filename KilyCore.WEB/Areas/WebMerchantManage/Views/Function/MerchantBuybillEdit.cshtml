@@ -18,8 +18,8 @@
                 $("#InfoId").val(RepastUser.Id);
                 controller.LayDate({ elem: "input[name='OrderTime']" });
                 var Guid = controller.GetParam("Id");
-                options.GetDetail(Guid);
                 options.GetList();
+                options.GetDetail(Guid);
             },
             //获取详情
             GetDetail: function (Guid) {
@@ -31,6 +31,7 @@
                         type: "post",
                         success: function (result) {
                             controller.SetCtrlValue("#Edit", result.data);
+                            $("#Unit").selectpicker('val', result.data.Unit);
                         }
                     });
             },
@@ -45,7 +46,7 @@
                     success: function (result) {
                         var html = '<option>==请选择==</option>'
                         $.each(result.data, function (i, obj) {
-                            html += '<option>' + obj.TrueName + '</option>'
+                            html += '<option value=' + obj.TrueName+'>' + obj.TrueName + '</option>'
                         });
                         $("select[name='Purchase']").html(html);
                     }
@@ -59,7 +60,7 @@
                     success: function (result) {
                         var html = '<option>==请选择==</option>'
                         $.each(result.data, function (i, obj) {
-                            html += '<option data-value="' + obj.LinkPhone + '">' + obj.SupplierName + '</option>'
+                            html += '<option data-value="' + obj.LinkPhone + '" value=' + obj.SupplierName+'>' + obj.SupplierName + '</option>'
                         });
                         $("select[name='Supplier']").html(html);
                     }

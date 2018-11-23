@@ -28,6 +28,7 @@ namespace KilyCore.EntityFrameWork.EntityMapping.Repast
             builder.ToTable(typeof(RepastDisinfect).Name);
             builder.HasKey(t => t.Id);
             builder.Property(t => t.SupplierTime).HasColumnType(typeof(DateTime).Name);
+            builder.Property(t => t.DisinfectTime).HasColumnType(typeof(DateTime).Name);
         }
     }
 }

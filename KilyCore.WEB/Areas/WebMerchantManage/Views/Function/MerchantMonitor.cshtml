@@ -60,6 +60,7 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary play"><i class="fa fa-play"></i>播放</button>');
+                    action.push('<button class="btn btn-sm btn-primary watch"><i class="fa fa-eye"></i>播放</button>');
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
                     return action.join("&nbsp;")
                 },
@@ -82,6 +83,20 @@
                             if (bool) {
                                 controller.ajax({
                                     url: "RepastWeb/DeleteVideo",
+                                    data: { Id: row.Id },
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    "click .watch": function (event, val, row, index) {
+                        controller.Confirm("确认显示？", function (bool) {
+                            if (bool) {
+                                controller.ajax({
+                                    url: "RepastWeb/ShowVideo",
                                     data: { Id: row.Id },
                                     type: 'post',
                                     success: function (result) {

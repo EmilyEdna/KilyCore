@@ -44,5 +44,9 @@ namespace KilyCore.EntityFrameWork.Model.Repast
         /// 销售时间
         /// </summary>
         public virtual DateTime? SellTime { get; set; }
+        /// <summary>
+        /// 负责人
+        /// </summary>
+        public virtual string Manager { get; set; }
     }
 }

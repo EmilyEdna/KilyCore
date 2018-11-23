@@ -18,6 +18,20 @@
                 $("#InfoId").val(RepastUser.Id);
                 controller.LayDate({ elem: "input[name='SellTime']" });
                 var Guid = controller.GetParam("Id");
+                //获取负责人
+                controller.ajax({
+                    url: "RepastWeb/GetMerchantList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>'
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value=' + obj.TrueName + '>' + obj.TrueName + '</option>';
+                        });
+                        $("select[name='Manager']").html(html);
+                    }
+                });
                 options.GetDetail(Guid);
             },
             //获取详情
@@ -75,8 +89,12 @@
                 </tr>
                 <tr>
                     <th><label class="control-label">销售时间</label></th>
-                    <td class="has-warning" colspan="3">
+                    <td class="has-warning">
                         <input type="text" class="form-control" name="SellTime" />
+                    </td>
+                    <th><label class="control-label">负责人</label></th>
+                    <td class="has-warning">
+                        <select type="select" name="Manager" class="form-control"></select>
                     </td>
                 </tr>
             </table>

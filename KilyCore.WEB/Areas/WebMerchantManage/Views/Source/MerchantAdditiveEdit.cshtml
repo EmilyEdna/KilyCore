@@ -17,10 +17,25 @@
             InitDom: function () {
                 $("#InfoId").val(RepastUser.Id);
                 var Guid = controller.GetParam("Id");
+                controller.LayDate({ elem: "input[name='UseTime']" });
                 options.BindData(Guid);
             },
             //数据绑定
             BindData: function (Guid) {
+                //人员下拉
+                controller.ajax({
+                    url: "RepastWeb/GetMerchantList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.TrueName + '">' + obj.TrueName + '</option>';
+                        });
+                        $("#UsePerson").html(html);
+                    }
+                });
                 //获取原料列表
                 controller.ajax({
                     url: "RepastWeb/GetInStorageList",
@@ -62,20 +77,6 @@
                             $("input[name='SupplierTime']").val(result.data.SuppTime);
                         }
                     });
-                });
-                //人员下拉
-                controller.ajax({
-                    url: "RepastWeb/GetMerchantList",
-                    data: {},
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        var html = '<option>==请选择==</option>';
-                        $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.TrueName + '">' + obj.TrueName + '</option>';
-                        });
-                        $("#UsePerson").html(html);
-                    }
                 });
                 //验证
                 controller.ValidateConfirm("#Edit");

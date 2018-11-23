@@ -34,5 +34,6 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
         /// 封面图
         /// </summary>
         public string CoverPhoto { get; set; }
+        public bool? IsIndex { get; set; }
     }
 }

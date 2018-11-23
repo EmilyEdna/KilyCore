@@ -39,7 +39,7 @@ namespace KilyCore.EntityFrameWork.Model.Repast
         /// <summary>
         /// 消毒时间
         /// </summary>
-        public virtual string DisinfectTime { get; set; }
+        public virtual DateTime? DisinfectTime { get; set; }
         /// <summary>
         /// 使用计量
         /// </summary>

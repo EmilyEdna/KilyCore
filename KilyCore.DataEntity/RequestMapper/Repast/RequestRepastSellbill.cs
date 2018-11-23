@@ -42,5 +42,9 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
         /// 销售时间
         /// </summary>
         public DateTime? SellTime { get; set; }
+        /// <summary>
+        /// 负责人
+        /// </summary>
+        public string Manager { get; set; }
     }
 }

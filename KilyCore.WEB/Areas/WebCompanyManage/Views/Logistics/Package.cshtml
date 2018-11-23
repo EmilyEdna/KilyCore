@@ -92,7 +92,7 @@
                             if (bool) {
                                 $("#QRcode").html("");
                                 controller.QRCode("#QRcode", {
-                                    text: "https://www.baidu.com",
+                                    text: WebUrl + "StaticHtml/ScanPackage.html?Id=" + row.Id,
                                     height: 40,
                                     width:40
                                 })

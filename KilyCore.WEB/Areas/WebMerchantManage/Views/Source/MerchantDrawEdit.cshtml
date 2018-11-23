@@ -14,7 +14,21 @@
             //元素
             InitDom: function () {
                 $("#InfoId").val(RepastUser.Id);
-                controller.LayDate({ elem: "#DrawTime" })
+                controller.LayDate({ elem: "#DrawTime" });
+                //获取负责人
+                controller.ajax({
+                    url: "RepastWeb/GetMerchantList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>'
+                        $.each(result.data, function (i, obj) {
+                            html += '<option>' + obj.TrueName + '</option>'
+                        });
+                        $("select[name='DrawUser']").html(html);
+                    }
+                });
             },
             //事件
             InitEvents: function () {
@@ -52,7 +66,7 @@
                     </td>
                     <th><label class="control-label">操作人</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="DrawUser" />
+                        <select type="select" name="DrawUser" class="form-control"></select>
                     </td>
                 </tr>
                 <tr>

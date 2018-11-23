@@ -37,7 +37,7 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
         /// <summary>
         /// 消毒时间
         /// </summary>
-        public string DisinfectTime { get; set; }
+        public DateTime? DisinfectTime { get; set; }
         /// <summary>
         /// 食用计量
         /// </summary>
