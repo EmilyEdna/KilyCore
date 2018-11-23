@@ -444,10 +444,26 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.IsUse == false);
             var data = queryable.Select(t => new ResponseCookFood()
             {
-                Id = t.Id,
+                Id=t.Id,
+                BuyTime = t.BuyTime,
                 FoodName = t.FoodName
             }).ToList();
             return data;
+        }
+        #endregion
+
+        #region 数据统计
+        /// <summary>
+        /// 数据统计
+        /// </summary>
+        /// <returns></returns>
+        public Object GetDataCount()
+        {
+            IQueryable<CookBanquet> queryable = Kily.Set<CookBanquet>().Where(t => t.CookId == CookInfo().Id).AsNoTracking();
+            IQueryable<CookHelper> queryables = Kily.Set<CookHelper>().Where(t => t.CookId == CookInfo().Id).AsNoTracking();
+            int Banquet = queryable.Select(t => t.Id).Count();
+            int Helper = queryables.Select(t => t.Id).Count();
+            return new { Banquet, Helper };
         }
         #endregion
     }

@@ -65,6 +65,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Cook
         /// 是否使用
         /// </summary>
         public bool? IsUse { get; set; }
-        public string Ingredients => FoodName +"_"+ Id;
+        public string Ingredients => FoodName+"("+BuyTime.Value.ToString("yyyy-MM-dd")+")";
     }
 }

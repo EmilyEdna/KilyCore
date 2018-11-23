@@ -13,8 +13,8 @@
             },
             //元素
             InitDom: function () {
-                controller.LayDate({ elem: "input[name='Birthday']" });
-                controller.LayDate({ elem: "input[name='ExpiredDay']" });
+                controller.LayDate({ elem: "input[name='Birthday']", max: controller.GetDate(20) });
+                controller.LayDate({ elem: "input[name='ExpiredDay']", max: controller.GetDate(20) });
                 $("input[name='CookId']").val(CookerInfo.Id);
                 options.GetProvince();
                 options.GetCityByProvince();
@@ -35,6 +35,12 @@
                         controller.SetCtrlValue("#Edit", result.data);
                         options.SetTown();
                         controller.SetCtrlValue("#Edit", result.data);
+                        if (controller.CheckFeild(result.data.Province) && controller.CheckFeild(result.data.City) &&
+                            controller.CheckFeild(result.data.Area) && controller.CheckFeild(result.data.Town)) {
+                            $("#TypeArea").find("select").each(function () {
+                                $(this).attr("disabled", true);
+                            });
+                        }
                     }
                 });
                 options.UploadFiles();
@@ -282,7 +288,7 @@
                 <tr>
                     <th><label class="control-label">所属区域</label></th>
                     <td colspan="3">
-                        <table style="width:100%">
+                        <table style="width:100%" id="TypeArea">
                             <tr>
                                 <td class="has-warning" style="width:25%">
                                     <select type="select" class="form-control" name="Province" id="province">

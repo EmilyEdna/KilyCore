@@ -619,6 +619,7 @@ controller.Validate = function (element, data) {
         submitHandler: function (form) {
             var action = $(form).attr("action");
             var method = $(form).attr("method");
+            controller.RemoveDisabled(form);
             var datas = data != undefined ? data : $(element).SerializeJson();
             controller.ajax({
                 url: action,
@@ -1141,8 +1142,19 @@ controller.Echarts = function (element, option) {
 }
 /**
  * 获取当前时间
- * */
-controller.GetDate = function () {
+ * @param {any} option
+ */
+controller.GetDate = function (option) {
     var Now = new Date();
-    return Now.getFullYear() + "-" + (Now.getMonth() + 1) + "-" + Now.getDate() + " " + Now.getHours() + ":" + Now.getMinutes() + ":" + Now.getSeconds();
+    if (option == undefined)
+        return Now.getFullYear() + "-" + (Now.getMonth() + 1) + "-" + Now.getDate() + " " + Now.getHours() + ":" + Now.getMinutes() + ":" + Now.getSeconds();
+    else
+        return Now.getFullYear() + option + "-" + (Now.getMonth() + 1) + "-" + Now.getDate() + " " + Now.getHours() + ":" + Now.getMinutes() + ":" + Now.getSeconds();
+}
+/**
+ * 检查字段是否为空
+ * @param {any} option
+ */
+controller.CheckFeild = function (option) {
+    return (option != null && option != "" && option != undefined) ? true : false;
 }

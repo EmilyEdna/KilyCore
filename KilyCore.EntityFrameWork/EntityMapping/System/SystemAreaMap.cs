@@ -18,4 +18,12 @@ namespace KilyCore.EntityFrameWork.EntityMapping.System
             builder.HasKey(t => t.Id);
         }
     }
+    public class SystemAreaCarMap : IEntityTypeConfiguration<SystemAreaCar>
+    {
+        public void Configure(EntityTypeBuilder<SystemAreaCar> builder)
+        {
+            builder.ToTable(typeof(SystemAreaCar).Name);
+            builder.HasKey(t => t.Id);
+        }
+    }
 }

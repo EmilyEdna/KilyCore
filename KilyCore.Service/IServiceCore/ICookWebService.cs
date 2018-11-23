@@ -69,5 +69,9 @@ namespace KilyCore.Service.IServiceCore
         String EditFood(RequestCookFood Param);
         IList<ResponseCookFood> GetFoodList(Guid Param);
         #endregion
+
+        #region 数据统计
+        Object GetDataCount();
+        #endregion
     }
 }

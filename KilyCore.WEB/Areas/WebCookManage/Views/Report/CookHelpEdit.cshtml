@@ -14,7 +14,7 @@
             //元素
             InitDom: function () {
                 $("input[name='CookId']").val(CookerInfo.Id);
-                controller.LayDate({ elem: "#ExpiredDate" });
+                controller.LayDate({ elem: "#ExpiredDate", max: controller.GetDate(20) });
                 options.GetProvince();
                 options.GetCityByProvince();
                 options.GetAreaByCity();

@@ -1462,15 +1462,24 @@ namespace KilyCore.Service.ServiceCore
         public string ReportTrainNotice(Guid Id)
         {
             GovtTrainNotice notice = Kily.Set<GovtTrainNotice>().Where(t => t.Id == Id).FirstOrDefault();
-            SystemMessage message = new SystemMessage
+            SystemMessage message = new SystemMessage();
+            message.MsgName = notice.TrainTitle;
+            message.MsgContent = notice.Remark;
+            message.ReleaseTime = DateTime.Now;
+            message.TypePath = GovtInfo().TypePath;
+            if (!notice.CompanyType.Contains(","))
             {
-                MsgName = notice.TrainTitle,
-                MsgContent = notice.Remark,
-                ReleaseTime = DateTime.Now,
-                TrageType = notice.CompanyType,
-                TypePath = GovtInfo().TypePath
-            };
-            return Insert(message) ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
+                message.TrageType = notice.CompanyType;
+                return Insert(message) ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
+            }
+            else
+            {
+                notice.CompanyType.Split(",").ToList().ForEach(t => {
+                    message.TrageType = t;
+                    Insert(message);
+                });
+                return ServiceMessage.HANDLESUCCESS;
+            }
         }
         #endregion
         #region 培训报道

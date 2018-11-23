@@ -15,6 +15,7 @@
             InitDom: function () {
                 $("#GovtId").val(GovtInfo.Id);
                 controller.LayDate({ elem: "input[name='TrainTime']" });
+                options.Editor = controller.Editor(".summernote", { width: 655 });
                 var Id = controller.GetParam("Id");
                 if (Id != null && Id != undefined && Id != "")
                     controller.ajax({
@@ -24,11 +25,20 @@
                         type: "post",
                         success: function (result) {
                             controller.SetCtrlValue("#Edit", result.data);
+                            options.Editor.summernote('code', result.data.Remark);
+                            if (result.data.CompanyType.indexOf(",") != -1)
+                            {
+                                $("#CompanyType").selectpicker("val", result.data.CompanyType.split(","));
+                            }
+                           
                         }
                     });
             },
             //事件
             InitEvents: function () {
+                $("#CompanyType").on('changed.bs.select', function () {
+                    $('input[name="CompanyType"]').val($(this).val());
+                });
                 //验证
                 controller.ValidateConfirm("#Edit");
             },
@@ -46,6 +56,8 @@
         <form class="form-horizontal" method="post" action="GovtWeb/EditNotice" id="Edit">
             <input type="hidden" name="Id" id="Id" />
             <input type="hidden" name="GovtId" id="GovtId" />
+            <input type="hidden" name="CompanyType" />
+            <input type="hidden" name="Remark" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">培训标题</label></th>
@@ -59,12 +71,14 @@
                 </tr>
                 <tr>
                     <th><label class="control-label">培训时间</label></th>
-                    <td class="has-warning">
+                    <td class="has-warning" colspan="3">
                         <input type="text" class="form-control" name="TrainTime">
                     </td>
+                </tr>
+                <tr>
                     <th><label class="control-label">所属行业</label></th>
-                    <td class="has-warning">
-                        <select type="select" name="CompanyType" class="form-control">
+                    <td class="has-warning" colspan="3">
+                        <select type="select" class="selectpicker form-control" id="CompanyType" multiple>
                             <option value="种植企业">种植企业</option>
                             <option value="养殖企业">养殖企业</option>
                             <option value="生产企业">生产企业</option>
@@ -77,7 +91,7 @@
                 <tr>
                     <th><label class="control-label">培训内容</label></th>
                     <td class="has-warning" colspan="3">
-                        <textarea class="form-control" name="Remark" rows="4" maxlength="300"></textarea>
+                        <div class="summernote" name="Remark"></div>
                     </td>
                 </tr>
             </table>

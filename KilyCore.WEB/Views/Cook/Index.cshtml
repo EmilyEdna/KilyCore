@@ -27,6 +27,18 @@
                         }
                     }
                 });
+                //数据统计
+                controller.ajax({
+                    url: "CookWeb/GetDataCount",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        $.each(result.data, function (obj, i) {
+                            $("[name='" + obj + "']", $("tbody")).text(i);
+                        })
+                    }
+                });
             },
             InitEvent: function () {
                 //查看图片
@@ -76,7 +88,7 @@
 <form id="Edit">
     <div class="wrapper wrapper-content">
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-5">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <h5>个人资料</h5>
@@ -122,7 +134,39 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-2">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>数据统计</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <table class="table table-hover no-margins">
+                            <thead>
+                                <tr>
+                                    <th>报备数量</th>
+                                    <th>帮厨数量</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td name="Banquet"></td>
+                                    <td name="Helper"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-5">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <h5>个人图片</h5>

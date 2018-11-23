@@ -220,7 +220,8 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetHelperList")]
-        public ObjectResultEx GetHelperList() {
+        public ObjectResultEx GetHelperList()
+        {
             return ObjectResultEx.Instance(CookWebService.GetHelperList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
@@ -264,6 +265,18 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetFoodList(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(CookWebService.GetFoodList(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region 数据统计
+        /// <summary>
+        /// 数据统计
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetDataCount")]
+        public ObjectResultEx GetDataCount()
+        {
+            return ObjectResultEx.Instance(CookWebService.GetDataCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }
