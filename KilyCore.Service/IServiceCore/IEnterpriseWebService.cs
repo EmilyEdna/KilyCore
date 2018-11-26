@@ -33,6 +33,7 @@ namespace KilyCore.Service.IServiceCore
         #region 企业信息
         PagedResult<ResponseEnterprise> GetInfoPage(PageParamList<RequestEnterprise> pageParam);
         ResponseEnterprise GetEnterpriseInfo(Guid Id);
+        IDictionary<Guid, String> GetChildAccount(Guid Id);
         String SaveEnterprise(RequestEnterprise param);
         String SaveCompanyAccount(RequestEnterprise Param);
         String SaveCompanyArea(RequestEnterprise Param);
@@ -301,9 +302,9 @@ namespace KilyCore.Service.IServiceCore
         IList<Object> ExportProOutStockFile(String Param);
         #endregion
         #region 数据统计
-        Object GetDataCount();
-        ResponseDataCount GetPieCount();
-        ResponseDataCount GetPieCountBatch();
+        Object GetDataCount(Guid? Id);
+        ResponseDataCount GetPieCount(Guid? Id);
+        ResponseDataCount GetPieCountBatch(Guid? Id);
         #endregion
     }
 }

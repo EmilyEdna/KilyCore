@@ -38,6 +38,7 @@ namespace KilyCore.Service.IServiceCore
         #region 商家资料
         PagedResult<ResponseMerchant> GetMerchantInfoPage(PageParamList<RequestMerchant> pageParam);
         ResponseMerchant GetMerchantDetail(Guid Id);
+        IDictionary<Guid, String> GetChildAccount(Guid Id);
         String SaveMerchant(RequestMerchant Param);
         String SaveMerchantAccount(RequestMerchant Param);
         String SaveMerchantArea(RequestMerchant Param);
@@ -193,7 +194,7 @@ namespace KilyCore.Service.IServiceCore
          IList<Object> ExportGoodsOutStockFile(String Param);
         #endregion
         #region 数据统计
-        Object GetDataCount();
+        Object GetDataCount(Guid? Id);
         #endregion
         #region 扫码信息
         PagedResult<ResponseRepastScanInfo> GetScanInfoPage(PageParamList<RequestRepastScanInfo> pageParam);

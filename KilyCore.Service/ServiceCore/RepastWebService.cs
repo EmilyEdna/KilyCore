@@ -612,6 +612,19 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         /// <summary>
+        /// 获取子公司
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public IDictionary<Guid, String> GetChildAccount(Guid Id)
+        {
+            IQueryable<RepastInfo> queryable = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).AsNoTracking();
+            var Maps = queryable.Where(t => t.InfoId == Id).ToDictionary(t => t.Id, t => t.MerchantName);
+            var Map = queryable.Where(t => t.Id == Id).ToDictionary(t => t.Id, t => t.MerchantName);
+            Maps.Add(Map.Keys.FirstOrDefault(), Map.Values.FirstOrDefault());
+            return Maps;
+        }
+        /// <summary>
         /// 保存合同
         /// </summary>
         /// <returns></returns>
@@ -2297,7 +2310,7 @@ namespace KilyCore.Service.ServiceCore
         /// 数据统计
         /// </summary>
         /// <returns></returns>
-        public Object GetDataCount()
+        public Object GetDataCount(Guid? Id)
         {
             int Supplier = 0;
             int Video = 0;
@@ -2305,30 +2318,12 @@ namespace KilyCore.Service.ServiceCore
             int User = 0;
             int Stuff = 0;
             int Info = 0;
-            IQueryable<RepastSupplier> S1 = Kily.Set<RepastSupplier>().Where(t => t.IsDelete == false);
-            IQueryable<RepastVideo> S2 = Kily.Set<RepastVideo>().Where(t => t.IsDelete == false);
-            IQueryable<RepastDish> S3 = Kily.Set<RepastDish>().Where(t => t.IsDelete == false);
-            IQueryable<RepastInfoUser> S4 = Kily.Set<RepastInfoUser>().Where(t => t.IsDelete == false);
-            IQueryable<RepastStuff> S5 = Kily.Set<RepastStuff>().Where(t => t.IsDelete == false);
-            IQueryable<RepastInfo> S6 = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false);
-            if (MerchantInfo() != null)
-            {
-                Supplier = S1.Where(t => t.InfoId == MerchantInfo().Id).Count();
-                Video = S2.Where(t => t.InfoId == MerchantInfo().Id).Count();
-                Dish = S3.Where(t => t.InfoId == MerchantInfo().Id).Count();
-                User = User = S4.Where(t => t.InfoId == MerchantInfo().Id).Count();
-                Stuff = S5.Where(t => t.InfoId == MerchantInfo().Id).Count();
-                Info = S6.Where(t => t.InfoId == MerchantInfo().Id).Count();
-            }
-            else
-            {
-                Supplier = S1.Where(t => t.InfoId == MerchantUser().Id).Count();
-                Video = S2.Where(t => t.InfoId == MerchantUser().Id).Count();
-                Dish = S3.Where(t => t.InfoId == MerchantUser().Id).Count();
-                User = User = S4.Where(t => t.InfoId == MerchantUser().Id).Count();
-                Stuff = S5.Where(t => t.InfoId == MerchantUser().Id).Count();
-                Info = S6.Where(t => t.InfoId == MerchantUser().Id).Count();
-            }
+            IQueryable<RepastSupplier> S1 = Kily.Set<RepastSupplier>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id);
+            IQueryable<RepastVideo> S2 = Kily.Set<RepastVideo>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id);
+            IQueryable<RepastDish> S3 = Kily.Set<RepastDish>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id);
+            IQueryable<RepastInfoUser> S4 = Kily.Set<RepastInfoUser>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id);
+            IQueryable<RepastStuff> S5 = Kily.Set<RepastStuff>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id);
+            IQueryable<RepastInfo> S6 = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id);
             Object data = new{Supplier,Video,Dish,User,Stuff,Info};
             return data;
         }

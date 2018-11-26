@@ -7,10 +7,38 @@
     <script>
         var option = {
             Init: function () {
-                this.IntDom();
+                this.InitDrop();
+                this.InitDom();
                 this.InitEvent();
+                this.InitDataCount(RepastUser.Id)
             },
-            IntDom: function () {
+            InitDrop: function () {
+                $(".dropdown-toggle").html(RepastUser.MerchantName + '<b class="caret"></b>');
+                if (controller.CheckFeild(RepastUser.InfoId))
+                    $(".nav-pills").addClass("hidden");
+                else {
+                    $(".nav-pills").removeClass("hidden");
+                    //获取子账户
+                    controller.ajax({
+                        url: "RepastWeb/GetChildAccount",
+                        data: { Id: RepastUser.Id },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            var html = '';
+                            $.each(result.data, function (key, val) {
+                                html += '<li><a href="javascript:void(0);" data-Id="' + key + '">' + val + '</a></li>';
+                            });
+                            $(".dropdown-menu").html(html);
+                        }
+                    });
+                }
+                $(".dropdown-menu").find("a").on('click', function () {
+                    $(".dropdown-toggle").html($(this).text() + '<b class="caret"></b>');
+                    option.InitDataCount($(this).data().id);
+                });
+            },
+            InitDom: function () {
                 $("body").addClass("gray-bg");
                 $("input").addClass("noborder");
                 $("img[name='Certification']").addClass("imgheight");
@@ -26,18 +54,6 @@
                             $("img[name='IdCard_1']").attr("src", result.data.IdCard.split(',')[0]);
                             $("img[name='IdCard_2']").attr("src", result.data.IdCard.split(',')[1]);
                         }
-                    }
-                });
-                //数据统计
-                controller.ajax({
-                    url: "RepastWeb/GetDataCount",
-                    data: {},
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        $.each(result.data, function (obj, i) {
-                            $("[name='" + obj + "']", $("tbody")).text(i);
-                        })
                     }
                 });
                 //获取视频
@@ -84,6 +100,20 @@
                     var ibox = $(this).closest("div.ibox");
                     ibox.hide()
                 });
+            },
+            InitDataCount: function (Param) {
+                //数据统计
+                controller.ajax({
+                    url: "RepastWeb/GetDataCount",
+                    data: {Id:Param},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        $.each(result.data, function (obj, i) {
+                            $("[name='" + obj + "']", $("tbody")).text(i);
+                        })
+                    }
+                });
             }
         };
         $(document).ready(function () {
@@ -104,6 +134,13 @@
 }
 <form id="Edit">
     <div class="wrapper wrapper-content">
+        <ul class="nav nav-pills">
+            <li class="dropdown all-camera-dropdown">
+                <a class="dropdown-toggle text-danger" data-toggle="dropdown" href="#">
+                </a>
+                <ul class="dropdown-menu"></ul>
+            </li>
+        </ul>
         <div class="row">
             <div class="col-sm-12">
                 <div class="ibox float-e-margins">

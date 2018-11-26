@@ -7,44 +7,35 @@
     <script>
         var option = {
             Init: function () {
-                this.IntDom();
+                this.InitDom();
                 this.InitEvent();
+                this.InitDataCount(CompanyInfo.Id);
             },
-            IntDom: function () {
+            InitDom: function () {
                 $("body").addClass("gray-bg");
-                //数据统计
-                controller.ajax({
-                    url: "EnterpriseWeb/GetDataCount",
-                    data: {},
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        $.each(result.data, function (obj, i) {
-                            $("[name='" + obj + "']", $("#data1")).text(i);
-                            $("[name='" + obj + "']", $("#data2")).text(i);
-                            $("[name='" + obj + "']", $("#data3")).text(i);
-                        })
-                    }
-                });
-                //产量统计
-                controller.ajax({
-                    url: "EnterpriseWeb/GetPieCount",
-                    data: {},
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        controller.Echarts("#echarts-pie-chart", result.data);
-                    }
-                });
-                //批次统计
-                controller.ajax({
-                    url: "EnterpriseWeb/GetPieCountBatch",
-                    data: {},
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        controller.Echarts("#echarts-pie-chart-batch", result.data);
-                    }
+                $(".dropdown-toggle").html(CompanyInfo.CompanyName + '<b class="caret"></b>');
+                if (controller.CheckFeild(CompanyInfo.CompanyId))
+                    $(".nav-pills").addClass("hidden");
+                else {
+                    $(".nav-pills").removeClass("hidden");
+                    //获取子账户
+                    controller.ajax({
+                        url: "EnterpriseWeb/GetChildAccount",
+                        data: { Id: CompanyInfo.Id },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            var html = '';
+                            $.each(result.data, function (key, val) {
+                                html += '<li><a href="javascript:void(0);" data-Id="' + key + '">' + val + '</a></li>';
+                            });
+                            $(".dropdown-menu").html(html);
+                        }
+                    });
+                }
+                $(".dropdown-menu").find("a").on('click', function () {
+                    $(".dropdown-toggle").html($(this).text() + '<b class="caret"></b>');
+                    option.InitDataCount($(this).data().id);
                 });
                 //获取视频
                 controller.ajax({
@@ -54,7 +45,7 @@
                     type: "post",
                     success: function (result) {
                         $("img").each(function (i, obj) {
-                            if (result.data.rows[i] != undefined) 
+                            if (result.data.rows[i] != undefined)
                                 $(this).attr("title", result.data.rows[i].VedioName).attr("vedio", result.data.rows[i].VedioAddr).attr("src", result.data.rows[i].VedioCover);
                         });
                     }
@@ -93,6 +84,42 @@
                     var ibox = $(this).closest("div.ibox");
                     ibox.hide()
                 });
+            },
+            InitDataCount: function (Param) {
+                //数据统计
+                controller.ajax({
+                    url: "EnterpriseWeb/GetDataCount",
+                    data: { Id: Param },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        $.each(result.data, function (obj, i) {
+                            $("[name='" + obj + "']", $("#data1")).text(i);
+                            $("[name='" + obj + "']", $("#data2")).text(i);
+                            $("[name='" + obj + "']", $("#data3")).text(i);
+                        })
+                    }
+                });
+                //产量统计
+                controller.ajax({
+                    url: "EnterpriseWeb/GetPieCount",
+                    data: { Id: Param },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        controller.Echarts("#echarts-pie-chart", result.data);
+                    }
+                });
+                //批次统计
+                controller.ajax({
+                    url: "EnterpriseWeb/GetPieCountBatch",
+                    data: { Id: Param },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        controller.Echarts("#echarts-pie-chart-batch", result.data);
+                    }
+                });
             }
         };
         $(document).ready(function () {
@@ -109,6 +136,14 @@
 }
 <form id="Edit">
     <div class="wrapper wrapper-content">
+        <ul class="nav nav-pills">
+            <li class="dropdown all-camera-dropdown">
+                <a class="dropdown-toggle text-danger" data-toggle="dropdown" href="#">
+                </a>
+                <ul class="dropdown-menu">
+                </ul>
+            </li>
+        </ul>
         <div class="row">
             <div class="col-sm-4">
                 <div class="ibox float-e-margins">
@@ -265,7 +300,7 @@
                         </div>
                     </div>
                     <div class="ibox-content">
-                        <img  class="img-thumbnail" title="" src="" vedio=""/>
+                        <img class="img-thumbnail" title="" src="" vedio="" />
                     </div>
                 </div>
             </div>

@@ -24,7 +24,7 @@
             GetCompanyInfo: function () {
                 controller.ajax({
                     url: "EnterpriseWeb/GetEnterpriseInfo",
-                    data: { Id: CompanyInfo.Id },
+                    data: { Id: controller.GetParam("Id") },
                     type: "post",
                     async: false,
                     success: function (result) {

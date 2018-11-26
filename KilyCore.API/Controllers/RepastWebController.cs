@@ -67,6 +67,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastWebService.GetMerchantDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        [HttpPost("GetChildAccount")]
+        public ObjectResultEx GetChildAccount(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetChildAccount(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         /// <summary>
         /// 编辑商家资料
         /// </summary>
@@ -1112,9 +1117,9 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetDataCount")]
-        public ObjectResultEx GetDataCount()
+        public ObjectResultEx GetDataCount(SimpleParam<Guid> Param)
         {
-            return ObjectResultEx.Instance(RepastWebService.GetDataCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.GetDataCount(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
 

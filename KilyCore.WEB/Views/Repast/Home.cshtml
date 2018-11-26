@@ -7,7 +7,7 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp" />
     <title>餐饮系统-中食药监管信息查询平台</title>
-    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="icon" type="image/x-icon" href="~/StaticHtml/StaticImg/logo.ico" />
     <link href="~/Content/BootStrap/Css/bootstrap.css" rel="stylesheet" />
     <link href="~/Content/FontAwesome/Css/font-awesome.css" rel="stylesheet" />
     <link href="~/Content/Animate/Css/animate.css" rel="stylesheet" />
@@ -69,8 +69,7 @@
             //安全退出
             SignOut: function () {
                 $(".LoginOut").on('click', function () {
-                    controller.Confirm("确认退出系统！", function (index)
-                    {
+                    controller.Confirm("确认退出系统！", function (index) {
                         if (index) {
                             controller.ClearLocal();
                             controller.ajax({
@@ -153,7 +152,7 @@
                             </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
                                 <li>
-                                    <a href="javascript:;" id="EditPwd">修改密码</a>
+                                    <a href="javascript:void(0);" id="EditPwd">修改密码</a>
                                 </li>
                             </ul>
                         </div>
@@ -189,7 +188,7 @@
                 </button>
                 <nav class="page-tabs J_menuTabs">
                     <div class="page-tabs-content">
-                        <a href="javascript:;" class="active J_menuTab" data-id="/Repast/Index">首页</a>
+                        <a href="javascript:void(0);" class="active J_menuTab" data-id="/Repast/Index">首页</a>
                     </div>
                 </nav>
                 <button class="roll-nav roll-right J_tabRight">

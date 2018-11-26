@@ -85,6 +85,16 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.GetEnterpriseInfo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
+        /// 获取子公司
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetChildAccount")]
+        public ObjectResultEx GetChildAccount(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetChildAccount(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 企业资料分页
         /// </summary>
         /// <param name="pageParam"></param>
@@ -1993,27 +2003,27 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetDataCount")]
-        public ObjectResultEx GetDataCount()
+        public ObjectResultEx GetDataCount(SimpleParam<Guid?> Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.GetDataCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.GetDataCount(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 产量统计
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetPieCount")]
-        public ObjectResultEx GetPieCount()
+        public ObjectResultEx GetPieCount(SimpleParam<Guid?> Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.GetPieCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.GetPieCount(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 批次统计
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetPieCountBatch")]
-        public ObjectResultEx GetPieCountBatch()
+        public ObjectResultEx GetPieCountBatch(SimpleParam<Guid?> Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.GetPieCountBatch(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.GetPieCountBatch(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

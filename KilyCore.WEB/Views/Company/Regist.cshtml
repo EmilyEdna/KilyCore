@@ -3,6 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>企业注册</title>
+    <link rel="icon" type="image/x-icon" href="~/StaticHtml/StaticImg/logo.ico" />
     <link href="~/Content/BootStrap/Css/bootstrap.css" rel="stylesheet" />
     <link href="~/Content/FontAwesome/Css/font-awesome.css" rel="stylesheet" />
     <link href="~/Content/HPlus/Css/Hplus.css" rel="stylesheet" />
@@ -28,8 +29,7 @@
             },
             InitDom: function () {
                 $(".code").on('click', function () {
-                    if ($("#CompanyPhone").val() == "")
-                    {
+                    if ($("#CompanyPhone").val() == "") {
                         controller.Msg("请输入手机号");
                         return;
                     }
@@ -54,7 +54,7 @@
                     html = Timer + "秒";
                     Account = setTimeout("options.SetTime()", 1000);
                     Timer = Timer - 1;
-                    $(".code").attr("disabled","true");
+                    $(".code").attr("disabled", "true");
                 } else {
                     clearTimeout(Account);
                     Timer = 60;
@@ -103,7 +103,7 @@
                         controller.Tips("请勾选相关协议", "#Checkbox", { tips: [3, '#FF0000'] });
                         return;
                     }
-                    if ($("#PhoneCode").val()=="") {
+                    if ($("#PhoneCode").val() == "") {
                         controller.Tips("请输入验证码", "#PhoneCode", { tips: [3, '#FF0000'] });
                         return;
                     }
