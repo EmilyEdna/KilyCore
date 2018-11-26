@@ -999,6 +999,8 @@ namespace KilyCore.Service.ServiceCore
         public string PresonEdit(RequestPreson Param)
         {
             SystemPreson Preson = Param.MapToEntity<SystemPreson>();
+            SystemCity City = Kily.Set<SystemCity>().Where(t => t.Id.ToString() == UserInfo().City).AsNoTracking().FirstOrDefault();
+            SystemAreaCar AreaCar = Kily.Set<SystemAreaCar>().Where(t => t.CityCode == City.Code.ToString()).AsNoTracking().FirstOrDefault();
             if (Preson.Id != Guid.Empty)
             {
                 if (Update<SystemPreson, RequestPreson>(Preson, Param))
@@ -1033,34 +1035,35 @@ namespace KilyCore.Service.ServiceCore
                 if (UserInfo().AccountType == AccountEnum.Province)
                 {
                     int Num = Kily.Set<SystemPreson>().Where(t => t.Type.Contains("省级运营")).Count() + 1;
+
                     if (Num > 100)
-                        Preson.WorkNum = "省级运营0" + Num;
+                        Preson.WorkNum = AreaCar + "0" + Num;
                     if (Num > 10)
-                        Preson.WorkNum = "省级运营00" + Num;
+                        Preson.WorkNum = AreaCar + "00" + Num;
                     if (Num < 10)
-                        Preson.WorkNum = "省级运营000" + Num;
+                        Preson.WorkNum = AreaCar + "000" + Num;
                     Preson.Type = "省级运营";
                 }
                 if (UserInfo().AccountType == AccountEnum.City)
                 {
                     int Num = Kily.Set<SystemPreson>().Where(t => t.Type.Contains("市级运营")).Count() + 1;
                     if (Num > 100)
-                        Preson.WorkNum = "市级运营0" + Num;
+                        Preson.WorkNum = AreaCar + "0" + Num;
                     if (Num > 10)
-                        Preson.WorkNum = "市级运营00" + Num;
+                        Preson.WorkNum = AreaCar + "00" + Num;
                     if (Num < 10)
-                        Preson.WorkNum = "市级运营000" + Num;
+                        Preson.WorkNum = AreaCar + "000" + Num;
                     Preson.Type = "市级运营";
                 }
                 if (UserInfo().AccountType == AccountEnum.Area)
                 {
                     int Num = Kily.Set<SystemPreson>().Where(t => t.Type.Contains("区域运营")).Count() + 1;
                     if (Num > 100)
-                        Preson.WorkNum = "区域运营0" + Num;
+                        Preson.WorkNum = AreaCar + "0" + Num;
                     if (Num > 10)
-                        Preson.WorkNum = "区域运营00" + Num;
+                        Preson.WorkNum = AreaCar + "00" + Num;
                     if (Num < 10)
-                        Preson.WorkNum = "区域运营000" + Num;
+                        Preson.WorkNum = AreaCar + "000" + Num;
                     Preson.Type = "区域运营";
                 }
                 if (UserInfo().AccountType == AccountEnum.Village)
@@ -1118,7 +1121,7 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.OrderByDescending(t => t.CreateTime).AsNoTracking().Select(t => new ResponseStayContract()
             {
                 Id = t.Id,
-                Record = (pageParam.QueryParam.EnterpriseOrMerchant == 1 ?(elvs.Where(x=>x.CompanyId==t.CompanyId).AsNoTracking().FirstOrDefault() as Object): (rlvs.Where(x => x.InfoId == t.CompanyId).AsNoTracking().FirstOrDefault() as Object)),
+                Record = (pageParam.QueryParam.EnterpriseOrMerchant == 1 ? (elvs.Where(x => x.CompanyId == t.CompanyId).AsNoTracking().FirstOrDefault() as Object) : (rlvs.Where(x => x.InfoId == t.CompanyId).AsNoTracking().FirstOrDefault() as Object)),
                 TotalPrice = t.TotalPrice,
                 CompanyName = t.CompanyName,
                 PayTicket = t.PayTicket,

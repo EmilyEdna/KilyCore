@@ -1,9 +1,8 @@
 ﻿
 @{
-    ViewData["Title"] = "加工产品";
+    ViewData["Title"] = "其他产品";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
-
 @section script{
     <script>
         //配置
@@ -22,7 +21,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "GovtWeb/GetWorkPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { ProductType: "药品,化妆品" } });
+                this.$table = controller.Table("#tableList", { url: "GovtWeb/GetWorkPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { ProductType: "医疗器械,其他" } });
             },
             //事件
             InitEvents: function () {
@@ -42,7 +41,7 @@
                             type: 2,
                             height: "400px",
                             width: "800px",
-                            url: "WebGovtManage/Product/WorkSuperviseDetail?Id=" + row.Id,
+                            url: "WebGovtManage/Product/OtherSuperviseDetail?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }
@@ -64,7 +63,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>加工产品</h5>
+                <h5>其他产品</h5>
             </div>
             <div class="ibox-content">
                 <div class="row">

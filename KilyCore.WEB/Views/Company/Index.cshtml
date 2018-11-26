@@ -55,7 +55,7 @@
                     success: function (result) {
                         $("img").each(function (i, obj) {
                             if (result.data.rows[i] != undefined) 
-                                $(this).attr("title", result.data.rows[i].VedioName)..attr("vedio", result.data.rows[i].VedioAddr).attr("src", result.data.rows[i].VedioCover);
+                                $(this).attr("title", result.data.rows[i].VedioName).attr("vedio", result.data.rows[i].VedioAddr).attr("src", result.data.rows[i].VedioCover);
                         });
                     }
                 });
