@@ -59,6 +59,22 @@
                                 <br /><br />
                                 <strong class="detail_t">商品介绍：</strong><b class="detail_b" data-name="Remark"></b>
                             </div>
+                            <div class="col-sm-12 col-sm-12">
+                                <span class="title col-sm-12 col-sm-12">
+                                    ●产品检测信息●
+                                </span>
+                                <hr style="margin-top:5%;border:solid 1px #000000" />
+                                <strong class="detail_t">检测结果：</strong><b class="detail_b" data-name="ProductCheckResult"></b>
+                                <br /><br />
+                                <img class="img-responsive" src="" data-name="ProductCheckReport" />
+                            </div>
+                            <div class="col-sm-12 col-sm-12">
+                                <span class="title col-sm-12 col-sm-12">
+                                    ●原料检测信息●
+                                </span>
+                                <hr style="margin-top:5%;border:solid 1px #000000" />
+                                <section></section>
+                            </div>
                             <div class="Content_Grow">
                                 <div class="col-sm-12 col-sm-12">
                                     <span class="title col-sm-12 col-sm-12">
@@ -178,24 +194,21 @@
                 </div>
                 <div id="top5" class="hidden">
                     <div class="panel-heading">
-                        <h6>溯源信息</h6>
+                        <h6>监管信息</h6>
                     </div>
                     <div class="panel-body">
                         <div class="col-sm-12 col-sm-12">
                             <span class="title col-sm-12 col-sm-12">
-                                ●产品检测信息●
+                                ●详细信息●
                             </span>
                             <hr style="margin-top:5%;border:solid 1px #000000" />
-                            <strong class="detail_t">检测结果：</strong><b class="detail_b" data-name="ProductCheckResult"></b>
+                            <strong class="detail_t">检查次数：</strong><b class="detail_b" data-name="PotrolNum"></b>
                             <br /><br />
-                            <img class="img-responsive" src="" data-name="ProductCheckReport" />
-                        </div>
-                        <div class="col-sm-12 col-sm-12">
-                            <span class="title col-sm-12 col-sm-12">
-                                ●原料检测信息●
-                            </span>
-                            <hr style="margin-top:5%;border:solid 1px #000000" />
-                            <section></section>
+                            <strong class="detail_t">通报次数：</strong><b class="detail_b" data-name="BulletinNum"></b>
+                            <br /><br />
+                            <strong class="detail_t">投诉次数：</strong><b class="detail_b" data-name="Complain"></b>
+                            <br /><br />
+                            <strong class="detail_t">召回信息：</strong><b class="detail_b" data-name="Traffic"></b>
                         </div>
                     </div>
                 </div>
@@ -208,7 +221,7 @@
                         <span class="btn btn-default" style="background-image:url(Style/ScanDetailImg/Validate.png);background-repeat:no-repeat" data-selector="#top2"></span>
                         <span class="btn btn-default" style="background-image:url(Style/ScanDetailImg/Transport.png);background-repeat:no-repeat" data-selector="#top3"></span>
                         <span class="btn btn-default" style="background-image:url(Style/ScanDetailImg/Company.png);background-repeat:no-repeat" data-selector="#top4"></span>
-                        <span class="btn btn-default" style="background-image:url(Style/ScanDetailImg/Source.png);background-repeat:no-repeat" data-selector="#top5"></span>
+                        <span class="btn btn-default" style="background-image:url(Style/ScanDetailImg/Govt.png);background-repeat:no-repeat" data-selector="#top5"></span>
                     </div>
                 </div>
             </div>
@@ -252,6 +265,7 @@
                         option.BindNode(".content", result.data);
                         option.BindSourceCheck(result.data.Materials);
                         option.BindInput("#Edit", result.data);
+                        option.BindRecoverInfo(result.data.RecoverInfo);
                         option.BaiduMap(result.data.LngAndLat);
                     }
                 });
@@ -322,6 +336,7 @@
                     }
                 });
             },
+            //追加扫描信息
             AppendScanInfo: function (Param) {
                 $.ajax({
                     url: "http://localhost:50039/api/EnterpriseWeb/EditScanInfo",
@@ -377,6 +392,9 @@
                     html += '<img class="img-responsive" src="' + data.MaterCheckReport + '" />';
                 });
                 $("section").html(html);
+            },
+            BindRecoverInfo: function (Param) {
+                controller.CheckFeild(Param) ? "召回时间:" + Param.RecoverStarTime + "-" + RecoverEndTime + ";召回数量:" + Param.RecoverNum: "无召回信息";
             }
         };
         $(document).ready(function () {

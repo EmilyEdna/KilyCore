@@ -23,6 +23,18 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public Guid Id { get; set; }
         public Guid CompanyId { get; set; }
         /// <summary>
+        /// 抽查次数
+        /// </summary>
+        public int PotrolNum { get; set; }
+        /// <summary>
+        /// 通报次数
+        /// </summary>
+        public int BulletinNum { get; set; }
+        /// <summary>
+        /// 投诉举报
+        /// </summary>
+        public int Complain { get; set; }
+        /// <summary>
         /// 产品名称
         /// </summary>
         public string ProductName { get; set; }
@@ -134,6 +146,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string TypePath { get; set; }
         public Guid? GrowNoteId { get; set; }
         public string OutStockBatchNo { get; set; }
+        public ResponseEnterpriseRecover RecoverInfo { get; set; }
     }
     public class ResponseEnterpriseScanCodeMaterial
     {

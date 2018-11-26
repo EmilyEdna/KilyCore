@@ -6,6 +6,7 @@ using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.Function;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.EntityFrameWork.Model.Enterprise;
+using KilyCore.EntityFrameWork.Model.Govt;
 using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AttributeExtension;
@@ -1321,7 +1322,7 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 VedioName = t.VedioName,
                 VedioAddr = t.VedioAddr,
-                VedioCover=t.VedioCover
+                VedioCover = t.VedioCover
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -1896,8 +1897,8 @@ namespace KilyCore.Service.ServiceCore
             if (TagList.Count == 0)
                 Param.StarSerialNo = Convert.ToInt64(Province.Code + "100000000001");
             else
-                Param.StarSerialNo = TagList.FirstOrDefault().EndSerialNo+1;
-            Param.EndSerialNo = Param.StarSerialNo + Param.TotalNo-1;
+                Param.StarSerialNo = TagList.FirstOrDefault().EndSerialNo + 1;
+            Param.EndSerialNo = Param.StarSerialNo + Param.TotalNo - 1;
             EnterpriseTag Tag = Param.MapToEntity<EnterpriseTag>();
             Tag.TotalNo = Tag.TotalNo;
             //生成企业码更新企业信息表的二维码数量
@@ -2267,6 +2268,13 @@ namespace KilyCore.Service.ServiceCore
                      LngAndLat = t.i.p.k.LngAndLat,
                      GrowNoteId = t.i.p.f.y.x.GrowNoteId
                  }).FirstOrDefault();
+            EnterpriseGoodsStock GoodsStock = stocks.AsNoTracking().Where(t => t.Id == Id).FirstOrDefault();
+            String GoodsName = goods.Where(t => t.Id == GoodsStock.GoodsId).Select(t => t.ProductName).FirstOrDefault();
+            //网上执法
+            GovtNetPatrol patrol = Kily.Set<GovtNetPatrol>().Where(t => t.CompanyId == GoodsStock.CompanyId).AsNoTracking().FirstOrDefault();
+            //投诉
+            int Complain = Kily.Set<GovtComplain>().Where(t => t.CompanyId == GoodsStock.CompanyId).AsNoTracking().Count();
+            ResponseEnterpriseRecover Recover = Kily.Set<EnterpriseRecover>().Where(t => t.RecoverGoodsName.Equals(GoodsName)).AsNoTracking().FirstOrDefault().MapToEntity<ResponseEnterpriseRecover>();
             if (Batchs.Count != 0)
             {
                 ResponseEnterpriseProductionBatch data = Batchs.Where(t => t.Id == queryable.Id).Select(t => new ResponseEnterpriseProductionBatch()
@@ -2310,6 +2318,10 @@ namespace KilyCore.Service.ServiceCore
                 queryable.PackageNo = data.PackageNo;
                 queryable.Address = data.Address;
             }
+            queryable.PotrolNum = patrol.PotrolNum;
+            queryable.BulletinNum = patrol.BulletinNum;
+            queryable.Complain = Complain;
+            queryable.RecoverInfo = Recover;
             return queryable;
         }
         /// <summary>
@@ -3230,7 +3242,7 @@ namespace KilyCore.Service.ServiceCore
                         ProBatch = o.FirstOrDefault().BatchNo,
                         GoodsId = p.x.Id,
                         Manager = p.t.Manager,
-                        CheckGoodsId=p.t.CheckGoodsId,
+                        CheckGoodsId = p.t.CheckGoodsId,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
                     }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -3770,7 +3782,7 @@ namespace KilyCore.Service.ServiceCore
                 InferName = t.InferName,
                 InferType = t.InferType,
                 HandleUser = t.HandleUser,
-                InferNum=t.InferNum,
+                InferNum = t.InferNum,
                 HandleWays = t.HandleWays,
                 HandleTime = t.HandleTime,
                 HandleReason = t.HandleReason,
