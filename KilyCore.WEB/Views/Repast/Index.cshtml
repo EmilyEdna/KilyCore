@@ -14,7 +14,7 @@
             },
             InitDrop: function () {
                 $(".dropdown-toggle").html(RepastUser.MerchantName + '<b class="caret"></b>');
-                if (controller.CheckFeild(RepastUser.InfoId))
+                if (RepastUser.InfoId!=40)
                     $(".nav-pills").addClass("hidden");
                 else {
                     $(".nav-pills").removeClass("hidden");

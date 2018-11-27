@@ -460,6 +460,14 @@ namespace KilyCore.Service.ServiceCore
 
         #region 管辖区域
         /// <summary>
+        /// 获取所属区域的市名称
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public String GetCityName(Guid Id) {
+          return  Kily.Set<SystemCity>().Where(t => t.Id == Id).Select(t => t.Name).FirstOrDefault();
+        }
+        /// <summary>
         /// 获取分配的区域
         /// </summary>
         /// <returns></returns>
@@ -492,12 +500,16 @@ namespace KilyCore.Service.ServiceCore
                 Name = t.CompanyName,
                 LngAndLat = t.LngAndLat,
                 Address = t.CompanyAddress,
+                CompanyCode=t.CommunityCode,
+                CompanyType =AttrExtension.GetSingleDescription<CompanyEnum,DescriptionAttribute>(t.CompanyType)
             }).ToList();
             var temp = queryables.Select(t => new ResponseGovtDistribut()
             {
                 Name = t.MerchantName,
                 LngAndLat = t.LngAndLat,
-                Address = t.Address
+                Address = t.Address,
+                CompanyCode = t.CommunityCode,
+                CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType)
             }).ToList();
             data.AddRange(temp);
             return data;

@@ -11,6 +11,19 @@
             border: #ccc solid 1px;
             margin: auto auto;
         }
+
+        .search_com {
+            line-height: 35px;
+            z-index: 100;
+            background: #ffffff;
+            position: absolute;
+            top: 1%;
+            border-radius: 5px;
+            -webkit-border-radius: 5px;
+            left: 2%;
+            width: 10%;
+            border: 1px solid #dddddd;
+        }
     </style>
 }
 @section script{
@@ -19,13 +32,33 @@
         //配置
         var options = {
             Init: function () {
-                this.InitDom();
+                this.InitAddr();
                 this.InitEvents();
             },
+            InitAddr: function () {
+                controller.ajax({
+                    url: "GovtWeb/GetCityName",
+                    data: { Id: GovtInfo.City },
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        options.CityName = result.data;
+                    }
+                });
+                $.ajax({
+                    url: "http://api.map.baidu.com/geocoder/v2/?address=" + options.CityName + "&output=json&ak=rEU7BdGnB0kKyIjUiONnUHlw",
+                    type: "get",
+                    async: false,
+                    dataType: "jsonp",
+                    success: function (result) {
+                        options.InitDom(result.result.location.lng, result.result.location.lat);
+                    }
+                });
+            },
             //元素
-            InitDom: function () {
+            InitDom: function (Lng, Lat) {
                 options.Map = new BMap.Map("Map");//在百度地图容器中创建一个地图
-                options.Map.centerAndZoom(new BMap.Point(104.068881, 30.661984), 11);//设定地图的中心点和坐标并将地图显示在地图容器中
+                options.Map.centerAndZoom(new BMap.Point(Lng, Lat), 11);//设定地图的中心点和坐标并将地图显示在地图容器中
                 options.Map.enableScrollWheelZoom();//启用地图滚轮放大缩小
                 controller.ajax({
                     url: "GovtWeb/GetDistributArea",
@@ -34,27 +67,41 @@
                     type: "post",
                     success: function (result) {
                         $.each(result.data, function (i, obj) {
-                            var marker = new BMap.Marker(new BMap.Point(obj.Lng, obj.Lat));
-                            options.Map.addOverlay(marker);               // 将标注添加到地图中
-                            options.AddClickHandler(obj.Name, obj.Address, marker);
+                            options.marker = new BMap.Marker(new BMap.Point(obj.Lng, obj.Lat));
+                            options.marker.setTitle(obj.CompanyType);
+                            options.Map.addOverlay(options.marker);               // 将标注添加到地图中
+                            options.AddClickHandler(obj.Name, obj.Address, obj.CompanyCode, obj.CompanyType);
                         });
                     }
                 });
             },
-            AddClickHandler: function (content,path, marker) {
-                marker.addEventListener("click", function (e) {
+            AddClickHandler: function (name, path, code, type) {
+                options.marker.addEventListener("click", function (e) {
+                    var InfoWin = '<table class="table table-bordered">' +
+                        '<tr><th>商家名称</th> <td>' + name + '</td></tr>' +
+                        '<tr><th>商家类型</th><td>' + type + '</td></tr>' +
+                        '<tr><th>工商代码</th><td>' + code + '</td></tr>' +
+                        '<tr><th>商家地址</th><td>' + path + '</td></tr></table>'
                     var p = e.target;
                     var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
-                    var infoWindow = new BMap.InfoWindow("地址:"+path, {
-                        width: 100,
-                        height: 50,
-                        title: content,
-                    });  // 创建信息窗口对象
+                    var infoWindow = new BMap.InfoWindow(InfoWin);  // 创建信息窗口对象
                     options.Map.openInfoWindow(infoWindow, point); //开启信息窗口
                 });
             },
             //事件
             InitEvents: function () {
+                $("select").change(function () {
+                    var allOverlays = options.Map.getOverlays();
+                    for (var i = 0; i < allOverlays.length - 1; i++) {
+                        if ($(this).find("option:selected").val() !== "全部") {
+                            if (allOverlays[i].getTitle() !== $(this).find("option:selected").val())
+                                allOverlays[i].hide();
+                            else
+                                allOverlays[i].show();
+                        } else
+                            allOverlays[i].show();
+                    }
+                });
             }
         };
         //初始化
@@ -63,4 +110,20 @@
         });
     </script>
 }
+<div class="search_com">
+    <select class="form-control" name="CompanyType">
+        <option value="全部">全部</option>
+        <option value="种植企业">种植企业</option>
+        <option value="养殖企业">养殖企业</option>
+        <option value="生产企业">生产企业</option>
+        <option value="流通企业">流通企业</option>
+        <option value="其他企业">其他企业</option>
+        <option value="餐饮企业">餐饮企业</option>
+        <option value="单位食堂">单位食堂</option>
+        <option value="小经营店">小经营店</option>
+        <option value="小作坊">小作坊</option>
+        <option value="小摊贩">小摊贩</option>
+    </select>
+</div>
+
 <div class="ibox" id="Map"></div>

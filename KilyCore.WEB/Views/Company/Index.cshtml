@@ -14,7 +14,7 @@
             InitDom: function () {
                 $("body").addClass("gray-bg");
                 $(".dropdown-toggle").html(CompanyInfo.CompanyName + '<b class="caret"></b>');
-                if (controller.CheckFeild(CompanyInfo.CompanyId))
+                if (CompanyInfo.Version!=40)
                     $(".nav-pills").addClass("hidden");
                 else {
                     $(".nav-pills").removeClass("hidden");

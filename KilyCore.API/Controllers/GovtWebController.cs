@@ -213,6 +213,15 @@ namespace KilyCore.API.Controllers
 
         #region 管辖区域
         /// <summary>
+        /// 获取所属区域的市名称
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetCityName")]
+        public ObjectResultEx GetCityName(SimpleParam<Guid> Param) {
+            return ObjectResultEx.Instance(GovtWebService.GetCityName(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 获取分配的区域
         /// </summary>
         /// <returns></returns>

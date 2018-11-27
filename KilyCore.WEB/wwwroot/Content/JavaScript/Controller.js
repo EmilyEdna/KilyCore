@@ -23,11 +23,12 @@ controller.ajax = function (option) {
         async: true,
         cache: false,
         success: null,
+        ishost: true
     };
     var options = $.extend(defaultOption, option);
     options.data.TimeSpan = controller.SetRequestTime();
     return $.ajax({
-        url: host + options.url,
+        url: options.ishost ? (host + options.url):options.url,
         data: options.data,
         timeout: options.timeout,
         dataType: options.dataType,
