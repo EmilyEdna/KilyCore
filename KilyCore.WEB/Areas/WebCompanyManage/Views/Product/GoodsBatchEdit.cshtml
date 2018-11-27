@@ -78,14 +78,13 @@
                     }
                 });
                 //原料下拉
-                controller.ajax({
-                    url: "EnterpriseWeb/GetOutStockMaterialList",
-                    data: {},
-                    async: false,
-                    type: "post",
-                    success: function (result) {
+                controller.Select({
+                    arrelemnt: ['#MaterialName'],
+                    url: 'CookWeb/GetFoodList',
+                    flag: false,
+                    callBack: function (data) {
                         var html = '';
-                        $.each(result.data, function (i, obj) {
+                        $.each(data, function (i, obj) {
                             html += '<option value="' + obj.Id + '">' + obj.MaterName + '(' + obj.BatchNo + ')</option>';
                         });
                         $("#MaterialName").html(html);
