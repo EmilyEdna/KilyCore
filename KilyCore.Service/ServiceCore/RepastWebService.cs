@@ -353,6 +353,8 @@ namespace KilyCore.Service.ServiceCore
         public string SaveUser(RequestMerchantUser Param)
         {
             RepastInfoUser User = Param.MapToObj<RequestMerchantUser, RepastInfoUser>();
+           var Users = Kily.Set<RepastInfoUser>().Where(t => t.Account.Equals(Param.Account)).AsNoTracking().FirstOrDefault();
+            if (Users != null) return "该账号已经存在!";
             if (MerchantInfo() != null)
                 User.TypePath = MerchantInfo().TypePath;
             else
@@ -386,6 +388,8 @@ namespace KilyCore.Service.ServiceCore
                 if (MerchantInfo().InfoId != null)
                     return "无权限创建，仅限总公司使用!";
                 RepastInfo info = Param.MapToEntity<RepastInfo>();
+                var Infos = Kily.Set<RepastInfo>().Where(t => t.Account.Equals(Param.Account)).AsNoTracking().FirstOrDefault();
+                if (Infos != null) return "该账号已经存在!";
                 info.AuditType = AuditEnum.WaitAduit;
                 info.DiningType = MerchantEnum.Normal;
                 return Insert(info) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;

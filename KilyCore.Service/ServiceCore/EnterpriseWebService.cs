@@ -364,6 +364,8 @@ namespace KilyCore.Service.ServiceCore
         public string SaveUser(RequestEnterpriseUser Param)
         {
             EnterpriseUser User = Param.MapToObj<RequestEnterpriseUser, EnterpriseUser>();
+            var Users = Kily.Set<EnterpriseUser>().Where(t => t.Account.Equals(Param.Account)).AsNoTracking().FirstOrDefault();
+            if (Users != null) return "该账号已经存在!";
             if (CompanyInfo() != null)
                 User.TypePath = CompanyInfo().TypePath;
             else
@@ -414,6 +416,8 @@ namespace KilyCore.Service.ServiceCore
                 if (CompanyInfo().CompanyId != null)
                     return "无权限创建，仅限总公司使用!";
                 EnterpriseInfo info = Param.MapToEntity<EnterpriseInfo>();
+                var infos = Kily.Set<EnterpriseInfo>().Where(t => t.CompanyAccount.Equals(Param.CompanyAccount)).AsNoTracking().FirstOrDefault();
+                if (infos != null) return "改账号已经存在!";
                 info.AuditType = AuditEnum.WaitAduit;
                 info.CompanyType = CompanyEnum.Other;
                 info.NatureAgent = 1;
@@ -3186,6 +3190,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 ProductName = t.ProductName,
+                Specs=t.Spec,
                 Spec = Temp.Where(x => x.Id == t.Id).Select(x => x.Spec).FirstOrDefault()
             }).AsNoTracking().ToList();
             return data;

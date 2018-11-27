@@ -28,7 +28,7 @@
                     type: "post",
                     async: false,
                     success: function (result) {
-                        var html = '<option>==情选择==</option>'
+                        var html = '<option>==请选择==</option>'
                         $.each(result.data, function (i, obj) {
                             html += '<option value="' + obj.Id + '">' + obj.WorkShopName + '</option>';
                         });
@@ -42,7 +42,7 @@
                     type: "post",
                     async: false,
                     success: function (result) {
-                        var html ='<option>==情选择==</option>'
+                        var html ='<option>==请选择==</option>'
                         $.each(result.data, function (i, obj) {
                             html += '<option>' + obj.DeviceName + '</option>';
                         });
@@ -86,7 +86,7 @@
                     success: function (result) {
                         var html = '';
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '">' + obj.MaterName + '</option>';
+                            html += '<option value="' + obj.Id + '">' + obj.MaterName + '(' + obj.BatchNo + ')</option>';
                         });
                         $("#MaterialName").html(html);
                     }

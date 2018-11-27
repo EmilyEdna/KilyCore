@@ -46,7 +46,7 @@
                     success: function (result) {
                         var html = '<option value="0">===请选择===</option>';
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '">' + obj.ProductName + '</option>';
+                            html += '<option value="' + obj.Id + '">' + obj.ProductName + '(' + obj.Specs + ')</option>';
                         });
                         $("#GoodsId").html(html);
                     }

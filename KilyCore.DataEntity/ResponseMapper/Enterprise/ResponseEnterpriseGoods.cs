@@ -29,5 +29,9 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string ExpiredDate { get; set; }
         public string Spec { get; set; }
         public string Unit { get; set; }
+        /// <summary>
+        /// 规格
+        /// </summary>
+        public string Specs { get; set; }
     }
 }

@@ -47,6 +47,15 @@
             },
             //取得详情
             GetDetail: function (Guid) {
+                controller.Select({
+                    document: '#Unit',
+                    arrelemnt: ['#Unit'],
+                    data: { Id: "计量单位" },
+                    url: 'EnterpriseWeb/GetDictionaryList'
+                });
+                $("#Unit").on('changed.bs.select', function () {
+                    $('input[name="Unit"]').val($(this).val());
+                });
                 if (Guid != null && Guid != undefined && Guid != "")
                     controller.ajax({
                         url: "EnterpriseWeb/GetGrowDetail",
@@ -106,7 +115,7 @@
                     </td>
                     <th><label class="control-label">计量单位</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="Unit" />
+                        <select type="select" class="selectpicker form-control" data-max-options="2" id="Unit" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
                     </td>
                 </tr>
                 <tr>

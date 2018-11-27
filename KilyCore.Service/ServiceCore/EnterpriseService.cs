@@ -710,6 +710,7 @@ namespace KilyCore.Service.ServiceCore
                 VersionName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.Version),
                 Account = t.Account,
                 Phone = t.Phone,
+                TypePath=t.TypePath,
                 RoleAuthorType = t.RoleAuthorType,
                 TrueName = t.TrueName,
                 TableName = typeof(ResponseEnterpriseUser).Name

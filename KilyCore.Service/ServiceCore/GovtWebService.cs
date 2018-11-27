@@ -445,6 +445,8 @@ namespace KilyCore.Service.ServiceCore
         {
             GovtInfo Info = Param.MapToEntity<GovtInfo>();
             Info.TypePath = GovtInfo().TypePath;
+            var Infos = Kily.Set<GovtInfo>().Where(t => t.Account.Equals(Param.Account)).AsNoTracking().FirstOrDefault();
+            if (Infos != null) return "该账号已经存在!";
             if (Param.Id != Guid.Empty)
                 return Update(Info, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
             else
