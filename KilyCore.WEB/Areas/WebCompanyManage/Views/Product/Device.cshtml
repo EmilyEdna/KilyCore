@@ -1,0 +1,147 @@
+﻿
+@{
+    ViewData["Title"] = "设备管理";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                //恢复高度
+                $(window).resize(function (e) {
+                    window.setTimeout(function () {
+                        options.$table.bootstrapTable("resetView", { height: $(window).height() - 150 });
+                    }, 200);
+                    e.stopPropagation();
+                });
+                //设置表单
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetDevicePage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit"});
+            },
+            //事件
+            InitEvents: function () {
+                $("#add").on('click', function () {
+                    controller.OpenWindow({
+                        title: "新增设备",
+                        type: 2,
+                        height: "400px",
+                        width: "700px",
+                        url: "WebCompanyManage/Product/DeviceEdit",
+                        callBack: function (result) {
+                            result.$("#Edit").submit();
+                        }
+                    })
+                });
+            },
+            //行为
+            action: {
+                TableFormatter: function (val, row, index) {
+                    var action = [];
+                    action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
+                    action.push('<button class="btn btn-sm btn-primary clean"><i class="fa fa-plus"></i>维护记录</button>');
+                    action.push('<button class="btn btn-sm btn-primary fix"><i class="fa fa-plus"></i>维修记录</button>');
+                    return action.join("&nbsp;")
+                },
+                TableEvents: {
+                    "click .fix": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "维修记录",
+                            type: 2,
+                            btn: ["取消"],
+                            height: "500px",
+                            width: "700px",
+                            url: "WebCompanyManage/Product/DeviceFix?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.popClose();
+                            }
+                        })
+                    },
+                    "click .clean": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "维护记录",
+                            btn:["取消"],
+                            type: 2,
+                            height: "500px",
+                            width: "700px",
+                            url: "WebCompanyManage/Product/DeviceClean?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.popClose();
+                            }
+                        })
+                    },
+                    "click .del": function (event, val, row, index) {
+                        controller.Confirm("确认删除？", function (bool) {
+                            if (bool) {
+                                controller.ajax({
+                                    url: "EnterpriseWeb/DeleteDevice",
+                                    data: { Id: row.Id },
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
+                    },
+                }//表单事件结束
+            }//行为结束
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+@section css{
+
+}
+
+<div class="container-fluid">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>设备管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <form id="Edit">
+                        <div class="col-sm-8 m-b-xs">
+                            <div class="input-group">
+                                <button type="button" class="btn btn-sm btn-white" id="add"><i class="fa fa-plus"></i>新增</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" placeholder="设备名称" class="input-sm form-control" name="DeviceName">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
+                                    <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive">
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="DeviceName" data-halign="center" data-align="center" data-valign="middle">设备名称</th>
+                                <th data-field="ModelName" data-halign="center" data-align="center" data-valign="middle">型号</th>
+                                <th data-field="SupplierName" data-halign="center" data-align="center" data-valign="middle">生产商</th>
+                                <th data-field="ProductTime" data-halign="center" data-align="center" data-valign="middle">生产日期</th>
+                                <th data-field="Life" data-halign="center" data-align="center" data-valign="middle">使用寿命</th>
+                                <th data-field="Manager" data-halign="center" data-align="center" data-valign="middle">设备管理员</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

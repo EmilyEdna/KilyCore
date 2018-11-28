@@ -1,0 +1,346 @@
+﻿@{
+    ViewData["Title"] = "用户编辑";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+                this.GetProvince();
+                this.GetCityByProvince();
+                this.GetAreaByCity();
+                this.GetTownByArea();
+                this.GetAuthor();
+                this.GetDetail();
+                this.InitArea();
+            },
+            //元素
+            InitDom: function () {
+                options.Guid = controller.GetParam("Id");
+            },
+            //获取省份
+            GetProvince: function () {
+                controller.ajax({
+                    url: "System/GetProvince",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>=请选择=</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '" data-id="' + obj.ProvinceId + '">' + obj.ProvinceName + '</option>';
+                        });
+                        $("#province").html(html);
+                    }
+                });
+            },
+            //选中省份后获取城市
+            GetCityByProvince: function () {
+                $("#province").change(function () {
+                    controller.ajax({
+                        url: "System/GetCity",
+                        data: { Id: $(this).find("option:selected").data().id },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            var html = '<option>=请选择=</option>';
+                            $.each(result.data, function (i, obj) {
+                                html += '<option value="' + obj.Id + '" data-id="' + obj.CityId + '">' + obj.CityName + '</option>';
+                            });
+                            $("#city").html(html);
+                        }
+                    });
+                });
+            },
+            //选中城市后获取区域
+            GetAreaByCity: function () {
+                $("#province").change(function () {
+                    var html = '<option>=请选择=</option>';
+                    $("#area").html(html);
+                    $("#town").html(html);
+                });
+                $("#city").change(function () {
+                    controller.ajax({
+                        url: "System/GetArea",
+                        data: { Id: $(this).find("option:selected").data().id },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            var html = '<option>=请选择=</option>';
+                            $.each(result.data, function (i, obj) {
+                                html += '<option value="' + obj.Id + '" data-id="' + obj.AreaId + '">' + obj.AreaName + '</option>';
+                            });
+                            $("#area").html(html);
+                        }
+                    });
+                });
+            },
+            //选中区域后获取乡镇
+            GetTownByArea: function () {
+                $("#city").change(function () {
+                    var html = '<option>=请选择=</option>';
+                    $("#town").html(html);
+                });
+                $("#area").change(function () {
+                    controller.ajax({
+                        url: "System/GetTown",
+                        data: { Id: $(this).find("option:selected").data().id },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            var html = '<option>=请选择=</option>';
+                            $.each(result.data, function (i, obj) {
+                                html += '<option value="' + obj.Id + '" data-id="' + obj.TownId + '">' + obj.TownName + '</option>';
+                            });
+                            $("#town").html(html);
+                        }
+                    });
+                });
+            },
+            //获取权限
+            GetAuthor: function () {
+                controller.ajax({
+                    url: "System/GetAuthorRole",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>===请选择===</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.AuthorName + '</option>';
+                        });
+                        $("#roleAuthorType").html(html);
+                    }
+                });
+            },
+            //获取详情
+            GetDetail: function () {
+                if (options.Guid != null && options.Guid != undefined && options.Guid != "") {
+                    controller.ajax({
+                        url: 'System/GetAdminDetail',
+                        type: 'post',
+                        data: { Id: options.Guid },
+                        async: false,
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                            options.SetCity();
+                            controller.SetCtrlValue("#Edit", result.data);
+                            options.SetArea();
+                            controller.SetCtrlValue("#Edit", result.data);
+                            options.SetTown();
+                            controller.SetCtrlValue("#Edit", result.data);
+                        }
+                    });
+                }
+            },
+            //取得详情后获取城市
+            SetCity: function () {
+                controller.ajax({
+                    url: "System/GetCity",
+                    data: { Id: $("#province").find("option:selected").data().id },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>=请选择=</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '" data-id="' + obj.CityId + '">' + obj.CityName + '</option>';
+                        });
+                        $("#city").html(html);
+                    }
+                });
+            },
+            //取得详情后获取区域
+            SetArea: function () {
+                controller.ajax({
+                    url: "System/GetArea",
+                    data: { Id: $("#city").find("option:selected").data().id },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>=请选择=</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '" data-id="' + obj.AreaId + '">' + obj.AreaName + '</option>';
+                        });
+                        $("#area").html(html);
+                    }
+                });
+            },
+            //取得详情后获取乡镇
+            SetTown: function () {
+                controller.ajax({
+                    url: "System/GetTown",
+                    data: { Id: $("#area").find("option:selected").data().id },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>=请选择=</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '" data-id="' + obj.TownId + '">' + obj.TownName + '</option>';
+                        });
+                        $("#town").html(html);
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                //文件上传
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: ".upload-input",
+                    maxNum: 1,
+                    maxSize: 10,
+                    node: '.image-box',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        $("#Chapter").val(result.data);
+                    }
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            InitArea: function () {
+                if (SysUserInfo.AccountType == 30) {
+                    $("#province").attr("disabled", true).find("option[value='" + SysUserInfo.Province + "']").attr("selected", true);
+                }
+                if (SysUserInfo.AccountType == 40) {
+                    $("#province").attr("disabled", true).find("option[value='" + SysUserInfo.Province + "']").attr("selected", true);
+                    options.SetCity();
+                    $("#city").attr("disabled", true).find("option[value='" + SysUserInfo.City + "']").attr("selected", true);
+                }
+                if (SysUserInfo.AccountType == 50) {
+                    $("#province").attr("disabled", true).find("option[value='" + SysUserInfo.Province + "']").attr("selected", true);
+                    options.SetCity();
+                    $("#city").attr("disabled", true).find("option[value='" + SysUserInfo.City + "']").attr("selected", true);
+                    options.SetArea();
+                    $("#area").attr("disabled", true).find("option[value='" + SysUserInfo.Area + "']").attr("selected", true);
+                    options.SetTown();
+                }
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="System/EditAdmin" id="Edit" async="false">
+            <input type="hidden" name="Id" />
+            <input type="hidden" name="OpenNet" value="false" />
+            <input type="hidden" name="Chapter" id="Chapter" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">用户账号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="Account" data-msg-required="请输入用户账号" />
+                    </td>
+                    <th><label class="control-label">用户密码</label></th>
+                    <td class="has-warning">
+                        <input type="password" class="form-control required PassWordSave" name="PassWord" data-msg-required="请输入用户密码" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">真实姓名</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="TrueName" data-msg-required="请输入真实姓名" />
+                    </td>
+                    <th><label class="control-label">联系电话</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required IsPhone" maxlength="11" name="Phone" data-msg-required="请输入联系电话" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">银行卡号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="BankCard" data-msg-required="请输入银行卡号" />
+                    </td>
+                    <th><label class="control-label">开户行</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="BankName" data-msg-required="请输入开户行" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">用户邮箱</label></th>
+                    <td class="has-warning">
+                        <input type="email" class="form-control required IsEmail" name="Email" data-msg-required="请输入用户邮箱" />
+                    </td>
+                    <th><label class="control-label">身份证号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required IsIDCard" name="IdCard" data-msg-required="请输入身份证号" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">所属区域</label></th>
+                    <td colspan="3">
+                        <table style="width:100%">
+                            <tr>
+                                <td class="has-warning" style="width:25%">
+                                    <select type="select" class="form-control" name="Province" id="province">
+                                        <option>=请选择=</option>
+                                    </select>
+                                    <input type="hidden" name="Province" />
+                                </td>
+                                <td class="has-warning" style="width:25%">
+                                    <select type="select" class="form-control" name="City" id="city">
+                                        <option>=请选择=</option>
+                                    </select>
+                                </td>
+                                <td class="has-warning" style="width:25%">
+                                    <select type="select" class="form-control" name="Area" id="area">
+                                        <option>=请选择=</option>
+                                    </select>
+                                </td>
+                                <td class="has-warning" style="width:25%">
+                                    <select type="select" class="form-control" name="Town" id="town">
+                                        <option>=请选择=</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">账户权限</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="RoleAuthorType" id="roleAuthorType">
+                            <option>===请选择===</option>
+                        </select>
+                    </td>
+                    <th><label class="control-label">工商代码</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="CommunityCode" data-msg-required="请输入工商代码" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">详细地址</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" class="form-control required" name="Address" data-msg-required="请输入详细地址" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">电子公章</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                                <img type="image" class="img-preview" src="" name="Chapter" style="position:relative;left:200px;top:-170px;" />
+                            </section>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+
+

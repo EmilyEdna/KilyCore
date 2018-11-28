@@ -1,0 +1,121 @@
+﻿
+@{
+    ViewData["Title"] = "编辑原材料质检";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+               
+            },
+            //元素
+            InitDom: function () {
+                $("#CompanyId").val(CompanyInfo.Id);
+                this.GetRaws();
+            },
+            //获取原材料
+            GetRaws: function () {
+                controller.ajax({
+                    url: "EnterpriseWeb/GetMaterialList",
+                    data: { },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择原材料==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.BatchNo +'('+ obj.MaterName + ')</option>';
+                        });
+                        $("#MaterId").html(html);
+                    }
+                });
+            },
+          
+            //设置文件值
+            SetFileValue: function (data, elememt) {
+                var files = $(elememt).val();
+                if (files != null && files != "" && files != undefined) {
+                    files += "," + data;
+                    $(elememt).val(files);
+                } else {
+                    $(elememt).val(data);
+                }
+            },            
+            //事件
+            InitEvents: function () {
+                //文件上传
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#img1",
+                    maxNum: 1,
+                    node: '#Report',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        $("#CheckReport").val(result.data);
+                    }
+                });               
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/EditCheckMaterial" id="Edit">
+            <input type="hidden" id="Id" name="Id" />
+            <input type="hidden" id="CompanyId" name="CompanyId" />
+            <input type="hidden" id="CheckReport" name="CheckReport" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">报告名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="CheckName" id="CheckName" />
+                    </td>
+                    <th><label class="control-label">原材料</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="MaterId" id="MaterId"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">质检单位</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="CheckUint" />
+                    </td>
+                    <th><label class="control-label">质检人</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="CheckUser" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">质检结果</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" class="form-control" name="CheckResult" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">质检报告</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear" id="Report">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" id="img1" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,50 @@
+﻿
+@{
+    ViewData["Title"] = "产品说明";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var Guid = controller.GetParam("Id");
+                $("#Id").val(Guid);
+                controller.Editor(".summernote", { width: 655 });
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/EditExplanation" id="Edit">
+            <input type="hidden" name="Id" id="Id" />
+            <input type="hidden" name="Explanation" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">产品说明书</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="summernote" name="Explanation"></div>
+                    </td>
+            </table>
+        </form>
+    </div>
+</div>

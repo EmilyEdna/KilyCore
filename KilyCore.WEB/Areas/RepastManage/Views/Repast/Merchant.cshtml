@@ -1,0 +1,119 @@
+﻿@{
+    ViewData["Title"] = "商家列表";
+    Layout = "~/Views/Shared/BaseAreaView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                //恢复高度
+                $(window).resize(function (e) {
+                    window.setTimeout(function () {
+                        options.$table.bootstrapTable("resetView", { height: $(window).height() - 150 });
+                    }, 200);
+                    e.stopPropagation();
+                });
+                //设置表单
+                this.$table = controller.Table("#tableList", { url: "Repast/GetMerchantPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Merchant" });
+            },
+            //事件
+            InitEvents: function () {
+            },
+            //行为
+            action: {
+                TableFormatter: function (val, row, index) {
+                    var action = [];
+                    action.push('<button class="btn btn-sm btn-primary detail"><i class="fa fa-eye"></i>详情</button>');
+                    action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-trash-o"></i>审核</button>');
+                    return action.join("&nbsp;")
+                },
+                TableEvents: {
+                    "click .detail": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "商家详情",
+                            type: 2,
+                            height: "600px",
+                            width: "800px",
+                            url: "RepastManage/Repast/MerchantDetail?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.popClose();
+                            }
+                        });
+                    },
+                    "click .audit": function (event, val, row, index) { 
+                        controller.OpenWindow({
+                            title: "商家审核",
+                            type: 2,
+                            height: "260px",
+                            width: "400px",
+                            url: "RepastManage/Repast/AuditMerchant?Id=" + row.Id + "&TableName="+row.TableName,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        });
+                    }
+                }//表单事件结束
+            }//行为结束
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+        //来至父页面的树选中事件
+        function nodeSelected(event, node) {
+            options.$table.queryParams.AreaTree = node.id;
+            $("#Merchant").submit();
+            //清空查询参数
+            options.$table.queryParams = {};
+        }
+    </script>
+}
+@section css{
+
+}
+<div class="container-fluid">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>商家中心</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <form id="Merchant">
+                        <div class="col-sm-6 m-b-xs">
+                            <div class="input-group">
+                           
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <input type="text" placeholder="商家名称" class="input-sm form-control" name="MerchantName"> <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
+                                    <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive">
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="MerchantName" data-halign="center" data-align="center" data-valign="middle">商家名称</th>
+                                <th data-field="Account" data-halign="center" data-align="center" data-valign="middle">商家账号</th>
+                                <th data-field="DiningTypeName" data-halign="center" data-align="center" data-valign="middle">商家类型</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

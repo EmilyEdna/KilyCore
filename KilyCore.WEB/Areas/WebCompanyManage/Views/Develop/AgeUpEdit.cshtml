@@ -1,0 +1,103 @@
+﻿
+@{
+    ViewData["Title"] = "编辑流程";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                options.BindBatch();
+                $("#CompanyId").val(CompanyInfo.Id);
+            },
+            //绑定批次
+            BindBatch: function () {
+                controller.ajax({
+                    url: "EnterpriseWeb/GetGrowList",
+                    async: false,
+                    data: {},
+                    type: 'post',
+                    success: function (result) {
+                        var html = '';
+                        $.each(result.data, function (i, data) {
+                            html += '<option value="' + data.BatchNo + '">' + data.GrowName + '</option>'
+                        });
+                        $("#BatchNo").html(html);
+                    }
+                });
+            },
+            //设置文件值
+            SetFileValue: function (data, elememt) {
+                var files = $(elememt).val();
+                if (files != null && files != "" && files != undefined) {
+                    files += "," + data;
+                    $(elememt).val(files);
+                } else {
+                    $(elememt).val(data);
+                }
+            },
+            //事件
+            InitEvents: function () {
+                //文件上传
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: ".upload-input",
+                    maxNum: 1,
+                    node: '.image-box',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data,"#LvImg");
+                    }
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/EditAgeUp" id="Edit">
+            <input  name="CompanyId" type="hidden" id="CompanyId"/>
+            <input type="hidden" class="form-control" name="LvImg" id="LvImg" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">阶段名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="LvName" />
+                    </td>
+                    <th><label class="control-label">育苗批次</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="BatchNo" list="BatchNo" />
+                        <datalist id="BatchNo"></datalist>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">阶段图片</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

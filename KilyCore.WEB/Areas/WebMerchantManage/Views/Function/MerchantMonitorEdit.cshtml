@@ -1,0 +1,73 @@
+﻿
+@{
+    ViewData["Title"] = "编辑监控";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#InfoId").val(RepastUser.Id);
+            },
+            //事件
+            InitEvents: function () {
+                //封面
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: ".upload-input",
+                    maxNum: 1,
+                    node: '.image-box',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        $("#CoverPhoto").val(result.data);
+                    }
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="RepastWeb/SaveVideo" id="Edit">
+            <input type="hidden" name="InfoId" id="InfoId" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">监控区域</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="MonitorAddress" />
+                    </td>
+                    <th><label class="control-label">视频地址</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="VideoAddress"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">封面图</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files"  class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                        <input type="hidden" id="CoverPhoto" name="CoverPhoto" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,151 @@
+﻿
+@{
+    ViewData["Title"] = "编辑育苗";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var Guid = controller.GetParam("Id");
+                $("#CompanyId").val(CompanyInfo.Id);
+                $("#BatchNo").val("N" + controller.FormatDate("YYYYMMDDHHmmss"));
+                controller.LayDate({ elem: "#PlantTime", value: controller.FormatDate("YYYY-MM-DD HH:mm:ss") });
+                //厂商
+                controller.ajax({
+                    url: "EnterpriseWeb/GetSellerList",
+                    data: { Parameter: 10 },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>'
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.SupplierName+'">' + obj.SupplierName + '</option>';
+                        });
+                        $("#Supplier").html(html);
+                    }
+                });
+                options.GetDetail(Guid);
+            },
+            //设置文件值
+            SetFileValue: function (data, elememt) {
+                var files = $(elememt).val();
+                if (files != null && files != "" && files != undefined) {
+                    files += "," + data;
+                    $(elememt).val(files);
+                } else {
+                    $(elememt).val(data);
+                }
+            },
+            //取得详情
+            GetDetail: function (Guid) {
+                controller.Select({
+                    document: '#Unit',
+                    arrelemnt: ['#Unit'],
+                    data: { Id: "计量单位" },
+                    url: 'EnterpriseWeb/GetDictionaryList'
+                });
+                $("#Unit").on('changed.bs.select', function () {
+                    $('input[name="Unit"]').val($(this).val());
+                });
+                if (Guid != null && Guid != undefined && Guid != "")
+                    controller.ajax({
+                        url: "EnterpriseWeb/GetGrowDetail",
+                        type: "post",
+                        data: { Id: Guid },
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                        }
+                    });
+            },
+            //事件
+            InitEvents: function () {
+                //文件上传
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: ".upload-input",
+                    maxNum: 5,
+                    node: '.image-box',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#Paper");
+                    }
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/EditGrow" id="Edit">
+            <input type="hidden" name="Id" />
+            <input type="hidden" name="CompanyId" id="CompanyId" />
+            <input  type="hidden" name="Paper" id="Paper"/>
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">批次编号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="BatchNo" readonly id="BatchNo" />
+                    </td>
+                    <th><label class="control-label">育苗名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="GrowName" data-msg-required="请输入育苗名称" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">采购数量</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="BuyNum" />
+                    </td>
+                    <th><label class="control-label">计量单位</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="selectpicker form-control" data-max-options="2" id="Unit" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">播种时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="PlantTime" id="PlantTime" />
+                    </td>
+                    <th><label class="control-label">供应商</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="SupplierName" id="Supplier"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">合格证</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">备注</label></th>
+                    <td class="has-warning" colspan="3">
+                        <textarea class="form-control" rows="5" maxlength="200" name="Remark"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

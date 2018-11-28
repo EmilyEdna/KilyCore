@@ -1,0 +1,69 @@
+﻿
+@{
+    ViewData["Title"] = "编辑仓库";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("input[name='CompanyId']").val(CompanyInfo.Id);
+                $("input[name='StockNo']").val("CK" + controller.FormatDate("YYMMDDHHmmss"))
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/EditStockType" id="Edit">
+            <input type="hidden" name="CompanyId" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">编号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="StockNo" readonly />
+                    </td>
+                    <th><label class="control-label">仓库名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="StockName" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">贮藏湿度</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SaveH2" />
+                    </td>
+                    <th><label class="control-label">贮藏方式</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SaveType" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">贮藏温度</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SaveTemp" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

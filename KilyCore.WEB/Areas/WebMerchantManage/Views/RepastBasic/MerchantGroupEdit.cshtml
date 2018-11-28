@@ -1,0 +1,93 @@
+﻿
+@{
+    ViewData["Title"] = "编辑账户";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitEnterpriseRole();
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("input[name='InfoId']").val(RepastUser.Id);
+                $("input[name='VersionType']").val(RepastUser.VersionType);
+            },
+            //获取集团账户
+            InitEnterpriseRole: function () {
+                controller.ajax({
+                    url: "RepastWeb/GetRoleAuthorList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>===请选择===</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.AuthorName + '</option>'
+                        });
+                        $("#DingRoleId").html(html);
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="RepastWeb/SaveChildInfo" id="Edit">
+            <input type="hidden" name="InfoId" />
+            <input type="hidden" name="VersionType" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">企业名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="MerchantName" data-msg-required="请输入商家名称">
+                    </td>
+                    <th><label class="control-label">企业账号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="Account" data-msg-required="请输入商家账号">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">商家电话</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="Phone" data-msg-required="请输入商家电话" placeholder="格式：028-12345678或者13012345678">
+                    </td>
+                    <th><label class="control-label">商家地址</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="Address" data-msg-required="请输入商家地址">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">角色权限</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="DingRoleId" id="DingRoleId">
+                            <option>===请选择===</option>
+                        </select>
+                    </td>
+                    <th><label class="control-label">商家密码</label></th>
+                    <td class="has-warning">
+                        <input type="password" class="form-control required" name="PassWord" data-msg-required="请输入企业密码">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

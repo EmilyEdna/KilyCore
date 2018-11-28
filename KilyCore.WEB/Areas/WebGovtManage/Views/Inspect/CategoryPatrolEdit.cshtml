@@ -1,0 +1,87 @@
+﻿
+@{
+    ViewData["Title"] = "编辑类目";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#GovtId").val(GovtInfo.Id);
+                $("#TypePath").val(GovtInfo.TypePath);
+                var Editor = controller.Editor(".summernote", { width: 655 });
+                var Id = controller.GetParam("Id");
+                if (Id != null && Id != "" && Id != undefined) {
+                    controller.ajax({
+                        url: "GovtWeb/GetCategoryDetail",
+                        data: { Id: Id },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                            Editor.summernote('code', result.data.Template);
+                        }
+                    });
+                }
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="GovtWeb/EditCategory" id="Edit">
+            <input type="hidden" name="Id" id="Id" />
+            <input type="hidden" name="GovtId" id="GovtId" />
+            <input type="hidden" name="TypePath" id="TypePath" />
+            <input  type="hidden" name="Template"/>
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">类目名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="CategoryName" />
+                    </td>
+                    <th><label class="control-label">类目类型</label></th>
+                    <td class="has-warning">
+                        <select type="select" name="CategoryType" class="form-control">
+                            <option value="专项">专项</option>
+                            <option value="常规">常规</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">平分项</label></th>
+                    <td class="has-warning">
+                        <input class="form-control" name="Grade" maxlength="300" />
+                    </td>
+                    <th><label class="control-label">备注</label></th>
+                    <td class="has-warning">
+                        <input class="form-control" name="Remark" maxlength="300" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">报告模板</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div name="Template" class="summernote"></div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,129 @@
+﻿
+@{
+    ViewData["Title"] = "分配标签";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                options.BindBatch();
+                $("input[name='SingleBatchNo']").val("S" + controller.FormatDate("YYMMDDHHmmss"));
+                options.ChooseTypeGetUser($("input[type='radio']:checked").val());
+                $("input[type='radio']").on('click', function () {
+                    options.ChooseTypeGetUser($(this).val());
+                })
+            },
+            //绑定批次
+            BindBatch: function () {
+                controller.ajax({
+                    url: "Function/GetTagBatchList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = "<option>===请选择===</option>"
+                        $.each(result.data, function (i, obj) {
+                            if (obj.BatchNo != null)
+                                html += '<option>' + obj.BatchNo + '</option>';
+                            else
+                                html += '<option>' + obj.SingleBatchNo + '</option>';
+                        });
+                        $("#No").html(html);
+                    }
+                });
+            },
+            //根据类型选择接受人
+            ChooseTypeGetUser: function (flag) {
+                controller.ajax({
+                    url: 'Function/GetAcceptUser',
+                    data: { Id: flag },
+                    type: 'post',
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>'
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.Name + '</option>'
+                        });
+                        $("#AcceptUser").html(html);
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                $("#AcceptUser").on('change', function () {
+                    var flag = $(this).find("option:selected").text();
+                    if (flag == "==请选择==") {
+                        controller.Msg("请选择相应的接受人或者企业!")
+                        return;
+                    } else {
+                        $("#AcceptUserName").val(flag);
+                    }
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="Function/AllotTag" id="Edit">
+            <input type="hidden" name="IsAccept" value="false" />
+            <input type="hidden" name="AcceptUserName" id="AcceptUserName" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">编号批次</label></th>
+                    <td class="has-warning">
+                        <input type="text" name="SingleBatchNo" class="form-control" readonly />
+                    </td>
+                    <th><label class="control-label">号段批次</label></th>
+                    <td class="has-warning">
+                        <select type="select" name="BatchNo" id="No" class="form-control"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">开始号段</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="StarSerialNo" data-msg-required="请输入开始号段(仅限数字)" maxlength="11" />
+                    </td>
+                    <th><label class="control-label">结束号段</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="EndSerialNo" data-msg-required="请输入结束号段(仅限数字)" maxlength="11" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">分配类型</label></th>
+                    <td class="has-warning">
+                        <label class="radio-inline">
+                            <input type="radio" name="AllotType" value="1" style="margin-top:3px" checked />企业
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="AllotType" value="2" style="margin-top:3px" />运营商
+                        </label>
+                    </td>
+                    <th><label class="control-label">接受人(企业)</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="AcceptUser" id="AcceptUser">
+                            <option>==请选择==</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

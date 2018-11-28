@@ -1,0 +1,140 @@
+﻿
+@{
+    ViewData["Title"] = "编辑发货";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("input[name='CompanyId']").val(CompanyInfo.Id);
+                controller.LayDate({ elem: "input[name='SendTime']" });
+                controller.Select({
+                    document: '.selectpicker',
+                    arrelemnt: ['#PackageNo',],
+                    url: 'EnterpriseWeb/GetPackagesList',
+                    flag: false,
+                    callBack: function (data) {
+                        var html = '';
+                        $.each(data, function (i, obj) {
+                            html += '<option>' + obj.PackageNo + '</option>';
+                        });
+                        $("#PackageNo").html(html);
+                    }
+                });
+                $("#PackageNo").on('changed.bs.select', function () {
+                    $('input[name="PackageNo"]').val($(this).val());
+                });
+            },
+            //事件
+            InitEvents: function () {
+                //获取收货人
+                controller.AutoInput("#GainUser", {
+                    url: "EnterpriseWeb/GetSellerInEnterprise",
+                    effectiveFields: ["SupplierName"],
+                    effectiveFieldsAlias: { SupplierName: "收货人" },
+                    idField: "Id",
+                    keyField: "SupplierName",
+                    AttachField:"Address",
+                    processData: function (result) {
+                        var data = { value: [] };
+                        $.each(result.data, function (i, obj) {
+                            data.value.push({
+                                Id: obj.Id,
+                                SupplierName: obj.SupplierName,
+                                Address: obj.Address,
+                            });
+                        });
+                        return data;
+                    }
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/EditLogistics" id="Edit">
+            <input type="hidden" name="Id" />
+            <input type="hidden" name="CompanyId" />
+            <input type="hidden" name="Flag" value="false" />
+            <input type="hidden" name="GainId" id="GainId" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">打包批次</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="selectpicker form-control" id="PackageNo" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
+                    </td>
+                    <th><label class="control-label">产品名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="GoodsName" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">收货人</label></th>
+                    <td class="has-warning">
+                        <div class="input-group" style="width:100%;">
+                            <input type="text" class="form-control" id="GainUser" name="GainUser" Flag="GainId" titles="Address" placeholder="请输入检索字段" />
+                        </div>
+                    </td>
+                    <th><label class="control-label">发货数量</label></th>
+                    <td class="has-warning">
+                        <input type="text" name="SendGoodsNum" class="form-control" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">发货时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SendTime" />
+                    </td>
+                    <th><label class="control-label">收货地址</label></th>
+                    <td class="has-warning">
+                        <input type="text" name="Address" class="form-control" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">物流单号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="WayBill" />
+                    </td>
+                    <th><label class="control-label">联系电话</label></th>
+                    <td class="has-warning">
+                        <input type="text" name="LinkPhone" class="form-control" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">运输方式</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="TransportWay" />
+                    </td>
+                    <th><label class="control-label">交通工具</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Traffic" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">发货地址</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" class="form-control" name="SendAddress" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

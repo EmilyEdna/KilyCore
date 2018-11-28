@@ -1,0 +1,138 @@
+﻿
+@{
+    ViewData["Title"] = "二维码缴费";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                this.BindBankCard();
+                this.BindDetail();
+            },
+            //绑定详情
+            BindDetail: function () {
+                controller.ajax({
+                    url: "EnterpriseWeb/GetPaymentDetail",
+                    data: { Id: controller.GetParam("Id") },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        controller.SetCtrlValue("#Edit", result.data);
+                    }
+                });
+            },
+            //绑定银行信息
+            BindBankCard: function () { 
+                controller.ajax({
+                    url: "System/GetBankInfo",
+                    type: "post",
+                    async: false,
+                    data: {},
+                    success: function (result) {
+                        var html = '<option>===请选择===</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.BankCard + '" data-value="' + obj.BankName + '">' + obj.TrueName + '</option>'
+                        });
+                        $("select").html(html);
+                    }
+                });
+            },
+            //设置文件值
+            SetFileValue: function (data, elememt) {
+                var files = $(elememt).val();
+                if (files != null && files != "" && files != undefined) {
+                    files += "," + data;
+                    $(elememt).val(files);
+                } else {
+                    $(elememt).val(data);
+                }
+            },
+            //事件
+            InitEvents: function () {
+                $("select").on('change', function () {
+                    var flag = $(this).find("option:selected");
+                    $("#BankCard").val(flag.val());
+                    $("#BankName").val(flag.data().value);
+                });
+                //文件上传
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: ".upload-input",
+                    maxNum: 1,
+                    node: '.image-box',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#PaytTcket");
+                    }
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/ApplyEdit" id="Edit">
+            <input type="hidden" id="PaytTicket" name="PaytTicket" />
+            <input type="hidden" name="IsPay"  value="true"/>
+            <input type="hidden" name="Id" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">收款方</label></th>
+                    <td class="has-warning" colspan="3">
+                        <select type="select" class="form-control">
+                            <option>===请选择===</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">银行名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" readonly id="BankName" />
+                    </td>
+                    <th><label class="control-label">银行卡号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" readonly id="BankCard" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">批次编号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="BatchNo" readonly />
+                    </td>
+                    <th><label class="control-label">缴费金额</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ApplyMoney" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">缴费凭证</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

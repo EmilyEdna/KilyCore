@@ -1,0 +1,183 @@
+﻿
+@{
+    ViewData["Title"] = "新增申请";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#BatchNo").val("A" + controller.FormatDate("YYMMDDHHmmss"));
+                $("#CompanyId").val(CompanyInfo.Id);
+            },
+            //设置文件值
+            SetFileValue: function (data, elememt) {
+                var files = $(elememt).val();
+                if (files != null && files != "" && files != undefined) {
+                    files += "," + data;
+                    $(elememt).val(files);
+                } else {
+                    $(elememt).val(data);
+                }
+            },
+            CheckType: function () { 
+                $("input:radio[name='Payment']").click(function () {
+                    var type = $(this).val();
+                    if (type == 1)//年付费 10W =5,000,000枚
+                    {
+                        $("#ApplyMoney").val("10000");
+                        $("#PaytTicket").addClass("required")
+                        $("#ApplyNum").val("");
+                        $("#ApplyNum").attr("disabled", true);
+                    }
+                    else //启用按需付费
+                    {
+                        $("#ApplyMoney").val("");
+                        $("#ApplyNum").attr("disabled", false);
+                    }
+                });
+                $("input:radio[name='TagType']").click(function () {
+                    if ($(this).val() == 30) {
+                        $("#ApplyNum").attr("max", 1);
+                     }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                options.CheckType();
+                $("#ApplyNum").change(function () {
+                    var num = Number($(this).val());
+                    if (CompanyInfo.Version == 40)//旗舰版1厘钱
+                    {
+                        $("#ApplyMoney").val(num * 0.001);
+                    }
+                    else
+                        $("#ApplyMoney").val(num * 0.02)//非旗舰版2分钱
+                });
+                //文件上传
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: ".upload-input",
+                    maxNum: 1,
+                    node: '.image-box',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#PaytTicket");
+                    }
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/ApplyEdit" id="Edit">
+            <input type="hidden" id="CompanyId" name="CompanyId" />
+            <input type="hidden" id="PaytTicket" name="PaytTicket" data-msg-required="请先付款上传缴费凭证" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">收款方</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input  type="text" class="form-control" value="成都研成科技有限公司" readonly/>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">银行名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" readonly  value="中国农业银行股份有限公司成都高新技术产业开发区支行" />
+                    </td>
+                    <th><label class="control-label">银行卡号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" readonly value="22808801040014164" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">批次编号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="BatchNo" id="BatchNo" readonly />
+                    </td>
+                    <th><label class="control-label">付款方式</label></th>
+                    <td class="has-warning">
+                        <label class="radio-inline">
+                            <input type="radio" name="Payment" value="1" style="margin-top:3px" />
+                            <text title="年缴费">年付费</text>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="Payment" value="2" style="margin-top:3px" />
+                            <text title="按需付费">按需付费</text>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">标签类型</label></th>
+                    <td class="has-warning" colspan="3">
+                        <label class="radio-inline">
+                            <input type="radio" name="TagType" value="10" style="margin-top:3px"  checked/>
+                            <text title="一物一码">一物一码</text>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="TagType" value="20" style="margin-top:3px" />
+                            <text title="一品一码">一品一码</text>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="TagType" value="30" style="margin-top:3px" />
+                            <text title="一企一码">一企一码</text>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">是否付款</label></th>
+                    <td class="has-warning" colspan="3">
+                        <label class="radio-inline">
+                            <input type="radio" name="IsPay" value="false" style="margin-top:3px" checked />
+                            <text title="未付款">未付款</text>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="IsPay" value="true" style="margin-top:3px" />
+                            <text title="已付款">已付款</text>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">申请数量</label></th>
+                    <td class="has-warning" colspan="3">
+                            <input type="number" class="form-control" name="ApplyNum" id="ApplyNum" disabled max="100000"  min="0"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">付款金额(元)</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" class="form-control" name="ApplyMoney" id="ApplyMoney" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">缴费凭证</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,132 @@
+﻿
+@{
+    ViewData["Title"] = "不合格处理";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+<script>
+    //配置
+    var options = {
+        Init: function () {
+            this.InitDom();
+            this.InitEvents();
+        },
+        //元素
+        InitDom: function () {
+            //恢复高度
+            $(window).resize(function (e) {
+                window.setTimeout(function () {
+                    options.$table.bootstrapTable("resetView", { height: $(window).height() - 150 });
+                }, 200);
+                e.stopPropagation();
+            });
+            //设置表单
+            this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetInferiorExpriredPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { InferiorExprired:1} });
+        },
+        //事件
+        InitEvents: function () {
+            $("#add").on('click', function () {
+                controller.OpenWindow({
+                    title: "新增不合格处理",
+                    type: 2,
+                    height: "400px",
+                    width: "700px",
+                    url: "WebCompanyManage/Quality/InferiorEdit",
+                    callBack: function (result) {
+                        result.$("#Edit").submit();
+                    }
+                })
+            });
+        },
+        //行为
+        action: {
+            TableFormatter: function (val, row, index) {
+                var action = [];
+                action.push('<button class="btn btn-sm btn-primary watch"><i class="fa fa-eye"></i>详情</button>');
+                action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
+                return action.join("&nbsp;")
+            },
+            TableEvents: {
+                "click .del": function (event, val, row, index) {
+                    controller.Confirm("确认删除？", function (bool) {
+                        if (bool) {
+                            controller.ajax({
+                                url: "EnterpriseWeb/RemoveInferiorExprired",
+                                data: { Id: row.Id },
+                                type: 'post',
+                                success: function (result) {
+                                    options.$table.refresh();
+                                }
+                            });
+                        }
+                    });
+                },
+                "click .watch": function (event, val, row, index) {
+                    controller.OpenWindow({
+                        title: "查看详情",
+                        type: 2,
+                        height: "400px",
+                        width: "700px",
+                        url: "WebCompanyManage/Quality/InferiorEdit?Id=" + row.Id,
+                        callBack: function (result) {
+                            result.$("#Edit").submit();
+                        }
+                    })
+                }
+            }//表单事件结束
+        }//行为结束
+    };
+    //初始化
+    $(document).ready(function () {
+        options.Init();
+    });
+</script>
+@section css{
+
+}
+<div class="container-fluid">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>不合格处理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <form id="Edit">
+                        <div class="col-sm-8 m-b-xs">
+                            <div class="input-group">
+                                <button type="button" class="btn btn-sm btn-white" id="add"><i class="fa fa-plus"></i>新增</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" placeholder="名称" class="input-sm form-control" name="CustomName">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
+                                    <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive">
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="BatchNo" data-halign="center" data-align="center" data-valign="middle">生产批次</th>
+                                <th data-field="CustomName" data-halign="center" data-align="center" data-valign="middle">处理名称</th>
+                                <th data-field="InferNum" data-halign="center" data-align="center" data-valign="middle">不合格数量</th>
+                                <th data-field="InferName" data-halign="center" data-align="center" data-valign="middle">产品名称</th>
+                                <th data-field="InferType" data-halign="center" data-align="center" data-valign="middle">类型</th>
+                                <th data-field="HandleUser" data-halign="center" data-align="center" data-valign="middle">处理人</th>
+                                <th data-field="HandleWays" data-halign="center" data-align="center" data-valign="middle">处理方式</th>
+                                <th data-field="HandleTime" data-halign="center" data-align="center" data-valign="middle">处理时间</th>
+
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

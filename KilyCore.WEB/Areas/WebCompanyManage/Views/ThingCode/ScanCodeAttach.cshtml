@@ -1,0 +1,66 @@
+﻿
+@{
+    ViewData["Title"] = "扫码二维码";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var count = Number(controller.GetParam("ECode")) - Number(controller.GetParam("SCode")) + 1;
+                var html = ''; var htmls = '';
+                for (var i = 0; i < count; i++) {
+                    html += '<tr>';
+                    html += '<td>' + (Number(controller.GetParam("SCode")) + i) + '</td>';
+                    html += '<td id="' + i + '_code"></td>';
+                    html += '</tr>';
+                }
+                $("tbody").html(html);
+                for (var i = 0; i < count; i++) {
+                    controller.QRCode("#" + i + "_code", { width: 50, height: 50, text: WebUrl+"StaticHtml/ScanDetail.html?Id="+controller.GetParam("Id") + "&Code=" + (Number(controller.GetParam("SCode")) + i) });
+                }
+            },
+            //事件
+            InitEvents: function (xxx) {
+               
+            },
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+@section css{
+    <style>
+        th {
+            text-align: center;
+            vertical-align: middle;
+        }
+        td {
+            text-align: center;
+            vertical-align: middle;
+        }
+    </style>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/ApplyEdit" id="Edit">
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>号段</th>
+                        <th>二维码图片</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </form>
+    </div>
+</div>

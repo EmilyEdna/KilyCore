@@ -1,0 +1,54 @@
+﻿
+@{
+    ViewData["Title"] = "通报批评";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#Id").val(controller.GetParam("Id"));
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="GovtWeb/EditNetPatrol" id="Edit">
+            <input type="hidden" name="Id" id="Id" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">标题</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input  type="text" class="form-control" name="Title"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">内容</label></th>
+                    <td class="has-warning" colspan="3">
+                        <textarea class="form-control" name="Content" rows="4" maxlength="300"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

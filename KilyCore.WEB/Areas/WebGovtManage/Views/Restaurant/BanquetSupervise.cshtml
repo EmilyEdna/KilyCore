@@ -1,0 +1,152 @@
+﻿
+@{
+    ViewData["Title"] = "群宴监管";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+
+@section script{
+    <script src="~/Content/ExportPlugin/Script/xlsx.core.min.js"></script>
+    <script src="~/Content/ExportPlugin/Script/tableExport.js"></script>
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                //恢复高度
+                $(window).resize(function (e) {
+                    window.setTimeout(function () {
+                        options.$table.bootstrapTable("resetView", { height: $(window).height() - 150 });
+                    }, 200);
+                    e.stopPropagation();
+                });
+                //设置表单
+                this.$table = controller.Table("#tableList", { url: "GovtWeb/GetBanquetPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
+            },
+            //事件
+            InitEvents: function () {
+                //导出Excel
+                $("#export").on('click', function () {
+                    $("#tableList").tableExport({
+                        fileName: "群宴监管",
+                        ignoreColumn: ["Handler"],
+                        type: "excel",
+                        mso: {
+                            fileFormat: "xlsx",
+                            worksheetName: "数据",
+                        }
+                    });
+                });
+            },
+            //行为
+            action: {
+                TableFormatter: function (val, row, index) {
+                    var action = [];
+                    if (row.Stauts == "待批复")
+                        action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>批复</button>');
+                    action.push('<button class="btn btn-sm btn-primary save"><i class="fa fa-pencil-square-o"></i>归档</button>');
+                    action.push('<button class="btn btn-sm btn-primary detail"><i class="fa fa-pencil-square-o"></i>详情</button>');
+                    return action.join("&nbsp;")
+                },
+                TableEvents: {
+                    "click .detail": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "群宴详情",
+                            type: 2,
+                            height: "400px",
+                            width: "800px",
+                            url: "WebGovtManage/Restaurant/BanquetSuperviseDetail?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
+                    },
+                    "click .edit": function (event, val, row, index) {
+                        controller.Confirm("确认批复？", function (bool) {
+                            if (bool) {
+                                controller.ajax({
+                                    url: "GovtWeb/EditCookBanquet",
+                                    data: { Id: row.Id, Parameter: "待检查" },
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    "click .save": function (event, val, row, index) {
+                        controller.Confirm("确认归档？", function (bool) {
+                            if (bool) {
+                                controller.ajax({
+                                    url: "GovtWeb/EditCookBanquet",
+                                    data: { Id: row.Id, Parameter: "已归档" },
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }//表单事件结束
+            }//行为结束
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+@section css{
+
+}
+<div class="container-fluid">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>群宴监管</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <form id="Edit">
+                        <div class="col-sm-8 m-b-xs">
+                            <div class="input-group">
+                                <button type="button" class="btn btn-sm btn-white" id="export"><i class="fa fa-file-excel-o"></i>导出Excel</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" placeholder="办宴类型" class="input-sm form-control" name="HoldType">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
+                                    <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive">
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="HoldName" data-halign="center" data-align="center" data-valign="middle">举办者姓名</th>
+                                <th data-field="Phone" data-halign="center" data-align="center" data-valign="middle">联系电话</th>
+                                <th data-field="Address" data-halign="center" data-align="center" data-valign="middle">举办地址</th>
+                                <th data-field="HoldDay" data-halign="center" data-align="center" data-valign="middle">举办天数</th>
+                                <th data-field="HoldTime" data-halign="center" data-align="center" data-valign="middle">举办时间</th>
+                                <th data-field="ExpiredTime" data-halign="center" data-align="center" data-valign="middle">截至日期</th>
+                                <th data-field="HoldType" data-halign="center" data-align="center" data-valign="middle">宴会类型</th>
+                                <th data-field="Stauts" data-halign="center" data-align="center" data-valign="middle">申办状态</th>
+                                <th data-field="Handler" data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

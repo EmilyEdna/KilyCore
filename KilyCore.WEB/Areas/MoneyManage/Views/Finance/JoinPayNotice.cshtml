@@ -1,0 +1,54 @@
+﻿
+@{
+    ViewData["Title"] = "催缴通知";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#Email").val(controller.GetParam("Email"));
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="Finance/SendEmail" id="Edit">
+            <input type="hidden" name="Receive" id="Email" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">催缴标题</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" class="form-control required" name="Title" id="Title" data-msg-required="请输入催缴标题" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">催缴内容</label></th>
+                    <td class="has-warning" colspan="3">
+                       <textarea class="form-control required" name="Content" id="Content" data-msg-required="请输入催缴内容" rows="5"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

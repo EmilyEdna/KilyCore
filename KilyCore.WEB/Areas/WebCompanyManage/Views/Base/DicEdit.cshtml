@@ -1,0 +1,86 @@
+﻿
+@{
+    ViewData["Title"] = "编辑字典";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var Guid = controller.GetParam("Id");
+                $("#CompanyId").val(CompanyInfo.Id);
+                this.GetDicDetail(Guid);
+            },
+            //取详情
+            GetDicDetail: function (data) {
+                if (data != "" && data != null && data != undefined)
+                {
+                    controller.ajax({
+                        url: "EnterpriseWeb/GetDicDetail",
+                        data: { Id: data },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                         }
+                    });
+                }
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/SaveDic" id="Edit">
+            <input  type="hidden" name="Id"/>
+            <input  type="hidden" name="CompanyId" id="CompanyId"/>
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">字典分类</label></th>
+                    <td class="has-warning">
+                        <select type="select" name="DicType" class="form-control">
+                            <option value="计量单位">计量单位</option>
+                            <option value="指标单位">指标单位</option>
+                            <option value="执行标准">执行标准</option>
+                        </select>
+                    </td>
+                    <th><label class="control-label">字典名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="DicName" data-msg-required="请输入字典名称" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">字典值</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" class="form-control required" name="DicValue" data-msg-required="请输入字典值" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">字典备注</label></th>
+                    <td class="has-warning" colspan="3">
+                        <textarea class="form-control" rows="5" maxlength="200" name="Remark"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

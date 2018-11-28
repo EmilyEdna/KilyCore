@@ -1,0 +1,134 @@
+﻿
+@{
+    ViewData["Title"] = "新增入库";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#SerializNo").val("R" + controller.FormatDate("YYMMDDHHmmss"));
+                controller.LayDate({ elem: "#SetStockTime" });
+                controller.LayDate({ elem: "#ProductTime" });
+                $("#CompanyId").val(CompanyInfo.Id);
+                this.GetList();
+            },
+            GetList: function () {
+                //获取下拉原料
+                controller.ajax({
+                    url: "EnterpriseWeb/GetMaterialList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.BatchNo + '">' + obj.MaterName + '</option>';
+                        });
+                        $("#BatchNo").html(html);
+                    }
+                });
+                //人员下拉
+                controller.ajax({
+                    url: "EnterpriseWeb/GetUserList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option>' + obj.TrueName + '</option>';
+                        });
+                        $("#SetStockUser").html(html);
+                    }
+                });
+                //质检列表
+                controller.ajax({
+                    url: "EnterpriseWeb/GetCheckMaterial",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.CheckName + '</option>';
+                        });
+                        $("#CheckMaterialId").html(html);
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/EditStock" id="Edit">
+            <input type="hidden" class="form-control" name="CompanyId" id="CompanyId" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">批次号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SerializNo" id="SerializNo" readonly />
+                    </td>
+                    <th><label class="control-label">原料批次</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="BatchNo" list="BatchNo" />
+                        <datalist id="BatchNo"></datalist>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">入库时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SetStockTime" id="SetStockTime" />
+                    </td>
+                    <th><label class="control-label">生产时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ProductTime" id="ProductTime" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">入库数量</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SetStockNum" />
+                    </td>
+                    <th><label class="control-label">负责人</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="SetStockUser" id="SetStockUser"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">入库类型</label></th>
+                    <td class="has-warning">
+                        <select class="form-control" name="StockType" type="select">
+                            <option value="原料入库">原料入库</option>
+                            <option value="其他入库">其他入库</option>
+                        </select>
+                    </td>
+                    <th><label class="control-label">原料质检</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="CheckMaterialId" id="CheckMaterialId"></select>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

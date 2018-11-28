@@ -1,0 +1,203 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>商品详情</title>
+    <link rel="icon" type="image/x-icon" href="StaticImg/logo.ico" />
+    <link href="../Content/BootStrap/Css/bootstrap.css" rel="stylesheet" />
+    <link href="Style/ScanGoods.css" rel="stylesheet" />
+    <script src="../Content/JavaScript/jquery.min.js"></script>
+    <script src="../Content/BootStrap/Script/bootstrap.js"></script>
+    <script src="../Content/Layer/layer.js"></script>
+    <script src="../Content/JavaScript/jquery.extension.js"></script>
+    <style>
+        .layui-layer-tips .layui-layer-content {
+            min-width: 40px;
+            line-height: 40px;
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="row">
+        <div class=" col-sm-12 col-xs-12 head">
+            <img src="Style/ScanDetailImg/Logo.png" class="pull-left">
+            <h1>中食药监管信息查询平台</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="content">
+            <div class="panel panel-default" style="text-align:center;" id="Edit">
+                <h3 style="font-size:34px;">物流跟踪</h3>
+                <div style="background-color:#808080;line-height:100px;width:90%;margin:auto auto;height:100px;font-size:34px;color:#fff;text-align:left;">
+                    <span style="margin-left:8%;">物流编号:<b data-name="WayBill" >123456</b></span>
+                </div>
+                <div style="line-height:100px;width:90%;margin:auto auto;height:100px;font-size:34px;text-align:left;">
+                    <span style="margin-left:8%;color:#0d27f2">发货地:<b style="color:red" data-name="SendAddress"></b></span>
+                </div>
+                <div style="line-height:100px;width:90%;margin:auto auto;height:100px;font-size:34px;text-align:left;">
+                    <span style="margin-left:8%;color:#0d27f2">收货地:<b style="color:red" data-name="Address"></b></span>
+                </div>
+                <div style="line-height:100px;width:90%;margin:auto auto;height:100px;font-size:34px;text-align:left;">
+                    <span style="margin-left:8%;color:#0d27f2">批次号:<b style="color:red" data-name="PackageNo"></b></span>
+                </div>
+                <div style="line-height:100px;width:90%;margin:auto auto;height:100px;font-size:34px;text-align:left;">
+                    <span style="margin-left:8%;color:#0d27f2">产品名:<b style="color:red" data-name="GoodsName"></b></span>
+                </div>
+                <div style="line-height:100px;width:90%;margin:auto auto;height:100px;font-size:34px;text-align:left;">
+                    <span style="margin-left:8%;color:#0d27f2">发货数量:<b style="color:red" data-name="SendGoodsNum"></b></span>
+                </div>
+                <div style="line-height:100px;width:90%;margin:auto auto;height:100px;font-size:34px;text-align:left;">
+                    <span style="margin-left:8%;color:#0d27f2">发货人电话:<b style="color:red" data-name="LinkPhone"></b></span>
+                </div>
+                <div style="line-height:100px;width:90%;margin:auto auto;height:100px;font-size:34px;text-align:left;">
+                    <span style="margin-left:8%;color:#0d27f2">发货时间:<b style="color:red" data-name="SendTime"></b></span>
+                </div>
+            </div>
+            <div class="panel panel-default" style="text-align:center;">
+                <div style="line-height:100px;width:90%;margin:auto auto;height:250px;font-size:34px;text-align:left;">
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <div class="input-group" style="margin-left:8.6%;font-size:34px;">
+                                <span class="input-group-addon" style="font-size:34px;line-height:50px;">收货人手机</span>
+                                <input type="text" class="form-control" style="font-size:34px;line-height:64px;height:64px;" placeholder="请输入收货人手机" name="Phone" id="Phone" />
+                            </div>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <div class="input-group" style="margin-left:8.6%;font-size:34px;">
+                                <span class="input-group-addon" style="font-size:34px;line-height:50px;">验证码</span>
+                                <input type="text" class="form-control" style="font-size:34px;line-height:64px;height:64px;" placeholder="请输入验证码" name="Code" id="Code" />
+                                <span class="input-group-addon btn" style="font-size:34px;line-height:50px;" id="GetPhoneCode">获取验证码</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button class="btn btn-warning" style="font-size:34px;margin-left:7.5%" id="Save">确认收货</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div>
+            © 2017 CFDACX监管信息平台版权所有 蜀ICP备14013921号
+        </div>
+    </div>
+    <script>
+        //初始化
+        var Timer = 60;
+        var options = {
+            Init: function () {
+                options.InitDom();
+                options.InitEvent();
+            },
+            InitDom: function () {
+                $.ajax({
+                    url: "http://localhost:50039/api/EnterpriseWeb/GetSendDetail",
+                    type: "Post",
+                    dataType: "json",
+                    data: {
+                        TimeSpan: new Date().getTime(),
+                        Id: options.GetParam("Id")
+                    },
+                    async: false,
+                    success: function (result) {
+                        options.BindNode("#Edit", result.data);
+                    }
+                });
+                var data = {
+                    TimeSpan: new Date().getTime(),
+                    Id: options.GetParam("Id"),
+                    PackageNo: null,
+                    LinkPhone: null
+                };
+                $("#Save").on('click', function () {
+                    data.PackageNo = $("#Code").val();
+                    data.LinkPhone = $("#Phone").val();
+                    $.ajax({
+                        url: "http://localhost:50039/api/EnterpriseWeb/CheckLogistics",
+                        type: "Post",
+                        dataType: "json",
+                        data: data,
+                        async: false,
+                        xhrFields: {
+                            withCredentials: true
+                        },
+                        crossDomain: true,
+                        success: function (result) {
+                            if (result.flag == -1) {
+                                layer.msg(result.msg);
+                            } else {
+                                layer.msg(result.msg);
+                            }
+                        }
+                    });
+                });
+            },
+            InitEvent: function () {
+                $("#GetPhoneCode").on("click", function () {
+                    if ($(this).attr("disabled") != undefined)
+                        return;
+                    var mobile = $("#Phone").val();
+                    var reg = /^1[3|4|5|7|8][0-9]{9}$/;
+                    if (!reg.test(mobile)) {
+                        layer.tips("手机号不正确", "#Phone", { tips: [3, '#FF0000'] });
+                        return;
+                    }
+                    $.ajax({
+                        url: "http://localhost:50039/api/System/GetPhoneCode",
+                        type: "get",
+                        dataType: "json",
+                        data: { TimeSpan: new Date().getTime(), Parameter: mobile },
+                        async: false,
+                        xhrFields: {
+                            withCredentials: true
+                        },
+                        crossDomain: true,
+                        success: function (result) {
+                            options.SetTime();
+                        }
+                    });
+                });
+            },
+            //倒计时
+            SetTime: function () {
+                var html = '';
+                if (Timer > 0) {
+                    html = Timer + "秒";
+                    Account = setTimeout("options.SetTime()", 1000);
+                    Timer = Timer - 1;
+                    $("#GetPhoneCode").attr("disabled", "true");
+                } else {
+                    clearTimeout(Account);
+                    Timer = 60;
+                    html = '获取验证码';
+                    $("#GetPhoneCode").removeAttr("disabled");
+                }
+                $("#GetPhoneCode").text(html);
+            },
+            GetParam: function (Param) {
+                var reg = new RegExp("(^|&)" + Param + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+                var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+                if (r != null) return decodeURI(r[2]); return null; //返回参数值
+            },
+            BindNode: function (Element, Param) {
+                for (var key in Param) {
+                    var node = $("[data-name='" + key + "']", $(Element));
+                    var value = Param[key];
+                    node.text(value);
+                }
+            },
+        };
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+</body>
+</html>

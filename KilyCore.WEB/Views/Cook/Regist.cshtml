@@ -1,0 +1,170 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>厨师注册</title>
+    <link rel="icon" type="image/x-icon" href="~/StaticHtml/StaticImg/logo.ico" />
+    <link href="~/Content/BootStrap/Css/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/FontAwesome/Css/font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/HPlus/Css/Hplus.css" rel="stylesheet" />
+    <link href="~/Content/Enterprise/css/Regist.css" rel="stylesheet" />
+
+    <script src="~/Content/JavaScript/jquery.min.js"></script>
+    <script src="~/Content/BootStrap/Script/bootstrap.js"></script>
+    <script src="~/Content/Layer/layer.js"></script>
+    <script src="~/Content/JavaScript/jquery.cookie.js"></script>
+    <script src="~/Content/JavaScript/jquery.extension.js"></script>
+    <script src="~/Content/JavaScript/Controller.js"></script>
+    <script>
+        if (window.top !== window.self) {
+            window.top.location = window.location;
+        }
+        var Timer = 60;
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+                this.InitWinSize();
+            },
+            InitDom: function () {
+                $(".code").on('click', function () {
+                    if ($("#Phone").val() == "") {
+                        controller.Msg("请输入手机号");
+                        return;
+                    }
+                    controller.ajax({
+                        url: "System/GetPhoneCode",
+                        data: { Parameter: $("#Phone").val() },
+                        async: false,
+                        xhrFields: {
+                            withCredentials: true
+                        },
+                        crossDomain: true,
+                        success: function (result) {
+                            console.log(result.data);
+                            options.SetTime();
+                        }
+                    });
+                });
+            },
+            //倒计时
+            SetTime: function () {
+                var html = '';
+                if (Timer > 0) {
+                    html = Timer + "秒";
+                    Account = setTimeout("options.SetTime()", 1000);
+                    Timer = Timer - 1;
+                    $(".code").attr("disabled", "true");
+                } else {
+                    clearTimeout(Account);
+                    Timer = 60;
+                    html = '获取验证码';
+                    $(".code").removeAttr("disabled");
+                }
+                $(".code").text(html);
+            },
+            InitEvents: function () {
+                //注册事件
+                $("#Regist").on('click', function () {
+                    var data = $("#Edit").SerializeJson();
+                    if (data.Account == "") {
+                        controller.Tips("请输入账号", "#Account", { tips: [2, '#FF0000'] });
+                        return;
+                    }
+                    if (data.Phone == "") {
+                        controller.Tips("请输入公司手机", "#Phone", { tips: [2, '#FF0000'] });
+                        return;
+                    } else {
+                        var reg = /^1[3|4|5|7|8][0-9]{9}$/;
+                        if (!reg.test(data.Phone)) {
+                            controller.Tips("请输入正确手机号", "#Phone", { tips: [2, '#FF0000'] });
+                            return;
+                        }
+                    }
+                    if (data.PassWord == "") {
+                        controller.Tips("请输入公司密码", "#PassWord_One", { tips: [2, '#FF0000'] });
+                        return;
+                    }
+                    if (!$("#checkbox").is(":checked")) {
+                        controller.Tips("请勾选相关协议", "#checkbox", { tips: [3, '#FF0000'] });
+                        return;
+                    }
+                    if (data.PassWord === $("#PassWord_Two").val()) {
+                        controller.ajax({
+                            url: "CookWeb/RegistCookAccount",
+                            data: { Parameter: data },
+                            type: "post",
+                            xhrFields: {
+                                withCredentials: true
+                            },
+                            crossDomain: true,
+                            success: function (result) {
+                                if (result.HttpCode != 50) {
+                                    $("#Edit")[0].reset();
+                                    controller.SetHref("Login");
+                                }
+                                else
+                                    controller.Msg(result.data);
+                            }
+                        });
+                    }
+                    else { controller.Tips("两次输入的密码不同", "#PassWord_Two", { tips: [2, '#FF0000'] }); }
+                });
+            },
+            InitWinSize: function () {
+                $(".main").css("min-height", $("body").height() - $("header").outerHeight());
+                $(".main").css("top", ($(".main").outerHeight() - $(".main").outerHeight()) / 2 - 20);
+                $(window).resize(function () {
+                    window.setTimeout(function () {
+                        options.InitWinSize();
+                    }, 200);
+                });
+            },
+        };
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+</head>
+<body>
+    <!--头部-->
+    <header>
+        <div class="logo">
+            <a href="#"><img src="~/Content/Enterprise/img/logo.png" alt="" /></a>
+            <span>中食药监管信息查询平台-厨师注册</span>
+        </div>
+    </header>
+    <!--中间-->
+    <div class="main">
+        <div class="rg-box" style="height:480px;">
+            <div class="reg-head">
+                <h3 class="head-title">注册</h3>
+            </div>
+            <form class="form-horizontal" role="form" id="Edit">
+                <div class="rg-input rg-number">
+                    <input type="text" maxlength="32" class="ui-input" name="Account" id="Account" placeholder="| 请输入登录账户">
+                </div>
+                <div class="rg-input rg-number">
+                    <input type="text" maxlength="11" class="ui-input" name="Phone" id="Phone" placeholder="| 请输入个人手机">
+                </div>
+                <div class="rg-input rg-psw">
+                    <input type="password" maxlength="32" class="ui-input" name="PassWord" id="PassWord_One" placeholder="| 输入密码">
+                </div>
+                <div class="rg-input rg-psw">
+                    <input type="password" maxlength="32" class="ui-input" id="PassWord_Two" placeholder="| 请再次输入密码">
+                </div>
+                <div class="rg-input rg-type">
+                    <input type="text" maxlength="6" class="ui-input" id="" placeholder="| 输入手机验证码" style=" width:225px;" name="PhoneCode">
+                    <button class="code" type="button">获取验证码</button>
+                </div>
+                <div class="rg-agree">
+                    <input id="checkbox" type="checkbox" name="gender">我同意<a href="#">《注册协议》</a>
+                </div>
+                <div class="regbox">
+                    <button type="button" data-wait="1500" id="Regist">立即注册</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

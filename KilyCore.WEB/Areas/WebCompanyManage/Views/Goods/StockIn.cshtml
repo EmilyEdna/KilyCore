@@ -1,0 +1,237 @@
+﻿
+@{
+    ViewData["Title"] = "产品入库";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#GoodsBatchNo").val("R" + controller.FormatDate("YYMMDDHHmmss"));
+                controller.LayDate({ elem: "#ProductTime" });
+                $("#CompanyId").val(CompanyInfo.Id);
+                options.GetGoodsList();
+                options.BindTarget();
+            },
+            //获取产品下拉
+            GetGoodsList: function () {
+                //仓库类型
+                controller.ajax({
+                    url: "EnterpriseWeb/GetStockTypeList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option value="0">===请选择===</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.StockName + '</option>';
+                        });
+                        $("#StockTypeId").html(html);
+                    }
+                });
+                //产品下拉
+                controller.ajax({
+                    url: "EnterpriseWeb/GetGoodsList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option value="0">===请选择===</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.ProductName + '(' + obj.Specs + ')</option>';
+                        });
+                        $("#GoodsId").html(html);
+                    }
+                });
+                //产品批次下拉
+                controller.ajax({
+                    url: "EnterpriseWeb/GetProBatchList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option value="0">===请选择===</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.BatchNo + '</option>';
+                        });
+                        $("#BatchId").html(html);
+                    }
+                });
+                //人员下拉
+                controller.ajax({
+                    url: "EnterpriseWeb/GetUserList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option>' + obj.TrueName + '</option>';
+                        });
+                        $("#Manager").html(html);
+                    }
+                });
+                //质检列表
+                controller.ajax({
+                    url: "EnterpriseWeb/GetCheckGoodsList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.CheckName + '</option>';
+                        });
+                        $("#CheckGoodsId").html(html);
+                    }
+                });
+                //成长日记
+                controller.ajax({
+                    url: "EnterpriseWeb/GetNoteList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.NoteName + '</option>';
+                        });
+                        $("#GrowNoteId").html(html);
+                    }
+                });
+                //进货列表
+                controller.ajax({
+                    url: "EnterpriseWeb/GetBuyerList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.BatchNo + '</option>';
+                        });
+                        $("#BuyId").html(html);
+                    }
+                });
+            },
+            //绑定二维码
+            BindTarget: function () {
+                $("#bind").on('click', function () {
+                    var flag = $("#GoodsId").find("option:selected").val();
+                    if (flag == 0)
+                        controller.Msg("请先选择产品!");
+                    else
+                        controller.OpenWindow({
+                            title: "绑定二维码",
+                            type: 2,
+                            height: "400px",
+                            width: "700px",
+                            url: "WebCompanyManage/Goods/BindTarget?Id=" + flag + "&No=" + $("#GoodsBatchNo").val() + "&Num=" + $("input[name='InStockNum']").val(),
+                            callBack: function (result) {
+                                var num = $("input[name='InStockNum']").val();
+                                if (num != "" && num != null) {
+                                    if (result.$("#TagType").val() != 3) {
+                                        var total = (Number(result.$("#End").val()) - Number(result.$("#Star").val()))+1;
+                                        num > total ? controller.Msg("入库数量大于绑定二维码数量") : result.$("#Edit").submit();
+                                    } else
+                                        result.$("#Edit").submit();
+                                }
+                            }
+                        });
+                });
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/EditGoodsStock" id="Edit">
+            <input type="hidden" class="form-control" name="CompanyId" id="CompanyId" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">批次号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="GoodsBatchNo" id="GoodsBatchNo" readonly />
+                    </td>
+                    <th><label class="control-label">产品名称</label></th>
+                    <td class="has-warning">
+                        <select type="select" name="GoodsId" id="GoodsId" class="form-control"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">生产批次</label></th>
+                    <td class="has-warning">
+                        <select type="select" name="BatchId" id="BatchId" class="form-control"></select>
+                    </td>
+                    <th><label class="control-label">生产时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ProductTime" id="ProductTime" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">入库数量</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="InStockNum" />
+                    </td>
+                    <th><label class="control-label">负责人</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="Manager" id="Manager"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">入库类型</label></th>
+                    <td class="has-warning">
+                        <select class="form-control" name="StockType" type="select">
+                            <option value="产品入库">产品入库</option>
+                            <option value="半成品入库">半成品入库</option>
+                            <option value="其他入库">其他入库</option>
+                        </select>
+                    </td>
+                    <th><label class="control-label">产品质检</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="CheckGoodsId" id="CheckGoodsId"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">成长日记</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="GrowNoteId" id="GrowNoteId"></select>
+                    </td>
+                    <th><label class="control-label">进货批次</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="BuyId" id="BuyId"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">仓库类型</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="StockTypeId" id="StockTypeId"></select>
+                    </td>
+                    <th><label class="control-label">绑定二维码</label></th>
+                    <td class="has-warning">
+                        <button id="bind" class="btn btn-info form-control" type="button">绑定二维码标签</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

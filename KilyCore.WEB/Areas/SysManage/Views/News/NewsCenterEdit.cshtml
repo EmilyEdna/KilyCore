@@ -1,0 +1,87 @@
+﻿
+@{
+    ViewData["Title"] = "编辑新闻";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                controller.LayDate({ elem: "input[name='ReleaseDate']" });
+                var Editor = controller.Editor(".summernote", { width: 735 });
+                var Id = controller.GetParam("Id");
+                if (Id != null)
+                    controller.ajax({
+                        url: "System/GetNewsDetail",
+                        type: "post",
+                        async: false,
+                        data: { Id: Id },
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                            Editor.summernote('code', result.data.NewsContent);
+                        }
+                    })
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="System/EditNews" id="Edit">
+            <input type="hidden" name="Id" />
+            <input type="hidden" name="NewsContent" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">新闻标题</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="Title" data-msg-required="请输入新闻标题" />
+                    </td>
+                    <th><label class="control-label">来源</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SubTitle" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">新闻分类</label></th>
+                    <td class="has-warning">
+                        <select type="select" name="NewsType" class="form-control">
+                            <option value="10">公示公告</option>
+                            <option value="20">行业资讯</option>
+                            <option value="30">政策法规</option>
+                            <option value="40">健康生活</option>
+                            <option value="50">曝光台</option>
+                        </select>
+                    </td>
+                    <th><label class="control-label">发布时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ReleaseDate" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="has-warning" colspan="4">
+                        <div class="summernote" name="NewsContent"></div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

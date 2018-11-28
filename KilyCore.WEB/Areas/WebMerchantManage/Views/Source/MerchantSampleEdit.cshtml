@@ -1,0 +1,118 @@
+﻿
+@{
+    ViewData["Title"] = "编辑留样信息";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#InfoId").val(RepastUser.Id);
+                controller.LayDate({ elem: "#SampleTime" })
+                //菜品列表
+                controller.ajax({
+                    url: "RepastWeb/GetDishList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择菜品==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option data-value="' + obj.Id + '" value="' + obj.Name + '">' + obj.Name + '</option>';
+                        });
+                        $("#DishName").html(html);
+                    }
+                });
+                //获取负责人
+                controller.ajax({
+                    url: "RepastWeb/GetMerchantList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>'
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.TrueName + '">' + obj.TrueName + '</option>';
+                        });
+                        $("select[name='OperatUser']").html(html);
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                //文件上传
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: ".upload-input",
+                    maxNum: 1,
+                    node: '.image-box',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        $("#SampleImg").val(result.data);
+                    }
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="RepastWeb/EditSample" id="Edit">
+            <input type="hidden" class="form-control" name="InfoId" id="InfoId" />
+            <input name="Remark" type="hidden" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">菜品名称</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="DishName" id="DishName"></select>
+                    </td>
+                    <th><label class="control-label">留样时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SampleTime" id="SampleTime" />
+                    </td>
+                <tr>
+                    <th><label class="control-label">操作人</label></th>
+                    <td class="has-warning">
+                        <select type="select" name="OperatUser" class="form-control"></select>
+                    </td>
+                    <th><label class="control-label">电话</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Phone" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">备注</label></th>
+                    <td class="has-warning" colspan="3">
+                        <textarea class="form-control" name="Remark" rows="3" maxlength="200"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">留样图片</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                        <input type="hidden" id="SampleImg" name="SampleImg" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

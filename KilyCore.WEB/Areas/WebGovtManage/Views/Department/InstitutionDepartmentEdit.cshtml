@@ -1,0 +1,114 @@
+﻿
+@{
+    ViewData["Title"] = "编辑机构";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{ }
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitEvents();
+                this.InitDom();
+            },
+            //元素
+            InitDom: function () {
+                var Guid = controller.GetParam("Id");
+                $("#GovtId").val(GovtInfo.Id);
+                if (Guid != null && Guid != "")
+                    controller.ajax({
+                        url: "GovtWeb/GetInsDetail",
+                        data: { Id: Guid },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                            $("#ManageArea").selectpicker('val', result.data.ManageAreaList);
+                        }
+                    });
+            },
+            //事件
+            InitEvents: function () {
+                //当登录的用户账号角色为市级账号时默认查询改账号下所有的区县
+                if (GovtInfo.AccountType == 20)
+                    controller.Select({
+                        arrelemnt: ['#ManageArea'],
+                        url: 'GovtWeb/GetArea',
+                        data: { Id: GovtInfo.City },
+                        flag: false,
+                        callBack: function (data) {
+                            var html = '';
+                            $.each(data, function (i, obj) {
+                                html += '<option value="' + obj.Id + '">' + obj.AreaName + '</option>';
+                            });
+                            $("#ManageArea").html(html);
+                        }
+                    });
+                //当登录的用户账号角色为区县级账号时默认查询改账号下所有的乡镇
+                if (GovtInfo.AccountType == 30)
+                    controller.Select({
+                        arrelemnt: ['#ManageArea'],
+                        url: 'GovtWeb/GetTown',
+                        data: { Id: GovtInfo.Area },
+                        flag: false,
+                        callBack: function (data) {
+                            var html = '';
+                            $.each(data, function (i, obj) {
+                                html += '<option value="' + obj.Id + '">' + obj.TownName + '</option>';
+                            });
+                            $("#ManageArea").html(html);
+                        }
+                    });
+                $("#ManageArea").on('changed.bs.select', function () {
+                    var selector = $(this).find("option:selected");
+                    var array = [];
+                    for (var i = 0; i < selector.length; i++) {
+                        array.push($(selector[i]).text());
+                    }
+                    $('input[name="ManageArea"]').val($(this).val());
+                    $("input[name='ManageAreaName']").val(array);
+                });
+                controller.ValidateConfirm("#Edit");
+            },
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="GovtWeb/EditIns" id="Edit">
+            <input type="hidden" name="Id" />
+            <input type="hidden" name="GovtId" id="GovtId" />
+            <input type="hidden" name="TypePath" />
+            <input type="hidden" name="ManageAreaName" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">机构名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="InstitutionName" data-msg-required="请输入机构名称">
+                    </td>
+                    <th><label class="control-label">负责人</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="ChargeUser" data-msg-required="请输入机构负责人">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">管理区域</label></th>
+                    <td class="has-warning" colspan="3">
+                        <select type="select" class="selectpicker form-control" id="ManageArea" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">备注</label></th>
+                    <td class="has-warning" colspan="3">
+                        <textarea name="Remark" class="form-control" rows="3"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

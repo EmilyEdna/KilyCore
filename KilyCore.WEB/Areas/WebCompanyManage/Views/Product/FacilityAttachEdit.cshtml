@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewData["Title"] = "编辑保洁消毒";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#CompanyId").val(CompanyInfo.Id);
+                $("#FacId").val(controller.GetParam("Id"));
+                controller.LayDate({ elem: "input[name='CleanTime']" });
+                controller.ajax({
+                    url: "EnterpriseWeb/GetUserList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>===请选择===</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option>' + obj.TrueName + '</option>';
+                        });
+                        $("#HandlerUser").html(html);
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/SaveFacAttach" id="Edit">
+            <input type="hidden" id="CompanyId" name="CompanyId" />
+            <input type="hidden" id="FacId" name="FacId" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="DisinfectionName" />
+                    </td>
+                    <th><label class="control-label">时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="CleanTime" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">负责人</label></th>
+                    <td class="has-warning" colspan="3">
+                        <select type="select" class="form-control" name="HandlerUser" id="HandlerUser"></select>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

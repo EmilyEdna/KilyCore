@@ -1,0 +1,109 @@
+﻿
+@{
+    ViewData["Title"] = "绑定二维码";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#CompanyId").val(CompanyInfo.Id);
+                var Guid = controller.GetParam("Id");
+                var StockNo = controller.GetParam("No");
+                $("#GoodsId").val(Guid);
+                $("#StockNo").val(StockNo);
+            },
+            //事件
+            InitEvents: function () {
+                $("#TagType").on('change', function () {
+                    //绑定二维码批次
+                    controller.ajax({
+                        url: "EnterpriseWeb/GetTagList",
+                        data: { Id: $(this).val() },
+                        async: false,
+                        type: "post",
+                        success: function (result) {
+                            var html = '<option>===请选择===</option>';
+                            $.each(result.data, function (i, obj) {
+                                html += '<option value="' + obj.Id + '">' + obj.BatchNo + '</option>';
+                            });
+                            $('#TagId').html(html);
+                        }
+                    });
+                }).change();
+                $("#TagId").on('change', function () {
+                    $("#TagBatchNo").val($(this).find("option:selected").text());
+                    var datas = {
+                        Id: $("#TagType").find("option:selected").val(),
+                        Parameter: $("#TagBatchNo").val()
+                    };
+                    controller.ajax({
+                        url: "EnterpriseWeb/GetCodeNo",
+                        data: datas,
+                        async: false,
+                        type: "post",
+                        success: function (result) {
+                            $("#Star").val(result.data);
+                            var End = Number(result.data) - 1 + Number(controller.GetParam("Num"));
+                            $("#End").val(End);
+                        }
+                    });
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/BindTarget" id="Edit">
+            <input type="hidden" name="CompanyId" id="CompanyId" />
+            <input type="hidden" name="GoodsId" id="GoodsId" />
+            <input type="hidden" name="TagBatchNo" id="TagBatchNo" />
+            <input type="hidden" name="StockNo" id="StockNo" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">二维码类型</label></th>
+                    <td class="has-warning">
+                        <select type="select" id="TagType" name="TagType" class="form-control">
+                            <option value="1">纹理二维码</option>
+                            <option value="2">一物一码</option>
+                            <option value="3">一品一码</option>
+                        </select>
+                    </td>
+                    <th><label class="control-label">批次选择</label></th>
+                    <td class="has-warning">
+                        <select type="select" id="TagId" class="form-control" name="TagId">
+                            <option>===请选择===</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">开始号段</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="StarSerialNo" id="Star" placeholder="纹理二维码请输入前11位/普通二维码输入前14位" title="纹理二维码请输入前11位/普通二维码输入前14位" />
+                    </td>
+                    <th><label class="control-label">结束号段</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="EndSerialNo" id="End" placeholder="纹理二维码请输入前11位/普通二维码输入前14位" title="纹理二维码请输入前11位/普通二维码输入前14位" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

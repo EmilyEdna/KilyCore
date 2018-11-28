@@ -1,0 +1,126 @@
+﻿
+@{
+    ViewData["Title"] = "扫码管理";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                //恢复高度
+                $(window).resize(function (e) {
+                    window.setTimeout(function () {
+                        options.$table.bootstrapTable("resetView", { height: $(window).height() - 150 });
+                    }, 200);
+                    e.stopPropagation();
+                });
+                //设置表单
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetScanCodePage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
+            },
+            //事件
+            InitEvents: function () {
+            },
+            //行为
+            action: {
+                TableFormatter: function (val, row, index) {
+                    var action = [];
+                    action.push('<button class="btn btn-sm btn-primary add"><i class="fa fa-plus"></i>添加产品说明</button>');
+                    action.push('<button class="btn btn-sm btn-primary code"><i class="fa fa-plus"></i>生成二维码</button>');
+                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-plus"></i>生成二维码连接</button>');
+                    return action.join("&nbsp;")
+                },
+                TableEvents: {
+                    "click .add": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "添加产品说明",
+                            type: 2,
+                            height: "600px",
+                            width: "800px",
+                            url: "WebCompanyManage/ThingCode/AddExplanation?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
+                    },
+                    "click .code": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "二维码",
+                            type: 2,
+                            height: "600px",
+                            width: "800px",
+                            url: "WebCompanyManage/ThingCode/ScanCodeAttach?SCode=" + row.StarSerialNo + "&ECode=" + row.EndSerialNo + "&Id=" + row.Id,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
+                    },
+                    "click .edit": function (event, val, row, index) {
+                        $("input[type='hidden'][name='Id']").val(row.Id);
+                        $("input[type='hidden'][name='SCode']").val(row.StarSerialNo);
+                        $("input[type='hidden'][name='ECode']").val(row.EndSerialNo);
+                        $("#Export").submit();
+                    },
+                }//表单事件结束
+            }//行为结束
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+@section css{
+
+}
+<form method="post" action="/File/ExportTxt" id="Export">
+    <input type="hidden" name="Id" />
+    <input type="hidden" name="SCode" />
+    <input type="hidden" name="ECode" />
+</form>
+<div class="container-fluid">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>扫码管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <form id="Edit">
+                        <div class="col-sm-8 m-b-xs">
+                            <div class="input-group">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" placeholder="产品名称" class="input-sm form-control" name="ProductName">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
+                                    <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive">
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="BatchNo" data-halign="center" data-align="center" data-valign="middle">出库批次</th>
+                                <th data-field="ProductName" data-halign="center" data-align="center" data-valign="middle">产品名称</th>
+                                <th data-field="ProductType" data-halign="center" data-align="center" data-valign="middle">产品类型</th>
+                                <th data-field="ExpiredDate" data-halign="center" data-align="center" data-valign="middle">保质期</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

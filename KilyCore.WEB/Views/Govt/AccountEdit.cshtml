@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewData["Title"] = "修改密码";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#id").val(controller.GetParam("Id"));
+                controller.ValidateConfirm("#Edit");
+
+            },
+            //事件
+            InitEvents: function () { },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="GovtWeb/EditPwd" id="Edit" async="true">
+            <input type="hidden" id="id" name="Id" />
+            <div style="margin-top:30px;">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                    <input class="form-control required" type="password" placeholder="新密码" name="PassWord" id="pwd1" data-msg-required="请输入新密码">
+                </div>
+                <div class="inline"></div>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                    <input class="form-control required" type="password" placeholder="确认密码" id="pwd2" data-msg-required="请确认新密码">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

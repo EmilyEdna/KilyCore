@@ -1,0 +1,77 @@
+﻿
+@{
+    ViewData["Title"] = "新增标签";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var Flag = controller.GetParam("Flag");
+                if (Flag == 1)
+                    $("#BatchNo").val("G" + controller.FormatDate("YYMMDDHHmmss"));
+                else if (Flag == 2)
+                    $("#BatchNo").val("P" + controller.FormatDate("YYMMDDHHmmss"));
+                else
+                    $("#BatchNo").val("C" + controller.FormatDate("YYMMDDHHmmss"));
+                $("#CompanyId").val(CompanyInfo.Id);
+
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/CreateTag" id="Edit">
+            <input type="hidden" id="CompanyId" name="CompanyId" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">标签类型</label></th>
+                    <td class="has-warning" colspan="3">
+                        <label class="radio-inline">
+                            <input type="radio" name="TagType" value="10" style="margin-top:3px" />
+                            <text title="一物一码">一物一码</text>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="TagType" value="20" style="margin-top:3px" />
+                            <text title="一品一码">一品一码</text>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="TagType" value="30" style="margin-top:3px" />
+                            <text title="一企一码">一企一码</text>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">批次编号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="BatchNo" id="BatchNo" readonly />
+                    </td>
+                    <th><label class="control-label">生成数量</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required IsNumber" name="TotalNo" data-msg-required="请输入生成数量(仅限数字)" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

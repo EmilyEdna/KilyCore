@@ -1,0 +1,58 @@
+﻿
+@{
+    ViewData["Title"] = "录入标签";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("input[name='BatchNo']").val("V" + controller.FormatDate("YYMMDDHHmmss"));
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="Function/RecordTag" id="Edit">
+            <input type="hidden" name="IsAccept" value="true" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">批次</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" class="form-control" name="BatchNo" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">开始号段</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="StarSerialNo" data-msg-required="请输入开始号段(仅限数字)"  maxlength="11"/>
+                    </td>
+                    <th><label class="control-label">结束号段</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="EndSerialNo" data-msg-required="请输入结束号段(仅限数字)"  maxlength="11"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

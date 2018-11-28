@@ -1,0 +1,139 @@
+﻿
+@{
+    ViewData["Title"] = "人员编辑";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitEnterpriseRole();
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var Guid = controller.GetParam("Id");
+                if (Guid != null && Guid != undefined && Guid != "")
+                    options.GetUserDetail(Guid);
+                else
+                {
+                    $("#InfoId").val(RepastUser.Id);
+                    $("#VersionType").val(RepastUser.VersionType);
+                    $("#MerchantName").val(RepastUser.MerchantName);
+                    $("#DiningType").val(RepastUser.DiningType);
+                }
+            },
+            //获取详情
+            GetUserDetail: function (Guid) {
+                controller.ajax({
+                    url: "RepastWeb/GetUserDetail",
+                    data: { Id: Guid },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        controller.SetCtrlValue("#Edit",result.data)
+                     }
+                });
+            },
+            //获取集团账户
+            InitEnterpriseRole: function () {
+                controller.ajax({
+                    url: "RepastWeb/GetRoleAuthorList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result)
+                    {
+                        var html = '<option>===请选择===</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.AuthorName + '</option>'
+                        });
+                        $("#DingRoleId").html(html);
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: ".upload-input",
+                    maxNum: 1,
+                    node: '.image-box',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        $("#HealthCard").val(result.data);
+                    }
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="RepastWeb/SaveUser" id="Edit">
+            <input type="hidden" name="Id" />
+            <input type="hidden" name="InfoId" id="InfoId" />
+            <input type="hidden" name="VersionType" id="VersionType" />
+            <input type="hidden" name="MerchantName" id="MerchantName" />
+            <input type="hidden" name="DiningType" id="DiningType" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">用户账户</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="Account" data-msg-required="请输入用户账户" />
+                    </td>
+                    <th><label class="control-label">账户密码</label></th>
+                    <td class="has-warning">
+                        <input type="password" class="form-control required" name="PassWord" data-msg-required="请输入账户密码" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">人员姓名</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="TrueName" data-msg-required="请输入用户账户" />
+                    </td>
+                    <th><label class="control-label">身份证号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required IsIDCard" name="IdCard" data-msg-required="请输入身份证号" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">联系电话</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required IsPhone" name="Phone" data-msg-required="请输入联系电话" />
+                    </td>
+                    <th><label class="control-label">角色权限</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="DingRoleId" id="DingRoleId">
+                            <option>===请选择===</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">健康证</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                        <input type="hidden" id="HealthCard" name="HealthCard" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

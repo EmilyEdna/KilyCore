@@ -1,0 +1,167 @@
+﻿
+@{
+    ViewData["Title"] = "食用产品详情";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{ }
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                //取详情
+                controller.ajax({
+                    url: "GovtWeb/GetEdibleDetail",
+                    data: { Id: controller.GetParam("Id") },
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        controller.SetCtrlValue("#Edit", result.data);
+                    }
+                });
+                //查看大图
+                $("img").on('click', function () {
+                    var option = {
+                        title: "质检报告",
+                        data: [{
+                            alt: "质检报告",
+                            src: $(this).attr("src")
+                        }]
+                    };
+                    controller.Photos(option);
+                });
+            },
+            //事件
+            InitEvents: function () {
+            },
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+
+    </script>
+}
+<form class="form-horizontal" method="post" id="Edit">
+    <div class="tabs-container">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a data-toggle="tab" href="#tab-1" aria-expanded="true"> 基本信息</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-2" aria-expanded="false">产品质检</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-3" aria-expanded="false">库存信息</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-4" aria-expanded="false">仓库信息</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="tab-1" class="tab-pane active">
+                <table class="table table-hover table-bordered m-t-sm">
+                    <tr>
+                        <th><label class="control-label">产品名称</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="ProductName" readonly="readonly" />
+                        </td>
+                        <th><label class="control-label">保质期</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="ExpiredDate" readonly="readonly" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label class="control-label">规格</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="Spec" readonly="readonly" />
+                        </td>
+                        <th><label class="control-label">产品类型</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="ProductType" readonly="readonly" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="tab-2" class="tab-pane">
+                <table class="table table-hover table-bordered m-t-sm">
+                    <tr>
+                        <th><label class="control-label">质检单位</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="CheckUint" readonly="readonly" />
+                        </td>
+                        <th><label class="control-label">质检人</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="CheckUser" readonly="readonly" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label class="control-label">质检结果</label></th>
+                        <td class="has-warning" colspan="3">
+                            <input type="text" class="form-control" name="CheckResult" readonly="readonly" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label class="control-label">质检报告</label></th>
+                        <td class="has-warning" colspan="3">
+                            <img class="img-preview" src="" type="image" name="CheckReport" style="display:block;margin:auto" title="点击放大" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="tab-3" class="tab-pane">
+                <table class="table table-hover table-bordered m-t-sm">
+                    <tr>
+                        <th><label class="control-label">生产时间</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="ProductTime" readonly="readonly" />
+                        </td>
+                        <th><label class="control-label">入库管理员</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="Manager" readonly="readonly" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label class="control-label">出库时间</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="OutStockTime" readonly="readonly" />
+                        </td>
+                        <th><label class="control-label">出库管理员</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="OutStockUser" readonly="readonly" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="tab-4" class="tab-pane">
+                <table class="table table-hover table-bordered m-t-sm">
+                    <tr>
+                        <th><label class="control-label">仓库名称</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="StockName" readonly="readonly" />
+                        </td>
+                        <th><label class="control-label">贮藏方式</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="SaveType" readonly="readonly" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label class="control-label">贮藏湿度</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="SaveH2" readonly="readonly" />
+                        </td>
+                        <th><label class="control-label">贮藏温度</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="SaveTemp" readonly="readonly" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>

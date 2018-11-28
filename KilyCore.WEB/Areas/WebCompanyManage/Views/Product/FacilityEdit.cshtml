@@ -1,0 +1,82 @@
+﻿
+@{
+    ViewData["Title"] = "编辑设施";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#CompanyId").val(CompanyInfo.Id);
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/SaveFac" id="Edit">
+            <input type="hidden" id="CompanyId" name="CompanyId" />
+            <datalist id="datas">
+                <option value="是"></option>
+                <option value="否"></option>
+            </datalist>
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">车间名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="WorkShopName" />
+                    </td>
+                    <th><label class="control-label">是否供水</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="GetWater" list="datas" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">是否光照</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Light" list="datas" />
+                    </td>
+                    <th><label class="control-label">是否排水</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="WaterOut" list="datas" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">是否通风</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Wind" list="datas" />
+                    </td>
+                    <th><label class="control-label">废物处理</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Waste" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">环境控制</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" class="form-control" name="Environment" placeholder="多项用逗号隔开"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,124 @@
+﻿
+@{
+    ViewData["Title"] = "库存报表";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                //恢复高度
+                $(window).resize(function (e) {
+                    window.setTimeout(function () {
+                        options.$table.bootstrapTable("resetView", { height: $(window).height() - 150 });
+                    }, 200);
+                    e.stopPropagation();
+                });
+                //设置表单
+                this.$table = controller.Table("#tableListSet", { async: false, url: "RepastWeb/GetStorageReportPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Food" });
+            },
+            //事件
+            InitEvents: function () {
+                $("li").find("a").on('click', function () {
+                    if ($(this).attr("href") == "#tab-1")
+                        this.$table = controller.Table("#tableListSet", { async: false, url: "RepastWeb/GetStorageReportPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Food" });
+                    else
+                        this.$table = controller.Table("#tableListOut", { async: false, url: "RepastWeb/GetStockReportPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Goods" });
+                });
+            },
+            //行为
+            action: {
+
+            }
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+@section css{
+    <style>
+        .ibox-content {
+            border-top-style: none;
+        }
+    </style>
+}
+<!--导航-->
+<div class="tabs-container" style="margin-top:10px;">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a data-toggle="tab" href="#tab-1" aria-expanded="true"> 原料库存单</a>
+        </li>
+        <li>
+            <a data-toggle="tab" href="#tab-2" aria-expanded="false">物品库存单</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div id="tab-1" class="tab-pane active">
+            <div class="ibox-content">
+                <div class="row">
+                    <form id="Food">
+                        <div class="col-sm-8 m-b-xs">
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" placeholder="原料名称" class="input-sm form-control" name="Name">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
+                                    <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive m-t-sm">
+                    <table id="tableListSet" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="Name" data-halign="center" data-align="center" data-valign="middle">名称</th>
+                                <th data-field="InStock" data-halign="center" data-align="center" data-valign="middle">库存剩余</th>
+                                <th data-field="OutStock" data-halign="center" data-align="center" data-valign="middle">出库总量</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="tab-2" class="tab-pane">
+            <div class="ibox-content">
+                <div class="row">
+                    <form id="Goods">
+                        <div class="col-sm-8 m-b-xs">
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" placeholder="物品名称" class="input-sm form-control" name="Name">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
+                                    <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive m-t-sm">
+                    <table id="tableListOut" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="Name" data-halign="center" data-align="center" data-valign="middle">名称</th>
+                                <th data-field="InStock" data-halign="center" data-align="center" data-valign="middle">库存剩余</th>
+                                <th data-field="OutStock" data-halign="center" data-align="center" data-valign="middle">出库总量</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,95 @@
+﻿
+@{
+    ViewData["Title"] = "分配字典";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var data = controller.GetParam("Id");
+                $("#Id").val(data);
+                options.GetProvince();
+                controller.ajax({
+                    url: "Function/GetAreaDicDetail",
+                    type: "post",
+                    data: { Id: data },
+                    async: false,
+                    success: function (result) {
+                        if (result.data != null) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                            $("textarea").val(result.data.ProvinceName);
+                        }
+                    }
+                });
+            },
+            //获取省份
+            GetProvince: function () {
+                controller.Select({
+                    document: '.selectpicker',
+                    arrelemnt: ['#ProvinceId'],
+                    url: 'System/GetProvince',
+                    flag: false,
+                    callBack: function (result) {
+                        var html = '';
+                        $.each(result, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.ProvinceName + '</option>';
+                        });
+                        $("#ProvinceId").html(html);
+                    }
+                });
+                $("#ProvinceId").on('changed.bs.select', function () {
+                    var $Id = $('input[name="ProvinceId"]');
+                    if ($Id.val() != "") {
+                       var arr =  ($Id.val() + "," + $(this).val()).split(",");
+                        $.unique(arr);
+                        $Id.val(arr);
+                    }
+                    else
+                        $Id.val($(this).val());
+                });
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="Function/RecordAreaDic" id="Edit">
+            <input type="hidden" id="Id" name="DictionaryId" />
+            <input type="hidden" name="Id" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">选择省份</label></th>
+                    <td class="has-warning" colspan="3">
+                        <select type="select" class="selectpicker form-control" id="ProvinceId" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">已分配的省份</label></th>
+                    <td class="has-warning" colspan="3">
+                        <textarea class="form-control" rows="5"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

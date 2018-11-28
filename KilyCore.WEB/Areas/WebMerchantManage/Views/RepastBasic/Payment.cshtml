@@ -1,0 +1,254 @@
+﻿
+@{
+    ViewData["Title"] = "合同缴费";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var TypePath = controller.GetParam("TypePath");
+                if (TypePath == "null") {
+                    controller.Confirm("请先完善资料!", function () {
+                        controller.Close();
+                    });
+                    return;
+                }
+                $("#CompanyId").val(controller.GetParam("Id"));
+                $("#TypePath").val(TypePath);
+                $("#MerchantName").val(controller.GetParam("MerchantName"));
+                $(".A2").css({ display: "none" });
+                $(".B1").css({ display: "none" });
+                //获取版本
+                controller.ajax({
+                    url: "Function/GetAreaVersion",
+                    data: { Id: TypePath, Parameter: RepastUser.CompanyType },
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        var html = '<option>===请选择===</option>'
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.DicValue + '" data-value="' + obj.DicDescript + '" data-attach="' + obj.AttachInfo + '">' + obj.DicName + '</option>';
+                        });
+                        $("#VersionType").html(html);
+                    }
+                });
+                //获取授权企业
+                controller.ajax({
+                    url: "System/GetAuthorAdmin",
+                    data: { Parameter: TypePath },
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        var html = '<option>===请选择===</option>'
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '" data-name="'+obj.BankName+'" data-bank="' + obj.BankCard + '" data-img="' + obj.Chapter + '" data-code="' + obj.CommunityCode + '" data-address="' + obj.Address + '">' + obj.TrueName + '</option>';
+                        });
+                        $("#AdminId").html(html);
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                //显示版本详情
+                $("#VersionType").on("change", function () {
+                    var selector = $(this).find("option:selected");
+                    var html = "版本费用：" + selector.data().attach + "/年。</br>当前版本功能为：" + selector.data().value;
+                    controller.Alter(html);
+                });
+                //合同模式
+                $("input:radio[name='ContractType']").on('click', function () {
+                    if ($(this).val() == 1) {
+                        $("#A1").css({ display: "block", display: "table-row" });        
+                        $(".A2").css({ display: "none" });
+                        $("#A3").css({ display: "block", display: "table-footer-group" });
+                    } else {
+                        $("#A1").css({ display: "none" });
+                        $(".A2").css({ display: "none" });
+                        $("#A3").css({ display: "none" });
+                    }
+                });
+                //支付方式
+                $("input:radio[name='PayType']").on('click', function () {
+                    if ($(this).val() >= 30) {
+                        $("#A3").css({ display: "none" });
+                        $(".A2").css({ display: "block", display: "table-row" });
+                        $(".B1").css({ display: "none" });
+                    }
+                    else {
+                        $("#A3").css({ display: "block", display: "table-footer-group" });
+                        $(".A2").css({ display: "none" });
+                        $(".B1").css({ display: "none" });
+                    }
+                });
+                //文件上传-票据
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: ".upload-input",
+                    node: '.image-box',
+                    maxNum: 1,
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        $("#PayTicket").val(result.data);
+                    }
+                });
+                //生成合同
+                $("#down").on('click', function () {
+                    var data = {
+                        ContractType: $("input[type='radio'][name='ContractType']:checked").val(),
+                        ContractYear: $("input[type='text'][name='ContractYear']").val(),
+                        AuthorCompany: $("#AdminId").find("option:selected").text(),
+                        Code: $("#AdminId").find("option:selected").data().code,
+                        Chapter: $("#AdminId").find("option:selected").data().img,
+                        Address: $("#AdminId").find("option:selected").data().address,
+                        VersionName: $("#VersionType").find("option:selected").text(),
+                        VersionDes: $("#VersionType").find("option:selected").data().value,
+                        CompanyName: RepastUser.MerchantName,
+                        CommunityCode: RepastUser.CommunityCode,
+                        CompanyAddress: RepastUser.Address,
+                        AttachInfo: $("#VersionType").find("option:selected").data().attach
+                    }
+                    controller.SetCtrlValue("#PDF", data);
+                    $("#PDF").submit();
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+                $("#AdminId").on('change', function () {
+                    var $data = $(this).find("option:selected").data();
+                    $("#BankName").val($data.name);
+                    $("#BankCard").val($data.bank);               
+                    $(".B1").css({ display: "block", display: "table-row" });
+                });
+                $("#pay").click(function () {
+                    $("#Edit").submit();
+                });
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form method="post" action="/File/HTMLToPDF" id="PDF">
+            <input type="hidden" name="ContractType" />
+            <input type="hidden" name="ContractYear" />
+            <input type="hidden" name="AuthorCompany" />
+            <input type="hidden" name="Code" />
+            <input type="hidden" name="Chapter" />
+            <input type="hidden" name="Address" />
+            <input type="hidden" name="VersionName" />
+            <input type="hidden" name="VersionDes" />
+            <input type="hidden" name="CompanyName" />
+            <input type="hidden" name="CommunityCode" />
+            <input type="hidden" name="CompanyAddress" />
+            <input  type="hidden" name="AttachInfo"/>
+        </form>
+        <form class="form-horizontal" method="post" action="RepastWeb/SaveContract" id="Edit">
+            <input type="hidden" name="PayTicket" id="PayTicket" />
+            <input type="hidden" name="CompanyId" id="CompanyId" />
+            <input type="hidden" name="TypePath" id="TypePath" />
+            <input type="hidden" name="CompanyName" id="MerchantName" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">合同模式</label></th>
+                    <td class="has-warning">
+                        <label class="radio-inline">
+                            <input type="radio" name="ContractType" value="1" style="margin-top:3px" checked />
+                            <text title="线上合同">线上合同</text>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="ContractType" value="2" style="margin-top:3px" />
+                            <text title="线下合同">线下合同</text>
+                        </label>
+                    </td>
+                    <th><label class="control-label">版本选择</label></th>
+                    <td class="has-warning">
+                        <div class="input-group">
+                            <select type="select" name="VersionType" class="form-control" id="VersionType"></select>
+                            <span class="input-group-addon btn btn-sm" id="down">下载合同</span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">入住年限/年</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" name="ContractYear" class="form-control required" placeholder="请填入纯数字不要带其他任何汉子特殊字符" data-msg-required="请输入入住年限" />
+                    </td>
+                </tr>
+                <tr class="A2">
+                    <th><label class="control-label">授权企业</label></th>
+                    <td class="has-warning" colspan="3">
+                        <select type="select" name="AdminId" class="form-control" id="AdminId"></select>
+                    </td>
+                </tr>
+                <tr class="B1">
+                    <th><label class="control-label">开户行</label></th>
+                    <td class="has-warning">
+                       <input  type="text" id="BankName" class="form-control"/>
+                    </td>
+                    <th><label class="control-label">银行卡号</label></th>
+                    <td class="has-warning">
+                        <input type="text" id="BankCard" class="form-control" />
+                    </td>
+                </tr>
+                <tr id="A1">
+                    <th><label class="control-label">缴费方式</label></th>
+                    <td class="has-warning" colspan="3">
+                        <label class="radio-inline">
+                            <input type="radio" name="PayType" value="10" style="margin-top:3px" checked />
+                            <text title="支付宝">支付宝</text>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="PayType" value="20" style="margin-top:3px" />
+                            <text title="微信">微信</text>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="PayType" value="30" style="margin-top:3px" />
+                            <text title="银行转账">银行转账</text>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="PayType" value="40" style="margin-top:3px" />
+                            <text title="营运中心">营运中心</text>
+                        </label>
+                    </td>
+                </tr>
+                <tr class="A2">
+                    <th><label class="control-label">缴费票据</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                    </td>
+                </tr>
+                <tfoot id="A3">
+                    <tr>
+                        <th colspan="4">
+                            <div class="text-center">
+                                <button class="btn btn-info btn-sm" type="button" id="pay">支付</button>
+                            </div>
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+        </form>
+    </div>
+</div>
+<div class="text-center">
+    <div id="QRCode"></div>
+</div>

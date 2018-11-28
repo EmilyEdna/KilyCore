@@ -1,0 +1,134 @@
+﻿@{
+    ViewData["Title"] = "区域价格";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                //恢复高度
+                $(window).resize(function (e) {
+                    window.setTimeout(function () {
+                        options.$table.bootstrapTable("resetView", { height: $(window).height() - 150 });
+                    }, 200);
+                    e.stopPropagation();
+                });
+                //设置表单
+                this.$table = controller.Table("#tableList", { url: "Function/GetAreaPricePage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#AreaPrice" });
+                if (SysUserInfo.AccountType != 20 && SysUserInfo.AccountType != 10)
+                    $("#add").css({ display: "none" });
+            },
+            //事件
+            InitEvents: function () {
+                $("#add").on('click', function () {
+                    controller.OpenWindow({
+                        title: "新增价目",
+                        type: 2,
+                        height: "400px",
+                        width: "700px",
+                        url: "FunManage/System/AreaPriceEdit",
+                        callBack: function (result) {
+                            result.$("#Edit").submit();
+                        }
+                    })
+                });
+            },
+            //行为
+            action: {
+                TableFormatter: function (val, row, index) {
+                    var action = [];
+                    if (SysUserInfo.AccountType == 10 || SysUserInfo.AccountType == 20)
+                        action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
+                    if (SysUserInfo.AccountType != 60)
+                        action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
+                    return action.join("&nbsp;")
+                },
+                TableEvents: {
+                    "click .del": function (event, val, row, index) {
+                        controller.Confirm("确认删除？", function (bool) {
+                            if (bool) {
+                                controller.ajax({
+                                    url: "Function/RemovePrice",
+                                    data: { Id: row.Id },
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    "click .edit": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "编辑价格",
+                            type: 2,
+                            height: "400px",
+                            width: "700px",
+                            url: "FunManage/System/AreaPriceEdit?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
+                    }
+                }//表单事件结束
+            }//行为结束
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+@section css{
+
+}
+
+<div class="container-fluid">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>区域价目</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <form id="AreaPrice">
+                        <div class="col-sm-8 m-b-xs">
+                            <div class="input-group">
+                                <button type="button" class="btn btn-sm btn-white" id="add"><i class="fa fa-plus"></i>新增</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" placeholder="价目名称" class="input-sm form-control" name="ProjectName"> 
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
+                                    <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive">
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="ProjectName" data-halign="center" data-align="center" data-valign="middle">价目名称</th>
+                                <th data-field="ProvincePrice" data-halign="center" data-align="center" data-valign="middle">省级单价(元)</th>
+                                <th data-field="CityPrice" data-halign="center" data-align="center" data-valign="middle">市级单价(元)</th>
+                                <th data-field="AreaPrice" data-halign="center" data-align="center" data-valign="middle">区县单价(元)</th>
+                                <th data-field="TownPrice" data-halign="center" data-align="center" data-valign="middle">乡镇单价(元)</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

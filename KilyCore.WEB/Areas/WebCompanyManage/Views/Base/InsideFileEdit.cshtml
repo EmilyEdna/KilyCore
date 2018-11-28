@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewData["Title"] = "编辑文件";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var Guid = controller.GetParam("Id");
+                $("#CompanyId").val(CompanyInfo.Id);
+                var Editor = controller.Editor(".summernote", {width:655});
+                options.GetFileDetail(Guid, Editor);
+            },
+            //获取详细
+            GetFileDetail: function (data, Editor) {
+                if (data != null && data != undefined && data != "")
+                {
+                    controller.ajax({
+                        url: "EnterpriseWeb/GetFileDetail",
+                        data: { Id: data },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                            Editor.summernote('code', result.data.FileContent);
+                        }
+                    });
+                }
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/SaveFile" id="Edit">
+            <input type="hidden" name="Id" />
+            <input  type="hidden" name="CompanyId" id="CompanyId"/>
+            <input type="hidden" name="FileContent" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">文件标题</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" class="form-control" name="FileTitle" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">详情描述</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="summernote" name="FileContent"></div>
+                    </td>
+            </table>
+        </form>
+    </div>
+</div>

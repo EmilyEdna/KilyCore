@@ -1,0 +1,93 @@
+﻿
+@{
+    ViewData["Title"] = "编辑日记";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var Guid = controller.GetParam("Id");
+                $("#CompanyId").val(CompanyInfo.Id);
+                controller.LayDate({ elem: "#SowingTime" });
+                controller.LayDate({ elem: "#ResultTime" });
+                options.BindBatch();
+                options.GetNoteDetail(Guid);
+            },
+            //获取详情
+            GetNoteDetail: function (Guid) {
+                if (Guid != "" && Guid != null && Guid != undefined)
+                    controller.ajax({
+                        url: "EnterpriseWeb/GetNoteDetail",
+                        async: false,
+                        data: { Id: Guid },
+                        type: 'post',
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                        }
+                    });
+            },
+            //绑定批次
+            BindBatch: function () {
+                controller.ajax({
+                    url: "EnterpriseWeb/GetGrowList",
+                    async: false,
+                    data: {},
+                    type: 'post',
+                    success: function (result) {
+                        var html = '';
+                        $.each(result.data, function (i, data) {
+                            html += '<option value="' + data.BatchNo + '">' + data.GrowName + '</option>'
+                        });
+                        $("#BatchNo").html(html);
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/EditNote" id="Edit">
+            <input  type="hidden" name="CompanyId" id="CompanyId"/>
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">批次编号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="BatchNo" list="BatchNo" />
+                        <datalist id="BatchNo"></datalist>
+                    </td>
+                    <th><label class="control-label">日记名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="NoteName" data-msg-required="请输入日记名称" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">收获时间</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" class="form-control" name="ResultTime" id="ResultTime" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

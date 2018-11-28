@@ -1,0 +1,228 @@
+﻿
+@{
+    ViewData["Title"] = "认证详情";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+    <style>
+        th {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        td {
+            text-align: center;
+            vertical-align: middle;
+        }
+    </style>
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                this.Guid = controller.GetParam("Id");
+                options.GetCompanyIdentDetail(this.Guid);
+            },
+            //事件
+            InitEvents: function () {
+                //查看大图
+                $("#tab-2").find("img").on('click', function () {
+                    var option = {
+                        title: "证书图片",
+                        data: [{
+                            alt: "证书图片",
+                            src: $(this).attr("src")
+                        }]
+                    };
+                    controller.Photos(option);
+                });
+            },
+            //获取详情
+            GetCompanyIdentDetail: function (Guid) {
+                controller.ajax({
+                    url: 'Repast/GetDiningIdentDetail',
+                    data: { Id: Guid },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        controller.SetCtrlValue("#DiningIdentDetail", result.data);
+                        options.BindHonor(result.data);
+                        options.BindAuditInfo(result.data.AuditInfo);
+                    }
+                });
+            },
+            //绑定审核信息
+            BindAuditInfo: function (data) {
+                var html = '';
+                $.each(data, function (i, obj) {
+                    html += '<tr><td class="text-warning">' + obj.AuditName + '</td>';
+                    html += '<td class="text-warning">' + obj.CreateTime + '</td>';
+                    if (obj.AuditSuggestion.length < 8)
+                        html += '<td class="text-warning">' + obj.AuditSuggestion + '</td>';
+                    else
+                        html += '<td class="text-warning"><lable title="' + obj.AuditSuggestion + '">' + obj.AuditSuggestion.substring(0, 8) + '..</lable></td>';
+                    if (obj.AuditType == 10)
+                        html += '<td class="text-warning">审核未通过</td></tr>';
+                    if (obj.AuditType == 20)
+                        html += '<td class="text-warning">等待审核</td></tr>';
+                    if (obj.AuditType == 30)
+                        html += '<td class="text-warning">待上级审核</td></tr>';
+                    if (obj.AuditType == 40)
+                        html += '<td class="text-warning">审核通过</td></tr>'; 
+                    if (obj.AuditType == 50)
+                        html += '<td class="text-warning">终审未通过</td></tr>';
+                    if (obj.AuditType == 60)
+                        html += '<td class="text-warning">终审通过</td></tr>';
+                })
+                $("#AuditInfo").html(html);
+            },
+            //绑定证书
+            BindHonor: function (data) {
+                var html = '';
+                $.each(data, function (field, obj) {
+                    if (field.indexOf("Img")>=0)
+                    html += "<img src='" + obj + "' class='img-preview-sm'  title='点击放大' style='width:251px;height:300px;padding:5px'/>";
+                });
+                $(".ibox-content").html(html);
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<form class="form-horizontal" method="post" action="Repast/GetDiningIdentDetail" id="DiningIdentDetail">
+    <div class="tabs-container">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a data-toggle="tab" href="#tab-1" aria-expanded="true"> 基本资料</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-2" aria-expanded="false">证书资料</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-3" aria-expanded="false">审核详情</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="tab-1" class="tab-pane active">
+                <table class="table table-hover table-bordered m-t-sm">
+                    <tr>
+                        <th><label class="control-label">商家名称</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="MerchantName" readonly="readonly" />
+                        </td>
+                        <th><label class="control-label">认证星级</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="IdentStarName" readonly="readonly" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label class="control-label">工商代码</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="CommunityCode" readonly="readonly" />
+                        </td>
+                        <th><label class="control-label">商家类型</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="DiningTypeName" readonly="readonly" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label class="control-label">认证年限</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="IdentYear" readonly="readonly" />
+                        </td>
+                        <th><label class="control-label">联系电话</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="LinkPhone" readonly="readonly" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label class="control-label">认证时间</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="IdentStartTime" readonly="readonly" />
+                        </td>
+                        <th><label class="control-label">截至时间</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="IdentEndTime" readonly="readonly" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label class="control-label">法人代表</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="Representative" readonly="readonly" />
+                        </td>
+                        <th><label class="control-label">法人身份证</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="RepresentativeCard" readonly="readonly" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label class="control-label">报送人</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="SendPerson" readonly="readonly" />
+                        </td>
+                        <th><label class="control-label">报送人身份证</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="SendCard" readonly="readonly" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label class="control-label">认证编号</label></th>
+                        <td class="has-warning" colspan="3">
+                            <input type="text" class="form-control" name="IdentNo" readonly="readonly" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label class="control-label">备注</label></th>
+                        <td class="has-warning" colspan="3">
+                            <textarea rows="3" readonly="readonly" class="form-control" name="Remark"></textarea>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="tab-2" class="tab-pane">
+                <div class="ibox-content">
+                </div>
+            </div>
+            <div id="tab-3" class="tab-pane">
+                <table class="table table-bordered m-t-sm">
+                    <thead>
+                        <tr>
+                            <th>
+                                <span class="text-navy fa fa-user">审核人</span>
+                            </th>
+                            <th>
+                                <span class="text-navy fa fa-calendar">审核时间</span>
+                            </th>
+                            <th>
+                                <span class="text-navy fa fa-commenting">审核意见</span>
+                            </th>
+                            <th>
+                                <span class="text-navy fa fa-question">审核状态</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="AuditInfo"></tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="4" class="text-danger">
+                                没有更多记录...
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>
+

@@ -1,0 +1,126 @@
+﻿
+@{
+    ViewData["Title"] = "自定义支付";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#Id").val(controller.GetParam("Id"));
+                $("#info").val(Number(controller.GetParam("TotalPrice")) * 0.2);
+                $("input[name='PayType']").on("click", function () {
+                    if ($(this).val() == 30) {
+                        $("#A1").css({ display: "block", display: "table-row" });
+                        $("#A2").css({ display: "none" });
+                    } else {
+                        $("#A1").css({ display: "none" });
+                        $("#A2").css({ display: "block", display: "table-footer-group" });
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                //文件上传-票据
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: ".upload-input",
+                    maxNum: 1,
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        $("#PayTicket").val(result.data);
+                    }
+                });
+                $("#pay").click(function () {
+                    var PayType = $("input[name='PayType']:checked").val()
+                    var url = PayType == 10 ? "System/AliPay" : "System/WxPay";
+                    controller.ajax({
+                        url: url,
+                        type: "post",
+                        async: false,
+                        data: { Id: $("#Info").val() },
+                        success: function (result) {
+                            if ($.parseJSON(result.data).PayType)
+                                $("#QRCode").css({ "display": "none" }).html($.parseJSON(result.data).PayContent);
+                            else
+                                controller.QRCode("#QRCode", { text: $.parseJSON(result.data).PayContent });
+                        }
+                    });
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+               
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+    }
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            <form class="form-horizontal" method="post" action="System/EditPay" id="Edit">
+                <input type="hidden" name="Id" id="Id" />
+                <input type="hidden" name="PayTicket" id="PayTicket" />
+                <table class="table table-hover table-bordered">
+                    <tr>
+                        <th><label class="control-label">应缴金额</label></th>
+                        <td class="has-warning" colspan="3">
+                            <input type="text" class="form-control" id="info" readonly />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label class="control-label">缴费方式</label></th>
+                        <td class="has-warning" colspan="3">
+                            <label class="radio-inline">
+                                <input type="radio" name="PayType" value="10" style="margin-top:3px" checked />
+                                <text title="支付宝">支付宝</text>
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="PayType" value="20" style="margin-top:3px" />
+                                <text title="微信">微信</text>
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="PayType" value="30" style="margin-top:3px" />
+                                <text title="银行转账">银行转账</text>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr id="A1" style="display:none">
+                        <th><label class="control-label">缴费票据</label></th>
+                        <td class="has-warning" colspan="3">
+                            <div class="image-box clear">
+                                <section class="upload-section">
+                                    <div class="upload-btn"></div>
+                                    <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                                </section>
+                            </div>
+                        </td>
+                    </tr>
+                    <tfoot id="A2">
+                        <tr>
+                            <th colspan="4">
+                                <div class="text-center">
+                                    <button class="btn btn-info btn-sm" type="button" id="pay">支付</button>
+                                </div>
+                            </th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </form>
+        </div>
+    </div>
+    <div class="text-center">
+        <div id="QRCode"></div>
+    </div>

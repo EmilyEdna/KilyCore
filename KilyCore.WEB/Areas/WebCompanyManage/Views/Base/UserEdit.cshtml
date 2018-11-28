@@ -1,0 +1,116 @@
+﻿@{
+    ViewData["Title"] = "编辑用户";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitEnterpriseRole();
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var Guid = controller.GetParam("Id");
+                if (Guid != null && Guid != undefined && Guid != "")
+                    options.GetEnterpriseUserDetail(Guid);
+                else
+                {
+                    $("#CompanyId").val(CompanyInfo.Id);
+                    $("#Version").val(CompanyInfo.Version);
+                    $("#CompanyName").val(CompanyInfo.CompanyName);
+                    $("#CompanyType").val(CompanyInfo.CompanyType);
+                }
+            },
+            //获取详情
+            GetEnterpriseUserDetail: function (Guid) {
+                controller.ajax({
+                    url: "EnterpriseWeb/GetUserDetail",
+                    data: { Id: Guid },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        controller.SetCtrlValue("#Edit",result.data)
+                     }
+                });
+            },
+            //获取集团账户
+            InitEnterpriseRole: function () {
+                controller.ajax({
+                    url: "EnterpriseWeb/GetRoleAuthorList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result)
+                    { 
+                        var html = '<option>===请选择===</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.AuthorName + '</option>'
+                        });
+                        $("#RoleAuthorType").html(html);
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/SaveUser" id="Edit">
+            <input type="hidden" name="Id" />
+            <input type="hidden" name="CompanyId"  id="CompanyId"/>
+            <input type="hidden" name="Version"  id="Version"/>
+            <input type="hidden" name="CompanyName"  id="CompanyName"/>
+            <input type="hidden" name="CompanyType"  id="CompanyType"/>
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">用户账户</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="Account" data-msg-required="请输入用户账户" />
+                    </td>
+                    <th><label class="control-label">账户密码</label></th>
+                    <td class="has-warning">
+                        <input type="password" class="form-control required" name="PassWord" data-msg-required="请输入账户密码" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">人员姓名</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="TrueName" data-msg-required="请输入用户账户" />
+                    </td>
+                    <th><label class="control-label">身份证号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required IsIDCard" name="IdCard" data-msg-required="请输入身份证号" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">联系电话</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required IsPhone" name="Phone" data-msg-required="请输入联系电话"/>
+                    </td>
+                    <th><label class="control-label">角色权限</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="RoleAuthorType" id="RoleAuthorType">
+                            <option>===请选择===</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

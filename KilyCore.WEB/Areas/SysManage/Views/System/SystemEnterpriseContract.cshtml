@@ -1,0 +1,196 @@
+﻿
+@{
+    ViewData["Title"] = "入住合同";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                //恢复高度
+                $(window).resize(function (e) {
+                    window.setTimeout(function () {
+                        options.$table.bootstrapTable("resetView", { height: $(window).height() - 150 });
+                    }, 200);
+                    e.stopPropagation();
+                });
+                //设置表单
+                this.$table = controller.Table("#tableList", { url: "System/GetStayContractPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#JoinPay", param: { EnterpriseOrMerchant: 1 } });
+            },
+            //事件
+            InitEvents: function () {
+            },
+            //行为
+            action: {
+                ImgFormatter: function (val, row, index) {
+                    var action = [];
+                    if (row.PaytTicket != null)
+                        action.push('<img class="photo" src="' + row.PayTicket + '" style="width:48px;height:32px;"">')
+                    return action.join("&nbsp;");
+                },
+                ImgEvents: {
+                    "click .photo": function (event, val, row, index) {
+                        var option = {
+                            title: "缴费凭证",
+                            data: [{
+                                alt: "缴费凭证",
+                                src: $(this).attr("src")
+                            }]
+                        };
+                        controller.Photos(option);
+                    }
+                },
+                TableFormatter: function (val, row, index) {
+                    var action = [];
+                    if (SysUserInfo.AccountType < 20)
+                        if (row.IsPay == false)
+                            action.push('<button class="btn btn-sm btn-primary ok"><i class="fa fa-pencil-square-o"></i>确认缴费</button>');
+                    if (SysUserInfo.AccountType == 30 && row.PayType==40)
+                        action.push('<button class="btn btn-sm btn-primary pay"><i class="fa fa-pencil-square-o"></i>支付</button>');
+                    action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-pencil-square-o"></i>审核</button>');
+                    action.push('<button class="btn btn-sm btn-primary watch"><i class="fa fa-eye"></i>审核记录</button>');
+                    action.push('<button class="btn btn-sm btn-primary up"><i class="fa fa-angle-double-up"></i>升级</button>');
+                    action.push('<button class="btn btn-sm btn-primary last"><i class="fa fa-rotate-right"></i>续费</button>');
+                    return action.join("&nbsp;")
+                },
+                TableEvents: {
+                    "click .pay": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "自定义支付",
+                            type: 2,
+                            height: "500px",
+                            width: "700px",
+                            url: "SysManage/System/SystemPayment?Price=" + row.TotalPrice + "&Id=" + row.Id,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
+                    },
+                    "click .ok": function (event, val, row, index) {
+                        controller.Prompt({ formType: 0, title:"确认缴费",value:"请在此输入实际金额" }, function (index) {
+                            controller.ajax({
+                                url: "System/EditContract",
+                                data: { Id: row.Id, Parameter: index },
+                                type: 'post',
+                                success: function (result) {
+                                    options.$table.refresh();
+                                    controller.Close();
+                                }
+                            });
+                        });
+                    },
+                    "click .audit": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "审核信息",
+                            type: 2,
+                            height: "260px",
+                            width: "400px",
+                            url: "SysManage/System/SystemAuditContract?TableId=" + row.Id + "&TableName=" + row.TableName,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
+                    },
+                    "click .watch": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "审核记录",
+                            type: 2,
+                            height: "500px",
+                            width: "700px",
+                            url: "SysManage/System/SystemAuditRecord?TableId=" + row.Id + "&TableName=" + row.TableName,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
+                    },
+                    "click .up": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "升级记录",
+                            type: 2,
+                            height: "80%",
+                            width: "90%",
+                            url: "SysManage/System/SystemUpdate?Flag=true&Id=" + row.CompanyId,
+                            callBack: function (result) {
+                                options.$table.refresh();
+                            }
+                        })
+                    },
+                    "click .last": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "续费记录",
+                            type: 2,
+                            height: "80%",
+                            width: "90%",
+                            url: "SysManage/System/SystemContinued?Flag=true&Id=" + row.CompanyId,
+                            callBack: function (result) {
+                                options.$table.refresh();
+                            }
+                        })
+                    }
+                }//表单事件结束
+            }//行为结束
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+@section css{
+
+}
+<div class="container-fluid">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>企业入驻</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <form id="JoinPay">
+                        <div class="col-sm-8 m-b-xs">
+                            <div class="input-group">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" placeholder="企业名称" class="input-sm form-control" name="CompanyName"> <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
+                                    <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive">
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="CompanyName" data-halign="center" data-align="center" data-valign="middle">企业名称</th>
+                                <th data-field="StayTime" data-halign="center" data-align="center" data-valign="middle">入住时间</th>
+                                <th data-field="EndTime" data-halign="center" data-align="center" data-valign="middle">到期时间</th>
+                                <th data-field="ContractTypeName" data-halign="center" data-align="center" data-valign="middle">合同模式</th>
+                                <th data-field="Payment" data-halign="center" data-align="center" data-valign="middle">缴费状态</th>
+                                <th data-field="VersionTypeName" data-halign="center" data-align="center" data-valign="middle">版本</th>
+                                <th data-field="PayTypeName" data-halign="center" data-align="center" data-valign="middle">支付方式</th>
+                                <th data-field="TotalPrice" data-halign="center" data-align="center" data-valign="middle">合同金额</th>
+                                <th data-field="ActualPrice" data-halign="center" data-align="center" data-valign="middle">实际金额</th>
+                                <th data-field="TryOut" data-halign="center" data-align="center" data-valign="middle">试用(天)</th>
+                                <th data-field="Lv" data-halign="center" data-align="center" data-valign="middle">有无升级</th>
+                                <th data-field="AuditTypeName" data-halign="center" data-align="center" data-valign="middle">审核状态</th>
+                                <th data-formatter="options.action.ImgFormatter" data-events="options.action.ImgEvents" data-halign="center" data-align="center" data-valign="middle">缴费凭证</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

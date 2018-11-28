@@ -1,0 +1,115 @@
+﻿
+@{
+    ViewData["Title"] = "编辑生产设备";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#CompanyId").val(CompanyInfo.Id);
+                controller.LayDate({ elem: "#ProductTime" });
+                this.GetSupplier();
+                this.GetUsers();
+            },
+            //获取生产厂商
+            GetSupplier: function () {
+                controller.ajax({
+                    url: "EnterpriseWeb/GetSellerList",
+                    data: { Parameter:30},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>===请选择===</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option>' + obj.SupplierName + '</option>';
+                        });
+                        $("#SupplierName").html(html);
+                    }
+                });
+            },
+            //获取管理员
+            GetUsers: function () {
+                controller.ajax({
+                    url: "EnterpriseWeb/GetUserList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>===请选择===</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option>' + obj.TrueName + '</option>';
+                        });
+                        $("#Manager").html(html);
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/SaveDevice" id="Edit">
+            <input  type="hidden" id="CompanyId" name="CompanyId"/>
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">设备名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="DeviceName" id="DeviceName" />
+                    </td>
+                    <th><label class="control-label">设备型号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ModelName" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">生产日期</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ProductTime" id="ProductTime" />
+                    </td>
+                    <th><label class="control-label">使用寿命</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Life" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">生产商</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="SupplierName" id="SupplierName"></select>
+                    </td>
+                    <th><label class="control-label">产地</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Code" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">设备管理员</label></th>
+                    <td class="has-warning" colspan="3">
+                        <select type="select" class="form-control" name="Manager" id="Manager"></select>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+

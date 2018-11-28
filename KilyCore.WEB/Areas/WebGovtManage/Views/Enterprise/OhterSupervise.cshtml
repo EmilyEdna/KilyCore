@@ -1,0 +1,126 @@
+﻿
+@{
+    ViewData["Title"] = "其他企业";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+
+@section script{
+    <script src="~/Content/ExportPlugin/Script/xlsx.core.min.js"></script>
+    <script src="~/Content/ExportPlugin/Script/tableExport.js"></script>
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                //恢复高度
+                $(window).resize(function (e) {
+                    window.setTimeout(function () {
+                        options.$table.bootstrapTable("resetView", { height: $(window).height() - 150 });
+                    }, 200);
+                    e.stopPropagation();
+                });
+                //设置表单
+                this.$table = controller.Table("#tableList", { url: "GovtWeb/GetCompanyPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { CompanyType: 50 } });
+            },
+            //事件
+            InitEvents: function () {
+                //导出Excel
+                $("#export").on('click', function () {
+                    $("#tableList").tableExport({
+                        fileName: "其他企业",
+                        ignoreColumn: ["Handler"],
+                        type: "excel",
+                        mso: {
+                            fileFormat: "xlsx",
+                            worksheetName: "数据",
+                        }
+                    });
+                });
+            },
+            //行为
+            action: {
+                TableFormatter: function (val, row, index) {
+                    var action = [];
+                    action.push('<button class="btn btn-sm btn-primary detail"><i class="fa fa-pencil-square-o"></i>详情</button>');
+                    return action.join("&nbsp;")
+                },
+                TableEvents: {
+                    "click .detail": function (event, val, row, index) {
+                        //追加抽查次数
+                        controller.ajax({
+                            url: "GovtWeb/EditPatrol",
+                            data: { CompanyId: row.Id, TradeType: row.CompanyTypeName, CompanyName: row.CompanyName, TypePath: GovtInfo.TypePath },
+                            async: false,
+                            type: "post",
+                            success: function (result) { }
+                        });
+                        controller.OpenWindow({
+                            title: "企业详情",
+                            type: 2,
+                            height: "600px",
+                            width: "800px",
+                            url: "WebGovtManage/Enterprise/CompanySuperviseDetail?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
+                    }
+                }//表单事件结束
+            }//行为结束
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+@section css{
+
+}
+<div class="container-fluid">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>其他企业</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <form id="Edit">
+                        <div class="col-sm-8 m-b-xs">
+                            <div class="input-group">
+                                <button type="button" class="btn btn-sm btn-white" id="export"><i class="fa fa-file-excel-o"></i>导出Excel</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" placeholder="企业名称" class="input-sm form-control" name="CompanyName">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
+                                    <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive">
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="CompanyName" data-halign="center" data-align="center" data-valign="middle">企业名称</th>
+                                <th data-field="CompanyTypeName" data-halign="center" data-align="center" data-valign="middle">企业类型</th>
+                                <th data-field="CommunityCode" data-halign="center" data-align="center" data-valign="middle">信用代码</th>
+                                <th data-field="CompanyPhone" data-halign="center" data-align="center" data-valign="middle">企业电话</th>
+                                <th data-field="CompanyAddress" data-halign="center" data-align="center" data-valign="middle">注册地址</th>
+                                <th data-field="Handler" data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,112 @@
+﻿
+@{
+    ViewData["Title"] = "续费升级";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                //恢复高度
+                $(window).resize(function (e) {
+                    window.setTimeout(function () {
+                        options.$table.bootstrapTable("resetView", { height: $(window).height() - 150 });
+                    }, 200);
+                    e.stopPropagation();
+                });
+                //设置表单
+                this.$table = controller.Table("#tableList", { url: "RepastWeb/GetLvPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { Id: RepastUser.Id } });
+            },
+            //事件
+            InitEvents: function () {
+            },
+            //行为
+            action: {
+                TableFormatter: function (val, row, index) {
+                    var action = [];
+                    action.push('<button class="btn btn-sm btn-primary up"><i class="fa fa-angle-double-up"></i>升级</button>');
+                    action.push('<button class="btn btn-sm btn-primary last"><i class="fa fa-rotate-right"></i>续费</button>');
+                    return action.join("&nbsp;")
+                },
+                TableEvents: {
+                    "click .last": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "版本续费",
+                            type: 2,
+                            height: "500px",
+                            width: "700px", 
+                            url: "WebMerchantManage/RepastBasic/MerchantContinued?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
+                    },
+                    "click .up": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "版本升级",
+                            type: 2,
+                            height: "500px",
+                            width: "700px",
+                            url: "WebMerchantManage/RepastBasic/MerchantUpdate?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
+                    }
+                }//表单事件结束
+            }//行为结束
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+@section css{
+
+}
+<div class="container-fluid">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>升级续费</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <form id="Edit">
+                        <div class="col-sm-11 m-b-xs">
+                            <div class="input-group">
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive">
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="StarTime" data-halign="center" data-align="center" data-valign="middle">入驻时间</th>
+                                <th data-field="EndTime" data-halign="center" data-align="center" data-valign="middle">终止时间</th>
+                                <th data-field="Year" data-halign="center" data-align="center" data-valign="middle">合同年限</th>
+                                <th data-field="VersionName" data-halign="center" data-align="center" data-valign="middle">版本名称</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

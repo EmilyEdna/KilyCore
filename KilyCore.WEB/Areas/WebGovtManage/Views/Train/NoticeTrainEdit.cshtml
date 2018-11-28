@@ -1,0 +1,100 @@
+﻿
+@{
+    ViewData["Title"] = "通知编辑";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#GovtId").val(GovtInfo.Id);
+                controller.LayDate({ elem: "input[name='TrainTime']" });
+                options.Editor = controller.Editor(".summernote", { width: 655 });
+                var Id = controller.GetParam("Id");
+                if (Id != null && Id != undefined && Id != "")
+                    controller.ajax({
+                        url: "GovtWeb/GetTrainNoticeDetail",
+                        data: { Id: Id },
+                        async: false,
+                        type: "post",
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                            options.Editor.summernote('code', result.data.Remark);
+                            if (result.data.CompanyType.indexOf(",") != -1)
+                            {
+                                $("#CompanyType").selectpicker("val", result.data.CompanyType.split(","));
+                            }
+                           
+                        }
+                    });
+            },
+            //事件
+            InitEvents: function () {
+                $("#CompanyType").on('changed.bs.select', function () {
+                    $('input[name="CompanyType"]').val($(this).val());
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="GovtWeb/EditNotice" id="Edit">
+            <input type="hidden" name="Id" id="Id" />
+            <input type="hidden" name="GovtId" id="GovtId" />
+            <input type="hidden" name="CompanyType" />
+            <input type="hidden" name="Remark" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">培训标题</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="TrainTitle">
+                    </td>
+                    <th><label class="control-label">培训地址</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="TrainPlace">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">培训时间</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" class="form-control" name="TrainTime">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">所属行业</label></th>
+                    <td class="has-warning" colspan="3">
+                        <select type="select" class="selectpicker form-control" id="CompanyType" multiple>
+                            <option value="种植企业">种植企业</option>
+                            <option value="养殖企业">养殖企业</option>
+                            <option value="生产企业">生产企业</option>
+                            <option value="流通企业">流通企业</option>
+                            <option value="餐饮企业">餐饮企业</option>
+                            <option value="单位食堂">单位食堂</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">培训内容</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="summernote" name="Remark"></div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

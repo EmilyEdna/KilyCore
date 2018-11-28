@@ -1,0 +1,234 @@
+﻿
+@{
+    ViewData["Title"] = "资料编辑";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+
+                controller.LayDate({ elem: "input[name='CardExpiredDate']" });
+                options.Editor = controller.Editor(".summernote", { width: 760 });
+                options.GetCompanyInfo();
+                options.UploadFiles();
+            },
+            //获取企业信息
+            GetCompanyInfo: function () {
+                controller.ajax({
+                    url: "RepastWeb/GetMerchantDetail",
+                    data: { Id: RepastUser.Id },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        controller.SetCtrlValue("#Edit", result.data);
+                        options.Editor.summernote('code', result.data.Remark);
+                    }
+                });
+            },
+            //设置文件值
+            SetFileValue: function (data, elememt) {
+                var files = $(elememt).val();
+                if (files != null && files != "" && files != undefined) {
+                    files += "," + data;
+                    $(elememt).val(files);
+                } else {
+                    $(elememt).val(data);
+                }
+            },
+            //文件上传
+            UploadFiles: function () {
+                //文件上传-执照
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-1",
+                    maxNum: 1,
+                    node: '#Img1',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        $("#Certification").val(result.data);
+                    }
+                });
+                //文件上传-证书
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-2",
+                    maxNum: 3,
+                    node: '#Img2',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, '#HonorCertification');
+                    }
+                });
+                //文件上传-身份证
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-3",
+                    maxNum: 2,
+                    node: '#Img3',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, '#IdCard');
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                Number($("input[name='DiningType']").val()) != 20 ? $("input[name='AllowUnit']").attr("disabled", "true") : $("input[name='AllowUnit']").attr("disabled", "false");
+                //坐标选区
+                $("input[name='LngAndLat']").on('click', function () {
+                    controller.OpenWindow({
+                        title: "坐标选取",
+                        type: 2,
+                        height: "600px",
+                        width: "800px",
+                        url: "StaticHtml/BaiduMap.html",
+                        callBack: function (result) {
+                            $("input[name='LngAndLat']").val(result.$("#Edit").find("input[name='lng']").val() + "," + result.$("#Edit").find("input[name='lat']").val());
+                            result.popClose();
+                        }
+                    })
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="RepastWeb/SaveMerchant" id="Edit">
+            <input type="hidden" name="Id" />
+            <input type="hidden" name="PassWord" />
+            <input type="hidden" name="Account" />
+            <input type="hidden" name="DiningType" />
+            <input type="hidden" name="Province" />
+            <input type="hidden" name="City" />
+            <input type="hidden" name="Area" />
+            <input type="hidden" name="Town" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">商家名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="MerchantName" readonly>
+                    </td>
+                    <th><label class="control-label">商家类型</label></th>
+                    <td class="has-warning">
+                        <input type="text" name="DiningTypeName" class="form-control" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">商家邮箱</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Email">
+                    </td>
+                    <th><label class="control-label">经营地址</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="Address" data-msg-required="请输入经营地址">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">工商代码</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="CommunityCode" data-msg-required="请输入工商代码">
+                    </td>
+                    <th><label class="control-label">企业电话</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="Phone" data-msg-required="请输入企业电话" placeholder="格式：028-12345678或者13012345678" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">法人代表</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ImplUser">
+                    </td>
+                    <th><label class="control-label">所属单位</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="AllowUnit" placeholder="单位食堂必填">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">安全员</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SafeOffer">
+                    </td>
+                    <th><label class="control-label">安全等级</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="OfferLv">
+                            <option value="A级">A级</option>
+                            <option value="B级">B级</option>
+                            <option value="C级">C级</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">经度纬度</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="LngAndLat" placeholder="点击获取" readonly>
+                    </td>
+                    <th><label class="control-label">证件到期</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="CardExpiredDate">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">商家介绍</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="summernote" name="Remark"></div>
+                        <input type="hidden" name="Remark" />
+                    </td>
+                </tr>
+                <tr id="uploadCertification">
+                    <th><label class="control-label">营业执照</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear" id="Img1">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" id="upload-input-1" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                        <input type="hidden" id="Certification" name="Certification" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">荣誉证书</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear" id="Img2">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" id="upload-input-2" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                        <input type="hidden" id="HonorCertification" name="HonorCertification" />
+                    </td>
+                </tr>
+                <tr id="uploadIdCard">
+                    <th><label class="control-label">身份证</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear" id="Img3">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" id="upload-input-3" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                        <input type="hidden" id="IdCard" name="IdCard" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

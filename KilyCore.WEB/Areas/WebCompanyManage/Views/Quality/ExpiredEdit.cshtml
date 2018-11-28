@@ -1,0 +1,122 @@
+﻿
+@{
+    ViewData["Title"] = "过期产品编辑";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#CompanyId").val(CompanyInfo.Id);
+                $("input[name='InferType']").val(controller.GetParam("Type"));
+                controller.LayDate({ elem: "#HandleTime" });
+                options.GetUsers();
+                options.GetGoodsList();
+                $("#InferId").val(controller.GetParam("Id"));
+            },
+            //获取管理员
+            GetUsers: function () {
+                controller.ajax({
+                    url: "EnterpriseWeb/GetUserList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>===请选择===</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.TrueName + '">' + obj.TrueName + '</option>';
+                        });
+                        $("#HandleUser").html(html);
+                    }
+                });
+            },
+            //产品下拉
+            GetGoodsList: function () {
+                controller.ajax({
+                    url: "EnterpriseWeb/GetGoodsList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>===请选择===</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.ProductName + '</option>';
+                        });
+                        $("#InferId").html(html);
+                    }
+                });
+                $("#InferId").on('change', function () {
+                    var value = $(this).find("option:selected").text();
+                    $("#InferName").val(value);
+                });
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/EditInferiorExprired" id="Edit">
+            <input type="hidden" id="Id" name="Id" />
+            <input type="hidden" id="CompanyId" name="CompanyId" />
+            <input type="hidden" name="InferiorExprired" value="2" />
+            <input type="hidden" name="InferName" id="InferName" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">处理名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="CustomName" />
+                    </td>
+                    <th><label class="control-label">产品名称</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="InferId" id="InferId"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">类型</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="InferType" />
+                    </td>
+                    <th><label class="control-label">处理方式</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="HandleWays" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">处理人</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="HandleUser" id="HandleUser"></select>
+                    </td>
+                    <th><label class="control-label">处理时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="HandleTime" id="HandleTime" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">处理原因</label></th>
+                    <td class="has-warning" colspan="3">
+                        <textarea class="form-control" name="HandleReason" rows="5"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

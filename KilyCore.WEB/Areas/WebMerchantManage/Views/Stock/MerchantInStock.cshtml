@@ -1,0 +1,174 @@
+﻿
+@{
+    ViewData["Title"] = "物品入库";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#BatchNo").val("R" + controller.FormatDate("YYMMDDHHmmss"));
+                controller.LayDate({ elem: "#SuppTime" });
+                $("#InfoId").val(RepastUser.Id);
+                var Guid = controller.GetParam("Id");
+                var Editor = controller.Editor(".summernote", { width: 655 });
+                options.BindOption(Guid, Editor);
+            },
+            //数据绑定
+            BindOption: function (Guid, Editor) {
+                //获取名称
+                controller.ajax({
+                    url: "RepastWeb/GetNamesList",
+                    data: {Id:2},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.TypeNames + '">' + obj.TypeNames + '</option>';
+                        });
+                        $("#ArticleName").html(html);
+                    }
+                });
+                //人员下拉
+                controller.ajax({
+                    url: "RepastWeb/GetMerchantList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.TrueName + '">' + obj.TrueName + '</option>';
+                        });
+                        $("#BuyUser").html(html);
+                    }
+                });
+                //获取供应商
+                controller.ajax({
+                    url: "RepastWeb/GetSupplierList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.SupplierName + '" data-addr="' + obj.Address + '" data-tel="' + obj.LinkPhone + '">' + obj.SupplierName + '</option>';
+                        });
+                        $("#Supplier").html(html);
+                    }
+                });
+                //获取详情
+                if (Guid != null && Guid != undefined && Guid != "")
+                    controller.ajax({
+                        url: "RepastWeb/GetInStockDetail",
+                        data: { Id: Guid },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                            Editor.summernote('code', result.data.Remark);
+                        }
+                    });
+            },
+            //事件
+            InitEvents: function () {
+                $("#Supplier").on('change', function () {
+                    var obj = $(this).find("option:selected");
+                    var Address = obj.data().addr;
+                    var Phone = obj.data().tel;
+                    $("input[name='Address']").val(Address);
+                    $("input[name='Phone']").val(Phone);
+                });
+                $('input[name="PrePrice"]').on('change', function () {
+                    var price = $(this).val();
+                    var num = $("input[name='InStockNum']").val();
+                    $("input[name='ToPrice']").val(price * num);
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="RepastWeb/EditInStock" id="Edit">
+            <input type="hidden" id="Id" name="Id" />
+            <input type="hidden" class="form-control" name="InfoId" id="InfoId" />
+            <input name="Remark" type="hidden" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">批次号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="BatchNo" id="BatchNo" readonly />
+                    </td>
+                    <th><label class="control-label">物品名称</label></th>
+                    <td class="has-warning">
+                        <select type="select" name="ArticleName" class="form-control" id="ArticleName"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">入库数量</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="InStockNum" />
+                    </td>
+                    <th><label class="control-label">负责人</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="BuyUser" id="BuyUser"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">单价</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="PrePrice" />
+                    </td>
+                    <th><label class="control-label">总价</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ToPrice" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">供应商</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="Supplier" id="Supplier"></select>
+                    </td>
+                    <th><label class="control-label">供应时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SuppTime" id="SuppTime" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">生产地址</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Address" />
+                    </td>
+                    <th><label class="control-label">电话</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Phone" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">备注</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="summernote" name="Remark"></div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

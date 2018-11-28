@@ -1,0 +1,139 @@
+﻿
+@{
+    ViewData["Title"] = "编辑原料";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+                this.GetSelect();
+            },
+            //元素
+            InitDom: function () {
+                $("#No").val("Y" + controller.FormatDate("YYMMDDHHmmss"));
+                $("#CompanyId").val(CompanyInfo.Id);
+            },
+            GetSelect: function () {
+                //初始化下拉
+                controller.Select({
+                    document:'#Standard',
+                    arrelemnt: ['#Standard'],
+                    data: { Id: "执行标准" },
+                    url: 'EnterpriseWeb/GetDictionaryList'
+                });
+                controller.Select({
+                    document: '#Unit',
+                    arrelemnt: ['#Unit'],
+                    data: { Id: "计量单位" },
+                    url: 'EnterpriseWeb/GetDictionaryList'
+                });
+                $("#Unit").on('changed.bs.select', function () {
+                    $('input[name="Unit"]').val($(this).val());
+                });
+                $("#Standard").on('changed.bs.select', function () {
+                    $('input[name="Standard"]').val($(this).val());
+                });
+            },
+            //事件
+            InitEvents: function () {
+                //厂商
+                controller.ajax({
+                    url: "EnterpriseWeb/GetSellerList",
+                    data: { Parameter: 10 },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html ='<option>==请选择==</option>'
+                        $.each(result.data, function (i, obj) {
+                            html += '<option>' + obj.SupplierName + '</option>';
+                        });
+                        $("#Supplier").html(html);
+                    }
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/EditMaterial" id="Edit">
+            <input type="hidden" id="CompanyId" name="CompanyId" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">编号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="BatchNo" id="No" readonly />
+                    </td>
+                    <th><label class="control-label">原料名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="MaterName" data-msg-required="请输入原料名称" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">采购数量</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="MaterNum" data-msg-required="请输入采购数量" />
+                    </td>
+                    <th><label class="control-label">包装类型</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="PackageType" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">规格</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Spec" />
+                    </td>
+                    <th><label class="control-label">保质期/天</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ExpiredDay" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">产地</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Address" />
+                    </td>
+                    <th><label class="control-label">供应商</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="Supplier" id="Supplier"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">原料类型</label></th>
+                    <td class="has-warning" colspan="3">
+                        <select type="select" class="form-control" name="MaterType">
+                            <option>原料</option>
+                            <option>辅料</option>
+                            <option>添加剂</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">计量单位</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="selectpicker form-control" data-max-options="2" id="Unit" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
+                    </td>
+                    <th><label class="control-label">执行标准</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="selectpicker form-control" data-max-options="2" id="Standard" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

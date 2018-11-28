@@ -1,0 +1,169 @@
+﻿
+@{
+    ViewData["Title"] = "新增环境报告";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#EnvId").val(controller.GetParam("Id"));
+                controller.LayDate({ elem: "#RecordTime", value: controller.FormatDate("YYYY-MM-DD HH:mm:ss") });
+                //大气
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: ".Air",
+                    maxNum: 1,
+                    node: '#Air',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#AirReport");
+                    }
+                });
+                //金属
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: ".Matel",
+                    maxNum: 1,
+                    node: '#Matel',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#MetalReport");
+                    }
+                });
+                //水质
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: ".Water",
+                    maxNum: 1,
+                    node: '#Water',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#WaterReport");
+                    }
+                });
+                //土壤
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: ".Soil",
+                    maxNum: 1,
+                    node: '#Soil',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#SoilReport");
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                //绑定批次
+                controller.ajax({
+                    url: "EnterpriseWeb/GetGrowList",
+                    async: false,
+                    data: {},
+                    type: 'post',
+                    success: function (result) {
+                        var html = '';
+                        $.each(result.data, function (i, data) {
+                            html += '<option value="' + data.BatchNo + '">' + data.GrowName + '</option>'
+                        });
+                        $("#BatchNo").html(html);
+                    }
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/EditEnvAttach" id="Edit">
+            <input type="hidden" name="AirReport" id="AirReport" />
+            <input type="hidden" name="MetalReport" id="MetalReport" />
+            <input type="hidden" name="SoilReport" id="SoilReport" />
+            <input type="hidden" name="WaterReport" id="WaterReport" />
+            <input type="hidden" name="RecordTime" id="RecordTime" />
+            <div class="row">
+                <div class="m-t-sm col-sm-12">
+                    <div class="input-group line-width">
+                        <span class="label label-warning">育苗批次</span>
+                        <input type="text" class="form-control" name="BatchNo" list="BatchNo" />
+                        <datalist id="BatchNo"></datalist>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="row">
+                <div class="m-t-sm col-sm-6">
+                    <div class="input-group line-width">
+                        <span class="label label-warning">大气报告</span>
+                        <div class="upload-box">
+                            <div class="image-box clear" id="Air">
+                                <section class="upload-section">
+                                    <div class="upload-btn"></div>
+                                    <input type="file" name="Files" class="Air upload-input" value="" accept="image/*" multiple="multiple" />
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-t-sm col-sm-6">
+                    <div class="input-group line-width">
+                        <span class="label label-warning">金属报告</span>
+                        <div class="upload-box">
+                            <div class="image-box clear" id="Matel">
+                                <section class="upload-section">
+                                    <div class="upload-btn"></div>
+                                    <input type="file" name="Files" class="Matel upload-input" value="" accept="image/*" multiple="multiple" />
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="m-t-sm col-sm-6">
+                    <div class="input-group line-width">
+                        <span class="label label-warning">水质报告</span>
+                        <div class="upload-box">
+                            <div class="image-box clear" id="Water">
+                                <section class="upload-section">
+                                    <div class="upload-btn"></div>
+                                    <input type="file" name="Files" class="Water upload-input" value="" accept="image/*" multiple="multiple" />
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="m-t-sm col-sm-6">
+                    <div class="input-group line-width">
+                        <span class="label label-warning">土壤报告</span>
+                        <div class="upload-box">
+                            <div class="image-box clear" id="Soil">
+                                <section class="upload-section">
+                                    <div class="upload-btn"></div>
+                                    <input type="file" name="Files" class="Soil upload-input" value="" accept="image/*" multiple="multiple" />
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

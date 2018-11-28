@@ -1,0 +1,136 @@
+﻿
+@{
+    ViewData["Title"] = "商家详情";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{ }
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                //取详情
+                controller.ajax({
+                    url: "GovtWeb/GetRepastDetail",
+                    data: { Id: controller.GetParam("Id") },
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        controller.SetCtrlValue("#Edit", result.data);
+                        options.BindHonor(result.data.HonorCertification);
+                    }
+                });
+                //查看大图
+                $("#tab-2,#tab-3").find("img").on('click', function () {
+                    var option = {
+                        title: "相关证书",
+                        data: [{
+                            alt: "相关证书",
+                            src: $(this).attr("src")
+                        }]
+                    };
+                    controller.Photos(option);
+                });
+            },
+            //绑定荣誉证书
+            BindHonor: function (data) {
+                if (data != null) {
+                    var html = '';
+                    $.each(data, function (i, obj) {
+                        html += '<img src="' + obj + '" class="img-preview-sm" title="点击放大"/>';
+                    });
+                    $("#tab-3").find(".ibox-content").html(html);
+                    if (data.length > 4)
+                        $("#tab-3").find(".ibox-content").find("img").css({ width: "184px", padding: "1px" });
+                    else
+                        $("#tab-3").find(".ibox-content").find("img").css({ width: "186px", padding: "1px" });
+                }
+            },
+            //事件
+            InitEvents: function () {
+            },
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+
+    </script>
+}
+<form class="form-horizontal" method="post" id="Edit">
+    <div class="tabs-container">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a data-toggle="tab" href="#tab-1" aria-expanded="true"> 基本信息</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-2" aria-expanded="false">营业执照</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-3" aria-expanded="false">荣誉证书</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="tab-1" class="tab-pane active">
+                <table class="table table-hover table-bordered m-t-sm">
+                    <tr>
+                        <th><label class="control-label">企业名称</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="MerchantName" readonly="readonly" />
+                        </td>
+                        <th><label class="control-label">所属行业</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="DiningTypeName" readonly="readonly" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label class="control-label">企业邮箱</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="Email" readonly="readonly" />
+                        </td>
+                        <th><label class="control-label">信用代码</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="CommunityCode" readonly="readonly" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label class="control-label">企业电话</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="Phone" readonly="readonly" />
+                        </td>
+                        <th><label class="control-label">法人代表</label></th>
+                        <td class="has-warning">
+                            <input type="text" class="form-control" name="ImplUser" readonly="readonly" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label class="control-label">企业地址</label></th>
+                        <td class="has-warning" colspan="3">
+                            <input type="text" class="form-control" name="Address" readonly="readonly" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label class="control-label">企业介绍</label></th>
+                        <td class="has-warning" colspan="3">
+                            <textarea class="form-control" name="Remark" readonly="readonly"></textarea>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="tab-2" class="tab-pane">
+                <div class="ibox-content">
+                    <img class="img-preview" src="" type="image" name="Certification" style="display:block;margin:auto" title="点击放大" />
+                </div>
+            </div>
+            <div id="tab-3" class="tab-pane">
+                <div class="ibox-content">
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,169 @@
+﻿
+@{
+    ViewData["Title"] = "分配菜单";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#CompanyName").val(controller.GetParam("CompanyName"));
+                $("#CompanyId").val(controller.GetParam("CompanyId"));
+                //恢复高度
+                $(window).resize(function (e) {
+                    window.setTimeout(function () {
+                        options.$table.bootstrapTable("resetView", { height: $(window).height() - 150 });
+                    }, 200);
+                    e.stopPropagation();
+                });
+                //设置表单
+                this.$table = controller.Table("#tableList", { url: "Enterprise/GetRoleAuthorPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Author" });
+                //设置角色下拉
+                controller.ajax({
+                    type: "post",
+                    url: "Enterprise/GetRoleAuthorList",
+                    async: false,
+                    data: {},
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.EnterpriseRoleName + '</option>';
+                        });
+                        $("#EnterpriseRoleId").html(html);
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                $("#EnterpriseRoleId").on('change', function () {
+                    var Name = $(this).find("option:selected").text();
+                    $("#EnterpriseRoleName").val(Name);
+                });
+                $("#save").on('click', function () {
+                    controller.ajax({
+                        url: $("#Send").attr("action"),
+                        type: $("#Send").attr("method"),
+                        data: $("#Send").SerializeJson(),
+                        success: function (result) {
+                            controller.Msg(result.data);
+                        }
+                    });
+                });
+            },
+            //行为
+            action: {
+                TableFormatter: function (val, row, index) {
+                    var action = [];
+                    action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
+                    return action.join("&nbsp;");
+                },
+                TableEvents: {
+                    "click .del": function (event, val, row, index) {
+                        controller.Confirm("确认删除？", function (bool) {
+                            if (bool) {
+                                controller.ajax({
+                                    url: "Enterprise/RemoveEnterpriseRoleAuthor",
+                                    data: { Id: row.Id },
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                },//表单事件结束
+            }//行为结束
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+@section css{
+    <style>
+        .ibox-content {
+            border-top-style: none;
+        }
+    </style>
+}
+<div class="tabs-container">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a data-toggle="tab" href="#tab-1" aria-expanded="true"> 角色列表</a>
+        </li>
+        <li>
+            <a data-toggle="tab" href="#tab-2" aria-expanded="false">分配角色</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div id="tab-1" class="tab-pane active">
+            <div class="ibox-content">
+                <div class="row">
+                    <form id="Author">
+                        <div class="col-sm-9 m-b-xs">
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="input-group">
+                                <input type="text" placeholder="角色名称" class="input-sm form-control" name="EnterpriseRoleName">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
+                                    <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive m-t-sm">
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="EnterpriseRoleName">角色名称</th>
+                                <th data-field="AuthorMenuCount">菜单总数</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents">操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="tab-2" class="tab-pane">
+            <div class="panel-body">
+                <form class="form-horizontal" method="post" action="Enterprise/DistributionRole" id="Send">
+                    <input type="hidden" id="CompanyId" name="Id" />
+                    <input  type="hidden" id="EnterpriseRoleName" name="EnterpriseRoleName"/>
+                    <table class="table table-hover table-bordered">
+                        <tr>
+                            <th><label class="control-label">公司名称</label></th>
+                            <td class="has-warning">
+                                <input type="text" class="form-control" id="CompanyName" readonly>
+                            </td>
+                            <th><label class="control-label">选择角色</label></th>
+                            <td class="has-warning">
+                                <select type="select" class="form-control" name="EnterpriseRoleId" id="EnterpriseRoleId">
+                                    <option>==请选择==</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4" valign="middle" align="center">
+                                        <button class="btn btn-primary" type="button" id="save">保存内容</button>
+                                        <button class="btn btn-white" type="button">取消</button>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
