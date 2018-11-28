@@ -7,24 +7,33 @@ using System.Threading.Tasks;
 using KilyCore.Configure;
 using System.Linq;
 using System.Collections.Generic;
-
+/// <summary>
+/// 作者：刘泽华
+/// 时间：2018年5月29日11点51分
+/// </summary>
 namespace KilyCore.Quartz
 {
     /// <summary>
     /// 任务调度
     /// </summary>
-    public class QuartzCore
+    public class QuartzCore :IQuartzCore
     {
-        private static Task<IScheduler> instance;
+        private Task<IScheduler> instance;
         /// <summary>
         /// 初始化任务调度器
         /// </summary>
-        public static Task<IScheduler> Instance
+        public Task<IScheduler> Instance
         {
             get
             {
-                NameValueCollection props = new NameValueCollection { { "quartz.serializer.type", "binary" } };
-                return Instance ?? new StdSchedulerFactory(props).GetScheduler();
+                if (instance != null)
+                    return instance;
+                else
+                {
+                    NameValueCollection props = new NameValueCollection { { "quartz.serializer.type", "binary" } };
+                     instance = new StdSchedulerFactory(props).GetScheduler();
+                    return instance;
+                }
             }
         }
         /// <summary>
@@ -34,7 +43,7 @@ namespace KilyCore.Quartz
         /// <returns></returns>
         protected ITrigger CreateSimpleTrigger(QuartzMap quartz)
         {
-            if (quartz.ExcunteNum != null)
+            if (quartz.RunTimes >0)
             {
                 return TriggerBuilder.Create().WithIdentity(quartz.JobName, quartz.JobGroup)
                      .StartAt(quartz.StartTime).EndAt(quartz.EndTime)
@@ -69,7 +78,9 @@ namespace KilyCore.Quartz
         /// <returns></returns>
         public async void StopResumeJob(QuartzMap quartz)
         {
-            await Instance.Result.PauseJob(new JobKey(quartz.JobName, quartz.JobGroup));
+            var key = new JobKey(quartz.JobName, quartz.JobGroup);
+            if (await Instance.Result.CheckExists(key))
+                await Instance.Result.PauseJob(key);
         }
         /// <summary>
         /// 恢复运行已经暂停的指定任务
@@ -116,6 +127,7 @@ namespace KilyCore.Quartz
         {
             try
             {
+                await Instance.Result.Start();
                 JobKey key = new JobKey(quartz.JobName, quartz.JobGroup);
                 //任务存在则先删除
                 if (await Instance.Result.CheckExists(key))
@@ -131,7 +143,6 @@ namespace KilyCore.Quartz
             {
                 throw new Exception("添加任务出错!");
             }
-
         }
         /// <summary>
         /// 添加任务反射程序集模式
@@ -142,6 +153,7 @@ namespace KilyCore.Quartz
         {
             try
             {
+                await Instance.Result.Start();
                 JobKey key = new JobKey(quartz.JobName, quartz.JobGroup);
                 //任务存在则先删除
                 if (await Instance.Result.CheckExists(key))

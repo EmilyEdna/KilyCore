@@ -1,11 +1,16 @@
 ﻿using KilyCore.Configure;
+using KilyCore.Extension.ResultExtension;
 using KilyCore.Extension.RSACryption;
+using KilyCore.Extension.SessionExtension;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Linq;
-
+/// <summary>
+/// 作者：刘泽华
+/// 时间：2018年5月29日11点51分
+/// </summary>
 namespace KilyCore.Extension.FilterGroup
 {
     /// <summary>
@@ -19,8 +24,6 @@ namespace KilyCore.Extension.FilterGroup
         /// <param name="context"></param>
         public void OnActionExecuted(ActionExecutedContext context)
         {
-            //客服端IP
-            Configer.ClientIP = context.HttpContext.Connection.RemoteIpAddress.ToString();
             //HttpContext httpContext = context.HttpContext;
             //var  headerOrginUrl = httpContext.Request.Headers.GetCommaSeparatedValues("Origin");
             //httpContext.Response.Headers.SetCommaSeparatedValues("Access-Control-Allow-Origin", headerOrginUrl);
@@ -38,12 +41,46 @@ namespace KilyCore.Extension.FilterGroup
         public void OnActionExecuting(ActionExecutingContext context)
         {
             var request = context.HttpContext.Request;
+            var RequestPath = request.Path.ToString();
+            if (RequestPath.Contains("Regist"))
+            {
+               var PhoneCode = request.Form["Parameter[PhoneCode]"].ToString();
+                var SessionCode = context.HttpContext.Session.GetSession<string>("PhoneCode");
+                if (string.IsNullOrEmpty(SessionCode))
+                    context.Result = ObjectResultEx.Instance("请输入验证码", 1, RetrunMessge.SUCCESS, HttpCode.FAIL);
+                if (!SessionCode.Trim().Equals(PhoneCode))
+                    context.Result =ObjectResultEx.Instance("请输入正确的验证码", 1, RetrunMessge.SUCCESS, HttpCode.FAIL);
+                context.HttpContext.Session.DeleteSession("PhoneCode");
+            }
+            if (RequestPath.Contains("EnterpriseWeb/Edit") || RequestPath.Contains("EnterpriseWeb/Remove"))
+            {
+                if (RequestPath.Contains("Edit"))
+                {
+                    if (string.IsNullOrEmpty(request.Form["Id"].ToString()))
+                    {
+                        return;
+                    }
+                }
+                context.Result = new StatusCodeResult(403);
+            }
+            if (RequestPath.Contains("RepastWeb/Edit") || RequestPath.Contains("RepastWeb/Remove"))
+            {
+                if (RequestPath.Contains("Edit"))
+                {
+                    if (string.IsNullOrEmpty(request.Form["Id"].ToString()))
+                    {
+                        return;
+                    }
+                }
+                context.Result = new StatusCodeResult(403);
+            }
             if (context.Filters.Any(t => (t as AllowAnonymousFilter) != null))
                 return;
-            if (request.Headers.ContainsKey("ApiKey"))
+            if (request.Headers.ContainsKey("ApiKey") && request.Headers.ContainsKey("SysKey"))
             {
                 String ApiKey = RSACryptionExtension.RSADecrypt(request.Headers["ApiKey"].FirstOrDefault());
-                if (ApiKey.Equals(Configer.ApiKey + DateTime.Now.ToShortDateString()))
+                String SysKey = RSACryptionExtension.RSADecrypt(request.Headers["SysKey"].FirstOrDefault());
+                if (ApiKey.Equals(Configer.ApiKey + DateTime.Now.ToShortDateString()) && SystemInfoKey.PrivateKey.Equals(SysKey))
                     return;
             }
             context.Result = new UnauthorizedResult();

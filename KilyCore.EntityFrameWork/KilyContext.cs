@@ -4,7 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
+/// <summary>
+/// 作者：刘泽华
+/// 时间：2018年5月29日11点29分
+/// </summary>
 namespace KilyCore.EntityFrameWork
 {
     public class KilyContext: DbContext,IKilyContext
@@ -35,6 +38,7 @@ namespace KilyCore.EntityFrameWork
                 optionsBuilder.UseMySql(Configer.ConnentionString);
             else if (Configer.DataProvider.ToUpper().Equals("SQLSERVER"))
                 optionsBuilder.UseSqlServer(Configer.ConnentionString);
+            optionsBuilder.EnableSensitiveDataLogging();
         }
     }
 }

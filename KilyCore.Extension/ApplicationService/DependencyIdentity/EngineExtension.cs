@@ -4,14 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
-
+/// <summary>
+/// 作者：刘泽华
+/// 时间：2018年5月29日11点29分
+/// </summary>
 namespace KilyCore.Extension.ApplicationService.DependencyIdentity
 {
     public class EngineExtension
     {
-
-        private static IEngine instance;
-        public static IEngine Instance { get => instance; set => instance = value; }
+        public static IEngine Instance { get; set; }
         /// <summary>
         ///  确保方法同步实例化
         /// </summary>
@@ -20,7 +21,7 @@ namespace KilyCore.Extension.ApplicationService.DependencyIdentity
         [MethodImpl(MethodImplOptions.Synchronized)]
         public static IEngine Initialize(bool ReFind)
         {
-            if (Instance == null || ReFind) //forceRecreate 是否强制重新查找IOC容器
+            if (Instance == null || ReFind) //是否强制重新查找IOC容器
             {
                 Instance = CreateEngineInstance();
             }

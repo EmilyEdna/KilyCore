@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+/// <summary>
+/// 作者：刘泽华
+/// 时间：2018年5月29日11点29分
+/// </summary>
 namespace KilyCore.DataEntity.ResponseMapper.System
 {
     /// <summary>
@@ -40,6 +43,6 @@ namespace KilyCore.DataEntity.ResponseMapper.System
         /// <summary>
         /// 子菜单
         /// </summary>
-        public List<ResponseMenu> MenuChildren { get; set; }
+        public IList<ResponseMenu> MenuChildren { get; set; }
     }
 }

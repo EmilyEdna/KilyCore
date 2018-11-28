@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+/// <summary>
+/// 作者：刘泽华
+/// 时间：2018年5月29日11点51分
+/// </summary>
 namespace KilyCore.Extension.ResultExtension
 {
     /// <summary>
@@ -24,7 +27,11 @@ namespace KilyCore.Extension.ResultExtension
         /// <summary>
         /// 404
         /// </summary>
-        NULL=40
+        NULL=40,
+        /// <summary>
+        /// 失败
+        /// </summary>
+        FAIL=50
 
     }
     /// <summary>

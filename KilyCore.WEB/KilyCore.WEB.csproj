@@ -1,12 +1,29 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <UserSecretsId>2fe99d7b-0bd9-400b-b284-359c460581ab</UserSecretsId>
+    <Authors>刘泽华</Authors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" />
+    <Compile Remove="Areas\ComManage\**" />
+    <Content Remove="Areas\ComManage\**" />
+    <EmbeddedResource Remove="Areas\ComManage\**" />
+    <None Remove="Areas\ComManage\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EPPlus.Core" Version="1.5.4" />
+    <PackageReference Include="iTextSharp.LGPLv2.Core" Version="1.4.4" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.5" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Select.HtmlToPdf.NetCore" Version="18.3.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -14,7 +31,84 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Home\" />
+    <None Include="wwwroot\Content\Uploader\js\upload.js" />
+    <None Include="wwwroot\StaticHtml\Safe.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Repast\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Areas\FunManage\Views\System\AcceptTagAttachs.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\GovtManage\Views\Govt\GovtRoler.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\GovtManage\Views\Govt\GovtMenuEdit.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\WebGovtManage\Views\Product\WorkSuperviseDetail.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\WebGovtManage\Views\Product\WorkSupervise.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\WebGovtManage\Views\Restaurant\BanquetSupervise.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\WebGovtManage\Views\Restaurant\GovtAgree.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\WebGovtManage\Views\Restaurant\GovtAgreeEdit.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\WebGovtManage\Views\Restaurant\SamllSuperviseDetail.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\WebGovtManage\Views\Restaurant\UnitSupervise.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\WebMerchantManage\Views\RepastBasic\MerchantAudit.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\WebMerchantManage\Views\RepastBasic\MerchantInfoEditArea.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\WebMerchantManage\Views\Source\MerchantDisinfect.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\WebMerchantManage\Views\Source\MerchantAdditive.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\WebMerchantManage\Views\Source\MerchantDisinfectEdit.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\WebMerchantManage\Views\Source\MerchantAdditiveEdit.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Cook\Home.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Cook\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Cook\Login.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Cook\Regist.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Govt\Home.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Govt\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Govt\Login.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
   </ItemGroup>
 
 </Project>

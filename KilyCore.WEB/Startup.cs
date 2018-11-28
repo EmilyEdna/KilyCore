@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KilyCore.WEB.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
+ 
 namespace KilyCore.WEB
 {
     public class Startup
@@ -14,6 +15,7 @@ namespace KilyCore.WEB
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            GetSystemConfiger();
         }
 
         public IConfiguration Configuration { get; }
@@ -49,6 +51,16 @@ namespace KilyCore.WEB
                     template: "{area:exists}/{controller}/{action}/{id?}"
                     );
             });
+        }
+
+        public void GetSystemConfiger()
+        {
+            Configer.CompanySelf = Configuration["Company:Name"];
+            Configer.CodeSelf = Configuration["Company:Code"];
+            Configer.AddressSelf = Configuration["Company:Address"];
+            Configer.Chapter = Configuration["Company:Chapter"];
+            Configer.Host = Configuration["Host:ApiHost"];
+            Configer.WebHost = Configuration["Host:WebHost"];
         }
     }
 }

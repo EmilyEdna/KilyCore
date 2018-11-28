@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+/// <summary>
+/// 作者：刘泽华
+/// 时间：2018年5月29日11点51分
+/// </summary>
 namespace KilyCore.Quartz
 {
     /// <summary>
@@ -9,10 +12,6 @@ namespace KilyCore.Quartz
     /// </summary>
     public class QuartzMap
     {
-        /// <summary>
-        /// 执行次数
-        /// </summary>
-        public int? ExcunteNum { get; set; }
         /// <summary>
         /// 任务分组
         /// </summary>
@@ -28,7 +27,7 @@ namespace KilyCore.Quartz
         /// <summary>
         /// 结束时间
         /// </summary>
-        public DateTime EndTime { get; set; }
+        public DateTime? EndTime { get; set; }
         /// <summary>
         /// 执行任务间隔时间单位秒
         /// </summary>

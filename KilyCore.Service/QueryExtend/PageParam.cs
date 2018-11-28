@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+/// <summary>
+/// 作者：刘泽华
+/// 时间：2018年5月29日12点01分
+/// </summary>
 namespace KilyCore.Service.QueryExtend
 {
     /// <summary>
@@ -30,8 +33,9 @@ namespace KilyCore.Service.QueryExtend
     /// 单个值查询
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class SimlpeParam<T>
+    public class SimpleParam<T>
     {
         public T Id { get; set; }
+        public T Parameter { get; set; }
     }
 }

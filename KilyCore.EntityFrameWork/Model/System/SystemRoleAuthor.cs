@@ -2,7 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-
+/// <summary>
+/// 作者：刘泽华
+/// 时间：2018年5月29日11点29分
+/// </summary>
 namespace KilyCore.EntityFrameWork.Model.System
 {
     /// <summary>
@@ -23,7 +26,7 @@ namespace KilyCore.EntityFrameWork.Model.System
         /// </summary>
         public virtual string AuthorMenuPath { get; set; }
         /// <summary>
-        /// 所属管理范围
+        /// 所属管理区域
         /// </summary>
         public virtual string TypePath { get; set; }
     }

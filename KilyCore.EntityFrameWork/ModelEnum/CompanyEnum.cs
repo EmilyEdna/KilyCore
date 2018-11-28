@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
-
+/// <summary>
+/// 作者：刘泽华
+/// 时间：2018年5月29日11点29分
+/// </summary>
 namespace KilyCore.EntityFrameWork.ModelEnum
 {
     /// <summary>
@@ -11,20 +14,20 @@ namespace KilyCore.EntityFrameWork.ModelEnum
     public enum CompanyEnum
     {
         /// <summary>
-        /// 种养(值/殖)企业
+        /// 种植企业
         /// </summary>
-        [Description("种养(值/殖)企业")]
+        [Description("种植企业")]
         Plant = 10,
+        /// <summary>
+        /// 养殖企业
+        /// </summary>
+        [Description("养殖企业")]
+        Culture =20,
         /// <summary>
         /// 生产企业
         /// </summary>
         [Description("生产企业")]
-        Production = 20,
-        /// <summary>
-        /// 餐饮企业
-        /// </summary>
-        [Description("餐饮企业")]
-        Dining = 30,
+        Production = 30,
         /// <summary>
         /// 流通企业
         /// </summary>

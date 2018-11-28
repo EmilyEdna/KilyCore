@@ -282,6 +282,7 @@
         url: undefined,
         ajax: undefined,
         cache: true,
+        async: true,
         contentType: 'application/json',
         dataType: 'json',
         ajaxOptions: {},
@@ -2025,6 +2026,7 @@
             data: this.options.contentType === 'application/json' && this.options.method === 'post' ?
                 JSON.stringify(data) : data,
             cache: this.options.cache,
+            async: this.options.async,
             contentType: this.options.contentType,
             dataType: this.options.dataType,
             success: function (res) {

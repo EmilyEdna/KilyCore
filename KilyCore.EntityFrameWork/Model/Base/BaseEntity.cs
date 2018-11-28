@@ -1,9 +1,15 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.IdGenerators;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
-
+/// <summary>
+/// 作者：刘泽华
+/// 时间：2018年5月29日11点29分
+/// </summary>
 namespace KilyCore.EntityFrameWork.Model.Base
 {
     /// <summary>
@@ -15,6 +21,7 @@ namespace KilyCore.EntityFrameWork.Model.Base
         /// 主键
         /// </summary>
         //[Key,DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [BsonId(IdGenerator = typeof(GuidGenerator)), BsonRepresentation(BsonType.String)]
         public virtual Guid Id { get; set; }
         /// <summary>
         /// 创建时间

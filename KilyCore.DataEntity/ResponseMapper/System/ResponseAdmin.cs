@@ -1,6 +1,9 @@
 ﻿using KilyCore.EntityFrameWork.ModelEnum;
 using System;
-
+/// <summary>
+/// 作者：刘泽华
+/// 时间：2018年5月29日11点29分
+/// </summary>
 namespace KilyCore.DataEntity.ResponseMapper.System
 {
     public class ResponseAdmin
@@ -12,6 +15,13 @@ namespace KilyCore.DataEntity.ResponseMapper.System
         public string IdCard { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
+        public string BankCard { get; set; }
+        public string BankName { get; set; }
+        public string TableName { get; set; }
+        public bool OpenNet { get; set; }
+        public string Chapter { get; set; }
+        public  string Address { get; set; }
+        public string CommunityCode { get; set; }
         /// <summary>
         /// 所属区域
         /// </summary>

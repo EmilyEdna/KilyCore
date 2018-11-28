@@ -3,7 +3,10 @@ using KilyCore.EntityFrameWork.ModelEnum;
 using System;
 using System.Collections.Generic;
 using System.Text;
-
+/// <summary>
+/// 作者：刘泽华
+/// 时间：2018年5月29日11点29分
+/// </summary>
 namespace KilyCore.EntityFrameWork.Model.System
 {
     /// <summary>
@@ -28,6 +31,10 @@ namespace KilyCore.EntityFrameWork.Model.System
         /// </summary>
         public virtual string Email { get; set; }
         /// <summary>
+        /// 社会统一信用代码
+        /// </summary>
+        public virtual string CommunityCode { get; set; }
+        /// <summary>
         /// 电话
         /// </summary>
         public virtual string Phone { get; set; }
@@ -47,5 +54,25 @@ namespace KilyCore.EntityFrameWork.Model.System
         /// 角色权限类型
         /// </summary>
         public virtual Guid RoleAuthorType { get; set; }
+        /// <summary>
+        /// 银行账户
+        /// </summary>
+        public virtual string BankCard { get; set; }
+        /// <summary>
+        /// 开户行
+        /// </summary>
+        public virtual string BankName { get; set; }
+        /// <summary>
+        /// 开启网签
+        /// </summary>
+        public virtual bool OpenNet { get; set; }
+        /// <summary>
+        /// 详细地址
+        /// </summary>
+        public virtual string Address { get; set; }
+        /// <summary>
+        /// 电子章
+        /// </summary>
+        public virtual string Chapter { get; set; }
     }
 }
