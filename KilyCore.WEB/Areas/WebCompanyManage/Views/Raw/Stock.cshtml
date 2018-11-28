@@ -104,6 +104,8 @@
                 },
                 TableFormatter: function (val, row, index) {
                     var action = [];
+                    if (row.CheckMaterialId === "00000000-0000-0000-0000-000000000000")
+                        action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>添加产品质检</button>');
                     if (row.SetStockNum != undefined)
                         action.push('<button class="btn btn-sm btn-primary out"><i class="fa fa-pencil-square-o"></i>出库</button>');
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
@@ -138,6 +140,18 @@
                                 }
                             });
                         }
+                    },
+                    "click .edit": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "添加原料质检",
+                            type: 2,
+                            height: "200px",
+                            width: "400px",
+                            url: "WebCompanyManage/Raw/MaterCheck?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        });
                     },
                     "click .out": function (event, val, row, index) {
                         controller.OpenWindow({

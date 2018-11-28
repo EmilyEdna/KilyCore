@@ -1002,6 +1002,10 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveStock(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        public ObjectResultEx UpdateMaterStockCheck(RequestEnterpriseMaterialStock Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.UpdateMaterStockCheck(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         /// <summary>
         /// 编辑入库
         /// </summary>

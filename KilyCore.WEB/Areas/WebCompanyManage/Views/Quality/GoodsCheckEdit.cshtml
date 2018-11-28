@@ -23,14 +23,14 @@
             //获取产品
             GetGoods: function () {
                 controller.ajax({
-                    url: "EnterpriseWeb/GetGoodsList",
+                    url: "EnterpriseWeb/GetProBatchList",
                     data: { },
                     type: "post",
                     async: false,
                     success: function (result) {
                         var html = '<option>==请选择产品==</option>';
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '">' + obj.ProductName + '</option>';
+                            html += '<option value="' + obj.Id + '">' + obj.SeriesName +'(' + obj.BatchNo+ ')</option>';
                         });
                         $("#GoodsId").html(html);
                     }

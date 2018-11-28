@@ -41,14 +41,20 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         /// 入库
         /// </summary>
         /// <returns></returns>
-        public IActionResult StockIn() {
+        public IActionResult StockIn()
+        {
             return View();
         }
         /// <summary>
         /// 出库
         /// </summary>
         /// <returns></returns>
-        public IActionResult StockOut() {
+        public IActionResult StockOut()
+        {
+            return View();
+        }
+        public IActionResult MaterCheck()
+        {
             return View();
         }
     }

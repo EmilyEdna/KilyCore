@@ -35,7 +35,7 @@ namespace KilyCore.WEB.Util
         /// <returns></returns>
         public static Object UploadFile(IFormFile Files, String FolderName, String WebRootPath)
         {
-            String[] FileType = { ".jpg", ".png", ".jpeg", ".bmp", ".gif", ".ico" };
+            String[] FileType = { ".jpg", ".png", ".jpeg",".gif"};
             //文件后缀
             var FileExtension = Path.GetExtension(Files.FileName);
             if (FileExtension == null)

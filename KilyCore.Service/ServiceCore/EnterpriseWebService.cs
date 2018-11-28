@@ -779,7 +779,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public IDictionary<Guid,String> GetChildAccount(Guid Id)
+        public IDictionary<Guid, String> GetChildAccount(Guid Id)
         {
             IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).AsNoTracking();
             var Maps = queryable.Where(t => t.CompanyId == Id).ToDictionary(t => t.Id, t => t.CompanyName);
@@ -2620,6 +2620,12 @@ namespace KilyCore.Service.ServiceCore
         {
             return Remove<EnterpriseMaterialStock>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
+        public string UpdateMaterStockCheck(RequestEnterpriseMaterialStock Param)
+        {
+            EnterpriseMaterialStock queryable = Kily.Set<EnterpriseMaterialStock>().Where(t => t.IsDelete == false).Where(t => t.Id == Param.Id).AsNoTracking().FirstOrDefault();
+            queryable.CheckMaterialId = Param.CheckMaterialId;
+            return UpdateField(queryable, "CheckMaterialId") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
         #endregion
         #region 出库
         /// <summary>
@@ -3190,7 +3196,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 ProductName = t.ProductName,
-                Specs=t.Spec,
+                Specs = t.Spec,
                 Spec = Temp.Where(x => x.Id == t.Id).Select(x => x.Spec).FirstOrDefault()
             }).AsNoTracking().ToList();
             return data;
@@ -3686,7 +3692,7 @@ namespace KilyCore.Service.ServiceCore
         public PagedResult<ResponseEnterpriseCheckGoods> GetCheckGoodsPage(PageParamList<RequestEnterpriseCheckGoods> pageParam)
         {
             IQueryable<EnterpriseCheckGoods> queryable = Kily.Set<EnterpriseCheckGoods>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
-            IQueryable<EnterpriseGoods> queryables = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseProductionBatch> queryables = Kily.Set<EnterpriseProductionBatch>().Where(t => t.IsDelete == false);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.CheckName))
                 queryable = queryable.Where(t => t.CheckName.Contains(pageParam.QueryParam.CheckName));
             if (CompanyInfo() != null)
@@ -3697,7 +3703,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 CheckName = t.CheckName,
-                GoodsName = x.ProductName,
+                GoodsName = Kily.Set<EnterpriseProductSeries>().Where(o => o.Id == x.SeriesId).Select(o => o.SeriesName).FirstOrDefault(),
                 CheckResult = t.CheckResult,
                 CheckUint = t.CheckUint,
                 CheckUser = t.CheckUser,

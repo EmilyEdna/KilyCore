@@ -163,6 +163,7 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseEnterpriseMaterialStock> GetStockPage(PageParamList<RequestEnterpriseMaterialStock> pageParam);
         String EditStock(RequestEnterpriseMaterialStock Param);
         String RemoveStock(Guid Id);
+        String UpdateMaterStockCheck(RequestEnterpriseMaterialStock Param);
         #endregion
         #region 出库
         PagedResult<ResponseEnterpriseMaterialStockAttach> GetOutStockPage(PageParamList<RequestEnterpriseMaterialStockAttach> pageParam);

@@ -52,10 +52,11 @@
                     "click .sea": function (event, val, row, index) {
                         var arr = [];
                         var datas = [];
-                        if (row.ImgUr == null) {
+                        if (row.ImgUrl == null) {
                             controller.Msg("未上传图片");
                             return;
                         }
+
                         if (row.ImgUrl != "")
                             arr = row.ImgUrl.split(",");
                         $.each(arr, function (i, obj) {
