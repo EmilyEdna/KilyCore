@@ -20,7 +20,7 @@
                 $("#States").val("待处理");
                 controller.LayDate({ elem: "#HandleTime" });
                 controller.LayDate({ elem: "#RecoverStarTime" });
-                controller.LayDate({ elem: "#RecoverEndTime" });
+                controller.LayDate({ elem: "#RecoverEndTime",max: controller.GetDate(10) });
                 this.GetDetail(Guid);
             },
             //取详情

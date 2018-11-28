@@ -3772,7 +3772,7 @@ namespace KilyCore.Service.ServiceCore
                 t.ExpiredDate,
                 x.ProductTime,
                 ExpiredTime = x.ProductTime.AddDays(Convert.ToInt32(t.ExpiredDate))
-            }).Where(t => DateTime.Now.Subtract(t.ExpiredTime).TotalDays <= 7)
+            }).Where(t => t.ExpiredTime.Subtract(DateTime.Now).TotalDays <= 7)
             .ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
