@@ -40,5 +40,9 @@ namespace KilyCore.DataEntity.ResponseMapper.System
         /// 新闻内容
         /// </summary>
         public string NewsContent { get; set; }
+        /// <summary>
+        /// 发布者
+        /// </summary>
+        public string Writer { get; set; }
     }
 }

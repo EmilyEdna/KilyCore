@@ -42,6 +42,10 @@ namespace KilyCore.EntityFrameWork.Model.System
         /// </summary>
         public virtual string NewsContent { get; set; }
         /// <summary>
+        /// 发布者
+        /// </summary>
+        public virtual string Writer { get; set; }
+        /// <summary>
         /// 新闻分类
         /// </summary>
         public virtual NewsEnum NewsType { get; set; }
