@@ -130,6 +130,7 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 物码管理
         PagedResult<ResponseEnterpriseTag> GetTagPage(PageParamList<RequestEnterpriseTag> pageParam);
+        String UpdateEmptyTag(Guid Id);
         String CreateTag(RequestEnterpriseTag Param);
         String RemoveTag(Guid Id);
         String RemoveApplyTag(Guid Id);
@@ -142,7 +143,7 @@ namespace KilyCore.Service.IServiceCore
         Object GetTagList(int type);
         Object GetCodeNo(int Type, string BatchNo);
         PagedResult<ResponseEnterpriseScanCode> GetScanCodePage(PageParamList<RequestEnterpriseGoods> pageParam);
-        ResponseEnterpriseScanCode GetScanCodeDetail(Guid Id, Int64 Code);
+        ResponseEnterpriseScanCode GetScanCodeDetail(Guid? Id, Int64 Code);
         PagedResult<ResponseEnterpriseTagAttach> GetTagAttachPage(PageParamList<RequestEnterpriseTagAttach> pageParam);
         String EditScanInfo(RequestEnterpriseScanCodeInfo Param);
         #endregion

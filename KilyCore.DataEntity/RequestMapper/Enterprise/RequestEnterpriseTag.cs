@@ -16,6 +16,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public Int64 EndSerialNo { get; set; }
         public int TotalNo { get; set; }
         public TagEnum TagType { get; set; }
+        public bool? IsCreate { get; set; }
     }
     public class RequestEnterpriseTagAttach
     {

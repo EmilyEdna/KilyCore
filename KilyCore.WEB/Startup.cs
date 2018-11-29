@@ -61,6 +61,7 @@ namespace KilyCore.WEB
             Configer.Chapter = Configuration["Company:Chapter"];
             Configer.Host = Configuration["Host:ApiHost"];
             Configer.WebHost = Configuration["Host:WebHost"];
+            Configer.WebHostEmpty = Configuration["Host:WebHostEmpty"];
         } 
     }
 }

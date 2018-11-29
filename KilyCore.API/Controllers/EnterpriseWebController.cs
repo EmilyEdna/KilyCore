@@ -745,6 +745,16 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.GetTagPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
+        /// 创建空白标签
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("UpdateEmptyTag")]
+        public ObjectResultEx UpdateEmptyTag(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.UpdateEmptyTag(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 生成二维码
         /// </summary>
         /// <param name="Param"></param>
@@ -873,7 +883,7 @@ namespace KilyCore.API.Controllers
         /// <returns></returns>
         [AllowAnonymous]
         [HttpGet("GetScanCodeDetail")]
-        public ObjectResultEx GetScanCodeDetail(SimpleParam<Guid> Key, SimpleParam<Int64> Param)
+        public ObjectResultEx GetScanCodeDetail(SimpleParam<Guid?> Key, SimpleParam<Int64> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetScanCodeDetail(Key.Id, Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }

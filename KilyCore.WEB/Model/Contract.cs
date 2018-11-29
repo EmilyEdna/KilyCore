@@ -97,6 +97,8 @@ namespace KilyCore.WEB.Model
         public static String Chapter { get; set; }
         public static String Host { get; set; }
         public static String WebHost { get; set; }
+        public static String WebHostEmpty { get; set; }
+
     }
     public class ExcelModel
     {
@@ -108,6 +110,7 @@ namespace KilyCore.WEB.Model
     }
     public class ScanCodeModel
     {
+        public bool UseId { get; set; }
         public Guid Id { get; set; }
         public Int64 SCode { get; set; }
         public Int64 ECode { get; set; }

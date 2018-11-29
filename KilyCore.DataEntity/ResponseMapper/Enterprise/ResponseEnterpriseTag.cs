@@ -19,6 +19,8 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public TagEnum TagType { get; set; }
         public string TagTypeName { get; set; }
         public virtual int? UseNum { get; set; }
+        public bool? IsCreate { get; set; }
+        public string CreateEmpty => IsCreate.HasValue ? "已生成" : "未生成";
     }
     public class ResponseEnterpriseTagAttach
     {

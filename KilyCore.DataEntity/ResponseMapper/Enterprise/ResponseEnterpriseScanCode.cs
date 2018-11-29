@@ -147,6 +147,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public Guid? GrowNoteId { get; set; }
         public string OutStockBatchNo { get; set; }
         public ResponseEnterpriseRecover RecoverInfo { get; set; }
+        public bool? IsCreate { get; set; }
     }
     public class ResponseEnterpriseScanCodeMaterial
     {

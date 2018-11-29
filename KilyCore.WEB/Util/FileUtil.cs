@@ -245,13 +245,27 @@ namespace KilyCore.WEB.Util
         {
             Int64 region = model.ECode - model.SCode;
             IList<String> Address = new List<String>();
-            for (long i = region; i > 0; i--)
+            String Content = String.Empty;
+            String FileName=String.Empty;
+            if (model.UseId)
             {
-                Address.Add(string.Format(Configer.WebHost, model.Id, model.SCode + i));
+                for (long i = region; i > 0; i--)
+                {
+                    Address.Add(string.Format(Configer.WebHost, model.Id, model.SCode + i));
+                }
+                Address.Add(string.Format(Configer.WebHost, model.Id, model.SCode));
+                Content = String.Join("\r\n", Address);
+                FileName = WebRootPath + @"\Template\ScanLink.txt";
             }
-            Address.Add(string.Format(Configer.WebHost, model.Id, model.SCode));
-            string Content = String.Join("\r\n", Address);
-            var FileName = WebRootPath + @"\Template\ScanLink.txt";
+            else {
+                for (long i = region; i > 0; i--)
+                {
+                    Address.Add(string.Format(Configer.WebHostEmpty, model.SCode + i));
+                }
+                Address.Add(string.Format(Configer.WebHostEmpty, model.SCode));
+                Content = String.Join("\r\n", Address);
+                FileName = WebRootPath + @"\Template\ScanLinkEmpty.txt";
+            }
             using (StreamWriter str = File.CreateText(FileName))
             {
                 str.WriteLine(Content);

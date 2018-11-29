@@ -36,9 +36,9 @@
     }
 
     .content h6 {
-        font-size: 30px;
+        font-size: 36px;
         letter-spacing: 5px;
-        font-family: STZhongsong;
+        padding-left:2%;
     }
 
     .content strong {

@@ -42,5 +42,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 使用数量
         /// </summary>
         public virtual int UseNum { get; set; }
+        /// <summary>
+        /// 是否生成过空白标签
+        /// </summary>
+        public virtual bool? IsCreate { get; set; }
     }
 }
