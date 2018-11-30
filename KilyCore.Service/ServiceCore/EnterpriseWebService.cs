@@ -1333,13 +1333,14 @@ namespace KilyCore.Service.ServiceCore
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             if (pageParam.QueryParam.IsIndex.HasValue)
-                queryable = queryable.Where(t => t.IsDelete == true);
+                queryable = queryable.Where(t => t.IsIndex == pageParam.QueryParam.IsIndex);
             var data = queryable.Select(t => new ResponseEnterpriseVedio()
             {
                 Id = t.Id,
                 VedioName = t.VedioName,
                 VedioAddr = t.VedioAddr,
-                VedioCover = t.VedioCover
+                VedioCover = t.VedioCover,
+                IsIndex=t.IsIndex
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -1367,9 +1368,11 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public string ShowVedio(Guid Id)
+        public string ShowVedio(Guid Id, bool flag)
         {
-            return Delete<EnterpriseVedio>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+            var video = Kily.Set<EnterpriseVedio>().Where(t => t.Id == Id).AsNoTracking().FirstOrDefault();
+            video.IsIndex = flag;
+            return UpdateField(video,"IsIndex") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATESUCCESS;
         }
         #endregion
         #endregion

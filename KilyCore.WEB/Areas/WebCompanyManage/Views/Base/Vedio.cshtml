@@ -43,7 +43,11 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
-                    action.push('<button class="btn btn-sm btn-primary wacth"><i class="fa fa-eye"></i>首页显示</button>');
+                    if (!row.IsIndex) {
+                        action.push('<button class="btn btn-sm btn-primary wacth"><i class="fa fa-eye"></i>首页显示</button>');
+                    } else {
+                        action.push('<button class="btn btn-sm btn-primary closeye"><i class="fa fa-eye"></i>关闭显示</button>');
+                    }
                     action.push('<button class="btn btn-sm btn-primary sea"><i class="fa fa-eye"></i>视频播放</button>');
                     return action.join("&nbsp;")
                 },
@@ -63,11 +67,25 @@
                         });
                     },
                     "click .wacth": function (event, val, row, index) {
-                        controller.Confirm("确实首页显示？", function (bool) {
+                        controller.Confirm("确认首页显示？", function (bool) {
                             if (bool) {
                                 controller.ajax({
                                     url: "EnterpriseWeb/ShowVedio",
-                                    data: { Id: row.Id },
+                                    data: { Id: row.Id, Parameter: true },
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    "click .closeye": function (event, val, row, index) {
+                        controller.Confirm("确认关闭显示？", function (bool) {
+                            if (bool) {
+                                controller.ajax({
+                                    url: "EnterpriseWeb/ShowVedio",
+                                    data: { Id: row.Id, Parameter: false },
                                     type: 'post',
                                     success: function (result) {
                                         options.$table.refresh();

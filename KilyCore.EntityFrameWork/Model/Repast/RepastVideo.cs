@@ -36,5 +36,9 @@ namespace KilyCore.EntityFrameWork.Model.Repast
         /// 封面图
         /// </summary>
         public virtual string CoverPhoto { get; set; }
+        /// <summary>
+        /// 是否首页显示
+        /// </summary>
+        public virtual bool IsIndex { get; set; }
     }
 }

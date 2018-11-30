@@ -465,9 +465,9 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("ShowVedio")]
-        public ObjectResultEx ShowVedio(SimpleParam<Guid> Param)
+        public ObjectResultEx ShowVedio(SimpleParam<Guid> Param, SimpleParam<bool> flag)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.ShowVedio(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.ShowVedio(Param.Id, flag.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #endregion

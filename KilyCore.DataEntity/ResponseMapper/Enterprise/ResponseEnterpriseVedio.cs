@@ -32,5 +32,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// 视频地址3
         /// </summary>
         public string VedioCover { get; set; }
+        public bool IsIndex { get; set; }
     }
 }

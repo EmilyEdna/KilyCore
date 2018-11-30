@@ -104,7 +104,7 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseRepastVideo> GetVideoPage(PageParamList<RequestRepastVideo> pageParam);
         String SaveVideo(RequestRepastVideo Param);
         String DeleteVideo(Guid Id);
-        String ShowVideo(Guid Id);
+        String ShowVideo(Guid Id,bool flag);
         #endregion
         #endregion
         #region 菜品管理

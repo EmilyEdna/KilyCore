@@ -1277,13 +1277,14 @@ namespace KilyCore.Service.ServiceCore
             else
                 queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
             if (pageParam.QueryParam.IsIndex.HasValue)
-                queryable = queryable.Where(t => t.IsDelete == true);
+                queryable = queryable.Where(t => t.IsIndex == pageParam.QueryParam.IsIndex);
             var data = queryable.Select(t => new ResponseRepastVideo()
             {
                 Id = t.Id,
                 MonitorAddress = t.MonitorAddress,
                 CoverPhoto = t.CoverPhoto,
-                VideoAddress = t.VideoAddress
+                VideoAddress = t.VideoAddress,
+                IsIndex=t.IsIndex
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -1292,8 +1293,10 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public string ShowVideo(Guid Id) {
-            return Delete<RepastVideo>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        public string ShowVideo(Guid Id,bool flag) {
+            var Video = Kily.Set<RepastVideo>().Where(t => t.Id == Id).AsNoTracking().FirstOrDefault();
+            Video.IsIndex = flag;
+            return UpdateField(Video,"IsIndex") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         #endregion
         #endregion

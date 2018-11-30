@@ -34,5 +34,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 视频地址3
         /// </summary>
         public virtual string VedioCover { get; set; }
+        /// <summary>
+        /// 是否首页显示
+        /// </summary>
+        public virtual bool IsIndex { get; set; }
     }
 }

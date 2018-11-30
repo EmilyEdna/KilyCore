@@ -44,6 +44,7 @@
     <div class="ibox-content">
         <form class="form-horizontal" method="post" action="RepastWeb/SaveVideo" id="Edit">
             <input type="hidden" name="InfoId" id="InfoId" />
+            <input type="hidden" name="IsIndex" value="false" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">监控区域</label></th>
@@ -52,7 +53,7 @@
                     </td>
                     <th><label class="control-label">视频地址</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="VideoAddress"/>
+                        <input type="text" class="form-control" name="VideoAddress" />
                     </td>
                 </tr>
                 <tr>
@@ -61,7 +62,7 @@
                         <div class="image-box clear">
                             <section class="upload-section">
                                 <div class="upload-btn"></div>
-                                <input type="file" name="Files"  class="upload-input" value="" accept="image/*" multiple="multiple" />
+                                <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
                             </section>
                         </div>
                         <input type="hidden" id="CoverPhoto" name="CoverPhoto" />
