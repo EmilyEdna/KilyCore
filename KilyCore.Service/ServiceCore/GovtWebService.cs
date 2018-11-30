@@ -1762,12 +1762,12 @@ namespace KilyCore.Service.ServiceCore
             else
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
             IList<DataPie> InSideData = null;
-            InSideData = goods.Join(queryable, t => t.CompanyId, x => x.Id, (t, x) => new { x.CompanyType }).GroupBy(t => t.CompanyType).Select(t => new DataPie
+            InSideData = goods.Join(queryable, t => t.CompanyId, x => x.Id, (t, x) => new { t.ProductType }).GroupBy(t => t.ProductType).Select(t => new DataPie
             {
                 value = t.Count(),
-                name = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.Key)
+                name =t.Key
             }).ToList();
-            List<String> title = new List<String>() { "种植产品", "养殖产品", "加工产品" };
+            List<String> title = new List<String>() { "农产品", "食品", "药品", "化妆品", "医疗器械", "其他" };
             ResponseDataCount dataCount = new ResponseDataCount()
             {
                 Name = "数据统计",
