@@ -23,6 +23,10 @@
                     success: function (result) {
                         controller.SetCtrlValue("#Edit", result.data);
                         options.BindHonor(result.data.HonorCertification);
+                        $.each(result.data.Video, function (i, obj) {
+                            var url = "../../StaticHtml/PlayVedio.html?addr="+obj;
+                            $($(".ibox-content").find("iframe")[i]).attr("src", url);
+                        });
                     }
                 });
                 //查看大图
@@ -53,6 +57,11 @@
             },
             //事件
             InitEvents: function () {
+                $("#four").click(function () {
+                    $("#tab-4").find("iframe").contents().find(".vcp-player").each(function () {
+                        $(this).attr("style", "width:456px;");
+                    });
+                });
             },
         };
         //初始化
@@ -73,6 +82,9 @@
             </li>
             <li>
                 <a data-toggle="tab" href="#tab-3" aria-expanded="false">荣誉证书</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-4" aria-expanded="false" id="four">视频监控</a>
             </li>
         </ul>
         <div class="tab-content">
@@ -149,6 +161,14 @@
             </div>
             <div id="tab-3" class="tab-pane">
                 <div class="ibox-content">
+                </div>
+            </div>
+            <div id="tab-4" class="tab-pane">
+                <div class="ibox-content">
+                    <iframe class="J_iframe" src="" name="iframe" style="width:472px;height:400px" frameborder="0" seamless scrolling="no" align="middle"></iframe>
+                    <iframe class="J_iframe" src="" name="iframe" style="width:472px;height:400px" frameborder="0" seamless scrolling="no" align="middle"></iframe>
+                    <iframe class="J_iframe" src="" name="iframe" style="width:472px;height:400px" frameborder="0" seamless scrolling="no" align="middle"></iframe>
+                    <iframe class="J_iframe" src="" name="iframe" style="width:472px;height:400px" frameborder="0" seamless scrolling="no" align="middle"></iframe>
                 </div>
             </div>
         </div>

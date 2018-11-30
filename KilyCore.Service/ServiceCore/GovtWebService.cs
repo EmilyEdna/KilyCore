@@ -259,7 +259,9 @@ namespace KilyCore.Service.ServiceCore
                 NetAddress = t.NetAddress,
                 IdCard = t.IdCard,
                 Honor = t.HonorCertification,
-                Discription = t.Discription
+                Discription = t.Discription,
+                Video = Kily.Set<EnterpriseVedio>().Where(x => x.CompanyId == Id && x.IsIndex == true)
+                .OrderByDescending(x => x.CreateTime).Select(x => x.VedioAddr).Take(4).ToList()
             }).AsNoTracking().FirstOrDefault();
             return data;
         }
@@ -270,7 +272,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public ResponseMerchant GetRepastDetail(Guid Id)
         {
-            var data = Kily.Set<RepastInfo>().Where(t => t.Id == Id).GroupJoin(Kily.Set<RepastVideo>(), t => t.Id, x => x.InfoId, (t, x) => new ResponseMerchant()
+            var data = Kily.Set<RepastInfo>().Where(t => t.Id == Id).Select(t => new ResponseMerchant()
             {
                 Id = t.Id,
                 MerchantName = t.MerchantName,
@@ -285,7 +287,8 @@ namespace KilyCore.Service.ServiceCore
                 AllowUnit = t.AllowUnit,
                 Honor = t.HonorCertification,
                 Remark = t.Remark,
-                Account = x.FirstOrDefault().VideoAddress
+                Video=Kily.Set<RepastVideo>().Where(x=>x.InfoId==Id&&x.IsIndex==true)
+                .OrderByDescending(x=>x.CreateTime).Select(x=>x.MonitorAddress).Take(4).ToList()
             }).AsNoTracking().FirstOrDefault();
             return data;
         }

@@ -12,6 +12,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
 {
     public class ResponseEnterprise
     {
+        public IList<String> Video { get; set; }
         public Guid Id { get; set; }
         public Guid? CompanyId { get; set; }
         public DateTime? CardExpiredDate { get; set; }

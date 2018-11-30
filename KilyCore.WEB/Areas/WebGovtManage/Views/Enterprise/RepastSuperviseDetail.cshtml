@@ -22,9 +22,11 @@
                     type: "post",
                     success: function (result) {
                         controller.SetCtrlValue("#Edit", result.data);
-                        var url = "StaticHtml/PlayVedio.html?addr=" + result.data.Account;
-                        $("#play").attr("src", url);
                         options.BindHonor(result.data.HonorCertification);
+                        $.each(result.data.Video, function (i, obj) {
+                            var url = "../../StaticHtml/PlayVedio.html?addr=" + obj;
+                            $($(".ibox-content").find("iframe")[i]).attr("src", url);
+                        });
                     }
                 });
                 //查看大图
@@ -56,7 +58,9 @@
             //事件
             InitEvents: function () {
                 $("#four").click(function () {
-                    $("#play").contents().find(".vcp-player").css("margin", "0 auto");
+                    $("#tab-4").find("iframe").contents().find(".vcp-player").each(function () {
+                        $(this).attr("style", "width:456px;");
+                    });
                 });
             },
         };
@@ -141,7 +145,10 @@
             </div>
             <div id="tab-4" class="tab-pane">
                 <div class="ibox-content">
-                    <iframe id="play" class="J_iframe" src="" name="iframe" style="width:750px;height:400px" frameborder="0" seamless scrolling="no" align="middle"></iframe>
+                    <iframe class="J_iframe" src="" name="iframe" style="width:472px;height:400px" frameborder="0" seamless scrolling="no" align="middle"></iframe>
+                    <iframe class="J_iframe" src="" name="iframe" style="width:472px;height:400px" frameborder="0" seamless scrolling="no" align="middle"></iframe>
+                    <iframe class="J_iframe" src="" name="iframe" style="width:472px;height:400px" frameborder="0" seamless scrolling="no" align="middle"></iframe>
+                    <iframe class="J_iframe" src="" name="iframe" style="width:472px;height:400px" frameborder="0" seamless scrolling="no" align="middle"></iframe>
                 </div>
             </div>
         </div>
