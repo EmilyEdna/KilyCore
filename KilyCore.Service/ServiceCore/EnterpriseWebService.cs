@@ -4094,7 +4094,7 @@ namespace KilyCore.Service.ServiceCore
                 Flag = t.Flag,
                 Traffic = t.Traffic,
                 TransportWay = t.TransportWay,
-                CorrectError = t.Error / (t.Error + t.Correct)
+                CorrectError = t.Error / ((t.Error + t.Correct)==0?1: (t.Error + t.Correct))
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }

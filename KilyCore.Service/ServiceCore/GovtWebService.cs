@@ -587,7 +587,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false)
                 .Where(t => pageParam.QueryParam.ProductType.Contains(t.ProductType));
-            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.CompanyType == CompanyEnum.Production).Where(t => t.AuditType == AuditEnum.AuditSuccess);
+            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess);
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
             IList<string> Areas = GetDepartArea();
@@ -728,7 +728,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false)
                 .Where(t => pageParam.QueryParam.ProductType.Contains(t.ProductType));
-            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.CompanyType <= CompanyEnum.Culture).Where(t => t.AuditType == AuditEnum.AuditSuccess);
+            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess);
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
             IList<string> Areas = GetDepartArea();
