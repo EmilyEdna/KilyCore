@@ -240,7 +240,7 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 仓库类型
         PagedResult<ResponseEnterpriseStockType> GetStockTypePage(PageParamList<RequestEnterpriseStockType> pageParam);
-        IList<ResponseEnterpriseStockType> GetStockTypeList();
+        IList<ResponseEnterpriseStockType> GetStockTypeList(String Param);
         String RemoveStockType(Guid Id);
         String EditStockType(RequestEnterpriseStockType Param);
         #endregion

@@ -45,5 +45,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// 贮藏湿度
         /// </summary>
         public string SaveH2 { get; set; }
+        public string StockType { get; set; }
     }
 }

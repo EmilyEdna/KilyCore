@@ -44,5 +44,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 贮藏湿度
         /// </summary>
         public virtual string SaveH2 { get; set; }
+        /// <summary>
+        /// 仓库类型
+        /// </summary>
+        public virtual string StockType { get; set; }
     }
 }

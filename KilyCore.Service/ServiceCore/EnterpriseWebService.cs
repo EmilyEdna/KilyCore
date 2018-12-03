@@ -3601,7 +3601,8 @@ namespace KilyCore.Service.ServiceCore
                 SaveH2 = t.SaveH2,
                 SaveTemp = t.SaveTemp,
                 SaveType = t.SaveType,
-                StockNo = t.StockNo
+                StockNo = t.StockNo,
+                StockType=t.StockType,
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -3609,9 +3610,11 @@ namespace KilyCore.Service.ServiceCore
         /// 仓库类型列表
         /// </summary>
         /// <returns></returns>
-        public IList<ResponseEnterpriseStockType> GetStockTypeList()
+        public IList<ResponseEnterpriseStockType> GetStockTypeList(String Key)
         {
-            IQueryable<EnterpriseStockType> queryable = Kily.Set<EnterpriseStockType>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<EnterpriseStockType> queryable = Kily.Set<EnterpriseStockType>()
+                .Where(t => t.IsDelete == false).Where(t=>t.StockType.Equals(Key))
+                .OrderByDescending(t => t.CreateTime);
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else

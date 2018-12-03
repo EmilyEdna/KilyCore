@@ -1576,9 +1576,9 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetStockTypeList")]
-        public ObjectResultEx GetStockTypeList()
+        public ObjectResultEx GetStockTypeList(SimpleParam<String> Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.GetStockTypeList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.GetStockTypeList(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 删除仓库类型

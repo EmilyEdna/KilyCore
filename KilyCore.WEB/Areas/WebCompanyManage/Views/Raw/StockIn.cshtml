@@ -64,6 +64,20 @@
                         $("#CheckMaterialId").html(html);
                     }
                 });
+                //仓库类型
+                controller.ajax({
+                    url: "EnterpriseWeb/GetStockTypeList",
+                    data: { Id: "原料仓库" },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option value="0">===请选择===</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.StockName + '</option>';
+                        });
+                        $("#StockTypeId").html(html);
+                    }
+                })
             },
             //事件
             InitEvents: function () {
@@ -126,6 +140,12 @@
                     <th><label class="control-label">原料质检</label></th>
                     <td class="has-warning">
                         <select type="select" class="form-control" name="CheckMaterialId" id="CheckMaterialId"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">仓库类型</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="StockTypeId" id="StockTypeId"></select>
                     </td>
                 </tr>
             </table>

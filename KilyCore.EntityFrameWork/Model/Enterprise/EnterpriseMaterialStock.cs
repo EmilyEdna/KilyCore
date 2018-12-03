@@ -56,5 +56,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 原料质检表Id
         /// </summary>
         public virtual Guid CheckMaterialId { get; set; }
+        /// <summary>
+        /// 仓库类型
+        /// </summary>
+        public virtual Guid? StockTypeId { get; set; }
     }
 }
