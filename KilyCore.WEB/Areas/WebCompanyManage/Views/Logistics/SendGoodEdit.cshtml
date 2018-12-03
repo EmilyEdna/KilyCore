@@ -50,7 +50,7 @@
                             data.value.push({
                                 Id: obj.Id,
                                 SupplierName: obj.SupplierName,
-                                Address: obj.Address,
+                                Address: obj.Address + "," + obj.LinkPhone,
                             });
                         });
                         return data;
@@ -90,7 +90,7 @@
                     <th><label class="control-label">收货人</label></th>
                     <td class="has-warning">
                         <div class="input-group" style="width:100%;">
-                            <input type="text" class="form-control" id="GainUser" name="GainUser" Flag="GainId" titles="Address" placeholder="请输入检索字段" />
+                            <input type="text" class="form-control" id="GainUser" name="GainUser" data-list="GainId,Address,LinkPhone" placeholder="请输入检索字段" />
                         </div>
                     </td>
                     <th><label class="control-label">发货数量</label></th>

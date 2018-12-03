@@ -219,7 +219,6 @@ controller.Confirm = function (option, callBack, title) {
         icon: 6,
         title: title,
         skin: 'layui-layer-molv',
-        anim: 4,
         btn: ['确认', '取消']
     }, function (index) {
         callBack(true, index);
@@ -247,7 +246,6 @@ controller.Alter = function (option, title) {
     top.layer.alert(option,
         {
             title: title,
-            anim: 4,
             skin: 'layui-layer-molv'
         });
 }
@@ -315,7 +313,6 @@ controller.Photos = function (option) {
     var json = $.extend(defaultOption, option);
     layer.photos({
         photos: json,
-        anim: 4,
         closeBtn: true
     });
 }
@@ -350,7 +347,6 @@ controller.OpenWindow = function (option) {
         fixed: defaultOptions.fixed,
         resize: defaultOptions.resize,
         offset: "50px",
-        anim: 4,
         skin: defaultOptions.skin,
         scrollbar: defaultOptions.scrollbar,
         maxmin: defaultOptions.maxmin,

@@ -93,5 +93,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         }
         public string CompanyAccount => Account;
         public string TableName { get; set; }
+        public string LngAndLat { get; set; }
     }
 }

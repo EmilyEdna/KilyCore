@@ -1853,6 +1853,15 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.GetLogisticsPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
+        /// 获取收货地址
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetReceipt")]
+        public ObjectResultEx GetReceipt()
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetReceipt(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 编辑发货
         /// </summary>
         /// <param name="Param"></param>

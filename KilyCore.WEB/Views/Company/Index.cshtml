@@ -4,17 +4,19 @@
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
+    <script src="http://api.map.baidu.com/api?v=2.0&ak=rEU7BdGnB0kKyIjUiONnUHlw"></script>
     <script>
         var option = {
             Init: function () {
                 this.InitDom();
                 this.InitEvent();
                 this.InitDataCount(CompanyInfo.Id);
+                this.InitMap();
             },
             InitDom: function () {
                 $("body").addClass("gray-bg");
                 $(".dropdown-toggle").html(CompanyInfo.CompanyName + '<b class="caret"></b>');
-                if (CompanyInfo.Version!=40)
+                if (CompanyInfo.Version != 40)
                     $(".nav-pills").addClass("hidden");
                 else {
                     $(".nav-pills").removeClass("hidden");
@@ -120,12 +122,49 @@
                         controller.Echarts("#echarts-pie-chart-batch", result.data);
                     }
                 });
+            },
+            InitMap: function () {
+                var Map = new BMap.Map("Map");//在百度地图容器中创建一个地图
+                var Point = new BMap.Point(CompanyInfo.LngAndLat.split(",")[0], CompanyInfo.LngAndLat.split(",")[1]);//定义一个中心点坐标
+                Map.centerAndZoom(Point, 6);//设定地图的中心点和坐标并将地图显示在地图容器中
+                Map.enableScrollWheelZoom();//启用地图滚轮放大缩小
+                controller.ajax({
+                    url: "EnterpriseWeb/GetReceipt",
+                    data: {},
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        $.each(result.data, function (i, obj) {
+                            $.ajax({
+                                url: "http://api.map.baidu.com/geocoder/v2/?address=" + obj.Address + "&output=json&ak=rEU7BdGnB0kKyIjUiONnUHlw",
+                                type: "get",
+                                async: false,
+                                dataType: "jsonp",
+                                success: function (result) {
+                                    var marker = new BMap.Marker(new BMap.Point(result.result.location.lng, result.result.location.lat));
+                                    Map.addOverlay(marker);
+                                    marker.addEventListener('click', function (e) {
+                                        var InfoWin = '<table class="table table-bordered">' +
+                                            '<tr><th>分销商名称</th> <td>' + obj.GainUser + '</td></tr>' +
+                                            '<tr><th>分销商电话</th><td>' + obj.LinkPhone + '</td></tr>' +
+                                            '<tr><th>分销商地址</th><td>' + obj.Address + '</td></tr></table>'
+                                        var p = e.target;
+                                        var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+                                        var infoWindow = new BMap.InfoWindow(InfoWin);  // 创建信息窗口对象
+                                       Map.openInfoWindow(infoWindow, point); //开启信息窗口
+                                    });
+                                }
+                            });
+                        });
+                    }
+                });
             }
         };
         $(document).ready(function () {
             option.Init();
         });
     </script>
+
 }
 @section css{
     <style>
@@ -140,8 +179,7 @@
             <li class="dropdown all-camera-dropdown">
                 <a class="dropdown-toggle text-danger" data-toggle="dropdown" href="#">
                 </a>
-                <ul class="dropdown-menu">
-                </ul>
+                <ul class="dropdown-menu"></ul>
             </li>
         </ul>
         <div class="row">
@@ -355,6 +393,24 @@
                     </div>
                     <div class="ibox-content">
                         <img class="img-thumbnail" title="" src="" vedio="" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>区域发货图</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div id="Map" style="height:800px; width:100%"></div>
                     </div>
                 </div>
             </div>

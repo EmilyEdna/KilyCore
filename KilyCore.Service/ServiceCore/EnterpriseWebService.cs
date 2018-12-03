@@ -1340,7 +1340,7 @@ namespace KilyCore.Service.ServiceCore
                 VedioName = t.VedioName,
                 VedioAddr = t.VedioAddr,
                 VedioCover = t.VedioCover,
-                IsIndex=t.IsIndex
+                IsIndex = t.IsIndex
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -1372,7 +1372,7 @@ namespace KilyCore.Service.ServiceCore
         {
             var video = Kily.Set<EnterpriseVedio>().Where(t => t.Id == Id).AsNoTracking().FirstOrDefault();
             video.IsIndex = flag;
-            return UpdateField(video,"IsIndex") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATESUCCESS;
+            return UpdateField(video, "IsIndex") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATESUCCESS;
         }
         #endregion
         #endregion
@@ -1884,7 +1884,7 @@ namespace KilyCore.Service.ServiceCore
                 TotalNo = t.TotalNo,
                 TagType = t.TagType,
                 UseNum = t.UseNum,
-                IsCreate=t.IsCreate,
+                IsCreate = t.IsCreate,
                 TagTypeName = AttrExtension.GetSingleDescription<TagEnum, DescriptionAttribute>(t.TagType)
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -2203,7 +2203,7 @@ namespace KilyCore.Service.ServiceCore
             var data = goods.Join(stocks, t => t.Id, x => x.GoodsId, (t, x) => new { t, x })
                   .Join(attaches, y => y.x.GoodsBatchNo, z => z.StockNo, (y, z) => new { y, z })
                   .Join(stockAttaches, q => q.y.x.Id, p => p.StockId, (q, p) => new { q, p })
-                  .Join(tags,n=>n.q.z.TagId,m=>m.Id,(n,m)=> new { n,m.IsCreate})
+                  .Join(tags, n => n.q.z.TagId, m => m.Id, (n, m) => new { n, m.IsCreate })
                   .Where(t => t.n.q.y.x.GoodsId == t.n.q.z.GoodsId)
                   .Select(t => new ResponseEnterpriseScanCode()
                   {
@@ -2214,7 +2214,7 @@ namespace KilyCore.Service.ServiceCore
                       EndSerialNo = t.n.q.z.EndSerialNo,
                       ProductType = t.n.q.y.t.ProductType,
                       BatchNo = t.n.p.GoodsBatchNo,
-                      IsCreate=t.IsCreate
+                      IsCreate = t.IsCreate
                   })
                   .ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -2280,31 +2280,31 @@ namespace KilyCore.Service.ServiceCore
                 .Where(t => t.i.j.StarSerialNo <= Code && t.i.j.EndSerialNo >= Code);
             if (Id.HasValue)
                 queryables = queryables.Where(t => t.i.p.f.y.x.Id == Id);
-            ResponseEnterpriseScanCode queryable= queryables.Select(t => new ResponseEnterpriseScanCode()
-                 {
-                     Id = t.i.p.f.y.x.Id,
-                     CompanyType = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.i.p.k.CompanyType),
-                     TypePath = t.i.p.k.TypePath,
-                     CompanyId = t.i.p.f.y.t.CompanyId,
-                     OutStockBatchNo = t.u.GoodsBatchNo,
-                     ProductName = t.i.p.f.y.t.ProductName,
-                     ProductType = t.i.p.f.y.t.ProductType,
-                     ExpiredDate = t.i.p.f.y.t.ExpiredDate,
-                     Remark = t.i.p.f.y.x.Remark,
-                     ImgUrl = t.i.p.f.y.x.ImgUrl,
-                     ProductTime = t.i.p.f.y.x.ProductTime,
-                     Explanation = t.i.p.f.y.x.Explanation,
-                     ProductCheckResult = t.i.p.f.z.CheckResult,
-                     ProductCheckReport = t.i.p.f.z.CheckReport,
-                     StarSerialNo = t.i.j.StarSerialNo,
-                     EndSerialNo = t.i.j.EndSerialNo,
-                     NetAddress = t.i.p.k.NetAddress,
-                     CompanyAddress = t.i.p.k.CompanyAddress,
-                     CompanyName = t.i.p.k.CompanyName,
-                     Discription = t.i.p.k.Discription,
-                     LngAndLat = t.i.p.k.LngAndLat,
-                     GrowNoteId = t.i.p.f.y.x.GrowNoteId
-                 }).FirstOrDefault();
+            ResponseEnterpriseScanCode queryable = queryables.Select(t => new ResponseEnterpriseScanCode()
+            {
+                Id = t.i.p.f.y.x.Id,
+                CompanyType = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.i.p.k.CompanyType),
+                TypePath = t.i.p.k.TypePath,
+                CompanyId = t.i.p.f.y.t.CompanyId,
+                OutStockBatchNo = t.u.GoodsBatchNo,
+                ProductName = t.i.p.f.y.t.ProductName,
+                ProductType = t.i.p.f.y.t.ProductType,
+                ExpiredDate = t.i.p.f.y.t.ExpiredDate,
+                Remark = t.i.p.f.y.x.Remark,
+                ImgUrl = t.i.p.f.y.x.ImgUrl,
+                ProductTime = t.i.p.f.y.x.ProductTime,
+                Explanation = t.i.p.f.y.x.Explanation,
+                ProductCheckResult = t.i.p.f.z.CheckResult,
+                ProductCheckReport = t.i.p.f.z.CheckReport,
+                StarSerialNo = t.i.j.StarSerialNo,
+                EndSerialNo = t.i.j.EndSerialNo,
+                NetAddress = t.i.p.k.NetAddress,
+                CompanyAddress = t.i.p.k.CompanyAddress,
+                CompanyName = t.i.p.k.CompanyName,
+                Discription = t.i.p.k.Discription,
+                LngAndLat = t.i.p.k.LngAndLat,
+                GrowNoteId = t.i.p.f.y.x.GrowNoteId
+            }).FirstOrDefault();
             if (Id.HasValue)
                 stocks = stocks.AsNoTracking().Where(t => t.Id == Id);
             else
@@ -4094,9 +4094,27 @@ namespace KilyCore.Service.ServiceCore
                 Flag = t.Flag,
                 Traffic = t.Traffic,
                 TransportWay = t.TransportWay,
-                CorrectError = t.Error / ((t.Error + t.Correct)==0?1: (t.Error + t.Correct))
+                CorrectError = t.Error / ((t.Error + t.Correct) == 0 ? 1 : (t.Error + t.Correct))
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
+        }
+        /// <summary>
+        /// 获取收获地址
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseEnterpriseLogistics> GetReceipt()
+        {
+            IQueryable<EnterpriseLogistics> queryable = Kily.Set<EnterpriseLogistics>().Where(t => t.IsDelete == false);
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+            return queryable.AsNoTracking().Select(t => new ResponseEnterpriseLogistics()
+            {
+                GainUser=t.GainUser,
+                LinkPhone=t.LinkPhone,
+                Address=t.Address
+            }).ToList();
         }
         /// <summary>
         /// 发货详情
@@ -4547,4 +4565,4 @@ namespace KilyCore.Service.ServiceCore
         }
         #endregion
     }
-} 
+}
