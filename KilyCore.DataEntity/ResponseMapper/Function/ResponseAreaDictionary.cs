@@ -18,16 +18,24 @@ namespace KilyCore.DataEntity.ResponseMapper.Function
         public bool? IsEnable { get; set; }
         public string States { get => (bool)IsEnable ? "禁用中" : "启用中"; }
         public IDictionary<String, String> ProvinceKeyValue { get; set; }
+        /// <summary>
+        /// 禁用区域
+        /// </summary>
+        public string DisArea { get; set; }
+        /// <summary>
+        /// 分配区域
+        /// </summary>
+        public string AttachArea { get; set; }
         public string DisableArea
         {
             get
             {
-                if (string.IsNullOrEmpty(DicDescript))
+                if (string.IsNullOrEmpty(DisArea))
                     return null;
                 else
                 {
                     List<string> ls = new List<string>();
-                    var strs = DicDescript.Split("*").ToList();
+                    var strs = DisArea.Split("*").ToList();
                     foreach (var str in strs)
                     {
                         if (ProvinceKeyValue[str] != null)

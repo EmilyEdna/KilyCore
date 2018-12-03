@@ -13,7 +13,7 @@
             },
             //元素
             InitDom: function () {
-                controller.LayDate({ elem: "input[name='HoldTime']" });
+                controller.LayDate({ elem: "input[name='HoldTime']", max: controller.GetDate(1) });
                 $("input[name='CookId']").val(CookerInfo.Id);
                 options.GetProvince();
                 options.GetCityByProvince();

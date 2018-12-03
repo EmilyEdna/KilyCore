@@ -15,7 +15,7 @@
             },
             //元素
             InitDom: function () {
-                controller.LayDate({ elem: "input[name='CardExpiredDate']" });
+                controller.LayDate({ elem: "input[name='CardExpiredDate']", max: controller.GetDate(10) });
                 options.Editor = controller.Editor(".summernote", { width: 760 });
                 options.GetCompanyInfo();
                 options.UploadFiles();

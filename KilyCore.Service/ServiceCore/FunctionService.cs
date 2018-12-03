@@ -547,9 +547,9 @@ namespace KilyCore.Service.ServiceCore
                 DicName = x.DicName,
                 DicValue = x.DicValue,
                 Id = t.Id,
-                AttachInfo = string.Join("*", Kily.Set<SystemProvince>().Where(o => t.ProvinceId.Contains(o.Id.ToString())).Select(o => o.Name).ToArray()),
+                AttachArea = string.Join("*", Kily.Set<SystemProvince>().Where(o => t.ProvinceId.Contains(o.Id.ToString())).Select(o => o.Name).ToArray()),
                 ProvinceKeyValue = Kily.Set<SystemProvince>().Where(o => t.ProvinceId.Contains(o.Id.ToString())).ToDictionary(o=>o.Id.ToString(),o=>o.Name),
-                DicDescript = string.Join("*",queryables.Where(m => m.AreaDicId == t.Id).Select(m=>m.ProvinceId).ToArray()),
+                DisArea = string.Join("*",queryables.Where(m => m.AreaDicId == t.Id).Select(m=>m.ProvinceId).ToArray()),
                 IsEnable = (queryables.Where(o=>o.AreaDicId==t.Id).Select(o=>o.IsEnable).FirstOrDefault()==null?false: queryables.Where(o => o.AreaDicId == t.Id).Select(o => o.IsEnable).FirstOrDefault())
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
