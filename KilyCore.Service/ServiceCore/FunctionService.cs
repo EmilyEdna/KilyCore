@@ -250,7 +250,7 @@ namespace KilyCore.Service.ServiceCore
                     StarSerialNo = t.StarSerialNo,
                     EndSerialNo = t.EndSerialNo,
                     TotalNo = t.TotalNo,
-                    AcceptUser=t.AcceptUser,
+                    AcceptUser = t.AcceptUser,
                 }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
                 return data;
             }
@@ -536,14 +536,21 @@ namespace KilyCore.Service.ServiceCore
         public PagedResult<ResponseAreaDictionary> GetAreaDicPage(PageParamList<RequestAreaDictionary> pageParam)
         {
             IQueryable<FunctionAreaDictionary> queryable = Kily.Set<FunctionAreaDictionary>().AsNoTracking();
+            IQueryable<FunctionDisDictionary> queryables = Kily.Set<FunctionDisDictionary>().AsNoTracking();
             if (UserInfo().AccountType != AccountEnum.Admin && UserInfo().AccountType != AccountEnum.Country)
+            {
                 queryable = queryable.Where(t => t.ProvinceId.Contains(UserInfo().Province));
+                queryables = queryables.Where(t => t.ProvinceId.Equals(UserInfo().Province));
+            }
             var data = queryable.Join(Kily.Set<FunctionDictionary>(), t => t.DictionaryId, x => x.Id, (t, x) => new ResponseAreaDictionary()
             {
                 DicName = x.DicName,
                 DicValue = x.DicValue,
                 Id = t.Id,
-                IsEnable = t.IsDelete
+                AttachInfo = string.Join("*", Kily.Set<SystemProvince>().Where(o => t.ProvinceId.Contains(o.Id.ToString())).Select(o => o.Name).ToArray()),
+                ProvinceKeyValue = Kily.Set<SystemProvince>().Where(o => t.ProvinceId.Contains(o.Id.ToString())).ToDictionary(o=>o.Id.ToString(),o=>o.Name),
+                DicDescript = string.Join("*",queryables.Where(m => m.AreaDicId == t.Id).Select(m=>m.ProvinceId).ToArray()),
+                IsEnable = (queryables.Where(o=>o.AreaDicId==t.Id).Select(o=>o.IsEnable).FirstOrDefault()==null?false: queryables.Where(o => o.AreaDicId == t.Id).Select(o => o.IsEnable).FirstOrDefault())
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -566,11 +573,18 @@ namespace KilyCore.Service.ServiceCore
         /// <param name="Id"></param>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public string IsEnable(Guid Id, bool Param)
+        public string IsEnable(RequestDisDictionary Param)
         {
-            FunctionAreaDictionary dictionary = Kily.Set<FunctionAreaDictionary>().Where(t => t.Id == Id).FirstOrDefault();
-            dictionary.IsDelete = Param;
-            return UpdateField<FunctionAreaDictionary>(dictionary, "IsDelete") ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
+            FunctionDisDictionary data = Kily.Set<FunctionDisDictionary>().Where(t => t.AreaDicId == Param.AreaDicId).AsNoTracking().FirstOrDefault();
+            if (data == null)
+            {
+                FunctionDisDictionary dictionary = Param.MapToEntity<FunctionDisDictionary>();
+                return Insert(dictionary) ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
+            }
+            else
+            {
+                return Remove<FunctionDisDictionary>(t=>t.AreaDicId==Param.AreaDicId&&t.ProvinceId==Param.ProvinceId)? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
+            }
         }
         /// <summary>
         /// 获取版本码表
@@ -580,6 +594,7 @@ namespace KilyCore.Service.ServiceCore
         public IList<ResponseAreaDictionary> GetAreaVersion(string TypePaths, int Param)
         {
             IQueryable<FunctionDictionary> queryable = Kily.Set<FunctionDictionary>().Where(t => t.DicName.Contains("版"));
+            IQueryable<FunctionDisDictionary> queryables = Kily.Set<FunctionDisDictionary>();
             string TypePath = TypePaths.Split(',')[0];
             if (CompanyInfo() != null)
             {
@@ -607,15 +622,17 @@ namespace KilyCore.Service.ServiceCore
                   && !t.DicName.Contains("养殖")
                   && !t.DicName.Contains("其他"));
             }
-            var data = Kily.Set<FunctionAreaDictionary>().Where(t => t.ProvinceId.Contains(TypePath)).Where(t => t.IsDelete == false)
-                  .Join(queryable, t => t.DictionaryId, x => x.Id, (t, x) => new ResponseAreaDictionary()
+            var data = Kily.Set<FunctionAreaDictionary>().Where(t => t.ProvinceId.Contains(TypePath))
+                  .Join(queryable, t => t.DictionaryId, x => x.Id, (t, x) => new { t.Id, x })
+                  .GroupJoin(queryables, m => m.Id, n => n.AreaDicId, (m, n) => new { m.x, n.FirstOrDefault().IsEnable })
+                  .Select(t => new ResponseAreaDictionary()
                   {
-                      DicName = x.DicName,
-                      DicValue = x.DicValue,
-                      DicDescript = x.DicDescript,
-                      IsEnable = t.IsDelete,
-                      AttachInfo = x.AttachInfo
-                  }).ToList();
+                      DicName = t.x.DicName,
+                      DicValue = t.x.DicValue,
+                      DicDescript = t.x.DicDescript,
+                      AttachInfo = t.x.AttachInfo,
+                      IsEnable = (t.IsEnable==null?false:t.IsEnable)
+                  }).ToList().Where(t=>t.IsEnable==false).ToList();
             return data;
         }
         /// <summary>

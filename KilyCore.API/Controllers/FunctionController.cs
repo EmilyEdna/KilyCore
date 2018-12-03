@@ -230,9 +230,9 @@ namespace KilyCore.API.Controllers
         /// <param name="Value"></param>
         /// <returns></returns>
         [HttpPost("IsEnable")]
-        public ObjectResultEx IsEnable(SimpleParam<Guid> Key, SimpleParam<bool> Value)
+        public ObjectResultEx IsEnable(RequestDisDictionary Param)
         {
-            return ObjectResultEx.Instance(FunctionService.IsEnable(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(FunctionService.IsEnable(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 区域版本

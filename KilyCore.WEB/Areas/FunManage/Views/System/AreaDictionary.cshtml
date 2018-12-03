@@ -26,6 +26,16 @@
             //事件
             InitEvents: function () {
             },
+            InitDisable: function (Param) {
+                controller.ajax({
+                    url: "Function/IsEnable",
+                    data: Param,
+                    type: 'post',
+                    success: function (result) {
+                        options.$table.refresh();
+                    }
+                });
+            },
             //行为
             action: {
                 TableFormatter: function (val, row, index) {
@@ -40,28 +50,42 @@
                     "click .run": function (event, val, row, index) {
                         controller.Confirm("确认启用？", function (bool) {
                             if (bool) {
-                                controller.ajax({
-                                    url: "Function/IsEnable",
-                                    data: { Id: row.Id, Parameter: false },
-                                    type: 'post',
-                                    success: function (result) {
-                                        options.$table.refresh();
-                                    }
-                                });
+                                if (SysUserInfo.AccountType > 20) {
+                                    options.InitDisable({ AreaDicId: row.Id, IsEnable: false, ProvinceId: SysUserInfo.Province });
+                                } else {
+                                    controller.OpenWindow({
+                                        title: "启用区域",
+                                        type: 2,
+                                        height: "150px",
+                                        width: "300px",
+                                        url: "StaticHtml/ProvinceContent.html",
+                                        callBack: function (result) {
+                                            options.InitDisable({ AreaDicId: row.Id, IsEnable: false, ProvinceId: result.$("#Province").find("option:selected").val() });
+                                            result.popClose();
+                                        }
+                                    })
+                                }
                             }
                         });
                     },
                     "click .stop": function (event, val, row, index) {
                         controller.Confirm("确认禁用？", function (bool) {
                             if (bool) {
-                                controller.ajax({
-                                    url: "Function/IsEnable",
-                                    data: { Id: row.Id, Parameter: true },
-                                    type: 'post',
-                                    success: function (result) {
-                                        options.$table.refresh();
-                                    }
-                                });
+                                if (SysUserInfo.AccountType > 20) {
+                                    options.InitDisable({ AreaDicId: row.Id, IsEnable: true, ProvinceId: SysUserInfo.Province });
+                                } else {
+                                    controller.OpenWindow({
+                                        title: "禁用区域",
+                                        type: 2,
+                                        height: "150px",
+                                        width: "300px",
+                                        url: "StaticHtml/ProvinceContent.html",
+                                        callBack: function (result) {
+                                            options.InitDisable({ AreaDicId: row.Id, IsEnable: true, ProvinceId: result.$("#Province").find("option:selected").val() });
+                                            result.popClose();
+                                        }
+                                    })
+                                }
                             }
                         });
                     }
@@ -103,7 +127,8 @@
                             <tr>
                                 <th data-field="DicName" data-halign="center" data-align="center" data-valign="middle">字典名称</th>
                                 <th data-field="DicValue" data-halign="center" data-align="center" data-valign="middle">字典值</th>
-                                <th data-field="States" data-halign="center" data-align="center" data-valign="middle">状态</th>
+                                <th data-field="AttachInfo" data-halign="center" data-align="center" data-valign="middle">分配区域</th>
+                                <th data-field="DisableArea" data-halign="center" data-align="center" data-valign="middle">禁用区域</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>

@@ -44,7 +44,7 @@ namespace KilyCore.Service.IServiceCore
         #region 区域码表
         PagedResult<ResponseAreaDictionary> GetAreaDicPage(PageParamList<RequestAreaDictionary> pageParam);
         String RecordAreaDic(RequestAreaDictionary Param);
-        String IsEnable(Guid Id, bool Param);
+        String IsEnable(RequestDisDictionary Param);
         IList<ResponseAreaDictionary> GetAreaVersion(String TypePaths, int Param);
         ResponseAreaDic GetAreaDicDetail(Guid Id);
         #endregion

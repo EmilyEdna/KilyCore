@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 /// <summary>
 /// 作者：刘泽华
@@ -10,14 +11,35 @@ namespace KilyCore.DataEntity.ResponseMapper.Function
     public class ResponseAreaDictionary
     {
         public Guid Id { get; set; }
-        public string  DicName { get; set; }
+        public string DicName { get; set; }
         public string DicValue { get; set; }
         public string DicDescript { get; set; }
         public string AttachInfo { get; set; }
         public bool? IsEnable { get; set; }
         public string States { get => (bool)IsEnable ? "禁用中" : "启用中"; }
+        public IDictionary<String, String> ProvinceKeyValue { get; set; }
+        public string DisableArea
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(DicDescript))
+                    return null;
+                else
+                {
+                    List<string> ls = new List<string>();
+                    var strs = DicDescript.Split("*").ToList();
+                    foreach (var str in strs)
+                    {
+                        if (ProvinceKeyValue[str] != null)
+                            ls.Add(ProvinceKeyValue[str]);
+                    }
+                    return string.Join("*", ls);
+                }
+            }
+        }
     }
-    public class ResponseAreaDic {
+    public class ResponseAreaDic
+    {
         public Guid Id { get; set; }
         public string ProvinceId { get; set; }
         public string ProvinceName { get; set; }

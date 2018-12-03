@@ -13,4 +13,15 @@ namespace KilyCore.DataEntity.RequestMapper.Function
         public string ProvinceId { get; set; }
         public Guid DictionaryId { get; set; }
     }
+    public class RequestDisDictionary {
+        public Guid? AreaDicId { get; set; }
+        /// <summary>
+        /// 是否启用
+        /// </summary>
+        public bool? IsEnable { get; set; }
+        /// <summary>
+        /// 省份Id
+        /// </summary>
+        public string ProvinceId { get; set; }
+    }
 }

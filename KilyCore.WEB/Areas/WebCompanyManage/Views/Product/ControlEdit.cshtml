@@ -21,15 +21,15 @@
             GetSelect: function () {
                 //初始化下拉
                 controller.Select({
-                    document:'#TargetUnit',
+                    document: '#Standard',
                     arrelemnt: ['#Standard'],
-                    data: { Id:"执行标准"},
+                    data: { Id: "执行标准" },
                     url: 'EnterpriseWeb/GetDictionaryList',
                 });
                 controller.Select({
                     document: '#TargetUnit',
                     arrelemnt: ['#TargetUnit'],
-                    data: { Id:"指标单位"},
+                    data: { Id: "指标单位" },
                     url: 'EnterpriseWeb/GetDictionaryList',
                 });
                 $("#TargetUnit").on('changed.bs.select', function () {
@@ -61,21 +61,21 @@
                 <tr>
                     <th><label class="control-label">指标名称</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="TargetName"/>
+                        <input type="text" class="form-control" name="TargetName" />
                     </td>
                     <th><label class="control-label">指标限值</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="TargetValue"/>
+                        <input type="text" class="form-control" name="TargetValue" />
                     </td>
                 </tr>
                 <tr>
                     <th><label class="control-label">指标单位</label></th>
                     <td class="has-warning">
-                        <select type="select" class="selectpicker form-control" data-max-options="2" id="TargetUnit" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
+                        <select type="select" class="selectpicker form-control" id="TargetUnit" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
                     </td>
                     <th><label class="control-label">执行标准</label></th>
                     <td class="has-warning">
-                        <select type="select" class="selectpicker form-control" data-max-options="2" id="Standard" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
+                        <select type="select" class="selectpicker form-control" id="Standard" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
                     </td>
                 </tr>
             </table>

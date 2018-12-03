@@ -18,4 +18,12 @@ namespace KilyCore.EntityFrameWork.EntityMapping.Function
             builder.HasKey(t => t.Id);
         }
     }
+    public class FunctionDisDictionaryMap : IEntityTypeConfiguration<FunctionDisDictionary>
+    {
+        public void Configure(EntityTypeBuilder<FunctionDisDictionary> builder)
+        {
+            builder.ToTable(typeof(FunctionDisDictionary).Name);
+            builder.HasKey(t => t.Id);
+        }
+    }
 }
