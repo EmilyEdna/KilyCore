@@ -357,9 +357,11 @@
                 for (var key in Param) {
                     var node = $("[data-name='" + key + "']", $(Element));
                     var value = Param[key];
-                    if (node.attr("src") != undefined)
+                    if (node.attr("src") != undefined) {
                         node.attr("src", value);
-                    node.text(value);
+                    } else {
+                        node.text(value);
+                    }
                 }
             },
             BindInput: function (Element, Param) {

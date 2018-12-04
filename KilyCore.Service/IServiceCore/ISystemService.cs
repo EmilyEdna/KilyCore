@@ -71,6 +71,7 @@ namespace KilyCore.Service.IServiceCore
         String PresonEdit(RequestPreson Param);
         String RemovePreson(Guid Id);
         ResponsePreson GetPresonDetail(Guid Id);
+        ResponsePreson GetPresonDetailWeb(String key);
         #endregion
         #region 入住合同
         PagedResult<ResponseStayContract> GetStayContractPage(PageParamList<RequestStayContract> pageParam);

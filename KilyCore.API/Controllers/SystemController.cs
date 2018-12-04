@@ -456,6 +456,17 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetPresonDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 获取详情
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetPresonDetailWeb")]
+        [AllowAnonymous]
+        public ObjectResultEx GetPresonDetailWeb(SimpleParam<String> Param)
+        {
+            return ObjectResultEx.Instance(SystemService.GetPresonDetailWeb(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 入住合同
         /// <summary>

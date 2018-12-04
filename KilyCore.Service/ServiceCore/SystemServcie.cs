@@ -995,6 +995,23 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         /// <summary>
+        /// 获取人员详情
+        /// </summary>
+        public ResponsePreson GetPresonDetailWeb(String key)
+        {
+            var data = Kily.Set<SystemPreson>().Where(t => t.WorkNum.Contains(key)).Select(t => new ResponsePreson()
+            {
+                Id = t.Id,
+                TrueName = t.TrueName,
+                Address = t.Address,
+                IdCard = t.IdCard,
+                LinkPhone = t.LinkPhone,
+                WorkNum = t.WorkNum,
+                HeadImage = t.HeadImage
+            }).FirstOrDefault();
+            return data;
+        }
+        /// <summary>
         /// 编辑人员
         /// </summary>
         /// <param name="Param"></param>
