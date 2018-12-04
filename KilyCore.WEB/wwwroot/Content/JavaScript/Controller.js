@@ -552,6 +552,8 @@ controller.ValidateConfirm = function (element, option) {
                 data: data,
                 type: method,
                 async: async,
+                crossDomain: option.crossDomain,
+                xhrFields: option.xhrFields,
                 success: function (data) {
                     if (data.HttpCode != 10) {
                         controller.Alter(data.data);

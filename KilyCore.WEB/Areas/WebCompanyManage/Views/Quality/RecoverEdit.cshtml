@@ -75,7 +75,7 @@
                     }
                 });
                 //验证
-                controller.ValidateConfirm("#Edit");
+                controller.ValidateConfirm("#Edit", { crossDomain: true, xhrFields: { withCredentials: true} });
             },
             //行为
             action: {}
@@ -91,7 +91,8 @@
         <form class="form-horizontal" method="post" action="EnterpriseWeb/SaveRecover" id="Edit">
             <input type="hidden" name="Id" />
             <input type="hidden" name="CompanyId" id="CompanyId" />
-            <input type="hidden" name="States" id="States" />
+            <input type="hidden" name="States" id="States"/>
+            <input type="hidden" name="Code"  id="Code"/>
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">产品名称</label></th>

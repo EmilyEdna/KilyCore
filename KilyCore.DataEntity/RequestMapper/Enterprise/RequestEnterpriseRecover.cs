@@ -58,5 +58,9 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// 处理状态
         /// </summary>
         public string States { get; set; }
+        /// <summary>
+        /// 手机验证码
+        /// </summary>
+        public string Code { get; set; }
     }
 }

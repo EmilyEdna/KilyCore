@@ -1764,7 +1764,21 @@ namespace KilyCore.API.Controllers
         [HttpPost("SaveRecover")]
         public ObjectResultEx SaveRecover(RequestEnterpriseRecover Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.SaveRecover(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            if (Param.Id == Guid.Empty)
+            {
+                var SessionCode = HttpContext.Session.GetSession<String>("PhoneCode");
+                if (!string.IsNullOrEmpty(SessionCode))
+                {
+                    var Result = SessionCode.Equals(Param.Code) ? EnterpriseWebService.SaveRecover(Param) : "验证码错误!";
+                    return ObjectResultEx.Instance(Result, 1, RetrunMessge.SUCCESS, HttpCode.Success);
+                }
+                else {
+                    return ObjectResultEx.Instance("请输入手机验证码", 1, RetrunMessge.SUCCESS, HttpCode.Success);
+                }
+            }
+            else {
+                return ObjectResultEx.Instance(EnterpriseWebService.SaveRecover(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            }
         }
         /// <summary>
         /// 删除召回

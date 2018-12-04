@@ -185,6 +185,7 @@ namespace KilyCore.API.Controllers
             HttpContext.Session.SetSession("PhoneCode", Code);
             String Contents = $"你的手机验证码是：{Code}，请在5分钟内输入，如非本人操作，请忽略此短信。";
             return ObjectResultEx.Instance(PhoneSMS.SendPhoneMsg(Param.Parameter, Contents), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+           // return ObjectResultEx.Instance(Code, 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 安全退出
