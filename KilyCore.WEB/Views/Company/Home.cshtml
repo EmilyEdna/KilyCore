@@ -22,7 +22,9 @@
         var options = {
             Init: function () {
                 this.InitDom();
+                this.InitMsg(1);
                 this.InitEvents();
+                this.InitPageEvent();
             },
             //元素
             InitDom: function () {
@@ -87,12 +89,11 @@
                     })
                 });
             },
-            //事件
-            InitEvents: function () {
-                //获取消息
+            //获取消息
+            InitMsg: function (Index) {
                 controller.ajax({
                     url: "System/GetMsgPage",
-                    data: { pageNumber: 1, pageSize: 15 },
+                    data: { pageNumber: Index, pageSize: 10 },
                     type: "post",
                     async: false,
                     success: function (result) {
@@ -104,10 +105,16 @@
                             html += ' <span class="pull-right small">发布时间：' + obj.ReleaseTime + '</span>';
                             html += '</section></div></a></li><li class="divider"></li>';
                         });
+                        html += '<div style="margin-left:30%"><label class="label label-warning m-r" id="lastPage" data-index="' + result.data.Index + '">上一页</label>'
+                            + '<small>' + result.data.Index + '/' + result.data.TotalPage + '</small>'
+                            + '<label class="label label-warning m-l" id = "nextPage" data - index="' + result.data.Index + '" data - total="' + result.data.TotalPage + '" > 下一页</label ></div > '
                         $(".dropdown-alerts").html(html);
                         $(".label-primary").html(result.data.total);
                     }
                 });
+            },
+            //事件
+            InitEvents: function () {
                 //修改密码
                 $("#EditPwd").click(function () {
                     controller.OpenWindow({
@@ -137,8 +144,19 @@
 
                 });
             },
-            //行为
-            action: {}
+            //分页事件
+            InitPageEvent: function () {
+                $("#lastPage").on('click', function () {
+                    var Index = Number($(this).data().index);
+                    Index == 1 ? options.InitMsg(1) : options.InitMsg(Index - 1);
+                });
+                $("#nextPage").on('click', function () {
+                    var Index = Number($(this).data().index);
+                    var Total = Number($(this).data().total);
+                    if (Index < Total)
+                        options.InitMsg(Index + 1);
+                });
+            }
         };
         //初始化
         $(document).ready(function () {
