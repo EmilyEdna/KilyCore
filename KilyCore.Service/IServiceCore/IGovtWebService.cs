@@ -39,6 +39,10 @@ namespace KilyCore.Service.IServiceCore
         IList<ResponseGovtMenu> GetGovtMenu();
         #endregion
 
+        #region 获取所有商家和企业
+        Object GetAllMerchant(String Key);
+        #endregion
+
         #region 登录
         ResponseGovtInfo GovtLogin(RequestGovtInfo Param);
         String EditPwd(RequestGovtInfo Param);

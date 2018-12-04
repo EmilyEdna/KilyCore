@@ -25,6 +25,10 @@ namespace KilyCore.EntityFrameWork.Model.System
     public class SystemMessage : BaseEntity
     {
         /// <summary>
+        /// 投诉表Id
+        /// </summary>
+        public virtual Guid ComplainId { get; set; }
+        /// <summary>
         /// 企业的Id
         /// </summary>
         public virtual Guid? CompanyId { get; set; }

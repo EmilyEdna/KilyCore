@@ -99,8 +99,8 @@
                     success: function (result) {
                         var html = '';
                         $.each(result.data.rows, function (i, obj) {
-                            html += '<li><a href="javascript:void(0);"><div class="row"><section>';
-                            html += ' <dl> <i class="fa fa-comment fa-fw"></i>' + obj.MsgName + '</dl>';
+                            html += '<li><a href="#" data-id="' + obj.ComplainId + '" id="Replay"><div class="row"><section>';
+                            html += ' <dl> <i class="fa fa-comment fa-fw"></i>' + obj.MsgName + '[' + obj.Status + ']</dl>';
                             html += '<article class="text text-warning">' + obj.MsgContent + '</article>';
                             html += ' <span class="pull-right small">发布时间：' + obj.ReleaseTime + '</span>';
                             html += '</section></div></a></li><li class="divider"></li>';
@@ -121,6 +121,20 @@
                             result.$("#Edit").submit();
                         }
                     })
+                });
+                //处理消息
+                $("#Replay").on('click', function () {
+                    controller.Prompt({ formType: 2, title: "消息处理" }, function (index) {
+                        controller.ajax({
+                            url: "GovtWeb/ReportComplainInfo",
+                            data: { Id: $(this).data().id, Parameter: index },
+                            type: 'post',
+                            success: function (result) {
+                                controller.Close();
+                            }
+                        });
+                    });
+
                 });
             },
             //行为

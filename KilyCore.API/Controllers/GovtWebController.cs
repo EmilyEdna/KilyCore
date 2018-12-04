@@ -21,10 +21,28 @@ namespace KilyCore.API.Controllers
     public class GovtWebController : BaseController
     {
         #region 获取全局集团菜单
+        /// <summary>
+        /// 获取全局集团菜单
+        /// </summary>
+        /// <returns></returns>
         [HttpPost("GetGovtMenu")]
         public ObjectResultEx GetGovtMenu()
         {
             return ObjectResultEx.Instance(GovtWebService.GetGovtMenu(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region 获取所有商家和企业
+        /// <summary>
+        /// 获取所有商家和企业
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <returns></returns>
+        [HttpGet("GetAllMerchant")]
+        [AllowAnonymous]
+        public Object GetAllMerchant(SimpleParam<String> Key)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetAllMerchant(Key.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
 

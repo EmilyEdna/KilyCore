@@ -109,6 +109,29 @@ namespace KilyCore.Service.ServiceCore
         }
         #endregion
 
+        #region 获取所有商家和企业
+        /// <summary>
+        /// 获取所有商家和企业
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <returns></returns>
+        public Object GetAllMerchant(String Key)
+        {
+            var Data = Kily.Set<EnterpriseInfo>().Where(t => t.CompanyName.Contains(Key)).AsNoTracking().Select(t => new
+            {
+                t.Id,
+                Name = t.CompanyName
+            }).ToList();
+            var Datas = Kily.Set<RepastInfo>().Where(t => t.MerchantName.Contains(Key)).AsNoTracking().Select(t => new
+            {
+                t.Id,
+                Name = t.MerchantName
+            }).ToList();
+            Data.AddRange(Datas);
+            return Data;
+        }
+        #endregion
+
         #region 登录
         /// <summary>
         /// 监管登录
@@ -1651,6 +1674,7 @@ namespace KilyCore.Service.ServiceCore
             GovtComplain complain = Kily.Set<GovtComplain>().Where(t => t.Id == Id).FirstOrDefault();
             SystemMessage message = new SystemMessage
             {
+                ComplainId= complain.Id,
                 CompanyId = complain.CompanyId,
                 MsgName = complain.ProductName,
                 MsgContent = complain.ComplainContent,

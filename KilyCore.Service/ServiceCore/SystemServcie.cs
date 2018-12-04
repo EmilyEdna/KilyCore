@@ -3,6 +3,7 @@ using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.EntityFrameWork.Model.Cook;
 using KilyCore.EntityFrameWork.Model.Enterprise;
 using KilyCore.EntityFrameWork.Model.Function;
+using KilyCore.EntityFrameWork.Model.Govt;
 using KilyCore.EntityFrameWork.Model.Repast;
 using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
@@ -1259,6 +1260,7 @@ namespace KilyCore.Service.ServiceCore
         public PagedResult<ResponseSystemMessage> GetMsgPage(PageParamList<Object> pageParam)
         {
             IQueryable<SystemMessage> queryable = Kily.Set<SystemMessage>().OrderByDescending(t => t.CreateTime);
+            IQueryable<GovtComplain> queryables = Kily.Set<GovtComplain>().OrderByDescending(t => t.CreateTime);
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || t.TypePath.Contains(CompanyInfo().Area))
                     .Where(t => t.TrageType.Equals(CompanyInfo().CompanyTypeName));
@@ -1271,11 +1273,13 @@ namespace KilyCore.Service.ServiceCore
             else if (MerchantUser() != null)
                 queryable = queryable.Where(t => t.CompanyId == MerchantUser().Id || t.TypePath.Contains(MerchantUser().Area))
                      .Where(t => t.TrageType.Equals(MerchantUser().DiningTypeName));
-            var data = queryable.Select(t => new ResponseSystemMessage()
+            var data = queryable.Join(queryables,t=>t.ComplainId,x=>x.Id,(t,x) => new ResponseSystemMessage()
             {
                 MsgName = t.MsgName,
                 MsgContent = t.MsgContent,
-                ReleaseTime = t.ReleaseTime
+                ReleaseTime = t.ReleaseTime,
+                ComplainId=t.ComplainId,
+                Status = x.Status
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }

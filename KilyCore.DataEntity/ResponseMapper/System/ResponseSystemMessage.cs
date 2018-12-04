@@ -22,6 +22,10 @@ namespace KilyCore.DataEntity.ResponseMapper.System
     {
         public Guid Id { get; set; }
         /// <summary>
+        /// 投诉表Id
+        /// </summary>
+        public Guid ComplainId { get; set; }
+        /// <summary>
         /// 企业的Id
         /// </summary>
         public Guid? CompanyId { get; set; }
@@ -45,5 +49,9 @@ namespace KilyCore.DataEntity.ResponseMapper.System
         /// 行业类型
         /// </summary>
         public string TrageType { get; set; }
+        /// <summary>
+        /// 状态
+        /// </summary>
+        public string Status { get; set; }
     }
 }
