@@ -995,11 +995,11 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         /// <summary>
-        /// 获取人员详情
+        /// 首页人员查询
         /// </summary>
         public ResponsePreson GetPresonDetailWeb(String key)
         {
-            var data = Kily.Set<SystemPreson>().Where(t => t.WorkNum.Contains(key)).Select(t => new ResponsePreson()
+            var data = Kily.Set<SystemPreson>().Where(t => t.WorkNum.Equals(key)).Select(t => new ResponsePreson()
             {
                 Id = t.Id,
                 TrueName = t.TrueName,
@@ -1290,12 +1290,12 @@ namespace KilyCore.Service.ServiceCore
             else if (MerchantUser() != null)
                 queryable = queryable.Where(t => t.CompanyId == MerchantUser().Id || t.TypePath.Contains(MerchantUser().Area))
                      .Where(t => t.TrageType.Equals(MerchantUser().DiningTypeName));
-            var data = queryable.Join(queryables,t=>t.ComplainId,x=>x.Id,(t,x) => new ResponseSystemMessage()
+            var data = queryable.Join(queryables, t => t.ComplainId, x => x.Id, (t, x) => new ResponseSystemMessage()
             {
                 MsgName = t.MsgName,
                 MsgContent = t.MsgContent,
                 ReleaseTime = t.ReleaseTime,
-                ComplainId=t.ComplainId,
+                ComplainId = t.ComplainId,
                 Status = x.Status
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -1324,7 +1324,7 @@ namespace KilyCore.Service.ServiceCore
                 ReleaseDate = t.ReleaseDate,
                 NewsType = t.NewsType,
                 NewsContent = t.NewsContent,
-                Writer=t.Writer
+                Writer = t.Writer
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -1356,7 +1356,7 @@ namespace KilyCore.Service.ServiceCore
                 ReleaseDate = t.ReleaseDate,
                 NewsType = t.NewsType,
                 NewsContent = t.NewsContent,
-                Writer=t.Writer
+                Writer = t.Writer
             }).FirstOrDefault();
             return data;
         }

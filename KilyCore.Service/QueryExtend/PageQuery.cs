@@ -41,7 +41,8 @@ namespace KilyCore.Service.QueryExtend
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        public static PagedResult<T> ToPagedResult<T>(this IList<T> query, int pageIndex, int pageSize) {
+        public static PagedResult<T> ToPagedResult<T>(this IList<T> query, int pageIndex, int pageSize)
+        {
             PagedResult<T> pagedResult = new PagedResult<T>();
             pagedResult.Index = pageIndex;
             pagedResult.PageSize = pageSize;
@@ -87,6 +88,25 @@ namespace KilyCore.Service.QueryExtend
             }
 
             return pagedResult;
+        }
+        /// <summary>
+        /// BetweenAnd扩展查询
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="K"></typeparam>
+        /// <param name="query"></param>
+        /// <param name="exp"></param>
+        /// <param name="last">下限阙值</param>
+        /// <param name="next">上限阙值</param>
+        /// <returns></returns>
+        public static IQueryable<T> BetweenQuery<T, K>(this IQueryable<T> query, Expression<Func<T, K>> exp, K last, K next) where T : IComparable<T>
+        {
+            Expression key = Expression.Invoke(exp, exp.Parameters.ToArray());
+            Expression lowerBound = Expression.GreaterThanOrEqual(key, Expression.Constant(last));
+            Expression upperBound = Expression.LessThanOrEqual(key, Expression.Constant(next));
+            Expression and = Expression.AndAlso(lowerBound, upperBound);
+            Expression<Func<T, bool>> lambda = Expression.Lambda<Func<T, bool>>(and, exp.Parameters);
+            return query.Where(lambda.Compile()).AsQueryable();
         }
     }
 }

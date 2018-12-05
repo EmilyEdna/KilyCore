@@ -457,7 +457,7 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(SystemService.GetPresonDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
-        /// 获取详情
+        /// 首页人员查询
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>

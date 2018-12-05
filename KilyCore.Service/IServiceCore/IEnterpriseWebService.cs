@@ -130,6 +130,7 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 物码管理
         PagedResult<ResponseEnterpriseTag> GetTagPage(PageParamList<RequestEnterpriseTag> pageParam);
+        ResponseEnterpriseTag GetTagDetailWeb(Int64 key);
         String UpdateEmptyTag(Guid Id);
         String CreateTag(RequestEnterpriseTag Param);
         String RemoveTag(Guid Id);

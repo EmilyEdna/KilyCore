@@ -745,6 +745,17 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.GetTagPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
+        /// 首页号段查询接口
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetTagDetailWeb")]
+        [AllowAnonymous]
+        public ObjectResultEx GetTagDetailWeb(SimpleParam<Int64> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetTagDetailWeb(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 创建空白标签
         /// </summary>
         /// <param name="Id"></param>
@@ -1772,11 +1783,13 @@ namespace KilyCore.API.Controllers
                     var Result = SessionCode.Equals(Param.Code) ? EnterpriseWebService.SaveRecover(Param) : "验证码错误!";
                     return ObjectResultEx.Instance(Result, 1, RetrunMessge.SUCCESS, HttpCode.Success);
                 }
-                else {
+                else
+                {
                     return ObjectResultEx.Instance("请输入手机验证码", 1, RetrunMessge.SUCCESS, HttpCode.Success);
                 }
             }
-            else {
+            else
+            {
                 return ObjectResultEx.Instance(EnterpriseWebService.SaveRecover(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
             }
         }

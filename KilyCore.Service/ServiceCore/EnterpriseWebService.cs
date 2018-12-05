@@ -1890,6 +1890,25 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         /// <summary>
+        /// 首页号段查询接口
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public ResponseEnterpriseTag GetTagDetailWeb(Int64 key)
+        {
+            IQueryable<EnterpriseTagAttach> queryable = Kily.Set<EnterpriseTagAttach>().AsNoTracking()
+                .Where(t => t.StarSerialNo <= key && t.EndSerialNo >= key);
+            IQueryable<EnterpriseTag> queryables = Kily.Set<EnterpriseTag>().AsNoTracking();
+            return queryables.Join(queryable, t => t.Id, x => x.TagId, (t, x) => new ResponseEnterpriseTag()
+            {
+                BatchNo = t.BatchNo,
+                TagTypeName = AttrExtension.GetSingleDescription<TagEnum, DescriptionAttribute>(t.TagType),
+                IsCreate = t.IsCreate,
+                StarSerialNo = t.StarSerialNo,
+                EndSerialNo = x.EndSerialNo,
+            }).FirstOrDefault();
+        }
+        /// <summary>
         /// 创建空白标签
         /// </summary>
         /// <param name="Id"></param>
@@ -3602,7 +3621,7 @@ namespace KilyCore.Service.ServiceCore
                 SaveTemp = t.SaveTemp,
                 SaveType = t.SaveType,
                 StockNo = t.StockNo,
-                StockType=t.StockType,
+                StockType = t.StockType,
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -3613,7 +3632,7 @@ namespace KilyCore.Service.ServiceCore
         public IList<ResponseEnterpriseStockType> GetStockTypeList(String Key)
         {
             IQueryable<EnterpriseStockType> queryable = Kily.Set<EnterpriseStockType>()
-                .Where(t => t.IsDelete == false).Where(t=>t.StockType.Equals(Key))
+                .Where(t => t.IsDelete == false).Where(t => t.StockType.Equals(Key))
                 .OrderByDescending(t => t.CreateTime);
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
@@ -4114,9 +4133,9 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             return queryable.AsNoTracking().Select(t => new ResponseEnterpriseLogistics()
             {
-                GainUser=t.GainUser,
-                LinkPhone=t.LinkPhone,
-                Address=t.Address
+                GainUser = t.GainUser,
+                LinkPhone = t.LinkPhone,
+                Address = t.Address
             }).ToList();
         }
         /// <summary>
