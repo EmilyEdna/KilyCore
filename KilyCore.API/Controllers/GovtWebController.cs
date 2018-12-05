@@ -781,6 +781,23 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(GovtWebService.GetPieDataForProduct(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
+        /// 获取投诉率
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetComplainCount")]
+        public ObjectResultEx GetComplainCount() {
+            return ObjectResultEx.Instance(GovtWebService.GetComplainCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取入驻的企业地图
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetAllCityMerchantCount")]
+        public ObjectResultEx GetAllCityMerchantCount()
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetAllCityMerchantCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 获取区域信息
         /// </summary>
         /// <returns></returns>

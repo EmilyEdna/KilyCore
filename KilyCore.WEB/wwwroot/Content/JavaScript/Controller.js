@@ -28,7 +28,7 @@ controller.ajax = function (option) {
     var options = $.extend(defaultOption, option);
     options.data.TimeSpan = controller.SetRequestTime();
     return $.ajax({
-        url: options.ishost ? (host + options.url):options.url,
+        url: options.ishost ? (host + options.url) : options.url,
         data: options.data,
         timeout: options.timeout,
         dataType: options.dataType,
@@ -1012,131 +1012,115 @@ controller.QRCode = function (element, option) {
  * @param {any} 元素
  * @param {any} 数据
  */
-controller.Echarts = function (element, option) {
-    if (option.Type) {
-        OptionPie = {
+controller.Echarts = function (element, option, Type) {
+    if (Type == undefined) {
+        if (option.Type) {
+            OptionPie = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b}: {c} ({d}%)"
+                },
+                legend: {
+                    orient: 'vertical',
+                    x: 'left',
+                    data: option.DataTitle
+                },
+                series: [
+                    {
+                        name: (option.Name == null ? '未审核统计' : option.Name),
+                        type: 'pie',
+                        selectedMode: 'single',
+                        radius: [0, '30%'],
+                        data: option.InSideData
+                    },
+                    {
+                        name: (option.Name == null ? '已审核统计' : option.Name),
+                        type: 'pie',
+                        radius: ['40%', '55%'],
+                        data: option.OutSideData
+                    }
+                ]
+            };
+            echarts.init($(element)[0], "vintage").setOption(OptionPie);
+        }
+        else {
+            OptionBar = {
+                tooltip: {},
+                legend: {
+                    data: option.DataTitle
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ['体验版', '基础版', '升级版', '旗舰版', '公用版']
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value'
+                    }
+                ],
+                series: option.BarData
+            };
+            echarts.init($(element)[0], "vintage").setOption(OptionBar);
+        }
+    } else if (Type == 1) {
+        OptionGauge = {
             tooltip: {
-                trigger: 'item',
-                formatter: "{a} <br/>{b}: {c} ({d}%)"
-            },
-            legend: {
-                orient: 'vertical',
-                x: 'left',
-                data: option.DataTitle
+                formatter: "{a} <br/>{b} : {c}%"
             },
             series: [
                 {
-                    name: (option.Name == null ? '未审核统计' : option.Name),
-                    type: 'pie',
-                    selectedMode: 'single',
-                    radius: [0, '30%'],
-                    label: {
-                        normal: {
-                            position: 'inner'
-                        }
-                    },
-                    label: {
-                        normal: {
-                            formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
-                            backgroundColor: '#eee',
-                            borderColor: '#aaa',
-                            borderWidth: 1,
-                            borderRadius: 4,
-                            rich: {
-                                a: {
-                                    color: '#999',
-                                    lineHeight: 22,
-                                    align: 'center'
-                                },
-                                hr: {
-                                    borderColor: '#aaa',
-                                    width: '100%',
-                                    borderWidth: 0.5,
-                                    height: 0
-                                },
-                                b: {
-                                    fontSize: 16,
-                                    lineHeight: 33
-                                },
-                                per: {
-                                    color: '#eee',
-                                    backgroundColor: '#334455',
-                                    padding: [2, 4],
-                                    borderRadius: 2
-                                }
-                            }
-                        }
-                    },
-                    data: option.InSideData
-                },
-                {
-                    name: (option.Name == null ? '已审核统计' : option.Name),
-                    type: 'pie',
-                    radius: ['40%', '55%'],
-                    label: {
-                        normal: {
-                            formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
-                            backgroundColor: '#eee',
-                            borderColor: '#aaa',
-                            borderWidth: 1,
-                            borderRadius: 4,
-                            rich: {
-                                a: {
-                                    color: '#999',
-                                    lineHeight: 22,
-                                    align: 'center'
-                                },
-                                hr: {
-                                    borderColor: '#aaa',
-                                    width: '100%',
-                                    borderWidth: 0.5,
-                                    height: 0
-                                },
-                                b: {
-                                    fontSize: 16,
-                                    lineHeight: 33
-                                },
-                                per: {
-                                    color: '#eee',
-                                    backgroundColor: '#334455',
-                                    padding: [2, 4],
-                                    borderRadius: 2
-                                }
-                            }
-                        }
-                    },
-                    data: option.OutSideData
+                    name: '投诉率',
+                    type: 'gauge',
+                    detail: { formatter: '{value}%' },
+                    data: option.data
                 }
             ]
         };
-        echarts.init($(element)[0], "light").setOption(OptionPie);
-    }
-    else {
-        OptionBar = {
-            tooltip: {},
-            legend: {
-                data: option.DataTitle
+        echarts.init($(element)[0], "vintage").setOption(OptionGauge);
+    } else {
+        OptionMap = {
+            title: {
+                text: '入住企业区域分布',
             },
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true
+            tooltip: {
+                trigger: 'item',
+                formatter: '{b}<br/>{c} (个)'
             },
-            xAxis: [
-                {
-                    type: 'category',
-                    data: ['体验版', '基础版', '升级版', '旗舰版', '公用版']
+            visualMap: {
+                min: 1,
+                max: 100000,
+                text: ['High', 'Low'],
+                realtime: false,
+                calculable: true,
+                inRange: {
+                    color: ['lightskyblue', 'yellow', 'orangered']
                 }
-            ],
-            yAxis: [
+            },
+            series: [
                 {
-                    type: 'value'
+                    name: '入住企业区域分布',
+                    type: 'map',
+                    mapType: option.CityName,
+                    itemStyle: {
+                        normal: { label: { show: true } },
+                        emphasis: { label: { show: true } }
+                    },
+                    data: option.DataList,
                 }
-            ],
-            series: option.BarData
-        };
-        echarts.init($(element)[0], "light").setOption(OptionBar);
+            ]
+        }
+        var Json = option.JsonData;
+        debugger;
+        echarts.registerMap(option.CityName, Json);
+        echarts.init($(element)[0], "vintage").setOption(OptionMap);
     }
 }
 /**

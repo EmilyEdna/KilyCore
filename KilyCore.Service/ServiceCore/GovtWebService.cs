@@ -16,6 +16,7 @@ using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AttributeExtension;
 using KilyCore.Extension.AutoMapperExtension;
+using KilyCore.Extension.HttpClientFactory;
 using KilyCore.Repositories.BaseRepository;
 using KilyCore.Service.ConstMessage;
 using KilyCore.Service.IServiceCore;
@@ -310,8 +311,8 @@ namespace KilyCore.Service.ServiceCore
                 AllowUnit = t.AllowUnit,
                 Honor = t.HonorCertification,
                 Remark = t.Remark,
-                Video=Kily.Set<RepastVideo>().Where(x=>x.InfoId==Id&&x.IsIndex==true)
-                .OrderByDescending(x=>x.CreateTime).Select(x=>x.MonitorAddress).Take(4).ToList()
+                Video = Kily.Set<RepastVideo>().Where(x => x.InfoId == Id && x.IsIndex == true)
+                .OrderByDescending(x => x.CreateTime).Select(x => x.MonitorAddress).Take(4).ToList()
             }).AsNoTracking().FirstOrDefault();
             return data;
         }
@@ -492,8 +493,9 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public String GetCityName(Guid Id) {
-          return  Kily.Set<SystemCity>().Where(t => t.Id == Id).Select(t => t.Name).FirstOrDefault();
+        public String GetCityName(Guid Id)
+        {
+            return Kily.Set<SystemCity>().Where(t => t.Id == Id).Select(t => t.Name).FirstOrDefault();
         }
         /// <summary>
         /// 获取分配的区域
@@ -528,8 +530,8 @@ namespace KilyCore.Service.ServiceCore
                 Name = t.CompanyName,
                 LngAndLat = t.LngAndLat,
                 Address = t.CompanyAddress,
-                CompanyCode=t.CommunityCode,
-                CompanyType =AttrExtension.GetSingleDescription<CompanyEnum,DescriptionAttribute>(t.CompanyType)
+                CompanyCode = t.CommunityCode,
+                CompanyType = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType)
             }).ToList();
             var temp = queryables.Select(t => new ResponseGovtDistribut()
             {
@@ -598,6 +600,7 @@ namespace KilyCore.Service.ServiceCore
                 return data;
             }
         }
+
         #endregion
 
         #region 产品监管
@@ -1514,7 +1517,8 @@ namespace KilyCore.Service.ServiceCore
             }
             else
             {
-                notice.CompanyType.Split(",").ToList().ForEach(t => {
+                notice.CompanyType.Split(",").ToList().ForEach(t =>
+                {
                     message.TrageType = t;
                     Insert(message);
                 });
@@ -1674,7 +1678,7 @@ namespace KilyCore.Service.ServiceCore
             GovtComplain complain = Kily.Set<GovtComplain>().Where(t => t.Id == Id).FirstOrDefault();
             SystemMessage message = new SystemMessage
             {
-                ComplainId= complain.Id,
+                ComplainId = complain.Id,
                 CompanyId = complain.CompanyId,
                 MsgName = complain.ProductName,
                 MsgContent = complain.ComplainContent,
@@ -1792,7 +1796,7 @@ namespace KilyCore.Service.ServiceCore
             InSideData = goods.Join(queryable, t => t.CompanyId, x => x.Id, (t, x) => new { t.ProductType }).GroupBy(t => t.ProductType).Select(t => new DataPie
             {
                 value = t.Count(),
-                name =t.Key
+                name = t.Key
             }).ToList();
             List<String> title = new List<String>() { "农产品", "食品", "药品", "化妆品", "医疗器械", "其他" };
             ResponseDataCount dataCount = new ResponseDataCount()
@@ -1804,6 +1808,65 @@ namespace KilyCore.Service.ServiceCore
                 OutSideData = null
             };
             return dataCount;
+        }
+        /// <summary>
+        /// 获取投诉率
+        /// </summary>
+        /// <returns></returns>
+        public Object GetComplainCount()
+        {
+            IQueryable<GovtComplain> queryable = Kily.Set<GovtComplain>().Where(t => t.IsDelete == false).AsNoTracking();
+            IQueryable<GovtComplain> queryables = Kily.Set<GovtComplain>().Where(t => t.IsDelete == false).AsNoTracking();
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
+            {
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        queryable = queryable.Where(t => t.TypePath.Contains(item));
+                    }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+            }
+            else
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            var total = queryables.Select(t => t.Id).Count() == 0 ? 1.0 : Convert.ToDouble(queryables.Select(t => t.Id).Count());
+            var Count = (queryable.Select(t => t.Id).Count() / total) * 100;
+            Object data = new { value = Count, name = "投诉率" };
+            List<Object> Lo = new List<Object> { data };
+            return Lo;
+        }
+        /// <summary>
+        /// 获取入驻的企业地图
+        /// </summary>
+        /// <returns></returns>
+        public Object GetAllCityMerchantCount()
+        {
+            ResponseCity City = Kily.Set<SystemCity>().Where(t => t.Id.ToString() == GovtInfo().City).Select(t => new ResponseCity
+            {
+                CityId = t.Code,
+                CityName = t.Name
+            }).FirstOrDefault();
+            List<ResponseArea> Area = Kily.Set<SystemArea>().Where(t => t.CityCode == City.CityId).AsNoTracking().Select(t => new ResponseArea
+            {
+                Id = t.Id,
+                AreaName = t.Name
+            }).ToList();
+            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
+            IQueryable<RepastInfo> queryables = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false);
+            List<Object> data = new List<Object>();
+            Area.ForEach(t =>
+            {
+               int TotalCompany = queryable.Where(x => x.TypePath.Contains(t.Id.ToString())).Select(x => x.Id).Count();
+               int TotalMerchant = queryables.Where(x => x.TypePath.Contains(t.Id.ToString())).Select(x => x.Id).Count();
+                Object obj = new { name = t.AreaName, value = TotalCompany + TotalMerchant };
+                data.Add(obj);
+            });
+            //获取城市地图数据
+            var result = HttpClientExtension.HttpGetAsync("http://echarts.baidu.com/echarts2/doc/example/geoJson/china-main-city/" + City.CityId + "00.json?callback=?").Result.Replace("\"", "//\"");
+            return new { City.CityName, JsonData = result, DataList = data };
         }
         /// <summary>
         /// 获取区域信息

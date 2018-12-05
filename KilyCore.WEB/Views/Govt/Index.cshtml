@@ -20,8 +20,9 @@
             Init: function () {
                 this.InitDom();
                 this.InitEvents();
-            },
-            InitDom: function () {
+            }, 
+            InitDom: function() {
+                //企业统计
                 controller.ajax({
                     url: "GovtWeb/GetPieDataForCompany",
                     data: {},
@@ -31,6 +32,7 @@
                         controller.Echarts("#echarts-pie-chart-com", result.data);
                     }
                 });
+                //产品统计
                 controller.ajax({
                     url: "GovtWeb/GetPieDataForProduct",
                     data: {},
@@ -40,6 +42,28 @@
                         controller.Echarts("#echarts-pie-chart-pro", result.data);
                     }
                 });
+                //投诉率
+                controller.ajax({
+                    url: "GovtWeb/GetComplainCount",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        controller.Echarts("#echarts-gauge-chart", result, 1);
+                    }
+                });
+                //地图
+                controller.ajax({
+                    url: "GovtWeb/GetAllCityMerchantCount",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        controller.Echarts("#echarts-map-chart", result.data,2)
+                    }
+                });
+
+                //区域信息
                 controller.ajax({
                     url: "GovtWeb/GetIndexStatistics",
                     data: {},
@@ -88,74 +112,94 @@
         });
     </script>
 }
-<div class="row">
-    <div class="col-sm-6">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>企业统计</h5>
-                <div class="ibox-tools">
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
-                    <a class="close-link">
-                        <i class="fa fa-times"></i>
-                    </a>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>综合统计</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label class="label label-info">企业统计</label>
+                                    <div class="echarts" id="echarts-pie-chart-com"></div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <label class="label label-info">产品统计</label>
+                                    <div class="echarts" id="echarts-pie-chart-pro"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label class="label label-info">投诉率统计</label>
+                                    <div class="echarts" id="echarts-gauge-chart" style="height:500px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="ibox-content">
-                <div class="echarts" id="echarts-pie-chart-com"></div>
+        </div>
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>企业入住分布图</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="echarts" id="echarts-map-chart" style="height:800px;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>区域信息一览</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>区域名称</th>
+                                <th>企业数量</th>
+                                <th>三小数量</th>
+                                <th>群宴数量</th>
+                                <th>风险预警</th>
+                                <th>抽查次数</th>
+                                <th>通报次数</th>
+                                <th>投诉次数</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-sm-6">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>产品统计</h5>
-                <div class="ibox-tools">
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
-                    <a class="close-link">
-                        <i class="fa fa-times"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="ibox-content">
-                <div class="echarts" id="echarts-pie-chart-pro"></div>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>区域信息一览</h5>
-                <div class="ibox-tools">
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
-                    <a class="close-link">
-                        <i class="fa fa-times"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="ibox-content">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>区域名称</th>
-                            <th>企业数量</th>
-                            <th>三小数量</th>
-                            <th>群宴数量</th>
-                            <th>风险预警</th>
-                            <th>抽查次数</th>
-                            <th>通报次数</th>
-                            <th>投诉次数</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
