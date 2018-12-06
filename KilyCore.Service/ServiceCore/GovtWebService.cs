@@ -16,7 +16,6 @@ using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AttributeExtension;
 using KilyCore.Extension.AutoMapperExtension;
-using KilyCore.Extension.HttpClientFactory;
 using KilyCore.Repositories.BaseRepository;
 using KilyCore.Service.ConstMessage;
 using KilyCore.Service.IServiceCore;
@@ -1842,7 +1841,7 @@ namespace KilyCore.Service.ServiceCore
         /// 获取入驻的企业地图
         /// </summary>
         /// <returns></returns>
-        public Object GetAllCityMerchantCount()
+        public ResponseGovtMap GetAllCityMerchantCount()
         {
             ResponseCity City = Kily.Set<SystemCity>().Where(t => t.Id.ToString() == GovtInfo().City).Select(t => new ResponseCity
             {
@@ -1856,17 +1855,15 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
             IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
             IQueryable<RepastInfo> queryables = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false);
-            List<Object> data = new List<Object>();
+            List<ResponseGovtRanking> data = new List<ResponseGovtRanking>();
             Area.ForEach(t =>
             {
                int TotalCompany = queryable.Where(x => x.TypePath.Contains(t.Id.ToString())).Select(x => x.Id).Count();
                int TotalMerchant = queryables.Where(x => x.TypePath.Contains(t.Id.ToString())).Select(x => x.Id).Count();
-                Object obj = new { name = t.AreaName, value = TotalCompany + TotalMerchant };
-                data.Add(obj);
+                data.Add(new ResponseGovtRanking { AreaName = t.AreaName, TotalCount = TotalCompany + TotalMerchant });
             });
-            //获取城市地图数据
-            var result = HttpClientExtension.HttpGetAsync("http://echarts.baidu.com/echarts2/doc/example/geoJson/china-main-city/" + City.CityId + "00.json?callback=?").Result.Replace("\"", "//\"");
-            return new { City.CityName, JsonData = result, DataList = data };
+            data = data.OrderByDescending(t => t.TotalCount).ToList();
+            return new ResponseGovtMap { CityName=City.CityName,City=City.CityId, DataList = data };
         }
         /// <summary>
         /// 获取区域信息

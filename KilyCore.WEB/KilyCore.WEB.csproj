@@ -31,6 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\CityMap\china-main-city-map.js" />
     <None Include="wwwroot\Content\Uploader\js\upload.js" />
     <None Include="wwwroot\StaticHtml\Safe.html" />
   </ItemGroup>

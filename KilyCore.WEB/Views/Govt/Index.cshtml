@@ -59,10 +59,16 @@
                     type: "post",
                     async: false,
                     success: function (result) {
-                        controller.Echarts("#echarts-map-chart", result.data,2)
+                        controller.Echarts("#echarts-map-chart", result.data, 2);
+                        var html = '';
+                        for (var i = 0; i < result.data.DataList.length; i++) {
+                            html += '<tr><td>' + result.data.DataList[i].name + '</td>';
+                            html += '<td>' + result.data.DataList[i].value + '</td>';
+                            html += '<td>' + (i + 1) + '</td></tr>'
+                        }
+                        $("#Raking").html(html);
                     }
                 });
-
                 //区域信息
                 controller.ajax({
                     url: "GovtWeb/GetIndexStatistics",
@@ -82,7 +88,7 @@
                             html += "<td>" + result.data.CompCount[i] + "</td>";
                             html += "</tr>";
                         });
-                        $("tbody").html(html);
+                        $("#AreaCount").html(html);
                     }
                 });
             },
@@ -155,7 +161,7 @@
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>企业入住分布图</h5>
+                    <h5>企业统计</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -166,7 +172,21 @@
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <div class="echarts" id="echarts-map-chart" style="height:800px;"></div>
+                    <div class="col-sm-4">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>区域名称</th>
+                                    <th>入住数量</th>
+                                    <th>名次</th>
+                                </tr>
+                            </thead>
+                            <tbody id="Raking">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-sm-8"><div class="echarts" id="echarts-map-chart" style="height:600px;"></div></div>
+
                 </div>
             </div>
         </div>
@@ -197,7 +217,7 @@
                                 <th>投诉次数</th>
                             </tr>
                         </thead>
-                        <tbody></tbody>
+                        <tbody id="AreaCount"></tbody>
                     </table>
                 </div>
             </div>

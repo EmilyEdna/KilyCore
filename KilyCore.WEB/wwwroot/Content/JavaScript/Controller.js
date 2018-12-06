@@ -1092,7 +1092,7 @@ controller.Echarts = function (element, option, Type) {
             },
             tooltip: {
                 trigger: 'item',
-                formatter: '{b}<br/>{c} (个)'
+                formatter: '{b}<br/>{c} (家企业)'
             },
             visualMap: {
                 min: 1,
@@ -1117,10 +1117,10 @@ controller.Echarts = function (element, option, Type) {
                 }
             ]
         }
-        var Json = option.JsonData;
-        debugger;
-        echarts.registerMap(option.CityName, Json);
-        echarts.init($(element)[0], "vintage").setOption(OptionMap);
+        $.getJSON("/CityMap/" + option.City + "00.json", function (result) {
+            echarts.registerMap(option.CityName, result);
+            echarts.init($(element)[0], "vintage").setOption(OptionMap);
+        });
     }
 }
 /**
