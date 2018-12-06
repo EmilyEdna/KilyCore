@@ -10,6 +10,7 @@ namespace KilyCore.DataEntity.ResponseMapper.System
     {
         public Guid Id { get; set; }
         public string Account { get; set; }
+        public string CompanyName { get; set; }
         public string TrueName { get; set; }
         public string PassWord { get; set; }
         public string IdCard { get; set; }

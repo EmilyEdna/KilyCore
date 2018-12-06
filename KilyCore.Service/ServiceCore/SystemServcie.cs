@@ -284,10 +284,12 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseAdmin()
             {
                 Id = t.Id,
+                CompanyName = t.CompanyName,
                 TrueName = t.TrueName,
                 Account = t.Account,
                 AccountTypeName = AttrExtension.GetSingleDescription<AccountEnum, DescriptionAttribute>(t.AccountType),
                 Phone = t.Phone,
+                OpenNet=t.OpenNet,
                 CommunityCode = t.CommunityCode
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -316,6 +318,7 @@ namespace KilyCore.Service.ServiceCore
                  {
                      Id = t.Id,
                      Account = t.Account,
+                     CompanyName = t.CompanyName,
                      TrueName = t.TrueName,
                      PassWord = t.PassWord,
                      Phone = t.Phone,
@@ -363,23 +366,23 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 CommunityCode = t.CommunityCode,
-                TrueName = t.TrueName,
+                CompanyName = t.CompanyName,
                 Chapter = t.Chapter,
                 Address = t.Address,
                 BankCard = t.BankCard,
                 BankName = t.BankName
             }).ToList();
             ResponseAdmin admin = Kily.Set<SystemAdmin>().Where(t => t.IsDelete == false)
-            .Where(t => t.AccountType == AccountEnum.Country).Select(t => new ResponseAdmin()
-            {
-                Id = t.Id,
-                CommunityCode = t.CommunityCode,
-                TrueName = t.TrueName,
-                Chapter = t.Chapter,
-                Address = t.Address,
-                BankCard = t.BankCard,
-                BankName = t.BankName
-            }).FirstOrDefault();
+                .Where(t => t.OpenNet == true).Where(t => t.AccountType == AccountEnum.Country).Select(t => new ResponseAdmin()
+                {
+                    Id = t.Id,
+                    CompanyName = t.CompanyName,
+                    CommunityCode = t.CommunityCode,
+                    Chapter = t.Chapter,
+                    Address = t.Address,
+                    BankCard = t.BankCard,
+                    BankName = t.BankName
+                }).FirstOrDefault();
             data.Add(admin);
             return data;
         }
@@ -417,7 +420,7 @@ namespace KilyCore.Service.ServiceCore
                 || t.AccountType == AccountEnum.Country).AsNoTracking();
             var data = queryable.Select(t => new ResponseAdmin()
             {
-                TrueName = t.TrueName,
+                CompanyName = t.CompanyName,
                 BankCard = t.BankCard,
                 BankName = t.BankName
             }).ToList();
@@ -566,6 +569,7 @@ namespace KilyCore.Service.ServiceCore
                IdCard = t.IdCard,
                Phone = t.Phone,
                Email = t.Email,
+               CompanyName=t.CompanyName,
                AccountType = t.AccountType,
                RoleAuthorType = t.RoleAuthorType,
                Address = t.Address,

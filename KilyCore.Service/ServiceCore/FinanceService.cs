@@ -44,6 +44,7 @@ namespace KilyCore.Service.ServiceCore
             var data = Admin.OrderBy(t => t.CreateTime).GroupJoin(AdminAttach, t => t.Id, x => x.AdminId, (t, x) => new ResponseAdminAttach()
             {
                 AdminId = t.Id,
+                CompanyName=t.CompanyName,
                 TrueName = t.TrueName,
                 AccountType = t.AccountType,
                 AccountTypeName = AttrExtension.GetSingleDescription<AccountEnum, DescriptionAttribute>(t.AccountType),

@@ -12,6 +12,7 @@ namespace KilyCore.DataEntity.ResponseMapper.System
     public class ResponseAdminAttach
     {
         public Guid Id { get; set; }
+        public string CompanyName { get; set; }
         public string TrueName { get; set; }
         public string IdCard { get; set; }
         public string Phone { get; set; }

@@ -8,6 +8,7 @@ namespace KilyCore.DataEntity.RequestMapper.System
     public class RequestAdmin
     {
         public Guid Id { get; set; }
+        public string CompanyName { get; set; }
         public string Account { get; set; }
         public string TrueName { get; set; }
         public string PassWord { get; set; }

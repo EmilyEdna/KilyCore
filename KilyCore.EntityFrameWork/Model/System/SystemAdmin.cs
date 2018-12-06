@@ -15,6 +15,10 @@ namespace KilyCore.EntityFrameWork.Model.System
     public class SystemAdmin : BaseEntity
     {
         /// <summary>
+        /// 营运中心名称
+        /// </summary>
+        public virtual string CompanyName { get; set; }
+        /// <summary>
         /// 姓名
         /// </summary>
         public virtual string TrueName { get; set; }

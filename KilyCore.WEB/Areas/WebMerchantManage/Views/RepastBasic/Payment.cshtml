@@ -50,7 +50,7 @@
                     success: function (result) {
                         var html = '<option>===请选择===</option>'
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '" data-name="'+obj.BankName+'" data-bank="' + obj.BankCard + '" data-img="' + obj.Chapter + '" data-code="' + obj.CommunityCode + '" data-address="' + obj.Address + '">' + obj.TrueName + '</option>';
+                            html += '<option value="' + obj.Id + '" data-name="' + obj.BankName + '" data-bank="' + obj.BankCard + '" data-img="' + obj.Chapter + '" data-code="' + obj.CommunityCode + '" data-address="' + obj.Address + '">' + obj.CompanyName + '</option>';
                         });
                         $("#AdminId").html(html);
                     }

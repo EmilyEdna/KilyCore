@@ -55,8 +55,12 @@
             action: {
                 TableFormatter: function (val, row, index) {
                     var action = [];
-                    action.push('<button class="btn btn-sm btn-primary open"><i class="fa fa-cog"></i>开启网签</button>');
-                    action.push('<button class="btn btn-sm btn-primary close"><i class="fa fa-cog"></i>关闭网签</button>');
+                    if (SysUserInfo.AccountType < 30) {
+                        if (row.OpenNet)
+                            action.push('<button class="btn btn-sm btn-primary cancel"><i class="fa fa-cog"></i>关闭网签</button>');
+                        else
+                            action.push('<button class="btn btn-sm btn-primary open"><i class="fa fa-cog"></i>开启网签</button>');
+                    }
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
                     action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
                     return action.join("&nbsp;")
@@ -102,7 +106,7 @@
                             }
                         });
                     },
-                    "click .close": function (event, val, row, index) {
+                    "click .cancel": function (event, val, row, index) {
                         controller.Confirm("确认开启？", function (bool) {
                             if (bool) {
                                 controller.ajax({
@@ -165,6 +169,7 @@
                             <tr>
                                 <th data-field="TrueName" data-halign="center" data-align="center" data-valign="middle">姓名</th>
                                 <th data-field="Account" data-halign="center" data-align="center" data-valign="middle">账号</th>
+                                <th data-field="CompanyName" data-halign="center" data-align="center" data-valign="middle">公司名称</th>
                                 <th data-field="AccountTypeName" data-halign="center" data-align="center" data-valign="middle">账号类型</th>
                                 <th data-field="Phone" data-halign="center" data-align="center" data-valign="middle">电话</th>
                                 <th data-field="CommunityCode" data-halign="center" data-align="center" data-valign="middle">工商代码</th>

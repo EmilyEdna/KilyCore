@@ -40,7 +40,7 @@
                     success: function (result) {
                         var html = '<option>===请选择===</option>';
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.BankCard + '" data-value="' + obj.BankName + '">' + obj.TrueName + '</option>'
+                            html += '<option value="' + obj.BankCard + '" data-value="' + obj.BankName + '">' + obj.CompanyName + '</option>'
                         });
                         $("select").html(html);
                     }
