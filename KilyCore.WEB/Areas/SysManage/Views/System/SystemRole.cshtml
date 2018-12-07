@@ -8,12 +8,7 @@
         var options = {
             Init: function () {
                 this.InitDom();
-                this.GetProvince();
-                this.GetCityByProvince();
-                this.GetAreaByCity();
-                this.GetTownByArea();
                 this.InitEvents();
-                this.SetPathByAccountType();
             },
             //元素
             InitDom: function () {
@@ -39,138 +34,29 @@
                         });
                         $("#roleLv").html(html);
                     }
-                })
-                //设置权限菜单
+                });
+                options.InitMenu();
+            },
+            //设置权限菜单
+            InitMenu: function (MenuIds) {
                 controller.ajax({
                     url: "System/GetSystemAdminTree",
                     type: "post",
                     async: false,
-                    data: {},
+                    data: { Id: MenuIds},
                     success: function (result) {
-                        controller.TreeCtrl("#TreeView", { levels: 1, data: result.data }, "#ShowMenu");
-                    }
-                });
-            },
-            //获取省份
-            GetProvince: function () {
-                controller.ajax({
-                    url: "System/GetProvince",
-                    data: {},
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        var html = '<option>===请选择===</option>';
-                        $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '" data-id="' + obj.ProvinceId + '">' + obj.ProvinceName + '</option>';
+                        $("#ShowMenu").html("");
+                        var tree = controller.TreeCtrl("#TreeView", { levels: MenuIds != undefined ? 2 : 1, data: result.data }, "#ShowMenu");
+                        var CheckList = $(tree).treeview("getChecked", [{ silent: true }]);
+                        if (CheckList.length == 0)
+                            return;
+                        var html = '';
+                        $.each(CheckList, function (i, data) {
+                            html += '<p class="text text-info" data-values=' + data.id + '><i class="fa fa-check-circle" aria-hidden="true"></i>' + data.text + '</p>';
                         });
-                        $("#province").html(html);
+                        $("#ShowMenu").html(html);
                     }
                 });
-            },
-            //选中省份后获取城市
-            GetCityByProvince: function () {
-                $("#province").change(function () {
-                    controller.ajax({
-                        url: "System/GetCity",
-                        data: { Id: $(this).find("option:selected").data().id },
-                        type: "post",
-                        async: false,
-                        success: function (result) {
-                            var html = '<option>===请选择===</option>';
-                            $.each(result.data, function (i, obj) {
-                                html += '<option value="' + obj.Id + '" data-id="' + obj.CityId + '">' + obj.CityName + '</option>';
-                            });
-                            $("#city").html(html);
-                        }
-                    });
-                });
-            },
-            //选中城市后获取区域
-            GetAreaByCity: function () {
-                $("#city").change(function () {
-                    controller.ajax({
-                        url: "System/GetArea",
-                        data: { Id: $(this).find("option:selected").data().id },
-                        type: "post",
-                        async: false,
-                        success: function (result) {
-                            var html = '<option>===请选择===</option>';
-                            $.each(result.data, function (i, obj) {
-                                html += '<option value="' + obj.Id + '" data-id="' + obj.AreaId + '">' + obj.AreaName + '</option>';
-                            });
-                            $("#area").html(html);
-                        }
-                    });
-                });
-            },
-            //选中区域后获取乡镇
-            GetTownByArea: function () {
-                $("#area").change(function () {
-                    controller.ajax({
-                        url: "System/GetTown",
-                        data: { Id: $(this).find("option:selected").data().id },
-                        type: "post",
-                        async: false,
-                        success: function (result) {
-                            var html = '<option>===请选择===</option>';
-                            $.each(result.data, function (i, obj) {
-                                html += '<option value="' + obj.Id + '" data-id="' + obj.TownId + '">' + obj.TownName + '</option>';
-                            });
-                            $("#town").html(html);
-                        }
-                    });
-                });
-            },
-            //更具权限设置区域
-            SetPathByAccountType: function () {
-                if (SysUserInfo.AccountType >= 30) {
-                    var Pid = $("#province").attr("disabled", true).find("option[value='" + SysUserInfo.Province + "']").attr("selected", true).data().id;
-                    controller.ajax({
-                        url: "System/GetCity",
-                        data: { Id: Pid },
-                        type: "post",
-                        async: false,
-                        success: function (result) {
-                            var html = '<option>===请选择===</option>';
-                            $.each(result.data, function (i, obj) {
-                                html += '<option value="' + obj.Id + '" data-id="' + obj.CityId + '">' + obj.CityName + '</option>';
-                            });
-                            $("#city").html(html);
-                        }
-                    });
-                    if (SysUserInfo.AccountType >= 40) {
-                        var Cid = $("#city").attr("disabled", true).find("option[value='" + SysUserInfo.City + "']").attr("selected", true).data().id;
-                        controller.ajax({
-                            url: "System/GetArea",
-                            data: { Id: Cid },
-                            type: "post",
-                            async: false,
-                            success: function (result) {
-                                var html = '<option>===请选择===</option>';
-                                $.each(result.data, function (i, obj) {
-                                    html += '<option value="' + obj.Id + '" data-id="' + obj.AreaId + '">' + obj.AreaName + '</option>';
-                                });
-                                $("#area").html(html);
-                            }
-                        });
-                        if (SysUserInfo.AccountType >= 50) {
-                            var Aid = $("#area").attr("disabled", true).find("option[value='" + SysUserInfo.Area + "']").attr("selected", true).data().id;
-                            controller.ajax({
-                                url: "System/GetTown",
-                                data: { Id: Aid },
-                                type: "post",
-                                async: false,
-                                success: function (result) {
-                                    var html = '<option>===请选择===</option>';
-                                    $.each(result.data, function (i, obj) {
-                                        html += '<option value="' + obj.Id + '" data-id="' + obj.TownId + '">' + obj.TownName + '</option>';
-                                    });
-                                    $("#town").html(html);
-                                }
-                            });
-                        }
-                    }
-                }
             },
             //事件
             InitEvents: function () {
@@ -178,11 +64,24 @@
                     controller.Validate("#Edit", $("#Edit").SerializeOver());
                     $("#Edit").submit();
                 });
+                $(".nav-tabs").find("li").click(function () {
+                    $("#Edit")[0].reset();
+                    $('#roleLv').find("option").attr("selected", false);
+                    $('#roleLv option:contains(==请选择==)').attr("selected", true);
+                    options.InitMenu(); 
+                });
+            },
+            //编辑权限
+            InitEditRole: function (data) {
+                controller.SetCtrlValue("#Edit", data);
+                $('#roleLv option:contains(' + data.AuthorRoleLv + ')').attr("selected", true);
+                options.InitMenu(data.AuthorMenuPath);
             },
             //行为
             action: {
                 TableFormatter: function (val, row, index) {
                     var action = [];
+                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
                     return action.join("&nbsp;");
                 },
@@ -200,6 +99,16 @@
                                 });
                             }
                         });
+                    },
+                    "click .edit": function (event, val, row, index) {
+                        var $li = $(".nav-tabs").find("li");
+                        $li.eq(0).removeClass("active");
+                        $li.eq(0).find("a").attr("aria-expanded", "false");
+                        $("#tab-1").removeClass("active");
+                        $li.eq(1).addClass("active");
+                        $li.eq(1).find("a").attr("aria-expanded", "true");
+                        $("#tab-2").addClass("active");
+                        options.InitEditRole(row);
                     },
                 }//表单事件结束
             }//行为结束
@@ -261,6 +170,7 @@
         <div id="tab-2" class="tab-pane">
             <div class="panel-body">
                 <form method="post" class="form-horizontal" action="System/EditRole" id="Edit">
+                    <input type="hidden" name="Id" />
                     <!--名称-->
                     <div class="form-group">
                         <label class="col-sm-2 control-label">请输入角色名称<span style="color:red">*</span></label>
@@ -268,31 +178,6 @@
                             <input type="text" class="form-control required" name="AuthorName" data-msg-required="请输入角色名称">
                         </div>
                         <div class="col-sm-6"></div>
-                    </div>
-                    <div class="hr-line-dashed"></div>
-                    <!--区域-->
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">请选择所属地域</label>
-                        <div class="col-sm-2">
-                            <select type="select" name="Province" id="province" class="form-control">
-                                <option>===请选择===</option>
-                            </select>
-                        </div>
-                        <div class="col-sm-2">
-                            <select type="select" name="City" id="city" class="form-control">
-                                <option>===请选择===</option>
-                            </select>
-                        </div>
-                        <div class="col-sm-2">
-                            <select type="select" name="Area" id="area" class="form-control">
-                                <option>===请选择===</option>
-                            </select>
-                        </div>
-                        <div class="col-sm-2">
-                            <select type="select" name="Town" id="town" class="form-control">
-                                <option>===请选择===</option>
-                            </select>
-                        </div>
                     </div>
                     <div class="hr-line-dashed"></div>
                     <!--等级-->

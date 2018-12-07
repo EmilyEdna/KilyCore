@@ -289,7 +289,7 @@ namespace KilyCore.Service.ServiceCore
                 Account = t.Account,
                 AccountTypeName = AttrExtension.GetSingleDescription<AccountEnum, DescriptionAttribute>(t.AccountType),
                 Phone = t.Phone,
-                OpenNet=t.OpenNet,
+                OpenNet = t.OpenNet,
                 CommunityCode = t.CommunityCode
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -454,8 +454,6 @@ namespace KilyCore.Service.ServiceCore
                 RoleLv = t.RoleLv
             }).ToList();
             return data;
-
-
         }
         #endregion
 
@@ -489,7 +487,7 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 AuthorName = t.AuthorName,
                 AuthorMenuPath = t.AuthorMenuPath,
-                AuthorRoleLv = x.LvName
+                AuthorRoleLv = x.LvName,
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -506,19 +504,14 @@ namespace KilyCore.Service.ServiceCore
             SystemRoleAuthor Author = Param.MapToEntity<SystemRoleAuthor>();
             if (Param.AuthorRoleLvId == null)
                 return "请选择权限等级!";
-            if (string.IsNullOrEmpty(Param.TypePath))
-                return "请选中所属区域!";
-            if (Kily.Set<SystemRoleAuthor>().Where(t => t.IsDelete == false).Where(t => t.AuthorName.Equals(Author.AuthorName)).AsNoTracking().FirstOrDefault() != null)
+            if (Param.Id == Guid.Empty)
             {
-                return "角色名称重复请重新添加!";
+                if (Kily.Set<SystemRoleAuthor>().Where(t => t.IsDelete == false).Where(t => t.AuthorName.Equals(Author.AuthorName)).AsNoTracking().FirstOrDefault() != null)
+                    return "角色名称重复请重新添加!";
+                return Insert<SystemRoleAuthor>(Author) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
             }
             else
-            {
-                if (Insert<SystemRoleAuthor>(Author))
-                    return ServiceMessage.INSERTSUCCESS;
-                else
-                    return ServiceMessage.INSERTFAIL;
-            }
+                return Update<SystemRoleAuthor, RequestAuthorRole>(Author, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         /// <summary>
         /// 删除角色
@@ -569,7 +562,7 @@ namespace KilyCore.Service.ServiceCore
                IdCard = t.IdCard,
                Phone = t.Phone,
                Email = t.Email,
-               CompanyName=t.CompanyName,
+               CompanyName = t.CompanyName,
                AccountType = t.AccountType,
                RoleAuthorType = t.RoleAuthorType,
                Address = t.Address,
@@ -683,31 +676,31 @@ namespace KilyCore.Service.ServiceCore
         /// 获取权限菜单树
         /// </summary>
         /// <returns></returns>
-        public IList<ResponseParentTree> GetSystemAdminTree()
+        public IList<ResponseParentTree> GetSystemAdminTree(String Key)
         {
+            IQueryable<SystemMenu> queryables = string.IsNullOrEmpty(Key) ? Kily.Set<SystemMenu>().Where(t => t.IsDelete == false).AsNoTracking() : Kily.Set<SystemMenu>().Where(t => Key.Contains(t.Id.ToString())).Where(t => t.IsDelete == false).AsNoTracking();
             if (UserInfo().AccountType == AccountEnum.Admin)
             {
-                IQueryable<ResponseParentTree> queryable = Kily.Set<SystemMenu>().Where(t => t.IsDelete == false)
-                     .Where(t => t.Level == MenuEnum.LevelOne)
-                     .AsNoTracking().Select(t => new ResponseParentTree()
-                     {
-                         Id = t.Id,
-                         Text = t.MenuName,
-                         Color = "black",
-                         BackClolor = "white",
-                         SelectedIcon = "fa fa-refresh fa-spin",
-                         Nodes = Kily.Set<SystemMenu>().Where(x => x.IsDelete == false)
-                         .Where(x => x.Level != MenuEnum.LevelOne)
-                         .Where(x => x.ParentId == t.MenuId).AsNoTracking()
+                IQueryable<ResponseParentTree> queryable = queryables.Where(t => t.Level == MenuEnum.LevelOne)
+                    .AsNoTracking().Select(t => new ResponseParentTree()
+                    {
+                        Id = t.Id,
+                        Text = t.MenuName,
+                        Color = "black",
+                        BackClolor = "white",
+                        SelectedIcon = "fa fa-refresh fa-spin",
+                        State = string.IsNullOrEmpty(Key) ? null : new States { Checked = true },
+                        Nodes = queryables.Where(x => x.Level != MenuEnum.LevelOne).Where(x => x.ParentId == t.MenuId).AsNoTracking()
                          .Select(x => new ResponseChildTree()
                          {
                              Id = x.Id,
                              Text = x.MenuName,
                              Color = "black",
+                             State = string.IsNullOrEmpty(Key) ? null : new States { Checked = true },
                              BackClolor = "white",
                              SelectedIcon = "fa fa-refresh fa-spin",
                          }).AsQueryable()
-                     }).AsQueryable();
+                    }).AsQueryable();
                 var data = queryable.ToList();
                 return data;
             }
@@ -715,19 +708,17 @@ namespace KilyCore.Service.ServiceCore
             {
                 //取权限菜单
                 SystemRoleAuthor Author = Kily.Set<SystemRoleAuthor>().Where(t => t.Id == UserInfo().RoleAuthorType).AsNoTracking().FirstOrDefault();
-                IQueryable<ResponseParentTree> queryable = Kily.Set<SystemMenu>().Where(t => t.IsDelete == false)
-                     .Where(t => t.Level == MenuEnum.LevelOne)
-                     .Where(t => Author.AuthorMenuPath.Contains(t.Id.ToString())).AsQueryable().AsNoTracking()
+                IQueryable<ResponseParentTree> queryable = queryables.Where(t => t.Level == MenuEnum.LevelOne)
+                    .Where(t => Author.AuthorMenuPath.Contains(t.Id.ToString())).AsQueryable().AsNoTracking()
                      .Select(t => new ResponseParentTree()
                      {
                          Id = t.Id,
                          Text = t.MenuName,
                          Color = "black",
+                         State = string.IsNullOrEmpty(Key) ? null : new States { Checked = true },
                          BackClolor = "white",
                          SelectedIcon = "fa fa-refresh fa-spin",
-                         Nodes = Kily.Set<SystemMenu>().Where(x => x.IsDelete == false)
-                         .Where(x => x.Level != MenuEnum.LevelOne)
-                         .Where(x => x.ParentId == t.MenuId).AsNoTracking()
+                         Nodes = queryables.Where(x => x.Level != MenuEnum.LevelOne).Where(x => x.ParentId == t.MenuId).AsNoTracking()
                          .Where(x => Author.AuthorMenuPath.Contains(x.Id.ToString()))
                          .Select(x => new ResponseChildTree()
                          {
@@ -735,6 +726,7 @@ namespace KilyCore.Service.ServiceCore
                              Text = x.MenuName,
                              Color = "black",
                              BackClolor = "white",
+                             State = string.IsNullOrEmpty(Key) ? null : new States { Checked = true },
                              SelectedIcon = "fa fa-refresh fa-spin",
                          }).AsQueryable()
                      }).AsQueryable();

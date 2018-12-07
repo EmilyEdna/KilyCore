@@ -25,9 +25,5 @@ namespace KilyCore.EntityFrameWork.Model.System
         /// 选中的菜单
         /// </summary>
         public virtual string AuthorMenuPath { get; set; }
-        /// <summary>
-        /// 所属管理区域
-        /// </summary>
-        public virtual string TypePath { get; set; }
     }
 }

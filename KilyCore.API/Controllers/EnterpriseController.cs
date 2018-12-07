@@ -73,9 +73,9 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetEnterpriseTree")]
-        public ObjectResultEx GetEnterpriseTree()
+        public ObjectResultEx GetEnterpriseTree(SimpleParam<String> Param)
         {
-            return ObjectResultEx.Instance(EnterpriseService.GetEnterpriseTree(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseService.GetEnterpriseTree(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
 
@@ -148,6 +148,16 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx DistributionRole(RequestEnterpriseRoleAuthor Param)
         {
             return ObjectResultEx.Instance(EnterpriseService.DistributionRole(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取角色详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetEnterpriseRoleAuthorDetail")]
+        public ObjectResultEx GetEnterpriseRoleAuthorDetail(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseService.GetEnterpriseRoleAuthorDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
 

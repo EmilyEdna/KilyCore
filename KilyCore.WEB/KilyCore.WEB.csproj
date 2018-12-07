@@ -31,7 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\CityMap\china-main-city-map.js" />
     <None Include="wwwroot\Content\Uploader\js\upload.js" />
     <None Include="wwwroot\StaticHtml\Safe.html" />
   </ItemGroup>
@@ -41,6 +40,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Areas\CliqueManage\Views\Enterprise\WatchRoleEdit.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Areas\FunManage\Views\System\AcceptTagAttachs.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
@@ -48,6 +50,12 @@
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Areas\GovtManage\Views\Govt\GovtMenuEdit.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\RepastManage\Views\Repast\WatchRole.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\RepastManage\Views\Repast\WatchRoleEdit.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Areas\WebGovtManage\Views\Product\WorkSuperviseDetail.cshtml">

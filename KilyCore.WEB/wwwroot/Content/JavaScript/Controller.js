@@ -646,15 +646,18 @@ controller.TreeCtrl = function (element, option, document) {
         data: undefined,                 //数据源
         showCheckbox: true,        //是否显示复选框
         multiSelect: true,    //多选
+        onNodeChecked: NodeChecked,
+        onNodeUnchecked: NodeUnchecked
     };
     var options = $.extend(defaultOption, option);
     return $(element).treeview({
+        state: { checked: false },
         levels: options.levels,
         data: options.data,                 //数据源
         showCheckbox: options.showCheckbox,        //是否显示复选框
         multiSelect: options.multiSelect,    //多选
-        onNodeChecked: NodeChecked,
-        onNodeUnchecked: NodeUnchecked
+        onNodeChecked: options.onNodeChecked,
+        onNodeUnchecked: options.onNodeUnchecked
     });
     //选中状态
     var nodeCheckedSilent = false;
@@ -688,7 +691,6 @@ controller.TreeCtrl = function (element, option, document) {
     function NodeUnchecked(event, node) {
         CheckStatus();
         if (nodeUncheckedSilent)
-            return;
         nodeUncheckedSilent = true;
         UnCheckAllParent(node);
         UnCheckAllSon(node);

@@ -88,7 +88,7 @@ namespace KilyCore.Service.ServiceCore
                 Certification = t.Certification,
                 ImplUser = t.ImplUser,
                 AllowUnit = t.AllowUnit,
-                Honor=t.HonorCertification,
+                Honor = t.HonorCertification,
                 VersionTypeName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.VersionType),
                 AuditInfo = Kily.Set<SystemAudit>()
                     .Where(x => x.IsDelete == false)
@@ -229,25 +229,26 @@ namespace KilyCore.Service.ServiceCore
         /// 餐饮权限菜单树
         /// </summary>
         /// <returns></returns>
-        public IList<ResponseParentTree> GetDiningTree()
+        public IList<ResponseParentTree> GetDiningTree(String key)
         {
-            IQueryable<ResponseParentTree> queryable = Kily.Set<RepastMenu>().Where(t => t.IsDelete == false)
-              .Where(t => t.Level == MenuEnum.LevelOne)
+            IQueryable<RepastMenu> queryables = string.IsNullOrEmpty(key) ? Kily.Set<RepastMenu>().Where(t => t.IsDelete == false) : Kily.Set<RepastMenu>().Where(t => key.Contains(t.Id.ToString())).Where(t => t.IsDelete == false);
+            IQueryable<ResponseParentTree> queryable = queryables.Where(t => t.Level == MenuEnum.LevelOne)
               .AsNoTracking().Select(t => new ResponseParentTree()
               {
                   Id = t.Id,
                   Text = t.MenuName,
                   Color = "black",
                   BackClolor = "white",
+                  State = string.IsNullOrEmpty(key) ? null : new States { Checked = true },
                   SelectedIcon = "fa fa-refresh fa-spin",
-                  Nodes = Kily.Set<RepastMenu>().Where(x => x.IsDelete == false)
-                  .Where(x => x.Level != MenuEnum.LevelOne)
+                  Nodes = queryables.Where(x => x.Level != MenuEnum.LevelOne)
                   .Where(x => x.ParentId == t.MenuId).AsNoTracking()
                   .Select(x => new ResponseChildTree()
                   {
                       Id = x.Id,
                       Text = x.MenuName,
                       Color = "black",
+                      State = string.IsNullOrEmpty(key) ? null : new States { Checked = true },
                       BackClolor = "white",
                       SelectedIcon = "fa fa-refresh fa-spin",
                   }).AsQueryable()
@@ -266,17 +267,14 @@ namespace KilyCore.Service.ServiceCore
         public string EditRole(RequestRepastRoleAuthor Param)
         {
             RepastRoleAuthor Author = Param.MapToEntity<RepastRoleAuthor>();
-            if (Kily.Set<RepastRoleAuthor>().Where(t => t.IsDelete == false).Where(t => t.AuthorName.Equals(Author.AuthorName)).AsNoTracking().FirstOrDefault() != null)
+            if (Param.Id == Guid.Empty)
             {
-                return "角色名称重复请重新添加!";
+                if (Kily.Set<RepastRoleAuthor>().Where(t => t.IsDelete == false).Where(t => t.AuthorName.Equals(Author.AuthorName)).AsNoTracking().FirstOrDefault() != null)
+                    return "角色名称重复请重新添加!";
+                return Insert<RepastRoleAuthor>(Author) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
             }
             else
-            {
-                if (Insert<RepastRoleAuthor>(Author))
-                    return ServiceMessage.INSERTSUCCESS;
-                else
-                    return ServiceMessage.INSERTFAIL;
-            }
+                return Update(Author, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         /// <summary>
         /// 角色权限列表分页
@@ -297,6 +295,24 @@ namespace KilyCore.Service.ServiceCore
                 MerchantRoleName = x.FirstOrDefault().AuthorName,
                 MerchantTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
                 AuthorMenuPath = x.FirstOrDefault().AuthorMenuPath
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 权限分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRepastRoleAuthor> WatchRolePage(PageParamList<RequestRepastRoleAuthor> pageParam)
+        {
+            IQueryable<RepastRoleAuthor> queryable = Kily.Set<RepastRoleAuthor>().AsNoTracking();
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.AuthorName))
+                queryable = queryable.Where(t => t.AuthorName.Contains(pageParam.QueryParam.AuthorName));
+            var data = queryable.Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime).Select(t => new ResponseRepastRoleAuthor()
+            {
+                Id = t.Id,
+                MerchantRoleName = t.AuthorName,
+                AuthorMenuPath = t.AuthorMenuPath
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -366,6 +382,20 @@ namespace KilyCore.Service.ServiceCore
                 return ServiceMessage.HANDLESUCCESS;
             else
                 return ServiceMessage.HANDLEFAIL;
+        }
+        /// <summary>
+        /// 角色详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseRepastRoleAuthor GetRepastRoleAuthorDetail(Guid Id)
+        {
+            return Kily.Set<RepastRoleAuthor>().Where(t => t.Id == Id).Select(t => new ResponseRepastRoleAuthor()
+            {
+                Id = t.Id,
+                MerchantRoleName = t.AuthorName,
+                AuthorMenuPath = t.AuthorMenuPath
+            }).AsNoTracking().FirstOrDefault();
         }
         #endregion
 
@@ -513,7 +543,7 @@ namespace KilyCore.Service.ServiceCore
         {
             #region 餐饮企业登录
             IQueryable<RepastInfo> queryable = Kily.Set<RepastInfo>()
-               .Where(t => t.Account.Equals(LoginValidate.Account)||t.Phone.Equals(LoginValidate.Account))
+               .Where(t => t.Account.Equals(LoginValidate.Account) || t.Phone.Equals(LoginValidate.Account))
                .Where(t => t.PassWord.Equals(LoginValidate.PassWord))
                .Where(t => t.IsDelete == false);
             ResponseMerchant Info = queryable.Select(t => new ResponseMerchant()
@@ -532,14 +562,14 @@ namespace KilyCore.Service.ServiceCore
                 DingRoleId = t.DingRoleId,
                 TypePath = t.TypePath,
                 Certification = t.Certification,
-                Email=t.Email,
-                ImplUser=t.ImplUser,
+                Email = t.Email,
+                ImplUser = t.ImplUser,
                 TableName = typeof(ResponseMerchant).Name
             }).FirstOrDefault();
             #endregion
             #region 非企业登录
             IQueryable<RepastInfoUser> queryables = Kily.Set<RepastInfoUser>()
-              .Where(t => t.Account.Equals(LoginValidate.Account)|| t.Phone.Equals(LoginValidate.Account))
+              .Where(t => t.Account.Equals(LoginValidate.Account) || t.Phone.Equals(LoginValidate.Account))
               .Where(t => t.PassWord.Equals(LoginValidate.PassWord))
               .Where(t => t.IsDelete == false);
             ResponseMerchantUser User = queryables.Select(t => new ResponseMerchantUser()
@@ -552,9 +582,9 @@ namespace KilyCore.Service.ServiceCore
                 VersionType = t.VersionType,
                 DingRoleId = t.DingRoleId,
                 TypePath = t.TypePath,
-                MerchantName=t.MerchantName,
-                Phone=t.Phone,
-                IdCard=t.Phone,
+                MerchantName = t.MerchantName,
+                Phone = t.Phone,
+                IdCard = t.Phone,
                 VersionTypeName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.VersionType),
                 DiningTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
                 TableName = typeof(ResponseMerchantUser).Name

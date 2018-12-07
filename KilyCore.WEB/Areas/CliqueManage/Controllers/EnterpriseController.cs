@@ -33,6 +33,10 @@ namespace KilyCore.WEB.Areas.CliqueManage.Controllers
         {
             return View();
         }
+        public IActionResult WatchRoleEdit()
+        {
+            return View();
+        }
         #endregion
 
         #region 资料审核

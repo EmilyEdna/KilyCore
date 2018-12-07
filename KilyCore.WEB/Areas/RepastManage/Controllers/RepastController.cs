@@ -38,6 +38,14 @@ namespace KilyCore.WEB.Areas.RepastManage.Controllers
         {
             return View();
         }
+        public IActionResult WatchRole()
+        {
+            return View();
+        }
+        public IActionResult WatchRoleEdit()
+        {
+            return View();
+        }
         #endregion
         #region  审核商家
         public IActionResult AuditMerchant()

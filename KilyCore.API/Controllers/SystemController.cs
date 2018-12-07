@@ -223,9 +223,9 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetSystemAdminTree")]
-        public ObjectResultEx GetSystemAdminTree()
+        public ObjectResultEx GetSystemAdminTree(SimpleParam<String> Param)
         {
-            return ObjectResultEx.Instance(SystemService.GetSystemAdminTree(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(SystemService.GetSystemAdminTree(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 用户管理

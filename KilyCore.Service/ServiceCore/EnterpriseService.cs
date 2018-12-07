@@ -134,25 +134,26 @@ namespace KilyCore.Service.ServiceCore
         /// 获取权限菜单树
         /// </summary>
         /// <returns></returns>
-        public IList<ResponseParentTree> GetEnterpriseTree()
+        public IList<ResponseParentTree> GetEnterpriseTree(String key)
         {
-            IQueryable<ResponseParentTree> queryable = Kily.Set<EnterpriseMenu>().Where(t => t.IsDelete == false)
-                 .Where(t => t.Level == MenuEnum.LevelOne)
+            IQueryable<EnterpriseMenu> queryables = string.IsNullOrEmpty(key) ? Kily.Set<EnterpriseMenu>().Where(t => t.IsDelete == false) : Kily.Set<EnterpriseMenu>().Where(t => key.Contains(t.Id.ToString())).Where(t => t.IsDelete == false);
+            IQueryable<ResponseParentTree> queryable = queryables.Where(t => t.Level == MenuEnum.LevelOne)
                  .AsNoTracking().Select(t => new ResponseParentTree()
                  {
                      Id = t.Id,
                      Text = t.MenuName,
                      Color = "black",
                      BackClolor = "white",
+                     State = string.IsNullOrEmpty(key) ? null : new States { Checked = true },
                      SelectedIcon = "fa fa-refresh fa-spin",
-                     Nodes = Kily.Set<EnterpriseMenu>().Where(x => x.IsDelete == false)
-                     .Where(x => x.Level != MenuEnum.LevelOne)
+                     Nodes = queryables.Where(x => x.Level != MenuEnum.LevelOne)
                      .Where(x => x.ParentId == t.MenuId).AsNoTracking()
                      .Select(x => new ResponseChildTree()
                      {
                          Id = x.Id,
                          Text = x.MenuName,
                          Color = "black",
+                         State = string.IsNullOrEmpty(key) ? null : new States { Checked = true },
                          BackClolor = "white",
                          SelectedIcon = "fa fa-refresh fa-spin",
                      }).AsQueryable()
@@ -197,9 +198,9 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.EnterpriseRoleName.Contains(pageParam.QueryParam.EnterpriseRoleName));
             var data = queryable.Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseRoleAuthor()
             {
+                Id = t.Id,
                 EnterpriseRoleName = t.EnterpriseRoleName,
                 AuthorMenuPath = t.AuthorMenuPath
-
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -211,10 +212,14 @@ namespace KilyCore.Service.ServiceCore
         public string EditEnterpriseRoleAuthor(RequestEnterpriseRoleAuthor Param)
         {
             EnterpriseRoleAuthor RoleAuthor = Param.MapToEntity<EnterpriseRoleAuthor>();
-            if (Insert<EnterpriseRoleAuthor>(RoleAuthor))
-                return ServiceMessage.INSERTSUCCESS;
+            if (Param.Id == Guid.Empty)
+            {
+                if (Kily.Set<EnterpriseRoleAuthor>().Where(t => t.IsDelete == false).Where(t => t.EnterpriseRoleName.Equals(RoleAuthor.EnterpriseRoleName)).AsNoTracking().FirstOrDefault() != null)
+                    return "角色名称重复请重新添加!";
+                return Insert<EnterpriseRoleAuthor>(RoleAuthor) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            }
             else
-                return ServiceMessage.INSERTFAIL;
+                return Update<EnterpriseRoleAuthor, RequestEnterpriseRoleAuthor>(RoleAuthor, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         /// <summary>
         /// 角色分页列表
@@ -283,6 +288,20 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.HANDLEFAIL;
         }
+        /// <summary>
+        /// 获取角色详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseEnterpriseRoleAuthor GetEnterpriseRoleAuthorDetail(Guid Id)
+        {
+            return Kily.Set<EnterpriseRoleAuthor>().Where(t => t.Id == Id).Select(t => new ResponseEnterpriseRoleAuthor()
+            {
+                Id = t.Id,
+                EnterpriseRoleName = t.EnterpriseRoleName,
+                AuthorMenuPath = t.AuthorMenuPath
+            }).AsNoTracking().FirstOrDefault();
+        }
         #endregion
 
         #region 资料审核
@@ -333,9 +352,9 @@ namespace KilyCore.Service.ServiceCore
                  {
                      Id = t.Id,
                      CompanyName = t.CompanyName,
-                     CardExpiredDate=t.CardExpiredDate,
-                     SafeOffer=t.SafeOffer,
-                     OfferLv=t.OfferLv,
+                     CardExpiredDate = t.CardExpiredDate,
+                     SafeOffer = t.SafeOffer,
+                     OfferLv = t.OfferLv,
                      CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
                      CompanyAccount = t.CompanyAccount,
                      TypePath = t.TypePath,
@@ -346,7 +365,7 @@ namespace KilyCore.Service.ServiceCore
                      CompanyPhone = t.CompanyPhone,
                      NetAddress = t.NetAddress,
                      Discription = t.Discription,
-                     VideoAddress=t.VideoAddress,
+                     VideoAddress = t.VideoAddress,
                      Certification = t.Certification,
                      Honor = t.HonorCertification,
                      AuditDetails = Kily.Set<SystemAudit>().Where(x => x.IsDelete == false).
@@ -670,7 +689,7 @@ namespace KilyCore.Service.ServiceCore
             ResponseEnterprise Info = queryable.Select(t => new ResponseEnterprise()
             {
                 Id = t.Id,
-                CompanyId=t.CompanyId,
+                CompanyId = t.CompanyId,
                 CompanyAccount = t.CompanyAccount,
                 CommunityCode = t.CommunityCode,
                 CompanyAddress = t.CompanyAddress,
@@ -684,7 +703,7 @@ namespace KilyCore.Service.ServiceCore
                 AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
                 EnterpriseRoleId = t.EnterpriseRoleId,
                 TypePath = t.TypePath,
-                LngAndLat=t.LngAndLat,
+                LngAndLat = t.LngAndLat,
                 Certification = t.Certification,
                 Honor = t.HonorCertification,
                 Discription = t.Discription,
@@ -696,7 +715,7 @@ namespace KilyCore.Service.ServiceCore
             #endregion
             #region 公司子账号登录
             IQueryable<EnterpriseUser> queryables = Kily.Set<EnterpriseUser>()
-                .Where(t => t.Account.Equals(LoginValidate.Account)||t.Phone.Equals(LoginValidate.Account))
+                .Where(t => t.Account.Equals(LoginValidate.Account) || t.Phone.Equals(LoginValidate.Account))
                 .Where(t => t.PassWord.Equals(LoginValidate.PassWord))
                 .Where(t => t.IsDelete == false);
             ResponseEnterpriseUser User = queryables.Select(t => new ResponseEnterpriseUser()
@@ -711,8 +730,8 @@ namespace KilyCore.Service.ServiceCore
                 VersionName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.Version),
                 Account = t.Account,
                 Phone = t.Phone,
-                LngAndLat=t.Account,
-                TypePath=t.TypePath,
+                LngAndLat = t.Account,
+                TypePath = t.TypePath,
                 RoleAuthorType = t.RoleAuthorType,
                 TrueName = t.TrueName,
                 TableName = typeof(ResponseEnterpriseUser).Name
@@ -815,23 +834,23 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseInfo> info = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseGoodsStock> stocks = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false);
-            if(!string.IsNullOrEmpty(pageParam.QueryParam.TempPath))
-                info=info.Where(t => t.TypePath.Contains(pageParam.QueryParam.TempPath));
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.TempPath))
+                info = info.Where(t => t.TypePath.Contains(pageParam.QueryParam.TempPath));
             if (!string.IsNullOrEmpty(pageParam.QueryParam.GoodsName))
                 goods = goods.Where(t => t.ProductName.Contains(pageParam.QueryParam.GoodsName));
             var data = goods.Join(info, x => x.CompanyId, y => y.Id, (x, y) => new { x }).Join(stocks, t => t.x.Id, p => p.GoodsId, (t, p) => new ResponseEnterpriseGoodsStock()
             {
                 Id = p.Id,
                 GoodsId = t.x.Id,
-                GoodsName=t.x.ProductName,
+                GoodsName = t.x.ProductName,
                 Spec = t.x.Spec,
                 Unit = t.x.Unit,
                 ExpiredDate = t.x.ExpiredDate,
                 AuditType = t.x.AuditType,
                 AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.x.AuditType),
-                ImgUrl=p.ImgUrl,
-                Remark =p.Remark
-            }).Distinct().AsNoTracking().ToPagedResult(pageParam.pageNumber,pageParam.pageSize);
+                ImgUrl = p.ImgUrl,
+                Remark = p.Remark
+            }).Distinct().AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
         /// <summary>

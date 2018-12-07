@@ -40,7 +40,7 @@ namespace KilyCore.Service.IServiceCore
         IList<ResponseTree> GetSystemAreaTrees();
         #endregion
         #region 权限菜单树
-        IList<ResponseParentTree> GetSystemAdminTree();
+        IList<ResponseParentTree> GetSystemAdminTree(String Key);
         #endregion
         #region 省市区
         IList<ResponseProvince> GetProvince();

@@ -24,7 +24,7 @@ namespace KilyCore.Service.IServiceCore
         IList<ResponseEnterpriseMenu> AddEnterpriseParentMenu();
         ResponseEnterpriseMenu GetEnterpriseMenuDetail(Guid Id);
         String EditEnterpriseMenu(RequestEnterpriseMenu Param);
-        IList<ResponseParentTree> GetEnterpriseTree();
+        IList<ResponseParentTree> GetEnterpriseTree(String key);
         #endregion
 
         #region 集团角色
@@ -35,6 +35,7 @@ namespace KilyCore.Service.IServiceCore
         String RemoveEnterpriseRoleAuthor(Guid Id);
         IList<ResponseEnterpriseRoleAuthor> GetRoleAuthorList();
         String DistributionRole(RequestEnterpriseRoleAuthor Param);
+        ResponseEnterpriseRoleAuthor GetEnterpriseRoleAuthorDetail(Guid Id);
         #endregion
 
         #region 资料审核

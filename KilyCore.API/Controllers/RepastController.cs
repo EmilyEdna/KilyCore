@@ -109,9 +109,9 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetDiningTree")]
-        public ObjectResultEx GetDiningTree()
+        public ObjectResultEx GetDiningTree(SimpleParam<String> Param)
         {
-            return ObjectResultEx.Instance(RepastService.GetDiningTree(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastService.GetDiningTree(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 角色管理
@@ -133,6 +133,15 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetMerchantAuthorPage(PageParamList<RequestRepastRoleAuthor> pageParam)
         {
             return ObjectResultEx.Instance(RepastService.GetMerchantAuthorPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 权限分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("WatchRolePage")]
+        public ObjectResultEx WatchRolePage(PageParamList<RequestRepastRoleAuthor> pageParam) {
+            return ObjectResultEx.Instance(RepastService.WatchRolePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 删除角色
@@ -172,6 +181,15 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx DistributionRole(RequestRepastRoleAuthor Param)
         {
             return ObjectResultEx.Instance(RepastService.DistributionRole(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 权限详情
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetRepastRoleAuthorDetail")]
+        public ObjectResultEx GetRepastRoleAuthorDetail(SimpleParam<Guid> Param) {
+            return ObjectResultEx.Instance(RepastService.GetRepastRoleAuthorDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 认证审核

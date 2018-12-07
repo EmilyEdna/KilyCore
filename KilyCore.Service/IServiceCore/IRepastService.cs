@@ -31,15 +31,17 @@ namespace KilyCore.Service.IServiceCore
         IList<ResponseRepastMenu> AddDiningParentMenu();
         #endregion
         #region 餐饮权限菜单树
-        IList<ResponseParentTree> GetDiningTree();
+        IList<ResponseParentTree> GetDiningTree(String key);
         #endregion
         #region 餐饮权限
         String EditRole(RequestRepastRoleAuthor Param);
         PagedResult<ResponseRepastRoleAuthor> GetMerchantAuthorPage(PageParamList<RequestRepastRoleAuthor> pageParam);
+        PagedResult<ResponseRepastRoleAuthor> WatchRolePage(PageParamList<RequestRepastRoleAuthor> pageParam);
         String RemoveAuthorRole(Guid Id);
         PagedResult<ResponseRepastRoleAuthor> GetRoleAuthorPage(PageParamList<RequestRepastRoleAuthor> pageParam);
         IList<ResponseRepastRoleAuthor> GetRoleAuthorList();
         String DistributionRole(RequestRepastRoleAuthor Param);
+        ResponseRepastRoleAuthor GetRepastRoleAuthorDetail(Guid Id);
         #endregion
         #region 认证审核
         PagedResult<ResponseRepastIdent> GetDiningIdentPage(PageParamList<RequestRepastIdent> pageParam);

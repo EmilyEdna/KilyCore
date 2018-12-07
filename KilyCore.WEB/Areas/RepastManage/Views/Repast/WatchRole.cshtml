@@ -21,7 +21,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "Enterprise/WatchRolePage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Role" });
+                this.$table = controller.Table("#tableList", { url: "Repast/WatchRolePage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Role" });
             },
             //事件
             InitEvents: function () {
@@ -40,7 +40,7 @@
                             type: 2,
                             height: "90%",
                             width: "80%",
-                            url: "CliqueManage/Enterprise/WatchRoleEdit?Id=" + row.Id,
+                            url: "RepastManage/Repast/WatchRoleEdit?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }
@@ -73,7 +73,8 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input type="text" placeholder="角色名称" class="input-sm form-control" name="EnterpriseRoleName"> <span class="input-group-btn">
+                                <input type="text" placeholder="角色名称" class="input-sm form-control" name="AuthorName"> 
+                                <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
                                     <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
                                 </span>
@@ -85,7 +86,7 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="EnterpriseRoleName">角色名称</th>
+                                <th data-field="MerchantRoleName">角色名称</th>
                                 <th data-field="AuthorMenuCount">菜单数目</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>

@@ -33,6 +33,19 @@
             },
             //事件
             InitEvents: function () {
+                //查看角色
+                $("#watch").click(function () {
+                    controller.OpenWindow({
+                        title: "编辑角色",
+                        type: 2,
+                        height: "90%",
+                        width: "80%",
+                        url: "RepastManage/Repast/WatchRole",
+                        callBack: function (result) {
+                            result.popup.close();
+                        }
+                    });
+                });
                 $("#save").click(function () {
                     controller.Validate("#Edit", $("#Edit").SerializeOver());
                     $("#Edit").submit();
@@ -91,6 +104,7 @@
                 <div class="row">
                     <form id="Role">
                         <div class="col-sm-8 m-b-xs">
+                            <button type="button" class="btn btn-sm btn-white" id="watch"><i class="fa fa-plus"></i>编辑角色</button>
                         </div>
                         <div class="col-sm-4">
                             <div class="input-group">

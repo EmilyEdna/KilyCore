@@ -46,10 +46,10 @@
                 //查看角色
                 $("#watch").click(function () { 
                     controller.OpenWindow({
-                        title: "查看角色",
+                        title: "编辑角色",
                         type: 2,
-                        height: "600px",
-                        width: "1000px",
+                        height: "90%",
+                        width: "80%",
                         url: "CliqueManage/Enterprise/WatchRole",
                         callBack: function (result) {
                             result.popup.close();
@@ -110,7 +110,7 @@
                 <div class="row">
                     <form id="Role">
                         <div class="col-sm-8 m-b-xs">
-                            <button type="button" class="btn btn-sm btn-white" id="watch"><i class="fa fa-plus"></i>查看角色</button>
+                            <button type="button" class="btn btn-sm btn-white" id="watch"><i class="fa fa-plus"></i>编辑角色</button>
                         </div>
                         <div class="col-sm-4">
                             <div class="input-group">
