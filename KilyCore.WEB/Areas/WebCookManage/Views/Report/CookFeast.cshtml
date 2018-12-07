@@ -29,8 +29,8 @@
                     controller.OpenWindow({
                         title: "新增报备信息",
                         type: 2,
-                        height: "600px",
-                        width: "800px",
+                        height: "90%",
+                        width: "80%",
                         url: "WebCookManage/Report/CookFeastEdit",
                         callBack: function (result) {
                             var checkboxs = result.$("#Edit").find("input[type='checkbox']:checked");
@@ -58,8 +58,8 @@
                         controller.OpenWindow({
                             title: "报备详情",
                             type: 2,
-                            height: "600px",
-                            width: "800px",
+                            height: "90%",
+                            width: "80%",
                             btn: ["取消"],
                             url: "WebCookManage/Report/CookFeastEdit?Id=" + row.Id,
                             callBack: function (result) {

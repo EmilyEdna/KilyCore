@@ -29,8 +29,8 @@
                     controller.OpenWindow({
                         title: "查看过期处理",
                         type: 2,
-                        height: "600px",
-                        width: "1200px",
+                        height: "90%",
+                        width: "80%",
                         url: "WebCompanyManage/Quality/Expireds",
                         callBack: function (result) {
                             result.$("#Edit").submit();
@@ -50,8 +50,8 @@
                         controller.OpenWindow({
                             title: "新增过期处理",
                             type: 2,
-                            height: "400px",
-                            width: "700px",
+                            height: "90%",
+                            width: "80%",
                             url: "WebCompanyManage/Quality/ExpiredEdit?Id=" + row.Id + "&Type=" + row.ProductType,
                             callBack: function (result) {
                                 result.$("#Edit").submit();

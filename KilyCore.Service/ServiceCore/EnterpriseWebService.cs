@@ -206,8 +206,11 @@ namespace KilyCore.Service.ServiceCore
         /// 获取权限菜单树
         /// </summary>
         /// <returns></returns>
-        public IList<ResponseParentTree> GetEnterpriseWebTree()
+        public IList<ResponseParentTree> GetEnterpriseWebTree(String Key)
         {
+            IQueryable<EnterpriseMenu> query = Kily.Set<EnterpriseMenu>().Where(t => t.IsDelete == false);
+            if (!string.IsNullOrEmpty(Key))
+                query = query.Where(t => Key.Contains(t.Id.ToString()));
             if (CompanyInfo() != null)
             {
                 if (CompanyInfo().CompanyId == null)
@@ -224,8 +227,9 @@ namespace KilyCore.Service.ServiceCore
                              Text = t.MenuName,
                              Color = "black",
                              BackClolor = "white",
+                             State = string.IsNullOrEmpty(Key) ? null : (query.Where(x=>x.Id==t.Id).AsNoTracking().FirstOrDefault()!=null? new States { Checked = true }:null),
                              SelectedIcon = "fa fa-refresh fa-spin",
-                             Nodes = Kily.Set<EnterpriseMenu>().Where(x => x.IsDelete == false)
+                             Nodes = Kily.Set<EnterpriseMenu>().Where(x => t.IsDelete == false)
                              .Where(x => x.Level != MenuEnum.LevelOne)
                              .Where(x => x.ParentId == t.MenuId)
                              .Where(x => Author.AuthorMenuPath.Contains(x.Id.ToString()))
@@ -235,6 +239,7 @@ namespace KilyCore.Service.ServiceCore
                                  Id = x.Id,
                                  Text = x.MenuName,
                                  Color = "black",
+                                 State = string.IsNullOrEmpty(Key) ? null : (query.Where(p => p.Id == x.Id).AsNoTracking().FirstOrDefault() != null ? new States { Checked = true } : null),
                                  BackClolor = "white",
                                  SelectedIcon = "fa fa-refresh fa-spin",
                              }).AsQueryable()
@@ -248,7 +253,7 @@ namespace KilyCore.Service.ServiceCore
                     queryables = queryables.Where(t => t.Id == CompanyInfo().EnterpriseRoleId).AsNoTracking();
                     EnterpriseRoleAuthorWeb Author = queryables.FirstOrDefault();
                     IQueryable<ResponseParentTree> queryable = Kily.Set<EnterpriseMenu>().Where(t => t.IsDelete == false)
-                         .Where(t => t.Level == MenuEnum.LevelOne)
+                        .Where(t => t.Level == MenuEnum.LevelOne)
                          .Where(t => Author.AuthorMenuPath.Contains(t.Id.ToString()))
                          .AsNoTracking().Select(t => new ResponseParentTree()
                          {
@@ -256,8 +261,9 @@ namespace KilyCore.Service.ServiceCore
                              Text = t.MenuName,
                              Color = "black",
                              BackClolor = "white",
+                             State = string.IsNullOrEmpty(Key) ? null : (query.Where(x => x.Id == t.Id).AsNoTracking().FirstOrDefault() != null ? new States { Checked = true } : null),
                              SelectedIcon = "fa fa-refresh fa-spin",
-                             Nodes = Kily.Set<EnterpriseMenu>().Where(x => x.IsDelete == false)
+                             Nodes = Kily.Set<EnterpriseMenu>().Where(x => t.IsDelete == false)
                              .Where(x => x.Level != MenuEnum.LevelOne)
                              .Where(x => x.ParentId == t.MenuId)
                              .Where(x => Author.AuthorMenuPath.Contains(x.Id.ToString()))
@@ -267,6 +273,7 @@ namespace KilyCore.Service.ServiceCore
                                  Id = x.Id,
                                  Text = x.MenuName,
                                  Color = "black",
+                                 State = string.IsNullOrEmpty(Key) ? null : (query.Where(p => p.Id == x.Id).AsNoTracking().FirstOrDefault() != null ? new States { Checked = true } : null),
                                  BackClolor = "white",
                                  SelectedIcon = "fa fa-refresh fa-spin",
                              }).AsQueryable()
@@ -288,9 +295,10 @@ namespace KilyCore.Service.ServiceCore
                          Id = t.Id,
                          Text = t.MenuName,
                          Color = "black",
+                         State = string.IsNullOrEmpty(Key) ? null : (query.Where(x => x.Id == t.Id).AsNoTracking().FirstOrDefault() != null ? new States { Checked = true } : null),
                          BackClolor = "white",
                          SelectedIcon = "fa fa-refresh fa-spin",
-                         Nodes = Kily.Set<EnterpriseMenu>().Where(x => x.IsDelete == false)
+                         Nodes = Kily.Set<EnterpriseMenu>().Where(x => t.IsDelete == false)
                          .Where(x => x.Level != MenuEnum.LevelOne)
                          .Where(x => x.ParentId == t.MenuId)
                          .Where(x => Author.AuthorMenuPath.Contains(x.Id.ToString()))
@@ -300,6 +308,7 @@ namespace KilyCore.Service.ServiceCore
                              Id = x.Id,
                              Text = x.MenuName,
                              Color = "black",
+                             State = string.IsNullOrEmpty(Key) ? null : (query.Where(p => p.Id == x.Id).AsNoTracking().FirstOrDefault() != null ? new States { Checked = true } : null),
                              BackClolor = "white",
                              SelectedIcon = "fa fa-refresh fa-spin",
                          }).AsQueryable()
@@ -396,10 +405,10 @@ namespace KilyCore.Service.ServiceCore
         public string SaveRoleAuthor(RequestRoleAuthorWeb Param)
         {
             EnterpriseRoleAuthorWeb Author = Param.MapToEntity<EnterpriseRoleAuthorWeb>();
-            if (Insert<EnterpriseRoleAuthorWeb>(Author))
-                return ServiceMessage.INSERTSUCCESS;
+            if (Param.Id == Guid.Empty)
+                return Insert<EnterpriseRoleAuthorWeb>(Author) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
             else
-                return ServiceMessage.INSERTFAIL;
+                return Update<EnterpriseRoleAuthorWeb, RequestRoleAuthorWeb>(Author, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         #endregion
 

@@ -14,7 +14,7 @@
             //元素
             InitDom: function () {
                 $("#GovtId").val(GovtInfo.Id);
-                options.Editor = controller.Editor(".summernote", { width: 655 });
+                options.Editor = controller.Editor(".summernote");
                 var Id = controller.GetParam("Id");
                 if (Id != null && Id != undefined && Id != "")
                     controller.ajax({

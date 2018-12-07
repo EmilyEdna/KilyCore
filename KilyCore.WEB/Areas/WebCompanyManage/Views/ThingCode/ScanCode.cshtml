@@ -42,8 +42,8 @@
                         controller.OpenWindow({
                             title: "添加产品说明",
                             type: 2,
-                            height: "600px",
-                            width: "800px",
+                            height: "90%",
+                            width: "80%",
                             url: "WebCompanyManage/ThingCode/AddExplanation?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
@@ -54,8 +54,8 @@
                         controller.OpenWindow({
                             title: "二维码",
                             type: 2,
-                            height: "600px",
-                            width: "800px",
+                            height: "90%",
+                            width: "80%",
                             url: "WebCompanyManage/ThingCode/ScanCodeAttach?SCode=" + row.StarSerialNo + "&ECode=" + row.EndSerialNo + "&Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();

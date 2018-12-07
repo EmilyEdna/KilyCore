@@ -29,8 +29,8 @@
                     controller.OpenWindow({
                         title: "新增日记",
                         type: 2,
-                        height: "500px",
-                        width: "650px",
+                        height: "90%",
+                        width: "80%",
                         url: "WebCompanyManage/Develop/DiaryEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
@@ -65,8 +65,8 @@
                         controller.OpenWindow({
                             title: "编辑日记",
                             type: 2,
-                            height: "500px",
-                            width: "650px",
+                            height: "90%",
+                            width: "80%",
                             url: "WebCompanyManage/Develop/DiaryEdit?Id=" + row.Id,
                             callBack: function (result) {
                                 result.popClose();

@@ -38,8 +38,8 @@
                         controller.OpenWindow({
                             title: "商家详情",
                             type: 2,
-                            height: "600px",
-                            width: "800px",
+                            height: "90%",
+                            width: "80%",
                             url: "RepastManage/Repast/MerchantDetail?Id=" + row.Id,
                             callBack: function (result) {
                                 result.popClose();
@@ -50,8 +50,8 @@
                         controller.OpenWindow({
                             title: "商家审核",
                             type: 2,
-                            height: "260px",
-                            width: "400px",
+                            height: "90%",
+                            width: "80%",
                             url: "RepastManage/Repast/AuditMerchant?Id=" + row.Id + "&TableName="+row.TableName,
                             callBack: function (result) {
                                 result.$("#Edit").submit();

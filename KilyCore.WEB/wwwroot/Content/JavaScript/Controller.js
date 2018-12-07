@@ -866,7 +866,7 @@ controller.Select = function (option) {
 controller.Editor = function (element, option) {
     defaultOption = {
         height: Math.ceil($(window).height() / 2),
-        width: $(window).width(),
+        width: $(window).width()/1.1,
         lang: 'zh-CN',
         maximumImageFileSize: 2097152,
         placeholder: "请输入内容!",

@@ -136,24 +136,28 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public IList<ResponseParentTree> GetEnterpriseTree(String key)
         {
-            IQueryable<EnterpriseMenu> queryables = string.IsNullOrEmpty(key) ? Kily.Set<EnterpriseMenu>().Where(t => t.IsDelete == false) : Kily.Set<EnterpriseMenu>().Where(t => key.Contains(t.Id.ToString())).Where(t => t.IsDelete == false);
-            IQueryable<ResponseParentTree> queryable = queryables.Where(t => t.Level == MenuEnum.LevelOne)
+            IQueryable<EnterpriseMenu> queryables = Kily.Set<EnterpriseMenu>().Where(t => t.IsDelete == false);
+            if (!string.IsNullOrEmpty(key))
+                queryables = queryables.Where(t => key.Contains(t.Id.ToString()));
+            IQueryable<ResponseParentTree> queryable = Kily.Set<EnterpriseMenu>().Where(t => t.IsDelete == false)
+                .Where(t => t.Level == MenuEnum.LevelOne)
                  .AsNoTracking().Select(t => new ResponseParentTree()
                  {
                      Id = t.Id,
                      Text = t.MenuName,
                      Color = "black",
                      BackClolor = "white",
-                     State = string.IsNullOrEmpty(key) ? null : new States { Checked = true },
+                     State = string.IsNullOrEmpty(key) ? null : (queryables.Where(x => x.Id == t.Id).AsNoTracking().FirstOrDefault() != null ? new States { Checked = true } : null),
                      SelectedIcon = "fa fa-refresh fa-spin",
-                     Nodes = queryables.Where(x => x.Level != MenuEnum.LevelOne)
+                     Nodes = Kily.Set<EnterpriseMenu>().Where(x => x.IsDelete == false)
+                     .Where(x => x.Level != MenuEnum.LevelOne)
                      .Where(x => x.ParentId == t.MenuId).AsNoTracking()
                      .Select(x => new ResponseChildTree()
                      {
                          Id = x.Id,
                          Text = x.MenuName,
                          Color = "black",
-                         State = string.IsNullOrEmpty(key) ? null : new States { Checked = true },
+                         State = string.IsNullOrEmpty(key) ? null : (queryables.Where(p => p.Id == x.Id).AsNoTracking().FirstOrDefault() != null ? new States { Checked = true } : null),
                          BackClolor = "white",
                          SelectedIcon = "fa fa-refresh fa-spin",
                      }).AsQueryable()

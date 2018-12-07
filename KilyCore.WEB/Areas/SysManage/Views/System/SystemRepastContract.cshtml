@@ -64,8 +64,8 @@
                         controller.OpenWindow({
                             title: "自定义支付",
                             type: 2,
-                            height: "500px",
-                            width: "700px",
+                            height: "90%",
+                            width: "80%",
                             url: "SysManage/System/SystemPayment?Price=" + row.TotalPrice + "&Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
@@ -89,8 +89,8 @@
                         controller.OpenWindow({
                             title: "审核信息",
                             type: 2,
-                            height: "260px",
-                            width: "400px",
+                            height: "90%",
+                            width: "80%",
                             url: "SysManage/System/SystemAuditContract?TableId=" + row.Id + "&TableName=" + row.TableName,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
@@ -101,8 +101,8 @@
                         controller.OpenWindow({
                             title: "审核记录",
                             type: 2,
-                            height: "500px",
-                            width: "700px",
+                            height: "90%",
+                            width: "80%",
                             url: "SysManage/System/SystemAuditRecord?TableId=" + row.Id + "&TableName=" + row.TableName,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
@@ -113,8 +113,8 @@
                         controller.OpenWindow({
                             title: "升级记录",
                             type: 2,
-                            height: "80%",
-                            width: "90%",
+                            height: "90%",
+                            width: "80%",
                             url: "SysManage/System/SystemUpdate?Flag=false&Id=" + row.CompanyId,
                             callBack: function (result) {
                                 options.$table.refresh();
@@ -125,8 +125,8 @@
                         controller.OpenWindow({
                             title: "续费记录",
                             type: 2,
-                            height: "80%",
-                            width: "90%",
+                            height: "90%",
+                            width: "80%",
                             url: "SysManage/System/SystemContinued?Flag=false&Id=" + row.CompanyId,
                             callBack: function (result) {
                                 options.$table.refresh();

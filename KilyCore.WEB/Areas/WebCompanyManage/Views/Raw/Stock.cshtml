@@ -33,8 +33,8 @@
                     controller.OpenWindow({
                         title: "新增入库",
                         type: 2,
-                        height: "600px",
-                        width: "800px",
+                        height: "90%",
+                        width: "80%",
                         url: "WebCompanyManage/Raw/StockIn",
                         callBack: function (result) {
                             result.$("#Edit").submit();
@@ -157,8 +157,8 @@
                         controller.OpenWindow({
                             title: "新增出库",
                             type: 2,
-                            height: "450px",
-                            width: "700px",
+                            height: "90%",
+                            width: "80%",
                             url: "WebCompanyManage/Raw/StockOut?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();

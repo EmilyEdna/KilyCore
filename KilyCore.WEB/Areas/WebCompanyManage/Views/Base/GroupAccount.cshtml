@@ -25,14 +25,23 @@
                 options.SetRoleMenu();
             },
              //设置权限菜单
-            SetRoleMenu: function () {
+            SetRoleMenu: function (MenuIds) {
                 controller.ajax({
                     url: "EnterpriseWeb/GetEnterpriseWebTree",
                     type: "post",
                     async: false,
-                    data: {},
+                    data: { Id: MenuIds},
                     success: function (result) {
-                        controller.TreeCtrl("#TreeView", { levels: 1, data: result.data }, "#ShowMenu");
+                        $("#ShowMenu").html("");
+                        var tree = controller.TreeCtrl("#TreeView", { levels: MenuIds != undefined ? 2 : 1, data: result.data }, "#ShowMenu");
+                        var CheckList = $(tree).treeview("getChecked", [{ silent: true }]);
+                        if (CheckList.length == 0)
+                            return;
+                        var html = '';
+                        $.each(CheckList, function (i, data) {
+                            html += '<p class="text text-info" data-values=' + data.id + '><i class="fa fa-check-circle" aria-hidden="true"></i>' + data.text + '</p>';
+                        });
+                        $("#ShowMenu").html(html);
                     }
                 });
             },
@@ -43,11 +52,21 @@
                     controller.Validate("#Edit", $("#Edit").SerializeOver());
                     $("#Edit").submit();
                 });
+                $(".nav-tabs").find("li").click(function () {
+                    $("#Edit")[0].reset();
+                    options.SetRoleMenu();
+                });
+            },
+            //编辑权限
+            InitEditRole: function (data) {
+                controller.SetCtrlValue("#Edit", data);
+                options.SetRoleMenu(data.AuthorMenuPath);
             },
             //行为
             action: {
                 TableFormatter: function (val, row, index) {
                     var action = [];
+                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
                     return action.join("&nbsp;");
                 },
@@ -62,7 +81,17 @@
                                 options.$table.refresh();
                             }
                         })
-                    }
+                    },
+                    "click .edit": function (event, val, row, index) {
+                        var $li = $(".nav-tabs").find("li");
+                        $li.eq(0).removeClass("active");
+                        $li.eq(0).find("a").attr("aria-expanded", "false");
+                        $("#tab-1").removeClass("active");
+                        $li.eq(1).addClass("active");
+                        $li.eq(1).find("a").attr("aria-expanded", "true");
+                        $("#tab-2").addClass("active");
+                        options.InitEditRole(row);
+                    },
                 },//表单事件结束
             }//行为结束
         };
@@ -123,6 +152,7 @@
         <div id="tab-2" class="tab-pane">
             <div class="panel-body">
                 <form method="post" class="form-horizontal" action="EnterpriseWeb/SaveRoleAuthor" id="Edit">
+                    <input  type="hidden" name="Id"/>
                     <!--名称-->
                     <div class="form-group">
                         <label class="col-sm-2 control-label">请输入角色账户名称<span style="color:red">*</span></label>

@@ -56,8 +56,8 @@
                         controller.OpenWindow({
                             title: "编辑账号",
                             type: 2,
-                            height: "400px",
-                            width: "700px",
+                            height: "90%",
+                            width: "80%",
                             url: "WebCookManage/Cook/CookAccountEdit?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
@@ -68,8 +68,8 @@
                         controller.OpenWindow({
                             title: "开通会员",
                             type: 2,
-                            height: "400px",
-                            width: "700px",
+                            height: "90%",
+                            width: "80%",
                             btn:["取消"],
                             url: "WebCookManage/Cook/Payment?Id=" + row.Id,
                             callBack: function (result) {

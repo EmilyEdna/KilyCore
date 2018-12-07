@@ -29,8 +29,8 @@
                     controller.OpenWindow({
                         title: "新增生产批次",
                         type: 2,
-                        height: "500px",
-                        width: "700px",
+                        height: "90%",
+                        width: "80%",
                         url: "WebCompanyManage/Product/GoodsBatchEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
@@ -65,8 +65,8 @@
                         controller.OpenWindow({
                             title: "指标参考",
                             type: 2,
-                            height: "600px",
-                            width: "800px",
+                            height: "90%",
+                            width: "80%",
                             url: "WebCompanyManage/Product/ShowTarget?Id=" + row.Id + "&Manager=" + row.Manager,
                             callBack: function (result) {
                                 result.$("#Edit").submit();

@@ -29,8 +29,8 @@
                     controller.OpenWindow({
                         title: "新增类目",
                         type: 2,
-                        height: "600px",
-                        width: "800px",
+                        height: "90%",
+                        width: "80%",  
                         url: "WebGovtManage/Inspect/CategoryPatrolEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
@@ -52,8 +52,8 @@
                         controller.OpenWindow({
                             title: "执法题库",
                             type: 2,
-                            height: "700px",
-                            width: "1200px",
+                            height: "90%",
+                            width: "80%",  
                             url: "WebGovtManage/Inspect/CategoryPatrolAttach?Id=" + row.Id,
                             callBack: function (result) {
                                 result.popClose();
@@ -64,8 +64,8 @@
                         controller.OpenWindow({
                             title: "编辑类目",
                             type: 2,
-                            height: "600px",
-                            width: "800px",
+                            height: "90%",
+                            width: "80%",  
                             url: "WebGovtManage/Inspect/CategoryPatrolEdit?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();

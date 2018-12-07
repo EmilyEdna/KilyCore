@@ -29,8 +29,8 @@
                     controller.OpenWindow({
                         title: "企业投保",
                         type: 2,
-                        height: "680px",
-                        width: "1140px",
+                        height: "90%",
+                        width: "80%",
                         url: "StaticHtml/Safe.html",
                         callBack: function (result) {
                             result.popClose();
@@ -70,8 +70,8 @@
                         controller.OpenWindow({
                             title: "完善资料",
                             type: 2,
-                            height: "700px",
-                            width: "900px",
+                            height: "90%",
+                            width: "80%",
                             url: "WebCompanyManage/Base/CompanyDataEdit?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
@@ -82,8 +82,8 @@
                         controller.OpenWindow({
                             title: "缴费",
                             type: 2,
-                            height: "600px",
-                            width: "800px",
+                            height: "90%",
+                            width: "80%",
                             url: "WebCompanyManage/Base/Payment?Id=" + row.Id + "&TypePath=" + row.TypePath + "&CompanyName=" + row.CompanyName,
                             callBack: function (result) {
                                 result.$("#Edit").submit();

@@ -17,7 +17,7 @@
             InitDom: function () {
 
                 controller.LayDate({ elem: "input[name='CardExpiredDate']" });
-                options.Editor = controller.Editor(".summernote", { width: 760 });
+                options.Editor = controller.Editor(".summernote");
                 options.GetCompanyInfo();
                 options.UploadFiles();
             },
@@ -88,8 +88,8 @@
                     controller.OpenWindow({
                         title: "坐标选取",
                         type: 2,
-                        height: "600px",
-                        width: "800px",
+                        height: "90%",
+                        width: "80%",  
                         url: "StaticHtml/BaiduMap.html",
                         callBack: function (result) {
                             $("input[name='LngAndLat']").val(result.$("#Edit").find("input[name='lng']").val() + "," + result.$("#Edit").find("input[name='lat']").val());

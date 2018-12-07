@@ -34,8 +34,8 @@
                     controller.OpenWindow({
                         title: "新增入库",
                         type: 2,
-                        height: "600px",
-                        width: "800px",
+                        height: "90%",
+                        width: "80%",  
                         url: "WebMerchantManage/Stock/MerchantInStock",
                         callBack: function (result) {
                             result.$("#Edit").submit();
@@ -146,8 +146,8 @@
                         controller.OpenWindow({
                             title: "新增出库",
                             type: 2,
-                            height: "450px",
-                            width: "700px",
+                            height: "90%",
+                            width: "80%",  
                             url: "WebMerchantManage/Stock/MerchantOutStock?Id=" + row.Id + "&Name=" + row.ArticleName,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
@@ -158,8 +158,8 @@
                         controller.OpenWindow({
                             title: "查看详情",
                             type: 2,
-                            height: "600px",
-                            width: "800px",
+                            height: "90%",
+                            width: "80%",  
                             url: "WebMerchantManage/Stock/MerchantInStock?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();

@@ -29,8 +29,8 @@
                     controller.OpenWindow({
                         title: "新增问题",
                         type: 2,
-                        height: "400px",
-                        width: "800px",
+                        height: "90%",
+                        width: "80%",  
                         url: "WebGovtManage/Inspect/CategoryPatrolAttachEdit?PId=" + controller.GetParam("Id"),
                         callBack: function (result) {
                             result.$("#Edit").submit();
@@ -51,8 +51,8 @@
                         controller.OpenWindow({
                             title: "编辑问题",
                             type: 2,
-                            height: "400px",
-                            width: "800px",
+                            height: "90%",
+                            width: "80%",  
                             url: "WebGovtManage/Inspect/CategoryPatrolAttachEdit?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();

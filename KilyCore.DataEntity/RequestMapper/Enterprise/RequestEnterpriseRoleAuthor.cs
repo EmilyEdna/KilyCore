@@ -27,6 +27,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
     }
     public class RequestRoleAuthorWeb
     {
+        public Guid Id { get; set; }
         public string AuthorName { get; set; }
         public List<string> AuthorPath { get; set; }
         public string AuthorMenuPath

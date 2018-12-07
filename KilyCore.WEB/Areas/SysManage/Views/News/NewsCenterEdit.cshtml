@@ -16,7 +16,7 @@
             //元素
             InitDom: function () {
                 controller.LayDate({ elem: "input[name='ReleaseDate']" });
-                var Editor = controller.Editor(".summernote", { width: 735 });
+                var Editor = controller.Editor(".summernote");
                 var Id = controller.GetParam("Id");
                 if (Id != null)
                     controller.ajax({

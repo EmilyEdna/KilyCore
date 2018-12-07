@@ -27,7 +27,7 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 获取全局集团菜单
         IList<ResponseEnterpriseMenu> GetEnterpriseMenu();
-        IList<ResponseParentTree> GetEnterpriseWebTree();
+        IList<ResponseParentTree> GetEnterpriseWebTree(String Key);
         #endregion
         #region 基础管理
         #region 企业信息

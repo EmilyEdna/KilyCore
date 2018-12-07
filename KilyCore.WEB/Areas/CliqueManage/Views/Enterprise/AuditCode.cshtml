@@ -57,8 +57,8 @@
                         controller.OpenWindow({
                             title: "二维码审核",
                             type: 2,
-                            height: "260px",
-                            width: "400px",
+                            height: "90%",
+                            width: "80%",
                             url: "CliqueManage/Enterprise/AuditCodeTag?Id=" + row.Id + "&TableName=" + row.TableName,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
@@ -69,8 +69,8 @@
                         controller.OpenWindow({
                             title: "审核详情",
                             type: 2,
-                            height: "400px",
-                            width: "700px",
+                            height: "90%",
+                            width: "80%",
                             url: "CliqueManage/Enterprise/AuditCodeDetail?Id=" + row.Id + "&TableName=" + row.TableName,
                             callBack: function (result) {
                                 result.popClose();

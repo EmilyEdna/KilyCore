@@ -167,8 +167,11 @@ namespace KilyCore.Service.ServiceCore
         /// 获取权限菜单树
         /// </summary>
         /// <returns></returns>
-        public IList<ResponseParentTree> GetRepastWebTree()
+        public IList<ResponseParentTree> GetRepastWebTree(String Key)
         {
+            IQueryable<RepastMenu> query = Kily.Set<RepastMenu>().Where(t => t.IsDelete == false).AsNoTracking();
+            if (!string.IsNullOrEmpty(Key))
+                query = query.Where(t => Key.Contains(t.Id.ToString()));
             if (MerchantInfo() != null)
             {
                 if (MerchantInfo().InfoId == null)
@@ -185,6 +188,7 @@ namespace KilyCore.Service.ServiceCore
                              Text = t.MenuName,
                              Color = "black",
                              BackClolor = "white",
+                             State = string.IsNullOrEmpty(Key) ? null : (query.Where(x => x.Id == t.Id).AsNoTracking().FirstOrDefault() != null ? new States { Checked = true } : null),
                              SelectedIcon = "fa fa-refresh fa-spin",
                              Nodes = Kily.Set<RepastMenu>().Where(x => x.IsDelete == false)
                              .Where(x => x.Level != MenuEnum.LevelOne)
@@ -197,6 +201,7 @@ namespace KilyCore.Service.ServiceCore
                                  Text = x.MenuName,
                                  Color = "black",
                                  BackClolor = "white",
+                                 State = string.IsNullOrEmpty(Key) ? null : (query.Where(p => p.Id == x.Id).AsNoTracking().FirstOrDefault() != null ? new States { Checked = true } : null),
                                  SelectedIcon = "fa fa-refresh fa-spin",
                              }).AsQueryable()
                          }).AsQueryable();
@@ -218,6 +223,7 @@ namespace KilyCore.Service.ServiceCore
                              Color = "black",
                              BackClolor = "white",
                              SelectedIcon = "fa fa-refresh fa-spin",
+                             State = string.IsNullOrEmpty(Key) ? null : (query.Where(x => x.Id == t.Id).AsNoTracking().FirstOrDefault() != null ? new States { Checked = true } : null),
                              Nodes = Kily.Set<RepastMenu>().Where(x => x.IsDelete == false)
                              .Where(x => x.Level != MenuEnum.LevelOne)
                              .Where(x => x.ParentId == t.MenuId)
@@ -228,6 +234,7 @@ namespace KilyCore.Service.ServiceCore
                                  Id = x.Id,
                                  Text = x.MenuName,
                                  Color = "black",
+                                 State = string.IsNullOrEmpty(Key) ? null : (query.Where(p => p.Id == x.Id).AsNoTracking().FirstOrDefault() != null ? new States { Checked = true } : null),
                                  BackClolor = "white",
                                  SelectedIcon = "fa fa-refresh fa-spin",
                              }).AsQueryable()
@@ -250,6 +257,7 @@ namespace KilyCore.Service.ServiceCore
                          Text = t.MenuName,
                          Color = "black",
                          BackClolor = "white",
+                         State = string.IsNullOrEmpty(Key) ? null : (query.Where(p => p.Id == t.Id).AsNoTracking().FirstOrDefault() != null ? new States { Checked = true } : null),
                          SelectedIcon = "fa fa-refresh fa-spin",
                          Nodes = Kily.Set<RepastMenu>().Where(x => x.IsDelete == false)
                          .Where(x => x.Level != MenuEnum.LevelOne)
@@ -262,6 +270,7 @@ namespace KilyCore.Service.ServiceCore
                              Text = x.MenuName,
                              Color = "black",
                              BackClolor = "white",
+                             State = string.IsNullOrEmpty(Key) ? null : (query.Where(p => p.Id == x.Id).AsNoTracking().FirstOrDefault() != null ? new States { Checked = true } : null),
                              SelectedIcon = "fa fa-refresh fa-spin",
                          }).AsQueryable()
                      }).AsQueryable();
@@ -338,10 +347,10 @@ namespace KilyCore.Service.ServiceCore
         public string SaveRoleAuthor(RequestRoleAuthorWeb Param)
         {
             RepastRoleAuthorWeb Author = Param.MapToEntity<RepastRoleAuthorWeb>();
-            if (Insert<RepastRoleAuthorWeb>(Author))
-                return ServiceMessage.INSERTSUCCESS;
+            if (Param.Id == Guid.Empty)
+                return Insert<RepastRoleAuthorWeb>(Author) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
             else
-                return ServiceMessage.INSERTFAIL;
+                return Update<RepastRoleAuthorWeb, RequestRoleAuthorWeb>(Author, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         #endregion
         #region 人员管理

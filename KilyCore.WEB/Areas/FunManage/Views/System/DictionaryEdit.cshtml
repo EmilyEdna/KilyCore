@@ -16,7 +16,7 @@
             //元素
             InitDom: function () {
                 var Guid = controller.GetParam("Id");
-                var Editor = controller.Editor(".summernote", { width: 655 });
+                var Editor = controller.Editor(".summernote");
                 options.GetDicDetail(Guid, Editor);
             },
             //获取详细

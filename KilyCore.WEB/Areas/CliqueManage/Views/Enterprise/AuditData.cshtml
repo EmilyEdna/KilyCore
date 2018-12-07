@@ -40,8 +40,8 @@
                         controller.OpenWindow({
                             title: "企业详情",
                             type: 2,
-                            height: "450px",
-                            width: "700px",
+                            height: "90%",
+                            width: "80%",
                             url: "CliqueManage/Enterprise/AuditDataDetail?Id=" + row.Id,
                             callBack: function (result) {
                                 result.popClose();
@@ -52,8 +52,8 @@
                         controller.OpenWindow({
                             title: "资料审核",
                             type: 2,
-                            height: "260px",
-                            width: "400px",
+                            height: "90%",
+                            width: "80%",
                             url: "CliqueManage/Enterprise/AuditDataInfo?Id=" + row.Id + "&TableName=" + row.TableName,
                             callBack: function (result) {
                                 result.$("#Edit").submit();

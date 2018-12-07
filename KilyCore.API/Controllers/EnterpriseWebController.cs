@@ -66,9 +66,9 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetEnterpriseWebTree")]
-        public ObjectResultEx GetEnterpriseWebTree()
+        public ObjectResultEx GetEnterpriseWebTree(SimpleParam<String> Partam)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.GetEnterpriseWebTree(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.GetEnterpriseWebTree(Partam.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 基础管理

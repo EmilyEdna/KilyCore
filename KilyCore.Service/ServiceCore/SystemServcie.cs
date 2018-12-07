@@ -678,10 +678,13 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public IList<ResponseParentTree> GetSystemAdminTree(String Key)
         {
-            IQueryable<SystemMenu> queryables = string.IsNullOrEmpty(Key) ? Kily.Set<SystemMenu>().Where(t => t.IsDelete == false).AsNoTracking() : Kily.Set<SystemMenu>().Where(t => Key.Contains(t.Id.ToString())).Where(t => t.IsDelete == false).AsNoTracking();
+            IQueryable<SystemMenu> queryables = Kily.Set<SystemMenu>().Where(t => t.IsDelete == false);
+            if (!string.IsNullOrEmpty(Key))
+                queryables = queryables.Where(t => Key.Contains(t.Id.ToString()));
             if (UserInfo().AccountType == AccountEnum.Admin)
             {
-                IQueryable<ResponseParentTree> queryable = queryables.Where(t => t.Level == MenuEnum.LevelOne)
+                IQueryable<ResponseParentTree> queryable = Kily.Set<SystemMenu>().Where(t => t.IsDelete == false)
+                    .Where(t => t.Level == MenuEnum.LevelOne)
                     .AsNoTracking().Select(t => new ResponseParentTree()
                     {
                         Id = t.Id,
@@ -689,14 +692,15 @@ namespace KilyCore.Service.ServiceCore
                         Color = "black",
                         BackClolor = "white",
                         SelectedIcon = "fa fa-refresh fa-spin",
-                        State = string.IsNullOrEmpty(Key) ? null : new States { Checked = true },
-                        Nodes = queryables.Where(x => x.Level != MenuEnum.LevelOne).Where(x => x.ParentId == t.MenuId).AsNoTracking()
+                        State = string.IsNullOrEmpty(Key) ? null : (queryables.Where(x => x.Id == t.Id).AsNoTracking().FirstOrDefault() != null ? new States { Checked = true } : null),
+                        Nodes = Kily.Set<SystemMenu>().Where(x => x.IsDelete == false)
+                        .Where(x => x.Level != MenuEnum.LevelOne).Where(x => x.ParentId == t.MenuId).AsNoTracking()
                          .Select(x => new ResponseChildTree()
                          {
                              Id = x.Id,
                              Text = x.MenuName,
                              Color = "black",
-                             State = string.IsNullOrEmpty(Key) ? null : new States { Checked = true },
+                             State = string.IsNullOrEmpty(Key) ? null : (queryables.Where(p => p.Id == x.Id).AsNoTracking().FirstOrDefault() != null ? new States { Checked = true } : null),
                              BackClolor = "white",
                              SelectedIcon = "fa fa-refresh fa-spin",
                          }).AsQueryable()
@@ -708,17 +712,19 @@ namespace KilyCore.Service.ServiceCore
             {
                 //取权限菜单
                 SystemRoleAuthor Author = Kily.Set<SystemRoleAuthor>().Where(t => t.Id == UserInfo().RoleAuthorType).AsNoTracking().FirstOrDefault();
-                IQueryable<ResponseParentTree> queryable = queryables.Where(t => t.Level == MenuEnum.LevelOne)
+                IQueryable<ResponseParentTree> queryable = Kily.Set<SystemMenu>().Where(t => t.IsDelete == false)
+                    .Where(t => t.Level == MenuEnum.LevelOne)
                     .Where(t => Author.AuthorMenuPath.Contains(t.Id.ToString())).AsQueryable().AsNoTracking()
                      .Select(t => new ResponseParentTree()
                      {
                          Id = t.Id,
                          Text = t.MenuName,
                          Color = "black",
-                         State = string.IsNullOrEmpty(Key) ? null : new States { Checked = true },
+                         State = string.IsNullOrEmpty(Key) ? null : (queryables.Where(x => x.Id == t.Id).AsNoTracking().FirstOrDefault() != null ? new States { Checked = true } : null),
                          BackClolor = "white",
                          SelectedIcon = "fa fa-refresh fa-spin",
-                         Nodes = queryables.Where(x => x.Level != MenuEnum.LevelOne).Where(x => x.ParentId == t.MenuId).AsNoTracking()
+                         Nodes = Kily.Set<SystemMenu>().Where(x => x.IsDelete == false)
+                         .Where(x => x.Level != MenuEnum.LevelOne).Where(x => x.ParentId == t.MenuId).AsNoTracking()
                          .Where(x => Author.AuthorMenuPath.Contains(x.Id.ToString()))
                          .Select(x => new ResponseChildTree()
                          {
@@ -726,7 +732,7 @@ namespace KilyCore.Service.ServiceCore
                              Text = x.MenuName,
                              Color = "black",
                              BackClolor = "white",
-                             State = string.IsNullOrEmpty(Key) ? null : new States { Checked = true },
+                             State = string.IsNullOrEmpty(Key) ? null : (queryables.Where(p => p.Id == x.Id).AsNoTracking().FirstOrDefault() != null ? new States { Checked = true } : null),
                              SelectedIcon = "fa fa-refresh fa-spin",
                          }).AsQueryable()
                      }).AsQueryable();

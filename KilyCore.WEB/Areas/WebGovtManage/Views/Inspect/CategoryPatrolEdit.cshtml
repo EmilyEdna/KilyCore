@@ -17,7 +17,7 @@
             InitDom: function () {
                 $("#GovtId").val(GovtInfo.Id);
                 $("#TypePath").val(GovtInfo.TypePath);
-                var Editor = controller.Editor(".summernote", { width: 655 });
+                var Editor = controller.Editor(".summernote");
                 var Id = controller.GetParam("Id");
                 if (Id != null && Id != "" && Id != undefined) {
                     controller.ajax({

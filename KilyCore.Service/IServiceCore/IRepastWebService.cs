@@ -32,7 +32,7 @@ namespace KilyCore.Service.IServiceCore
         #region 获取全局集团菜单
         IList<ResponseRepastDictionary> GetDictionaryList(String Param);
         IList<ResponseRepastMenu> GetRepastMenu();
-        IList<ResponseParentTree> GetRepastWebTree();
+        IList<ResponseParentTree> GetRepastWebTree(String Key);
         #endregion
         #region 基础管理
         #region 商家资料

@@ -39,9 +39,9 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetRepastWebTree")]
-        public ObjectResultEx GetRepastWebTree()
+        public ObjectResultEx GetRepastWebTree(SimpleParam<String> Param)
         {
-            return ObjectResultEx.Instance(RepastWebService.GetRepastWebTree(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.GetRepastWebTree(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
 

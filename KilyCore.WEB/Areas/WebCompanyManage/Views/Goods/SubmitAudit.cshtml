@@ -17,7 +17,7 @@
             InitDom: function () {
                 var Guid = controller.GetParam("Id");
                 $("#Id").val(Guid);
-                controller.Editor(".summernote", { width: 750 });
+                controller.Editor(".summernote");
             },
             //设置文件值
             SetFileValue: function (data, elememt) {

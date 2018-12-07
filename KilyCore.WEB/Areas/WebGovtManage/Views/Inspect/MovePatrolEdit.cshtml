@@ -36,7 +36,7 @@
                 $("#Edit").on("click", function () {
                     var html = $("#Content").html();
                     if (html != "" && html != null) {
-                        var Editor = controller.Editor(".summernote", { width: 1150, height: 600 });
+                        var Editor = controller.Editor(".summernote", { width: $(window).width, height: 600 });
                         Editor.summernote('code', html);
                         $("#Content").html("");
                     }

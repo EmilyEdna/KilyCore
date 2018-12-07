@@ -17,7 +17,7 @@
             InitDom: function () {
                 $("#InfoId").val(RepastUser.Id);
                 var Guid = controller.GetParam("Id");
-                var Editor = controller.Editor(".summernote", { width: 655 });
+                var Editor = controller.Editor(".summernote");
                 options.BindData(Guid, Editor);
             },
             //数据绑定

@@ -29,8 +29,8 @@
                     controller.OpenWindow({
                         title: "新增打包",
                         type: 2,
-                        height: "450px",
-                        width: "700px",
+                        height: "90%",
+                        width: "80%",
                         url: "WebCompanyManage/Logistics/PackageEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
@@ -53,8 +53,8 @@
                         controller.OpenWindow({
                             title: "编辑产品打包",
                             type: 2,
-                            height: "450px",
-                            width: "700px",
+                            height: "90%",
+                            width: "80%",
                             url: "WebCompanyManage/Logistics/PackageEdit?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
@@ -65,8 +65,8 @@
                         controller.OpenWindow({
                             title: "产品发货",
                             type: 2,
-                            height: "450px",
-                            width: "700px",
+                            height: "90%",
+                            width: "80%",
                             url: "WebCompanyManage/Logistics/SendGoodsEdit?GoodsName=" + row.ProductName + "&No=" + row.PackageNo,
                             callBack: function (result) {
                                 result.$("#Edit").submit();

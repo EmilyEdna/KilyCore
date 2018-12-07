@@ -29,8 +29,8 @@
                     controller.OpenWindow({
                         title: "新增设备",
                         type: 2,
-                        height: "400px",
-                        width: "700px",
+                        height: "90%",
+                        width: "80%",
                         url: "WebCompanyManage/Product/DeviceEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
@@ -53,8 +53,8 @@
                             title: "维修记录",
                             type: 2,
                             btn: ["取消"],
-                            height: "500px",
-                            width: "700px",
+                            height: "90%",
+                            width: "80%",
                             url: "WebCompanyManage/Product/DeviceFix?Id=" + row.Id,
                             callBack: function (result) {
                                 result.popClose();
@@ -66,8 +66,8 @@
                             title: "维护记录",
                             btn:["取消"],
                             type: 2,
-                            height: "500px",
-                            width: "700px",
+                            height: "90%",
+                            width: "80%",
                             url: "WebCompanyManage/Product/DeviceClean?Id=" + row.Id,
                             callBack: function (result) {
                                 result.popClose();

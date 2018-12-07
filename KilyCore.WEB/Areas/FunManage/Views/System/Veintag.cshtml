@@ -31,8 +31,8 @@
                     controller.OpenWindow({
                         title: "录入标签",
                         type: 2,
-                        height: "400px",
-                        width: "700px",
+                        height: "90%",
+                        width: "80%",
                         url: "FunManage/System/RecordTag",
                         callBack: function (result) {
                             result.$("#Edit").submit();
@@ -43,8 +43,8 @@
                     controller.OpenWindow({
                         title: "分配标签",
                         type: 2,
-                        height: "400px",
-                        width: "650px",
+                        height: "90%",
+                        width: "80%",
                         url: "FunManage/System/AcceptTag",
                         callBack: function (result) {
                             result.$("#Edit").submit();
@@ -82,8 +82,8 @@
                         controller.OpenWindow({
                             title: "分配公司信息",
                             type: 2,
-                            height: "600px",
-                            width: "900px",
+                            height: "90%",
+                            width: "80%",
                             url: "FunManage/System/AcceptTagAttach?Id=" + row.AcceptUser,
                             callBack: function (result) {
                                 result.popClose();
@@ -94,8 +94,8 @@
                         controller.OpenWindow({
                             title: "分配营运中心信息",
                             type: 2,
-                            height: "600px",
-                            width: "900px",
+                            height: "90%",
+                            width: "80%",
                             url: "FunManage/System/AcceptTagAttachs?Id=" + row.AcceptUser,
                             callBack: function (result) {
                                 result.popClose();

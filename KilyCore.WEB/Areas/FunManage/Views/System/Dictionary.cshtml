@@ -29,8 +29,8 @@
                     controller.OpenWindow({
                         title: "新增码表",
                         type: 2,
-                        height: "600px",
-                        width: "800px",
+                        height: "90%",
+                        width: "80%",
                         url: "FunManage/System/DictionaryEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
@@ -52,8 +52,8 @@
                         controller.OpenWindow({
                             title: "编辑码表",
                             type: 2,
-                            height: "600px",
-                            width: "800px",
+                            height: "90%",
+                            width: "80%",
                             url: "FunManage/System/DictionaryEdit?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
@@ -64,8 +64,8 @@
                         controller.OpenWindow({
                             title: "分配码表",
                             type: 2,
-                            height: "300px",
-                            width: "600px",
+                            height: "90%",
+                            width: "80%",
                             url: "FunManage/System/AcceptDic?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();

@@ -40,8 +40,8 @@
                         controller.OpenWindow({
                             title: "厨师详情",
                             type: 2,
-                            height: "600px",
-                            width: "800px",
+                            height: "90%",
+                            width: "80%",
                             btn:["取消"],
                             url: "CookManage/Cook/CookInfoDetail?Id=" + row.Id,
                             callBack: function (result) {
@@ -53,8 +53,8 @@
                         controller.OpenWindow({
                             title: "资料审核",
                             type: 2,
-                            height: "260px",
-                            width: "400px",
+                            height: "90%",
+                            width: "80%",
                             url: "CookManage/Cook/CookInfoAudit?Id=" + row.Id + "&TableName=" + row.TableName,
                             callBack: function (result) {
                                 result.$("#Edit").submit();

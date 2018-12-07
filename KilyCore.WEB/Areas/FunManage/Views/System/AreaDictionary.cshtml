@@ -56,8 +56,8 @@
                                     controller.OpenWindow({
                                         title: "启用区域",
                                         type: 2,
-                                        height: "150px",
-                                        width: "300px",
+                                        height: "90%",
+                                        width: "80%",
                                         url: "StaticHtml/ProvinceContent.html",
                                         callBack: function (result) {
                                             options.InitDisable({ AreaDicId: row.Id, IsEnable: false, ProvinceId: result.$("#Province").find("option:selected").val() });
@@ -77,8 +77,8 @@
                                     controller.OpenWindow({
                                         title: "禁用区域",
                                         type: 2,
-                                        height: "150px",
-                                        width: "300px",
+                                        height: "90%",
+                                        width: "80%",
                                         url: "StaticHtml/ProvinceContent.html",
                                         callBack: function (result) {
                                             options.InitDisable({ AreaDicId: row.Id, IsEnable: true, ProvinceId: result.$("#Province").find("option:selected").val() });

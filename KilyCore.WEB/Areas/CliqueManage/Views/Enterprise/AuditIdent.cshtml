@@ -61,8 +61,8 @@
                         controller.OpenWindow({
                             title: "认证详情",
                             type: 2,
-                            height: "600px",
-                            width: "800px",
+                            height: "90%",
+                            width: "80%",
                             url: "CliqueManage/Enterprise/AuditIdentDetail?Id=" + row.Id + "&CompanyType=" + row.CompanyType,
                             callBack: function (result) {
                                 result.popClose();
@@ -73,8 +73,8 @@
                         controller.OpenWindow({
                             title: "认证审核",
                             type: 2,
-                            height: "260px",
-                            width: "400px",
+                            height: "90%",
+                            width: "80%",
                             url: "CliqueManage/Enterprise/AuditIdentInfo?Id=" + row.Id + "&TableName=" + row.TableName,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
@@ -85,8 +85,8 @@
                         controller.OpenWindow({
                             title: "认证缴费",
                             type: 2,
-                            height: "600px",
-                            width: "800px",
+                            height: "90%",
+                            width: "80%",
                             url: "CliqueManage/Enterprise/Payment?Id=" + row.Id + "&TableName=" + row.TableName,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
