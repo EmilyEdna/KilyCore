@@ -25,7 +25,7 @@ namespace KilyCore.Extension.PayCore.WxPay
         public const string MerchantAccount = @"1451396702";
         public const string MerchantPayKey = @"chengduyanchengkejigs02885336372";
         public static string OutTradeNo = DateTime.Now.ToString("yyyyMMddhhmmss");
-        public const string NotifyUrl = @"http://localhost:50070/Pay/Notify";
+        public const string NotifyUrl = @"http://main.cfdacx.com/StaticHtml/WxNotify.html";
         public const string GateWayUrl = @"https://api.mch.weixin.qq.com";
     }
 }

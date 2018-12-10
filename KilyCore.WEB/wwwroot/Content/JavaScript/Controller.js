@@ -192,7 +192,6 @@ controller.SetCtrlValue = function (element, option) {
  */
 controller.JsonObject = function (option) {
     return typeof (option) == "object" && Object.prototype.toString.call(option).toLowerCase() == "[object object]" && !option.length; //true or false
-
 }
 /**
  * 检查字符串是否为Json
@@ -562,8 +561,14 @@ controller.ValidateConfirm = function (element, option) {
                     if (window.source != undefined)
                         if (window.source.options.$table != undefined)
                             window.source.options.$table.refresh();
-                    if (controller.CheckJsonFormat(data.data)) {
-                        var obj = JSON.parse(data.data);
+                    //判断支付
+                    if (controller.JsonObject(data.data)&& data.flag == 5) {
+                        $("#ContractHidden").find("#tag").val(data.data.TagNum);
+                        $("#ContractHidden").find("#gid").val(data.data.Id);
+                        $("#ContractHidden").find("#ver").val(data.data.VersionType);
+                        if (!controller.CheckJsonFormat(data.data.PayInfoMsg))
+                            return;
+                        var obj = JSON.parse(data.data.PayInfoMsg);
                         if (obj.PayType)//支付宝
                         {
                             $("#QRCode").css({ "display": "none" }).html(obj.PayContent);
@@ -572,6 +577,7 @@ controller.ValidateConfirm = function (element, option) {
                         else {
                             {
                                 $("#QRCode").css({ "display": "block" });
+                                $("#QRCode").html("");
                                 controller.QRCode("#QRCode", { text: obj.PayContent });
                                 return;
                             }

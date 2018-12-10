@@ -35,6 +35,9 @@
         Init: function () {
             this.InitDom();
             this.InitEvent();
+            if (options.GetURLParam("Addr") != null)
+                options.GetAddress(options.GetURLParam("Addr"));
+
         },
         InitDom: function () {
             var Map = new BMap.Map("Map");//在百度地图容器中创建一个地图
@@ -62,9 +65,10 @@
             Map.clearOverlays();//清空点
             document.getElementById("Edit").reset();
         },
-        GetAddress: function () {
+        GetAddress: function (data) {
+            var Addr = (data == undefined ? $("#Address").val() : data);
             $.ajax({
-                url: "http://api.map.baidu.com/geocoder/v2/?address=" + $("#Address").val() + "&output=json&ak=rEU7BdGnB0kKyIjUiONnUHlw",
+                url: "http://api.map.baidu.com/geocoder/v2/?address=" + Addr + "&output=json&ak=rEU7BdGnB0kKyIjUiONnUHlw",
                 type: "get",
                 async: false,
                 dataType: "jsonp",
@@ -75,6 +79,11 @@
                     $("#lat").val(result.result.location.lat);
                 }
             });
+        },
+        GetURLParam: function (Param) {
+            var reg = new RegExp("(^|&)" + Param + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+            var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+            if (r != null) return decodeURI(r[2]); return null; //返回参数值
         }
     }
     $(document).ready(function () {

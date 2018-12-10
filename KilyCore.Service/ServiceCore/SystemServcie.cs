@@ -1170,6 +1170,27 @@ namespace KilyCore.Service.ServiceCore
         public string EditContract(Guid Id, decimal Money)
         {
             SystemStayContract Contract = Kily.Set<SystemStayContract>().Where(t => t.IsDelete == false).Where(t => t.Id == Id).FirstOrDefault();
+            if (Contract.EnterpriseOrMerchant == 1)
+            {
+                EnterpriseInfo Info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Contract.CompanyId).AsNoTracking().FirstOrDefault();
+                Info.Version = Contract.VersionType;
+                if (Info.Version == SystemVersionEnum.Test)
+                    Info.TagCodeNum = ServiceMessage.TEST;
+                if (Info.Version == SystemVersionEnum.Base)
+                    Info.TagCodeNum = ServiceMessage.BASE;
+                if (Info.Version == SystemVersionEnum.Level)
+                    Info.TagCodeNum = ServiceMessage.LEVEL;
+                if (Info.Version == SystemVersionEnum.Enterprise)
+                    Info.TagCodeNum = ServiceMessage.ENTERPRISE;
+                IList<string> Fields = new List<string> { "Version", "TagCodeNum" };
+                UpdateField(Info, null, Fields);
+            }
+            else
+            {
+                RepastInfo Info = Kily.Set<RepastInfo>().Where(t => t.Id == Contract.CompanyId).AsNoTracking().FirstOrDefault();
+                Info.VersionType = Contract.VersionType;
+                UpdateField(Info, "VersionType");
+            }
             Contract.IsPay = true;
             Contract.TryOut = null;
             Contract.ActualPrice = Money;

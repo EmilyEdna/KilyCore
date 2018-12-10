@@ -144,7 +144,7 @@ namespace KilyCore.API.Controllers
         [HttpPost("SaveContract")]
         public ObjectResultEx SaveContract(RequestStayContract Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.SaveContract(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.SaveContract(Param), 5, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 人员管理
@@ -2000,6 +2000,16 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx WxPay(SimpleParam<int> Key, SimpleParam<int?> Value)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.WxPay(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 查询微信支付
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("WxQueryPay")]
+        public ObjectResultEx WxQueryPay(RequestContractTemp Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.WxQueryPay(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 导出Excel

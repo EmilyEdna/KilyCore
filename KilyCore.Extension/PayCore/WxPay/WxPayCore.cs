@@ -81,5 +81,27 @@ namespace KilyCore.Extension.PayCore.WxPay
             };
             return JsonConvert.SerializeObject(Model);
         }
+        /// <summary>
+        /// 获取订单号
+        /// </summary>
+        /// <returns></returns>
+        public string GetTradeNo()
+        {
+            return WxPayModel.OutTradeNo;
+        }
+        /// <summary>
+        /// 查询订单
+        /// </summary>
+        /// <param name="TradeNo"></param>
+        /// <returns></returns>
+        public string QueryWxPay(String TradeNo) {
+            QueryRequest Request = new QueryRequest();
+            Request.AddGatewayData(new QueryModel()
+            {
+                OutTradeNo = TradeNo
+            });
+            var ResultData = GetGatewayData().Execute(Request);
+            return ResultData.TradeState;//SUCCESS FAIL
+        }
     }
 }

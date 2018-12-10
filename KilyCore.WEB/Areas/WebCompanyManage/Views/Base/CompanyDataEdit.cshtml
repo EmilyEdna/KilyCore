@@ -98,7 +98,7 @@
                         type: 2,
                         height: "90%",
                         width: "80%",
-                        url: "StaticHtml/BaiduMap.html",
+                        url: "StaticHtml/BaiduMap.html?Addr=" + $("input[name='CompanyAddress']").val(),
                         callBack: function (result) {
                             $("input[name='LngAndLat']").val(result.$("#Edit").find("input[name='lng']").val() + "," + result.$("#Edit").find("input[name='lat']").val());
                             result.popClose();

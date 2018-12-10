@@ -39,7 +39,7 @@ namespace KilyCore.Service.IServiceCore
         String SaveCompanyArea(RequestEnterprise Param);
         #endregion
         #region 保存合同和缴费凭证
-        String SaveContract(RequestStayContract Param);
+        ResponseStayContract SaveContract(RequestStayContract Param);
         #endregion
         #region 人员管理
         PagedResult<ResponseEnterpriseUser> GetUserPage(PageParamList<RequestEnterpriseUser> pageParam);
@@ -298,6 +298,7 @@ namespace KilyCore.Service.IServiceCore
         #region 微信和支付宝调用
         String AliPay(int Key, int? Value);
         String WxPay(int Key, int? Value);
+        String WxQueryPay(RequestContractTemp Param);
         #endregion
         #region 导出Excel
         IList<Object> ExportMaterialInStockFile(String Param);

@@ -93,5 +93,7 @@ namespace KilyCore.DataEntity.ResponseMapper.System
                     return "无";
             }
         }
+        public string PayInfoMsg { get; set; }
+        public long? TagNum { get; set; }
     }
 }

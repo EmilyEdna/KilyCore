@@ -227,7 +227,7 @@ namespace KilyCore.Service.ServiceCore
                              Text = t.MenuName,
                              Color = "black",
                              BackClolor = "white",
-                             State = string.IsNullOrEmpty(Key) ? null : (query.Where(x=>x.Id==t.Id).AsNoTracking().FirstOrDefault()!=null? new States { Checked = true }:null),
+                             State = string.IsNullOrEmpty(Key) ? null : (query.Where(x => x.Id == t.Id).AsNoTracking().FirstOrDefault() != null ? new States { Checked = true } : null),
                              SelectedIcon = "fa fa-refresh fa-spin",
                              Nodes = Kily.Set<EnterpriseMenu>().Where(x => t.IsDelete == false)
                              .Where(x => x.Level != MenuEnum.LevelOne)
@@ -804,11 +804,13 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public string SaveContract(RequestStayContract Param)
+        public ResponseStayContract SaveContract(RequestStayContract Param)
         {
             Param.AuditType = AuditEnum.WaitAduit;
-            RequestAliPayModel AliPayModel = new RequestAliPayModel();
-            AliPayModel.OrderTitle = CompanyInfo().CompanyName + "合同缴费";
+            RequestAliPayModel AliPayModel = new RequestAliPayModel
+            {
+                OrderTitle = CompanyInfo().CompanyName + "合同缴费"
+            };
             SystemStayContract contract = Param.MapToEntity<SystemStayContract>();
             contract.EnterpriseOrMerchant = 1;
             EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == contract.CompanyId).FirstOrDefault();
@@ -853,8 +855,7 @@ namespace KilyCore.Service.ServiceCore
                 if (info.CompanyType == CompanyEnum.Circulation)
                     AliPayModel.Money = ConfigMoney.CirculationEnterprise * Convert.ToInt32(Param.ContractYear);
             }
-            IList<string> Fields = new List<string> { "Version", "TagCodeNum" };
-            //UpdateField(info, null, Fields);
+            contract.Id = Guid.NewGuid();
             if (contract.ContractType == 1)
             {
                 contract.IsPay = false;
@@ -864,22 +865,69 @@ namespace KilyCore.Service.ServiceCore
                 if (contract.PayType == PayEnum.Unionpay || contract.PayType == PayEnum.AgentPay)
                 {
                     contract.TotalPrice = (decimal)AliPayModel.Money;
-                    return Insert<SystemStayContract>(contract) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+                    return new ResponseStayContract()
+                    {
+                        Id = contract.Id,
+                        VersionType = Param.VersionType,
+                        TagNum = info.TagCodeNum,
+                        PayInfoMsg = Insert<SystemStayContract>(contract) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL
+                    };
                 }
                 //支付宝支付
                 else if (contract.PayType == PayEnum.Alipay)
                 {
                     contract.TotalPrice = (decimal)AliPayModel.Money;
                     //Insert<SystemStayContract>(contract);
-                    return AliPayCore.Instance.WebPay(AliPayModel);
+                    return new ResponseStayContract()
+                    {
+                        Id = contract.Id,
+                        VersionType = Param.VersionType,
+                        TagNum = info.TagCodeNum,
+                        PayInfoMsg = AliPayCore.Instance.WebPay(AliPayModel)
+                    };
                 }
                 //微信支付
                 else
                 {
                     RequestWxPayModel WxPayModel = AliPayModel.MapToEntity<RequestWxPayModel>();
                     contract.TotalPrice = WxPayModel.Money;
-                    //Insert<SystemStayContract>(contract);
-                    return WxPayCore.Instance.WebPay(WxPayModel);
+                    SystemStayContract CompanyContract = Kily.Set<SystemStayContract>().Where(t => t.CompanyId == contract.CompanyId)
+                        .Where(t => t.PayType == PayEnum.WxPay)
+                        .Where(t => t.EnterpriseOrMerchant == 1)
+                        .AsNoTracking().FirstOrDefault();
+                    if (CompanyContract == null)
+                    {
+                        Insert(contract, false);
+                        Insert(new SystemPayInfo()
+                        {
+                            MerchantId = contract.CompanyId,
+                            GoodsId = contract.Id,
+                            PayType = contract.PayType,
+                            TradeNo = WxPayCore.Instance.GetTradeNo()
+                        });
+                        return new ResponseStayContract()
+                        {
+                            Id = contract.Id,
+                            VersionType = Param.VersionType,
+                            TagNum = info.TagCodeNum,
+                            PayInfoMsg = WxPayCore.Instance.WebPay(WxPayModel)
+                        };
+                    }
+                    else
+                    {
+                        SystemPayInfo PayInfo = Kily.Set<SystemPayInfo>().Where(t => t.GoodsId == CompanyContract.Id)
+                            .Where(t => t.PayType == PayEnum.WxPay)
+                            .Where(t => t.MerchantId == CompanyContract.CompanyId).AsNoTracking().FirstOrDefault();
+                        PayInfo.TradeNo = WxPayCore.Instance.GetTradeNo();
+                        UpdateField(PayInfo, "TradeNo");
+                        return new ResponseStayContract()
+                        {
+                            Id = CompanyContract.Id,
+                            VersionType = Param.VersionType,
+                            TagNum = info.TagCodeNum,
+                            PayInfoMsg = WxPayCore.Instance.WebPay(WxPayModel)
+                        };
+                    }
                 }
             }
             else
@@ -889,7 +937,13 @@ namespace KilyCore.Service.ServiceCore
                 contract.TryOut = "30";
                 contract.TotalPrice = (decimal)AliPayModel.Money;
                 contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(contract.ContractYear));
-                return Insert<SystemStayContract>(contract) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+                return new ResponseStayContract()
+                {
+                    Id = contract.Id,
+                    VersionType = Param.VersionType,
+                    TagNum = info.TagCodeNum,
+                    PayInfoMsg = Insert<SystemStayContract>(contract) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL
+                };
             }
         }
         #endregion
@@ -4376,6 +4430,40 @@ namespace KilyCore.Service.ServiceCore
                     WxPayModel.Money = ConfigMoney.CirculationEnterprise * Key;
             }
             return WxPayCore.Instance.WebPay(WxPayModel);
+        }
+        /// <summary>
+        /// 查询微信支付
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string WxQueryPay(RequestContractTemp Param)
+        {
+            SystemPayInfo PayInfo = Kily.Set<SystemPayInfo>().Where(t => t.GoodsId == Param.GoodsId)
+                .Where(t => t.MerchantId == Param.MerchantId)
+                .Where(t => t.PayType == PayEnum.WxPay)
+                .AsNoTracking().FirstOrDefault();
+            if (PayInfo != null)
+            {
+                String ResultCode = WxPayCore.Instance.QueryWxPay(PayInfo.TradeNo);
+                if (ResultCode.Equals("SUCCESS"))
+                {
+                    EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Param.MerchantId).FirstOrDefault();
+                    PayInfo.PayDes = "SUCCESS";
+                    IList<string> Fields = new List<string> { "Version", "TagCodeNum" };
+                    info.Version = Param.VersionType;
+                    info.TagCodeNum = Param.TagNum;
+                    if (string.IsNullOrEmpty(PayInfo.PayDes))
+                    {
+                        UpdateField(PayInfo, "PayDes");
+                        UpdateField(info, null, Fields);
+                    }
+                    return "http://main.cfdacx.com/StaticHtml/WxNotify.html";
+                }
+                else
+                    return null;
+            }
+            else
+                return null;
         }
         #endregion
 

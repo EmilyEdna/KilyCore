@@ -61,7 +61,7 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-plus"></i>完善资料</button>');
-                    if (row.CompanyId == null)
+                    if (row.CompanyId == null && row.TagCodeNum == null)
                         action.push('<button class="btn btn-sm btn-primary pay"><i class="fa fa-plus"></i>缴费</button>');
                     return action.join("&nbsp;")
                 },

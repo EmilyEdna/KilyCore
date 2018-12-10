@@ -641,7 +641,7 @@ namespace KilyCore.Service.ServiceCore
         /// 保存合同
         /// </summary>
         /// <returns></returns>
-        public string SaveContract(RequestStayContract Param)
+        public ResponseStayContract SaveContract(RequestStayContract Param)
         {
             Param.AuditType = AuditEnum.WaitAduit;
             RequestAliPayModel AliPayModel = new RequestAliPayModel();
@@ -680,7 +680,7 @@ namespace KilyCore.Service.ServiceCore
             }
             if (Param.VersionType == SystemVersionEnum.Common)
                 AliPayModel.Money = ConfigMoney.Common * Convert.ToInt32(Param.ContractYear);
-            //UpdateField(info, "VersionType");
+            contract.Id = Guid.NewGuid();
             if (contract.ContractType == 1)
             {
                 contract.IsPay = false;
@@ -690,22 +690,65 @@ namespace KilyCore.Service.ServiceCore
                 if (contract.PayType == PayEnum.Unionpay || contract.PayType == PayEnum.AgentPay)
                 {
                     contract.TotalPrice = (decimal)AliPayModel.Money;
-                    return Insert<SystemStayContract>(contract) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+                    return new ResponseStayContract()
+                    {
+                        Id = contract.Id,
+                        VersionType = Param.VersionType,
+                        PayInfoMsg = Insert<SystemStayContract>(contract) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL
+                    };
                 }
                 //支付宝支付
                 else if (contract.PayType == PayEnum.Alipay)
                 {
                     contract.TotalPrice = (decimal)AliPayModel.Money;
                     //Insert<SystemStayContract>(contract);
-                    return AliPayCore.Instance.WebPay(AliPayModel);
+                    return new ResponseStayContract()
+                    {
+                        Id = contract.Id,
+                        VersionType = Param.VersionType,
+                        PayInfoMsg = AliPayCore.Instance.WebPay(AliPayModel)
+                    };
                 }
                 //微信支付
                 else
                 {
                     RequestWxPayModel WxPayModel = AliPayModel.MapToEntity<RequestWxPayModel>();
                     contract.TotalPrice = WxPayModel.Money;
-                    //Insert<SystemStayContract>(contract);
-                    return WxPayCore.Instance.WebPay(WxPayModel);
+                    SystemStayContract CompanyContract = Kily.Set<SystemStayContract>().Where(t => t.CompanyId == contract.CompanyId)
+                      .Where(t => t.PayType == PayEnum.WxPay)
+                      .Where(t => t.EnterpriseOrMerchant == 2)
+                      .AsNoTracking().FirstOrDefault();
+                    if (CompanyContract == null)
+                    {
+                        Insert(contract, false);
+                        Insert(new SystemPayInfo()
+                        {
+                            MerchantId = contract.CompanyId,
+                            GoodsId = contract.Id,
+                            PayType = contract.PayType,
+                            TradeNo = WxPayCore.Instance.GetTradeNo()
+                        });
+                        return new ResponseStayContract()
+                        {
+                            Id = contract.Id,
+                            VersionType = Param.VersionType,
+                            PayInfoMsg = WxPayCore.Instance.WebPay(WxPayModel)
+                        };
+                    }
+                    else
+                    {
+                        SystemPayInfo PayInfo = Kily.Set<SystemPayInfo>().Where(t => t.GoodsId == CompanyContract.Id)
+                            .Where(t => t.PayType == PayEnum.WxPay)
+                            .Where(t => t.MerchantId == CompanyContract.CompanyId).AsNoTracking().FirstOrDefault();
+                        PayInfo.TradeNo = WxPayCore.Instance.GetTradeNo();
+                        UpdateField(PayInfo, "TradeNo");
+                        return new ResponseStayContract()
+                        {
+                            Id = CompanyContract.Id,
+                            VersionType = Param.VersionType,
+                            PayInfoMsg = WxPayCore.Instance.WebPay(WxPayModel)
+                        };
+                    }
                 }
             }
             else
@@ -715,7 +758,12 @@ namespace KilyCore.Service.ServiceCore
                 contract.TryOut = "30";
                 contract.TotalPrice = (decimal)AliPayModel.Money;
                 contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(contract.ContractYear));
-                return Insert<SystemStayContract>(contract) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+                return new ResponseStayContract()
+                {
+                    Id = contract.Id,
+                    VersionType = Param.VersionType,
+                    PayInfoMsg = Insert<SystemStayContract>(contract) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL
+                };
             }
         }
         /// <summary>

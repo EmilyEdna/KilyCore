@@ -28,5 +28,13 @@ namespace KilyCore.Extension.PayCore
         /// 支付成共返回的内容
         /// </summary>
         public  string PayContent { get; set; }
+        /// <summary>
+        /// 订单号
+        /// </summary>
+        public string TradeNo { get; set; }
+        /// <summary>
+        /// 商品Id
+        /// </summary>
+        public string GoodsId { get; set; }
     }
 }
