@@ -1015,7 +1015,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public ResponseRepastDictionary GetDicDetail(Guid Id)
         {
-            var data = Kily.Set<RepastDictionary>().AsNoTracking().Select(t => new ResponseRepastDictionary()
+            var data = Kily.Set<RepastDictionary>().Where(t=>t.Id==Id).AsNoTracking().Select(t => new ResponseRepastDictionary()
             {
                 Id = t.Id,
                 InfoId = t.InfoId,

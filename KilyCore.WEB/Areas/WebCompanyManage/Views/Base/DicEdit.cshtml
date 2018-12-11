@@ -21,8 +21,7 @@
             },
             //取详情
             GetDicDetail: function (data) {
-                if (data != "" && data != null && data != undefined)
-                {
+                if (controller.CheckFeild(data)) {
                     controller.ajax({
                         url: "EnterpriseWeb/GetDicDetail",
                         data: { Id: data },
@@ -30,7 +29,7 @@
                         async: false,
                         success: function (result) {
                             controller.SetCtrlValue("#Edit", result.data);
-                         }
+                        }
                     });
                 }
             },
@@ -51,8 +50,8 @@
 <div class="ibox float-e-margins">
     <div class="ibox-content">
         <form class="form-horizontal" method="post" action="EnterpriseWeb/SaveDic" id="Edit">
-            <input  type="hidden" name="Id"/>
-            <input  type="hidden" name="CompanyId" id="CompanyId"/>
+            <input type="hidden" name="Id" />
+            <input type="hidden" name="CompanyId" id="CompanyId" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">字典分类</label></th>

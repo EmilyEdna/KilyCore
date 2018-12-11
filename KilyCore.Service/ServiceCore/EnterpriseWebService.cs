@@ -1226,7 +1226,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public ResponseEnterpriseDictionary GetDicDetail(Guid Id)
         {
-            var data = Kily.Set<EnterpriseDictionary>().AsNoTracking().Select(t => new ResponseEnterpriseDictionary()
+            var data = Kily.Set<EnterpriseDictionary>().Where(t=>t.Id==Id).AsNoTracking().Select(t => new ResponseEnterpriseDictionary()
             {
                 Id = t.Id,
                 CompanyId = t.CompanyId,

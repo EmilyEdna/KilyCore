@@ -21,8 +21,7 @@
             },
             //取详情
             GetDicDetail: function (data) {
-                if (data != "" && data != null && data != undefined)
-                {
+                if (controller.CheckFeild(data)) {
                     controller.ajax({
                         url: "RepastWeb/GetDicDetail",
                         data: { Id: data },
@@ -30,7 +29,7 @@
                         async: false,
                         success: function (result) {
                             controller.SetCtrlValue("#Edit", result.data);
-                         }
+                        }
                     });
                 }
             },
