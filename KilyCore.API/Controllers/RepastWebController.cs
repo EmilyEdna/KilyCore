@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KilyCore.DataEntity.RequestMapper.Function;
 using KilyCore.DataEntity.RequestMapper.Repast;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.Extension.ResultExtension;
@@ -529,7 +530,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("ShowVideo")]
-        public ObjectResultEx ShowVideo(SimpleParam<Guid> Param,SimpleParam<bool> flag)
+        public ObjectResultEx ShowVideo(SimpleParam<Guid> Param, SimpleParam<bool> flag)
         {
             return ObjectResultEx.Instance(RepastWebService.ShowVideo(Param.Id, flag.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1061,6 +1062,16 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx WxPay(SimpleParam<int> Key, SimpleParam<int?> Value)
         {
             return ObjectResultEx.Instance(RepastWebService.WxPay(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 微信支付查询
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("WxQueryPay")]
+        public ObjectResultEx WxQueryPay(RequestContractTemp Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.WxQueryPay(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
 

@@ -1,4 +1,5 @@
 ﻿using KilyCore.Configure;
+using KilyCore.DataEntity.RequestMapper.Function;
 using KilyCore.DataEntity.RequestMapper.Repast;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Repast;
@@ -186,6 +187,7 @@ namespace KilyCore.Service.IServiceCore
         #region 微信和支付宝调用
         String AliPay(int Key, int? Value);
         String WxPay(int Key, int? Value);
+        String WxQueryPay(RequestContractTemp Param);
         #endregion
         #region 导出Excel
         IList<Object> ExportStuffInStockFile(String Param);

@@ -4386,9 +4386,10 @@ namespace KilyCore.Service.ServiceCore
             if (CompanyInfo() == null)
                 return "请使用企业账户进行操作！";
             EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == CompanyInfo().Id).FirstOrDefault();
-            RequestWxPayModel WxPayModel = new RequestWxPayModel();
-            WxPayModel.OrderTitle = CompanyInfo().CompanyName + (Value == null ? "版本续费" : "版本升级");
-
+            RequestWxPayModel WxPayModel = new RequestWxPayModel
+            {
+                OrderTitle = CompanyInfo().CompanyName + (Value == null ? "版本续费" : "版本升级")
+            };
             if ((Value == null ? info.Version : (SystemVersionEnum)(Value)) == SystemVersionEnum.Test)
             {
                 info.TagCodeNum += ServiceMessage.TEST;
@@ -4445,6 +4446,8 @@ namespace KilyCore.Service.ServiceCore
             if (PayInfo != null)
             {
                 String ResultCode = WxPayCore.Instance.QueryWxPay(PayInfo.TradeNo);
+                if (string.IsNullOrEmpty(ResultCode))
+                    return null;
                 if (ResultCode.Equals("SUCCESS"))
                 {
                     EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Param.MerchantId).FirstOrDefault();

@@ -1,4 +1,5 @@
 ﻿using KilyCore.Configure;
+using KilyCore.DataEntity.RequestMapper.Function;
 using KilyCore.DataEntity.RequestMapper.Repast;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Repast;
@@ -2258,6 +2259,40 @@ namespace KilyCore.Service.ServiceCore
                     WxPayModel.Money = ConfigMoney.UnitCanteenEnterprise * Key;
             }
             return WxPayCore.Instance.WebPay(WxPayModel);
+        }
+        /// <summary>
+        /// 查询微信支付
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string WxQueryPay(RequestContractTemp Param)
+        {
+            SystemPayInfo PayInfo = Kily.Set<SystemPayInfo>().Where(t => t.GoodsId == Param.GoodsId)
+                .Where(t => t.MerchantId == Param.MerchantId)
+                .Where(t => t.PayType == PayEnum.WxPay)
+                .AsNoTracking().FirstOrDefault();
+            if (PayInfo != null)
+            {
+                String ResultCode = WxPayCore.Instance.QueryWxPay(PayInfo.TradeNo);
+                if (string.IsNullOrEmpty(ResultCode))
+                    return null;
+                if (ResultCode.Equals("SUCCESS"))
+                {
+                    RepastInfo Info = Kily.Set<RepastInfo>().Where(t => t.Id == Param.MerchantId).FirstOrDefault();
+                    PayInfo.PayDes = "SUCCESS";
+                    Info.VersionType = Param.VersionType;
+                    if (string.IsNullOrEmpty(PayInfo.PayDes))
+                    {
+                        UpdateField(PayInfo, "PayDes");
+                        UpdateField(Info, "VersionType");
+                    }
+                    return "http://main.cfdacx.com/StaticHtml/WxNotify.html";
+                }
+                else
+                    return null;
+            }
+            else
+                return null;
         }
         #endregion
 

@@ -1170,27 +1170,6 @@ namespace KilyCore.Service.ServiceCore
         public string EditContract(Guid Id, decimal Money)
         {
             SystemStayContract Contract = Kily.Set<SystemStayContract>().Where(t => t.IsDelete == false).Where(t => t.Id == Id).FirstOrDefault();
-            if (Contract.EnterpriseOrMerchant == 1)
-            {
-                EnterpriseInfo Info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Contract.CompanyId).AsNoTracking().FirstOrDefault();
-                Info.Version = Contract.VersionType;
-                if (Info.Version == SystemVersionEnum.Test)
-                    Info.TagCodeNum = ServiceMessage.TEST;
-                if (Info.Version == SystemVersionEnum.Base)
-                    Info.TagCodeNum = ServiceMessage.BASE;
-                if (Info.Version == SystemVersionEnum.Level)
-                    Info.TagCodeNum = ServiceMessage.LEVEL;
-                if (Info.Version == SystemVersionEnum.Enterprise)
-                    Info.TagCodeNum = ServiceMessage.ENTERPRISE;
-                IList<string> Fields = new List<string> { "Version", "TagCodeNum" };
-                UpdateField(Info, null, Fields);
-            }
-            else
-            {
-                RepastInfo Info = Kily.Set<RepastInfo>().Where(t => t.Id == Contract.CompanyId).AsNoTracking().FirstOrDefault();
-                Info.VersionType = Contract.VersionType;
-                UpdateField(Info, "VersionType");
-            }
             Contract.IsPay = true;
             Contract.TryOut = null;
             Contract.ActualPrice = Money;
@@ -1259,9 +1238,11 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string AliPay(int Money)
         {
-            RequestAliPayModel AliPayModel = new RequestAliPayModel();
-            AliPayModel.OrderTitle = "营运中心缴费";
-            AliPayModel.Money = Money;
+            RequestAliPayModel AliPayModel = new RequestAliPayModel
+            {
+                OrderTitle = "营运中心缴费",
+                Money = Money
+            };
             return AliPayCore.Instance.WebPay(AliPayModel);
         }
         /// <summary>
@@ -1271,9 +1252,11 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string WxPay(int Money)
         {
-            RequestWxPayModel WxPayModel = new RequestWxPayModel();
-            WxPayModel.OrderTitle = "营运中心缴费";
-            WxPayModel.Money = Money;
+            RequestWxPayModel WxPayModel = new RequestWxPayModel
+            {
+                OrderTitle = "营运中心缴费",
+                Money = Money
+            };
             return WxPayCore.Instance.WebPay(WxPayModel);
         }
         /// <summary>

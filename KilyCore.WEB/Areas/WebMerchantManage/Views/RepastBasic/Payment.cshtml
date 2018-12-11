@@ -12,6 +12,7 @@
             Init: function () {
                 this.InitDom();
                 this.InitEvents();
+                options.Timer = setInterval("options.CheckWxPay()", 5000);
             },
             //元素
             InitDom: function () {
@@ -131,8 +132,22 @@
                     $("#Edit").submit();
                 });
             },
-            //行为
-            action: {}
+            CheckWxPay: function () {
+                controller.ajax({
+                    url: "RepastWeb/WxQueryPay",
+                    data: $("#ContractHidden").SerializeJson(),
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        if (result.data == null)
+                            return;
+                        else {
+                            window.open(result.data);
+                            clearInterval(options.Timer);
+                        }
+                    }
+                })
+            }
         };
         //初始化
         $(document).ready(function () {
@@ -154,7 +169,12 @@
             <input type="hidden" name="CompanyName" />
             <input type="hidden" name="CommunityCode" />
             <input type="hidden" name="CompanyAddress" />
-            <input  type="hidden" name="AttachInfo"/>
+            <input type="hidden" name="AttachInfo" />
+        </form>
+        <form id="ContractHidden">
+            <input name="MerchantId" id="cid" type="hidden" />
+            <input name="GoodsId" id="gid" type="hidden" />
+            <input name="VersionType" id="ver" type="hidden" />
         </form>
         <form class="form-horizontal" method="post" action="RepastWeb/SaveContract" id="Edit">
             <input type="hidden" name="PayTicket" id="PayTicket" />
@@ -197,7 +217,7 @@
                 <tr class="B1">
                     <th><label class="control-label">开户行</label></th>
                     <td class="has-warning">
-                       <input  type="text" id="BankName" class="form-control"/>
+                        <input type="text" id="BankName" class="form-control" />
                     </td>
                     <th><label class="control-label">银行卡号</label></th>
                     <td class="has-warning">

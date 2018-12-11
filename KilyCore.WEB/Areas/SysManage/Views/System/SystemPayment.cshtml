@@ -16,7 +16,7 @@
             //元素
             InitDom: function () {
                 $("#Id").val(controller.GetParam("Id"));
-                $("#info").val(Number(controller.GetParam("TotalPrice")) * 0.2);
+                $("#info").val(Number(controller.GetParam("Price")) * 0.2);//收取营运商20%
                 $("input[name='PayType']").on("click", function () {
                     if ($(this).val() == 30) {
                         $("#A1").css({ display: "block", display: "table-row" });
@@ -46,7 +46,7 @@
                         url: url,
                         type: "post",
                         async: false,
-                        data: { Id: $("#Info").val() },
+                        data: { Id: $("#info").val() },
                         success: function (result) {
                             if ($.parseJSON(result.data).PayType)
                                 $("#QRCode").css({ "display": "none" }).html($.parseJSON(result.data).PayContent);
@@ -77,7 +77,7 @@
                     <tr>
                         <th><label class="control-label">应缴金额</label></th>
                         <td class="has-warning" colspan="3">
-                            <input type="text" class="form-control" id="info" readonly />
+                            <input type="text" class="form-control" id="info" readonly  />
                         </td>
                     </tr>
                     <tr>
