@@ -43,5 +43,13 @@ namespace KilyCore.EntityFrameWork.Model.System
         /// 商品Id
         /// </summary>
         public virtual Guid GoodsId { get; set; }
+        /// <summary>
+        /// 系统版本
+        /// </summary>
+        public virtual SystemVersionEnum? Version { get; set; }
+        /// <summary>
+        /// 标签数量
+        /// </summary>
+        public virtual long? TagNum { get; set; }
     }
 }

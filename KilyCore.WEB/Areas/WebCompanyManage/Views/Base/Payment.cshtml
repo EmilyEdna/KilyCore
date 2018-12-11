@@ -125,9 +125,14 @@
                 });
             },
             CheckWxPay: function () {
+                var datas = $("#ContractHidden").SerializeJson();
+                if (!controller.CheckFeild(datas.flag))
+                    return;
+                if (datas.flag)
+                    return;
                 controller.ajax({
                     url: "EnterpriseWeb/WxQueryPay",
-                    data: $("#ContractHidden").SerializeJson(),
+                    data: datas,
                     async: false,
                     type: "post",
                     success: function (result) {
@@ -161,13 +166,14 @@
             <input type="hidden" name="CompanyName" />
             <input type="hidden" name="CommunityCode" />
             <input type="hidden" name="CompanyAddress" />
-            <input  type="hidden" name="AttachInfo"/>
+            <input type="hidden" name="AttachInfo" />
         </form>
         <form id="ContractHidden">
             <input name="TagNum" id="tag" type="hidden" />
             <input name="MerchantId" id="cid" type="hidden" />
             <input name="GoodsId" id="gid" type="hidden" />
             <input name="VersionType" id="ver" type="hidden" />
+            <input name="flag" id="flag" type="hidden" />
         </form>
         <form class="form-horizontal" method="post" action="EnterpriseWeb/SaveContract" id="Edit">
             <input type="hidden" name="PayTicket" id="PayTicket" />

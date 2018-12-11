@@ -650,7 +650,6 @@ namespace KilyCore.Service.ServiceCore
             SystemStayContract contract = Param.MapToEntity<SystemStayContract>();
             contract.EnterpriseOrMerchant = 2;
             RepastInfo info = Kily.Set<RepastInfo>().Where(t => t.Id == contract.CompanyId).FirstOrDefault();
-            info.VersionType = Param.VersionType;
             if (Param.VersionType == SystemVersionEnum.Test)
             {
                 if (info.DiningType == MerchantEnum.Normal)
@@ -702,13 +701,42 @@ namespace KilyCore.Service.ServiceCore
                 else if (contract.PayType == PayEnum.Alipay)
                 {
                     contract.TotalPrice = (decimal)AliPayModel.Money;
-                    //Insert<SystemStayContract>(contract);
-                    return new ResponseStayContract()
+                    SystemStayContract CompanyContract = Kily.Set<SystemStayContract>().Where(t => t.CompanyId == contract.CompanyId)
+                      .Where(t => t.PayType == PayEnum.WxPay)
+                      .Where(t => t.EnterpriseOrMerchant == 2)
+                      .AsNoTracking().FirstOrDefault();
+                    if (CompanyContract == null)
                     {
-                        Id = contract.Id,
-                        VersionType = Param.VersionType,
-                        PayInfoMsg = AliPayCore.Instance.WebPay(AliPayModel)
-                    };
+                        Insert(contract, false);
+                        Insert(new SystemPayInfo()
+                        {
+                            MerchantId = contract.CompanyId,
+                            GoodsId = contract.Id,
+                            PayType = contract.PayType,
+                            TradeNo = AliPayCore.Instance.GetTradeNo(),
+                            Version = Param.VersionType,
+                        });
+                        return new ResponseStayContract()
+                        {
+                            Id = contract.Id,
+                            VersionType = Param.VersionType,
+                            PayInfoMsg = AliPayCore.Instance.WebPay(AliPayModel)
+                        };
+                    }
+                    else
+                    {
+                        SystemPayInfo PayInfo = Kily.Set<SystemPayInfo>().Where(t => t.GoodsId == CompanyContract.Id)
+                            .Where(t => t.PayType == PayEnum.Alipay)
+                            .Where(t => t.MerchantId == CompanyContract.CompanyId).AsNoTracking().FirstOrDefault();
+                        PayInfo.TradeNo = AliPayCore.Instance.GetTradeNo();
+                        UpdateField(PayInfo, "TradeNo");
+                        return new ResponseStayContract()
+                        {
+                            Id = contract.Id,
+                            VersionType = Param.VersionType,
+                            PayInfoMsg = AliPayCore.Instance.WebPay(AliPayModel)
+                        };
+                    }
                 }
                 //微信支付
                 else

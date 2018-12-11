@@ -82,8 +82,9 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 支付宝微信银行支付
         String AliPay(int Money);
-         String WxPay(int Money);
-         String EditPay(RequestStayContract Param);
+        String WxPay(int Money);
+        String AliQueryPay(String TradeNo);
+        String EditPay(RequestStayContract Param);
         #endregion
         #region 消息盒子
         PagedResult<ResponseSystemMessage> GetMsgPage(PageParamList<Object> pageParam);

@@ -569,6 +569,7 @@ controller.ValidateConfirm = function (element, option) {
                         if (!controller.CheckJsonFormat(data.data.PayInfoMsg))
                             return;
                         var obj = JSON.parse(data.data.PayInfoMsg);
+                        $("#ContractHidden").find("#flag").val(obj.PayType);
                         if (obj.PayType)//支付宝
                         {
                             $("#QRCode").css({ "display": "none" }).html(obj.PayContent);

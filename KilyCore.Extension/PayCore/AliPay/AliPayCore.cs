@@ -85,5 +85,27 @@ namespace KilyCore.Extension.PayCore.AliPay
             };
             return JsonConvert.SerializeObject(Model);
         }
+        /// <summary>
+        /// 获取订单号
+        /// </summary>
+        /// <returns></returns>
+        public string GetTradeNo()
+        {
+            return AliPayModel.OutTradeNo;
+        }
+        /// <summary>
+        /// 查询订单
+        /// </summary>
+        /// <param name="TradeNo"></param>
+        /// <returns></returns>
+        public string QueryAliPay(String TradeNo)
+        {
+             QueryRequest Request = new QueryRequest();
+            Request.AddGatewayData(new QueryModel()
+            {
+                OutTradeNo = TradeNo
+            });
+          return GetGatewayData().Execute(Request).TradeStatus;//TRADE_SUCCESS
+        }
     }
 }

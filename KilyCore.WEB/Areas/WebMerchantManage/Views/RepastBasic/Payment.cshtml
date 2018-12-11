@@ -133,9 +133,14 @@
                 });
             },
             CheckWxPay: function () {
+                var datas = $("#ContractHidden").SerializeJson();
+                if (!controller.CheckFeild(datas.flag))
+                    return;
+                if (datas.flag)
+                    return;
                 controller.ajax({
                     url: "RepastWeb/WxQueryPay",
-                    data: $("#ContractHidden").SerializeJson(),
+                    data: datas,
                     async: false,
                     type: "post",
                     success: function (result) {
@@ -174,6 +179,7 @@
         <form id="ContractHidden">
             <input name="MerchantId" id="cid" type="hidden" />
             <input name="GoodsId" id="gid" type="hidden" />
+            <input name="flag" id="flag" type="hidden" />
             <input name="VersionType" id="ver" type="hidden" />
         </form>
         <form class="form-horizontal" method="post" action="RepastWeb/SaveContract" id="Edit">

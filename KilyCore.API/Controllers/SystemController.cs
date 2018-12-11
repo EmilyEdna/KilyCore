@@ -521,15 +521,35 @@ namespace KilyCore.API.Controllers
         }
         #endregion
         #region 支付宝微信银行支付
+        /// <summary>
+        /// 支付宝支付
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
         [HttpPost("AliPay")]
         public ObjectResultEx AliPay(SimpleParam<int> Param)
         {
             return ObjectResultEx.Instance(SystemService.AliPay(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 微信支付
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
         [HttpPost("WxPay")]
         public ObjectResultEx WxPay(SimpleParam<int> Param)
         {
             return ObjectResultEx.Instance(SystemService.WxPay(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 查询支付宝支付
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <returns></returns>
+        [HttpPost("AliQueryPay")]
+        public ObjectResultEx AliQueryPay(SimpleParam<String> Key)
+        {
+            return ObjectResultEx.Instance(SystemService.AliQueryPay(Key.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         [HttpPost("EditPay")]
         public ObjectResultEx EditPay(RequestStayContract Param)

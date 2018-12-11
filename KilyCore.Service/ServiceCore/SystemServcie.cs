@@ -1260,6 +1260,36 @@ namespace KilyCore.Service.ServiceCore
             return WxPayCore.Instance.WebPay(WxPayModel);
         }
         /// <summary>
+        /// 查询支付宝支付
+        /// </summary>
+        /// <param name="TradeNo"></param>
+        /// <returns></returns>
+        public string AliQueryPay(String TradeNo)
+        {
+            SystemPayInfo PayInfo = Kily.Set<SystemPayInfo>().Where(t => t.PayType == PayEnum.Alipay)
+                .Where(t => t.TradeNo.Equals(TradeNo)).AsNoTracking().FirstOrDefault();
+            if (PayInfo != null)
+            {
+                String ResultCode = AliPayCore.Instance.QueryAliPay(TradeNo);
+                if (string.IsNullOrEmpty(ResultCode))
+                    return null;
+                if (ResultCode.Equals("TRADE_SUCCESS"))
+                {
+                    EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == PayInfo.MerchantId).FirstOrDefault();
+                    PayInfo.PayDes = "TRADE_SUCCESS";
+                    IList<string> Fields = new List<string> { "Version", "TagCodeNum" };
+                    info.Version = (SystemVersionEnum)PayInfo.Version;
+                    info.TagCodeNum = PayInfo.TagNum;
+                    if (string.IsNullOrEmpty(PayInfo.PayDes))
+                    {
+                        UpdateField(PayInfo, "PayDes");
+                        UpdateField(info, null, Fields);
+                    }
+                }
+            }
+            return null;
+        }
+        /// <summary>
         /// 更新支付
         /// </summary>
         /// <param name="Param"></param>
