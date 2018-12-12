@@ -17,6 +17,8 @@
             //元素
             InitDom: function () {
                 var TypePath = controller.GetParam("TypePath");
+                options.Editor = controller.Editor(".summernote");
+                $(".note-editor").addClass("hidden");
                 if (TypePath == "null") {
                     controller.Confirm("请先完善资料!", function () {
                         controller.Close();
@@ -37,7 +39,7 @@
                     success: function (result) {
                         var html = '<option>===请选择===</option>'
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.DicValue + '" data-value="' + obj.DicDescript + '" data-attach="' + obj.AttachInfo + '">' + obj.DicName + '</option>';
+                            html += '<option value="' + obj.DicValue + '" data-value="' + obj.Id + '" data-attach="' + obj.AttachInfo + '">' + obj.DicName + '</option>';
                         });
                         $("#VersionType").html(html);
                     }
@@ -62,8 +64,19 @@
                 //显示版本详情
                 $("#VersionType").on("change", function () {
                     var selector = $(this).find("option:selected");
-                    var html = "版本费用：" + selector.data().attach + "/年。</br>当前版本功能为：" + selector.data().value;
+                    var html = "版本费用：" + selector.data().attach + "/年。";
+                    controller.ajax({
+                        url: "Function/GetVersionById",
+                        data: { Id: selector.data().value },
+                        async: false,
+                        type: "post",
+                        success: function (result) {
+                            options.Editor.summernote('code', '');
+                            options.Editor.summernote('code', result.data);
+                        }
+                    });
                     controller.Alter(html);
+                 
                 });
                 //合同模式
                 $("input:radio[name='ContractType']").on('click', function () {
@@ -111,11 +124,19 @@
                         Chapter: $("#AdminId").find("option:selected").data().img,
                         Address: $("#AdminId").find("option:selected").data().address,
                         VersionName: $("#VersionType").find("option:selected").text(),
-                        VersionDes: $("#VersionType").find("option:selected").data().value,
+                        VersionDes: options.Editor.summernote('code'),
                         CompanyName: RepastUser.MerchantName,
                         CommunityCode: RepastUser.CommunityCode,
                         CompanyAddress: RepastUser.Address,
                         AttachInfo: $("#VersionType").find("option:selected").data().attach
+                    }
+                    if (!controller.CheckFeild(data.ContractYear)) {
+                        controller.Msg("请输入入住年限!");
+                        return;
+                    }
+                    if (data.AuthorCompany == "===请选择===") {
+                        controller.Msg("请选择签约中心!");
+                        return;
                     }
                     controller.SetCtrlValue("#PDF", data);
                     $("#PDF").submit();
@@ -160,6 +181,7 @@
         });
     </script>
 }
+    <div class="hidden summernote"></div>
 <div class="ibox float-e-margins">
     <div class="ibox-content">
         <form method="post" action="/File/HTMLToPDF" id="PDF">

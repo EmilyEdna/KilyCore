@@ -627,13 +627,22 @@ namespace KilyCore.Service.ServiceCore
                   .GroupJoin(queryables, m => m.Id, n => n.AreaDicId, (m, n) => new { m.x, n.FirstOrDefault().IsEnable })
                   .Select(t => new ResponseAreaDictionary()
                   {
+                      Id=t.x.Id,
                       DicName = t.x.DicName,
                       DicValue = t.x.DicValue,
-                      DicDescript = t.x.DicDescript,
                       AttachInfo = t.x.AttachInfo,
                       IsEnable = (t.IsEnable==null?false:t.IsEnable)
                   }).ToList().Where(t=>t.IsEnable==false).ToList();
             return data;
+        }
+        /// <summary>
+        /// 获取功能描述
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string GetVersionById(Guid Id)
+        {
+           return Kily.Set<FunctionDictionary>().Where(t => t.Id == Id).Select(t => t.DicDescript).FirstOrDefault();
         }
         /// <summary>
         /// 获取分配详情

@@ -245,6 +245,16 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(FunctionService.GetAreaVersion(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
+        /// 获取功能描述
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetVersionById")]
+        public ObjectResultEx GetVersionById(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(FunctionService.GetVersionById(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 获取分配详情
         /// </summary>
         /// <param name="Id"></param>

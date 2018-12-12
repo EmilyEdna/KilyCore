@@ -46,6 +46,7 @@ namespace KilyCore.Service.IServiceCore
         String RecordAreaDic(RequestAreaDictionary Param);
         String IsEnable(RequestDisDictionary Param);
         IList<ResponseAreaDictionary> GetAreaVersion(String TypePaths, int Param);
+        String GetVersionById(Guid Id);
         ResponseAreaDic GetAreaDicDetail(Guid Id);
         #endregion
         #region 数据统计
