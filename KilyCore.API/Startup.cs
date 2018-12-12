@@ -62,14 +62,19 @@ namespace KilyCore.API
             //添加跨域
             services.AddCors(option =>
             {
-                option.AddPolicy("KilyCore", builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials());
+                option.AddPolicy("KilyCore",
+                    builder =>
+                    builder.AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .WithOrigins(Configuration["CorsOrigins:Origin"].Split(",").ToArray())
+                    .AllowCredentials());
             });
             //添加Session
             services.AddSession(t =>
             {
                 //Session 5分钟后过期
                 t.IdleTimeout = TimeSpan.FromMinutes(5);
-             });
+            });
             IServiceProvider IocProviderService = Engine.ServiceProvider(services);
             //持久化任务
             IocProviderServices.Instance.IocProviderService.RestartQuartz();

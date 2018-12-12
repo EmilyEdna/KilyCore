@@ -243,7 +243,6 @@ namespace KilyCore.Service.ServiceCore
             }
             SystemAdmin Admin = Param.MapToEntity<SystemAdmin>();
             var Adm = Kily.Set<SystemAdmin>().Where(t => t.Account.Equals(Param.Account)).AsNoTracking().FirstOrDefault();
-            if (Adm != null) return "该账号已经存在!";
             if (Param.Id != Guid.Empty)
             {
                 if (Update<SystemAdmin, RequestAdmin>(Admin, Param))
@@ -253,6 +252,7 @@ namespace KilyCore.Service.ServiceCore
             }
             else
             {
+                if (Adm != null) return "该账号已经存在!";
                 if (Insert<SystemAdmin>(Admin))
                     return ServiceMessage.INSERTSUCCESS;
                 else
