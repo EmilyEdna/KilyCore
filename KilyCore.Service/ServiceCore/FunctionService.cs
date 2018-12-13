@@ -148,6 +148,8 @@ namespace KilyCore.Service.ServiceCore
                 {
                     Entity.CityId = Param.CityId;
                     Entity.CityPrice = Param.CityPrice;
+                    if (Entity.CityPrice > (Entity.ProvincePrice + Entity.ProvincePrice * (decimal)0.5))
+                        return "当前价格高出标准价格50%";
                     Fields.Add("CityId");
                     Fields.Add("CityPrice");
                 }
@@ -155,6 +157,8 @@ namespace KilyCore.Service.ServiceCore
                 {
                     Entity.AreaId = Param.AreaId;
                     Entity.AreaPrice = Param.AreaPrice;
+                    if (Entity.AreaPrice > (Entity.CityPrice + Entity.CityPrice * (decimal)0.5))
+                        return "当前价格高出标准价格50%";
                     Fields.Add("AreaId");
                     Fields.Add("AreaPrice");
                 }
@@ -162,6 +166,8 @@ namespace KilyCore.Service.ServiceCore
                 {
                     Entity.TownId = Param.TownId;
                     Entity.TownPrice = Param.TownPrice;
+                    if (Entity.TownPrice > (Entity.AreaPrice + Entity.AreaPrice * (decimal)0.5))
+                        return "当前价格高出标准价格50%";
                     Fields.Add("TownId");
                     Fields.Add("TownPrice");
                 }
