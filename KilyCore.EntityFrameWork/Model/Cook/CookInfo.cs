@@ -74,6 +74,10 @@ namespace KilyCore.EntityFrameWork.Model.Cook
         /// </summary>
         public virtual string TrainCard { get; set; }
         /// <summary>
+        /// 健康证
+        /// </summary>
+        public virtual string HealthCard { get; set; }
+        /// <summary>
         /// 审核
         /// </summary>
         public virtual AuditEnum AuditType { get; set; }

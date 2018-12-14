@@ -232,6 +232,7 @@ namespace KilyCore.Service.ServiceCore
                 ExpiredDay = t.ExpiredDay,
                 IdCardPhoto = t.IdCardPhoto,
                 BookInCard = t.BookInCard,
+                HealthCard=t.HealthCard,
                 TrainCard = t.TrainCard,
                 AuditTypeName = AttrExtension.GetSingleDescription<DescriptionAttribute>(t.AuditType)
             }).AsNoTracking().FirstOrDefault();

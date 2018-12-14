@@ -99,6 +99,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Cook
         /// </summary>
         public string TrainCard { get; set; }
         /// <summary>
+        /// 健康证
+        /// </summary>
+        public string HealthCard { get; set; }
+        /// <summary>
         /// 是否会员
         /// </summary>
         public bool IsVip { get; set; }

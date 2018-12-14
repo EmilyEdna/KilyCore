@@ -89,6 +89,17 @@
                         controller.Alter(result.msg);
                         $("#BookInCard").val(result.data);
                     }
+                })
+                //文件上传-健康证
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-4",
+                    maxNum: 1,
+                    node: '#img4',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        $("#HealthCard").val(result.data);
+                    }
                 });
             },
             //获取省份
@@ -280,9 +291,9 @@
                     <td class="has-warning">
                         <input type="text" class="form-control" name="CardOffice">
                     </td>
-                    <th><label class="control-label">过期时间</label></th>
+                    <th><label class="control-label">健康证过期时间<span style="color:red">*</span></label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="ExpiredDay">
+                        <input type="text" class="form-control required" name="ExpiredDay" data-msg-required="请输入健康证过期时间">
                     </td>
                 </tr>
                 <tr>
@@ -358,6 +369,18 @@
                             </section>
                         </div>
                         <input type="hidden" id="BookInCard" name="BookInCard" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">健康证</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear" id="img4">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" id="upload-input-4" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                        <input type="hidden" id="HealthCard" name="HealthCard" />
                     </td>
                 </tr>
                 <tfoot>

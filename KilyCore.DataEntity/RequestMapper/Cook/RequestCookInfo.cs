@@ -103,6 +103,10 @@ namespace KilyCore.DataEntity.RequestMapper.Cook
         /// </summary>
         public  Guid? RoleId { get; set; }
         /// <summary>
+        /// 健康证
+        /// </summary>
+        public string HealthCard { get; set; }
+        /// <summary>
         /// 所在区域
         /// </summary>
         public string TypePath
