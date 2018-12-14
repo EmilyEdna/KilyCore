@@ -34,5 +34,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public Int64 EndSerialNo { get; set; }
         public int UseNum { get; set; }
         public string StockNo { get; set; }
+        public Object StockStutas { get; set; }
     }
 }

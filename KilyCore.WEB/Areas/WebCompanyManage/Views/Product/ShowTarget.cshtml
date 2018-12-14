@@ -26,11 +26,7 @@
             },
             //元素
             InitDom: function () {
-                $("#CompanyId").val(CompanyInfo.Id);
-                var Guid = controller.GetParam("Id");
-                $("#Manager").val(controller.GetParam("Manager"));
-                $("#ProBatchId").val(Guid);
-                this.BindPare(Guid);
+                this.BindPare(controller.GetParam("Id"));
             },
             //绑定对比值
             BindPare: function (Guid) {
@@ -45,30 +41,54 @@
                             html += '<tr>';
                             html += '<td class="text-warning">' + obj.TargetName + '</td>';
                             html += '<td class="text-warning">' + obj.TargetUnit + '</td>';
-                            html += '<td class="text-warning">' + obj.TargetUnit + '</td>';
+                            html += '<td class="text-warning">' + obj.TargetValue + '</td>';
                             if (obj.Result == null || obj.ResultTime == null) {
-                                html += '<td class="text-warning"><input type="text" class="form-control" name="Result"></td>';
-                                html += '<td class="text-warning"><input type="text" class="form-control" name="ResultTime" id="ResultTime"></td>';
+                                html += '<td class="text-warning"><input type="text" class="form-control" name="Result"/></td>';
+                                html += '<td class="text-warning"><input type="text" class="form-control" name="ResultTime"/></td>';
                                 html += '<td class="text-warning">' + controller.GetParam("Manager") + '</td>';
+                                html += '<td><button class="btn btn-sm btn-primary" type="button"><i class="fa fa-pencil-square-o"></i>保存</button></td>'
                             } else {
                                 html += '<td class="text-warning">' + obj.Result + '</td>';
                                 html += '<td class="text-warning">' + obj.ResultTime + '</td>';
                                 html += '<td class="text-warning">' + controller.GetParam("Manager") + '</td>';
+                                html += '<td></td>'
                             }
+                          
                             html += '</tr>';
                         });
                         $("#content").html(html);
-                        controller.LayDate({ elem: "#ResultTime" });
+                        var res = $("input[name='ResultTime']");
+                        for (var i = 0; i < res.length; i++) {
+                            controller.LayDate({ elem: res[i] });
+                        }
                     }
                 });
             },
             //事件
             InitEvents: function () {
-                //验证
-                controller.ValidateConfirm("#Edit");
+                $("button").on('click', function () {
+                    var tds = $(this).parent().parent().find('td');
+                    var datas = {
+                        CompanyId: CompanyInfo.Id,
+                        ProBatchId: controller.GetParam("Id"),
+                        TargetName: tds.eq(0).text(),
+                        TargetUnit: tds.eq(1).text(),
+                        TargetValue: tds.eq(2).text(),
+                        Result: tds.find("input[name='Result']").val(),
+                        ResultTime: tds.find("input[name='ResultTime']").val(),
+                        Manager: controller.GetParam("Manager")
+                    };
+                    controller.ajax({
+                        url: "EnterpriseWeb/EditProBatchAttach",
+                        type: "post",
+                        data: datas,
+                        async: false,
+                        success: function (result) {
+                            controller.Msg(result.data);
+                        }
+                    });
+                });
             },
-            //行为
-            action: {}
         };
         //初始化
         $(document).ready(function () {
@@ -78,10 +98,7 @@
 }
 <div class="ibox float-e-margins">
     <div class="ibox-content">
-        <form class="form-horizontal" method="post" action="EnterpriseWeb/EditProBatchAttach" id="Edit">
-            <input type="hidden" id="CompanyId" name="CompanyId" />
-            <input type="hidden" id="ProBatchId" name="ProBatchId" />
-            <input type="hidden" id="Manager" name="Manager" />
+        <form class="form-horizontal">
             <table class="table table-hover table-bordered">
                 <thead>
                     <tr>
@@ -103,12 +120,15 @@
                         <th>
                             <span class="text-navy">负责人</span>
                         </th>
+                        <th>
+                            <span class="text-navy">操作</span>
+                        </th>
                     </tr>
                 </thead>
                 <tbody id="content"></tbody>
                 <tfoot>
                     <tr>
-                        <th colspan="6" class="text-danger">
+                        <th colspan="7" class="text-danger">
                             没有更多记录...
                         </th>
                     </tr>

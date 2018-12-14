@@ -16,14 +16,21 @@
             //元素
             InitDom: function () {
                 var Flag = controller.GetParam("Flag");
-                if (Flag == 1)
+                if (Flag == 1) {
                     $("#BatchNo").val("G" + controller.FormatDate("YYMMDDHHmmss"));
-                else if (Flag == 2)
+                    $("input[name='TagType']").eq(0).attr("checked", true);
+                }
+                else if (Flag == 2) {
                     $("#BatchNo").val("P" + controller.FormatDate("YYMMDDHHmmss"));
-                else
+                    $("input[name='TagType']").eq(1).attr("checked", true);
+                }
+                else {
                     $("#BatchNo").val("C" + controller.FormatDate("YYMMDDHHmmss"));
+                    $("#TotalNo").val(1);
+                    $("#TotalNo").attr("readonly", true);
+                    $("input[name='TagType']").eq(2).attr("checked", true);
+                }
                 $("#CompanyId").val(CompanyInfo.Id);
-
             },
             //事件
             InitEvents: function () {
@@ -68,7 +75,7 @@
                     </td>
                     <th><label class="control-label">生成数量<span style="color:red">*</span></label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control required IsNumber" name="TotalNo" data-msg-required="请输入生成数量(仅限数字)" />
+                        <input type="text" class="form-control required IsNumber" name="TotalNo" id="TotalNo" data-msg-required="请输入生成数量(仅限数字)" />
                     </td>
                 </tr>
             </table>

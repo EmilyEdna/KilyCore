@@ -38,7 +38,7 @@
                             $('#TagId').html(html);
                         }
                     });
-                }).change();
+                });
                 $("#TagId").on('change', function () {
                     $("#TagBatchNo").val($(this).find("option:selected").text());
                     var datas = {
@@ -52,7 +52,11 @@
                         type: "post",
                         success: function (result) {
                             $("#Star").val(result.data);
-                            var End = Number(result.data) - 1 + Number(controller.GetParam("Num"));
+                            var End = '';
+                            if ($("#TagType").find("option:selected").val() == 2)
+                                End  = Number(result.data);
+                            else
+                                End = Number(result.data) - 1 + Number(controller.GetParam("Num"));
                             $("#End").val(End);
                         }
                     });

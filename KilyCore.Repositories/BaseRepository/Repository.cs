@@ -33,14 +33,14 @@ namespace KilyCore.Repositories.BaseRepository
         /// </summary>
         /// <param name="exp"></param>
         /// <returns></returns>
-        public virtual bool Delete<TEntity>(Expression<Func<TEntity, bool>> exp,string FieldName=null,object Data=null) where TEntity : class, new()
+        public virtual bool Delete<TEntity>(Expression<Func<TEntity, bool>> exp, string FieldName = null, object Data = null) where TEntity : class, new()
         {
             try
             {
                 TEntity Entity = Kily.Set<TEntity>().Where(exp).FirstOrDefault();
                 RemovePath(Entity);
                 List<PropertyInfo> props = Entity.GetType().GetProperties().Where(t => t.Name.Contains("Delete")).ToList();
-                if(!string.IsNullOrEmpty(FieldName))
+                if (!string.IsNullOrEmpty(FieldName))
                     Entity.GetType().GetProperties().Where(t => t.Name.Equals(FieldName)).FirstOrDefault().SetValue(Entity, Data);
                 props.Where(t => t.Name.Equals("IsDelete")).FirstOrDefault().SetValue(Entity, true);
                 props.Where(t => t.Name.Equals("DeleteTime")).FirstOrDefault().SetValue(Entity, DateTime.Now);
@@ -191,7 +191,7 @@ namespace KilyCore.Repositories.BaseRepository
                         EntityProps.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, MerchantUser().InfoId.ToString());
                     else if (CookInfo() != null)
                         EntityProps.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, CookInfo().Id.ToString());
-                     else if (GovtInfo() != null)
+                    else if (GovtInfo() != null)
                         EntityProps.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, GovtInfo().Id.ToString());
                     else
                         EntityProps.Where(t => t.Name.Equals("UpdateUser")).FirstOrDefault().SetValue(Entity, null);
@@ -404,7 +404,7 @@ namespace KilyCore.Repositories.BaseRepository
             try
             {
                 IList<String> PhotoPath = new List<String>();
-                String Url = $"{ Configer.HttpContext.Response.Headers["Access-Control-Allow-Origin"].ToString()}/File/RemovePath";
+                String Url = $"{ Configer.RemovePathHost}/File/RemovePath";
                 Entity.GetType().GetProperties().ToList().ForEach(t =>
                 {
                     if (t.PropertyType == typeof(String))

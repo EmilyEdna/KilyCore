@@ -12,6 +12,7 @@
             Init: function () {
                 this.InitDom();
                 this.InitEvents();
+                options.Timer = setInterval("options.CheckWxPay()", 5000);
             },
             //元素
             InitDom: function () {
@@ -26,8 +27,22 @@
                     $("#Edit").submit();
                 });
             },
-            //行为
-            action: {}
+            CheckWxPay: function () {
+                controller.ajax({
+                    url: "CookWeb/WxQueryPay",
+                    data: { Id: controller.GetParam("Id")},
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        if (result.data == null)
+                            return;
+                        else {
+                            window.open(result.data);
+                            clearInterval(options.Timer);
+                        }
+                    }
+                })
+            }
         };
         //初始化
         $(document).ready(function () {
@@ -61,6 +76,19 @@
                             <input type="radio" name="PayType" value="20" style="margin-top:3px" />
                             <text title="微信">微信</text>
                         </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="has-warning" colspan="4">
+                        <p>&nbsp;&nbsp;费用说明：</p>
+                        <br />
+                        <p>&nbsp;&nbsp;乡村厨师系统会员价格为每年60元。</p>
+                        <br />
+                        <p>&nbsp;&nbsp;一年价格为:60元。</p>
+                        <br />
+                        <p>&nbsp;&nbsp;两年价格为:120元。</p>
+                        <br />
+                        <p>&nbsp;&nbsp;依此类推。</p>
                     </td>
                 </tr>
                 <tfoot>

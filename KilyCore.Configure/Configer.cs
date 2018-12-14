@@ -49,5 +49,9 @@ namespace KilyCore.Configure
         /// 客服端IP地址
         /// </summary>
         public static string ClientIP { get; set; }
+        /// <summary>
+        /// 删除图片请求地址前缀
+        /// </summary>
+        public static string RemovePathHost { get; set; }
     }
 }

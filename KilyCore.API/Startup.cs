@@ -125,6 +125,7 @@ namespace KilyCore.API
             Configer.MongoDBConnectionString = Configuration["MongoDBConnectionString:ConnectionString"];
             Configer.MongoDBName = Configuration["MongoDBConnectionString:MongoDBName"];
             Configer.ApiKey = Configuration["Key:ApiKey"];
+            Configer.RemovePathHost = Configuration["RemovePathHost"];
         }
         /// <summary>
         /// 获取版本价格

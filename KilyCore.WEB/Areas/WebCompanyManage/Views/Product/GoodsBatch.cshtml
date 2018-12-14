@@ -67,9 +67,10 @@
                             type: 2,
                             height: "90%",
                             width: "80%",
+                            btn:['取消'],
                             url: "WebCompanyManage/Product/ShowTarget?Id=" + row.Id + "&Manager=" + row.Manager,
                             callBack: function (result) {
-                                result.$("#Edit").submit();
+                                result.popClose();
                             }
                         })
                     },

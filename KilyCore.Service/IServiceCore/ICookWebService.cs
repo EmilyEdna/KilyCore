@@ -2,6 +2,7 @@
 using KilyCore.DataEntity.RequestMapper.Cook;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Cook;
+using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.Service.QueryExtend;
 using System;
 using System.Collections.Generic;
@@ -41,7 +42,7 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseCookInfo> GetCookVipPage(PageParamList<RequestCookInfo> pageParam);
         ResponseCookInfo GetCookVipDetail(Guid Id);
         String EditCookVip(RequestCookInfo Param);
-        String OpenService(RequestStayContract Param);
+        ResponseStayContract OpenService(RequestStayContract Param);
         #endregion
 
         #region 厨师信息
@@ -72,6 +73,10 @@ namespace KilyCore.Service.IServiceCore
 
         #region 数据统计
         Object GetDataCount();
+        #endregion
+
+        #region 微信支付
+        String WxQueryPay(Guid Param);
         #endregion
     }
 }

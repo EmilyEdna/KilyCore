@@ -25,8 +25,32 @@
             },
             //事件
             InitEvents: function () {
-          
+
             },
+            action: {
+                TableFormatter: function (val, row, index) {
+                    var action = [];
+                    if (row.StockStutas == null)
+                        action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
+                    return action.join("&nbsp;")
+                },
+                TableEvents: {
+                    "click .del": function (event, val, row, index) {
+                        controller.Confirm("确认删除？", function (bool) {
+                            if (bool) {
+                                controller.ajax({
+                                    url: "EnterpriseWeb/DeleteBindTagInfo",
+                                    data: { Id: row.Id },
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
+                    },
+                }
+            }
         };
         //初始化
         $(document).ready(function () {
@@ -56,6 +80,7 @@
                                 <th data-field="StarSerialNo" data-halign="center" data-align="center" data-valign="middle">开始号段</th>
                                 <th data-field="EndSerialNo" data-halign="center" data-align="center" data-valign="middle">结束号段</th>
                                 <th data-field="UseNum" data-halign="center" data-align="center" data-valign="middle">使用数量</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>
                     </table>

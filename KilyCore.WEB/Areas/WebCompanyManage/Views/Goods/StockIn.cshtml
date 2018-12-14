@@ -60,7 +60,7 @@
                     success: function (result) {
                         var html = '<option value="0">===请选择===</option>';
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '">' + obj.BatchNo + '</option>';
+                            html += '<option value="' + obj.Id + '">' + obj.SeriesName + '(' + obj.BatchNo + ')</option>';
                         });
                         $("#BatchId").html(html);
                     }
@@ -126,8 +126,15 @@
             BindTarget: function () {
                 $("#bind").on('click', function () {
                     var flag = $("#GoodsId").find("option:selected").val();
-                    if (flag == 0)
+                    if (flag == 0) {
                         controller.Msg("请先选择产品!");
+                        return;
+                    }
+                    else if (!controller.CheckFeild($("input[name='InStockNum']").val()))
+                    {
+                        controller.Msg("请输入入库数量!");
+                        return;
+                    }
                     else
                         controller.OpenWindow({
                             title: "绑定二维码",

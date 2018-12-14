@@ -712,6 +712,24 @@ namespace KilyCore.Service.ServiceCore
             return Delete<EnterpriseTarget>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         #endregion
+
+        #region 物码管理
+        /// <summary>
+        /// 删除绑定信息
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string DeleteBindTagInfo(Guid Id)
+        {
+            EnterpriseTagAttach TagAttach = Kily.Set<EnterpriseTagAttach>().Where(t => t.Id == Id).AsNoTracking().FirstOrDefault();
+            EnterpriseTag Tag = Kily.Set<EnterpriseTag>().Where(t => t.Id == TagAttach.TagId).AsNoTracking().FirstOrDefault();
+            Tag.UseNum = 0;
+            Tag.TotalNo += TagAttach.UseNum;
+            IList<String> Fields = new List<String> { "UseNum", "TotalNo" };
+            UpdateField(Tag, null, Fields);
+            return Remove<EnterpriseTagAttach>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
         #endregion
 
         #region 基础管理
@@ -889,8 +907,8 @@ namespace KilyCore.Service.ServiceCore
                             GoodsId = contract.Id,
                             PayType = contract.PayType,
                             TradeNo = AliPayCore.Instance.GetTradeNo(),
-                            Version=Param.VersionType,
-                            TagNum= info.TagCodeNum
+                            Version = Param.VersionType,
+                            TagNum = info.TagCodeNum
                         });
                         return new ResponseStayContract()
                         {
@@ -900,7 +918,8 @@ namespace KilyCore.Service.ServiceCore
                             PayInfoMsg = AliPayCore.Instance.WebPay(AliPayModel)
                         };
                     }
-                    else {
+                    else
+                    {
                         SystemPayInfo PayInfo = Kily.Set<SystemPayInfo>().Where(t => t.GoodsId == CompanyContract.Id)
                             .Where(t => t.PayType == PayEnum.Alipay)
                             .Where(t => t.MerchantId == CompanyContract.CompanyId).AsNoTracking().FirstOrDefault();
@@ -933,7 +952,7 @@ namespace KilyCore.Service.ServiceCore
                             GoodsId = contract.Id,
                             PayType = contract.PayType,
                             TradeNo = WxPayCore.Instance.GetTradeNo(),
-                          
+
                         });
                         return new ResponseStayContract()
                         {
@@ -1226,7 +1245,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public ResponseEnterpriseDictionary GetDicDetail(Guid Id)
         {
-            var data = Kily.Set<EnterpriseDictionary>().Where(t=>t.Id==Id).AsNoTracking().Select(t => new ResponseEnterpriseDictionary()
+            var data = Kily.Set<EnterpriseDictionary>().Where(t => t.Id == Id).AsNoTracking().Select(t => new ResponseEnterpriseDictionary()
             {
                 Id = t.Id,
                 CompanyId = t.CompanyId,
@@ -2491,12 +2510,13 @@ namespace KilyCore.Service.ServiceCore
                 .OrderByDescending(t => t.CreateTime)
                 .Select(t => new ResponseEnterpriseTagAttach()
                 {
+                    Id = t.Id,
                     StarSerialNo = t.StarSerialNo,
                     EndSerialNo = t.EndSerialNo,
                     StockNo = t.StockNo,
-                    UseNum = t.UseNum
-                })
-                .ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                    UseNum = t.UseNum,
+                    StockStutas = Kily.Set<EnterpriseGoodsStock>().Where(x => x.GoodsBatchNo == t.StockNo).AsNoTracking().FirstOrDefault()
+                }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
         /// <summary>
@@ -4480,15 +4500,15 @@ namespace KilyCore.Service.ServiceCore
                     return null;
                 if (ResultCode.Equals("SUCCESS"))
                 {
-                    EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Param.MerchantId).FirstOrDefault();
+                    EnterpriseInfo Info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Param.MerchantId).FirstOrDefault();
                     PayInfo.PayDes = "SUCCESS";
                     IList<string> Fields = new List<string> { "Version", "TagCodeNum" };
-                    info.Version = Param.VersionType;
-                    info.TagCodeNum = Param.TagNum;
+                    Info.Version = Param.VersionType;
+                    Info.TagCodeNum = Param.TagNum;
                     if (string.IsNullOrEmpty(PayInfo.PayDes))
                     {
                         UpdateField(PayInfo, "PayDes");
-                        UpdateField(info, null, Fields);
+                        UpdateField(Info, null, Fields);
                     }
                     return "http://main.cfdacx.com/StaticHtml/WxNotify.html";
                 }

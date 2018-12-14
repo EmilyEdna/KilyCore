@@ -146,6 +146,7 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseEnterpriseScanCode> GetScanCodePage(PageParamList<RequestEnterpriseGoods> pageParam);
         ResponseEnterpriseScanCode GetScanCodeDetail(Guid? Id, Int64 Code);
         PagedResult<ResponseEnterpriseTagAttach> GetTagAttachPage(PageParamList<RequestEnterpriseTagAttach> pageParam);
+        String DeleteBindTagInfo(Guid Id);
         String EditScanInfo(RequestEnterpriseScanCodeInfo Param);
         #endregion
         #region 厂商管理

@@ -1275,15 +1275,45 @@ namespace KilyCore.Service.ServiceCore
                     return null;
                 if (ResultCode.Equals("TRADE_SUCCESS"))
                 {
-                    EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == PayInfo.MerchantId).FirstOrDefault();
+                    EnterpriseInfo EInfo = Kily.Set<EnterpriseInfo>().Where(t => t.Id == PayInfo.MerchantId).AsNoTracking().FirstOrDefault();
+                    RepastInfo RInfo = Kily.Set<RepastInfo>().Where(t => t.Id == PayInfo.MerchantId).AsNoTracking().FirstOrDefault();
+                    CookVip CInfo = Kily.Set<CookVip>().Where(t => t.Id == PayInfo.MerchantId).AsNoTracking().FirstOrDefault();
                     PayInfo.PayDes = "TRADE_SUCCESS";
-                    IList<string> Fields = new List<string> { "Version", "TagCodeNum" };
-                    info.Version = (SystemVersionEnum)PayInfo.Version;
-                    info.TagCodeNum = PayInfo.TagNum;
-                    if (string.IsNullOrEmpty(PayInfo.PayDes))
+                    IList<string> Fields = new List<string>();
+                    if (EInfo != null)
                     {
-                        UpdateField(PayInfo, "PayDes");
-                        UpdateField(info, null, Fields);
+                        EInfo.Version = (SystemVersionEnum)PayInfo.Version;
+                        EInfo.TagCodeNum = PayInfo.TagNum;
+                        Fields.Add("Version");
+                        Fields.Add("TagCodeNum");
+                        if (string.IsNullOrEmpty(PayInfo.PayDes))
+                        {
+                            UpdateField(PayInfo, "PayDes");
+                            UpdateField(EInfo, null, Fields);
+                        }
+                    }
+                    if (RInfo != null)
+                    {
+                        RInfo.VersionType = (SystemVersionEnum)PayInfo.Version;
+                        if (string.IsNullOrEmpty(PayInfo.PayDes))
+                        {
+                            UpdateField(PayInfo, "PayDes");
+                            UpdateField(RInfo, "VersionType");
+                        }
+                    }
+                    if (CInfo != null)
+                    {
+                        CInfo.IsVip = true;
+                        CInfo.StartTime = DateTime.Now;
+                        CInfo.EndTime= DateTime.Now.AddYears(Convert.ToInt32(PayInfo.TagNum));
+                        Fields.Add("IsVip");
+                        Fields.Add("StartTime");
+                        Fields.Add("EndTime");
+                        if (string.IsNullOrEmpty(PayInfo.PayDes))
+                        {
+                            UpdateField(PayInfo, "PayDes");
+                            UpdateField(CInfo, null, Fields);
+                        }
                     }
                 }
             }

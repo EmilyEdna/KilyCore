@@ -115,7 +115,7 @@ namespace KilyCore.API.Controllers
         [HttpPost("OpenService")]
         public ObjectResultEx OpenService(RequestStayContract Param)
         {
-            return ObjectResultEx.Instance(CookWebService.OpenService(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(CookWebService.OpenService(Param), 5, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
 
@@ -277,6 +277,19 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetDataCount()
         {
             return ObjectResultEx.Instance(CookWebService.GetDataCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region 微信支付
+        /// <summary>
+        /// 查询微信支付
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("WxQueryPay")]
+        public ObjectResultEx WxQueryPay(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(CookWebService.WxQueryPay(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

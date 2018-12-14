@@ -2,7 +2,9 @@
 using KilyCore.DataEntity.RequestMapper.Cook;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Cook;
+using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.EntityFrameWork.Model.Cook;
+using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AttributeExtension;
 using KilyCore.Extension.AutoMapperExtension;
@@ -189,24 +191,38 @@ namespace KilyCore.Service.ServiceCore
         /// <param name="Year"></param>
         /// <param name="PayType"></param>
         /// <returns></returns>
-        public string OpenService(RequestStayContract Param)
+        public ResponseStayContract OpenService(RequestStayContract Param)
         {
-            CookVip vip = Kily.Set<CookVip>().Where(t => t.Id == Param.Id).FirstOrDefault();
-            IList<String> Fields = new List<String> { "IsVip", "StartTime", "EndTime" };
             RequestAliPayModel AliPayModel = new RequestAliPayModel
             {
                 OrderTitle = "厨师系统会员服务",
                 Money = ConfigMoney.Cook * Convert.ToInt32(Param.ContractYear)
             };
             RequestWxPayModel WxPayModel = AliPayModel.MapToEntity<RequestWxPayModel>();
-            vip.IsVip = true;
-            vip.StartTime = DateTime.Now;
-            vip.EndTime = DateTime.Now.AddYears(Convert.ToInt32(Param.ContractYear));
-            UpdateField(vip, null, Fields);
             if (Param.PayType == PayEnum.Alipay)
-                return AliPayCore.Instance.WebPay(AliPayModel);
+            {
+                Insert(new SystemPayInfo()
+                {
+                    GoodsId = Param.Id,
+                    MerchantId = Param.Id,
+                    PayType = Param.PayType,
+                    TradeNo = AliPayCore.Instance.GetTradeNo(),
+                    TagNum = Convert.ToInt32(Param.ContractYear)
+                });
+                return new ResponseStayContract() { PayInfoMsg = AliPayCore.Instance.WebPay(AliPayModel) };
+            }
             else
-                return WxPayCore.Instance.WebPay(WxPayModel);
+            {
+                Insert(new SystemPayInfo()
+                {
+                    GoodsId = Param.Id,
+                    MerchantId = Param.Id,
+                    PayType = Param.PayType,
+                    TradeNo = WxPayCore.Instance.GetTradeNo(),
+                    TagNum = Convert.ToInt32(Param.ContractYear)
+                });
+                return new ResponseStayContract() { PayInfoMsg = WxPayCore.Instance.WebPay(WxPayModel) };
+            }
         }
         #endregion
 
@@ -232,7 +248,7 @@ namespace KilyCore.Service.ServiceCore
                 ExpiredDay = t.ExpiredDay,
                 IdCardPhoto = t.IdCardPhoto,
                 BookInCard = t.BookInCard,
-                HealthCard=t.HealthCard,
+                HealthCard = t.HealthCard,
                 TrainCard = t.TrainCard,
                 AuditTypeName = AttrExtension.GetSingleDescription<DescriptionAttribute>(t.AuditType)
             }).AsNoTracking().FirstOrDefault();
@@ -445,7 +461,7 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.IsUse == false);
             var data = queryable.Select(t => new ResponseCookFood()
             {
-                Id=t.Id,
+                Id = t.Id,
                 BuyTime = t.BuyTime,
                 FoodName = t.FoodName
             }).ToList();
@@ -465,6 +481,45 @@ namespace KilyCore.Service.ServiceCore
             int Banquet = queryable.Select(t => t.Id).Count();
             int Helper = queryables.Select(t => t.Id).Count();
             return new { Banquet, Helper };
+        }
+        #endregion
+
+        #region 微信支付
+        /// <summary>
+        /// 查询微信支付
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string WxQueryPay(Guid Param)
+        {
+            SystemPayInfo PayInfo = Kily.Set<SystemPayInfo>().Where(t => t.GoodsId == Param)
+                .Where(t => t.PayType == PayEnum.WxPay)
+                .AsNoTracking().FirstOrDefault();
+            if (PayInfo != null)
+            {
+                String ResultCode = WxPayCore.Instance.QueryWxPay(PayInfo.TradeNo);
+                if (string.IsNullOrEmpty(ResultCode))
+                    return null;
+                if (ResultCode.Equals("SUCCESS"))
+                {
+                    CookVip Info = Kily.Set<CookVip>().Where(t => t.Id == Param).FirstOrDefault();
+                    PayInfo.PayDes = "SUCCESS";
+                    IList<string> Fields = new List<string> { "IsVip", "StartTime", "EndTime" };
+                    Info.IsVip = true;
+                    Info.StartTime = DateTime.Now;
+                    Info.EndTime = DateTime.Now.AddYears(Convert.ToInt32(PayInfo.TagNum));
+                    if (string.IsNullOrEmpty(PayInfo.PayDes))
+                    {
+                        UpdateField(PayInfo, "PayDes");
+                        UpdateField(Info, null, Fields);
+                    }
+                    return "http://main.cfdacx.com/StaticHtml/WxNotify.html";
+                }
+                else
+                    return null;
+            }
+            else
+                return null;
         }
         #endregion
     }
