@@ -84,8 +84,8 @@
                                     type: 'post',
                                     success: function (result) {
                                         options.$table.refresh();
-                                        $("input[type='hidden'][name='SCode']").val(row.StarSerialNo);
-                                        $("input[type='hidden'][name='ECode']").val(row.EndSerialNo);
+                                        $("input[type='hidden'][name='SCodes']").val(row.StarSerialNo);
+                                        $("input[type='hidden'][name='ECodes']").val(row.EndSerialNo);
                                         $("#Export").submit();
                                     }
                                 });
@@ -105,8 +105,8 @@
 
 }
 <form method="post" action="/File/ExportTxt" id="Export">
-    <input type="hidden" name="SCode" />
-    <input type="hidden" name="ECode" />
+    <input type="hidden" name="SCodes" />
+    <input type="hidden" name="ECodes" />
     <input type="hidden" name="UseId" value="false" />
 </form>
 <div class="container-fluid">

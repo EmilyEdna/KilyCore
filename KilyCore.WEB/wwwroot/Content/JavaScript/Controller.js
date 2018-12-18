@@ -562,7 +562,7 @@ controller.ValidateConfirm = function (element, option) {
                         if (window.source.options.$table != undefined)
                             window.source.options.$table.refresh();
                     //判断支付
-                    if (controller.JsonObject(data.data)&& data.flag == 5) {
+                    if (controller.JsonObject(data.data) && data.flag == 5) {
                         $("#ContractHidden").find("#tag").val(data.data.TagNum);
                         $("#ContractHidden").find("#gid").val(data.data.Id);
                         $("#ContractHidden").find("#ver").val(data.data.VersionType);
@@ -698,7 +698,7 @@ controller.TreeCtrl = function (element, option, document) {
     function NodeUnchecked(event, node) {
         CheckStatus();
         if (nodeUncheckedSilent)
-        nodeUncheckedSilent = true;
+            nodeUncheckedSilent = true;
         UnCheckAllParent(node);
         UnCheckAllSon(node);
         nodeUncheckedSilent = false;
@@ -873,7 +873,7 @@ controller.Select = function (option) {
 controller.Editor = function (element, option) {
     defaultOption = {
         height: Math.ceil($(window).height() / 2),
-        width: $(window).width()/1.1,
+        width: $(window).width() / 1.1,
         lang: 'zh-CN',
         maximumImageFileSize: 2097152,
         placeholder: "请输入内容!",
@@ -1149,4 +1149,13 @@ controller.GetDate = function (option) {
  */
 controller.CheckFeild = function (option) {
     return (option != null && option != "" && option != undefined) ? true : false;
+}
+/**
+ * 随机数
+ * @param {any} index
+ * @param {any} last
+ */
+controller.Random = function (index, last)
+{
+    return parseInt(Math.random() * (last - index + 1) + index);
 }

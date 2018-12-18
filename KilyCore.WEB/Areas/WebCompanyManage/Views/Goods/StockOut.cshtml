@@ -58,7 +58,8 @@
                     type: "post",
                     async: false,
                     success: function (result) {
-                        $("input[name='CodeStarSerialNo']").val(result.data);
+                        $("input[name='CodeStarSerialNos']").val(result.data.StarSerialNos);
+                        $("input[name='CodeStarSerialNo']").val(result.data.StarSerialNo);
                     }
                 });
             },
@@ -81,6 +82,7 @@
         <form class="form-horizontal" method="post" action="EnterpriseWeb/EditStockAttach" id="Edit">
             <input type="hidden" class="form-control" name="CompanyId" id="CompanyId" />
             <input type="hidden" class="form-control" name="StockId" id="StockId" />
+            <input type="hidden" class="form-control" name="CodeStarSerialNo" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">批次号</label></th>
@@ -118,7 +120,7 @@
                 <tr>
                     <th><label class="control-label">追溯开始号段</label></th>
                     <td class="has-warning" colspan="3">
-                        <input type="text"  class="form-control" name="CodeStarSerialNo" readonly/>
+                        <input type="text" class="form-control" name="CodeStarSerialNos" readonly />
                     </td>
                 </tr>
             </table>

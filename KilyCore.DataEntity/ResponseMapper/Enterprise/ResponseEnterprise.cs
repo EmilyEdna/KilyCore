@@ -94,5 +94,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string SafeCompany { get; set; }
         public string Scope { get; set; }
         public string VideoAddress { get; set; }
+        public string CodeStar { get; set; }
     }
 }

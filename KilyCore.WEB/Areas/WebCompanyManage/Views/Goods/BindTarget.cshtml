@@ -51,12 +51,19 @@
                         async: false,
                         type: "post",
                         success: function (result) {
-                            $("#Star").val(result.data);
+                            var HostCode = CompanyInfo.CodeStar + ($("#TagType").find("option:selected").val() == 2 ? "W" : "P") + result.data;
+                            $("#Star").val(HostCode);
+                            $("#stars").val(result.data);
                             var End = '';
-                            if ($("#TagType").find("option:selected").val() == 2)
-                                End  = Number(result.data);
-                            else
+                            if ($("#TagType").find("option:selected").val() != 2) {
+                                $("#ends").val(Number(result.data));
+                                End = CompanyInfo.CodeStar + "P" + Number(result.data);
+                            }
+                            else {
                                 End = Number(result.data) - 1 + Number(controller.GetParam("Num"));
+                                $("#ends").val(End);
+                                End = CompanyInfo.CodeStar + "W" + End;
+                            }
                             $("#End").val(End);
                         }
                     });
@@ -80,6 +87,8 @@
             <input type="hidden" name="GoodsId" id="GoodsId" />
             <input type="hidden" name="TagBatchNo" id="TagBatchNo" />
             <input type="hidden" name="StockNo" id="StockNo" />
+            <input type="hidden" name="StarSerialNo" id="stars" />
+            <input type="hidden" name="EndSerialNo" id="ends" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">二维码类型</label></th>
@@ -100,11 +109,11 @@
                 <tr>
                     <th><label class="control-label">开始号段</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="StarSerialNo" id="Star" placeholder="纹理二维码请输入前11位/普通二维码输入前14位" title="纹理二维码请输入前11位/普通二维码输入前14位" />
+                        <input type="text" class="form-control" name="StarSerialNos" id="Star" placeholder="纹理二维码请输入前11位/普通二维码输入前14位" title="纹理二维码请输入前11位/普通二维码输入前14位" />
                     </td>
                     <th><label class="control-label">结束号段</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="EndSerialNo" id="End" placeholder="纹理二维码请输入前11位/普通二维码输入前14位" title="纹理二维码请输入前11位/普通二维码输入前14位" />
+                        <input type="text" class="form-control" name="EndSerialNos" id="End" placeholder="纹理二维码请输入前11位/普通二维码输入前14位" title="纹理二维码请输入前11位/普通二维码输入前14位" />
                     </td>
                 </tr>
             </table>

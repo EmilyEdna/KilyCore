@@ -112,7 +112,11 @@ namespace KilyCore.WEB.Model
     {
         public bool UseId { get; set; }
         public Guid Id { get; set; }
-        public Int64 SCode { get; set; }
-        public Int64 ECode { get; set; }
+        public Int64 SCode => SCodes.Contains("W") ? Convert.ToInt64(SCodes.Split("W")[1]) : Convert.ToInt64(SCodes.Split("P")[1]);
+        public Int64 ECode => ECodes.Contains("W") ? Convert.ToInt64(ECodes.Split("W")[1]) : Convert.ToInt64(ECodes.Split("P")[1]);
+        public String SCodes { get; set; }
+        public String ECodes { get; set; }
+        public String CodeHost => ECodes.Contains("W") ? ECodes.Split("W")[0] + "W" : ECodes.Split("P")[0] + "P";
+
     }
 }

@@ -13,8 +13,8 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public Guid Id { get; set; }
         public Guid CompanyId { get; set; }
         public string BatchNo { get; set; }
-        public Int64 StarSerialNo { get; set; }
-        public Int64 EndSerialNo { get; set; }
+        public string StarSerialNo { get; set; }
+        public string EndSerialNo { get; set; }
         public int TotalNo { get; set; }
         public TagEnum TagType { get; set; }
         public string TagTypeName { get; set; }
@@ -31,9 +31,14 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public Guid GoodsId { get; set; }
         public string TagBatchNo { get; set; }
         public Int64 StarSerialNo { get; set; }
+        public string StarSerialNos { get; set; }
+        public string EndSerialNos { get; set; }
         public Int64 EndSerialNo { get; set; }
         public int UseNum { get; set; }
         public string StockNo { get; set; }
+        /// <summary>
+        /// 入库状态
+        /// </summary>
         public Object StockStutas { get; set; }
     }
 }

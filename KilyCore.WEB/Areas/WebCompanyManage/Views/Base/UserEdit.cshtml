@@ -18,12 +18,12 @@
                 var Guid = controller.GetParam("Id");
                 if (Guid != null && Guid != undefined && Guid != "")
                     options.GetEnterpriseUserDetail(Guid);
-                else
-                {
+                else {
                     $("#CompanyId").val(CompanyInfo.Id);
                     $("#Version").val(CompanyInfo.Version);
                     $("#CompanyName").val(CompanyInfo.CompanyName);
                     $("#CompanyType").val(CompanyInfo.CompanyType);
+                    $("#CodeStar").val(CompanyInfo.CodeStar);
                 }
             },
             //获取详情
@@ -34,8 +34,8 @@
                     type: "post",
                     async: false,
                     success: function (result) {
-                        controller.SetCtrlValue("#Edit",result.data)
-                     }
+                        controller.SetCtrlValue("#Edit", result.data)
+                    }
                 });
             },
             //获取集团账户
@@ -45,8 +45,7 @@
                     data: {},
                     type: "post",
                     async: false,
-                    success: function (result)
-                    { 
+                    success: function (result) {
                         var html = '<option>===请选择===</option>';
                         $.each(result.data, function (i, obj) {
                             html += '<option value="' + obj.Id + '">' + obj.AuthorName + '</option>'
@@ -73,10 +72,11 @@
     <div class="ibox-content">
         <form class="form-horizontal" method="post" action="EnterpriseWeb/SaveUser" id="Edit">
             <input type="hidden" name="Id" />
-            <input type="hidden" name="CompanyId"  id="CompanyId"/>
-            <input type="hidden" name="Version"  id="Version"/>
-            <input type="hidden" name="CompanyName"  id="CompanyName"/>
-            <input type="hidden" name="CompanyType"  id="CompanyType"/>
+            <input type="hidden" name="CompanyId" id="CompanyId" />
+            <input type="hidden" name="Version" id="Version" />
+            <input type="hidden" name="CompanyName" id="CompanyName" />
+            <input type="hidden" name="CompanyType" id="CompanyType" />
+            <input type="hidden" name="CodeStar" id="CodeStar" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">用户账户<span style="color:red">*</span></label></th>
@@ -101,7 +101,7 @@
                 <tr>
                     <th><label class="control-label">联系电话<span style="color:red">*</span></label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control required IsPhone" name="Phone" data-msg-required="请输入联系电话"/>
+                        <input type="text" class="form-control required IsPhone" name="Phone" data-msg-required="请输入联系电话" />
                     </td>
                     <th><label class="control-label">角色权限</label></th>
                     <td class="has-warning">

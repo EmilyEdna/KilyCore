@@ -131,7 +131,7 @@
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">企业性质</label></th>
-                    <td class="has-warning" colspan="3">
+                    <td class="has-warning">
                         <label class="radio-inline">
                             <input type="radio" name="NatureAgent" value="1" style="margin-top:3px" checked />
                             <text title="企业或合作社">企业或合作社</text>
@@ -140,6 +140,10 @@
                             <input type="radio" name="NatureAgent" value="2" style="margin-top:3px" />
                             <text title="个体商业户">个体商业户</text>
                         </label>
+                    </td>
+                    <th><label class="control-label">码段前缀<span style="color:red">*</span></label></th>
+                    <td class="has-warning">
+                        <input type="text" maxlength="2" placeholder="请输入生成二维码前缀字符仅限汉字" class="form-control required" name="CodeStar" data-msg-required="请输入生成二维码前缀字符">
                     </td>
                 </tr>
                 <tr>

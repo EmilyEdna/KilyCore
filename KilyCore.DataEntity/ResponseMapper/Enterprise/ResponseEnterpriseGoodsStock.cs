@@ -101,5 +101,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// 库存
         /// </summary>
         public int StockEx { get; set; }
+        public string CodeStarSerialNos { get; set; }
+        public string CodeEndSerialNos { get; set; }
     }
 }

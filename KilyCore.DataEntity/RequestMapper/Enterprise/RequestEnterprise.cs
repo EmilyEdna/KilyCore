@@ -54,5 +54,6 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public DateTime? CardExpiredDate { get; set; }
         public string SafeOffer { get; set; }
         public string OfferLv { get; set; }
+        public string CodeStar { get; set; }
     }
 }

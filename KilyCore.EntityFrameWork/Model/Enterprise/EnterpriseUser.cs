@@ -54,5 +54,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 所属区域
         /// </summary>
         public virtual string TypePath { get; set; }
+        /// <summary>
+        /// 码段前缀
+        /// </summary>
+        public virtual string CodeStar { get; set; }
     }
 }

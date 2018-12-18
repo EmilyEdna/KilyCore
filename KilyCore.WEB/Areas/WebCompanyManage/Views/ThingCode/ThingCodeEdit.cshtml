@@ -31,6 +31,7 @@
                     $("input[name='TagType']").eq(2).attr("checked", true);
                 }
                 $("#CompanyId").val(CompanyInfo.Id);
+                $("#CodeStar").val(CompanyInfo.CodeStar);
             },
             //事件
             InitEvents: function () {
@@ -50,10 +51,11 @@
     <div class="ibox-content">
         <form class="form-horizontal" method="post" action="EnterpriseWeb/CreateTag" id="Edit">
             <input type="hidden" id="CompanyId" name="CompanyId" />
+            <input  type="hidden" id="CodeStar" name="CodeStar"/>
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">标签类型</label></th>
-                    <td class="has-warning" colspan="3">
+                    <td class="has-warning">
                         <label class="radio-inline">
                             <input type="radio" name="TagType" value="10" style="margin-top:3px" />
                             <text title="一物一码">一物一码</text>
@@ -66,6 +68,9 @@
                             <input type="radio" name="TagType" value="30" style="margin-top:3px" />
                             <text title="一企一码">一企一码</text>
                         </label>
+                    </td>
+                    <td class="has-warning" colspan="2">
+                        <p class="text-danger">号段组成说明：码段前缀加C(P或W)加区域加10位数和随机尾数[C:一企一码,P:一品一码,W:一物一码]</p>
                     </td>
                 </tr>
                 <tr>

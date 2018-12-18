@@ -579,7 +579,17 @@ namespace KilyCore.Service.ServiceCore
             if (recover.Id == Guid.Empty)
                 return Insert(recover) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
             else
-                return Update(recover, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            {
+                EnterpriseRecover data = Kily.Set<EnterpriseRecover>().Where(t => t.Id == Param.Id).AsNoTracking().FirstOrDefault();
+                if (!string.IsNullOrEmpty(data.RecoverNum) && !string.IsNullOrEmpty(data.HandleWays))
+                    return "无权限更改";
+                data.HandleTime = Param.HandleTime;
+                data.HandleUser = Param.HandleUser;
+                data.HandleWays = Param.HandleWays;
+                data.RecoverNum = Param.RecoverNum;
+                List<String> Fields = new List<String> { "HandleTime", "HandleUser", "HandleWays", "RecoverNum" };
+                return UpdateField(recover,null,Fields) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            }
         }
         #endregion
         #endregion
@@ -1991,8 +2001,8 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 BatchNo = t.BatchNo,
                 CompanyId = t.CompanyId,
-                EndSerialNo = t.EndSerialNo,
-                StarSerialNo = t.StarSerialNo,
+                EndSerialNo = t.CodeDiscern + t.EndSerialNo,
+                StarSerialNo = t.CodeDiscern + t.StarSerialNo,
                 TotalNo = t.TotalNo,
                 TagType = t.TagType,
                 UseNum = t.UseNum,
@@ -2006,18 +2016,25 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public ResponseEnterpriseTag GetTagDetailWeb(Int64 key)
+        public ResponseEnterpriseTag GetTagDetailWeb(String key)
         {
+            long LastStr = 0;
+            if (key.Contains("P"))
+                LastStr = Convert.ToInt64(key.Split("P")[1].Substring(0, 12));
+            else if (key.Contains("W"))
+                LastStr = Convert.ToInt64(key.Split("W")[1].Substring(0, 12));
+            else
+                return null;
             IQueryable<EnterpriseTagAttach> queryable = Kily.Set<EnterpriseTagAttach>().AsNoTracking()
-                .Where(t => t.StarSerialNo <= key && t.EndSerialNo >= key);
+                .Where(t => t.StarSerialNo <= LastStr && t.EndSerialNo >= LastStr);
             IQueryable<EnterpriseTag> queryables = Kily.Set<EnterpriseTag>().AsNoTracking();
             return queryables.Join(queryable, t => t.Id, x => x.TagId, (t, x) => new ResponseEnterpriseTag()
             {
                 BatchNo = t.BatchNo,
                 TagTypeName = AttrExtension.GetSingleDescription<TagEnum, DescriptionAttribute>(t.TagType),
                 IsCreate = t.IsCreate,
-                StarSerialNo = t.StarSerialNo,
-                EndSerialNo = x.EndSerialNo,
+                EndSerialNo = t.CodeDiscern + t.EndSerialNo,
+                StarSerialNo = t.CodeDiscern + t.StarSerialNo,
             }).FirstOrDefault();
         }
         /// <summary>
@@ -2058,7 +2075,7 @@ namespace KilyCore.Service.ServiceCore
                 .Where(t => t.CompanyId == Param.CompanyId).Where(t => t.TagType == Param.TagType).OrderByDescending(t => t.CreateTime);
             List<EnterpriseTag> TagList = queryables.ToList();
             if (TagList.Count == 0)
-                Param.StarSerialNo = Convert.ToInt64(Province.Code + "100000000001");
+                Param.StarSerialNo = Convert.ToInt64(Province.Code + "1000000001");
             else
                 Param.StarSerialNo = TagList.FirstOrDefault().EndSerialNo + 1;
             Param.EndSerialNo = Param.StarSerialNo + Param.TotalNo - 1;
@@ -2068,6 +2085,7 @@ namespace KilyCore.Service.ServiceCore
             if (Tag.TagType == TagEnum.OneEnterprise)
             {
                 Tag.TotalNo = 1;
+                Tag.CodeDiscern = Param.CodeStar + "C";
                 Tag.EndSerialNo = Tag.StarSerialNo;
                 var data = queryables.Where(t => t.TagType == TagEnum.OneEnterprise).ToList().Count >= 1 ?
                      "企业只能拥有一个企业二维码!" :
@@ -2079,6 +2097,10 @@ namespace KilyCore.Service.ServiceCore
             }
             else
             {
+                if (Tag.TagType == TagEnum.OneBrand)
+                    Tag.CodeDiscern = Param.CodeStar + "P";
+                else
+                    Tag.CodeDiscern = Param.CodeStar + "W";
                 info.TagCodeNum -= Tag.TotalNo;
                 if (info.TagCodeNum < 0)
                     return $"当前剩余标签数量:{info.TagCodeNum},请升级版本或申请购买数量!";
@@ -2343,6 +2365,8 @@ namespace KilyCore.Service.ServiceCore
                       ExpiredDate = t.n.q.y.t.ExpiredDate,
                       StarSerialNo = t.n.q.z.StarSerialNo,
                       EndSerialNo = t.n.q.z.EndSerialNo,
+                      StarSerialNos = t.n.q.z.StarSerialNos,
+                      EndSerialNos = t.n.q.z.EndSerialNos,
                       ProductType = t.n.q.y.t.ProductType,
                       BatchNo = t.n.p.GoodsBatchNo,
                       IsCreate = t.IsCreate
@@ -2429,6 +2453,8 @@ namespace KilyCore.Service.ServiceCore
                 ProductCheckReport = t.i.p.f.z.CheckReport,
                 StarSerialNo = t.i.j.StarSerialNo,
                 EndSerialNo = t.i.j.EndSerialNo,
+                StarSerialNos = t.i.j.StarSerialNos,
+                EndSerialNos = t.i.j.EndSerialNos,
                 NetAddress = t.i.p.k.NetAddress,
                 CompanyAddress = t.i.p.k.CompanyAddress,
                 CompanyName = t.i.p.k.CompanyName,
@@ -2511,7 +2537,9 @@ namespace KilyCore.Service.ServiceCore
                 .Select(t => new ResponseEnterpriseTagAttach()
                 {
                     Id = t.Id,
+                    StarSerialNos = t.StarSerialNos,
                     StarSerialNo = t.StarSerialNo,
+                    EndSerialNos = t.EndSerialNos,
                     EndSerialNo = t.EndSerialNo,
                     StockNo = t.StockNo,
                     UseNum = t.UseNum,
@@ -3632,8 +3660,8 @@ namespace KilyCore.Service.ServiceCore
                     GoodsName = p.ProductName,
                     OutStockNum = o.t.OutStockNum,
                     StockEx = o.x.InStockNum,
-                    CodeEndSerialNo = o.t.CodeEndSerialNo,
-                    CodeStarSerialNo = o.t.CodeStarSerialNo
+                    CodeEndSerialNos = o.t.CodeEndSerialNos,
+                    CodeStarSerialNos = o.t.CodeStarSerialNos
                 }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -3651,27 +3679,29 @@ namespace KilyCore.Service.ServiceCore
             if (stock.InStockNum < Param.OutStockNum)
                 return "当前库存少于出库量";
             stock.InStockNum -= Param.OutStockNum;
-            UpdateField(stock, "InStockNum");
             Param.CodeEndSerialNo = Param.CodeStarSerialNo + Param.OutStockNum - 1;
+            Param.CodeEndSerialNos = (Param.CodeStarSerialNos.Contains("P") ? Param.CodeStarSerialNos.Split("P")[0] + "P" : Param.CodeStarSerialNos.Split("W")[0] + "W") + Param.CodeEndSerialNo;
             EnterpriseGoodsStockAttach Attach = Param.MapToEntity<EnterpriseGoodsStockAttach>();
+            UpdateField(stock, "InStockNum");
             return Insert<EnterpriseGoodsStockAttach>(Attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         /// <summary>
         /// 获取二维码号段
         /// </summary>
         /// <param name="Id"></param>
-        public long GetCodeSerialNo(Guid Id)
+        public object GetCodeSerialNo(Guid Id)
         {
             List<EnterpriseGoodsStockAttach> StockAttach = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.StockId == Id).Where(t => t.IsDelete == false).AsNoTracking().ToList();
             if (StockAttach.Count != 0)
             {
-                return StockAttach.OrderByDescending(t => t.CreateTime).Select(t => t.CodeEndSerialNo).FirstOrDefault() + 1;
+                return StockAttach.OrderByDescending(t => t.CreateTime).Select(t => new { CodeEndSerialNo = t.CodeEndSerialNo +1,t.CodeEndSerialNos}).FirstOrDefault();
             }
             else
             {
                 Guid GoodsId = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false).Where(t => t.Id == Id).AsNoTracking().Select(t => t.GoodsId).FirstOrDefault();
-                long Code = Kily.Set<EnterpriseTagAttach>().Where(t => t.GoodsId == GoodsId && t.IsDelete == false).OrderByDescending(t => t.CreateTime).Select(t => t.StarSerialNo).FirstOrDefault();
-                return Code;
+                return Kily.Set<EnterpriseTagAttach>().Where(t => t.GoodsId == GoodsId && t.IsDelete == false)
+                     .OrderByDescending(t => t.CreateTime).Select(t => new { t.StarSerialNos, t.StarSerialNo }).FirstOrDefault();
+
             }
         }
         /// <summary>

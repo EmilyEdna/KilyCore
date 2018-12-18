@@ -35,7 +35,7 @@ namespace KilyCore.WEB.Util
         /// <returns></returns>
         public static Object UploadFile(IFormFile Files, String FolderName, String WebRootPath)
         {
-            String[] FileType = { ".jpg", ".png", ".jpeg",".gif"};
+            String[] FileType = { ".jpg", ".png", ".jpeg", ".gif" };
             //文件后缀
             var FileExtension = Path.GetExtension(Files.FileName);
             if (FileExtension == null)
@@ -246,23 +246,24 @@ namespace KilyCore.WEB.Util
             Int64 region = model.ECode - model.SCode;
             IList<String> Address = new List<String>();
             String Content = String.Empty;
-            String FileName=String.Empty;
+            String FileName = String.Empty;
             if (model.UseId)
             {
                 for (long i = region; i > 0; i--)
                 {
-                    Address.Add(string.Format(Configer.WebHost, model.Id, model.SCode + i));
+                    Address.Add(string.Format(Configer.WebHost, model.Id, model.CodeHost + (model.SCode + i)+ GetRandom()));
                 }
-                Address.Add(string.Format(Configer.WebHost, model.Id, model.SCode));
+                Address.Add(string.Format(Configer.WebHost, model.Id, model.CodeHost + model.SCode+ GetRandom()));
                 Content = String.Join("\r\n", Address);
                 FileName = WebRootPath + @"\Template\ScanLink.txt";
             }
-            else {
+            else
+            {
                 for (long i = region; i > 0; i--)
                 {
-                    Address.Add(string.Format(Configer.WebHostEmpty, model.SCode + i));
+                    Address.Add(string.Format(Configer.WebHostEmpty, model.CodeHost + (model.SCode + i)+ GetRandom()));
                 }
-                Address.Add(string.Format(Configer.WebHostEmpty, model.SCode));
+                Address.Add(string.Format(Configer.WebHostEmpty, model.CodeHost + model.SCode+ GetRandom()));
                 Content = String.Join("\r\n", Address);
                 FileName = WebRootPath + @"\Template\ScanLinkEmpty.txt";
             }
@@ -432,6 +433,15 @@ namespace KilyCore.WEB.Util
                 }
             }
             return dt;
+        }
+        /// <summary>
+        /// 产生随机数
+        /// </summary>
+        /// <returns></returns>
+        public static int GetRandom()
+        {
+            Random rd = new Random();
+            return rd.Next(1, 10);
         }
     }
 }

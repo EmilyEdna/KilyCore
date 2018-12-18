@@ -751,7 +751,7 @@ namespace KilyCore.API.Controllers
         /// <returns></returns>
         [HttpPost("GetTagDetailWeb")]
         [AllowAnonymous]
-        public ObjectResultEx GetTagDetailWeb(SimpleParam<Int64> Param)
+        public ObjectResultEx GetTagDetailWeb(SimpleParam<String> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetTagDetailWeb(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }

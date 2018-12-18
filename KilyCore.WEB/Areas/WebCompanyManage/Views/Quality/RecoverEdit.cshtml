@@ -15,13 +15,11 @@
             },
             //元素
             InitDom: function () {
-                var Guid = controller.GetParam("Id");
                 $("#CompanyId").val(CompanyInfo.Id);
                 $("#States").val("待处理");
                 controller.LayDate({ elem: "#HandleTime" });
                 controller.LayDate({ elem: "#RecoverStarTime" });
                 controller.LayDate({ elem: "#RecoverEndTime",max: controller.GetDate(10) });
-                this.GetDetail(Guid);
             },
             //取详情
             GetDetail: function (data) {
@@ -74,6 +72,7 @@
                         $("#RecoverGoodsName").html(html);
                     }
                 });
+                this.GetDetail(controller.GetParam("Id"));
                 //验证
                 controller.ValidateConfirm("#Edit", { crossDomain: true, xhrFields: { withCredentials: true} });
             },

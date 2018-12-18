@@ -98,6 +98,14 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// 结束号段
         /// </summary>
         public long EndSerialNo { get; set; }
+        /// <summary>
+        /// 开始号段
+        /// </summary>
+        public string StarSerialNos { get; set; }
+        /// <summary>
+        /// 结束号段
+        /// </summary>
+        public string EndSerialNos { get; set; }
         public IList<ResponseEnterpriseScanCodeMaterial> Materials { get; set; }
         /// <summary>
         /// 公司名称

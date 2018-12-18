@@ -17,6 +17,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public int TotalNo { get; set; }
         public TagEnum TagType { get; set; }
         public bool? IsCreate { get; set; }
+        public string CodeStar { get; set; }
     }
     public class RequestEnterpriseTagAttach
     {
@@ -25,7 +26,9 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public string TagType { get; set; }
         public  Guid TagId { get; set; }
         public  Guid GoodsId { get; set; }
-        public  string TagBatchNo { get; set; }
+        public string TagBatchNo { get; set; }
+        public string StarSerialNos { get; set; }
+        public string EndSerialNos { get; set; }
         public  Int64 StarSerialNo { get; set; }
         public  Int64 EndSerialNo { get; set; }
         public  int UseNum { get; set; }

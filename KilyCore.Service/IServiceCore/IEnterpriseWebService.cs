@@ -130,7 +130,7 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 物码管理
         PagedResult<ResponseEnterpriseTag> GetTagPage(PageParamList<RequestEnterpriseTag> pageParam);
-        ResponseEnterpriseTag GetTagDetailWeb(Int64 key);
+        ResponseEnterpriseTag GetTagDetailWeb(String key);
         String UpdateEmptyTag(Guid Id);
         String CreateTag(RequestEnterpriseTag Param);
         String RemoveTag(Guid Id);
@@ -236,7 +236,7 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseEnterpriseGoodsStockAttach> GetGoodsStockAttachPage(PageParamList<RequestEnterpriseGoodsStockAttach> pageParam);
         String EditStockAttach(RequestEnterpriseGoodsStockAttach Param);
         String RemoveGoodsStockAttach(Guid Id);
-        long GetCodeSerialNo(Guid Id);
+        Object GetCodeSerialNo(Guid Id);
         IList<ResponseEnterpriseGoodsStockAttach> GetStockOutNoList();
         String UpdateStockCheck(RequestEnterpriseGoodsStock Param);
         #endregion

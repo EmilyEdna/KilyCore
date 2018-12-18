@@ -46,5 +46,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 是否生成过空白标签
         /// </summary>
         public virtual bool? IsCreate { get; set; }
+        /// <summary>
+        /// 前缀识别
+        /// </summary>
+        public virtual string CodeDiscern { get; set; }
     }
 }

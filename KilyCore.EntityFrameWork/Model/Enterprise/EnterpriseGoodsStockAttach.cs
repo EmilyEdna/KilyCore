@@ -60,5 +60,13 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 二维码结束号段
         /// </summary>
         public virtual Int64 CodeEndSerialNo { get; set; }
+        /// <summary>
+        /// 二维码开始号段
+        /// </summary>
+        public virtual string CodeStarSerialNos { get; set; }
+        /// <summary>
+        /// 二维码结束号段
+        /// </summary>
+        public virtual string CodeEndSerialNos { get; set; }
     }
 }

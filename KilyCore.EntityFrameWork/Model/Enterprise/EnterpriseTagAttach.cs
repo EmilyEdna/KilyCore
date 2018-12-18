@@ -38,6 +38,14 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual Int64 EndSerialNo { get; set; }
         /// <summary>
+        /// 开始号段
+        /// </summary>
+        public virtual string StarSerialNos { get; set; }
+        /// <summary>
+        /// 结束号段
+        /// </summary>
+        public virtual string EndSerialNos { get; set; }
+        /// <summary>
         /// 标签类型 1:表示纹理二维码。2:表示一物一码。3:表示一品一码。
         /// </summary>
         public virtual string TagType { get; set; }

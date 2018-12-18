@@ -55,5 +55,6 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// </summary>
         public  Guid? RoleAuthorType { get; set; }
         public string TypePath { get; set; }
+        public string CodeStar { get; set; }
     }
 }

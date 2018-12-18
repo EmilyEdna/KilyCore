@@ -36,14 +36,15 @@
                             title: "确认发布信息？",
                             type: 2,
                             height: "240px",
-                            width: "260px",
+                            width: "400px",
                             resize: false,
                             maxmin: false,
                             url: "StaticHtml/PhoneCodeValidate.html",
                             callBack: function (res) {
                                 var code = res.$("#Edit").find("input[name='codes']").val();
                                 result.$("#Edit").find("#Code").val(code);
-                                 result.$("#Edit").submit();
+                                result.$("#Edit").submit();
+                                res.popClose();
                             }
                         })
                     }

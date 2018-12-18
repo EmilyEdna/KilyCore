@@ -130,5 +130,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 安全员等级
         /// </summary>
         public virtual string OfferLv { get; set; }
+        /// <summary>
+        /// 码段前缀
+        /// </summary>
+        public virtual string CodeStar { get; set; }
     }
 }

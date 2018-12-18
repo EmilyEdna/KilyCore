@@ -256,11 +256,13 @@
                 option.InitPosition();
             },
             InitDom: function () {
+                var Code = option.GetParam("Code").indexOf('W') != -1 ? option.GetParam("Code").split('W')[1] : option.GetParam("Code").split('P')[1];
+                Code = Code.substring(0, 12);
                 $.ajax({
                     url: "http://localhost:50039/api/EnterpriseWeb/GetScanCodeDetail",
                     type: "get",
                     dataType: "json",
-                    data: { TimeSpan: new Date().getTime(), Parameter: option.GetParam("Code") },
+                    data: { TimeSpan: new Date().getTime(), Parameter: Code },
                     async: false,
                     success: function (result) {
                         option.BindNode(".content", result.data);
