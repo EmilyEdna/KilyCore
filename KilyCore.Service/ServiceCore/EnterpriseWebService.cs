@@ -798,6 +798,7 @@ namespace KilyCore.Service.ServiceCore
                     TypePath = t.TypePath,
                     Certification = t.Certification,
                     Honor = t.HonorCertification,
+                    CodeStar=t.CodeStar,
                     Discription = t.Discription,
                     NetAddress = t.NetAddress,
                     ProductionAddress = t.ProductionAddress,

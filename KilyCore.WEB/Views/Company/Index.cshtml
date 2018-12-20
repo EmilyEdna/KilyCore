@@ -128,6 +128,8 @@
                 var Point = new BMap.Point(CompanyInfo.LngAndLat.split(",")[0], CompanyInfo.LngAndLat.split(",")[1]);//定义一个中心点坐标
                 Map.centerAndZoom(Point, 6);//设定地图的中心点和坐标并将地图显示在地图容器中
                 Map.enableScrollWheelZoom();//启用地图滚轮放大缩小
+                var markers = new BMap.Marker(new BMap.Point(CompanyInfo.LngAndLat.split(",")[0], CompanyInfo.LngAndLat.split(",")[1]));
+                Map.addOverlay(markers);
                 controller.ajax({
                     url: "EnterpriseWeb/GetReceipt",
                     data: {},
@@ -157,6 +159,15 @@
                             });
                         });
                     }
+                });
+                markers.addEventListener('click', function (e) {
+                    var InfoWin = '<table class="table table-bordered">' +
+                        '<tr><th>企业名称</th> <td>' + CompanyInfo.CompanyName + '</td></tr>' +
+                        '<tr><th>企业地址</th><td>' + CompanyInfo.CompanyAddress + '</td></tr></table>'
+                    var p = e.target;
+                    var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+                    var infoWindow = new BMap.InfoWindow(InfoWin);  // 创建信息窗口对象
+                    Map.openInfoWindow(infoWindow, point); //开启信息窗口
                 });
             }
         };
