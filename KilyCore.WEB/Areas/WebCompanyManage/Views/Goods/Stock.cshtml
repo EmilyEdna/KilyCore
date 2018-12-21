@@ -105,6 +105,8 @@
                 },
                 TableFormatter: function (val, row, index) {
                     var action = [];
+                    if (!row.IsBindBoxCode)
+                        action.push('<button class="btn btn-sm btn-primary pack"><i class="fa fa-pencil-square-o"></i>装箱</button>');
                     if (row.InStockNum != undefined) {
                         if (row.CheckGoodsId === '00000000-0000-0000-0000-000000000000') 
                             action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>添加产品质检</button>');
@@ -164,6 +166,18 @@
                             height: "200px",
                             width: "400px",
                             url: "WebCompanyManage/Goods/ProCheck?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        });
+                    },
+                    "click .pack": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "产品装箱",
+                            type: 2,
+                            height: "90%",
+                            width: "80%",
+                            url: "WebCompanyManage/Goods/GoodPack?StockNo=" + row.GoodsBatchNo + "&ProNo=" + row.ProBatch + "&Good=" + row.GoodsName,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }

@@ -44,7 +44,7 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
             return View();
         }
         #endregion
-        #region 苍老管理
+        #region 仓库管理
         public IActionResult StockManage()
         {
             return View();
@@ -55,6 +55,10 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         }
         #endregion
         public IActionResult ProCheck()
+        {
+            return View();
+        }
+        public IActionResult GoodPack()
         {
             return View();
         }

@@ -51,6 +51,10 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// </summary>
         public Guid? BuyId { get; set; }
         public string TempPath { get; set; }
+        /// <summary>
+        /// 是否绑定箱码
+        /// </summary>
+        public bool IsBindBoxCode { get; set; }
     }
     public class RequestEnterpriseGoodsStockAttach
     {

@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewData["Title"] = "装箱管理";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#CompanyId").val(CompanyInfo.Id);
+                $("input[name='BoxBatchNo']").val("B" + controller.FormatDate("YYMMDDHHmmss"));
+                controller.LayDate({ elem: 'input[name="BoxTime"]' });
+                $("input[name='GoodName']").val(controller.GetParam("Good"));
+                $("input[name='StockBatchNo']").val(controller.GetParam("StockNo"));
+                $("input[name='ProductionBatchNo']").val(controller.GetParam("ProNo"));
+            },
+            //事件
+            InitEvents: function () {
+                controller.ValidateConfirm("#Edit");
+            },
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/EditBoxing" id="Edit">
+            <input type="hidden" name="CompanyId" id="CompanyId" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">装箱批次</label></th>
+                    <td class="has-warning">
+                        <input class="form-control" name="BoxBatchNo" type="text" readonly />
+                    </td>
+                    <th><label class="control-label">产品名称</label></th>
+                    <td class="has-warning">
+                        <input class="form-control" name="GoodName" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">入库批次</label></th>
+                    <td class="has-warning">
+                        <input class="form-control" name="StockBatchNo" type="text" />
+                    </td>
+                    <th><label class="control-label">生产批次</label></th>
+                    <td class="has-warning">
+                        <input class="form-control" name="ProductionBatchNo" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">装箱码</label><span style="color:red">*</span></th>
+                    <td class="has-warning">
+                        <input class="form-control required" name="BoxCode" type="text" data-msg-required="请填入装箱码" />
+                    </td>
+                    <th><label class="control-label">装箱时间</label></th>
+                    <td class="has-warning">
+                        <input class="form-control" name="BoxTime" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">装箱码</label><span style="color:red">*</span></th>
+                    <td class="has-warning" colspan="3">
+                        <textarea class="form-control" name="ThingCode" rows="30" cols="30" placeholder="每箱最大扫入100个物品"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

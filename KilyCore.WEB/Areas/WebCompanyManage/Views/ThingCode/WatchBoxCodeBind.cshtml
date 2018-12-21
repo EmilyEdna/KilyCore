@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewData["Title"] = "查看二维码使用";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                //恢复高度
+                $(window).resize(function (e) {
+                    window.setTimeout(function () {
+                        options.$table.bootstrapTable("resetView", { height: $(window).height() - 150 });
+                    }, 200);
+                    e.stopPropagation();
+                });
+                //设置表单
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetBoxPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { StarCode: controller.GetParam("Star"), EndCode: controller.GetParam("End") } });
+            },
+            //事件
+            InitEvents: function () {
+
+            },
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+@section css{
+
+}
+
+<div class="container-fluid">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>使用情况</h5>
+            </div>
+            <div class="table-responsive">
+                <table id="tableList" class="table">
+                    <thead>
+                        <tr>
+                            <th data-field="BoxBatchNo" data-halign="center" data-align="center" data-valign="middle">装箱批次</th>
+                            <th data-field="ProductionBatchNo" data-halign="center" data-align="center" data-valign="middle">生产批次</th>
+                            <th data-field="StockBatchNo" data-halign="center" data-align="center" data-valign="middle">入库批次</th>
+                            <th data-field="BoxCode" data-halign="center" data-align="center" data-valign="middle">一箱一码</th>
+                            <th data-field="GoodName" data-halign="center" data-align="center" data-valign="middle">产品名称</th>
+                            <th data-field="BoxCount" data-halign="center" data-align="center" data-valign="middle">每箱数量/件</th>
+                            <th data-field="BoxTime" data-halign="center" data-align="center" data-valign="middle">装箱时间</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

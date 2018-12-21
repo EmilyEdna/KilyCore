@@ -24,11 +24,15 @@
                     $("#BatchNo").val("P" + controller.FormatDate("YYMMDDHHmmss"));
                     $("input[name='TagType']").eq(1).attr("checked", true);
                 }
-                else {
+                else if (Flag == 3) {
                     $("#BatchNo").val("C" + controller.FormatDate("YYMMDDHHmmss"));
                     $("#TotalNo").val(1);
                     $("#TotalNo").attr("readonly", true);
                     $("input[name='TagType']").eq(2).attr("checked", true);
+                }
+                else {
+                    $("#BatchNo").val("B" + controller.FormatDate("YYMMDDHHmmss"));
+                    $("input[name='TagType']").eq(3).attr("checked", true);
                 }
                 $("#CompanyId").val(CompanyInfo.Id);
                 $("#CodeStar").val(CompanyInfo.CodeStar);
@@ -68,9 +72,13 @@
                             <input type="radio" name="TagType" value="30" style="margin-top:3px" />
                             <text title="一企一码">一企一码</text>
                         </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="TagType" value="40" style="margin-top:3px" />
+                            <text title="一箱一码">一箱一码</text>
+                        </label>
                     </td>
                     <td class="has-warning" colspan="2">
-                        <p class="text-danger">号段组成说明：码段前缀加C(P或W)加区域加10位数和随机尾数[C:一企一码,P:一品一码,W:一物一码]</p>
+                        <p class="text-danger">号段组成说明：码段前缀加C(P或W或B)加区域加10位数和随机尾数[C:一企一码,P:一品一码,W:一物一码,B:一箱一码]</p>
                     </td>
                 </tr>
                 <tr>

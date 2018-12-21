@@ -5,13 +5,14 @@ using System.Text;
 
 #region << 版 本 注 释 >>
 /*----------------------------------------------------------------
-* 类 名 称 ：GoodsPackage
+* 项目名称 ：KilyCore.EntityFrameWork.Model.Enterprise
+* 项目描述 ：
 * 类 描 述 ：
 * 命名空间 ：KilyCore.EntityFrameWork.Model.Enterprise
-* 机器名称 ：DESKTOP-QPIVQ28 
+* 机器名称 ：EMILY 
 * CLR 版本 ：4.0.30319.42000
 * 作    者 ：刘泽华
-* 创建时间 ：2018/6/22 14:46:37
+* 创建时间 ：2018/12/21 14:55:12
 *******************************************************************
 * Copyright @ 刘泽华 2018. All rights reserved.
 *******************************************************************
@@ -20,37 +21,45 @@ using System.Text;
 namespace KilyCore.EntityFrameWork.Model.Enterprise
 {
     /// <summary>
-    /// 产品打包表
+    /// 装箱表
     /// </summary>
-    public class EnterpriseGoodsPackage : EnterpriseBase
+    public class EnterpriseBoxing: EnterpriseBase
     {
         /// <summary>
-        /// 包装编号
+        /// 产品名称
         /// </summary>
-        public virtual string PackageNo { get; set; }
+        public virtual string GoodName { get; set; }
         /// <summary>
-        /// 产品出库表编号
+        /// 入库批次
         /// </summary>
-        public virtual string ProductOutStockNo { get; set; }
+        public virtual string StockBatchNo { get; set; }
         /// <summary>
-        /// 打包时间
+        /// 生产批次
         /// </summary>
-        public virtual DateTime? PackageTime { get; set; }
+        public virtual string ProductionBatchNo { get; set; }
         /// <summary>
-        /// 打包数量
+        /// 装箱批次
         /// </summary>
-        public virtual int PackageNum { get; set; }
+        public virtual string BoxBatchNo { get; set; }
         /// <summary>
-        /// 二维码开始号段
+        /// 箱码
         /// </summary>
-        public virtual Int64 CodeStarSerialNo { get; set; }
+        public virtual string BoxCode { get; set; }
         /// <summary>
-        /// 二维码结束号段
+        /// 装箱数量
         /// </summary>
-        public virtual Int64 CodeEndSerialNo { get; set; }
+        public virtual string BoxCount { get; set; }
         /// <summary>
-        /// 负责人
+        /// 物品码
         /// </summary>
-        public virtual string Manager { get; set; }
+        public virtual string ThingCode { get; set; }
+        /// <summary>
+        /// 装箱时间
+        /// </summary>
+        public virtual DateTime? BoxTime { get; set; }
+        /// <summary>
+        /// 箱码短码
+        /// </summary>
+        public virtual Int64 BoxCodeSort { get; set; }
     }
 }

@@ -588,7 +588,7 @@ namespace KilyCore.Service.ServiceCore
                 data.HandleWays = Param.HandleWays;
                 data.RecoverNum = Param.RecoverNum;
                 List<String> Fields = new List<String> { "HandleTime", "HandleUser", "HandleWays", "RecoverNum" };
-                return UpdateField(recover,null,Fields) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+                return UpdateField(recover, null, Fields) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
             }
         }
         #endregion
@@ -798,7 +798,7 @@ namespace KilyCore.Service.ServiceCore
                     TypePath = t.TypePath,
                     Certification = t.Certification,
                     Honor = t.HonorCertification,
-                    CodeStar=t.CodeStar,
+                    CodeStar = t.CodeStar,
                     Discription = t.Discription,
                     NetAddress = t.NetAddress,
                     ProductionAddress = t.ProductionAddress,
@@ -2100,8 +2100,10 @@ namespace KilyCore.Service.ServiceCore
             {
                 if (Tag.TagType == TagEnum.OneBrand)
                     Tag.CodeDiscern = Param.CodeStar + "P";
-                else
+                else if (Tag.TagType == TagEnum.OneThing)
                     Tag.CodeDiscern = Param.CodeStar + "W";
+                else
+                    Tag.CodeDiscern = Param.CodeStar + "B";
                 info.TagCodeNum -= Tag.TotalNo;
                 if (info.TagCodeNum < 0)
                     return $"当前剩余标签数量:{info.TagCodeNum},请升级版本或申请购买数量!";
@@ -2581,6 +2583,28 @@ namespace KilyCore.Service.ServiceCore
             }
             Code.ScanNum += 1;
             return Insert(Code) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 箱码绑定情况
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseBoxing> GetBoxPage(PageParamList<RequestEnterpriseBoxing> pageParam)
+        {
+            Int64 Star = Convert.ToInt64(pageParam.QueryParam.StarCode.Split("B")[1]);
+            Int64 End = Convert.ToInt64(pageParam.QueryParam.EndCode.Split("B")[1]);
+            var data = Kily.Set<EnterpriseBoxing>().Where(t => t.BoxCodeSort >= Star && t.BoxCodeSort <= End).Select(t => new ResponseEnterpriseBoxing
+            {
+                Id=t.Id,
+                BoxCode=t.BoxCode,
+                StockBatchNo=t.StockBatchNo,
+                BoxBatchNo=t.BoxBatchNo,
+                GoodName=t.GoodName,
+                BoxCount=t.BoxCount,
+                ProductionBatchNo=t.ProductionBatchNo,
+                BoxTime=t.BoxTime
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
         }
         #endregion
 
@@ -3453,6 +3477,7 @@ namespace KilyCore.Service.ServiceCore
                         InStockNum = p.t.InStockNum,
                         ProBatch = o.FirstOrDefault().BatchNo,
                         GoodsId = p.x.Id,
+                        IsBindBoxCode = p.t.IsBindBoxCode,
                         Manager = p.t.Manager,
                         CheckGoodsId = p.t.CheckGoodsId,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
@@ -3466,6 +3491,7 @@ namespace KilyCore.Service.ServiceCore
                         GoodsName = p.x.ProductName,
                         GoodsBatchNo = p.t.GoodsBatchNo,
                         StockType = p.t.StockType,
+                        IsBindBoxCode = p.t.IsBindBoxCode,
                         InStockNum = p.t.InStockNum,
                         ProBatch = o.FirstOrDefault().BatchNo,
                         GoodsId = p.x.Id,
@@ -3486,6 +3512,7 @@ namespace KilyCore.Service.ServiceCore
                         InStockNum = p.t.InStockNum,
                         ProBatch = o.FirstOrDefault().BatchNo,
                         GoodsId = p.x.Id,
+                        IsBindBoxCode = p.t.IsBindBoxCode,
                         CheckGoodsId = p.t.CheckGoodsId,
                         Manager = p.t.Manager,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
@@ -3504,6 +3531,7 @@ namespace KilyCore.Service.ServiceCore
                         GoodsName = p.x.ProductName,
                         GoodsBatchNo = p.t.GoodsBatchNo,
                         StockType = p.t.StockType,
+                        IsBindBoxCode = p.t.IsBindBoxCode,
                         InStockNum = p.t.InStockNum,
                         ProBatch = o.FirstOrDefault().BatchNo,
                         GoodsId = p.x.Id,
@@ -3520,6 +3548,7 @@ namespace KilyCore.Service.ServiceCore
                         GoodsName = p.x.ProductName,
                         GoodsBatchNo = p.t.GoodsBatchNo,
                         StockType = p.t.StockType,
+                        IsBindBoxCode = p.t.IsBindBoxCode,
                         InStockNum = p.t.InStockNum,
                         ProBatch = o.FirstOrDefault().BatchNo,
                         GoodsId = p.x.Id,
@@ -3537,6 +3566,7 @@ namespace KilyCore.Service.ServiceCore
                         GoodsName = p.x.ProductName,
                         GoodsBatchNo = p.t.GoodsBatchNo,
                         StockType = p.t.StockType,
+                        IsBindBoxCode = p.t.IsBindBoxCode,
                         InStockNum = p.t.InStockNum,
                         ProBatch = o.FirstOrDefault().BatchNo,
                         GoodsId = p.x.Id,
@@ -3566,6 +3596,26 @@ namespace KilyCore.Service.ServiceCore
         {
             EnterpriseGoodsStock Stock = Param.MapToEntity<EnterpriseGoodsStock>();
             return Insert<EnterpriseGoodsStock>(Stock) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 装箱管理
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditBoxing(RequestEnterpriseBoxing Param)
+        {
+            Param.ThingCode = Param.ThingCode.Replace("\r\n", ",");
+            var Num = Param.ThingCode.Split(",").ToList();
+            if (string.IsNullOrEmpty(Num[Num.Count - 1]))
+                Num.RemoveAt(Num.Count - 1);
+            if (Num.Count > 100)
+                return "装箱数量最大支持每箱100个物件";
+            Param.BoxCount = Num.Count.ToString();
+            Param.BoxCodeSort = Convert.ToInt64(Param.BoxCode.Split("B")[1].Substring(0, 12));
+            EnterpriseBoxing Box = Param.MapToEntity<EnterpriseBoxing>();
+            EnterpriseGoodsStock Stock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.GoodsBatchNo == Param.StockBatchNo).AsNoTracking().FirstOrDefault();
+            Stock.IsBindBoxCode = true;
+            return Insert(Box) && UpdateField(Stock, "IsBindBoxCode") ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         /// <summary>
         /// 绑定二维码
@@ -3695,7 +3745,7 @@ namespace KilyCore.Service.ServiceCore
             List<EnterpriseGoodsStockAttach> StockAttach = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.StockId == Id).Where(t => t.IsDelete == false).AsNoTracking().ToList();
             if (StockAttach.Count != 0)
             {
-                return StockAttach.OrderByDescending(t => t.CreateTime).Select(t => new { CodeEndSerialNo = t.CodeEndSerialNo +1,t.CodeEndSerialNos}).FirstOrDefault();
+                return StockAttach.OrderByDescending(t => t.CreateTime).Select(t => new { CodeEndSerialNo = t.CodeEndSerialNo + 1, t.CodeEndSerialNos }).FirstOrDefault();
             }
             else
             {

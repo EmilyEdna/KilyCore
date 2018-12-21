@@ -80,5 +80,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 仓库类型Id
         /// </summary>
         public virtual Guid? StockTypeId { get; set; }
+        /// <summary>
+        /// 是否绑定箱码
+        /// </summary>
+        public virtual bool IsBindBoxCode { get; set; }
     }
 }

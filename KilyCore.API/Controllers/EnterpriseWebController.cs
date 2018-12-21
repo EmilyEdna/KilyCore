@@ -928,6 +928,16 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseWebService.EditScanInfo(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 箱码绑定情况
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetBoxPage")]
+        public ObjectResultEx GetBoxPage(PageParamList<RequestEnterpriseBoxing> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetBoxPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 厂商管理
         /// <summary>
@@ -1512,6 +1522,16 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx EditGoodsStock(RequestEnterpriseGoodsStock Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.EditGoodsStock(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 装箱管理
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditBoxing")]
+        public ObjectResultEx EditBoxing(RequestEnterpriseBoxing Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditBoxing(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 绑定二维码

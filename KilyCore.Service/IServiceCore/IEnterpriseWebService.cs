@@ -148,6 +148,7 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseEnterpriseTagAttach> GetTagAttachPage(PageParamList<RequestEnterpriseTagAttach> pageParam);
         String DeleteBindTagInfo(Guid Id);
         String EditScanInfo(RequestEnterpriseScanCodeInfo Param);
+        PagedResult<ResponseEnterpriseBoxing> GetBoxPage(PageParamList<RequestEnterpriseBoxing> pageParam);
         #endregion
         #region 厂商管理
         PagedResult<ResponseEnterpriseSeller> GetSellerPage(PageParamList<RequestEnterpriseSeller> pageParam);
@@ -232,6 +233,7 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseEnterpriseGoodsStock> GetGoodsStockPage(PageParamList<RequestEnterpriseGoodsStock> pageParam);
         String RemoveGoodsStock(Guid Id);
         String EditGoodsStock(RequestEnterpriseGoodsStock Param);
+        String EditBoxing(RequestEnterpriseBoxing Param);
         String BindTarget(RequestEnterpriseTagAttach Param);
         PagedResult<ResponseEnterpriseGoodsStockAttach> GetGoodsStockAttachPage(PageParamList<RequestEnterpriseGoodsStockAttach> pageParam);
         String EditStockAttach(RequestEnterpriseGoodsStockAttach Param);

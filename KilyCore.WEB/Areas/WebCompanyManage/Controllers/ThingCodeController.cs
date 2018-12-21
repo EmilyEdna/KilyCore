@@ -37,6 +37,14 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
             return View();
         }
         /// <summary>
+        /// 箱码管理
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult BoxCode()
+        {
+            return View();
+        }
+        /// <summary>
         /// 编辑二维码
         /// </summary>
         /// <returns></returns>
@@ -84,18 +92,42 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 添加说明
+        /// </summary>
+        /// <returns></returns>
         public IActionResult AddExplanation()
         {
             return View();
         }
+        /// <summary>
+        /// 二维码绑定情况
+        /// </summary>
+        /// <returns></returns>
         public IActionResult WatchCodeUse()
         {
             return View();
         }
+        /// <summary>
+        /// 箱码绑定情况
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult WatchBoxCodeBind()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 生成二维码图片
+        /// </summary>
+        /// <returns></returns>
         public IActionResult ScanCodeAttach()
         {
             return View();
         }
+        /// <summary>
+        /// 企业二维码
+        /// </summary>
+        /// <returns></returns>
         public IActionResult CompanyCodeView()
         {
             return View();

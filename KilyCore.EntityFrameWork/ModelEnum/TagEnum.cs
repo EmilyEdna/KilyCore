@@ -27,6 +27,11 @@ namespace KilyCore.EntityFrameWork.ModelEnum
         /// 一企一码
         /// </summary>
         [Description("一企一码")]
-        OneEnterprise =30
+        OneEnterprise =30,
+        /// <summary>
+        /// 一箱一码
+        /// </summary>
+        [Description("一箱一码")]
+        OneBox = 40
     }
 }
