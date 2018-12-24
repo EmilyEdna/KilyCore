@@ -3708,11 +3708,10 @@ namespace KilyCore.Service.ServiceCore
                     OutStockType = o.t.OutStockType,
                     StockBatch = o.x.GoodsBatchNo,
                     Seller = o.t.Seller,
+                    BoxCount=o.t.BoxCount,
                     GoodsName = p.ProductName,
                     OutStockNum = o.t.OutStockNum,
-                    StockEx = o.x.InStockNum,
-                    CodeEndSerialNos = o.t.CodeEndSerialNos,
-                    CodeStarSerialNos = o.t.CodeStarSerialNos
+                    StockEx = o.x.InStockNum
                 }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -3730,30 +3729,17 @@ namespace KilyCore.Service.ServiceCore
             if (stock.InStockNum < Param.OutStockNum)
                 return "当前库存少于出库量";
             stock.InStockNum -= Param.OutStockNum;
-            Param.CodeEndSerialNo = Param.CodeStarSerialNo + Param.OutStockNum - 1;
-            Param.CodeEndSerialNos = (Param.CodeStarSerialNos.Contains("P") ? Param.CodeStarSerialNos.Split("P")[0] + "P" : Param.CodeStarSerialNos.Split("W")[0] + "W") + Param.CodeEndSerialNo;
+            if (!string.IsNullOrEmpty(Param.BoxCodeNo))
+            {
+                Param.BoxCodeNo=Param.BoxCodeNo.Replace("\r\n", ",");
+                var Num = Param.BoxCodeNo.Split(",").ToList();
+                if (string.IsNullOrEmpty(Num[Num.Count - 1]))
+                    Num.RemoveAt(Num.Count - 1);
+                Param.BoxCount = Num.Count.ToString();
+            }
             EnterpriseGoodsStockAttach Attach = Param.MapToEntity<EnterpriseGoodsStockAttach>();
             UpdateField(stock, "InStockNum");
             return Insert<EnterpriseGoodsStockAttach>(Attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
-        }
-        /// <summary>
-        /// 获取二维码号段
-        /// </summary>
-        /// <param name="Id"></param>
-        public object GetCodeSerialNo(Guid Id)
-        {
-            List<EnterpriseGoodsStockAttach> StockAttach = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.StockId == Id).Where(t => t.IsDelete == false).AsNoTracking().ToList();
-            if (StockAttach.Count != 0)
-            {
-                return StockAttach.OrderByDescending(t => t.CreateTime).Select(t => new { CodeEndSerialNo = t.CodeEndSerialNo + 1, t.CodeEndSerialNos }).FirstOrDefault();
-            }
-            else
-            {
-                Guid GoodsId = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false).Where(t => t.Id == Id).AsNoTracking().Select(t => t.GoodsId).FirstOrDefault();
-                return Kily.Set<EnterpriseTagAttach>().Where(t => t.GoodsId == GoodsId && t.IsDelete == false)
-                     .OrderByDescending(t => t.CreateTime).Select(t => new { t.StarSerialNos, t.StarSerialNo }).FirstOrDefault();
-
-            }
         }
         /// <summary>
         /// 删除出库
@@ -4193,8 +4179,6 @@ namespace KilyCore.Service.ServiceCore
                       ProductOutStockNo = t.e.q.ProductOutStockNo,
                       PackageTime = t.e.q.PackageTime,
                       PackageNum = t.e.q.PackageNum,
-                      CodeStarSerialNo = t.e.q.CodeStarSerialNo,
-                      CodeEndSerialNo = t.e.q.CodeEndSerialNo,
                       Manager = t.e.q.Manager
                   }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -4228,8 +4212,6 @@ namespace KilyCore.Service.ServiceCore
                 ProductOutStockNo = t.ProductOutStockNo,
                 PackageTime = t.PackageTime,
                 PackageNum = t.PackageNum,
-                CodeStarSerialNo = t.CodeStarSerialNo,
-                CodeEndSerialNo = t.CodeEndSerialNo,
                 Manager = t.Manager
             }).FirstOrDefault();
             return data;
@@ -4242,23 +4224,6 @@ namespace KilyCore.Service.ServiceCore
         public string RemoveGoodsPackge(Guid Id)
         {
             return Delete<EnterpriseGoodsPackage>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
-        }
-        /// <summary>
-        /// 获取二维码
-        /// </summary>
-        /// <param name="StockOutNo"></param>
-        /// <returns></returns>
-        public long GetPackageCode(string StockOutNo)
-        {
-            List<EnterpriseGoodsPackage> Package = Kily.Set<EnterpriseGoodsPackage>().Where(t => t.IsDelete == false).Where(t => t.ProductOutStockNo.Equals(StockOutNo)).AsNoTracking().ToList();
-            if (Package.Count != 0)
-            {
-                return Package.OrderByDescending(t => t.CreateTime).Select(t => t.CodeEndSerialNo).FirstOrDefault() + 1;
-            }
-            else
-            {
-                return Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false).Where(t => t.GoodsBatchNo.Equals(StockOutNo)).Select(t => t.CodeStarSerialNo).FirstOrDefault();
-            }
         }
         /// <summary>
         /// 打包批次号

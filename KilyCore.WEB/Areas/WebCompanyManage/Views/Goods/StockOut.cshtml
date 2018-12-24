@@ -21,6 +21,9 @@
                 var Guid = controller.GetParam("Id");
                 $("#StockId").val(Guid);
                 this.GetList(Guid);
+                if (controller.GetParam("IsBox") == "false")
+                    $("#last").css({ "display": "none" });
+
             },
             GetList: function (data) {
                 //负责人下拉
@@ -51,17 +54,6 @@
                         $("#Seller").html(html);
                     }
                 });
-                //获取追溯号段
-                controller.ajax({
-                    url: "EnterpriseWeb/GetCodeSerialNo",
-                    data: {Id:data},
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        $("input[name='CodeStarSerialNos']").val(result.data.StarSerialNos);
-                        $("input[name='CodeStarSerialNo']").val(result.data.StarSerialNo);
-                    }
-                });
             },
             //事件
             InitEvents: function () {
@@ -82,7 +74,6 @@
         <form class="form-horizontal" method="post" action="EnterpriseWeb/EditStockAttach" id="Edit">
             <input type="hidden" class="form-control" name="CompanyId" id="CompanyId" />
             <input type="hidden" class="form-control" name="StockId" id="StockId" />
-            <input type="hidden" class="form-control" name="CodeStarSerialNo" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">批次号</label></th>
@@ -117,10 +108,10 @@
                         <select class="form-control" name="Seller" id="Seller" type="select"></select>
                     </td>
                 </tr>
-                <tr>
-                    <th><label class="control-label">追溯开始号段</label></th>
+                <tr id="last">
+                    <th><label class="control-label">装箱码段</label></th>
                     <td class="has-warning" colspan="3">
-                        <input type="text" class="form-control" name="CodeStarSerialNos" readonly />
+                        <textarea rows="15" cols="5" class="form-control" name="BoxCodeNo"></textarea>
                     </td>
                 </tr>
             </table>

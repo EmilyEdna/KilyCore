@@ -90,8 +90,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public Guid CompanyId { get; set; }
         public string GoodsName { get; set; }
         public string OutStockType { get; set; }
-        public Int64 CodeStarSerialNo { get; set; }
-        public Int64 CodeEndSerialNo { get; set; }
         public string GoodsBatchNo { get; set; }
         /// <summary>
         /// 入库批次
@@ -101,11 +99,14 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string Seller { get; set; }
         public int OutStockNum { get; set; }
         public DateTime OutStockTime { get; set; }
+        public string BoxCodeNo { get; set; }
         /// <summary>
         /// 库存
         /// </summary>
         public int StockEx { get; set; }
-        public string CodeStarSerialNos { get; set; }
-        public string CodeEndSerialNos { get; set; }
+        /// <summary>
+        /// 装箱数量
+        /// </summary>
+        public string BoxCount { get; set; }
     }
 }

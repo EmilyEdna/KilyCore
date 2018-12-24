@@ -67,19 +67,6 @@
                         $("#Manager").html(html);
                     }
                 });
-                $("#ProductOutStockNo").on('change', function ()
-                {
-                    var data = $(this).find("option:selected").val();
-                    controller.ajax({
-                        url: "EnterpriseWeb/GetPackageCode",
-                        type: "post",
-                        data: { Parameter: data },
-                        async: false,
-                        success: function (result) {
-                            $("input[name='CodeStarSerialNo']").val(result.data);
-                        }
-                    });
-                });
                 //验证
                 controller.ValidateConfirm("#Edit");
             },
@@ -109,22 +96,18 @@
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">开始号段</label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control" name="CodeStarSerialNo" readonly />
-                    </td>
                     <th><label class="control-label">打包数量</label></th>
                     <td class="has-warning">
                         <input type="number" name="PackageNum" class="form-control" min="1" />
                     </td>
-                </tr>
-                <tr>
                     <th><label class="control-label">打包时间</label></th>
-                    <td class="has-warning">
+                    <td class="has-warning" col>
                         <input type="text" class="form-control" name="PackageTime" />
                     </td>
+                </tr>
+                <tr>
                     <th><label class="control-label">负责人</label></th>
-                    <td class="has-warning">
+                    <td class="has-warning" colspan="3">
                         <select type="select" name="Manager" class="form-control" id="Manager"></select>
                     </td>
                 </tr>

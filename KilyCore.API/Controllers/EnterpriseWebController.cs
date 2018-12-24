@@ -1578,16 +1578,6 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveGoodsStockAttach(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
-        /// 获取二维码号段
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        [HttpPost("GetCodeSerialNo")]
-        public ObjectResultEx GetCodeSerialNo(SimpleParam<Guid> Param)
-        {
-            return ObjectResultEx.Instance(EnterpriseWebService.GetCodeSerialNo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }
-        /// <summary>
         /// 获取出库批次编号
         /// </summary>
         /// <returns></returns>
@@ -1883,16 +1873,6 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx RemoveGoodsPackge(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveGoodsPackge(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }
-        /// <summary>
-        /// 获取二维码
-        /// </summary>
-        /// <param name="StockOutNo"></param>
-        /// <returns></returns>
-        [HttpPost("GetPackageCode")]
-        public ObjectResultEx GetPackageCode(SimpleParam<String> Param)
-        {
-            return ObjectResultEx.Instance(EnterpriseWebService.GetPackageCode(Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 打包批次号

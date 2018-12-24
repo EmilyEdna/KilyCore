@@ -105,15 +105,18 @@
                 },
                 TableFormatter: function (val, row, index) {
                     var action = [];
-                    if (!row.IsBindBoxCode)
-                        action.push('<button class="btn btn-sm btn-primary pack"><i class="fa fa-pencil-square-o"></i>装箱</button>');
                     if (row.InStockNum != undefined) {
-                        if (row.CheckGoodsId === '00000000-0000-0000-0000-000000000000') 
+                        if (row.CheckGoodsId === '00000000-0000-0000-0000-000000000000')
                             action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>添加产品质检</button>');
                         action.push('<button class="btn btn-sm btn-primary out"><i class="fa fa-pencil-square-o"></i>出库</button>');
                         if (row.AuditTypeName != "审核通过")
                             action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-pencil-square-o"></i>提交审核</button>');
+                        if (!row.IsBindBoxCode)
+                            action.push('<button class="btn btn-sm btn-primary pack"><i class="fa fa-pencil-square-o"></i>装箱</button>');
                     }
+                    if (row.BoxCount != undefined)
+                        if (row.BoxCount == null)
+                            action.push('<button class="btn btn-sm btn-primary pack"><i class="fa fa-pencil-square-o"></i>装箱</button>');
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
                     return action.join("&nbsp;");
                 },
@@ -153,7 +156,7 @@
                             type: 2,
                             height: "90%",
                             width: "80%",
-                            url: "WebCompanyManage/Goods/StockOut?Id=" + row.Id,
+                            url: "WebCompanyManage/Goods/StockOut?Id=" + row.Id + "&IsBox=" + row.IsBindBoxCode,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }
@@ -172,12 +175,23 @@
                         });
                     },
                     "click .pack": function (event, val, row, index) {
+                       var host = "WebCompanyManage/Goods/GoodPack";
+                        if (row.ProBatch != undefined)
+                            host = host + '?StockNo=' + row.GoodsBatchNo + '&ProNo=' + row.ProBatch + '&Good=' + row.GoodsName;
+                        else {
+                            var ProNo = '';
+                            $("#tableListSet").find("td").each(function (i, obj) {
+                                if (obj.innerText == row.StockBatch)
+                                    ProNo = $(obj).prev('td').text();
+                            });
+                            host = host + '?StockNo=' + row.GoodsBatchNo + '&ProNo=' + ProNo + '&Good=' + row.GoodsName;
+                        }
                         controller.OpenWindow({
                             title: "产品装箱",
                             type: 2,
                             height: "90%",
                             width: "80%",
-                            url: "WebCompanyManage/Goods/GoodPack?StockNo=" + row.GoodsBatchNo + "&ProNo=" + row.ProBatch + "&Good=" + row.GoodsName,
+                            url: host,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }
@@ -297,8 +311,7 @@
                                 <th data-field="OutStockNum" data-halign="center" data-align="center" data-valign="middle">出库数量</th>
                                 <th data-field="StockEx" data-halign="center" data-align="center" data-valign="middle">库存</th>
                                 <th data-field="Seller" data-halign="center" data-align="center" data-valign="middle">分销商</th>
-                                <th data-field="CodeStarSerialNos" data-halign="center" data-align="center" data-valign="middle">开始号段</th>
-                                <th data-field="CodeEndSerialNos" data-halign="center" data-align="center" data-valign="middle">结束号段</th>
+                                <th data-field="BoxCount" data-halign="center" data-align="center" data-valign="middle">装箱数量</th>
                                 <th data-field="OutStockType" data-halign="center" data-align="center" data-valign="middle">出库类型</th>
                                 <th data-field="OutStockUser" data-halign="center" data-align="center" data-valign="middle">负责人</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>

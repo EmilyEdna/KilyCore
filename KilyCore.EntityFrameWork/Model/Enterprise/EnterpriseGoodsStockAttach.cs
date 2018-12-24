@@ -53,20 +53,12 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual DateTime OutStockTime { get; set; }
         /// <summary>
-        /// 二维码开始号段
+        /// 装箱码
         /// </summary>
-        public virtual Int64 CodeStarSerialNo { get; set; }
+        public virtual string BoxCodeNo { get; set; }
         /// <summary>
-        /// 二维码结束号段
+        /// 装箱数量
         /// </summary>
-        public virtual Int64 CodeEndSerialNo { get; set; }
-        /// <summary>
-        /// 二维码开始号段
-        /// </summary>
-        public virtual string CodeStarSerialNos { get; set; }
-        /// <summary>
-        /// 二维码结束号段
-        /// </summary>
-        public virtual string CodeEndSerialNos { get; set; }
+        public virtual string BoxCount { get; set; }
     }
 }

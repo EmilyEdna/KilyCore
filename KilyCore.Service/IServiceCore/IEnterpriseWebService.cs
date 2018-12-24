@@ -238,7 +238,6 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseEnterpriseGoodsStockAttach> GetGoodsStockAttachPage(PageParamList<RequestEnterpriseGoodsStockAttach> pageParam);
         String EditStockAttach(RequestEnterpriseGoodsStockAttach Param);
         String RemoveGoodsStockAttach(Guid Id);
-        Object GetCodeSerialNo(Guid Id);
         IList<ResponseEnterpriseGoodsStockAttach> GetStockOutNoList();
         String UpdateStockCheck(RequestEnterpriseGoodsStock Param);
         #endregion
@@ -280,7 +279,6 @@ namespace KilyCore.Service.IServiceCore
         String EditGoodsPackage(RequestEnterpriseGoodsPackage Param);
         ResponseEnterpriseGoodsPackage GetGoodsPackageDetail(Guid Id);
         String RemoveGoodsPackge(Guid Id);
-        long GetPackageCode(String StockOutNo);
         IList<ResponseEnterpriseGoodsPackage> GetPackagesList();
         #endregion
         #region 发货收货
