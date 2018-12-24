@@ -86,9 +86,9 @@
             <input type="hidden" name="CompanyId" />
             <table class="table table-hover table-bordered">
                 <tr>
-                    <th><label class="control-label">打包批次</label></th>
+                    <th><label class="control-label">装车批次</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="PackageNo"  readonly/>
+                        <input type="text" class="form-control" name="PackageNo" readonly />
                     </td>
                     <th><label class="control-label">出库批次</label></th>
                     <td class="has-warning">
@@ -96,11 +96,11 @@
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">打包数量</label></th>
+                    <th><label class="control-label">装车数量</label></th>
                     <td class="has-warning">
                         <input type="number" name="PackageNum" class="form-control" min="1" />
                     </td>
-                    <th><label class="control-label">打包时间</label></th>
+                    <th><label class="control-label">装车时间</label></th>
                     <td class="has-warning" col>
                         <input type="text" class="form-control" name="PackageTime" />
                     </td>
@@ -109,6 +109,12 @@
                     <th><label class="control-label">负责人</label></th>
                     <td class="has-warning" colspan="3">
                         <select type="select" name="Manager" class="form-control" id="Manager"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">装箱码</label></th>
+                    <td class="has-warning" colspan="3">
+                       <textarea cols="5" rows="15" class="form-control" name="BoxCode"></textarea>
                     </td>
                 </tr>
             </table>

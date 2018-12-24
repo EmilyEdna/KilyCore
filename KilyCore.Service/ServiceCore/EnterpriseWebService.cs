@@ -4151,9 +4151,9 @@ namespace KilyCore.Service.ServiceCore
         #endregion
 
         #region 物流管理
-        #region 打包管理
+        #region 装车管理
         /// <summary>
-        /// 打包分页
+        /// 装车分页
         /// </summary>
         /// <param name="pageParam"></param>
         /// <returns></returns>
@@ -4184,13 +4184,13 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         /// <summary>
-        /// 编辑打包
+        /// 编辑装车
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
         public string EditGoodsPackage(RequestEnterpriseGoodsPackage Param)
         {
-            Param.CodeEndSerialNo = Param.CodeStarSerialNo + Param.PackageNum - 1;
+            Param.BoxCode = Param.BoxCode.Replace("\r\n", ",");
             EnterpriseGoodsPackage package = Param.MapToEntity<EnterpriseGoodsPackage>();
             if (Param.Id == Guid.Empty)
                 return Insert(package) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
@@ -4198,7 +4198,7 @@ namespace KilyCore.Service.ServiceCore
                 return Update(package, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         /// <summary>
-        /// 打包详情
+        /// 装车详情
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
@@ -4212,12 +4212,13 @@ namespace KilyCore.Service.ServiceCore
                 ProductOutStockNo = t.ProductOutStockNo,
                 PackageTime = t.PackageTime,
                 PackageNum = t.PackageNum,
+                BoxCode=t.BoxCode,
                 Manager = t.Manager
             }).FirstOrDefault();
             return data;
         }
         /// <summary>
-        /// 删除打包
+        /// 删除装车
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
@@ -4226,7 +4227,7 @@ namespace KilyCore.Service.ServiceCore
             return Delete<EnterpriseGoodsPackage>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         /// <summary>
-        /// 打包批次号
+        /// 装车批次号
         /// </summary>
         /// <returns></returns>
         public IList<ResponseEnterpriseGoodsPackage> GetPackagesList()

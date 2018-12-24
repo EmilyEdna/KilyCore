@@ -1832,9 +1832,9 @@ namespace KilyCore.API.Controllers
         #endregion
         #endregion
         #region 物流管理
-        #region 打包管理
+        #region 装车管理
         /// <summary>
-        /// 打包分页
+        /// 装车分页
         /// </summary>
         /// <param name="pageParam"></param>
         /// <returns></returns>
@@ -1844,7 +1844,7 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.GetPackagePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
-        /// 编辑打包
+        /// 编辑装车
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
@@ -1854,7 +1854,7 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.EditGoodsPackage(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
-        /// 打包详情
+        /// 装车详情
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
@@ -1865,7 +1865,7 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.GetGoodsPackageDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
-        /// 删除打包
+        /// 删除装车
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
@@ -1875,7 +1875,7 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveGoodsPackge(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
-        /// 打包批次号
+        /// 装车批次号
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetPackagesList")]

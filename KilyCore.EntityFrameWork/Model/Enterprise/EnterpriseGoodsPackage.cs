@@ -20,7 +20,7 @@ using System.Text;
 namespace KilyCore.EntityFrameWork.Model.Enterprise
 {
     /// <summary>
-    /// 产品打包表
+    /// 装车管理表
     /// </summary>
     public class EnterpriseGoodsPackage : EnterpriseBase
     {
@@ -41,16 +41,12 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual int PackageNum { get; set; }
         /// <summary>
-        /// 二维码开始号段
-        /// </summary>
-        public virtual Int64 CodeStarSerialNo { get; set; }
-        /// <summary>
-        /// 二维码结束号段
-        /// </summary>
-        public virtual Int64 CodeEndSerialNo { get; set; }
-        /// <summary>
         /// 负责人
         /// </summary>
         public virtual string Manager { get; set; }
+        /// <summary>
+        /// 箱码
+        /// </summary>
+        public virtual string BoxCode { get; set; }
     }
 }

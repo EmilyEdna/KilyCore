@@ -39,14 +39,6 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// </summary>
         public int PackageNum { get; set; }
         /// <summary>
-        /// 二维码开始号段
-        /// </summary>
-        public Int64 CodeStarSerialNo { get; set; }
-        /// <summary>
-        /// 二维码结束号段
-        /// </summary>
-        public Int64 CodeEndSerialNo { get; set; }
-        /// <summary>
         /// 负责人
         /// </summary>
         public string Manager { get; set; }
@@ -54,5 +46,9 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// 产品名称
         /// </summary>
         public string ProductName { get; set; }
+        /// <summary>
+        /// 箱码
+        /// </summary>
+        public string BoxCode { get; set; }
     }
 }
