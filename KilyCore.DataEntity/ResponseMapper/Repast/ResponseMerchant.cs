@@ -32,6 +32,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         public string TypePath { get; set; }
         public string IdCard { get; set; }
         public string Honor { get; set; }
+        public bool IsPayContract { get; set; }
         public string Province
         {
             get

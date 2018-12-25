@@ -584,6 +584,7 @@ namespace KilyCore.Service.ServiceCore
                 CommunityCode = t.CommunityCode,
                 Certification = t.Certification,
                 TypePath = t.TypePath,
+                IsPayContract = t.IsPayContract,
                 DiningTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType)
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -650,6 +651,7 @@ namespace KilyCore.Service.ServiceCore
             SystemStayContract contract = Param.MapToEntity<SystemStayContract>();
             contract.EnterpriseOrMerchant = 2;
             RepastInfo info = Kily.Set<RepastInfo>().Where(t => t.Id == contract.CompanyId).FirstOrDefault();
+            info.IsPayContract = true;
             if (Param.VersionType == SystemVersionEnum.Test)
             {
                 if (info.DiningType == MerchantEnum.Normal)
@@ -681,6 +683,7 @@ namespace KilyCore.Service.ServiceCore
             if (Param.VersionType == SystemVersionEnum.Common)
                 AliPayModel.Money = ConfigMoney.Common * Convert.ToInt32(Param.ContractYear);
             contract.Id = Guid.NewGuid();
+            UpdateField(info, "IsPayContract");
             if (contract.ContractType == 1)
             {
                 contract.IsPay = false;
@@ -800,28 +803,21 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="pageParam"></param>
         /// <returns></returns>
-        public PagedResult<ResponseAudit> GetContractAudit(PageParamList<RequestAudit> pageParam)
+        public PagedResult<ResponseStayContract> GetContractAudit(PageParamList<RequestStayContract> pageParam)
         {
-            var Info = MerchantInfo();
-            var Contract = Kily.Set<SystemStayContract>()
-                .Where(t => t.CompanyId == Info.Id && t.CompanyName.Equals(Info.MerchantName))
+            var data = Kily.Set<SystemStayContract>().Where(t => t.CompanyId == MerchantInfo().Id)
+                .Where(t => t.CompanyName.Equals(MerchantInfo().MerchantName))
                 .Select(t => new ResponseStayContract()
                 {
-                    TableName = t.GetType().Name,
-                    Id = t.Id
-                }).FirstOrDefault();
-            if (Contract == null)
-                return null;
-            var data = Kily.Set<SystemAudit>().Where(t => t.IsDelete == false)
-               .Where(t => t.TableId == Contract.Id && t.TableName.Contains(Contract.TableName))
-               .Select(t => new ResponseAudit()
-               {
-                   Id = t.Id,
-                   AuditName = t.AuditName,
-                   AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
-                   AuditSuggestion = t.AuditSuggestion,
-                   CreateTime = t.CreateTime
-               }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                    Id = t.Id,
+                    ContractYear = t.ContractYear,
+                    ContractType = t.ContractType,
+                    StayTime = t.CreateTime,
+                    EndTime = t.EndTime,
+                    VersionType = t.VersionType,
+                    VersionTypeName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.VersionType),
+                    AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
+                }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
         #endregion

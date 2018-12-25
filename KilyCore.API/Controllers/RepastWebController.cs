@@ -119,7 +119,7 @@ namespace KilyCore.API.Controllers
         /// <param name="pageParam"></param>
         /// <returns></returns>
         [HttpPost("GetContractAudit")]
-        public ObjectResultEx GetContractAudit(PageParamList<RequestAudit> pageParam)
+        public ObjectResultEx GetContractAudit(PageParamList<RequestStayContract> pageParam)
         {
             return ObjectResultEx.Instance(RepastWebService.GetContractAudit(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }

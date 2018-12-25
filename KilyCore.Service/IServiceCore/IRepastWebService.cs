@@ -44,7 +44,7 @@ namespace KilyCore.Service.IServiceCore
         String SaveMerchantAccount(RequestMerchant Param);
         String SaveMerchantArea(RequestMerchant Param);
         ResponseStayContract SaveContract(RequestStayContract Param);
-        PagedResult<ResponseAudit> GetContractAudit(PageParamList<RequestAudit> pageParam);
+        PagedResult<ResponseStayContract> GetContractAudit(PageParamList<RequestStayContract> pageParam);
         #endregion
         #region 商家认证
         String SaveMerchantIdent(RequestRepastIdent Param);

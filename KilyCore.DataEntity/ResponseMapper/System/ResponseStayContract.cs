@@ -82,6 +82,9 @@ namespace KilyCore.DataEntity.ResponseMapper.System
         public DateTime EndTime { get; set; }
         public string TableName { get; set; }
         public decimal? ActualPrice { get; set; }
+        /// <summary>
+        /// 升级记录
+        /// </summary>
         public Object Record { get; set; }
         public string Lv
         {

@@ -106,5 +106,9 @@ namespace KilyCore.EntityFrameWork.Model.Repast
         /// 安全员等级
         /// </summary>
         public virtual string OfferLv { get; set; }
+        /// <summary>
+        /// 合同状态
+        /// </summary>
+        public virtual bool IsPayContract { get; set; }
     }
 }

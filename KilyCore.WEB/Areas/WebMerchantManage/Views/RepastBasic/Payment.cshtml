@@ -96,11 +96,13 @@
                         $("#A3").css({ display: "none" });
                         $(".A2").css({ display: "block", display: "table-row" });
                         $(".B1").css({ display: "none" });
+                        $("#PayTicket").addClass("required").attr("data-msg-required", "请上传缴费凭证");
                     }
                     else {
                         $("#A3").css({ display: "block", display: "table-footer-group" });
                         $(".A2").css({ display: "none" });
                         $(".B1").css({ display: "none" });
+                        $("#PayTicket").removeClass("required").removeAttr("data-msg-required");
                     }
                 });
                 //文件上传-票据
@@ -205,7 +207,7 @@
             <input name="VersionType" id="ver" type="hidden" />
         </form>
         <form class="form-horizontal" method="post" action="RepastWeb/SaveContract" id="Edit">
-            <input type="hidden" name="PayTicket" id="PayTicket" />
+            <input type="hidden" name="PayTicket" id="PayTicket" class=""/>
             <input type="hidden" name="CompanyId" id="CompanyId" />
             <input type="hidden" name="TypePath" id="TypePath" />
             <input type="hidden" name="CompanyName" id="MerchantName" />
@@ -236,7 +238,7 @@
                         <input type="text" name="ContractYear" class="form-control required" placeholder="请填入纯数字不要带其他任何汉子特殊字符" data-msg-required="请输入入住年限" />
                     </td>
                 </tr>
-                <tr class="A2">
+                <tr>
                     <th><label class="control-label">签约中心</label></th>
                     <td class="has-warning" colspan="3">
                         <select type="select" name="AdminId" class="form-control" id="AdminId"></select>
