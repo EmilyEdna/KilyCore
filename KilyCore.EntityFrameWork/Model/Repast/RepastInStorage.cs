@@ -84,5 +84,9 @@ namespace KilyCore.EntityFrameWork.Model.Repast
         /// 采购负责人
         /// </summary>
         public virtual string BuyUser { get; set; }
+        /// <summary>
+        /// 计量单位
+        /// </summary>
+        public virtual string Unit { get; set; }
     }
 }
