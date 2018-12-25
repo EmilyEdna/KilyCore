@@ -289,7 +289,8 @@
         }
 
     .note-editor.note-frame {
-        border: 1px solid #a9a9a9
+        border: 1px solid #a9a9a9;
+        margin:0 auto;
     }
 
         .note-editor.note-frame.codeview .note-editing-area .note-editable {

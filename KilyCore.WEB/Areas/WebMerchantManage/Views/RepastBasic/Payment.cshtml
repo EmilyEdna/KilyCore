@@ -33,7 +33,7 @@
                 //获取版本
                 controller.ajax({
                     url: "Function/GetAreaVersion",
-                    data: { Id: TypePath, Parameter: RepastUser.CompanyType },
+                    data: { Id: TypePath, Parameter: RepastUser.DiningType },
                     async: false,
                     type: "post",
                     success: function (result) {
@@ -245,11 +245,11 @@
                 <tr class="B1">
                     <th><label class="control-label">开户行</label></th>
                     <td class="has-warning">
-                        <input type="text" id="BankName" class="form-control" />
+                        <input type="text" id="BankName" class="form-control"  readonly/>
                     </td>
                     <th><label class="control-label">银行卡号</label></th>
                     <td class="has-warning">
-                        <input type="text" id="BankCard" class="form-control" />
+                        <input type="text" id="BankCard" class="form-control"  readonly/>
                     </td>
                 </tr>
                 <tr id="A1">

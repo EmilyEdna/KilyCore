@@ -54,7 +54,7 @@
                     success: function (result) {
                         var html = '<option>===请选择===</option>'
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '" data-img="' + obj.Chapter + '" data-code="' + obj.CommunityCode + '" data-address="' + obj.Address + '">' + obj.CompanyName + '</option>';
+                            html += '<option value="' + obj.Id + '" data-name="' + obj.BankName + '" data-bank="' + obj.BankCard + '" data-img="' + obj.Chapter + '" data-code="' + obj.CommunityCode + '" data-address="' + obj.Address + '">' + obj.CompanyName + '</option>';
                         });
                         $("#AdminId").html(html);
                     }
@@ -143,6 +143,11 @@
                 controller.ValidateConfirm("#Edit");
                 $("#pay").click(function () {
                     $("#Edit").submit();
+                });
+                $("#AdminId").on('change', function () {
+                    var $data = $(this).find("option:selected").data();
+                    $("#BankName").val($data.name);
+                    $("#BankCard").val($data.bank);
                 });
             },
             CheckWxPay: function () {
@@ -233,6 +238,16 @@
                     <th><label class="control-label">签约中心</label></th>
                     <td class="has-warning" colspan="3">
                         <select type="select" name="AdminId" class="form-control" id="AdminId"></select>
+                    </td>
+                </tr>
+                <tr class="B1">
+                    <th><label class="control-label">开户行</label></th>
+                    <td class="has-warning">
+                        <input type="text" id="BankName" class="form-control" readonly />
+                    </td>
+                    <th><label class="control-label">银行卡号</label></th>
+                    <td class="has-warning">
+                        <input type="text" id="BankCard" class="form-control" readonly />
                     </td>
                 </tr>
                 <tr id="A1">

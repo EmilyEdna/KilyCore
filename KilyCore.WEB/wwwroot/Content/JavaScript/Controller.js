@@ -584,7 +584,7 @@ controller.ValidateConfirm = function (element, option) {
                             }
                         }
                     }
-                    controller.Confirm(data.data, function () {
+                    controller.Confirm(controller.JsonObject(data.data) ? data.msg : data.data, function () {
                         window.popClose();
                     });
                 },
@@ -1155,7 +1155,6 @@ controller.CheckFeild = function (option) {
  * @param {any} index
  * @param {any} last
  */
-controller.Random = function (index, last)
-{
+controller.Random = function (index, last) {
     return parseInt(Math.random() * (last - index + 1) + index);
 }
