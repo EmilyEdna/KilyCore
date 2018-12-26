@@ -114,9 +114,11 @@
                         if (!row.IsBindBoxCode)
                             action.push('<button class="btn btn-sm btn-primary pack"><i class="fa fa-pencil-square-o"></i>装箱</button>');
                     }
-                    if (row.BoxCount != undefined)
+                    if (row.InStockNum == undefined)
+                    {
                         if (row.BoxCount == null)
                             action.push('<button class="btn btn-sm btn-primary pack"><i class="fa fa-pencil-square-o"></i>装箱</button>');
+                    }
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
                     return action.join("&nbsp;");
                 },

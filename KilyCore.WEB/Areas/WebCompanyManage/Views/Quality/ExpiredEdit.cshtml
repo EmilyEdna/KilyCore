@@ -17,6 +17,7 @@
             InitDom: function () {
                 $("#CompanyId").val(CompanyInfo.Id);
                 $("input[name='InferType']").val(controller.GetParam("Type"));
+                $("#InferName").val(controller.GetParam("ProName"));
                 controller.LayDate({ elem: "#HandleTime" });
                 options.GetUsers();
                 options.GetGoodsList();

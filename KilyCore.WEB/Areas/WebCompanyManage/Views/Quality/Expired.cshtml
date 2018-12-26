@@ -52,7 +52,7 @@
                             type: 2,
                             height: "90%",
                             width: "80%",
-                            url: "WebCompanyManage/Quality/ExpiredEdit?Id=" + row.Id + "&Type=" + row.ProductType,
+                            url: "WebCompanyManage/Quality/ExpiredEdit?Id=" + row.Id + "&Type=" + row.ProductType + "&ProName=" + row.ProductName,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }
