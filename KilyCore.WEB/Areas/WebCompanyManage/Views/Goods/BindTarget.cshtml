@@ -33,14 +33,14 @@
                         success: function (result) {
                             var html = '<option>===请选择===</option>';
                             $.each(result.data, function (i, obj) {
-                                html += '<option value="' + obj.Id + '">' + obj.BatchNo + '</option>';
+                                html += '<option value="' + obj.Id + '">' + obj.BatchNo + '(剩余:' + obj.TotalNo + ')</option>';
                             });
                             $('#TagId').html(html);
                         }
                     });
                 });
                 $("#TagId").on('change', function () {
-                    $("#TagBatchNo").val($(this).find("option:selected").text());
+                    $("#TagBatchNo").val($(this).find("option:selected").text().split("(")[0]);
                     var datas = {
                         Id: $("#TagType").find("option:selected").val(),
                         Parameter: $("#TagBatchNo").val()

@@ -2291,10 +2291,11 @@ namespace KilyCore.Service.ServiceCore
                     queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
                 else
                     queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
-                return queryable.Select(t => new ResponseVeinTag()
+                return queryable.Where(t => t.TotalNo != 0).Select(t => new ResponseVeinTag()
                 {
                     Id = t.Id,
                     BatchNo = t.BatchNo,
+                    TotalNo=t.TotalNo,
                 }).AsNoTracking().ToList();
             }
             else
@@ -2308,10 +2309,11 @@ namespace KilyCore.Service.ServiceCore
                     queryable = queryable.Where(t => t.TagType == TagEnum.OneThing);
                 if (type == 3)
                     queryable = queryable.Where(t => t.TagType == TagEnum.OneBrand);
-                return queryable.Select(t => new ResponseEnterpriseTag()
+                return queryable.Where(t => t.TotalNo != 0).Select(t => new ResponseEnterpriseTag()
                 {
                     Id = t.Id,
                     BatchNo = t.BatchNo,
+                    TotalNo = t.TotalNo,
                 }).AsNoTracking().ToList();
             }
         }
