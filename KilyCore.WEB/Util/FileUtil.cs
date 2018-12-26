@@ -259,13 +259,26 @@ namespace KilyCore.WEB.Util
             }
             else
             {
-                for (long i = region; i > 0; i--)
+                if (!model.CodeHost.Contains("B"))
                 {
-                    Address.Add(string.Format(Configer.WebHostEmpty, model.CodeHost + (model.SCode + i)+ GetRandom()));
+                    for (long i = region; i > 0; i--)
+                    {
+                        Address.Add(string.Format(Configer.WebHostEmpty, model.CodeHost + (model.SCode + i) + GetRandom()));
+                    }
+                    Address.Add(string.Format(Configer.WebHostEmpty, model.CodeHost + model.SCode + GetRandom()));
+                    Content = String.Join("\r\n", Address);
+                    FileName = WebRootPath + @"\Template\ScanLinkEmpty.txt";
                 }
-                Address.Add(string.Format(Configer.WebHostEmpty, model.CodeHost + model.SCode+ GetRandom()));
-                Content = String.Join("\r\n", Address);
-                FileName = WebRootPath + @"\Template\ScanLinkEmpty.txt";
+                else
+                {
+                    for (long i = region; i > 0; i--)
+                    {
+                        Address.Add(string.Format(Configer.WebHostBox, model.CodeHost + (model.SCode + i) + GetRandom()));
+                    }
+                    Address.Add(string.Format(Configer.WebHostBox, model.CodeHost + model.SCode + GetRandom()));
+                    Content = String.Join("\r\n", Address);
+                    FileName = WebRootPath + @"\Template\ScanLinkBox.txt";
+                }
             }
             using (StreamWriter str = File.CreateText(FileName))
             {

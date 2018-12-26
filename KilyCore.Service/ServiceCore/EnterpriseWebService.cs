@@ -1997,7 +1997,7 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
-            var data = queryable.Select(t => new ResponseEnterpriseTag()
+            var data = queryable.AsNoTracking().Select(t => new ResponseEnterpriseTag()
             {
                 Id = t.Id,
                 BatchNo = t.BatchNo,
