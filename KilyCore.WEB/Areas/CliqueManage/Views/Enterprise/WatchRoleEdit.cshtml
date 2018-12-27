@@ -43,7 +43,16 @@
             },
             //事件
             InitEvents: function () {
-                controller.Validate("#Edit", $("#Edit").SerializeOver());
+                $("#save").click(function () {
+                    controller.ajax({
+                        url: $("#Edit").attr("action"),
+                        type: $("#Edit").attr("method"),
+                        data: $("#Edit").SerializeOver(),
+                        success: function (result) {
+                            controller.Msg(result.data);
+                        }
+                    });
+                });
             },
         };
         //初始化

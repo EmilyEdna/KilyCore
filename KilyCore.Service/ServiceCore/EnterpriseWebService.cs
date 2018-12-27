@@ -1044,7 +1044,7 @@ namespace KilyCore.Service.ServiceCore
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
-                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
+                queryable = queryable.Where(t => t.Id == CompanyUser().CompanyId);
             var data = queryable.Select(t => new ResponseEnterpriseUser()
             {
                 TrueName = t.TrueName,
