@@ -1,9 +1,12 @@
 ﻿using KilyCore.Configure;
 using KilyCore.DataEntity.RequestMapper.Function;
+using KilyCore.DataEntity.RequestMapper.Govt;
 using KilyCore.DataEntity.RequestMapper.Repast;
 using KilyCore.DataEntity.RequestMapper.System;
+using KilyCore.DataEntity.ResponseMapper.Govt;
 using KilyCore.DataEntity.ResponseMapper.Repast;
 using KilyCore.DataEntity.ResponseMapper.System;
+using KilyCore.EntityFrameWork.Model.Govt;
 using KilyCore.EntityFrameWork.Model.Repast;
 using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
@@ -948,7 +951,7 @@ namespace KilyCore.Service.ServiceCore
             if (MerchantInfo() != null)
                 queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
             else
-                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+                queryable = queryable.Where(t => t.Id == MerchantUser().InfoId);
             var data = queryable.Select(t => new ResponseMerchantUser()
             {
                 Id = t.Id,
@@ -1144,6 +1147,51 @@ namespace KilyCore.Service.ServiceCore
                     return UpdateField(level, null, Field) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
                 }
             }
+        }
+        #endregion
+        #region 商家自查
+        /// <summary>
+        /// 获取企业检查分页
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseGovtTemplateChild> GetTemplateChild(PageParamList<RequestGovtTemplateChild> pageParam)
+        {
+            IQueryable<GovtTemplateChild> queryable = Kily.Set<GovtTemplateChild>().OrderByDescending(t => t.CreateTime).AsNoTracking();
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.TypePath.Contains(MerchantInfo().TypePath));
+            else
+                queryable = queryable.Where(t => t.TypePath.Contains(MerchantUser().TypePath));
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.TemplateName))
+                queryable = queryable.Where(t => t.CompanyName.Contains(pageParam.QueryParam.TemplateName));
+            var data = queryable.Select(t => new ResponseGovtTemplateChild()
+            {
+                Id = t.Id,
+                CompanyName = t.CompanyName,
+                CompanyType = t.CompanyType,
+                TemplateName = t.TemplateName,
+                CheckUser = t.CheckUser
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑企业自查信息
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditTemplateChild(RequestGovtTemplateChild Param)
+        {
+            GovtTemplateChild Data = Param.MapToEntity<GovtTemplateChild>();
+            return Insert(Data) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 删除企业自查记录
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string DeleteTemplate(Guid Id)
+        {
+            return Remove<GovtTemplateChild>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         #endregion
         #endregion

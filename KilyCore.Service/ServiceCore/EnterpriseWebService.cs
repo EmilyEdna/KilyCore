@@ -3661,14 +3661,18 @@ namespace KilyCore.Service.ServiceCore
             var Num = Param.ThingCode.Split(",").ToList();
             if (string.IsNullOrEmpty(Num[Num.Count - 1]))
                 Num.RemoveAt(Num.Count - 1);
+
             if (Num.Count > 100)
                 return "装箱数量最大支持每箱100个物件";
             Param.BoxCount = Num.Count.ToString();
             Param.BoxCodeSort = Convert.ToInt64(Param.BoxCode.Split("B")[1].Substring(0, 12));
             EnterpriseBoxing Box = Param.MapToEntity<EnterpriseBoxing>();
             EnterpriseGoodsStock Stock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.GoodsBatchNo == Param.StockBatchNo).AsNoTracking().FirstOrDefault();
-            Stock.IsBindBoxCode = true;
-            return Insert(Box) && UpdateField(Stock, "IsBindBoxCode") ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            if (Stock != null) {
+                Stock.IsBindBoxCode = true;
+                UpdateField(Stock, "IsBindBoxCode");
+            }
+            return Insert(Box)? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         /// <summary>
         /// 绑定二维码

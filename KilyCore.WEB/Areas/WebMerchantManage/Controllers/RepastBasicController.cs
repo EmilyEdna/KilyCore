@@ -97,5 +97,13 @@ namespace KilyCore.WEB.Areas.WebMerchantManage.Controllers
             return View();
         }
         #endregion
+        public IActionResult MerchantCheck()
+        {
+            return View();
+        }
+        public IActionResult MerchantCheckEdit()
+        {
+            return View();
+        }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using KilyCore.DataEntity.RequestMapper.Function;
+using KilyCore.DataEntity.RequestMapper.Govt;
 using KilyCore.DataEntity.RequestMapper.Repast;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.Extension.ResultExtension;
@@ -363,6 +364,38 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx AuditContinuedAndLevel(SimpleParam<Guid> Key, SimpleParam<bool> Param)
         {
             return ObjectResultEx.Instance(RepastWebService.AuditContinuedAndLevel(Key.Id, Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #region 商家自查
+        /// <summary>
+        /// 获取企业检查分页
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetTemplateChild")]
+        public ObjectResultEx GetTemplateChild(PageParamList<RequestGovtTemplateChild> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetTemplateChild(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑企业检查
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("EditTemplateChild")]
+        public ObjectResultEx EditTemplateChild(RequestGovtTemplateChild Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.EditTemplateChild(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除企业自查
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("DeleteTemplate")]
+        public ObjectResultEx DeleteTemplate(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.DeleteTemplate(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #endregion

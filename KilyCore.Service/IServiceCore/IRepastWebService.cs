@@ -1,7 +1,9 @@
 ﻿using KilyCore.Configure;
 using KilyCore.DataEntity.RequestMapper.Function;
+using KilyCore.DataEntity.RequestMapper.Govt;
 using KilyCore.DataEntity.RequestMapper.Repast;
 using KilyCore.DataEntity.RequestMapper.System;
+using KilyCore.DataEntity.ResponseMapper.Govt;
 using KilyCore.DataEntity.ResponseMapper.Repast;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.Service.QueryExtend;
@@ -80,6 +82,11 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseRepastContinued> GetContinuedPage(PageParamList<RequestRepastContinued> pageParam);
         PagedResult<ResponseRepastUpLevel> GetUpLevelPage(PageParamList<RequestRepastUpLevel> pageParam);
         String AuditContinuedAndLevel(Guid Id, bool Param);
+        #endregion
+        #region 商家自查
+        PagedResult<ResponseGovtTemplateChild> GetTemplateChild(PageParamList<RequestGovtTemplateChild> pageParam);
+        String EditTemplateChild(RequestGovtTemplateChild Param);
+        String DeleteTemplate(Guid Id);
         #endregion
         #endregion
         #region 功能管理

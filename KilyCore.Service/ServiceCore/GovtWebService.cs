@@ -1468,6 +1468,8 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public IList<ResponseGovtTemplate> GetTemplateContentList(String CompanyType, String TypePath)
         {
+            if (CompanyType.Contains("小经营店") || CompanyType.Contains("小作坊") || CompanyType.Contains("小摊贩"))
+                CompanyType = "三小商家";
             var data = Kily.Set<GovtTemplate>().Where(t => t.CompanyType.Equals(CompanyType)).Where(t => TypePath.Contains(t.TypePath))
                  .Select(t => new ResponseGovtTemplate()
                  {

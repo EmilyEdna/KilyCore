@@ -1,0 +1,107 @@
+﻿
+@{
+    ViewData["Title"] = "编辑企业自查";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                options.Editor = controller.Editor(".summernote");
+                $("input[name='CompanyName']").val(RepastUser.MerchantName); 
+                $("input[name='CompanyType']").val(RepastUser.DiningTypeName);
+                $("input[name='TypePath']").val(RepastUser.TypePath);
+                //人员下拉
+                controller.ajax({
+                    url: "RepastWeb/GetMerchantList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value=' + obj.TrueName+'>' + obj.TrueName + '</option>';
+                        });
+                        $("#CheckUser").html(html);
+                    }
+                });
+                //模板下拉
+                controller.ajax({
+                    url: "GovtWeb/GetTemplateContentList",
+                    data: { Id: RepastUser.DiningTypeName, Parameter: RepastUser.TypePath},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += "<option  data-value= '"+obj.TemplateContent + "'  value=" + obj.TemplateName + ">" + obj.TemplateName + "</option>";
+                        });
+                        $("#TemplateName").html(html);
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                $("#TemplateName").on("change", function () {
+                    var data = $(this).find("option:selected").data().value;
+                    options.Editor.summernote('code', data);
+                });
+                controller.ValidateConfirm("#Edit");
+            },
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" id="Edit" method="post" action="RepastWeb/EditTemplateChild">
+            <input name="TemplateContent" type="hidden" />
+            <input name="TypePath" type="hidden" />
+            <table class="table table-hover table-bordered">
+                <colgroup>
+                    <col width="10%" />
+                    <col width="40%" />
+                    <col width="10%" />
+                    <col width="40%" />
+                </colgroup>
+                <tr>
+                    <th><label class="control-label">企业名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="CompanyName" readonly />
+                    </td>
+                    <th><label class="control-label">企业类型</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="CompanyType" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">模板名称</label></th>
+                    <td class="has-warning">
+                        <select type="select" name="TemplateName" class="form-control" id="TemplateName"></select>
+                    </td>
+                    <th><label class="control-label">自查人</label></th>
+                    <td class="has-warning">
+                        <select type="select" name="CheckUser" class="form-control" id="CheckUser"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">自查结果</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div name="TemplateContent" class="summernote"></div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
