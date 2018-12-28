@@ -471,12 +471,12 @@ namespace KilyCore.Service.ServiceCore
         {
             GovtInfo Info = Param.MapToEntity<GovtInfo>();
             Info.TypePath = GovtInfo().TypePath;
-            var Infos = Kily.Set<GovtInfo>().Where(t => t.Account.Equals(Param.Account)).AsNoTracking().FirstOrDefault();
-            if (Infos != null) return "该账号已经存在!";
             if (Param.Id != Guid.Empty)
                 return Update(Info, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
             else
             {
+                var Infos = Kily.Set<GovtInfo>().Where(t => t.Account.Equals(Param.Account)).AsNoTracking().FirstOrDefault();
+                if (Infos != null) return "该账号已经存在!";
                 if (GovtInfo().AccountType == GovtAccountEnum.City)
                     Info.AccountType = GovtAccountEnum.Area;
                 else if (GovtInfo().AccountType == GovtAccountEnum.Area)
@@ -1430,6 +1430,103 @@ namespace KilyCore.Service.ServiceCore
             }).FirstOrDefault();
         }
         #endregion
+        #region 企业自查模板
+        /// <summary>
+        /// 获取企业检查分页
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseGovtTemplateChild> GetTemplateChild(PageParamList<RequestGovtTemplateChild> pageParam)
+        {
+            IQueryable<GovtTemplateChild> queryable = Kily.Set<GovtTemplateChild>().Where(t => t.TypePath.Contains(GovtInfo().TypePath)).OrderByDescending(t => t.CreateTime).AsNoTracking();
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.CompanyName))
+                queryable = queryable.Where(t => t.CompanyName.Contains(pageParam.QueryParam.CompanyName));
+            var data = queryable.Select(t => new ResponseGovtTemplateChild()
+            {
+                Id = t.Id,
+                CompanyName = t.CompanyName,
+                CompanyType = t.CompanyType,
+                TemplateName = t.TemplateName,
+                CheckUser = t.CheckUser
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 获取企业检查详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseGovtTemplateChild GetTemplateChildDetail(Guid Id)
+        {
+            return Kily.Set<GovtTemplateChild>().Where(t => t.Id == Id).AsNoTracking().FirstOrDefault().MapToEntity<ResponseGovtTemplateChild>();
+        }
+        /// <summary>
+        /// 获取模板列表
+        /// </summary>
+        /// <param name="CompanyType"></param>
+        /// <param name="TypePath"></param>
+        /// <returns></returns>
+        public IList<ResponseGovtTemplate> GetTemplateContentList(String CompanyType, String TypePath)
+        {
+            var data = Kily.Set<GovtTemplate>().Where(t => t.CompanyType.Equals(CompanyType)).Where(t => TypePath.Contains(t.TypePath))
+                 .Select(t => new ResponseGovtTemplate()
+                 {
+                     TemplateName = t.TemplateName,
+                     TemplateContent = t.TemplateContent
+                 }).ToList();
+            return data;
+        }
+        /// <summary>
+        /// 自查模板分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseGovtTemplate> GetTemplatePage(PageParamList<RequestGovtTemplate> pageParam)
+        {
+            IQueryable<GovtTemplate> queryable = Kily.Set<GovtTemplate>().Where(t => t.GovtId == GovtInfo().Id).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.TemplateName))
+                queryable = queryable.Where(t => t.TemplateName.Contains(pageParam.QueryParam.TemplateName));
+            var data = queryable.AsNoTracking().Select(t => new ResponseGovtTemplate()
+            {
+                Id = t.Id,
+                GovtId = t.GovtId,
+                TemplateName = t.TemplateName,
+                CompanyType = t.CompanyType
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 编辑模板
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditGovtTemplate(RequestGovtTemplate Param)
+        {
+            GovtTemplate Govt = Param.MapToEntity<GovtTemplate>();
+            if (Param.Id != Guid.Empty)
+                return Update(Govt, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            else
+                return Insert(Govt) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 删除模板
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveTemplate(Guid Id)
+        {
+            return Remove<GovtTemplate>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 获取详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseGovtTemplate GetTemplateDetail(Guid Id)
+        {
+            return Kily.Set<GovtTemplate>().Where(t => t.Id == Id).AsNoTracking().FirstOrDefault().MapToEntity<ResponseGovtTemplate>();
+        }
+        #endregion
         #endregion
 
         #region 应急培训
@@ -1858,12 +1955,12 @@ namespace KilyCore.Service.ServiceCore
             List<ResponseGovtRanking> data = new List<ResponseGovtRanking>();
             Area.ForEach(t =>
             {
-               int TotalCompany = queryable.Where(x => x.TypePath.Contains(t.Id.ToString())).Select(x => x.Id).Count();
-               int TotalMerchant = queryables.Where(x => x.TypePath.Contains(t.Id.ToString())).Select(x => x.Id).Count();
+                int TotalCompany = queryable.Where(x => x.TypePath.Contains(t.Id.ToString())).Select(x => x.Id).Count();
+                int TotalMerchant = queryables.Where(x => x.TypePath.Contains(t.Id.ToString())).Select(x => x.Id).Count();
                 data.Add(new ResponseGovtRanking { AreaName = t.AreaName, TotalCount = TotalCompany + TotalMerchant });
             });
             data = data.OrderByDescending(t => t.TotalCount).ToList();
-            return new ResponseGovtMap { CityName=City.CityName,City=City.CityId, DataList = data };
+            return new ResponseGovtMap { CityName = City.CityName, City = City.CityId, DataList = data };
         }
         /// <summary>
         /// 获取区域信息

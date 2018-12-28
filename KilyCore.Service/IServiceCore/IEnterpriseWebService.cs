@@ -1,9 +1,11 @@
 ﻿using KilyCore.Configure;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.Function;
+using KilyCore.DataEntity.RequestMapper.Govt;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.Function;
+using KilyCore.DataEntity.ResponseMapper.Govt;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.Service.QueryExtend;
 using System;
@@ -87,6 +89,11 @@ namespace KilyCore.Service.IServiceCore
         String EditVedio(RequestEnterpriseVedio Param);
         String DeleteVedio(Guid Id);
         String ShowVedio(Guid Id, bool flag);
+        #endregion
+        #region 企业自查
+         PagedResult<ResponseGovtTemplateChild> GetTemplateChild(PageParamList<RequestGovtTemplateChild> pageParam);
+         String EditTemplateChild(RequestGovtTemplateChild Param);
+         String DeleteTemplate(Guid Id);
         #endregion
         #endregion
         #region 成长档案

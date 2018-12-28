@@ -121,6 +121,15 @@ namespace KilyCore.Service.IServiceCore
         String EditMovePatrol(RequestGovtMovePatrol Param);
         ResponseGovtMovePatrol GetGovtMovePatrolDetail(Guid Id);
         #endregion
+        #region 企业自查模板
+        PagedResult<ResponseGovtTemplateChild> GetTemplateChild(PageParamList<RequestGovtTemplateChild> pageParam);
+        ResponseGovtTemplateChild GetTemplateChildDetail(Guid Id);
+        IList<ResponseGovtTemplate> GetTemplateContentList(String CompanyType, String TypePath);
+        PagedResult<ResponseGovtTemplate> GetTemplatePage(PageParamList<RequestGovtTemplate> pageParam);
+        String EditGovtTemplate(RequestGovtTemplate Param);
+        String RemoveTemplate(Guid Id);
+         ResponseGovtTemplate GetTemplateDetail(Guid Id);
+        #endregion
         #endregion
 
         #region 应急培训

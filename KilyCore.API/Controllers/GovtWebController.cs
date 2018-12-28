@@ -236,7 +236,8 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("GetCityName")]
-        public ObjectResultEx GetCityName(SimpleParam<Guid> Param) {
+        public ObjectResultEx GetCityName(SimpleParam<Guid> Param)
+        {
             return ObjectResultEx.Instance(GovtWebService.GetCityName(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -340,9 +341,9 @@ namespace KilyCore.API.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("EditCookBanquet")]
-        public ObjectResultEx EditCookBanquet(SimpleParam<Guid> Key,SimpleParam<String> Param)
+        public ObjectResultEx EditCookBanquet(SimpleParam<Guid> Key, SimpleParam<String> Param)
         {
-            return ObjectResultEx.Instance(GovtWebService.EditCookBanquet(Key.Id,Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(GovtWebService.EditCookBanquet(Key.Id, Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
 
@@ -598,6 +599,80 @@ namespace KilyCore.API.Controllers
         }
         #endregion
 
+        #region 企业自查模板
+        /// <summary>
+        /// 获取企业检查分页
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetTemplateChild")]
+        public ObjectResultEx GetTemplateChild(PageParamList<RequestGovtTemplateChild> pageParam)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetTemplateChild(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取企业检查详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetTemplateChildDetail")]
+        public ObjectResultEx GetTemplateChildDetail(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetTemplateChildDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取模板列表
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetTemplateContentList")]
+        public ObjectResultEx GetTemplateContentList(SimpleParam<String> Key, SimpleParam<String> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetTemplateContentList(Key.Id,Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 自查模板分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetTemplatePage")]
+        public ObjectResultEx GetTemplatePage(PageParamList<RequestGovtTemplate> pageParam)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetTemplatePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑模板
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditGovtTemplate")]
+        public ObjectResultEx EditGovtTemplate(RequestGovtTemplate Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.EditGovtTemplate(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除模板
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveTemplate")]
+        public ObjectResultEx RemoveTemplate(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.RemoveTemplate(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("GetTemplateDetail")]
+        public ObjectResultEx GetTemplateDetail(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetTemplateDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
         #region 应急培训
         #region 培训通知
         /// <summary>
@@ -785,7 +860,8 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetComplainCount")]
-        public ObjectResultEx GetComplainCount() {
+        public ObjectResultEx GetComplainCount()
+        {
             return ObjectResultEx.Instance(GovtWebService.GetComplainCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -802,7 +878,8 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetIndexStatistics")]
-        public ObjectResultEx GetIndexStatistics() {
+        public ObjectResultEx GetIndexStatistics()
+        {
             return ObjectResultEx.Instance(GovtWebService.GetIndexStatistics(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion

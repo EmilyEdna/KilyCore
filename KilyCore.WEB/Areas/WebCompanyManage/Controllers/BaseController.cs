@@ -164,5 +164,21 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 企业自查
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult CompanyCheck()
+        {
+            return View();
+        }
+        /// <summary>
+        /// 编辑自查
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult CompanyCheckEdit()
+        {
+            return View();
+        }
     }
 }

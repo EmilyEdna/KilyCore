@@ -21,10 +21,7 @@ namespace KilyCore.DataEntity.RequestMapper.Govt
     public class RequestGovtAgree
     {
         public Guid Id { get; set; }
-        /// <summary>
-        /// 厨师会员表Id
-        /// </summary>
-        public Guid? CookId { get; set; }
+        public Guid? GovtId { get; set; }
         /// <summary>
         /// 标题
         /// </summary>
