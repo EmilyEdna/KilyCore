@@ -25,6 +25,10 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
     public class EnterpriseLogistics : EnterpriseBase
     {
         /// <summary>
+        /// 发货批次
+        /// </summary>
+        public virtual string BatchNo { get; set; }
+        /// <summary>
         /// 物流单号
         /// </summary>
         public virtual string WayBill { get; set; }

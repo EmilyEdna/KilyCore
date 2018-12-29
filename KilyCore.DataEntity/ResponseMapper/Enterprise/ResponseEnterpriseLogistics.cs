@@ -24,6 +24,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public Guid CompanyId { get; set; }
         public string SendAddress { get; set; }
         /// <summary>
+        /// 发货批次
+        /// </summary>
+        public string BatchNo { get; set; }
+        /// <summary>
         /// 物流单号
         /// </summary>
         public string WayBill { get; set; }

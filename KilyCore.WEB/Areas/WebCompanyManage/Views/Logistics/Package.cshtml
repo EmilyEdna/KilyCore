@@ -67,7 +67,7 @@
                         type: 2,
                         height: "90%",
                         width: "80%",
-                        url: "WebCompanyManage/Logistics/SendGoodsEdit?GoodsName=" + row.ProductName + "&No=" + row.PackageNo,
+                        url: "WebCompanyManage/Logistics/SendGoodsEdit?GoodsName=" + row.ProductName + "&No=" + row.PackageNo + "&SendNo=" + row.PackageNum,
                         callBack: function (result) {
                             result.$("#Edit").submit();
                         }
@@ -145,7 +145,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input type="text" placeholder="产品名称" class="input-sm form-control" name="ProductName">
+                                <input type="text" placeholder="装车批次" class="input-sm form-control" name="PackageNo">
                                 <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
                                     <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>

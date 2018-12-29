@@ -3661,7 +3661,6 @@ namespace KilyCore.Service.ServiceCore
             var Num = Param.ThingCode.Split(",").ToList();
             if (string.IsNullOrEmpty(Num[Num.Count - 1]))
                 Num.RemoveAt(Num.Count - 1);
-
             if (Num.Count > 100)
                 return "装箱数量最大支持每箱100个物件";
             Param.BoxCount = Num.Count.ToString();
@@ -3764,7 +3763,6 @@ namespace KilyCore.Service.ServiceCore
                     OutStockUser = o.t.OutStockUser,
                     OutStockType = o.t.OutStockType,
                     StockBatch = o.x.GoodsBatchNo,
-                    Seller = o.t.Seller,
                     BoxCount=o.t.BoxCount,
                     GoodsName = p.ProductName,
                     OutStockNum = o.t.OutStockNum,
@@ -3820,7 +3818,11 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             return queryable.Select(t => new ResponseEnterpriseGoodsStockAttach()
             {
-                GoodsBatchNo = t.GoodsBatchNo
+                GoodsBatchNo = t.GoodsBatchNo,
+                GoodsName=Kily.Set<EnterpriseGoods>()
+                .Where(o=>o.Id==Kily.Set<EnterpriseGoodsStock>()
+                .Where(x=>x.Id==t.StockId).Select(x=>x.GoodsId)
+                .FirstOrDefault()).Select(o=>o.ProductName).FirstOrDefault()
             }).ToList();
         }
         /// <summary>
@@ -4220,23 +4222,27 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseGoodsStockAttach> Attach = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseGoodsStock> Stock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseGoods> Goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
-            if (!string.IsNullOrEmpty(pageParam.QueryParam.ProductName))
-                Goods = Goods.Where(t => t.ProductName.Contains(pageParam.QueryParam.ProductName));
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.PackageNo))
+                Package = Package.Where(t => t.PackageNo.Contains(pageParam.QueryParam.PackageNo));
             if (CompanyInfo() != null)
                 Package = Package.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 Package = Package.Where(t => t.CompanyId == CompanyUser().Id);
-            var data = Package.Join(Attach, q => q.ProductOutStockNo, w => w.GoodsBatchNo, (q, w) => new { q, w.StockId })
-                  .Join(Stock, e => e.StockId, r => r.Id, (e, r) => new { e, r.GoodsId })
-                  .Join(Goods, t => t.GoodsId, y => y.Id, (t, y) => new ResponseEnterpriseGoodsPackage()
+            var data = Package.Select(t=> new ResponseEnterpriseGoodsPackage()
                   {
-                      Id = t.e.q.Id,
-                      PackageNo = t.e.q.PackageNo,
-                      ProductName = y.ProductName,
-                      ProductOutStockNo = t.e.q.ProductOutStockNo,
-                      PackageTime = t.e.q.PackageTime,
-                      PackageNum = t.e.q.PackageNum,
-                      Manager = t.e.q.Manager
+                      Id = t.Id,
+                      PackageNo = t.PackageNo,
+                      ProductName = string.Join(",",Goods.Where(p=>
+                      Stock.Where(o=>
+                      Attach.Where(x=>
+                      t.ProductOutStockNo.Contains(x.GoodsBatchNo))
+                      .Select(x=>x.StockId).Contains(o.Id))
+                      .Select(o=>o.GoodsId).Contains(p.Id))
+                      .Select(p=>p.ProductName).ToList()),
+                      ProductOutStockNo = t.ProductOutStockNo,
+                      PackageTime = t.PackageTime,
+                      PackageNum = t.PackageNum,
+                      Manager = t.Manager
                   }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -4248,6 +4254,10 @@ namespace KilyCore.Service.ServiceCore
         public string EditGoodsPackage(RequestEnterpriseGoodsPackage Param)
         {
             Param.BoxCode = Param.BoxCode.Replace("\r\n", ",");
+            var Num = Param.BoxCode.Split(",").ToList();
+            if (string.IsNullOrEmpty(Num[Num.Count - 1]))
+                Num.RemoveAt(Num.Count - 1);
+            Param.PackageNum = Num.Count;
             EnterpriseGoodsPackage package = Param.MapToEntity<EnterpriseGoodsPackage>();
             if (Param.Id == Guid.Empty)
                 return Insert(package) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
@@ -4290,13 +4300,23 @@ namespace KilyCore.Service.ServiceCore
         public IList<ResponseEnterpriseGoodsPackage> GetPackagesList()
         {
             IQueryable<EnterpriseGoodsPackage> queryable = Kily.Set<EnterpriseGoodsPackage>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<EnterpriseGoodsStockAttach> Attach = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseGoodsStock> Stock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseGoods> Goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             var data = queryable.Select(t => new ResponseEnterpriseGoodsPackage()
             {
-                PackageNo = t.PackageNo
+                PackageNo = t.PackageNo,
+                ProductName = string.Join("|", Goods.Where(p =>
+                      Stock.Where(o =>
+                      Attach.Where(x =>
+                      t.ProductOutStockNo.Contains(x.GoodsBatchNo))
+                      .Select(x => x.StockId).Contains(o.Id))
+                      .Select(o => o.GoodsId).Contains(p.Id))
+                      .Select(p => p.ProductName).ToList())
             }).ToList();
             return data;
         }
@@ -4323,7 +4343,7 @@ namespace KilyCore.Service.ServiceCore
                 GainId = t.GainId,
                 SendAddress = t.SendAddress,
                 GoodsName = t.GoodsName,
-                PackageNo = t.PackageNo,
+                BatchNo=t.BatchNo,
                 LinkPhone = t.LinkPhone,
                 Address = t.Address,
                 WayBill = t.WayBill,
@@ -4373,6 +4393,27 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string EditLogistics(RequestEnterpriseLogistics Param)
         {
+            IQueryable<EnterpriseGoodsPackage> queryable = Kily.Set<EnterpriseGoodsPackage>().Where(t => t.IsDelete == false);
+            if (Param.PackageNo.Contains("_"))
+            {
+                int count = 0;
+                if (!Param.PackageNo.Contains(","))
+                {
+                    Param.GoodsName = Param.PackageNo.Split("_")[1];
+                    Param.PackageNo = Param.PackageNo.Split("_")[0];
+                    Param.SendGoodsNum = queryable.Where(t => t.PackageNo == Param.PackageNo).Select(t => t.PackageNum).FirstOrDefault().ToString();
+                }
+                else
+                {
+                    Param.PackageNo.Split(",").ToList().ForEach(t =>
+                    {
+                        Param.GoodsName += t.Split("_")[1] + "|";
+                        Param.PackageNo = t.Split("_")[0] + ",";
+                        count += queryable.Where(x => x.PackageNo == Param.PackageNo).Select(x => x.PackageNum).FirstOrDefault();
+                    });
+                    Param.SendGoodsNum = count.ToString();
+                }
+            }
             EnterpriseLogistics logistics = Param.MapToEntity<EnterpriseLogistics>();
             return Insert<EnterpriseLogistics>(logistics) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
@@ -4730,7 +4771,6 @@ namespace KilyCore.Service.ServiceCore
                 出库数量 = t.OutStockNum,
                 出库时间 = t.OutStockTime,
                 负责人 = t.OutStockUser,
-                分销商 = t.Seller,
                 出库类型 = t.OutStockType
             }).ToList<Object>();
             return data;

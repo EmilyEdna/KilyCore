@@ -65,7 +65,6 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public string GoodsBatchNo { get; set; }
         public Guid StockId { get; set; }
         public string OutStockUser { get; set; }
-        public string Seller { get; set; }
         public int OutStockNum { get; set; }
         public DateTime OutStockTime { get; set; }
         public string BoxCodeNo { get; set; }

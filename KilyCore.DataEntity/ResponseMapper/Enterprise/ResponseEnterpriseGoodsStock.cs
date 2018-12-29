@@ -96,7 +96,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// </summary>
         public string StockBatch { get; set; }
         public string OutStockUser { get; set; }
-        public string Seller { get; set; }
         public int OutStockNum { get; set; }
         public DateTime OutStockTime { get; set; }
         public string BoxCodeNo { get; set; }

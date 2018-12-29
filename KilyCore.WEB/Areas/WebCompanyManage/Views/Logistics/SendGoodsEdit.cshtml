@@ -20,9 +20,9 @@
                 $("input[name='CompanyId']").val(CompanyInfo.Id);
                 $("input[name='PackageNo']").val(No);
                 $("input[name='GoodsName']").val(GoodsName);
+                $("input[name='SendGoodsNum']").val(controller.GetParam("SendNo"));
+                $("input[name='BatchNo']").val("No." + controller.FormatDate("YYYYMMDDHHmmss"));
                 controller.LayDate({ elem: "input[name='SendTime']" });
-                if (No != null && No != "")
-                    $("input[name='SendGoodsNum']").val(1);
             },
             //事件
             InitEvents: function () {
@@ -67,25 +67,35 @@
             <input type="hidden" name="GainId" id="GainId" />
             <table class="table table-hover table-bordered">
                 <tr>
+                    <th><label class="control-label">发货批次</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="BatchNo" readonly />
+                    </td>
                     <th><label class="control-label">打包批次</label></th>
                     <td class="has-warning">
                         <input type="text" class="form-control" name="PackageNo" readonly />
                     </td>
+                </tr>
+                <tr>
                     <th><label class="control-label">产品名称</label></th>
                     <td class="has-warning">
                         <input type="text" class="form-control" name="GoodsName" />
                     </td>
-                </tr>
-                <tr>
                     <th><label class="control-label">收货人</label></th>
                     <td class="has-warning">
                         <div class="input-group" style="width:100%;">
                             <input type="text" class="form-control" id="GainUser" name="GainUser" data-list="GainId,Address,LinkPhone" placeholder="请输入检索字段" />
                         </div>
                     </td>
+                </tr>
+                <tr>
                     <th><label class="control-label">发货数量</label></th>
                     <td class="has-warning">
                         <input type="text" name="SendGoodsNum" class="form-control" />
+                    </td>
+                    <th><label class="control-label">发货地址</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SendAddress" />
                     </td>
                 </tr>
                 <tr>
@@ -95,7 +105,7 @@
                     </td>
                     <th><label class="control-label">收货地址</label></th>
                     <td class="has-warning">
-                        <input type="text" name="Address" class="form-control" readonly />
+                        <input type="text" name="Address" class="form-control" />
                     </td>
                 </tr>
                 <tr>
@@ -118,12 +128,7 @@
                         <input type="text" class="form-control" name="Traffic" />
                     </td>
                 </tr>
-                <tr>
-                    <th><label class="control-label">发货地址</label></th>
-                    <td class="has-warning" colspan="3">
-                        <input type="text" class="form-control" name="SendAddress" />
-                    </td>
-                </tr>
+
             </table>
         </form>
     </div>
