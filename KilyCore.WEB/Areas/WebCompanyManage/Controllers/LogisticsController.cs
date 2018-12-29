@@ -39,6 +39,10 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        public IActionResult SendGoodsCoodView()
+        {
+            return View();
+        }
         #endregion
         #region 进货
         public IActionResult Buyer()

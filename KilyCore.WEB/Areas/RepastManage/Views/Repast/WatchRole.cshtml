@@ -42,7 +42,8 @@
                             width: "80%",
                             url: "RepastManage/Repast/WatchRoleEdit?Id=" + row.Id,
                             callBack: function (result) {
-                                result.$("#Edit").submit();
+                                result.popClose();
+                                options.$table.refresh();
                             }
                         })
                     }

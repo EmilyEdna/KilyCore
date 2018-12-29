@@ -62,15 +62,12 @@
                         });
                     },
                     "click .code": function (event, val, row, index) {
-                        var host = WebUrl+"StaticHtml/ScanGoods.html?Id=" + row.Id;
-                        $("#QRcode").html("");
-                        controller.QRCode('#QRcode', { render: "table", text: host });
                         controller.OpenWindow({
                             title: "发货二维码",
-                            type: 1,
-                            height: "365px",
-                            width: "265px",
-                            content: $("#QRcode").html(),
+                            type: 2,
+                            url: "WebCompanyManage/Logistics/SendGoodsCoodView?Id=" + row.CompanyId,
+                            height: "400px",
+                            width: "300px",
                             callBack: function (result) {
                                 result.popClose();
                             }
@@ -140,4 +137,3 @@
         </div>
     </div>
 </div>
-<div style="display:none" id='QRcode'></div>
