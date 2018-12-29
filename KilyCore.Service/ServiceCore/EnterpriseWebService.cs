@@ -2346,7 +2346,7 @@ namespace KilyCore.Service.ServiceCore
                 {
                     Id = t.Id,
                     BatchNo = t.BatchNo,
-                    TotalNo=t.TotalNo,
+                    TotalNo = t.TotalNo,
                 }).AsNoTracking().ToList();
             }
             else
@@ -2648,14 +2648,14 @@ namespace KilyCore.Service.ServiceCore
             Int64 End = Convert.ToInt64(pageParam.QueryParam.EndCode.Split("B")[1]);
             var data = Kily.Set<EnterpriseBoxing>().Where(t => t.BoxCodeSort >= Star && t.BoxCodeSort <= End).Select(t => new ResponseEnterpriseBoxing
             {
-                Id=t.Id,
-                BoxCode=t.BoxCode,
-                StockBatchNo=t.StockBatchNo,
-                BoxBatchNo=t.BoxBatchNo,
-                GoodName=t.GoodName,
-                BoxCount=t.BoxCount,
-                ProductionBatchNo=t.ProductionBatchNo,
-                BoxTime=t.BoxTime
+                Id = t.Id,
+                BoxCode = t.BoxCode,
+                StockBatchNo = t.StockBatchNo,
+                BoxBatchNo = t.BoxBatchNo,
+                GoodName = t.GoodName,
+                BoxCount = t.BoxCount,
+                ProductionBatchNo = t.ProductionBatchNo,
+                BoxTime = t.BoxTime
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -3667,11 +3667,20 @@ namespace KilyCore.Service.ServiceCore
             Param.BoxCodeSort = Convert.ToInt64(Param.BoxCode.Split("B")[1].Substring(0, 12));
             EnterpriseBoxing Box = Param.MapToEntity<EnterpriseBoxing>();
             EnterpriseGoodsStock Stock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.GoodsBatchNo == Param.StockBatchNo).AsNoTracking().FirstOrDefault();
-            if (Stock != null) {
+            EnterpriseGoodsStockAttach StockAttach = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.GoodsBatchNo == Param.StockBatchNo).AsNoTracking().FirstOrDefault();
+            if (Stock != null)
+            {
                 Stock.IsBindBoxCode = true;
                 UpdateField(Stock, "IsBindBoxCode");
             }
-            return Insert(Box)? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+            {
+                StockAttach.BoxCodeNo = Param.BoxCode;
+                StockAttach.BoxCount = Param.BoxCount;
+                List<String> Field = new List<String> { "BoxCodeNo", "BoxCount" };
+                UpdateField(Stock, null, Field);
+            }
+            return Insert(Box) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         /// <summary>
         /// 绑定二维码
@@ -3763,7 +3772,7 @@ namespace KilyCore.Service.ServiceCore
                     OutStockUser = o.t.OutStockUser,
                     OutStockType = o.t.OutStockType,
                     StockBatch = o.x.GoodsBatchNo,
-                    BoxCount=o.t.BoxCount,
+                    BoxCount = o.t.BoxCount,
                     GoodsName = p.ProductName,
                     OutStockNum = o.t.OutStockNum,
                     StockEx = o.x.InStockNum
@@ -3786,7 +3795,7 @@ namespace KilyCore.Service.ServiceCore
             stock.InStockNum -= Param.OutStockNum;
             if (!string.IsNullOrEmpty(Param.BoxCodeNo))
             {
-                Param.BoxCodeNo=Param.BoxCodeNo.Replace("\r\n", ",");
+                Param.BoxCodeNo = Param.BoxCodeNo.Replace("\r\n", ",");
                 var Num = Param.BoxCodeNo.Split(",").ToList();
                 if (string.IsNullOrEmpty(Num[Num.Count - 1]))
                     Num.RemoveAt(Num.Count - 1);
@@ -3819,10 +3828,10 @@ namespace KilyCore.Service.ServiceCore
             return queryable.Select(t => new ResponseEnterpriseGoodsStockAttach()
             {
                 GoodsBatchNo = t.GoodsBatchNo,
-                GoodsName=Kily.Set<EnterpriseGoods>()
-                .Where(o=>o.Id==Kily.Set<EnterpriseGoodsStock>()
-                .Where(x=>x.Id==t.StockId).Select(x=>x.GoodsId)
-                .FirstOrDefault()).Select(o=>o.ProductName).FirstOrDefault()
+                GoodsName = Kily.Set<EnterpriseGoods>()
+                .Where(o => o.Id == Kily.Set<EnterpriseGoodsStock>()
+                .Where(x => x.Id == t.StockId).Select(x => x.GoodsId)
+                .FirstOrDefault()).Select(o => o.ProductName).FirstOrDefault()
             }).ToList();
         }
         /// <summary>
@@ -4228,22 +4237,22 @@ namespace KilyCore.Service.ServiceCore
                 Package = Package.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 Package = Package.Where(t => t.CompanyId == CompanyUser().Id);
-            var data = Package.Select(t=> new ResponseEnterpriseGoodsPackage()
-                  {
-                      Id = t.Id,
-                      PackageNo = t.PackageNo,
-                      ProductName = string.Join(",",Goods.Where(p=>
-                      Stock.Where(o=>
-                      Attach.Where(x=>
-                      t.ProductOutStockNo.Contains(x.GoodsBatchNo))
-                      .Select(x=>x.StockId).Contains(o.Id))
-                      .Select(o=>o.GoodsId).Contains(p.Id))
-                      .Select(p=>p.ProductName).ToList()),
-                      ProductOutStockNo = t.ProductOutStockNo,
-                      PackageTime = t.PackageTime,
-                      PackageNum = t.PackageNum,
-                      Manager = t.Manager
-                  }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            var data = Package.Select(t => new ResponseEnterpriseGoodsPackage()
+            {
+                Id = t.Id,
+                PackageNo = t.PackageNo,
+                ProductName = string.Join(",", Goods.Where(p =>
+                 Stock.Where(o =>
+                 Attach.Where(x =>
+                 t.ProductOutStockNo.Contains(x.GoodsBatchNo))
+                 .Select(x => x.StockId).Contains(o.Id))
+                 .Select(o => o.GoodsId).Contains(p.Id))
+                      .Select(p => p.ProductName).ToList()),
+                ProductOutStockNo = t.ProductOutStockNo,
+                PackageTime = t.PackageTime,
+                PackageNum = t.PackageNum,
+                Manager = t.Manager
+            }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
         /// <summary>
@@ -4258,6 +4267,13 @@ namespace KilyCore.Service.ServiceCore
             if (string.IsNullOrEmpty(Num[Num.Count - 1]))
                 Num.RemoveAt(Num.Count - 1);
             Param.PackageNum = Num.Count;
+            var data = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => Param.ProductOutStockNo.Contains(t.GoodsBatchNo))
+               .Select(t => t.BoxCodeNo).ToList();
+            foreach (var item in data)
+            {
+                if (!Param.BoxCode.Contains(item))
+                    return "当前批次不包括装箱码：" + item;
+            }
             EnterpriseGoodsPackage package = Param.MapToEntity<EnterpriseGoodsPackage>();
             if (Param.Id == Guid.Empty)
                 return Insert(package) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
@@ -4279,7 +4295,7 @@ namespace KilyCore.Service.ServiceCore
                 ProductOutStockNo = t.ProductOutStockNo,
                 PackageTime = t.PackageTime,
                 PackageNum = t.PackageNum,
-                BoxCode=t.BoxCode,
+                BoxCode = t.BoxCode,
                 Manager = t.Manager
             }).FirstOrDefault();
             return data;
@@ -4343,7 +4359,7 @@ namespace KilyCore.Service.ServiceCore
                 GainId = t.GainId,
                 SendAddress = t.SendAddress,
                 GoodsName = t.GoodsName,
-                BatchNo=t.BatchNo,
+                BatchNo = t.BatchNo,
                 LinkPhone = t.LinkPhone,
                 Address = t.Address,
                 WayBill = t.WayBill,

@@ -28,7 +28,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// </summary>
         public  string GoodName { get; set; }
         /// <summary>
-        /// 入库批次
+        /// 出入库批次
         /// </summary>
         public  string StockBatchNo { get; set; }
         /// <summary>
