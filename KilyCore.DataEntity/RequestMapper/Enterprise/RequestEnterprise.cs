@@ -55,5 +55,21 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public string SafeOffer { get; set; }
         public string OfferLv { get; set; }
         public string CodeStar { get; set; }
+        /// <summary>
+        /// 安全等级
+        /// </summary>
+        public string CompanySafeLv { get; set; }
+        /// <summary>
+        /// 主要产品
+        /// </summary>
+        public string MainPro { get; set; }
+        /// <summary>
+        /// 产品名称
+        /// </summary>
+        public string MainProRemark { get; set; }
+        /// <summary>
+        /// 企业形象
+        /// </summary>
+        public string ComImage { get; set; }
     }
 }

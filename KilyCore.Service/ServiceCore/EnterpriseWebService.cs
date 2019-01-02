@@ -822,7 +822,10 @@ namespace KilyCore.Service.ServiceCore
                     Scope = t.Scope,
                     NatureAgent = t.NatureAgent,
                     TagCodeNum = t.TagCodeNum,
-                    SafeCompany = t.SafeCompany
+                    SafeCompany = t.SafeCompany,
+                    ComImage = t.ComImage,
+                    MainPro = t.MainPro,
+                    MainProRemark = t.MainProRemark
                 }).FirstOrDefault();
             return data;
         }
@@ -4894,6 +4897,40 @@ namespace KilyCore.Service.ServiceCore
                 OutSideData = OutSideData
             };
             return dataCount;
+        }
+        #endregion
+
+        #region 手机扫描页面
+        /// <summary>
+        /// 一企一码
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseEnterprise GetScanCompanyFirst(Guid Id)
+        {
+            IQueryable<EnterpriseInfo> enterpriseInfos = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Id).AsNoTracking();
+            IQueryable<EnterpriseVedio> enterpriseVedios = Kily.Set<EnterpriseVedio>().OrderByDescending(t => t.CreateTime).Where(t => t.IsIndex == true).AsNoTracking();
+            var data = enterpriseInfos.GroupJoin(enterpriseVedios, t => t.Id, x => x.CompanyId, (t, x) => new ResponseEnterprise
+            {
+                CompanyName = t.CompanyName,
+                CompanyAddress = t.CompanyAddress,
+                Scope = t.Scope,
+                NetAddress = t.NetAddress,
+                OfferLv = t.OfferLv,
+                Discription = t.Discription,
+                CompanyPhone = t.CompanyPhone,
+                MainProRemark = t.MainProRemark,
+                MainPro = t.MainPro,
+                CompanySafeLv = t.CompanySafeLv,
+                ComImage = t.ComImage,
+                Honor = t.Certification + "," + t.HonorCertification,
+                VideoMap = x.ToDictionary(o => o.VedioName, o => o.VedioAddr)
+            }).AsNoTracking().FirstOrDefault();
+            return data;
+        }
+        public void GetScanBrandFirst(Guid? Id, String Code)
+        {
+
         }
         #endregion
     }

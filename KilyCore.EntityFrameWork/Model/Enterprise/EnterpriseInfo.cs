@@ -134,5 +134,21 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 码段前缀
         /// </summary>
         public virtual string CodeStar { get; set; }
+        /// <summary>
+        /// 安全等级
+        /// </summary>
+        public virtual string CompanySafeLv { get; set; }
+        /// <summary>
+        /// 主要产品
+        /// </summary>
+        public virtual string MainPro { get; set; }
+        /// <summary>
+        /// 产品名称
+        /// </summary>
+        public virtual string MainProRemark { get; set; }
+        /// <summary>
+        /// 企业形象
+        /// </summary>
+        public virtual string ComImage { get; set; }
     }
 }

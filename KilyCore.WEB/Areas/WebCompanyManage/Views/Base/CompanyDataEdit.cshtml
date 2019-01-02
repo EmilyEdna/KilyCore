@@ -78,6 +78,28 @@
                         options.SetFileValue(result.data, '#IdCard');
                     }
                 });
+                //文件上传-主要产品
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-4",
+                    maxNum: 5,
+                    node: '#Img4',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, '#MainPro');
+                    }
+                });
+                //文件上传-企业形象
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-5",
+                    maxNum: 1,
+                    node: '#Img5',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, '#ComImage');
+                    }
+                });
             },
             //事件
             InitEvents: function () {
@@ -217,9 +239,23 @@
                     <td class="has-warning">
                         <input type="text" class="form-control" name="SafeOffer">
                     </td>
-                    <th><label class="control-label">安全等级</label></th>
+                    <th><label class="control-label">安全员等级</label></th>
                     <td class="has-warning">
                         <select type="select" class="form-control" name="OfferLv">
+                            <option value="A级">A级</option>
+                            <option value="B级">B级</option>
+                            <option value="C级">C级</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">主要产品</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="MainProRemark" placeholder="多项用逗号隔开">
+                    </td>
+                    <th><label class="control-label">企业安全等级</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="CompanySafeLv">
                             <option value="A级">A级</option>
                             <option value="B级">B级</option>
                             <option value="C级">C级</option>
@@ -277,6 +313,30 @@
                             </section>
                         </div>
                         <input type="hidden" id="IdCard" name="IdCard" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">主要产品</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear" id="Img4">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" id="upload-input-4" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                        <input type="hidden" id="MainPro" name="MainPro" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">企业形象</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear" id="Img5">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" id="upload-input-5" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                        <input type="hidden" id="ComImage" name="ComImage" />
                     </td>
                 </tr>
             </table>

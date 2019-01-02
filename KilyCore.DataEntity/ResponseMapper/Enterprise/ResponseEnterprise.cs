@@ -13,6 +13,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
     public class ResponseEnterprise
     {
         public IList<String> Video { get; set; }
+        public IDictionary<String,String> VideoMap { get; set; }
         public Guid Id { get; set; }
         public Guid? CompanyId { get; set; }
         public DateTime? CardExpiredDate { get; set; }
@@ -95,5 +96,21 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string Scope { get; set; }
         public string VideoAddress { get; set; }
         public string CodeStar { get; set; }
+        /// <summary>
+        /// 安全等级
+        /// </summary>
+        public string CompanySafeLv { get; set; }
+        /// <summary>
+        /// 主要产品
+        /// </summary>
+        public string MainPro { get; set; }
+        /// <summary>
+        /// 产品名称
+        /// </summary>
+        public string MainProRemark { get; set; }
+        /// <summary>
+        /// 企业形象
+        /// </summary>
+        public string ComImage { get; set; }
     }
 }
