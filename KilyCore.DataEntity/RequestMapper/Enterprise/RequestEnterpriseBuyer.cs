@@ -57,5 +57,9 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// 供应商
         /// </summary>
         public string Supplier { get; set; }
+        /// <summary>
+        /// 检测报告
+        /// </summary>
+        public string CheckReport { get; set; }
     }
 }

@@ -40,6 +40,24 @@
             },
             //行为
             action: {
+                ImgFormatter: function (val, row, index) {
+                    var action = [];
+                    if (row.LvImg != null)
+                        action.push('<img class="photo" src="' + row.CheckReport + '" style="width:48px;height:32px;"">')
+                    return action.join("&nbsp;");
+                },
+                ImgEvents: {
+                    "click .photo": function (event, val, row, index) {
+                        var option = {
+                            title: "报告图片",
+                            data: [{
+                                alt: "报告图片",
+                                src: $(this).attr("src")
+                            }]
+                        };
+                        controller.Photos(option);
+                    }
+                },
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
@@ -111,6 +129,7 @@
                                 <th data-field="Num" data-halign="center" data-align="center" data-valign="middle">进货数量</th>
                                 <th data-field="Spec" data-halign="center" data-align="center" data-valign="middle">规格</th>
                                 <th data-field="Address" data-halign="center" data-align="center" data-valign="middle">产地</th>
+                                <th data-formatter="options.action.ImgFormatter" data-events="options.action.ImgEvents" data-halign="center" data-align="center" data-valign="middle">检测报告</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>

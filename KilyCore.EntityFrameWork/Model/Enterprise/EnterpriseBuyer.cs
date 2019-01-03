@@ -60,5 +60,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 供应商
         /// </summary>
         public virtual string Supplier { get; set; }
+        /// <summary>
+        /// 检查报告
+        /// </summary>
+        public virtual string CheckReport { get; set; }
     }
 }

@@ -4488,7 +4488,8 @@ namespace KilyCore.Service.ServiceCore
                 GetGoodsTime = t.GetGoodsTime,
                 ProTime = t.ProTime,
                 Num = t.Num,
-                Spec = t.Spec
+                Spec = t.Spec,
+                CheckReport=t.CheckReport
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -4930,6 +4931,28 @@ namespace KilyCore.Service.ServiceCore
         }
         public void GetScanBrandFirst(Guid? Id, String Code)
         {
+            IQueryable<EnterpriseGoods> enterpriseGoods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseCheckGoods> enterpriseCheckGoods = Kily.Set<EnterpriseCheckGoods>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseGoodsStock> enterpriseGoodsStocks = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseGoodsStockAttach> enterpriseGoodsStockAttaches = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseMaterial> enterpriseMaterials = Kily.Set<EnterpriseMaterial>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseCheckMaterial> enterpriseCheckMaterials = Kily.Set<EnterpriseCheckMaterial>().Where(t => t.IsDelete == false);
+            //种植企业
+            IQueryable<EnterpriseNote> enterpriseNotes = Kily.Set<EnterpriseNote>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseEnvironmentAttach> enterpriseEnvironmentAttaches = Kily.Set<EnterpriseEnvironmentAttach>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseAgeUp> enterpriseAgeUps = Kily.Set<EnterpriseAgeUp>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseDrug> enterpriseDrugs = Kily.Set<EnterpriseDrug>().Where(t => t.IsDelete == false);
+            IQueryable<EnterprisePlanting> enterprisePlantings = Kily.Set<EnterprisePlanting>().Where(t => t.IsDelete == false);
+            //生产企业
+            IQueryable<EnterpriseProductionBatch> enterpriseProductionBatches = Kily.Set<EnterpriseProductionBatch>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseDevice> enterpriseDevices = Kily.Set<EnterpriseDevice>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseFacilities> enterpriseFacilities = Kily.Set<EnterpriseFacilities>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseProductSeries> enterpriseProductSeries = Kily.Set<EnterpriseProductSeries>().Where(t => t.IsDelete == false);
+            //流通企业
+            IQueryable<EnterpriseBuyer> enterpriseBuyers = Kily.Set<EnterpriseBuyer>().Where(t => t.IsDelete == false);
+            //通用信息
+            IQueryable<EnterpriseTagAttach> enterpriseTagAttaches = Kily.Set<EnterpriseTagAttach>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseInfo> enterpriseInfos = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
 
         }
         #endregion

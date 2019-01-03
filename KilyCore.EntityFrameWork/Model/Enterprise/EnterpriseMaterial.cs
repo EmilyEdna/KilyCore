@@ -70,5 +70,13 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 包装类型
         /// </summary>
         public virtual string PackageType { get; set; }
+        /// <summary>
+        /// 采购时间
+        /// </summary>
+        public virtual DateTime? BuyTime { get; set; }
+        /// <summary>
+        /// 原料生产时间
+        /// </summary>
+        public virtual DateTime? MaterCreateTime { get; set; }
     }
 }

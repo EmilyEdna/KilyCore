@@ -33,5 +33,13 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public string Address { get; set; }
         public  int MaterNum { get; set; }
         public string PackageType { get; set; }
+        /// <summary>
+        /// 采购时间
+        /// </summary>
+        public  DateTime? BuyTime { get; set; }
+        /// <summary>
+        /// 原料生产时间
+        /// </summary>
+        public  DateTime? MaterCreateTime { get; set; }
     }
 }

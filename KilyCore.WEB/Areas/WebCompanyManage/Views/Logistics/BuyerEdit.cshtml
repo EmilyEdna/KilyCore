@@ -40,6 +40,17 @@
             },
             //事件
             InitEvents: function () {
+                //文件上传
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: ".upload-input",
+                    maxNum: 1,
+                    node: '.image-box',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        $("#CheckReport", result.data);
+                    }
+                });
                 //验证
                 controller.ValidateConfirm("#Edit");
             },
@@ -60,7 +71,7 @@
                 <tr>
                     <th><label class="control-label">进货批次</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="BatchNo" readonly  id="BatchNo"/>
+                        <input type="text" class="form-control" name="BatchNo" readonly id="BatchNo" />
                     </td>
                     <th><label class="control-label">货品名称</label></th>
                     <td class="has-warning">
@@ -70,7 +81,7 @@
                 <tr>
                     <th><label class="control-label">保质期</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="ExpiredDate"/>
+                        <input type="text" class="form-control" name="ExpiredDate" />
                     </td>
                     <th><label class="control-label">进货日期</label></th>
                     <td class="has-warning">
@@ -101,6 +112,18 @@
                     <th><label class="control-label">规格</label></th>
                     <td class="has-warning" colspan="3">
                         <input name="Spec" id="Spec" class="form-control" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">质检报告</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                                <input type="hidden" class="form-control" name="CheckReport" id="CheckReport" />
+                            </section>
+                        </div>
                     </td>
                 </tr>
             </table>

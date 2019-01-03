@@ -57,7 +57,7 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual string Manager { get; set; }
         /// <summary>
-        /// 生产时间
+        /// 入库时间
         /// </summary>
         public virtual DateTime ProductTime { get; set; }
         /// <summary>

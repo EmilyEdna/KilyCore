@@ -17,6 +17,8 @@
             //元素
             InitDom: function () {
                 $("#No").val("Y" + controller.FormatDate("YYMMDDHHmmss"));
+                controller.LayDate({ elem: "input[name='BuyTime']" });
+                controller.LayDate({ elem: "input[name='MaterCreateTime']" });
                 $("#CompanyId").val(CompanyInfo.Id);
             },
             GetSelect: function () {
@@ -101,6 +103,16 @@
                     <th><label class="control-label">保质期/天</label></th>
                     <td class="has-warning">
                         <input type="text" class="form-control" name="ExpiredDay" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">采购时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="BuyTime" />
+                    </td>
+                    <th><label class="control-label">生产时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="MaterCreateTime" />
                     </td>
                 </tr>
                 <tr>
