@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Data.SqlClient;
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日12点01分
@@ -2434,157 +2435,6 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         /// <summary>
-        /// 获取扫码详情
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <param name="Code"></param>
-        /// <returns></returns>
-        public ResponseEnterpriseScanCode GetScanCodeDetail(Guid? Id, Int64 Code)
-        {
-            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess);
-            IQueryable<EnterpriseGoodsStock> stocks = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false);
-            IQueryable<EnterpriseGoodsStockAttach> outStock = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false);
-            IQueryable<EnterpriseGoodsPackage> Package = Kily.Set<EnterpriseGoodsPackage>().Where(t => t.IsDelete == false);
-            IQueryable<EnterpriseLogistics> Trans = Kily.Set<EnterpriseLogistics>().Where(t => t.IsDelete == false);
-            IQueryable<EnterpriseCheckGoods> checkGoods = Kily.Set<EnterpriseCheckGoods>().Where(t => t.IsDelete == false);
-            IQueryable<EnterpriseProductionBatch> batches = Kily.Set<EnterpriseProductionBatch>().Where(t => t.IsDelete == false);
-            IQueryable<EnterpriseNote> notes = Kily.Set<EnterpriseNote>().Where(t => t.IsDelete == false);
-            IQueryable<EnterpriseGrowInfo> infos = Kily.Set<EnterpriseGrowInfo>().Where(t => t.IsDelete == false);
-            IQueryable<EnterpriseMaterial> materials = Kily.Set<EnterpriseMaterial>().Where(t => t.IsDelete == false);
-            IQueryable<EnterpriseCheckMaterial> checkMaterials = Kily.Set<EnterpriseCheckMaterial>().Where(t => t.IsDelete == false);
-            IQueryable<EnterpriseTagAttach> attaches = Kily.Set<EnterpriseTagAttach>().Where(t => t.IsDelete == false);
-            IQueryable<EnterpriseInfo> enterpriseInfos = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
-            var mater = materials.Join(checkMaterials, z => z.Id, c => c.MaterId, (z, c) => new ResponseEnterpriseScanCodeMaterial
-            {
-                Id = z.Id,
-                MaterName = z.MaterName,
-                Supplier = z.Supplier,
-                Standard = z.Standard,
-                MaterCheckResult = c.CheckResult,
-                MaterCheckReport = c.CheckReport
-            }).AsNoTracking();
-            var growInfo = notes.Join(infos, t => t.BatchNo, x => x.BatchNo, (t, x) => new EnterpriseGrowInfo()
-            {
-                Id = t.Id,
-                GrowName = x.GrowName,
-                PlantTime = x.PlantTime,
-                Paper = x.Paper
-            }).AsNoTracking().ToList();
-            var Logistics = Package.Join(Trans, y => y.PackageNo, z => z.PackageNo, (y, z) => new EnterpriseLogistics()
-            {
-                WayBill = z.WayBill,
-                PackageNo = z.PackageNo,
-                TransportWay = z.TransportWay,
-                Address = z.Address,
-                Traffic = z.Traffic,
-                SendGoodsNum = y.ProductOutStockNo
-            }).AsNoTracking().ToList();
-            var Batchs = stocks.Join(batches, t => t.BatchId, x => x.Id, (t, x) => new EnterpriseProductionBatch()
-            {
-                Id = t.Id,
-                BatchNo = x.BatchNo,
-                DeviceName = x.DeviceName,
-                MaterialId = x.MaterialId
-            }).AsNoTracking().ToList();
-            var queryables = goods.Join(stocks, t => t.Id, x => x.GoodsId, (t, x) => new { t, x })
-                .Join(checkGoods, y => y.x.CheckGoodsId, z => z.Id, (y, z) => new { y, z })
-                .Join(enterpriseInfos, f => f.y.t.CompanyId, k => k.Id, (f, k) => new { f, k })
-                .Join(attaches, p => p.f.y.x.GoodsId, j => j.GoodsId, (p, j) => new { p, j })
-                .Join(outStock, i => i.p.f.y.x.Id, u => u.StockId, (i, u) => new { i, u })
-                .Where(t => t.i.j.StarSerialNo <= Code && t.i.j.EndSerialNo >= Code);
-            if (Id.HasValue)
-                queryables = queryables.Where(t => t.i.p.f.y.x.Id == Id);
-            ResponseEnterpriseScanCode queryable = queryables.Select(t => new ResponseEnterpriseScanCode()
-            {
-                Id = t.i.p.f.y.x.Id,
-                CompanyType = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.i.p.k.CompanyType),
-                TypePath = t.i.p.k.TypePath,
-                CompanyId = t.i.p.f.y.t.CompanyId,
-                OutStockBatchNo = t.u.GoodsBatchNo,
-                ProductName = t.i.p.f.y.t.ProductName,
-                ProductType = t.i.p.f.y.t.ProductType,
-                ExpiredDate = t.i.p.f.y.t.ExpiredDate,
-                Remark = t.i.p.f.y.x.Remark,
-                ImgUrl = t.i.p.f.y.x.ImgUrl,
-                ProductTime = t.i.p.f.y.x.ProductTime,
-                Explanation = t.i.p.f.y.x.Explanation,
-                ProductCheckResult = t.i.p.f.z.CheckResult,
-                ProductCheckReport = t.i.p.f.z.CheckReport,
-                StarSerialNo = t.i.j.StarSerialNo,
-                EndSerialNo = t.i.j.EndSerialNo,
-                StarSerialNos = t.i.j.StarSerialNos,
-                EndSerialNos = t.i.j.EndSerialNos,
-                NetAddress = t.i.p.k.NetAddress,
-                CompanyAddress = t.i.p.k.CompanyAddress,
-                CompanyName = t.i.p.k.CompanyName,
-                Discription = t.i.p.k.Discription,
-                LngAndLat = t.i.p.k.LngAndLat,
-                GrowNoteId = t.i.p.f.y.x.GrowNoteId
-            }).FirstOrDefault();
-            if (Id.HasValue)
-                stocks = stocks.AsNoTracking().Where(t => t.Id == Id);
-            else
-                stocks = stocks.AsNoTracking().Where(t => t.Id == queryable.Id);
-            EnterpriseGoodsStock GoodsStock = stocks.FirstOrDefault();
-            String GoodsName = goods.Where(t => t.Id == GoodsStock.GoodsId).Select(t => t.ProductName).FirstOrDefault();
-            //网上执法
-            GovtNetPatrol patrol = Kily.Set<GovtNetPatrol>().Where(t => t.CompanyId == GoodsStock.CompanyId).AsNoTracking().FirstOrDefault();
-            //投诉
-            int Complain = Kily.Set<GovtComplain>().Where(t => t.CompanyId == GoodsStock.CompanyId).AsNoTracking().Count();
-            ResponseEnterpriseRecover Recover = Kily.Set<EnterpriseRecover>().Where(t => t.RecoverGoodsName.Equals(GoodsName)).AsNoTracking().FirstOrDefault().MapToEntity<ResponseEnterpriseRecover>();
-            if (Batchs.Count != 0)
-            {
-                ResponseEnterpriseProductionBatch data = Batchs.Where(t => t.Id == queryable.Id).Select(t => new ResponseEnterpriseProductionBatch()
-                {
-                    DeviceName = t.DeviceName,
-                    BatchNo = t.BatchNo,
-                    MaterialId = t.MaterialId
-                }).FirstOrDefault();
-                if (data != null)
-                {
-                    queryable.BatchNo = data.BatchNo;
-                    queryable.DeviceName = data.DeviceName;
-                    queryable.Materials = mater.Where(t => data.MaterialId.Contains(t.Id.ToString())).ToList();
-                }
-            }
-            if (growInfo.Count != 0)
-            {
-                ResponseEnterpriseGrowInfo data = growInfo.Where(t => t.Id == queryable.GrowNoteId).Select(t => new ResponseEnterpriseGrowInfo
-                {
-                    GrowName = t.GrowName,
-                    Paper = t.Paper,
-                    PlantTime = t.PlantTime
-                }).FirstOrDefault();
-                queryable.Paper = data.Paper;
-                queryable.PlantTime = data.PlantTime;
-                queryable.GrowName = data.GrowName;
-            }
-            if (Logistics.Count != 0)
-            {
-                ResponseEnterpriseLogistics data = Logistics.Where(t => t.SendGoodsNum.Equals(queryable.OutStockBatchNo)).Select(t => new ResponseEnterpriseLogistics()
-                {
-                    WayBill = t.WayBill,
-                    PackageNo = t.PackageNo,
-                    TransportWay = t.TransportWay,
-                    Address = t.Address,
-                    Traffic = t.Traffic,
-                }).FirstOrDefault();
-                queryable.WayBill = data.WayBill;
-                queryable.TransportWay = data.TransportWay;
-                queryable.Traffic = data.Traffic;
-                queryable.PackageNo = data.PackageNo;
-                queryable.Address = data.Address;
-            }
-            if (patrol != null)
-            {
-                queryable.PotrolNum = patrol.PotrolNum;
-                queryable.BulletinNum = patrol.BulletinNum;
-                queryable.Complain = Complain;
-                queryable.RecoverInfo = Recover;
-            }
-            return queryable;
-        }
-        /// <summary>
         /// 查看绑定信息
         /// </summary>
         /// <param name="pageParam"></param>
@@ -4489,7 +4339,7 @@ namespace KilyCore.Service.ServiceCore
                 ProTime = t.ProTime,
                 Num = t.Num,
                 Spec = t.Spec,
-                CheckReport=t.CheckReport
+                CheckReport = t.CheckReport
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -4930,22 +4780,38 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         /// <summary>
-        /// 一品一码
+        /// 手机端扫码查询
         /// </summary>
         /// <param name="Id"></param>
         /// <param name="Code"></param>
-        public void GetScanBrandFirst(Guid? Id, String Code)
+        public ResponseEnterpriseScanCodeContent GetScanCodeInfo(Guid? Id, String Code)
         {
-            
-        }
-        /// <summary>
-        /// 一物一码
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <param name="Code"></param>
-        public void GetScanThingFirst(Guid? Id, String Code)
-        {
-
+            String SearchCode = String.Empty;
+            int CodeType = 0;
+            if (Code.Contains("W"))
+            {
+                SearchCode = Code.Split("W")[1].Substring(0, 12);
+                CodeType = 2;
+            }
+            else if (Code.Contains("P"))
+            {
+                SearchCode = Code.Split("P")[1].Substring(0, 12);
+                CodeType = 3;
+            }
+            else
+            {
+                SearchCode = Code.Substring(0, 11);
+                CodeType = 1;
+            }
+            SqlParameter[] Param = {
+             new SqlParameter("@Id", Id),
+             new SqlParameter("@Code",SearchCode),
+             new SqlParameter("@CodeType",CodeType),
+            };
+            if (!Id.HasValue)
+                Param[0].Value = DBNull.Value;
+            var data = Kily.Execute("Sp_GetScanCodeInfo", Param).ToCollection<ResponseEnterpriseScanCodeContent>().FirstOrDefault();
+            return data;
         }
         #endregion
     }

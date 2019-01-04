@@ -23,18 +23,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public Guid Id { get; set; }
         public Guid CompanyId { get; set; }
         /// <summary>
-        /// 抽查次数
-        /// </summary>
-        public int PotrolNum { get; set; }
-        /// <summary>
-        /// 通报次数
-        /// </summary>
-        public int BulletinNum { get; set; }
-        /// <summary>
-        /// 投诉举报
-        /// </summary>
-        public int Complain { get; set; }
-        /// <summary>
         /// 产品名称
         /// </summary>
         public string ProductName { get; set; }
@@ -47,49 +35,9 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// </summary>
         public string ExpiredDate { get; set; }
         /// <summary>
-        /// 生产时间
-        /// </summary>
-        public DateTime ProductTime { get; set; }
-        /// <summary>
-        /// 产品质检结果
-        /// </summary>
-        public string ProductCheckResult { get; set; }
-        /// <summary>
-        /// 产品质检报告
-        /// </summary>
-        public string ProductCheckReport { get; set; }
-        /// <summary>
-        /// 产品介绍
-        /// </summary>
-        public string Remark { get; set; }
-        /// <summary>
-        /// 产品图片
-        /// </summary>
-        public string ImgUrl { get; set; }
-        /// <summary>
-        /// 产品说明书
-        /// </summary>
-        public string Explanation { get; set; }
-        /// <summary>
         /// 生产批次
         /// </summary>
         public string BatchNo { get; set; }
-        /// <summary>
-        /// 生产设备
-        /// </summary>
-        public string DeviceName { get; set; }
-        /// <summary>
-        /// 育苗名称
-        /// </summary>
-        public string GrowName { get; set; }
-        /// <summary>
-        /// 种植时间
-        /// </summary>
-        public DateTime PlantTime { get; set; }
-        /// <summary>
-        /// 育苗证书
-        /// </summary>
-        public string Paper { get; set; }
         /// <summary>
         /// 开始号段
         /// </summary>
@@ -106,64 +54,128 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// 结束号段
         /// </summary>
         public string EndSerialNos { get; set; }
-        public IList<ResponseEnterpriseScanCodeMaterial> Materials { get; set; }
-        /// <summary>
-        /// 公司名称
-        /// </summary>
-        public string CompanyName { get; set; }
-        /// <summary>
-        /// 企业地址
-        /// </summary>
-        public string CompanyAddress { get; set; }
-        /// <summary>
-        /// 经纬度
-        /// </summary>
-        public string LngAndLat { get; set; }
-        /// <summary>
-        /// 企业介绍
-        /// </summary>
-        public string Discription { get; set; }
-        /// <summary>
-        /// 网址
-        /// </summary>
-        public string NetAddress { get; set; }
-        /// <summary>
-        /// 物流单号
-        /// </summary>
-        public string WayBill { get; set; }
-        /// <summary>
-        /// 包装编号
-        /// </summary>
-        public string PackageNo { get; set; }
-        /// <summary>
-        /// 地址
-        /// </summary>
-        public string Address { get; set; }
-        /// <summary>
-        /// 运输方式
-        /// </summary>
-        public string TransportWay { get; set; }
-        /// <summary>
-        /// 交通工具
-        /// </summary>
-        public string Traffic { get; set; }
-        /// <summary>
-        /// 公司类型
-        /// </summary>
-        public string CompanyType { get; set; }
-        public string TypePath { get; set; }
-        public Guid? GrowNoteId { get; set; }
-        public string OutStockBatchNo { get; set; }
-        public ResponseEnterpriseRecover RecoverInfo { get; set; }
         public bool? IsCreate { get; set; }
     }
-    public class ResponseEnterpriseScanCodeMaterial
+    public class ResponseEnterpriseScanCodeContent
     {
-        public Guid Id { get; set; }
-        public string MaterName { get; set; }
-        public string Supplier { get; set; }
-        public string Standard { get; set; }
-        public string MaterCheckResult { get; set; }
-        public string MaterCheckReport { get; set; }
+        public List<ResponseEnterpriseScanCodeBaseInfos> BaseInfo { get; set; }
+        public List<ResponseEnterpriseScanCodeTarget> TargetInfo { get; set; }
+        public List<ResponseEnterpriseScanCodeMater> MaterInfo { get; set; }
+        public List<ResponseEnterpriseScanCodeFacility> FacilityInfo { get; set; }
+        public List<ResponseEnterpriseScanCodeAgeLV> AgeLVInfo { get; set; }
+        public List<ResponseEnterpriseScanCodeEnv> EnvInfo { get; set; }
+        public List<ResponseEnterpriseScanCodePlant> PlantInfo { get; set; }
+        public List<ResponseEnterpriseScanCodeDrugOne> DrugOneInfo { get; set; }
+        public List<ResponseEnterpriseScanCodeDrugTwo> DrugTwoInfo { get; set; }
+        public List<ResponseEnterpriseScanCodeComplain> ComplainInfo { get; set; }
+        public List<ResponseEnterpriseScanCodeRecover> RecoverInfo { get; set; }
+    }
+    public class ResponseEnterpriseScanCodeBaseInfos {
+        public Guid? 二维码Id { get; set; }
+        public Guid? 成长Id { get; set; }
+        public Guid? 企业Id { get; set; }
+        public Guid? 设施Id { get; set; }
+        public string 产品名称 { get; set; }
+        public string 产品保质期 { get; set; }
+        public string 入库负责人 { get; set; }
+        public string 入库批次 { get; set; }
+        public string 产品图片 { get; set; }
+        public string 产品介绍 { get; set; }
+        public string 出库负责人 { get; set; }
+        public string 出库批次 { get; set; }
+        public string 生产商或发布企业 { get; set; }
+        public string 生产地址 { get; set; }
+        public int 企业类型 { get; set; }
+        public string 企业类型名称 { get; set; }
+        public string 所属区域 { get; set; }
+        public DateTime? 生产时间 { get; set; }
+        public string 生产负责人 { get; set; }
+        public string 原料列表 { get; set; }
+        public string 设备名称 { get; set; }
+        public string 储藏方式 { get; set; }
+        public string 储藏温度 { get; set; }
+        public string 储藏湿度 { get; set; }
+        public string 进货批次 { get; set; }
+        public string 进货名称 { get; set; }
+        public string 供应商 { get; set; }
+        public string 检测报告 { get; set; }
+        public string 进货规格 { get; set; }
+        public string 进货产地 { get; set; }
+        public string 产品质检单位 { get; set; }
+        public string 产品质检人 { get; set; }
+        public string 产品质检结果 { get; set; }
+        public string 产品质检报告 { get; set; }
+        public string 发货批次 { get; set; }
+        public DateTime? 发货时间 { get; set; }
+        public string 经销商 { get; set; }
+        public string 运输方式 { get; set; }
+        public string 交通工具 { get; set; }
+        public int? 认证星级 { get; set; }
+    }
+    public class ResponseEnterpriseScanCodeTarget {
+        public string 关键点名称 { get; set; }
+        public string 关键点阙值 { get; set; }
+        public string 关键点单位 { get; set; }
+        public string 结果 { get; set; }
+    }
+    public class ResponseEnterpriseScanCodeMater {
+        public Guid? 原料Id { get; set; }
+        public string 原料名称 { get; set; }
+        public string 原料保质期 { get; set; }
+        public string 原料供应商 { get; set; }
+        public DateTime? 采购时间 { get; set; }
+        public DateTime? 原料生产时间 { get; set; }
+        public string 质检单位 { get; set; }
+        public string 质检人 { get; set; }
+        public string 质检报告 { get; set; }
+        public string 质检结果 { get; set; }
+    }
+    public class ResponseEnterpriseScanCodeFacility {
+        public string 车间名称 { get; set; }
+        public string 环境信息 { get; set; }
+    }
+    public class ResponseEnterpriseScanCodeAgeLV
+    {
+        public string 阶段名称 { get; set; }
+        public string 阶段图片 { get; set; }
+    }
+    public class ResponseEnterpriseScanCodeEnv
+    {
+        public string 土壤报告 { get; set; }
+        public string 空气报告 { get; set; }
+        public string 水质报告 { get; set; }
+        public string 金属报告 { get; set; }
+    }
+    public class ResponseEnterpriseScanCodePlant {
+        public string 肥料名称 { get; set; }
+        public DateTime? 施肥时间 { get; set; }
+        public string 肥料生产商 { get; set; }
+    }
+    public class ResponseEnterpriseScanCodeDrugOne
+    {
+        public string 药品名称 { get; set; }
+        public DateTime? 施药时间 { get; set; }
+        public string 农药生产商 { get; set; }
+    }
+    public class ResponseEnterpriseScanCodeDrugTwo
+    {
+        public string 疫苗名称 { get; set; }
+        public DateTime? 接种时间 { get; set; }
+        public string 疫苗生产商 { get; set; }
+    }
+    public class ResponseEnterpriseScanCodeGovt {
+        public int? 抽查次数 { get; set; }
+        public int? 通报次数 { get; set; }
+        public string 合格率 { get; set; }
+        public DateTime? 通报时间 { get; set; }
+    }
+    public class ResponseEnterpriseScanCodeComplain
+    {
+        public int? 投诉次数 { get; set; }
+    }
+    public class ResponseEnterpriseScanCodeRecover
+    {
+        public DateTime? 召回开始时间 { get; set; }
+        public DateTime? 召回截至时间 { get; set; }
     }
 }

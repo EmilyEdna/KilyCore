@@ -17,6 +17,10 @@ using System.Text;
 using KilyCore.Extension.HttpClientFactory;
 using KilyCore.DataEntity.ResponseMapper.Cook;
 using KilyCore.DataEntity.ResponseMapper.Govt;
+using System.Data;
+using System.Data.SqlClient;
+using System.Data.Common;
+using System.Collections;
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日12点01分
@@ -417,6 +421,103 @@ namespace KilyCore.Repositories.BaseRepository
             {
                 throw ex;
             }
+        }
+    }
+    /// <summary>
+    ///  EF查询存储过程拓展
+    /// </summary>
+    public static class ExtendDBContext
+    {
+        /// <summary>
+        /// 执行存储过程返回DataSet数据集
+        /// </summary>
+        public static DataSet Execute(this KilyContext db, string sql, SqlParameter[] sqlParams) 
+        {
+            DbConnection connection = db.Database.GetDbConnection();
+            SqlCommand cmd = connection.CreateCommand() as SqlCommand;
+            db.Database.OpenConnection();
+            cmd.CommandText = sql;
+            cmd.CommandType = CommandType.StoredProcedure;
+            if (sqlParams != null)
+            {
+                cmd.Parameters.AddRange(sqlParams);
+            }
+            DataSet ds = new DataSet();
+            using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+            {
+                adapter.Fill(ds);
+            }
+            db.Database.CloseConnection();
+            return ds;
+        }
+        /// <summary>
+        /// DateSet转IEnumerable
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="ds"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> ToCollection<T>(this DataSet ds) where T : new()
+        {
+            if (ds == null || ds.Tables.Count == 0)
+            {
+                return Enumerable.Empty<T>();
+            }
+            IDictionary<String, IList> Map = new Dictionary<String, IList>();
+            IList<T> Parent = new List<T>();
+            T ParentInstance = new T();
+            foreach (DataTable dt in ds.Tables)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    PropertyInfo[] PropertInfosParent = ParentInstance.GetType().GetProperties();
+                    foreach (PropertyInfo ParentInfo in PropertInfosParent)
+                    {
+                        if (ParentInfo.PropertyType.IsGenericType)
+                        {
+                            Type ChildType = ParentInfo.PropertyType.GetGenericArguments().FirstOrDefault();
+                            var ChildInstrance = Activator.CreateInstance(ChildType);
+                            PropertyInfo[] PropertInfosChild = ChildInstrance.GetType().GetProperties();
+                            foreach (PropertyInfo ChildInfo in PropertInfosChild)
+                            {
+                                if (dt.Columns.Contains(ChildInfo.Name))
+                                {
+                                    if (!ChildInfo.CanWrite) continue;
+                                    object value = row[ChildInfo.Name];
+                                    if (value != DBNull.Value)
+                                        ChildInfo.SetValue(ChildInstrance, value);
+                                }
+                            }
+                            var FirstValue = ChildInstrance.GetType().GetProperties().FirstOrDefault().GetValue(ChildInstrance, null);
+                            if (FirstValue != null)
+                            {
+                                Type DynamicList = typeof(List<>).MakeGenericType(ChildType);
+                                IList ChildListType = null;
+                                if (!Map.ContainsKey(ChildType.FullName))
+                                {
+                                    ChildListType = Activator.CreateInstance(DynamicList) as IList;
+                                    Map.Add(ChildType.FullName, ChildListType);
+                                }
+                                else
+                                    ChildListType = Map[ChildType.FullName];
+                                ChildListType.Add(ChildInstrance);
+                                ParentInfo.SetValue(ParentInstance, ChildListType);
+                            }
+                        }
+                        else
+                        {
+                            if (dt.Columns.Contains(ParentInfo.Name))
+                            {
+                                if (!ParentInfo.CanWrite) continue;
+                                object value = row[ParentInfo.Name];
+                                if (value != DBNull.Value)
+                                    ParentInfo.SetValue(ParentInstance, value);
+                            }
+                        }
+                    }
+                }
+            }
+            Parent.Add(ParentInstance);
+            return Parent;
         }
     }
 }

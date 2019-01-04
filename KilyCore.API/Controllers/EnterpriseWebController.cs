@@ -919,18 +919,6 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.GetScanCodePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
-        /// 获取扫码详情
-        /// </summary>
-        /// <param name="Key"></param>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        [AllowAnonymous]
-        [HttpGet("GetScanCodeDetail")]
-        public ObjectResultEx GetScanCodeDetail(SimpleParam<Guid?> Key, SimpleParam<Int64> Param)
-        {
-            return ObjectResultEx.Instance(EnterpriseWebService.GetScanCodeDetail(Key.Id, Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }
-        /// <summary>
         /// 查看二维码绑定信息
         /// </summary>
         /// <param name="pageParam"></param>

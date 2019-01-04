@@ -51,18 +51,31 @@
                         async: false,
                         type: "post",
                         success: function (result) {
-                            var HostCode = CompanyInfo.CodeStar + ($("#TagType").find("option:selected").val() == 2 ? "W" : "P") + result.data;
+                            var HostCode = '';
+                            if ($("#TagType").find("option:selected").val() == 2) {
+                                HostCode = CompanyInfo.CodeStar + "W" + result.data;
+                            }
+                            else if ($("#TagType").find("option:selected").val() == 3) {
+                                HostCode = CompanyInfo.CodeStar + "P" + result.data;
+                            }
+                            else {
+                                HostCode = result.data;
+                            }
                             $("#Star").val(HostCode);
                             $("#stars").val(result.data);
                             var End = '';
-                            if ($("#TagType").find("option:selected").val() != 2) {
+                            if ($("#TagType").find("option:selected").val() == 3) {
                                 $("#ends").val(Number(result.data));
                                 End = CompanyInfo.CodeStar + "P" + Number(result.data);
+                            }
+                            else if ($("#TagType").find("option:selected").val() == 2) {
+                                End = Number(result.data) - 1 + Number(controller.GetParam("Num"));
+                                $("#ends").val(End);
+                                End = CompanyInfo.CodeStar + "W" + End;
                             }
                             else {
                                 End = Number(result.data) - 1 + Number(controller.GetParam("Num"));
                                 $("#ends").val(End);
-                                End = CompanyInfo.CodeStar + "W" + End;
                             }
                             $("#End").val(End);
                         }
