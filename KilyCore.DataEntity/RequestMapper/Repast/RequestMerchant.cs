@@ -47,5 +47,13 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
         public DateTime? CardExpiredDate { get; set; }
         public string SafeOffer { get; set; }
         public string OfferLv { get; set; }
+        /// <summary>
+        /// 企业形象
+        /// </summary>
+        public string MerchantImage { get; set; }
+        /// <summary>
+        /// 安全等级
+        /// </summary>
+        public string MerchantSafeLv { get; set; }
     }
 }

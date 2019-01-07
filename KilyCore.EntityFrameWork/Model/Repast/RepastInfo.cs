@@ -110,5 +110,13 @@ namespace KilyCore.EntityFrameWork.Model.Repast
         /// 合同状态
         /// </summary>
         public virtual bool IsPayContract { get; set; }
+        /// <summary>
+        /// 企业形象
+        /// </summary>
+        public virtual string MerchantImage { get; set; }
+        /// <summary>
+        /// 安全等级
+        /// </summary>
+        public virtual string MerchantSafeLv { get; set; }
     }
 }

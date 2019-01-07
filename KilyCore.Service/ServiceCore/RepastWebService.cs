@@ -22,6 +22,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 
@@ -2725,79 +2726,13 @@ namespace KilyCore.Service.ServiceCore
         #endregion
 
         #region 手机端扫码信息
-        public Object GetMobileScanInfo(Guid Id)
+        public ResponseRepastScanInfos GetMobileScanInfo(Guid Id)
         {
-            RepastScanInfo scanInfo = Kily.Set<RepastScanInfo>().Where(t => t.Id == Id).FirstOrDefault();
-            var Info = Kily.Set<RepastInfo>().Where(t => t.Id == scanInfo.InfoId).Select(t => new ResponseMerchant()
-            {
-                Certification = t.Certification,
-                MerchantName = t.MerchantName,
-                Address = t.Address,
-                Phone = t.Phone,
-                DiningTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType)
-            }).FirstOrDefault();
-            var Dish = Kily.Set<RepastDish>().Where(t => scanInfo.DishIds.Contains(t.Id.ToString())).Select(t => new
-            {
-                DishName = t.DishName,
-                Batching = t.Batching,
-                Seasoning = t.Seasoning,
-                DishType = t.DishType,
-                MainBatch = t.MainBatch
-            }).ToList();
-            var Stuff = Kily.Set<RepastStuff>().Where(t => scanInfo.StuffIds.Contains(t.Id.ToString())).Select(t => new
-            {
-                MaterialName = t.MaterialName,
-                Supplier = t.Supplier,
-                SuppTime = t.SuppTime,
-                ExpiredDay = t.ExpiredDay,
-                QualityReport = t.QualityReport
-            }).ToList();
-            var Video = Kily.Set<RepastVideo>().Where(t => scanInfo.VideoIds.Contains(t.Id.ToString())).Select(t => new
-            {
-                VideoAddress = t.VideoAddress
-            }).ToList();
-            var User = Kily.Set<RepastInfoUser>().Where(t => scanInfo.UserIds.Contains(t.Id.ToString())).Select(t => new
-            {
-                t.TrueName,
-                UserPhone = t.Phone,
-                t.HealthCard
-            }).ToList();
-            var Duck = Kily.Set<RepastDuck>().Where(t => scanInfo.DuckIds.Contains(t.Id.ToString())).Select(t => new
-            {
-                t.HandleWays,
-                t.HandleUser,
-                DuckPhone = t.Phone
-            }).ToList();
-            var Draw = Kily.Set<RepastDraw>().Where(t => scanInfo.DrawIds.Contains(t.Id.ToString())).Select(t => new
-            {
-                DrawUnit = t.DrawUnit,
-                DrawUser = t.DrawUser,
-                DrawTime = t.DrawTime,
-                DrawPhone = t.Phone
-            }).ToList();
-            var Sample = Kily.Set<RepastSample>().Where(t => scanInfo.SampleIds.Contains(t.Id.ToString())).Select(t => new
-            {
-                DishName = t.DishName,
-                SampleTime = t.SampleTime,
-                OperatUser = t.OperatUser,
-                SamplePhone = t.Phone
-            }).ToList();
-            var Disinfect = Kily.Set<RepastDisinfect>().Where(t => scanInfo.DisinfectIds.Contains(t.Id.ToString())).Select(t => new
-            {
-                DisinfectName = t.DisinfectName,
-                Metering = t.Metering,
-                DisinfectTime = t.DisinfectTime,
-                UsePerson = t.UsePerson
-            }).ToList();
-            var Additive = Kily.Set<RepastAdditive>().Where(t => scanInfo.AdditiveIds.Contains(t.Id.ToString())).Select(t => new
-            {
-                AdditiveName = t.AdditiveName,
-                SupplierName = t.SupplierName,
-                Meterings = t.Metering,
-                ProFood = t.ProFood
-            }).ToList();
-            Object obj = new { Info, Dish, Stuff, Video, User, Duck, Draw, Sample, Disinfect, Additive };
-            return obj;
+            SqlParameter[] Param = {
+             new SqlParameter("@Id", Id)
+            };
+            var data = Kily.Execute("Sp_GetScanMerchantInfo", Param).ToCollection<ResponseRepastScanInfos>().FirstOrDefault();
+            return data;
         }
         #endregion
     }

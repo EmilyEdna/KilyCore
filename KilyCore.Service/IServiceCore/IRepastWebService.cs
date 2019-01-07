@@ -223,7 +223,7 @@ namespace KilyCore.Service.IServiceCore
          Object GetAdditiveList();
         #endregion
         #region 手机端信息
-        Object GetMobileScanInfo(Guid Id);
+        ResponseRepastScanInfos GetMobileScanInfo(Guid Id);
         #endregion
     }
 }

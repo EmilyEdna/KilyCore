@@ -16,7 +16,6 @@
             },
             //元素
             InitDom: function () {
-                var Guid = controller.GetParam("Id");
                 $("#CompanyId").val(CompanyInfo.Id);
                 this.GetGoods();
             },
@@ -53,7 +52,7 @@
                 controller.Upload({
                     url: "File/UploadImg",
                     element: "#img1",
-                    maxNum: 1,
+                    maxNum: 2,
                     node: '#Report',
                     success: function (result) {
                         controller.Alter(result.msg);

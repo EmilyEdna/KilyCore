@@ -54,7 +54,7 @@
                     node: '#Img1',
                     success: function (result) {
                         controller.Alter(result.msg);
-                        $("#Certification").val(result.data);
+                        options.SetFileValue(result.data, '#Certification');
                     }
                 });
                 //文件上传-证书
@@ -77,6 +77,17 @@
                     success: function (result) {
                         controller.Alter(result.msg);
                         options.SetFileValue(result.data, '#IdCard');
+                    }
+                });
+                //文件上传-商家形象
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-4",
+                    maxNum: 1,
+                    node: '#Img4',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, '#MerchantImage');
                     }
                 });
             },
@@ -172,7 +183,7 @@
                     <td class="has-warning">
                         <input type="text" class="form-control" name="SafeOffer">
                     </td>
-                    <th><label class="control-label">安全等级</label></th>
+                    <th><label class="control-label">安全员等级</label></th>
                     <td class="has-warning">
                         <select type="select" class="form-control" name="OfferLv">
                             <option value="A级">A级</option>
@@ -189,6 +200,20 @@
                     <th><label class="control-label">证件到期</label></th>
                     <td class="has-warning">
                         <input type="text" class="form-control" name="CardExpiredDate">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">安全员</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SafeOffer">
+                    </td>
+                    <th><label class="control-label">安全等级</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="MerchantSafeLv">
+                            <option value="A级">A级</option>
+                            <option value="B级">B级</option>
+                            <option value="C级">C级</option>
+                        </select>
                     </td>
                 </tr>
                 <tr>
@@ -232,6 +257,18 @@
                             </section>
                         </div>
                         <input type="hidden" id="IdCard" name="IdCard" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">商家形象</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear" id="Img4">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" id="upload-input-4" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                        <input type="hidden" id="MerchantImage" name="MerchantImage" />
                     </td>
                 </tr>
             </table>
