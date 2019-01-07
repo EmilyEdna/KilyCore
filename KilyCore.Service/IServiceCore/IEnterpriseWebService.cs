@@ -153,7 +153,6 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseEnterpriseScanCode> GetScanCodePage(PageParamList<RequestEnterpriseGoods> pageParam);
         PagedResult<ResponseEnterpriseTagAttach> GetTagAttachPage(PageParamList<RequestEnterpriseTagAttach> pageParam);
         String DeleteBindTagInfo(Guid Id);
-        String EditScanInfo(RequestEnterpriseScanCodeInfo Param);
         PagedResult<ResponseEnterpriseBoxing> GetBoxPage(PageParamList<RequestEnterpriseBoxing> pageParam);
         #endregion
         #region 厂商管理
@@ -291,9 +290,7 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseEnterpriseLogistics> GetLogisticsPage(PageParamList<RequestEnterpriseLogistics> pageParam);
         IList<ResponseEnterpriseLogistics> GetReceipt();
         String EditLogistics(RequestEnterpriseLogistics Param);
-        RequestEnterpriseLogistics GetSendDetail(Guid Id);
         String RemoveLogistics(Guid Id);
-        String CheckLogistics(RequestEnterpriseLogistics Param);
         #endregion
         #region 进货管理
         PagedResult<ResponseEnterpriseBuyer> GetBuyerPage(PageParamList<RequestEnterpriseBuyer> pageParam);
@@ -317,6 +314,15 @@ namespace KilyCore.Service.IServiceCore
         Object GetDataCount(Guid? Id);
         ResponseDataCount GetPieCount(Guid? Id);
         ResponseDataCount GetPieCountBatch(Guid? Id);
+        #endregion
+        #region 手机扫描页面
+        ResponseEnterprise GetScanCompanyFirst(Guid Id);
+        ResponseEnterpriseScanCodeContent GetScanCodeInfo(Guid? Id, String Code);
+        String EditScanInfo(RequestEnterpriseScanCodeInfo Param);
+        ResponseEnterpriseBoxing GetScanBoxInfo(Guid? Id, String Code);
+        RequestEnterpriseLogistics GetScanSendInfo(Guid Id);
+        String CheckLogistics(RequestEnterpriseLogistics Param);
+        ResponseEnterpriseGoodsPackage GetScanPackageInfo(Guid Id);
         #endregion
     }
 }

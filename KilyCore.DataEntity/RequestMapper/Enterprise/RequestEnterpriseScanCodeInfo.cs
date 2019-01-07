@@ -33,9 +33,9 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// </summary>
         public string ScanPackageNo { get; set; }
         /// <summary>
-        /// 商品名称
+        /// 装车Id
         /// </summary>
-        public string ScanGoodsName { get; set; }
+        public Guid? TakeCarId { get; set; }
         /// <summary>
         /// Ip地址
         /// </summary>

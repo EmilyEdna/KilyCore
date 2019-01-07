@@ -939,16 +939,6 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.DeleteBindTagInfo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
-        /// 新增扫码记录
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        [HttpPost("EditScanInfo")]
-        public ObjectResultEx EditScanInfo(RequestEnterpriseScanCodeInfo Param)
-        {
-            return ObjectResultEx.Instance(EnterpriseWebService.EditScanInfo(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }
-        /// <summary>
         /// 箱码绑定情况
         /// </summary>
         /// <param name="pageParam"></param>
@@ -1935,17 +1925,6 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.EditLogistics(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
-        /// 发货详情
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        [HttpPost("GetSendDetail")]
-        [AllowAnonymous]
-        public ObjectResultEx GetSendDetail(SimpleParam<Guid> Param)
-        {
-            return ObjectResultEx.Instance(EnterpriseWebService.GetSendDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }
-        /// <summary>
         /// 删除发货
         /// </summary>
         /// <param name="Id"></param>
@@ -1954,22 +1933,6 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx RemoveLogistics(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.RemoveLogistics(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }
-        /// <summary>
-        /// 确认收货
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        [HttpPost("CheckLogistics")]
-        [AllowAnonymous]
-        public ObjectResultEx CheckLogistics(RequestEnterpriseLogistics Param)
-        {
-            if (string.IsNullOrEmpty(Param.PackageNo))
-                return ObjectResultEx.Instance(null, -1, "验证码不能为空", HttpCode.FAIL);
-            string Code = HttpContext.Session.GetSession<string>("PhoneCode").Trim();
-            if (!Code.Equals(Param.PackageNo))
-                return ObjectResultEx.Instance(null, -1, "请检查验证码", HttpCode.FAIL);
-            return ObjectResultEx.Instance(EnterpriseWebService.CheckLogistics(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 进货管理
@@ -2121,6 +2084,87 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetPieCountBatch(SimpleParam<Guid?> Param)
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetPieCountBatch(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #region 手机扫描页面
+        /// <summary>
+        /// 一企一码
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetScanCompanyFirst")]
+        [AllowAnonymous]
+        public ObjectResultEx GetScanCompanyFirst(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetScanCompanyFirst(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 一品一码一物一码
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetScanCodeInfo")]
+        [AllowAnonymous]
+        public ObjectResultEx GetScanCodeInfo(SimpleParam<Guid?> Key, SimpleParam<String> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetScanCodeInfo(Key.Id, Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 新增扫码记录
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditScanInfo")]
+        [AllowAnonymous]
+        public ObjectResultEx EditScanInfo(RequestEnterpriseScanCodeInfo Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditScanInfo(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 一箱一码
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetScanBoxInfo")]
+        [AllowAnonymous]
+        public ObjectResultEx GetScanBoxInfo(SimpleParam<Guid?> Key, SimpleParam<String> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetScanBoxInfo(Key.Id, Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        [HttpPost("GetScanSendInfo")]
+        [AllowAnonymous]
+        public ObjectResultEx GetScanSendInfo(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetScanSendInfo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 确认收货
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost("CheckLogistics")]
+        [AllowAnonymous]
+        public ObjectResultEx CheckLogistics(RequestEnterpriseLogistics Param)
+        {
+            if (string.IsNullOrEmpty(Param.PackageNo))
+                return ObjectResultEx.Instance(null, -1, "验证码不能为空", HttpCode.FAIL);
+            string Code = HttpContext.Session.GetSession<string>("PhoneCode").Trim();
+            if (!Code.Equals(Param.PackageNo))
+                return ObjectResultEx.Instance(null, -1, "请检查验证码", HttpCode.FAIL);
+            return ObjectResultEx.Instance(EnterpriseWebService.CheckLogistics(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 装车信息
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetScanPackageInfo")]
+        [AllowAnonymous]
+        public ObjectResultEx GetScanPackageInfo(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetScanPackageInfo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

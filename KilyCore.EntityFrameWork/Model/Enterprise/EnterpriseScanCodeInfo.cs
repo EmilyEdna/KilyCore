@@ -35,9 +35,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual string ScanPackageNo { get; set; }
         /// <summary>
-        /// 商品名称
+        /// 装车Id
         /// </summary>
-        public virtual string ScanGoodsName { get; set; }
+        public virtual Guid? TakeCarId { get; set; }
         /// <summary>
         /// Ip地址
         /// </summary>

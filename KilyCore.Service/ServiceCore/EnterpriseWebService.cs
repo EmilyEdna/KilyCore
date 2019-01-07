@@ -2457,40 +2457,6 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         /// <summary>
-        /// 新增扫码记录
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        public string EditScanInfo(RequestEnterpriseScanCodeInfo Param)
-        {
-            EnterpriseScanCodeInfo CodeInfo = Param.MapToEntity<EnterpriseScanCodeInfo>();
-            EnterpriseScanCodeInfo Code = Kily.Set<EnterpriseScanCodeInfo>()
-                .Where(t => t.ScanPackageNo.Equals(CodeInfo.ScanPackageNo))
-                .Where(t => t.ScanGoodsName.Equals(CodeInfo.ScanGoodsName))
-                .AsNoTracking().FirstOrDefault();
-            if (Code != null)
-            {
-                Code.ScanNum += 1;
-                UpdateField(Code, "ScanNum");
-            }
-            EnterpriseLogistics Log = Kily.Set<EnterpriseLogistics>().Where(t => t.PackageNo == CodeInfo.ScanPackageNo)
-                .Where(t => t.Address.Contains(CodeInfo.ScanAddress))
-                .Where(t => t.IsDelete == false).AsNoTracking().FirstOrDefault();
-            if (Log != null)
-            {
-                Log.Correct += 1;
-                UpdateField(Log, "Correct");
-            }
-            else
-            {
-                Log.Error += 1;
-                UpdateField(Log, "Error" +
-                    "");
-            }
-            Code.ScanNum += 1;
-            return Insert(Code) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
-        }
-        /// <summary>
         /// 箱码绑定情况
         /// </summary>
         /// <param name="pageParam"></param>
@@ -4245,17 +4211,6 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
         }
         /// <summary>
-        /// 发货详情
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public RequestEnterpriseLogistics GetSendDetail(Guid Id)
-        {
-            var data = Kily.Set<EnterpriseLogistics>().Where(t => t.Id == Id)
-                 .AsNoTracking().FirstOrDefault().MapToEntity<RequestEnterpriseLogistics>();
-            return data;
-        }
-        /// <summary>
         /// 编辑发货
         /// </summary>
         /// <param name="Param"></param>
@@ -4294,22 +4249,6 @@ namespace KilyCore.Service.ServiceCore
         public string RemoveLogistics(Guid Id)
         {
             return Delete<EnterpriseLogistics>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
-        }
-        /// <summary>
-        /// 确认收货
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public string CheckLogistics(RequestEnterpriseLogistics Param)
-        {
-            var Temp = Kily.Set<EnterpriseSeller>().Where(t => t.IsDelete == false)
-                .Where(t => t.SellerType == SellerEnum.Sale)
-                .Where(t => t.LinkPhone.Equals(Param.LinkPhone)).AsNoTracking().FirstOrDefault();
-            if (Temp == null)
-                return "请勿串货";
-            EnterpriseLogistics logistics = Kily.Set<EnterpriseLogistics>().Where(t => t.Id == Param.Id).FirstOrDefault();
-            logistics.Flag = true;
-            return UpdateField(logistics, "Flag") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         #endregion
         #region 进货管理
@@ -4787,15 +4726,18 @@ namespace KilyCore.Service.ServiceCore
         public ResponseEnterpriseScanCodeContent GetScanCodeInfo(Guid? Id, String Code)
         {
             String SearchCode = String.Empty;
+            String PreFix = String.Empty;
             int CodeType = 0;
             if (Code.Contains("W"))
             {
                 SearchCode = Code.Split("W")[1].Substring(0, 12);
+                PreFix = Code.Split("W")[0];
                 CodeType = 2;
             }
             else if (Code.Contains("P"))
             {
                 SearchCode = Code.Split("P")[1].Substring(0, 12);
+                PreFix = Code.Split("P")[0];
                 CodeType = 3;
             }
             else
@@ -4807,10 +4749,99 @@ namespace KilyCore.Service.ServiceCore
              new SqlParameter("@Id", Id),
              new SqlParameter("@Code",SearchCode),
              new SqlParameter("@CodeType",CodeType),
+             new SqlParameter("@PreFix",PreFix),
             };
             if (!Id.HasValue)
                 Param[0].Value = DBNull.Value;
+            if(String.IsNullOrEmpty(PreFix))
+                Param[3].Value = DBNull.Value;
             var data = Kily.Execute("Sp_GetScanCodeInfo", Param).ToCollection<ResponseEnterpriseScanCodeContent>().FirstOrDefault();
+            return data;
+        }
+        /// <summary>
+        /// 新增扫码记录
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditScanInfo(RequestEnterpriseScanCodeInfo Param)
+        {
+            EnterpriseScanCodeInfo CodeInfo = Param.MapToEntity<EnterpriseScanCodeInfo>();
+            EnterpriseScanCodeInfo Code = Kily.Set<EnterpriseScanCodeInfo>()
+                .Where(t => t.ScanPackageNo.Equals(CodeInfo.ScanPackageNo))
+                .Where(t=>t.TakeCarId==Param.TakeCarId)
+                .AsNoTracking().FirstOrDefault();
+            if (Code != null)
+            {
+                Code.ScanNum += 1;
+                UpdateField(Code, "ScanNum");
+            }
+            EnterpriseLogistics Log = Kily.Set<EnterpriseLogistics>().Where(t => t.PackageNo == CodeInfo.ScanPackageNo)
+                .Where(t => t.Address.Contains(CodeInfo.ScanAddress))
+                .Where(t => t.IsDelete == false).AsNoTracking().FirstOrDefault();
+            if (Log != null)
+            {
+                Log.Correct += 1;
+                UpdateField(Log, "Correct");
+            }
+            else
+            {
+                Log.Error += 1;
+                UpdateField(Log, "Error");
+            }
+            Code.ScanNum += 1;
+            return Insert(Code) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 手机端箱码
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="Code"></param>
+        /// <returns></returns>
+        public ResponseEnterpriseBoxing GetScanBoxInfo(Guid? Id, String Code)
+        {
+            String HostCode = Code.Substring(0, 15);
+            IQueryable<EnterpriseBoxing> queryable = Kily.Set<EnterpriseBoxing>().Where(t => t.BoxCode.Contains(HostCode)).Where(t => t.IsDelete == false);
+            if (Id.HasValue)
+                queryable = queryable.Where(t => t.Id == Id);
+            var data = queryable.FirstOrDefault().MapToEntity<ResponseEnterpriseBoxing>();
+            return data;
+        }
+        /// <summary>
+        /// 发货信息
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public RequestEnterpriseLogistics GetScanSendInfo(Guid Id)
+        {
+            var data = Kily.Set<EnterpriseLogistics>().Where(t => t.Id == Id)
+                 .AsNoTracking().FirstOrDefault().MapToEntity<RequestEnterpriseLogistics>();
+            return data;
+        }
+        /// <summary>
+        /// 确认收货
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string CheckLogistics(RequestEnterpriseLogistics Param)
+        {
+            var Temp = Kily.Set<EnterpriseSeller>().Where(t => t.IsDelete == false)
+                .Where(t => t.SellerType == SellerEnum.Sale)
+                .Where(t => t.LinkPhone.Equals(Param.LinkPhone)).AsNoTracking().FirstOrDefault();
+            if (Temp == null)
+                return "请勿串货";
+            EnterpriseLogistics logistics = Kily.Set<EnterpriseLogistics>().Where(t => t.Id == Param.Id).FirstOrDefault();
+            logistics.Flag = true;
+            return UpdateField(logistics, "Flag") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        /// <summary>
+        /// 装车清单
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseEnterpriseGoodsPackage GetScanPackageInfo(Guid Id)
+        {
+            var data = Kily.Set<EnterpriseGoodsPackage>().Where(t => t.Id == Id)
+                .AsNoTracking().FirstOrDefault().MapToEntity<ResponseEnterpriseGoodsPackage>();
             return data;
         }
         #endregion
