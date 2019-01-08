@@ -21,9 +21,13 @@
                 var Guid = controller.GetParam("Id");
                 $("#StockId").val(Guid);
                 this.GetList(Guid);
-                if (controller.GetParam("IsBox") == "false")
-                    $("#last").css({ "display": "none" });
-
+                $("input[type='radio'][name='CodeType']").on('click', function ()
+                {
+                    if ($(this).val() == 1)
+                        $("#last").find("label").text('装箱码段').parents().find("tr[id='last']").find("textarea").attr("name", "BoxCodeNo")
+                    else
+                        $("#last").find("label").text('溯源码段').parents().find("tr[id='last']").find("textarea").attr("name", "SourceCodeNo")
+                });
             },
             GetList: function (data) {
                 //负责人下拉
@@ -62,13 +66,20 @@
             <input type="hidden" class="form-control" name="StockId" id="StockId" />
             <table class="table table-hover table-bordered">
                 <tr>
+                    <th><label class="control-label">扫描类型<span style="color:red">*</span></label></th>
+                    <td class="has-warning">
+                        <label class="radio-inline">
+                            <input type="radio" name="CodeType" value="1" style="margin-top:3px" checked />
+                            <text title="装箱码">装箱码</text>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="CodeType" value="2" style="margin-top:3px" />
+                            <text title="溯源码">溯源码</text>
+                        </label>
+                    </td>
                     <th><label class="control-label">批次号</label></th>
                     <td class="has-warning">
                         <input type="text" class="form-control" name="GoodsBatchNo" id="GoodsBatchNo" readonly />
-                    </td>
-                    <th><label class="control-label">出库数量</label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control" name="OutStockNum" />
                     </td>
                 </tr>
                 <tr>
@@ -94,7 +105,7 @@
                 <tr id="last">
                     <th><label class="control-label">装箱码段</label></th>
                     <td class="has-warning" colspan="3">
-                        <textarea rows="15" cols="5" class="form-control" name="BoxCodeNo"></textarea>
+                        <textarea rows="22" cols="5" class="form-control" name="BoxCodeNo"></textarea>
                     </td>
                 </tr>
             </table>

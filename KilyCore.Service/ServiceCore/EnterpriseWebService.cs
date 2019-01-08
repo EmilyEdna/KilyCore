@@ -3605,6 +3605,28 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string EditStockAttach(RequestEnterpriseGoodsStockAttach Param)
         {
+            if (Param.CodeType == 1)
+            {
+                if (!string.IsNullOrEmpty(Param.BoxCodeNo))
+                {
+                    Param.BoxCodeNo = Param.BoxCodeNo.Replace("\r\n", ",");
+                    var Num = Param.BoxCodeNo.Split(",").ToList();
+                    if (string.IsNullOrEmpty(Num[Num.Count - 1]))
+                        Num.RemoveAt(Num.Count - 1);
+                    Param.BoxCount = Num.Count.ToString();
+                    Param.OutStockNum = Kily.Set<EnterpriseBoxing>().Where(t => Num.Contains(t.BoxCode)).Select(t => t.ThingCode).ToList().SelectMany(t => t.Split(",")).Count();
+                }
+            }
+            else {
+                if (!string.IsNullOrEmpty(Param.SourceCodeNo))
+                {
+                    Param.SourceCodeNo = Param.SourceCodeNo.Replace("\r\n", ",");
+                    var Num = Param.SourceCodeNo.Split(",").ToList();
+                    if (string.IsNullOrEmpty(Num[Num.Count - 1]))
+                        Num.RemoveAt(Num.Count - 1);
+                    Param.OutStockNum = Num.Count;
+                }
+            }
             if (Param.OutStockNum <= 0)
                 return "出库数量必须大于0";
             EnterpriseGoodsStock stock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false)
@@ -3612,14 +3634,6 @@ namespace KilyCore.Service.ServiceCore
             if (stock.InStockNum < Param.OutStockNum)
                 return "当前库存少于出库量";
             stock.InStockNum -= Param.OutStockNum;
-            if (!string.IsNullOrEmpty(Param.BoxCodeNo))
-            {
-                Param.BoxCodeNo = Param.BoxCodeNo.Replace("\r\n", ",");
-                var Num = Param.BoxCodeNo.Split(",").ToList();
-                if (string.IsNullOrEmpty(Num[Num.Count - 1]))
-                    Num.RemoveAt(Num.Count - 1);
-                Param.BoxCount = Num.Count.ToString();
-            }
             EnterpriseGoodsStockAttach Attach = Param.MapToEntity<EnterpriseGoodsStockAttach>();
             UpdateField(stock, "InStockNum");
             return Insert<EnterpriseGoodsStockAttach>(Attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;

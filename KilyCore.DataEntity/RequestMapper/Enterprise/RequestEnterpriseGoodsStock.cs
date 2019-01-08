@@ -72,5 +72,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// 装箱数量
         /// </summary>
         public string BoxCount { get; set; }
+        public int CodeType { get; set; }
+        public string SourceCodeNo { get; set; }
     }
 }
