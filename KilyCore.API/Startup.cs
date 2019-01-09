@@ -162,7 +162,6 @@ namespace KilyCore.API
             ConfigMoney.UnitCanteenEnterprise = Convert.ToInt32(Configuration["ConfigMoney:UnitCanteenEnterprise"]);
             ConfigMoney.RepastEnterprise = Convert.ToInt32(Configuration["ConfigMoney:RepastEnterprise"]);
             #endregion
-
         }
     }
 }

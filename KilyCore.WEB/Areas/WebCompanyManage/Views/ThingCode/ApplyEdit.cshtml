@@ -55,12 +55,12 @@
                 options.CheckType();
                 $("#ApplyNum").change(function () {
                     var num = Number($(this).val());
-                    if (CompanyInfo.Version == 40)//旗舰版1厘钱
-                    {
-                        $("#ApplyMoney").val(num * 0.001);
-                    }
+                    if (CompanyInfo.Version == 10)//体验版3分钱
+                        $("#ApplyMoney").val(num * 0.03);
+                    else if (CompanyInfo.Version == 20)//基础版2分钱
+                        $("#ApplyMoney").val(num * 0.02)
                     else
-                        $("#ApplyMoney").val(num * 0.02)//非旗舰版2分钱
+                        $("#ApplyMoney").val(num * 0.01)
                 });
                 //文件上传
                 controller.Upload({
