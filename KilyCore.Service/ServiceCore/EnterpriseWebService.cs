@@ -1855,6 +1855,7 @@ namespace KilyCore.Service.ServiceCore
                 SoilEnv = t.SoilEnv,
                 SoilHdy = t.SoilHdy,
                 Light = t.Light,
+                CO2=t.CO2,
                 RecordTime = t.RecordTime
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;

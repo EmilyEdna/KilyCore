@@ -41,6 +41,10 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 光照
         /// </summary>
         public virtual string Light { get; set; }
+        /// <summary>
+        /// CO2浓度
+        /// </summary>
+        public virtual string CO2 { get; set; }
     }
     /// <summary>
     /// 环境检测附加表

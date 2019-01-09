@@ -25,7 +25,7 @@
                     node: '#Air',
                     success: function (result) {
                         controller.Alter(result.msg);
-                        options.SetFileValue(result.data, "#AirReport");
+                        $("#AirReport").val(result.data);
                     }
                 });
                 //金属
@@ -36,7 +36,7 @@
                     node: '#Matel',
                     success: function (result) {
                         controller.Alter(result.msg);
-                        options.SetFileValue(result.data, "#MetalReport");
+                        $("#MetalReport").val(result.data);
                     }
                 });
                 //水质
@@ -47,7 +47,7 @@
                     node: '#Water',
                     success: function (result) {
                         controller.Alter(result.msg);
-                        options.SetFileValue(result.data, "#WaterReport");
+                        $("#WaterReport").val(result.data);
                     }
                 });
                 //土壤
@@ -58,7 +58,7 @@
                     node: '#Soil',
                     success: function (result) {
                         controller.Alter(result.msg);
-                        options.SetFileValue(result.data, "#SoilReport");
+                        $("#SoilReport").val(result.data);
                     }
                 });
             },
@@ -124,7 +124,7 @@
                 </div>
                 <div class="m-t-sm col-sm-6">
                     <div class="input-group line-width">
-                        <span class="label label-warning">金属报告</span>
+                        <span class="label label-warning">重金属报告</span>
                         <div class="upload-box">
                             <div class="image-box clear" id="Matel">
                                 <section class="upload-section">

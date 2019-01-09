@@ -40,6 +40,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// </summary>
         public string Light { get; set; }
         public string BatchNo { get; set; }
+        /// <summary>
+        /// CO2浓度
+        /// </summary>
+        public string CO2 { get; set; }
     }
     public class ResponseEnterpriseEnvironmentAttach
     {
