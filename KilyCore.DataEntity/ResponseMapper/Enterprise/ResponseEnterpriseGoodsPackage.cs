@@ -49,5 +49,9 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// 箱码
         /// </summary>
         public string BoxCode { get; set; }
+        /// <summary>
+        /// 是否发货
+        /// </summary>
+        public bool IsSend { get; set; }
     }
 }

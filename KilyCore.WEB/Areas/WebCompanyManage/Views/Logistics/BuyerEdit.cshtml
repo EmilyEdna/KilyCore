@@ -48,7 +48,7 @@
                     node: '.image-box',
                     success: function (result) {
                         controller.Alter(result.msg);
-                        $("#CheckReport", result.data);
+                        $("#CheckReport").val(result.data);
                     }
                 });
                 //验证
@@ -69,7 +69,7 @@
             <input type="hidden" id="CompanyId" name="CompanyId" />
             <table class="table table-hover table-bordered">
                 <tr>
-                    <th><label class="control-label">进货批次</label></th>
+                    <th><label class="control-label">装车批次</label></th>
                     <td class="has-warning">
                         <input type="text" class="form-control" name="BatchNo" readonly id="BatchNo" />
                     </td>

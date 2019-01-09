@@ -3617,7 +3617,8 @@ namespace KilyCore.Service.ServiceCore
                     Param.OutStockNum = Kily.Set<EnterpriseBoxing>().Where(t => Num.Contains(t.BoxCode)).Select(t => t.ThingCode).ToList().SelectMany(t => t.Split(",")).Count();
                 }
             }
-            else {
+            else
+            {
                 if (!string.IsNullOrEmpty(Param.SourceCodeNo))
                 {
                     Param.SourceCodeNo = Param.SourceCodeNo.Replace("\r\n", ",");
@@ -4084,7 +4085,8 @@ namespace KilyCore.Service.ServiceCore
                 ProductOutStockNo = t.ProductOutStockNo,
                 PackageTime = t.PackageTime,
                 PackageNum = t.PackageNum,
-                Manager = t.Manager
+                Manager = t.Manager,
+                IsSend = Kily.Set<EnterpriseLogistics>().Where(x => x.PackageNo == t.PackageNo).AsNoTracking().FirstOrDefault() != null ? true : false
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -4152,6 +4154,7 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseGoodsStockAttach> Attach = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseGoodsStock> Stock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseGoods> Goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseLogistics> Logistics = Kily.Set<EnterpriseLogistics>().Where(t => t.IsDelete == false);
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
@@ -4167,7 +4170,14 @@ namespace KilyCore.Service.ServiceCore
                       .Select(o => o.GoodsId).Contains(p.Id))
                       .Select(p => p.ProductName).ToList())
             }).ToList();
-            return data;
+            IList<ResponseEnterpriseGoodsPackage> Result = new List<ResponseEnterpriseGoodsPackage>();
+            data.ForEach(t =>
+            {
+                var temp = Logistics.Where(p => p.PackageNo == t.PackageNo).AsNoTracking().Select(p => p.Id).Count();
+                if (temp == 0)
+                    Result.Add(t);
+            });
+            return Result;
         }
         #endregion
         #region 发货收货
@@ -4181,6 +4191,8 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseLogistics> queryable = Kily.Set<EnterpriseLogistics>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.GoodsName))
                 queryable = queryable.Where(t => t.GoodsName.Contains(pageParam.QueryParam.GoodsName));
+            if (pageParam.QueryParam.GainId != Guid.Empty)
+                queryable = queryable.Where(t => t.GainId == pageParam.QueryParam.GainId);
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
@@ -4767,7 +4779,7 @@ namespace KilyCore.Service.ServiceCore
             };
             if (!Id.HasValue)
                 Param[0].Value = DBNull.Value;
-            if(String.IsNullOrEmpty(PreFix))
+            if (String.IsNullOrEmpty(PreFix))
                 Param[3].Value = DBNull.Value;
             var data = Kily.Execute("Sp_GetScanCodeInfo", Param).ToCollection<ResponseEnterpriseScanCodeContent>().FirstOrDefault();
             return data;
@@ -4782,7 +4794,7 @@ namespace KilyCore.Service.ServiceCore
             EnterpriseScanCodeInfo CodeInfo = Param.MapToEntity<EnterpriseScanCodeInfo>();
             EnterpriseScanCodeInfo Code = Kily.Set<EnterpriseScanCodeInfo>()
                 .Where(t => t.ScanPackageNo.Equals(CodeInfo.ScanPackageNo))
-                .Where(t=>t.TakeCarId==Param.TakeCarId)
+                .Where(t => t.TakeCarId == Param.TakeCarId)
                 .AsNoTracking().FirstOrDefault();
             if (Code != null)
             {

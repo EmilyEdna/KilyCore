@@ -4,118 +4,120 @@
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
-<script>
-    //配置
-    var options = {
-        Init: function () {
-            this.InitDom();
-            this.InitEvents();
-        },
-        //元素
-        InitDom: function () {
-            //恢复高度
-            $(window).resize(function (e) {
-                window.setTimeout(function () {
-                    options.$table.bootstrapTable("resetView", { height: $(window).height() - 150 });
-                }, 200);
-                e.stopPropagation();
-            });
-            //设置表单
-            this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetPackagePage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
-        },
-        //事件
-        InitEvents: function () {
-            $("#add").on('click', function () {
-                controller.OpenWindow({
-                    title: "新增装车",
-                    type: 2,
-                    height: "90%",
-                    width: "80%",
-                    url: "WebCompanyManage/Logistics/PackageEdit",
-                    callBack: function (result) {
-                        result.$("#Edit").submit();
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                //恢复高度
+                $(window).resize(function (e) {
+                    window.setTimeout(function () {
+                        options.$table.bootstrapTable("resetView", { height: $(window).height() - 150 });
+                    }, 200);
+                    e.stopPropagation();
+                });
+                //设置表单
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetPackagePage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
+            },
+            //事件
+            InitEvents: function () {
+                $("#add").on('click', function () {
+                    controller.OpenWindow({
+                        title: "新增装车",
+                        type: 2,
+                        height: "90%",
+                        width: "80%",
+                        url: "WebCompanyManage/Logistics/PackageEdit",
+                        callBack: function (result) {
+                            result.$("#Edit").submit();
+                        }
+                    })
+                });
+            },
+            //行为
+            action: {
+                TableFormatter: function (val, row, index) {
+                    var action = [];
+                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
+                    if (!row.IsSend)
+                        action.push('<button class="btn btn-sm btn-primary send"><i class="fa fa-pencil-square-o"></i>发货</button>');
+                    action.push('<button class="btn btn-sm btn-primary code"><i class="fa fa-barcode"></i>生成二维码</button>');
+                    action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
+                    return action.join("&nbsp;")
+                },
+                TableEvents: {
+                    "click .edit": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "编辑装车管理",
+                            type: 2,
+                            height: "90%",
+                            width: "80%",
+                            url: "WebCompanyManage/Logistics/PackageEdit?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
+                    },
+                    "click .send": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "产品发货",
+                            type: 2,
+                            height: "90%",
+                            width: "80%",
+                            url: "WebCompanyManage/Logistics/SendGoodsEdit?GoodsName=" + row.ProductName + "&No=" + row.PackageNo + "&SendNo=" + row.PackageNum,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
+                    },
+                    "click .del": function (event, val, row, index) {
+                        controller.Confirm("确认删除？", function (bool) {
+                            if (bool) {
+                                controller.ajax({
+                                    url: "EnterpriseWeb/RemoveGoodsPackge",
+                                    data: { Id: row.Id },
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    "click .code": function (event, val, row, index) {
+                        controller.Confirm("确认生成二维码？", function (bool) {
+                            if (bool) {
+                                $("#QRcode").html("");
+                                controller.QRCode("#QRcode", {
+                                    text: WebUrl + "StaticHtml/PackageList.html?Id=" + row.Id,
+                                    height: 40,
+                                    width: 40
+                                })
+                            }
+                        });
+                    },
+                },
+                CodeFormatter: function (val, row, index) {
+                    return "<span id='QRcode'><span>";
+                },
+                CodeEvents: {
+                    'click span': function (event, val, row, index) {
+                        debugger;
+                        controller.OpenWindow({
+                            title: "查看二维码",
+                            type: 2,
+                            height: "600px",
+                            width: "600px",
+                            url: "StaticHtml/CarBoxCode.html?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.popClose();
+                            }
+                        })
                     }
-                })
-            });
-        },
-        //行为
-        action: {
-            TableFormatter: function (val, row, index) {
-                var action = [];
-                action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
-                action.push('<button class="btn btn-sm btn-primary send"><i class="fa fa-pencil-square-o"></i>发货</button>');
-                action.push('<button class="btn btn-sm btn-primary code"><i class="fa fa-pencil-square-o"></i>生成二维码</button>');
-                action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
-                return action.join("&nbsp;")
-            },
-            TableEvents: {
-                "click .edit": function (event, val, row, index) {
-                    controller.OpenWindow({
-                        title: "编辑装车管理",
-                        type: 2,
-                        height: "90%",
-                        width: "80%",
-                        url: "WebCompanyManage/Logistics/PackageEdit?Id=" + row.Id,
-                        callBack: function (result) {
-                            result.$("#Edit").submit();
-                        }
-                    })
-                },
-                "click .send": function (event, val, row, index) {
-                    controller.OpenWindow({
-                        title: "产品发货",
-                        type: 2,
-                        height: "90%",
-                        width: "80%",
-                        url: "WebCompanyManage/Logistics/SendGoodsEdit?GoodsName=" + row.ProductName + "&No=" + row.PackageNo + "&SendNo=" + row.PackageNum,
-                        callBack: function (result) {
-                            result.$("#Edit").submit();
-                        }
-                    })
-                },
-                "click .del": function (event, val, row, index) {
-                    controller.Confirm("确认删除？", function (bool) {
-                        if (bool) {
-                            controller.ajax({
-                                url: "EnterpriseWeb/RemoveGoodsPackge",
-                                data: { Id: row.Id },
-                                type: 'post',
-                                success: function (result) {
-                                    options.$table.refresh();
-                                }
-                            });
-                        }
-                    });
-                },
-                "click .code": function (event, val, row, index) {
-                    controller.Confirm("确认生成二维码？", function (bool) {
-                        if (bool) {
-                            $("#QRcode").html("");
-                            controller.QRCode("#QRcode", {
-                                text: WebUrl + "StaticHtml/PackageList.html?Id=" + row.Id,
-                                height: 40,
-                                width: 40
-                            })
-                        }
-                    });
-                },
-            },
-            CodeFormatter: function (val, row, index) {
-                return "<span id='QRcode'><span>";
-            },
-            CodeEvents: {
-                'click span': function (event, val, row, index) {
-                    debugger;
-                    controller.OpenWindow({
-                        title: "查看二维码",
-                        type: 2,
-                        height: "600px",
-                        width: "600px",
-                        url: "StaticHtml/CarBoxCode.html?Id=" + row.Id,
-                        callBack: function (result) {
-                            result.popClose();
-                        }
-                    })}
                 }
             }
         };
