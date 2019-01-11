@@ -431,7 +431,7 @@ namespace KilyCore.Repositories.BaseRepository
         /// <summary>
         /// 执行存储过程返回DataSet数据集
         /// </summary>
-        public static DataSet Execute(this KilyContext db, string sql, SqlParameter[] sqlParams) 
+        public static DataSet Execute(this KilyContext db, string sql, SqlParameter[] sqlParams,IList<String> PropertyNames=null) 
         {
             DbConnection connection = db.Database.GetDbConnection();
             SqlCommand cmd = connection.CreateCommand() as SqlCommand;
@@ -445,6 +445,17 @@ namespace KilyCore.Repositories.BaseRepository
             DataSet ds = new DataSet();
             using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
             {
+                if (PropertyNames != null)
+                {
+                    string Table = "Table";
+                    for (int i = 0; i < PropertyNames.Count; i++)
+                    {
+                        if (i == 0)
+                            adapter.TableMappings.Add(Table, PropertyNames[i]);
+                        else
+                            adapter.TableMappings.Add(Table+i, PropertyNames[i]);
+                    }
+                }
                 adapter.Fill(ds);
             }
             db.Database.CloseConnection();
