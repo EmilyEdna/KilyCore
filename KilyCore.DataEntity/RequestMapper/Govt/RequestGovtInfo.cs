@@ -75,5 +75,6 @@ namespace KilyCore.DataEntity.RequestMapper.Govt
         /// 验证码
         /// </summary>
         public string ValidateCode { get; set; }
+        public bool IsApp { get; set; }
     }
 }

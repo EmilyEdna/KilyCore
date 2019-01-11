@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using KilyCore.Configure;
 using KilyCore.DataEntity.RequestMapper.Cook;
 using KilyCore.DataEntity.RequestMapper.System;
+using KilyCore.DataEntity.ResponseMapper.Cook;
 using KilyCore.Extension.ResultExtension;
 using KilyCore.Extension.SessionExtension;
 using KilyCore.Extension.Token;
@@ -41,16 +42,31 @@ namespace KilyCore.API.Controllers
         {
             try
             {
-                string Code = HttpContext.Session.GetSession<string>("ValidateCode").Trim();
-                var CookAdmin = CookWebService.CookLogin(LoginValidate);
-                if (CookAdmin != null && Code.ToUpper().Equals(LoginValidate.ValidateCode.Trim().ToUpper()))
+                ResponseCookInfo CookAdmin = CookWebService.CookLogin(LoginValidate);
+                string Code = string.Empty;
+                if (!LoginValidate.IsApp)
                 {
-                    CookieInfo cookie = new CookieInfo();
-                    VerificationExtension.WriteToken(cookie, CookAdmin);
-                    return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ResponseCookieInfo.RSASysKey, CookAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
+                    Code = HttpContext.Session.GetSession<string>("ValidateCode").Trim();
+                    if (CookAdmin != null && Code.ToUpper().Equals(LoginValidate.ValidateCode.Trim().ToUpper()))
+                    {
+                        CookieInfo cookie = new CookieInfo();
+                        VerificationExtension.WriteToken(cookie, CookAdmin);
+                        return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ResponseCookieInfo.RSASysKey, CookAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
+                    }
+                    else
+                        return ObjectResultEx.Instance(null, -1, "登录失败", HttpCode.NoAuth);
                 }
                 else
-                    return ObjectResultEx.Instance(null, -1, "登录失败", HttpCode.NoAuth);
+                {
+                    if (CookAdmin != null)
+                    {
+                        CookieInfo cookie = new CookieInfo();
+                        VerificationExtension.WriteToken(cookie, CookAdmin);
+                        return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ResponseCookieInfo.RSASysKey, SysAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
+                    }
+                    else
+                        return ObjectResultEx.Instance(null, -1, "登录失败或账户冻结", HttpCode.NoAuth);
+                }
             }
             catch (Exception)
             {

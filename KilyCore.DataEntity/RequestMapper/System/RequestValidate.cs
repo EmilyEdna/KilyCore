@@ -9,5 +9,6 @@ namespace KilyCore.DataEntity.RequestMapper.System
         public string Account { get; set; }
         public string PassWord { get; set; }
         public string ValidateCode { get; set; }
+        public bool IsApp { get; set; }
     }
 }

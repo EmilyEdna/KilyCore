@@ -257,16 +257,30 @@ namespace KilyCore.API.Controllers
         {
             try
             {
-                string Code = HttpContext.Session.GetSession<string>("ValidateCode").Trim();
                 var RepAdmin = RepastService.MerchantLogin(LoginValidate);
-                if (RepAdmin != null && Code.ToUpper().Equals(LoginValidate.ValidateCode.Trim().ToUpper()))
+                string Code = string.Empty;
+                if (!LoginValidate.IsApp)
                 {
-                    CookieInfo cookie = new CookieInfo();
-                    VerificationExtension.WriteToken(cookie, RepAdmin);
-                    return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ResponseCookieInfo.RSASysKey, RepAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
+                    Code = HttpContext.Session.GetSession<string>("ValidateCode").Trim();
+                    if (RepAdmin != null && Code.ToUpper().Equals(LoginValidate.ValidateCode.Trim().ToUpper()))
+                    {
+                        CookieInfo cookie = new CookieInfo();
+                        VerificationExtension.WriteToken(cookie, RepAdmin);
+                        return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ResponseCookieInfo.RSASysKey, RepAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
+                    }
+                    else
+                        return ObjectResultEx.Instance(null, -1, "登录失败", HttpCode.NoAuth);
                 }
-                else
-                    return ObjectResultEx.Instance(null, -1, "登录失败", HttpCode.NoAuth);
+                else {
+                    if (RepAdmin != null)
+                    {
+                        CookieInfo cookie = new CookieInfo();
+                        VerificationExtension.WriteToken(cookie, RepAdmin);
+                        return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ResponseCookieInfo.RSASysKey, RepAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
+                    }
+                    else
+                        return ObjectResultEx.Instance(null, -1, "登录失败", HttpCode.NoAuth);
+                }
             }
             catch (Exception)
             {

@@ -144,16 +144,31 @@ namespace KilyCore.API.Controllers
         {
             try
             {
-                string Code = HttpContext.Session.GetSession<string>("ValidateCode").Trim();
                 ResponseAdmin SysAdmin = SystemService.SystemLogin(LoginValidate);
-                if (SysAdmin != null && Code.ToUpper().Equals(LoginValidate.ValidateCode.Trim().ToUpper()))
+                string Code = string.Empty;
+                if (!LoginValidate.IsApp)
                 {
-                    CookieInfo cookie = new CookieInfo();
-                    VerificationExtension.WriteToken(cookie, SysAdmin);
-                    return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ResponseCookieInfo.RSASysKey, SysAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
+                    Code = HttpContext.Session.GetSession<string>("ValidateCode").Trim();
+                    if (SysAdmin != null && Code.ToUpper().Equals(LoginValidate.ValidateCode.Trim().ToUpper()))
+                    {
+                        CookieInfo cookie = new CookieInfo();
+                        VerificationExtension.WriteToken(cookie, SysAdmin);
+                        return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ResponseCookieInfo.RSASysKey, SysAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
+                    }
+                    else
+                        return ObjectResultEx.Instance(null, -1, "登录失败或账户冻结", HttpCode.NoAuth);
                 }
                 else
-                    return ObjectResultEx.Instance(null, -1, "登录失败或账户冻结", HttpCode.NoAuth);
+                {
+                    if (SysAdmin != null)
+                    {
+                        CookieInfo cookie = new CookieInfo();
+                        VerificationExtension.WriteToken(cookie, SysAdmin);
+                        return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ResponseCookieInfo.RSASysKey, SysAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
+                    }
+                    else
+                        return ObjectResultEx.Instance(null, -1, "登录失败或账户冻结", HttpCode.NoAuth);
+                }
             }
             catch (Exception)
             {
