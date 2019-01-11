@@ -62,7 +62,7 @@ namespace KilyCore.API.Controllers
                     {
                         CookieInfo cookie = new CookieInfo();
                         VerificationExtension.WriteToken(cookie, CookAdmin);
-                        return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ResponseCookieInfo.RSASysKey, SysAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
+                        return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ResponseCookieInfo.RSASysKey, CookAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
                     }
                     else
                         return ObjectResultEx.Instance(null, -1, "登录失败或账户冻结", HttpCode.NoAuth);
