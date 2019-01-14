@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\KilyCore.Configure\KilyCore.Configure.csproj" />
+    <ProjectReference Include="..\KilyCore.Repositories\KilyCore.Repositories.csproj" />
   </ItemGroup>
 
 </Project>

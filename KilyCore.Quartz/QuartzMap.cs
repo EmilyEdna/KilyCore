@@ -40,5 +40,9 @@ namespace KilyCore.Quartz
         /// 时间表达式
         /// </summary>
         public string Cron { get; set; }
+        /// <summary>
+        /// 任务描述
+        /// </summary>
+        public string JobDetail { get; set; }
     }
 }

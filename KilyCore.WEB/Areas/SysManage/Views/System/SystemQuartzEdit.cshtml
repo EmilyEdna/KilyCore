@@ -16,7 +16,7 @@
             //元素
             InitDom: function () {
                 controller.LayDate({ elem: "#StartTime" });
-                controller.LayDate({ elem: "#EndTime" });
+                controller.LayDate({ elem: "#EndTime", max: controller.GetDate(20) });
             },
             //事件
             InitEvents: function () {

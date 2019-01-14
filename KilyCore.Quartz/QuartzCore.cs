@@ -16,7 +16,7 @@ namespace KilyCore.Quartz
     /// <summary>
     /// 任务调度
     /// </summary>
-    public class QuartzCore :IQuartzCore
+    public class QuartzCore : IQuartzCore
     {
         private Task<IScheduler> instance;
         /// <summary>
@@ -31,7 +31,7 @@ namespace KilyCore.Quartz
                 else
                 {
                     NameValueCollection props = new NameValueCollection { { "quartz.serializer.type", "binary" } };
-                     instance = new StdSchedulerFactory(props).GetScheduler();
+                    instance = new StdSchedulerFactory(props).GetScheduler();
                     return instance;
                 }
             }
@@ -43,12 +43,13 @@ namespace KilyCore.Quartz
         /// <returns></returns>
         protected ITrigger CreateSimpleTrigger(QuartzMap quartz)
         {
-            if (quartz.RunTimes >0)
+            if (quartz.RunTimes > 0)
             {
                 return TriggerBuilder.Create().WithIdentity(quartz.JobName, quartz.JobGroup)
                      .StartAt(quartz.StartTime).EndAt(quartz.EndTime)
                      .WithSimpleSchedule(t => t.WithIntervalInSeconds(quartz.IntervalSecond)
-                     .WithRepeatCount(quartz.RunTimes)).ForJob(quartz.JobName, quartz.JobGroup).Build();
+                     .WithRepeatCount(quartz.RunTimes)).ForJob(quartz.JobName, quartz.JobGroup)
+                     .WithDescription(quartz.JobDetail).Build();
             }
             else
             {
@@ -56,7 +57,8 @@ namespace KilyCore.Quartz
                 return TriggerBuilder.Create().WithIdentity(quartz.JobName, quartz.JobGroup)
                     .StartAt(quartz.StartTime).EndAt(quartz.EndTime)
                     .WithSimpleSchedule(t => t.WithIntervalInSeconds(quartz.IntervalSecond)
-                    .RepeatForever()).ForJob(quartz.JobName, quartz.JobGroup).Build();
+                    .RepeatForever()).ForJob(quartz.JobName, quartz.JobGroup)
+                    .WithDescription(quartz.JobDetail).Build();
             }
         }
         /// <summary>
@@ -68,7 +70,8 @@ namespace KilyCore.Quartz
         {
             return TriggerBuilder.Create().WithIdentity(quartz.JobName, quartz.JobGroup)
                  .StartAt(quartz.StartTime).EndAt(quartz.EndTime)
-                 .WithCronSchedule(quartz.Cron).ForJob(quartz.JobName, quartz.JobGroup).Build();
+                 .WithCronSchedule(quartz.Cron).ForJob(quartz.JobName, quartz.JobGroup)
+                 .WithDescription(quartz.JobDetail).Build();
         }
         /// <summary>
         /// 暂停指定任务
@@ -176,4 +179,3 @@ namespace KilyCore.Quartz
         }
     }
 }
-

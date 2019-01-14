@@ -27,11 +27,11 @@ namespace KilyCore.DataEntity.RequestMapper.System
         /// <summary>
         /// 执行任务间隔时间单位秒
         /// </summary>
-        public int IntervalSecond { get; set; }
+        public int? IntervalSecond { get; set; }
         /// <summary>
         /// 执行次数
         /// </summary>
-        public int RunTimes { get; set; }
+        public int? RunTimes { get; set; }
         /// <summary>
         /// 时间表达式
         /// </summary>
