@@ -541,7 +541,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseAreaDictionary> GetAreaDicPage(PageParamList<RequestAreaDictionary> pageParam)
         {
-            IQueryable<FunctionAreaDictionary> queryable = Kily.Set<FunctionAreaDictionary>().AsNoTracking();
+            IQueryable<FunctionAreaDictionary> queryable = Kily.Set<FunctionAreaDictionary>().OrderByDescending(t=>t.CreateTime).AsNoTracking();
             IQueryable<FunctionDisDictionary> queryables = Kily.Set<FunctionDisDictionary>().AsNoTracking();
             if (UserInfo().AccountType != AccountEnum.Admin && UserInfo().AccountType != AccountEnum.Country)
             {

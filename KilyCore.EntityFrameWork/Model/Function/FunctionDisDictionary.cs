@@ -17,6 +17,9 @@ using System.Text;
 #endregion
 namespace KilyCore.EntityFrameWork.Model.Function
 {
+    /// <summary>
+    /// 版本禁用表
+    /// </summary>
     public class FunctionDisDictionary: BaseEntity
     {
         /// <summary>
