@@ -792,6 +792,8 @@ namespace KilyCore.Service.ServiceCore
                 contract.PayType = PayEnum.AgentPay;
                 contract.IsPay = false;
                 contract.TryOut = "30";
+                contract.TryStarDate = DateTime.Now;
+                contract.TryEndDate = contract.TryStarDate.Value.AddDays(30);
                 contract.TotalPrice = (decimal)AliPayModel.Money;
                 contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(contract.ContractYear));
                 return new ResponseStayContract()

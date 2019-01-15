@@ -78,5 +78,13 @@ namespace KilyCore.EntityFrameWork.Model.System
         /// 实际金额
         /// </summary>
         public virtual decimal? ActualPrice { get; set; }
+        /// <summary>
+        /// 试用开始日期
+        /// </summary>
+        public virtual DateTime? TryStarDate { get; set; }
+        /// <summary>
+        /// 试用结束日期
+        /// </summary>
+        public virtual DateTime? TryEndDate { get; set; }
     }
 }

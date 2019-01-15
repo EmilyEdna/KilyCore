@@ -17,6 +17,8 @@ namespace KilyCore.EntityFrameWork.EntityMapping.System
             builder.ToTable(typeof(SystemStayContract).Name);
             builder.HasKey(t => t.Id);
             builder.Property(t => t.EndTime).HasColumnType(typeof(DateTime).Name);
+            builder.Property(t => t.TryStarDate).HasColumnType(typeof(DateTime).Name);
+            builder.Property(t => t.TryEndDate).HasColumnType(typeof(DateTime).Name);
             builder.Property(t => t.TotalPrice).HasColumnType("decimal(18,2)");
             builder.Property(t => t.ActualPrice).HasColumnType("decimal(18,2)");
         }
