@@ -24,5 +24,23 @@ namespace KilyCore.Extension.UtilExtension
             int Result = Rd.Next(StarNo, EndNo);
             return Result.ToString();
         }
+        /// <summary>
+        /// 判断是否为汉字
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns>真：是汉字；假：不是</returns>
+        public static bool CheckStringChineseUn(String Param)
+        {
+            bool result = false;
+            foreach (char item in Param)
+            {
+                if (item >= 0x4e00 && item <= 0x9fbb)
+                {
+                    result = true;
+                    break;
+                }
+            }
+            return result;
+        }
     }
 }

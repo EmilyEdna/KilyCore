@@ -16,6 +16,7 @@ using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AttributeExtension;
 using KilyCore.Extension.AutoMapperExtension;
+using KilyCore.Extension.UtilExtension;
 using KilyCore.Repositories.BaseRepository;
 using KilyCore.Service.ConstMessage;
 using KilyCore.Service.IServiceCore;
@@ -471,6 +472,8 @@ namespace KilyCore.Service.ServiceCore
         {
             GovtInfo Info = Param.MapToEntity<GovtInfo>();
             Info.TypePath = GovtInfo().TypePath;
+            if (NormalUtil.CheckStringChineseUn(Info.Account))
+                return "账号不能包含中文和特殊字符";
             if (Param.Id != Guid.Empty)
                 return Update(Info, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
             else

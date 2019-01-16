@@ -7,6 +7,7 @@ using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AttributeExtension;
 using KilyCore.Extension.AutoMapperExtension;
+using KilyCore.Extension.UtilExtension;
 using KilyCore.Repositories.BaseRepository;
 using KilyCore.Service.ConstMessage;
 using KilyCore.Service.IServiceCore;
@@ -533,10 +534,16 @@ namespace KilyCore.Service.ServiceCore
             RepastRoleAuthor Author = Kily.Set<RepastRoleAuthor>().Where(t => t.IsDelete == false).Where(t => t.AuthorName.Contains("基本")).OrderBy(t => t.CreateTime).FirstOrDefault();
             Param.DingRoleId = Author.Id;
             RepastInfo Info = Param.MapToEntity<RepastInfo>();
-            if (Insert<RepastInfo>(Info))
-                return ServiceMessage.INSERTSUCCESS;
-            else
-                return ServiceMessage.INSERTFAIL;
+            if (!NormalUtil.CheckStringChineseUn(Info.Account))
+            {
+                if (Insert<RepastInfo>(Info))
+                    return ServiceMessage.INSERTSUCCESS;
+                else
+                    return ServiceMessage.INSERTFAIL;
+            }
+            else {
+                return "账号不能包含中文和特殊字符";
+            }
         }
         /// <summary>
         /// 餐饮商家登录

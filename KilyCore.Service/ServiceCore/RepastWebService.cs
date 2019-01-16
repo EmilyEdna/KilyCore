@@ -14,6 +14,7 @@ using KilyCore.Extension.AttributeExtension;
 using KilyCore.Extension.AutoMapperExtension;
 using KilyCore.Extension.PayCore.AliPay;
 using KilyCore.Extension.PayCore.WxPay;
+using KilyCore.Extension.UtilExtension;
 using KilyCore.Repositories.BaseRepository;
 using KilyCore.Service.ConstMessage;
 using KilyCore.Service.IServiceCore;
@@ -312,7 +313,9 @@ namespace KilyCore.Service.ServiceCore
             info.Account = Param.Account;
             info.PassWord = Param.PassWord;
             List<String> Fields = new List<String>() { "Account", "PassWord" };
-            return UpdateField(info, null, Fields) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            return NormalUtil.CheckStringChineseUn(info.Account) ?
+                "账号不能包含中文和特殊字符" :
+                (UpdateField(info, null, Fields) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL);
         }
         /// <summary>
         /// 修改所属区域
@@ -367,12 +370,14 @@ namespace KilyCore.Service.ServiceCore
         public string SaveUser(RequestMerchantUser Param)
         {
             RepastInfoUser User = Param.MapToObj<RequestMerchantUser, RepastInfoUser>();
-           var Users = Kily.Set<RepastInfoUser>().Where(t => t.Account.Equals(Param.Account)).AsNoTracking().FirstOrDefault();
+            var Users = Kily.Set<RepastInfoUser>().Where(t => t.Account.Equals(Param.Account)).AsNoTracking().FirstOrDefault();
             if (Users != null) return "该账号已经存在!";
             if (MerchantInfo() != null)
                 User.TypePath = MerchantInfo().TypePath;
             else
                 User.TypePath = MerchantUser().TypePath;
+            if (NormalUtil.CheckStringChineseUn(User.Account))
+                return "账号不能包含中文和特殊字符";
             if (Param.Id != Guid.Empty)
             {
                 if (Update<RepastInfoUser, RequestMerchantUser>(User, Param))
@@ -1017,7 +1022,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public ResponseRepastDictionary GetDicDetail(Guid Id)
         {
-            var data = Kily.Set<RepastDictionary>().Where(t=>t.Id==Id).AsNoTracking().Select(t => new ResponseRepastDictionary()
+            var data = Kily.Set<RepastDictionary>().Where(t => t.Id == Id).AsNoTracking().Select(t => new ResponseRepastDictionary()
             {
                 Id = t.Id,
                 InfoId = t.InfoId,
@@ -1349,7 +1354,7 @@ namespace KilyCore.Service.ServiceCore
                 ToPay = t.ToPay,
                 SellTime = t.SellTime,
                 UnPay = t.UnPay,
-                Manager=t.Manager
+                Manager = t.Manager
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -1377,7 +1382,7 @@ namespace KilyCore.Service.ServiceCore
                 ToPay = t.ToPay,
                 SellTime = t.SellTime,
                 UnPay = t.UnPay,
-                Manager=t.Manager,
+                Manager = t.Manager,
             }).FirstOrDefault();
             return data;
         }
@@ -1417,7 +1422,7 @@ namespace KilyCore.Service.ServiceCore
                 MonitorAddress = t.MonitorAddress,
                 CoverPhoto = t.CoverPhoto,
                 VideoAddress = t.VideoAddress,
-                IsIndex=t.IsIndex
+                IsIndex = t.IsIndex
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -1426,10 +1431,11 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public string ShowVideo(Guid Id,bool flag) {
+        public string ShowVideo(Guid Id, bool flag)
+        {
             var Video = Kily.Set<RepastVideo>().Where(t => t.Id == Id).AsNoTracking().FirstOrDefault();
             Video.IsIndex = flag;
-            return UpdateField(Video,"IsIndex") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            return UpdateField(Video, "IsIndex") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         #endregion
         #endregion
@@ -1880,7 +1886,7 @@ namespace KilyCore.Service.ServiceCore
                 .Select(t => new ResponseRepastInStorage()
                 {
                     Id = t.Id,
-                    IngredientName = "("+t.BatchNo+")"+t.IngredientName,
+                    IngredientName = "(" + t.BatchNo + ")" + t.IngredientName,
                 }).AsNoTracking().ToList();
             return data;
         }
@@ -1926,7 +1932,7 @@ namespace KilyCore.Service.ServiceCore
                 BuyUser = t.BuyUser,
                 InStorageNum = t.InStorageNum,
                 Phone = t.Phone,
-                MaterType=t.MaterType,
+                MaterType = t.MaterType,
                 PrePrice = t.PrePrice,
                 QualityReport = t.QualityReport,
                 Remark = t.Remark,
@@ -2498,7 +2504,7 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<RepastInfoUser> S4 = Kily.Set<RepastInfoUser>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id);
             IQueryable<RepastStuff> S5 = Kily.Set<RepastStuff>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id);
             IQueryable<RepastInfo> S6 = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id);
-            Object data = new{Supplier,Video,Dish,User,Stuff,Info};
+            Object data = new { Supplier, Video, Dish, User, Stuff, Info };
             return data;
         }
         #endregion

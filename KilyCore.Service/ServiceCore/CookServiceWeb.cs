@@ -10,6 +10,7 @@ using KilyCore.Extension.AttributeExtension;
 using KilyCore.Extension.AutoMapperExtension;
 using KilyCore.Extension.PayCore.AliPay;
 using KilyCore.Extension.PayCore.WxPay;
+using KilyCore.Extension.UtilExtension;
 using KilyCore.Repositories.BaseRepository;
 using KilyCore.Service.ConstMessage;
 using KilyCore.Service.IServiceCore;
@@ -51,6 +52,8 @@ namespace KilyCore.Service.ServiceCore
             CookVip vip = Param.MapToEntity<CookVip>();
             CookRoleAuthor author = Kily.Set<CookRoleAuthor>().Where(t => t.IsDelete == false).Where(t => t.AuthorName.Contains("基本")).FirstOrDefault();
             vip.RoleId = author.Id;
+            if (NormalUtil.CheckStringChineseUn(vip.Account))
+                return "账号不能包含中文和特殊字符";
             return Insert<CookVip>(vip) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         /// <summary>

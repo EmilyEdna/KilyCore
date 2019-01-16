@@ -8,6 +8,7 @@ using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AttributeExtension;
 using KilyCore.Extension.AutoMapperExtension;
+using KilyCore.Extension.UtilExtension;
 using KilyCore.Repositories.BaseRepository;
 using KilyCore.Service.ConstMessage;
 using KilyCore.Service.IServiceCore;
@@ -673,10 +674,16 @@ namespace KilyCore.Service.ServiceCore
             EnterpriseRoleAuthor Author = Kily.Set<EnterpriseRoleAuthor>().Where(t => t.IsDelete == false).Where(t => t.EnterpriseRoleName.Contains("基本")).OrderBy(t => t.CreateTime).FirstOrDefault();
             Param.EnterpriseRoleId = Author.Id;
             EnterpriseInfo Info = Param.MapToEntity<EnterpriseInfo>();
-            if (Insert<EnterpriseInfo>(Info))
-                return ServiceMessage.INSERTSUCCESS;
-            else
-                return ServiceMessage.INSERTFAIL;
+            if (!NormalUtil.CheckStringChineseUn(Info.CompanyAccount))
+            {
+                if (Insert<EnterpriseInfo>(Info))
+                    return ServiceMessage.INSERTSUCCESS;
+                else
+                    return ServiceMessage.INSERTFAIL;
+            }
+            else {
+                return "账号不能包含中文和特殊字符";
+            }
         }
         /// <summary>
         /// 企业登录

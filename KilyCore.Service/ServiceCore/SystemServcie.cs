@@ -11,6 +11,7 @@ using KilyCore.Extension.AttributeExtension;
 using KilyCore.Extension.AutoMapperExtension;
 using KilyCore.Extension.PayCore.AliPay;
 using KilyCore.Extension.PayCore.WxPay;
+using KilyCore.Extension.UtilExtension;
 using KilyCore.Quartz;
 using KilyCore.Repositories.BaseRepository;
 using KilyCore.Service.ConstMessage;
@@ -245,10 +246,16 @@ namespace KilyCore.Service.ServiceCore
             var Adm = Kily.Set<SystemAdmin>().Where(t => t.Account.Equals(Param.Account)).AsNoTracking().FirstOrDefault();
             if (Param.Id != Guid.Empty)
             {
-                if (Update<SystemAdmin, RequestAdmin>(Admin, Param))
-                    return ServiceMessage.UPDATESUCCESS;
-                else
-                    return ServiceMessage.UPDATEFAIL;
+                if (!NormalUtil.CheckStringChineseUn(Admin.Account))
+                {
+                    if (Update<SystemAdmin, RequestAdmin>(Admin, Param))
+                        return ServiceMessage.UPDATESUCCESS;
+                    else
+                        return ServiceMessage.UPDATEFAIL;
+                }
+                else {
+                    return "账号不能包含中文和特殊字符";
+                }
             }
             else
             {

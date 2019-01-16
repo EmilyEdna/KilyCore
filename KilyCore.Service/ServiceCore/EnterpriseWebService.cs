@@ -26,6 +26,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Data.SqlClient;
+using KilyCore.Extension.UtilExtension;
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日12点01分
@@ -351,6 +352,8 @@ namespace KilyCore.Service.ServiceCore
             EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
             info.PassWord = Param.PassWord;
             info.CompanyAccount = Param.CompanyAccount;
+            if (NormalUtil.CheckStringChineseUn(info.CompanyAccount))
+                return "账号不能包含中文和特殊字符";
             IList<String> Fields = new List<String> { "CompanyAccount", "PassWord" };
             return UpdateField(info, null, Fields) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
@@ -376,6 +379,8 @@ namespace KilyCore.Service.ServiceCore
         public string SaveUser(RequestEnterpriseUser Param)
         {
             EnterpriseUser User = Param.MapToObj<RequestEnterpriseUser, EnterpriseUser>();
+            if (NormalUtil.CheckStringChineseUn(User.Account))
+                return "账号不能包含中文和特殊字符";
             var Users = Kily.Set<EnterpriseUser>().Where(t => t.Account.Equals(Param.Account)).AsNoTracking().FirstOrDefault();
             if (Users != null) return "该账号已经存在!";
             if (CompanyInfo() != null)
