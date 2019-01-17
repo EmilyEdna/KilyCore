@@ -2596,8 +2596,7 @@ namespace KilyCore.Service.ServiceCore
                 Unit = t.Unit,
                 Address = t.Address,
                 ExpiredDay = t.ExpiredDay,
-                PackageType = t.PackageType,
-                MaterNum = t.MaterNum
+                PackageType = t.PackageType
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -2665,6 +2664,7 @@ namespace KilyCore.Service.ServiceCore
                     SerializNo = t.SerializNo,
                     BatchNo = t.BatchNo,
                     StockType = t.StockType,
+                    CheckMaterialId=t.CheckMaterialId,
                     SetStockNum = t.SetStockNum,
                     SetStockTime = t.SetStockTime,
                     SetStockUser = t.SetStockUser
@@ -2679,29 +2679,7 @@ namespace KilyCore.Service.ServiceCore
         public string EditStock(RequestEnterpriseMaterialStock Param)
         {
             EnterpriseMaterialStock stock = Param.MapToEntity<EnterpriseMaterialStock>();
-            List<int> NumList = Kily.Set<EnterpriseMaterialStock>().Where(t => t.BatchNo == Param.BatchNo).Select(t => t.SetStockNum).ToList();
-            int MaterNum = Kily.Set<EnterpriseMaterial>().Where(t => t.BatchNo == Param.BatchNo).Select(t => t.MaterNum).FirstOrDefault();
-            long Sum = 0;
-            if (NumList.Count != 0)
-            {
-                NumList.ForEach(t =>
-                 {
-                     Sum += t;
-                 });
-                if (MaterNum - Sum > 0)
-                    return Insert<EnterpriseMaterialStock>(stock) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
-                else if (MaterNum - Sum == 0)
-                    return $"该原料已经全部入库,请重新选择!";
-                else
-                    return $"超出采购数量{MaterNum - Sum}";
-            }
-            else
-            {
-                if (MaterNum - Param.SetStockNum >= 0)
-                    return Insert<EnterpriseMaterialStock>(stock) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
-                else
-                    return $"超出采购数量{Param.SetStockNum - MaterNum}";
-            }
+            return Insert<EnterpriseMaterialStock>(stock) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         /// <summary>
         /// 删除入库
@@ -2797,7 +2775,7 @@ namespace KilyCore.Service.ServiceCore
             var data = Attach.Join(Stock, t => t.MaterialStockId, y => y.Id, (t, y) => new { t, y }).Join(queryable, o => o.y.BatchNo, p => p.BatchNo, (o, p) => new ResponseEnterpriseMaterial()
             {
                 Id = p.Id,
-                BatchNo = p.BatchNo,
+                BatchNo = o.t.SerializNo,
                 MaterName = p.MaterName
             }).ToList();
             return data;

@@ -86,13 +86,17 @@
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">采购数量<span style="color:red">*</span></label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control required" name="MaterNum" data-msg-required="请输入采购数量" />
-                    </td>
                     <th><label class="control-label">包装类型</label></th>
                     <td class="has-warning">
                         <input type="text" class="form-control" name="PackageType" />
+                    </td>
+                    <th><label class="control-label">原料类型</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="MaterType">
+                            <option>原料</option>
+                            <option>辅料</option>
+                            <option>添加剂</option>
+                        </select>
                     </td>
                 </tr>
                 <tr>
@@ -106,16 +110,6 @@
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">采购时间</label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control" name="BuyTime" />
-                    </td>
-                    <th><label class="control-label">生产时间</label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control" name="MaterCreateTime" />
-                    </td>
-                </tr>
-                <tr>
                     <th><label class="control-label">产地</label></th>
                     <td class="has-warning">
                         <input type="text" class="form-control" name="Address" />
@@ -123,16 +117,6 @@
                     <th><label class="control-label">供应商</label></th>
                     <td class="has-warning">
                         <select type="select" class="form-control" name="Supplier" id="Supplier"></select>
-                    </td>
-                </tr>
-                <tr>
-                    <th><label class="control-label">原料类型</label></th>
-                    <td class="has-warning" colspan="3">
-                        <select type="select" class="form-control" name="MaterType">
-                            <option>原料</option>
-                            <option>辅料</option>
-                            <option>添加剂</option>
-                        </select>
                     </td>
                 </tr>
                 <tr>
