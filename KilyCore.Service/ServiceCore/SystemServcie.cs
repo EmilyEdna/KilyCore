@@ -253,7 +253,8 @@ namespace KilyCore.Service.ServiceCore
                     else
                         return ServiceMessage.UPDATEFAIL;
                 }
-                else {
+                else
+                {
                     return "账号不能包含中文和特殊字符";
                 }
             }
@@ -538,13 +539,26 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public IList<ResponseAuthorRole> GetAuthorRole()
         {
-            return Kily.Set<SystemRoleAuthor>().Where(t => t.IsDelete == false)
-                .Where(t => t.CreateUser == UserInfo().Id.ToString()).AsNoTracking()
-                 .Select(t => new ResponseAuthorRole()
-                 {
-                     AuthorName = t.AuthorName,
-                     Id = t.Id
-                 }).ToList();
+            IQueryable<SystemRoleAuthor> queryable = Kily.Set<SystemRoleAuthor>().Where(t => t.IsDelete == false).AsNoTracking();
+            IQueryable<SystemRoleLevel> queryables = Kily.Set<SystemRoleLevel>().Where(t => t.IsDelete == false).AsNoTracking();
+            if (UserInfo().AccountType != AccountEnum.Admin || UserInfo().AccountType != AccountEnum.Country)
+            {
+                var data = queryable.Join(queryables.Where(t => t.RoleLv <= RoleEnum.LV3), t => t.AuthorRoleLvId, x => x.Id, (t, x) => new ResponseAuthorRole()
+                {
+                    AuthorName = t.AuthorName,
+                    Id = t.Id
+                }).ToList();
+                return data;
+            }
+            else
+            {
+                var data = queryable.Join(queryables.Where(t => t.RoleLv > RoleEnum.LV3), t => t.AuthorRoleLvId, x => x.Id, (t, x) => new ResponseAuthorRole()
+                {
+                    AuthorName = t.AuthorName,
+                    Id = t.Id
+                }).ToList();
+                return data;
+            }
         }
         #endregion
         #endregion
@@ -1312,7 +1326,7 @@ namespace KilyCore.Service.ServiceCore
                     {
                         CInfo.IsVip = true;
                         CInfo.StartTime = DateTime.Now;
-                        CInfo.EndTime= DateTime.Now.AddYears(Convert.ToInt32(PayInfo.TagNum));
+                        CInfo.EndTime = DateTime.Now.AddYears(Convert.ToInt32(PayInfo.TagNum));
                         Fields.Add("IsVip");
                         Fields.Add("StartTime");
                         Fields.Add("EndTime");
