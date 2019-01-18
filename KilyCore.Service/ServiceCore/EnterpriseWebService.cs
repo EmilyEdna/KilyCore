@@ -4621,9 +4621,9 @@ namespace KilyCore.Service.ServiceCore
             int Exprired = exprireds.Where(t => t.InferiorExprired == 2).Select(t => t.Id).Count();
             int Recover = recovers.Select(t => t.Id).Count();
             int Msg = msg.Select(t => t.Id).Count();
-            int TagClass = tagAttaches.Where(t => t.TagType == "2").Select(t => t.Id).Count();
-            int TagThing = tagAttaches.Where(t => t.TagType == "3").Select(t => t.Id).Count();
-            int VeinTag = tagAttaches.Where(t => t.TagType == "1").Select(t => t.Id).Count();
+            int TagClass = tagAttaches.Where(t => t.TagType == "3").Sum(t => t.UseNum);
+            int TagThing = tagAttaches.Where(t => t.TagType == "2").Sum(t => t.UseNum);
+            int VeinTag = tagAttaches.Where(t => t.TagType == "1").Sum(t => t.UseNum);
             int Info = infos.Sum(t => t.ScanNum);
             Object obj = new { Series, Goods, Supplier, Sale, Inferior, Exprired, Recover, Msg, VeinTag, TagClass, TagThing, Info };
             return obj;
@@ -4638,21 +4638,21 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseGoodsStockAttach> queryables = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id);
             int WeekDataCount = queryable.Where(t => t.ProductTime > DateTime.Now.AddDays(-7))
                 .Where(t => t.ProductTime < DateTime.Now)
-                .Join(queryables, t => t.Id, x => x.StockId, (t, x) => new
+                .GroupJoin(queryables, t => t.Id, x => x.StockId, (t, x) => new
                 {
-                    Total = t.InStockNum + x.OutStockNum,
+                    Total = t.InStockNum + x.Sum(o=>o.OutStockNum)
                 }).Sum(t => t.Total);
             int MonthDataCount = queryable.Where(t => t.ProductTime > DateTime.Now.AddMonths(-1))
               .Where(t => t.ProductTime < DateTime.Now)
-              .Join(queryables, t => t.Id, x => x.StockId, (t, x) => new
+              .GroupJoin(queryables, t => t.Id, x => x.StockId, (t, x) => new
               {
-                  Total = t.InStockNum + x.OutStockNum,
+                  Total = t.InStockNum + x.Sum(o => o.OutStockNum)
               }).Sum(t => t.Total);
             int YearDataCount = queryable.Where(t => t.ProductTime > DateTime.Now.AddYears(-1))
                 .Where(t => t.ProductTime < DateTime.Now)
-                .Join(queryables, t => t.Id, x => x.StockId, (t, x) => new
+                .GroupJoin(queryables, t => t.Id, x => x.StockId, (t, x) => new
                 {
-                    Total = t.InStockNum + x.OutStockNum,
+                    Total = t.InStockNum + x.Sum(o => o.OutStockNum)
                 }).Sum(t => t.Total);
             IList<DataPie> OutSideData = new List<DataPie>
             {
@@ -4683,13 +4683,44 @@ namespace KilyCore.Service.ServiceCore
             int Note = notes.GroupBy(t => t.BatchNo).Select(t => t.Key).Count();
             int Batch = batches.GroupBy(t => t.BatchNo).Select(t => t.Key).Count();
             int But = buyers.GroupBy(t => t.BatchNo).Select(t => t.Key).Count();
-            IList<DataPie> OutSideData = new List<DataPie>
+            IList<DataPie> OutSideData = new List<DataPie>();
+            List<String> title = new List<String>();
+            if (CompanyInfo() != null)
             {
-                new DataPie { value = Note, name = "成长日记" },
-                new DataPie { value = Batch, name = "生产批次" },
-                new DataPie { value = But, name = "进货批次" }
-            };
-            List<String> title = new List<String>() { "成长日记", "生产批次", "进货批次" };
+                if (CompanyInfo().CompanyType == CompanyEnum.Plant || CompanyInfo().CompanyType == CompanyEnum.Culture)
+                {
+                    OutSideData.Add(new DataPie { value = Note, name = "成长日记" });
+                    title.Add("成长日记");
+                }
+                if (CompanyInfo().CompanyType == CompanyEnum.Production)
+                {
+                    OutSideData.Add(new DataPie { value = Batch, name = "生产批次" });
+                    title.Add("生产批次");
+                }
+                if (CompanyInfo().CompanyType == CompanyEnum.Circulation)
+                {
+                    OutSideData.Add(new DataPie { value = But, name = "进货批次" });
+                    title.Add("进货批次");
+                }
+            }
+            else
+            {
+                if (CompanyUser().CompanyType == CompanyEnum.Plant || CompanyUser().CompanyType == CompanyEnum.Culture)
+                {
+                    OutSideData.Add(new DataPie { value = Note, name = "成长日记" });
+                    title.Add("成长日记");
+                }
+                if (CompanyUser().CompanyType == CompanyEnum.Production)
+                {
+                    OutSideData.Add(new DataPie { value = Batch, name = "生产批次" });
+                    title.Add("生产批次");
+                }
+                if (CompanyUser().CompanyType == CompanyEnum.Circulation)
+                {
+                    OutSideData.Add(new DataPie { value = But, name = "进货批次" });
+                    title.Add("进货批次");
+                }
+            }
             ResponseDataCount dataCount = new ResponseDataCount()
             {
                 Name = "批次统计",
