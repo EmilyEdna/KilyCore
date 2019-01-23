@@ -25,6 +25,7 @@
                 this.InitMsg(1);
                 this.InitEvents();
                 this.InitPageEvent();
+                this.InitHandleFile(CompanyUser.CompanyType);
             },
             //元素
             InitDom: function () {
@@ -144,6 +145,15 @@
 
                 });
             },
+            //初始化操作文档
+            InitHandleFile: function (Param) {
+                if (Param == 30) 
+                    $("#HandleFile").attr("href", "../StaticHtml/File/生产企业操作手册.docx");
+                if (Param == 40)
+                    $("#HandleFile").attr("href", "../StaticHtml/File/流通企业操作手册.docx");
+                if (Param <30)
+                    $("#HandleFile").attr("href", "../StaticHtml/File/种养殖企业操作手册.docx");
+            },
             //分页事件
             InitPageEvent: function () {
                 $("#lastPage").on('click', function () {
@@ -164,6 +174,7 @@
         });
     </script>
 </head>
+
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
     <div id="wrapper">
         <!--左侧导航开始-->
@@ -185,6 +196,9 @@
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
                                 <li>
                                     <a href="javascript:void(0);" id="EditPwd">修改密码</a>
+                                </li>
+                                <li>
+                                    <a href="#" id="HandleFile">操作文档</a>
                                 </li>
                             </ul>
                         </div>

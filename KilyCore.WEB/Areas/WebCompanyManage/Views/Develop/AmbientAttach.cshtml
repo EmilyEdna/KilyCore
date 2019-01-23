@@ -42,25 +42,25 @@
             action: {
                 ImgFormatter1: function (val, row, index) {
                     var action = [];
-                    if (row.Certification != null)
+                    if (row.AirReport != null)
                         action.push('<img class="photo" src="' + row.AirReport + '" style="width:48px;height:32px;"">')
                     return action.join("&nbsp;");
                 },
                 ImgFormatter2: function (val, row, index) {
                     var action = [];
-                    if (row.Certification != null)
+                    if (row.MetalReport != null)
                         action.push('<img class="photo" src="' + row.MetalReport + '" style="width:48px;height:32px;"">')
                     return action.join("&nbsp;");
                 },
                 ImgFormatter3: function (val, row, index) {
                     var action = [];
-                    if (row.Certification != null)
+                    if (row.SoilReport != null)
                         action.push('<img class="photo" src="' + row.SoilReport + '" style="width:48px;height:32px;"">')
                     return action.join("&nbsp;");
                 },
                 ImgFormatter4: function (val, row, index) {
                     var action = [];
-                    if (row.Certification != null)
+                    if (row.WaterReport != null)
                         action.push('<img class="photo" src="' + row.WaterReport + '" style="width:48px;height:32px;"">')
                     return action.join("&nbsp;");
                 },

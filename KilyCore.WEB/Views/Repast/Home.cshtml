@@ -26,6 +26,7 @@
                 this.InitMsg(1);
                 this.InitEvents();
                 this.InitPageEvent();
+                this.InitHandleFile(RepastUser.DiningType);
             },
             //元素
             InitDom: function () {
@@ -144,6 +145,15 @@
 
                 });
             },
+            //初始化操作文档
+            InitHandleFile: function (Param) {
+                if (Param == 10)
+                    $("#HandleFile").attr("href", "../StaticHtml/File/餐饮企业操作手册.docx");
+                if (Param == 20)
+                    $("#HandleFile").attr("href", "../StaticHtml/File/单位食堂操作手册.docx");
+                if (Param >20)
+                    $("#HandleFile").attr("href", "../StaticHtml/File/三小企业操作手册.docx");
+            },
             //分页事件
             InitPageEvent: function () {
                 $("#lastPage").on('click', function () {
@@ -185,6 +195,9 @@
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
                                 <li>
                                     <a href="javascript:void(0);" id="EditPwd">修改密码</a>
+                                </li>
+                                <li>
+                                    <a href="#" id="HandleFile">操作文档</a>
                                 </li>
                             </ul>
                         </div>

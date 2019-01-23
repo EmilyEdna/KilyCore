@@ -18,7 +18,7 @@ namespace KilyCore.Cache.RedisCache
     public class RedisCache
     {
         #region Redis
-        private static ConfigurationOptions options = new ConfigurationOptions() { EndPoints = { Configer.RedisConnectionString }, AllowAdmin = true };
+        private static readonly ConfigurationOptions options = new ConfigurationOptions() { EndPoints = { Configer.RedisConnectionString }, AllowAdmin = true };
         private static readonly object locker = new object();
         private static ConnectionMultiplexer instance;
         public static ConnectionMultiplexer Instance
