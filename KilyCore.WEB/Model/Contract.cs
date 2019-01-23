@@ -84,6 +84,10 @@ namespace KilyCore.WEB.Model
         /// 乙方地址
         /// </summary>
         public String CompanyAddress { get; set; }
+        /// <summary>
+        /// 支付方式
+        /// </summary>
+        public int PayModel { get; set; } 
     }
     public class FromData
     {

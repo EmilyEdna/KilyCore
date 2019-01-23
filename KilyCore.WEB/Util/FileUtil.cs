@@ -135,6 +135,15 @@ namespace KilyCore.WEB.Util
             String TemplatePath = WebRootPath + @"/Template/Template.html";
             StreamReader reader = new StreamReader(TemplatePath, Encoding.UTF8);
             String HTMLContent = reader.ReadToEnd();
+            String PayModel = String.Empty;
+            if (help.PayModel == 10)
+                PayModel = "支付宝";
+           else if (help.PayModel == 20)
+                PayModel = "微信";
+           else if (help.PayModel == 30)
+                PayModel = "银行转账";
+            else
+                PayModel = "营运中心试用";
             if (help.ContractType == 1 && help.AuthorCompany == "成都研成科技有限公司")
                 HTMLContent = HTMLContent.Replace("{CompanySelf}", Configer.CompanySelf)
                     .Replace("{CodeSelf}", Configer.CodeSelf)
@@ -154,7 +163,8 @@ namespace KilyCore.WEB.Util
                     .Replace("{Years}", help.ContractYear.ToString())
                     .Replace("{CompanyVersion}", help.VersionName)
                     .Replace("{Moneys}", Money(help).ToString())
-                    .Replace("{ServerItems}", help.VersionDes);
+                    .Replace("{ServerItems}", help.VersionDes)
+                    .Replace("{PayModel}", PayModel);
             else
                 HTMLContent = HTMLContent.Replace("{CompanySelf}", help.AuthorCompany)
                    .Replace("{CodeSelf}", help.Code)
@@ -174,7 +184,8 @@ namespace KilyCore.WEB.Util
                    .Replace("{Years}", help.ContractYear.ToString())
                    .Replace("{CompanyVersion}", help.VersionName)
                    .Replace("{Moneys}", Money(help).ToString())
-                   .Replace("{ServerItems}", help.VersionDes);
+                   .Replace("{ServerItems}", help.VersionDes)
+                   .Replace("{PayModel}", PayModel);
             HtmlToPdf converter = new HtmlToPdf();
             converter.Options.PdfPageSize = PdfPageSize.A4;
             converter.Options.PdfPageOrientation = PdfPageOrientation.Portrait;

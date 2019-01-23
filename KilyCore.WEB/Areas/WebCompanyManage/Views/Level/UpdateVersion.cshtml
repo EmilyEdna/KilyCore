@@ -92,7 +92,8 @@
                         CompanyName: CompanyInfo.CompanyName,
                         CommunityCode: CompanyInfo.CommunityCode,
                         CompanyAddress: CompanyInfo.CompanyAddress,
-                        AttachInfo: $("#VersionType").find("option:selected").data().attach
+                        AttachInfo: $("#VersionType").find("option:selected").data().attach,
+                        PayModel: $("input:radio[name='PayType']").val()
                     }
                     controller.SetCtrlValue("#PDF", data);
                     $("#PDF").submit();
@@ -148,6 +149,7 @@
             <input type="hidden" name="CommunityCode" />
             <input type="hidden" name="CompanyAddress" />
             <input type="hidden" name="AttachInfo" />
+            <input type="hidden" name="PayModel" />
         </form>
         <form class="form-horizontal" method="post" action="EnterpriseWeb/SaveUpLevel" id="Edit">
             <input type="hidden" name="CompanyId" id="CompanyId" />

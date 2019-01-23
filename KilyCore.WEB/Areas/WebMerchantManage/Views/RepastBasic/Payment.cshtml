@@ -130,7 +130,8 @@
                         CompanyName: RepastUser.MerchantName,
                         CommunityCode: RepastUser.CommunityCode,
                         CompanyAddress: RepastUser.Address,
-                        AttachInfo: $("#VersionType").find("option:selected").data().attach
+                        AttachInfo: $("#VersionType").find("option:selected").data().attach,
+                        PayModel: $("input:radio[name='PayType']").val()
                     }
                     if (!controller.CheckFeild(data.ContractYear)) {
                         controller.Msg("请输入入住年限!");
@@ -199,6 +200,7 @@
             <input type="hidden" name="CommunityCode" />
             <input type="hidden" name="CompanyAddress" />
             <input type="hidden" name="AttachInfo" />
+            <input type="hidden" name="PayModel" />
         </form>
         <form id="ContractHidden">
             <input name="MerchantId" id="cid" type="hidden" />
