@@ -73,9 +73,9 @@ namespace KilyCore.Service.ServiceCore
                 }).AsNoTracking().ToList();
             data.ForEach(t =>
             {
-                t.DictionaryList = Kily.Set<RepastDictionary>()
-                .Where(x => x.IsDelete == false)
-                .Where(x => x.DicType == t.DicType).Select(x => new ResponseRepastDictionary()
+                t.DictionaryList = queryable
+                .Where(x => x.DicType == t.DicType)
+                .Select(x => new ResponseRepastDictionary()
                 {
                     Id = x.Id,
                     DicName = x.DicName,

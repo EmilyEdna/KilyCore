@@ -911,7 +911,6 @@ controller.Editor = function (element, option) {
             type: "post",
             data: formData,
             cache: false,
-            async: option.async,
             processData: false,
             contentType: false,
             dataType: 'json',

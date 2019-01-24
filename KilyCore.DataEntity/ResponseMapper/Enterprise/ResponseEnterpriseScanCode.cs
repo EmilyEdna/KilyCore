@@ -58,16 +58,49 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
     }
     public class ResponseEnterpriseScanCodeContent
     {
+        /// <summary>
+        /// 基础信息
+        /// </summary>
         public List<ResponseEnterpriseScanCodeBaseInfos> BaseInfo { get; set; }
+        /// <summary>
+        ///关键点
+        /// </summary>
         public List<ResponseEnterpriseScanCodeTarget> TargetInfo { get; set; }
+        /// <summary>
+        /// 原料一类
+        /// </summary>
         public List<ResponseEnterpriseScanCodeMater> MaterInfo { get; set; }
+        /// <summary>
+        /// 车间
+        /// </summary>
         public List<ResponseEnterpriseScanCodeFacility> FacilityInfo { get; set; }
+        /// <summary>
+        /// 成长阶段
+        /// </summary>
         public List<ResponseEnterpriseScanCodeAgeLV> AgeLVInfo { get; set; }
+        /// <summary>
+        /// 环境检测
+        /// </summary>
         public List<ResponseEnterpriseScanCodeEnv> EnvInfo { get; set; }
+        /// <summary>
+        /// 施肥或者喂养
+        /// </summary>
         public List<ResponseEnterpriseScanCodePlant> PlantInfo { get; set; }
+        /// <summary>
+        /// 药品
+        /// </summary>
         public List<ResponseEnterpriseScanCodeDrugOne> DrugOneInfo { get; set; }
+        /// <summary>
+        /// 疫苗
+        /// </summary>
         public List<ResponseEnterpriseScanCodeDrugTwo> DrugTwoInfo { get; set; }
+        /// <summary>
+        /// 投诉
+        /// </summary>
         public List<ResponseEnterpriseScanCodeComplain> ComplainInfo { get; set; }
+        /// <summary>
+        /// 召回
+        /// </summary>
         public List<ResponseEnterpriseScanCodeRecover> RecoverInfo { get; set; }
     }
     public class ResponseEnterpriseScanCodeBaseInfos {
