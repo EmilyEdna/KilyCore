@@ -3024,10 +3024,10 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
-            var data = queryable.Join(queryables, t => t.SeriesId, x => x.Id, (t, x) => new ResponseEnterpriseProductionBatch()
+            var data = queryable.GroupJoin(queryables, t => t.SeriesId, x => x.Id, (t, x) => new ResponseEnterpriseProductionBatch()
             {
                 Id = t.Id,
-                SeriesName = x.SeriesName,
+                SeriesName = x.FirstOrDefault()!=null?x.FirstOrDefault().SeriesName:null,
                 BatchNo = t.BatchNo
             }).AsNoTracking().ToList();
             return data;

@@ -63,10 +63,6 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual string Address { get; set; }
         /// <summary>
-        /// 采购数量
-        /// </summary>
-        public virtual int MaterNum { get; set; }
-        /// <summary>
         /// 包装类型
         /// </summary>
         public virtual string PackageType { get; set; }

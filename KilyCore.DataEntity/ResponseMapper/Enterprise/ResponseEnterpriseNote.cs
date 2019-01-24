@@ -14,5 +14,9 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string NoteName { get; set; }
         public string BatchNo { get; set; }
         public DateTime? ResultTime { get; set; }
+        /// <summary>
+        /// 质检报告
+        /// </summary>
+        public string CheckReport { get; set; }
     }
 }

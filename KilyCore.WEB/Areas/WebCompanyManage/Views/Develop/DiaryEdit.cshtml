@@ -51,8 +51,29 @@
                     }
                 });
             },
+            //设置文件值
+            SetFileValue: function (data, elememt) {
+                var files = $(elememt).val();
+                if (files != null && files != "" && files != undefined) {
+                    files += "," + data;
+                    $(elememt).val(files);
+                } else {
+                    $(elememt).val(data);
+                }
+            },
             //事件
             InitEvents: function () {
+                //文件上传
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: ".upload-input",
+                    maxNum: 1,
+                    maxSize: 10,
+                    node: '.image-box',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        options.SetFileValue(result.data, "#CheckReport");
+                    });
                 //验证
                 controller.ValidateConfirm("#Edit");
             },
@@ -68,7 +89,8 @@
 <div class="ibox float-e-margins">
     <div class="ibox-content">
         <form class="form-horizontal" method="post" action="EnterpriseWeb/EditNote" id="Edit">
-            <input  type="hidden" name="CompanyId" id="CompanyId"/>
+            <input type="hidden" name="CompanyId" id="CompanyId" />
+            <input type="hidden" class="form-control" name="CheckReport" id="CheckReport" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">批次编号</label></th>
@@ -85,6 +107,17 @@
                     <th><label class="control-label">收获时间</label></th>
                     <td class="has-warning" colspan="3">
                         <input type="text" class="form-control" name="ResultTime" id="ResultTime" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">质检报告</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
                     </td>
                 </tr>
             </table>

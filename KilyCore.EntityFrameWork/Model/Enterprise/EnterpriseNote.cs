@@ -29,5 +29,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 收获时间
         /// </summary>
         public virtual DateTime? ResultTime { get; set; }
+        /// <summary>
+        /// 质检报告
+        /// </summary>
+        public virtual string CheckReport { get; set; }
     }
 }
