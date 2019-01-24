@@ -102,8 +102,17 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// 召回
         /// </summary>
         public List<ResponseEnterpriseScanCodeRecover> RecoverInfo { get; set; }
+        /// <summary>
+        /// 种养殖质检报告
+        /// </summary>
+        public List<ResponseEnterpriseScanCodeNote> CheckNote { get; set; }
     }
-    public class ResponseEnterpriseScanCodeBaseInfos {
+    public class ResponseEnterpriseScanCodeNote
+    {
+        public string 质检报告 { get; set; }
+    }
+    public class ResponseEnterpriseScanCodeBaseInfos
+    {
         public Guid? 二维码Id { get; set; }
         public Guid? 成长Id { get; set; }
         public Guid? 企业Id { get; set; }
@@ -145,13 +154,15 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string 交通工具 { get; set; }
         public int? 认证星级 { get; set; }
     }
-    public class ResponseEnterpriseScanCodeTarget {
+    public class ResponseEnterpriseScanCodeTarget
+    {
         public string 关键点名称 { get; set; }
         public string 关键点阙值 { get; set; }
         public string 关键点单位 { get; set; }
         public string 结果 { get; set; }
     }
-    public class ResponseEnterpriseScanCodeMater {
+    public class ResponseEnterpriseScanCodeMater
+    {
         public Guid? 原料Id { get; set; }
         public string 原料名称 { get; set; }
         public string 原料保质期 { get; set; }
@@ -163,7 +174,8 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string 质检报告 { get; set; }
         public string 质检结果 { get; set; }
     }
-    public class ResponseEnterpriseScanCodeFacility {
+    public class ResponseEnterpriseScanCodeFacility
+    {
         public string 车间名称 { get; set; }
         public string 环境信息 { get; set; }
     }
@@ -179,7 +191,8 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string 水质报告 { get; set; }
         public string 金属报告 { get; set; }
     }
-    public class ResponseEnterpriseScanCodePlant {
+    public class ResponseEnterpriseScanCodePlant
+    {
         public string 肥料名称 { get; set; }
         public DateTime? 施肥时间 { get; set; }
         public string 肥料生产商 { get; set; }
@@ -196,7 +209,8 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public DateTime? 接种时间 { get; set; }
         public string 疫苗生产商 { get; set; }
     }
-    public class ResponseEnterpriseScanCodeGovt {
+    public class ResponseEnterpriseScanCodeGovt
+    {
         public int? 抽查次数 { get; set; }
         public int? 通报次数 { get; set; }
         public string 合格率 { get; set; }
