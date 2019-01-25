@@ -42,7 +42,7 @@
             action: {
                 ImgFormatter: function (val, row, index) {
                     var action = [];
-                    if (row.LvImg != null)
+                    if (row.CheckReport != null)
                         action.push('<img class="photo" src="' + row.CheckReport + '" style="width:48px;height:32px;"">')
                     return action.join("&nbsp;");
                 },
