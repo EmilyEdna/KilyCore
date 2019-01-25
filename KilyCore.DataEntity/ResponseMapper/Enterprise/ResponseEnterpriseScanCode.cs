@@ -136,6 +136,8 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string 生产负责人 { get; set; }
         public string 原料列表 { get; set; }
         public string 设备名称 { get; set; }
+        public string 设备生产商 { get; set; }
+        public string 设备负责人 { get; set; }
         public string 储藏方式 { get; set; }
         public string 储藏温度 { get; set; }
         public string 储藏湿度 { get; set; }
