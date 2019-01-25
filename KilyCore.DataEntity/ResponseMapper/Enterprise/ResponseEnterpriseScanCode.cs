@@ -75,6 +75,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// </summary>
         public List<ResponseEnterpriseScanCodeFacility> FacilityInfo { get; set; }
         /// <summary>
+        /// 种养殖质检报告
+        /// </summary>
+        public List<ResponseEnterpriseScanCodeNote> CheckNote { get; set; }
+        /// <summary>
         /// 成长阶段
         /// </summary>
         public List<ResponseEnterpriseScanCodeAgeLV> AgeLVInfo { get; set; }
@@ -102,14 +106,11 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// 召回
         /// </summary>
         public List<ResponseEnterpriseScanCodeRecover> RecoverInfo { get; set; }
-        /// <summary>
-        /// 种养殖质检报告
-        /// </summary>
-        public List<ResponseEnterpriseScanCodeNote> CheckNote { get; set; }
     }
     public class ResponseEnterpriseScanCodeNote
     {
-        public string 质检报告 { get; set; }
+        public string 成长档案质检报告 { get; set; }
+        public string 批次编号 { get; set; }
     }
     public class ResponseEnterpriseScanCodeBaseInfos
     {
