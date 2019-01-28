@@ -13,7 +13,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
     public class ResponseEnterprise
     {
         public IList<String> Video { get; set; }
-        public IDictionary<String,String> VideoMap { get; set; }
+        public IDictionary<String, String> VideoMap { get; set; }
         public Guid Id { get; set; }
         public Guid? CompanyId { get; set; }
         public DateTime? CardExpiredDate { get; set; }
@@ -112,5 +112,23 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// 企业形象
         /// </summary>
         public string ComImage { get; set; }
+        public IDictionary<String, String> MainProduncts
+        {
+            get
+            {
+                Dictionary<String, String> Map = new Dictionary<String, String>();
+                if (MainProRemark.Contains(","))
+                {
+                    var Remark = MainProRemark.Split(",");
+                    var Pro = MainPro.Split(",");
+                    var ProL = MainProRemark.Split(",").Length;
+                    for (int i = 0; i < ProL; i++)
+                    {
+                        Map.Add(Remark[i], Pro[i] ?? "");
+                    }
+                }
+                return Map;
+            }
+        }
     }
 }

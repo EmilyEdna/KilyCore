@@ -4756,7 +4756,8 @@ namespace KilyCore.Service.ServiceCore
                 MainPro = t.MainPro,
                 CompanySafeLv = t.CompanySafeLv,
                 ComImage = t.ComImage,
-                Honor = t.Certification + "," + t.HonorCertification,
+                Certification=t.Certification,
+                Honor = t.HonorCertification,
                 VideoMap = x.ToDictionary(o => o.VedioName, o => o.VedioAddr)
             }).AsNoTracking().FirstOrDefault();
             return data;

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -22,8 +23,9 @@ namespace KilyCore.Extension.AutoMapperExtension
         /// <returns></returns>
         public static K MapToObj<T, K>(this T Obj)
         {
-            Mapper.Initialize(t => t.CreateMap<T, K>());
-            return Mapper.Map<K>(Obj);
+            if (Obj == null) return default(K);
+            IMapper mapper = new MapperConfiguration(t => t.CreateMap(Obj.GetType(), typeof(K))).CreateMapper();
+            return mapper.Map<K>(Obj);
         }
         /// <summary>
         /// 数据传输对象转实体
@@ -34,8 +36,8 @@ namespace KilyCore.Extension.AutoMapperExtension
         public static T MapToEntity<T>(this Object Obj)
         {
             if (Obj == null) return default(T);
-            Mapper.Initialize(t => t.CreateMap(Obj.GetType(), typeof(T)));
-            return Mapper.Map<T>(Obj);
+            IMapper mapper = new MapperConfiguration(t => t.CreateMap(Obj.GetType(), typeof(T))).CreateMapper();
+            return mapper.Map<T>(Obj);
         }
         /// <summary>
         /// 自定义过滤映射
@@ -45,8 +47,12 @@ namespace KilyCore.Extension.AutoMapperExtension
         /// <returns></returns>
         public static T MapToEntity<T>(this Object Obj, String PropName)
         {
-            Mapper.Initialize(t => t.CreateMap(Obj.GetType(), typeof(T)).ForMember((PropName), x => { x.Ignore(); }));
-            return Mapper.Map<T>(Obj);
+            if (Obj == null) return default(T);
+            MapperConfigurationExpression expression = new MapperConfigurationExpression();
+            IMappingExpression mapping = expression.CreateMap(Obj.GetType(), typeof(T));
+            mapping.ForMember(PropName, x => x.Ignore());
+            IMapper mapper = new MapperConfiguration(expression).CreateMapper();
+            return mapper.Map<T>(Obj);
         }
         /// <summary>
         /// 集合映射
@@ -57,8 +63,8 @@ namespace KilyCore.Extension.AutoMapperExtension
         /// <returns></returns>
         public static List<K> MapToList<T, K>(this IEnumerable<T> Obj)
         {
-            Mapper.Initialize(t => t.CreateMap<T, K>());
-            return Mapper.Map<List<K>>(Obj);
+            IMapper mapper = new MapperConfiguration(t => t.CreateMap(Obj.GetType(), typeof(K))).CreateMapper();
+            return mapper.Map<List<K>>(Obj);
         }
         /// <summary>
         /// 集合映射
@@ -68,8 +74,8 @@ namespace KilyCore.Extension.AutoMapperExtension
         /// <returns></returns>
         public static IList<T> MapToList<T>(this IEnumerable<T> Obj)
         {
-            Mapper.Initialize(t => t.CreateMap(Obj.GetType(), typeof(T)));
-            return Mapper.Map<List<T>>(Obj);
+            IMapper mapper = new MapperConfiguration(t => t.CreateMap(Obj.GetType(), typeof(T))).CreateMapper();
+            return mapper.Map<List<T>>(Obj);
         }
     }
 }
