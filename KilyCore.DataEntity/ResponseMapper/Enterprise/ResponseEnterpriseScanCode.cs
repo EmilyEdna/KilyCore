@@ -99,6 +99,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// </summary>
         public List<ResponseEnterpriseScanCodeDrugTwo> DrugTwoInfo { get; set; }
         /// <summary>
+        /// 政府检查
+        /// </summary>
+        public List<ResponseEnterpriseScanCodeGovt> GovtCheck { get; set; }
+        /// <summary>
         /// 投诉
         /// </summary>
         public List<ResponseEnterpriseScanCodeComplain> ComplainInfo { get; set; }
