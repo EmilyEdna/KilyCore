@@ -117,17 +117,21 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
             get
             {
                 Dictionary<String, String> Map = new Dictionary<String, String>();
-                if (MainProRemark.Contains(","))
+                if (!string.IsNullOrEmpty(MainProRemark))
                 {
-                    var Remark = MainProRemark.Split(",");
-                    var Pro = MainPro.Split(",");
-                    var ProL = MainProRemark.Split(",").Length;
-                    for (int i = 0; i < ProL; i++)
+                    if (MainProRemark.Contains(","))
                     {
-                        Map.Add(Remark[i], Pro[i] ?? "");
+                        var Remark = MainProRemark.Split(",");
+                        var Pro = MainPro.Split(",");
+                        var ProL = MainProRemark.Split(",").Length;
+                        for (int i = 0; i < ProL; i++)
+                        {
+                            Map.Add(Remark[i], Pro[i] ?? "");
+                        }
                     }
+                    return Map;
                 }
-                return Map;
+                return null;
             }
         }
     }
