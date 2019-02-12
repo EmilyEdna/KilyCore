@@ -30,6 +30,7 @@ namespace KilyCore.EntityFrameWork.EntityMapping.Enterprise
             builder.Property(t => t.SendTime).HasColumnType(typeof(DateTime).Name);
             builder.Property(t => t.Error).HasColumnType("decimal(18,2)");
             builder.Property(t => t.Correct).HasColumnType("decimal(18,2)");
+            builder.Property(t=>t.GetGoodTime).HasColumnType(typeof(DateTime).Name);
         }
     }
 }

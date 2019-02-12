@@ -4875,7 +4875,9 @@ namespace KilyCore.Service.ServiceCore
                 return "请勿串货";
             EnterpriseLogistics logistics = Kily.Set<EnterpriseLogistics>().Where(t => t.Id == Param.Id).FirstOrDefault();
             logistics.Flag = true;
-            return UpdateField(logistics, "Flag") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            logistics.GetGoodTime = DateTime.Now;
+            List<String> Fields = new List<String> { "Flag", "GetGoodTime" };
+            return UpdateField(logistics,null, Fields) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         /// <summary>
         /// 装车清单

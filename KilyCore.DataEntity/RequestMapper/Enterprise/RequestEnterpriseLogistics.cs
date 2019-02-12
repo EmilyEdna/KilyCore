@@ -75,5 +75,9 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// 交通工具
         /// </summary>
         public string Traffic { get; set; }
+        /// <summary>
+        /// 收货时间
+        /// </summary>
+        public DateTime? GetGoodTime { get; set; }
     }
 }

@@ -87,6 +87,10 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// <summary>
         /// 错误
         /// </summary>
-        public virtual double Error{ get; set; }
+        public virtual double Error { get; set; }
+        /// <summary>
+        /// 收货时间
+        /// </summary>
+        public virtual DateTime? GetGoodTime{ get; set; }
     }
 }
