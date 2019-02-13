@@ -4873,7 +4873,7 @@ namespace KilyCore.Service.ServiceCore
                 .Where(t => t.LinkPhone.Equals(Param.LinkPhone)).AsNoTracking().FirstOrDefault();
             if (Temp == null)
                 return "请勿串货";
-            EnterpriseLogistics logistics = Kily.Set<EnterpriseLogistics>().Where(t => t.Id == Param.Id).FirstOrDefault();
+            EnterpriseLogistics logistics = Kily.Set<EnterpriseLogistics>().Where(t => t.GainId == Temp.Id).FirstOrDefault();
             logistics.Flag = true;
             logistics.GetGoodTime = DateTime.Now;
             List<String> Fields = new List<String> { "Flag", "GetGoodTime" };
