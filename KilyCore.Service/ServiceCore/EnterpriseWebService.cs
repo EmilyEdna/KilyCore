@@ -1862,7 +1862,7 @@ namespace KilyCore.Service.ServiceCore
                 SoilEnv = t.SoilEnv,
                 SoilHdy = t.SoilHdy,
                 Light = t.Light,
-                CO2=t.CO2,
+                CO2 = t.CO2,
                 RecordTime = t.RecordTime
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -2664,7 +2664,7 @@ namespace KilyCore.Service.ServiceCore
                     SerializNo = t.SerializNo,
                     BatchNo = t.BatchNo,
                     StockType = t.StockType,
-                    CheckMaterialId=t.CheckMaterialId,
+                    CheckMaterialId = t.CheckMaterialId,
                     SetStockNum = t.SetStockNum,
                     SetStockTime = t.SetStockTime,
                     SetStockUser = t.SetStockUser
@@ -3027,7 +3027,7 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.GroupJoin(queryables, t => t.SeriesId, x => x.Id, (t, x) => new ResponseEnterpriseProductionBatch()
             {
                 Id = t.Id,
-                SeriesName = x.FirstOrDefault()!=null?x.FirstOrDefault().SeriesName:null,
+                SeriesName = x.FirstOrDefault() != null ? x.FirstOrDefault().SeriesName : null,
                 BatchNo = t.BatchNo
             }).AsNoTracking().ToList();
             return data;
@@ -4088,8 +4088,7 @@ namespace KilyCore.Service.ServiceCore
             if (string.IsNullOrEmpty(Num[Num.Count - 1]))
                 Num.RemoveAt(Num.Count - 1);
             Param.PackageNum = Num.Count;
-            var data = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => Param.ProductOutStockNo.Contains(t.GoodsBatchNo))
-               .Select(t => t.BoxCodeNo).ToList();
+            var data = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => Param.ProductOutStockNo.Contains(t.GoodsBatchNo)).Select(t => t.BoxCodeNo).ToList();
             foreach (var item in data)
             {
                 if (!Param.BoxCode.Contains(item))
@@ -4640,7 +4639,7 @@ namespace KilyCore.Service.ServiceCore
                 .Where(t => t.ProductTime < DateTime.Now)
                 .GroupJoin(queryables, t => t.Id, x => x.StockId, (t, x) => new
                 {
-                    Total = t.InStockNum + x.Sum(o=>o.OutStockNum)
+                    Total = t.InStockNum + x.Sum(o => o.OutStockNum)
                 }).Sum(t => t.Total);
             int MonthDataCount = queryable.Where(t => t.ProductTime > DateTime.Now.AddMonths(-1))
               .Where(t => t.ProductTime < DateTime.Now)
@@ -4756,7 +4755,7 @@ namespace KilyCore.Service.ServiceCore
                 MainPro = t.MainPro,
                 CompanySafeLv = t.CompanySafeLv,
                 ComImage = t.ComImage,
-                Certification=t.Certification,
+                Certification = t.Certification,
                 Honor = t.HonorCertification,
                 VideoMap = x.ToDictionary(o => o.VedioName, o => o.VedioAddr)
             }).AsNoTracking().FirstOrDefault();
@@ -4877,7 +4876,7 @@ namespace KilyCore.Service.ServiceCore
             logistics.Flag = true;
             logistics.GetGoodTime = DateTime.Now;
             List<String> Fields = new List<String> { "Flag", "GetGoodTime" };
-            return UpdateField(logistics,null, Fields) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            return UpdateField(logistics, null, Fields) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         /// <summary>
         /// 装车清单
@@ -4888,7 +4887,11 @@ namespace KilyCore.Service.ServiceCore
         {
             var data = Kily.Set<EnterpriseGoodsPackage>().Where(t => t.Id == Id)
                 .AsNoTracking().FirstOrDefault().MapToEntity<ResponseEnterpriseGoodsPackage>();
+            List<Guid> StockIds = Kily.Set<EnterpriseGoodsStockAttach>().Where(t=> data.ProductOutStockNo.Contains(t.GoodsBatchNo)).Select(t => t.StockId).ToList();
+            List<Guid> GoodsIds = Kily.Set<EnterpriseGoodsStock>().Where(t => StockIds.Contains(t.Id)).Select(t => t.GoodsId).ToList();
+            data.ProductName = string.Join(",", Kily.Set<EnterpriseGoods>().Where(t => GoodsIds.Contains(t.Id)).Select(t => t.ProductName).ToArray());
             return data;
+
         }
         #endregion
     }

@@ -101,7 +101,7 @@
                             if (bool) {
                                 controller.ajax({
                                     url: "RepastWeb/ShowVideo",
-                                    data: { Id: row.Id },
+                                    data: { Id: row.Id,Parameter: true },
                                     type: 'post',
                                     success: function (result) {
                                         options.$table.refresh();
