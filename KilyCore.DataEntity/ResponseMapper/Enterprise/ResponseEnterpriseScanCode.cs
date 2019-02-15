@@ -99,6 +99,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// </summary>
         public List<ResponseEnterpriseScanCodeDrugTwo> DrugTwoInfo { get; set; }
         /// <summary>
+        /// 环境监测
+        /// </summary>
+        public List<ResponseEnterpriseScanCodeEnvironment> EnvInfoAttach { get; set; }
+        /// <summary>
         /// 政府检查
         /// </summary>
         public List<ResponseEnterpriseScanCodeGovt> GovtCheck { get; set; }
@@ -222,6 +226,15 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string 疫苗名称 { get; set; }
         public DateTime? 接种时间 { get; set; }
         public string 疫苗生产商 { get; set; }
+    }
+    public class ResponseEnterpriseScanCodeEnvironment
+    {
+        public string 空气温度 { get; set; }
+        public string 空气湿度 { get; set; }
+        public string 土壤温度 { get; set; }
+        public string 土壤湿度 { get; set; }
+        public string 光照 { get; set; }
+        public string 二氧化碳 { get; set; }
     }
     public class ResponseEnterpriseScanCodeGovt
     {
