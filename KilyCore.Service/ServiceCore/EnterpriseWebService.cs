@@ -4812,16 +4812,16 @@ namespace KilyCore.Service.ServiceCore
             EnterpriseScanCodeInfo Code = Kily.Set<EnterpriseScanCodeInfo>()
                 .Where(t => t.ScanPackageNo.Equals(CodeInfo.ScanPackageNo))
                 .Where(t => t.TakeCarId == Param.TakeCarId)
+                .Where(t=>t.ScanIP==Param.ScanIP)
                 .AsNoTracking().FirstOrDefault();
             if (Code != null)
             {
                 Code.ScanNum += 1;
-                UpdateField(Code, "ScanNum");
+                return UpdateField(Code, "ScanNum") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
             }
             EnterpriseLogistics Log = Kily.Set<EnterpriseLogistics>().Where(t => t.PackageNo == CodeInfo.ScanPackageNo)
-                .Where(t => CodeInfo.ScanAddress.Contains(t.Address))
                 .Where(t => t.IsDelete == false).AsNoTracking().FirstOrDefault();
-            if (Log != null)
+            if (CodeInfo.ScanAddress.Contains(Log.Address))
             {
                 Log.Correct += 1;
                 UpdateField(Log, "Correct");
@@ -4831,8 +4831,8 @@ namespace KilyCore.Service.ServiceCore
                 Log.Error += 1;
                 UpdateField(Log, "Error");
             }
-            Code.ScanNum += 1;
-            return Insert(Code) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            CodeInfo.ScanNum += 1;
+            return Insert(CodeInfo) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         /// <summary>
         /// 手机端箱码

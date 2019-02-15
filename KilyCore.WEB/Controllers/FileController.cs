@@ -102,5 +102,24 @@ namespace KilyCore.WEB.Controllers
             byte[] bytes = FileUtil.ExportTxt(data, Environment.WebRootPath);
             return File(bytes, "text/plain", "二维码链接地址.txt"); //welcome.txt是客户端保存的名字
         }
+        /// <summary>
+        /// 获取环境监测数据
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public String GetAmbient() {
+            string url = "http://www.0531yun.cn/wsjc/Device/getDeviceData.do?userID=171125yckj&userPassword=yckj85336372";
+            var data = HttpClientUtil.HttpGetAsync(url).Result;
+            AmbientModel ambient = new AmbientModel
+            {
+                AirEnv = JArray.Parse(data)[2]["DevTempValue"].ToString(),
+                AirHdy = JArray.Parse(data)[2]["DevHumiValue"].ToString(),
+                SoilEnv = JArray.Parse(data)[0]["DevTempValue"].ToString(),
+                SoilHdy = JArray.Parse(data)[0]["DevHumiValue"].ToString(),
+                Light = JArray.Parse(data)[3]["DevHumiValue"].ToString(),
+                CO2 = JArray.Parse(data)[1]["DevHumiValue"].ToString(),
+            };
+            return JsonConvert.SerializeObject(ambient);
+        }
     }
 }

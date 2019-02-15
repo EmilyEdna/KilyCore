@@ -16,6 +16,14 @@
             //元素
             InitDom: function () {
                 controller.LayDate({ elem: "#RecordTime", value: controller.FormatDate("YYYY-MM-DD HH:mm:ss") });
+                $.ajax({
+                    url: "/File/GetAmbient",
+                    type: 'get',
+                    dataType:"json",
+                    success: function (result) {
+                        controller.SetCtrlValue("#Edit", result);
+                    }
+                })
                 options.BindBatch();
             },
             //绑定批次

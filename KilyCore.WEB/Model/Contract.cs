@@ -124,4 +124,30 @@ namespace KilyCore.WEB.Model
         public String CodeHost => ECodes.Contains("W") ? ECodes.Split("W")[0] + "W" : (ECodes.Contains("P")?ECodes.Split("P")[0] + "P": ECodes.Split("B")[0] + "B");
 
     }
+    public class AmbientModel {
+        /// <summary>
+        /// 空气温度
+        /// </summary>
+        public string AirEnv { get; set; }
+        /// <summary>
+        /// 空气湿度
+        /// </summary>
+        public string AirHdy { get; set; }
+        /// <summary>
+        /// 土壤温度
+        /// </summary>
+        public string SoilEnv { get; set; }
+        /// <summary>
+        /// 土壤湿度
+        /// </summary>
+        public string SoilHdy { get; set; }
+        /// <summary>
+        /// 光照
+        /// </summary>
+        public string Light { get; set; }
+        /// <summary>
+        /// co2浓度
+        /// </summary>
+        public string CO2 { get; set; }
+    }
 }

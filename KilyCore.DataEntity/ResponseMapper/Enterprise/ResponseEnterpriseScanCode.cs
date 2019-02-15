@@ -110,6 +110,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// 召回
         /// </summary>
         public List<ResponseEnterpriseScanCodeRecover> RecoverInfo { get; set; }
+        /// <summary>
+        /// 扫码次数
+        /// </summary>
+        public List<ResponseEnterpriseScanCodeNum> ScanCodeNum { get; set; }
     }
     public class ResponseEnterpriseScanCodeNote
     {
@@ -162,6 +166,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string 运输方式 { get; set; }
         public string 交通工具 { get; set; }
         public int? 认证星级 { get; set; }
+        public string 装车批次 { get; set; }
     }
     public class ResponseEnterpriseScanCodeTarget
     {
@@ -233,5 +238,9 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
     {
         public DateTime? 召回开始时间 { get; set; }
         public DateTime? 召回截至时间 { get; set; }
+    }
+    public class ResponseEnterpriseScanCodeNum
+    {
+        public int 扫码次数 { get; set; }
     }
 }
