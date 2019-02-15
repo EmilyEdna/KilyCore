@@ -122,6 +122,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public Guid? 成长Id { get; set; }
         public Guid? 企业Id { get; set; }
         public Guid? 设施Id { get; set; }
+        public Guid? 装车Id { get; set; }
         public string 产品名称 { get; set; }
         public string 产品保质期 { get; set; }
         public string 入库负责人 { get; set; }

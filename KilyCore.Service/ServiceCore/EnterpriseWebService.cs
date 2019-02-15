@@ -4819,7 +4819,7 @@ namespace KilyCore.Service.ServiceCore
                 UpdateField(Code, "ScanNum");
             }
             EnterpriseLogistics Log = Kily.Set<EnterpriseLogistics>().Where(t => t.PackageNo == CodeInfo.ScanPackageNo)
-                .Where(t => t.Address.Contains(CodeInfo.ScanAddress))
+                .Where(t => CodeInfo.ScanAddress.Contains(t.Address))
                 .Where(t => t.IsDelete == false).AsNoTracking().FirstOrDefault();
             if (Log != null)
             {
