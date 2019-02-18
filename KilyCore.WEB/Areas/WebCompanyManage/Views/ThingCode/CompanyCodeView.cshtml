@@ -13,7 +13,7 @@
             },
             //元素
             InitDom: function () {
-                var host = WebUrl+"StaticHtml/ScanCompany.html?Id=" + controller.GetParam("Id");
+                var host = "phone.cfdacx.com/company.html?Id=" + controller.GetParam("Id");
                 controller.QRCode('#QRcode', { text: host });
             },
             //事件

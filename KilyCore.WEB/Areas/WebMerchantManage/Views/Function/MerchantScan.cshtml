@@ -30,7 +30,7 @@
                         title: "新增二维码",
                         type: 2,
                         height: "90%",
-                        width: "80%",  
+                        width: "80%",
                         url: "WebMerchantManage/Function/MerchantScanEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
@@ -46,6 +46,7 @@
                     action.push('<button class="btn btn-sm btn-primary dw"><i class="fa fa-trash-o"></i>下架</button>');
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
                     action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
+                    action.push('<button class="btn btn-sm btn-primary create"><i class="fa fa-pencil-square-o"></i>生成二维码链接</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
@@ -96,13 +97,17 @@
                             title: "编辑二维码",
                             type: 2,
                             height: "90%",
-                            width: "80%",  
+                            width: "80%",
                             url: "WebMerchantManage/Function/MerchantScanEdit?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }
                         })
-                    }
+                    },
+                    "click .create": function (event, val, row, index) {
+                        $("input[type='hidden']").val(row.Id);
+                        $("#Export").submit();
+                    },
                 }//表单事件结束
             }//行为结束
         };
@@ -115,6 +120,9 @@
 @section css{
 
 }
+<form method="post" action="/File/ExportMerTxt" id="Export">
+    <input type="hidden" name="Id" />
+</form>
 <div class="container-fluid">
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
@@ -155,4 +163,4 @@
             </div>
         </div>
     </div>
-  </div>
+</div>

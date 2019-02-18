@@ -100,7 +100,17 @@ namespace KilyCore.WEB.Controllers
         public FileResult ExportTxt(ScanCodeModel data)
         {
             byte[] bytes = FileUtil.ExportTxt(data, Environment.WebRootPath);
-            return File(bytes, "text/plain", "二维码链接地址.txt"); //welcome.txt是客户端保存的名字
+            return File(bytes, "text/plain", "二维码链接地址.txt");
+        }
+        /// <summary>
+        /// 导出二维码地址商家
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public FileResult ExportMerTxt(String Id) {
+            byte[] bytes = FileUtil.ExportMerTxt(Id, Environment.WebRootPath);
+            return File(bytes, "text/plain", "二维码链接地址.txt"); 
         }
         /// <summary>
         /// 获取环境监测数据

@@ -101,7 +101,7 @@ namespace KilyCore.WEB.Model
         public static String Chapter { get; set; }
         public static String Host { get; set; }
         public static String WebHost { get; set; }
-        public static String WebHostEmpty { get; set; }
+        public static String WebHostClass { get; set; }
         public static String WebHostBox { get; set; }
 
     }
@@ -115,8 +115,7 @@ namespace KilyCore.WEB.Model
     }
     public class ScanCodeModel
     {
-        public bool UseId { get; set; }
-        public Guid Id { get; set; }
+        public String Id { get; set; }
         public Int64 SCode => SCodes.Contains("W") ? Convert.ToInt64(SCodes.Split("W")[1]) :(SCodes.Contains("P")?Convert.ToInt64(SCodes.Split("P")[1]): Convert.ToInt64(SCodes.Split("B")[1]));
         public Int64 ECode => ECodes.Contains("W") ? Convert.ToInt64(ECodes.Split("W")[1]) : (ECodes.Contains("P") ? Convert.ToInt64(ECodes.Split("P")[1]) : Convert.ToInt64(ECodes.Split("B")[1]));
         public String SCodes { get; set; }

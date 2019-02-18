@@ -2542,7 +2542,12 @@ namespace KilyCore.Service.ServiceCore
         {
             RepastScanInfo Scan = Param.MapToEntity<RepastScanInfo>();
             if (Param.Id == Guid.Empty)
+            {
+                RepastScanInfo info = Kily.Set<RepastScanInfo>().Where(t => t.InfoId == Param.InfoId).AsNoTracking().FirstOrDefault();
+                if (info != null)
+                    return "每个商家只能生成一个二维码";
                 return Insert(Scan) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            }
             else
                 return Update(Scan, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }

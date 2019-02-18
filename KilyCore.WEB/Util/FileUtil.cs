@@ -138,9 +138,9 @@ namespace KilyCore.WEB.Util
             String PayModel = String.Empty;
             if (help.PayModel == 10)
                 PayModel = "支付宝";
-           else if (help.PayModel == 20)
+            else if (help.PayModel == 20)
                 PayModel = "微信";
-           else if (help.PayModel == 30)
+            else if (help.PayModel == 30)
                 PayModel = "银行转账";
             else
                 PayModel = "营运中心试用";
@@ -258,42 +258,64 @@ namespace KilyCore.WEB.Util
             IList<String> Address = new List<String>();
             String Content = String.Empty;
             String FileName = String.Empty;
-            if (model.UseId)
+            if (string.IsNullOrEmpty(model.Id))
+                model.Id = null;
+            if (!model.CodeHost.Contains("B"))
             {
-                for (long i = region; i > 0; i--)
-                {
-                    Address.Add(string.Format(Configer.WebHost, model.Id, model.CodeHost + (model.SCode + i)+ GetRandom()));
-                }
-                Address.Add(string.Format(Configer.WebHost, model.Id, model.CodeHost + model.SCode+ GetRandom()));
-                Content = String.Join("\r\n", Address);
-                FileName = WebRootPath + @"\Template\ScanLink.txt";
-            }
-            else
-            {
-                if (!model.CodeHost.Contains("B"))
+                if (model.CodeHost.Contains("W"))
                 {
                     for (long i = region; i > 0; i--)
                     {
-                        Address.Add(string.Format(Configer.WebHostEmpty, model.CodeHost + (model.SCode + i) + GetRandom()));
+                        Address.Add(string.Format(Configer.WebHost, model.Id, model.CodeHost + (model.SCode + i) + GetRandom()));
                     }
-                    Address.Add(string.Format(Configer.WebHostEmpty, model.CodeHost + model.SCode + GetRandom()));
-                    Content = String.Join("\r\n", Address);
-                    FileName = WebRootPath + @"\Template\ScanLinkEmpty.txt";
+                    Address.Add(string.Format(Configer.WebHost, model.Id, model.CodeHost + model.SCode + GetRandom()));
                 }
                 else
                 {
                     for (long i = region; i > 0; i--)
                     {
-                        Address.Add(string.Format(Configer.WebHostBox, model.CodeHost + (model.SCode + i) + GetRandom()));
+                        Address.Add(string.Format(Configer.WebHostClass, model.Id, model.CodeHost + (model.SCode + i) + GetRandom()));
                     }
-                    Address.Add(string.Format(Configer.WebHostBox, model.CodeHost + model.SCode + GetRandom()));
-                    Content = String.Join("\r\n", Address);
-                    FileName = WebRootPath + @"\Template\ScanLinkBox.txt";
+                    Address.Add(string.Format(Configer.WebHostClass, model.Id, model.CodeHost + model.SCode + GetRandom()));
                 }
+                Content = String.Join("\r\n", Address);
+                FileName = WebRootPath + @"\Template\ScanLink.txt";
+            }
+            else
+            {
+                for (long i = region; i > 0; i--)
+                {
+                    Address.Add(string.Format(Configer.WebHostBox, model.CodeHost + (model.SCode + i) + GetRandom(),model.Id));
+                }
+                Address.Add(string.Format(Configer.WebHostBox, model.CodeHost + model.SCode + GetRandom(), model.Id));
+                Content = String.Join("\r\n", Address);
+                FileName = WebRootPath + @"\Template\ScanLinkBox.txt";
             }
             using (StreamWriter str = File.CreateText(FileName))
             {
                 str.WriteLine(Content);
+            }
+            using (FileStream Fs = new FileStream(FileName, FileMode.Open, FileAccess.Read))
+            {
+                byte[] bytes = new byte[Fs.Length];
+                Fs.Read(bytes, 0, (int)Fs.Length);
+                return bytes;
+            }
+        }
+        /// <summary>
+        /// 导出二维码地址商家
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="WebRootPath"></param>
+        /// <returns></returns>
+        public static byte[] ExportMerTxt(String Id, String WebRootPath)
+        {
+            String FileName = String.Empty;
+            String MerchantCode = $@"http://phone.cfdacx.com/beverage.html?Id={Id}";
+            FileName = WebRootPath + @"\Template\MerchantLink.txt";
+            using (StreamWriter str = File.CreateText(FileName))
+            {
+                str.WriteLine(MerchantCode);
             }
             using (FileStream Fs = new FileStream(FileName, FileMode.Open, FileAccess.Read))
             {

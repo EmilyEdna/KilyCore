@@ -22,7 +22,7 @@
                 }
                 $("tbody").html(html);
                 for (var i = 0; i < count; i++) {
-                    controller.QRCode("#" + i + "_code", { width: 50, height: 50, text: WebUrl + "StaticHtml/ScanDetail.html?Id=" + controller.GetParam("Id") + "&Code=" + controller.GetParam('Chost') + (Number(controller.GetParam("SCode")) + i) + controller.Random(1,9) });
+                    controller.QRCode("#" + i + "_code", { width: 50, height: 50, text: "phone.cfdacx.com/oneThing.html?Id=" + controller.GetParam("Id") + "&Code=" + controller.GetParam('Chost') + (Number(controller.GetParam("SCode")) + i) + controller.Random(1,9) });
                 }
             },
         };
