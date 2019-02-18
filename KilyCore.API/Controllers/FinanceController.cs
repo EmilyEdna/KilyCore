@@ -11,6 +11,9 @@ using Microsoft.AspNetCore.Mvc;
 /// </summary>
 namespace KilyCore.API.Controllers
 {
+    /// <summary>
+    /// 系统财务接口
+    /// </summary>
     [Route("api/[controller]")]
     public class FinanceController : BaseController
     {
@@ -58,7 +61,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 发送邮件
         /// </summary>
-        /// <param name="receive"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("SendEmail")]
         public ObjectResultEx SendEmail(RequestEMail Param)
@@ -116,8 +119,8 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 查看缴费凭证
         /// </summary>
-        /// <param name="Id"></param>
-        /// <param name="Param"></param>
+        /// <param name="Key"></param>
+        /// <param name="Value"></param>
         /// <returns></returns>
         [HttpPost("WatchCertificate")]
         public ObjectResultEx WatchCertificate(SimpleParam<Guid> Key, SimpleParam<string> Value)

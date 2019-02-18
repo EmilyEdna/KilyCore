@@ -11,6 +11,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KilyCore.API.Controllers
 {
+    /// <summary>
+    /// 系统厨师后台接口
+    /// </summary>
     [Route("api/[controller]")]
     public class CookController : BaseController
     {
@@ -27,7 +30,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 获取菜单详情
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetCookMenuDetail")]
         public ObjectResultEx GetCookMenuDetail(SimpleParam<Guid> Param)
@@ -47,7 +50,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除菜单
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         [HttpPost("RemoveCookMenu")]
         public ObjectResultEx RemoveCookMenu(SimpleParam<Guid> Param)
         {
@@ -56,7 +59,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 新增菜单
         /// </summary>
-        /// <param name="param"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("EditCookMenu")]
         public ObjectResultEx EditCookMenu(RequestCookMenu Param)
@@ -81,7 +84,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 获取角色权限列表
         /// </summary>
-        /// <param name="param"></param>
+        /// <param name="pageParam"></param>
         /// <returns></returns>
         [HttpPost("GetCookAuthorPage")]
         public ObjectResultEx GetCookAuthorPage(PageParamList<RequestCookRole> pageParam)
@@ -91,7 +94,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 添加角色
         /// </summary>
-        /// <param name="param"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("EditRole")]
         public ObjectResultEx EditRole(RequestCookRole Param)
@@ -101,7 +104,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除角色
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveAuthorRole")]
         public ObjectResultEx RemoveAuthorRole(SimpleParam<Guid> Param)
@@ -156,7 +159,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 启用账号
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("StartUse")]
         public ObjectResultEx StartUse(SimpleParam<Guid> Param)
@@ -166,7 +169,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 停用账号
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("BlockUp")]
         public ObjectResultEx BlockUp(SimpleParam<Guid> Param)

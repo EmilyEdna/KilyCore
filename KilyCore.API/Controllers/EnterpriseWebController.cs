@@ -18,6 +18,9 @@ using Microsoft.AspNetCore.Mvc;
 /// </summary>
 namespace KilyCore.API.Controllers
 {
+    /// <summary>
+    /// 企业后台接口
+    /// </summary>
     [Route("api/[controller]")]
     public class EnterpriseWebController : BaseController
     {
@@ -87,7 +90,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 获取子公司
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetChildAccount")]
         public ObjectResultEx GetChildAccount(SimpleParam<Guid> Param)
@@ -171,7 +174,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 获取用户详情
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetUserDetail")]
         public ObjectResultEx GetUserDetail(SimpleParam<Guid> Param)
@@ -377,7 +380,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 审核审计续费
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Key"></param>
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("AuditContinuedAndLevel")]
@@ -452,7 +455,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除视频
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("DeleteVedio")]
         public ObjectResultEx DeleteVedio(SimpleParam<Guid> Param)
@@ -462,7 +465,8 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 显示视频
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
+        /// <param name="flag"></param>
         /// <returns></returns>
         [HttpPost("ShowVedio")]
         public ObjectResultEx ShowVedio(SimpleParam<Guid> Param, SimpleParam<bool> flag)
@@ -474,7 +478,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 获取企业检查分页
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="pageParam"></param>
         /// <returns></returns>
         [HttpPost("GetTemplateChild")]
         public ObjectResultEx GetTemplateChild(PageParamList<RequestGovtTemplateChild> pageParam)
@@ -484,7 +488,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 编辑企业检查
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("EditTemplateChild")]
         public ObjectResultEx EditTemplateChild(RequestGovtTemplateChild Param)
@@ -494,7 +498,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除企业自查
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("DeleteTemplate")]
         public ObjectResultEx DeleteTemplate(SimpleParam<Guid> Param)
@@ -538,7 +542,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除育苗信息
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveGrow")]
         public ObjectResultEx RemoveGrow(SimpleParam<Guid> Param)
@@ -548,7 +552,6 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 获取批次列表
         /// </summary>
-        /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost("GetGrowList")]
         public ObjectResultEx GetGrowList()
@@ -790,7 +793,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 创建空白标签
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("UpdateEmptyTag")]
         public ObjectResultEx UpdateEmptyTag(SimpleParam<Guid> Param)
@@ -931,7 +934,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除绑定信息
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("DeleteBindTagInfo")]
         public ObjectResultEx DeleteBindTagInfo(SimpleParam<Guid> Param)
@@ -1046,7 +1049,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除入库
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveStock")]
         public ObjectResultEx RemoveStock(SimpleParam<Guid> Param)
@@ -1086,7 +1089,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除出库记录
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveStockAttach")]
         public ObjectResultEx RemoveStockAttach(SimpleParam<Guid> Param)
@@ -1187,7 +1190,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除设备
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("DeleteDevice")]
         public ObjectResultEx DeleteDevice(SimpleParam<Guid> Param)
@@ -1197,7 +1200,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除清洗记录
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("DeleteDeviceClean")]
         public ObjectResultEx DeleteDeviceClean(SimpleParam<Guid> Param)
@@ -1207,7 +1210,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除维护记录
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("DeleteDeviceFix")]
         public ObjectResultEx DeleteDeviceFix(SimpleParam<Guid> Param)
@@ -1229,7 +1232,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除指标
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("DeleteTarget")]
         public ObjectResultEx DeleteTarget(SimpleParam<Guid> Param)
@@ -1270,7 +1273,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除系列
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveSeries")]
         public ObjectResultEx RemoveSeries(SimpleParam<Guid> Param)
@@ -1320,7 +1323,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除生产批次
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveProBatch")]
         public ObjectResultEx RemoveProBatch(SimpleParam<Guid> Param)
@@ -1340,7 +1343,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 对比指标值
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetProBatchAttachList")]
         public ObjectResultEx GetProBatchAttachList(SimpleParam<Guid> Param)
@@ -1391,7 +1394,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除设施
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("DeleteFac")]
         public ObjectResultEx DeleteFac(SimpleParam<Guid> Param)
@@ -1421,7 +1424,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除设施附加
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("DeleteFacAttach")]
         public ObjectResultEx DeleteFacAttach(SimpleParam<Guid> Param)
@@ -1445,7 +1448,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除产品
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveGoods")]
         public ObjectResultEx RemoveGoods(SimpleParam<Guid> Param)
@@ -1465,7 +1468,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 获取产品详情
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetGoodsDetail")]
         public ObjectResultEx GetGoodsDetail(SimpleParam<Guid> Param)
@@ -1516,7 +1519,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除仓库中产品
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveGoodsStock")]
         public ObjectResultEx RemoveGoodsStock(SimpleParam<Guid> Param)
@@ -1580,7 +1583,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除出库
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveGoodsStockAttach")]
         public ObjectResultEx RemoveGoodsStockAttach(SimpleParam<Guid> Param)
@@ -1630,7 +1633,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除仓库类型
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveStockType")]
         public ObjectResultEx RemoveStockType(SimpleParam<Guid> Param)
@@ -1674,7 +1677,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除原料质检
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveCheckMaterial")]
         public ObjectResultEx RemoveCheckMaterial(SimpleParam<Guid> Param)
@@ -1704,7 +1707,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除产品质检
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveCheckGoods")]
         public ObjectResultEx RemoveCheckGoods(SimpleParam<Guid> Param)
@@ -1754,7 +1757,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 获取详情
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetInferiorExpriredDetail")]
         public ObjectResultEx GetInferiorExpriredDetail(SimpleParam<Guid> Param)
@@ -1764,7 +1767,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除过期不合格处理
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveInferiorExprired")]
         public ObjectResultEx RemoveInferiorExprired(SimpleParam<Guid> Param)
@@ -1796,7 +1799,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 获取详情
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetRecoverDetail")]
         public ObjectResultEx GetRecoverDetail(SimpleParam<Guid> Param)
@@ -1832,7 +1835,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除召回
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveRecover")]
         public ObjectResultEx RemoveRecover(SimpleParam<Guid> Param)
@@ -1866,7 +1869,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 装车详情
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetGoodsPackageDetail")]
         [AllowAnonymous]
@@ -1877,7 +1880,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除装车
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveGoodsPackge")]
         public ObjectResultEx RemoveGoodsPackge(SimpleParam<Guid> Param)
@@ -1927,7 +1930,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除发货
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveLogistics")]
         public ObjectResultEx RemoveLogistics(SimpleParam<Guid> Param)
@@ -1959,7 +1962,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除进货
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveBuyer")]
         public ObjectResultEx RemoveBuyer(SimpleParam<Guid> Param)
@@ -2133,6 +2136,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetScanBoxInfo(Key.Id, Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 发货二维码
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
         [HttpPost("GetScanSendInfo")]
         [AllowAnonymous]
         public ObjectResultEx GetScanSendInfo(SimpleParam<Guid> Param)
@@ -2142,7 +2150,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 确认收货
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("CheckLogistics")]
         [AllowAnonymous]

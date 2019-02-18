@@ -16,6 +16,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KilyCore.API.Controllers
 {
+    /// <summary>
+    /// 厨师后台接口
+    /// </summary>
     [Route("api/[controller]")]
     public class CookWebController : BaseController
     {
@@ -85,6 +88,10 @@ namespace KilyCore.API.Controllers
         #endregion
 
         #region 全局菜单
+        /// <summary>
+        /// 获取厨师菜单
+        /// </summary>
+        /// <returns></returns>
         [HttpPost("GetCookMenu")]
         public ObjectResultEx GetCookMenu()
         {
@@ -181,7 +188,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 查看详情
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetBanquetDetail")]
         public ObjectResultEx GetBanquetDetail(SimpleParam<Guid> Param)
@@ -191,7 +198,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除报备
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveBanquet")]
         public ObjectResultEx RemoveBanquet(SimpleParam<Guid> Param)
@@ -224,7 +231,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除帮厨
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveHelper")]
         public ObjectResultEx RemoveHelper(SimpleParam<Guid> Param)
@@ -256,7 +263,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除食材
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveFood")]
         public ObjectResultEx RemoveFood(SimpleParam<Guid> Param)

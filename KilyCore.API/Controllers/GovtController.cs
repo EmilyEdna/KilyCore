@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KilyCore.API.Controllers
 {
+    /// <summary>
+    /// 系统政府后台接口
+    /// </summary>
     [Route("api/[controller]")]
     public class GovtController : BaseController
     {
@@ -32,7 +35,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 获取政府菜单详情
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetGovtMenuDetail")]
         public ObjectResultEx GetGovtMenuDetail(SimpleParam<Guid> Param)
@@ -42,7 +45,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除政府菜单
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         [HttpPost("RemoveGovtMenu")]
         public ObjectResultEx RemoveGovtMenu(SimpleParam<Guid> Param)
         {
@@ -51,7 +54,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 新增政府菜单
         /// </summary>
-        /// <param name="param"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("EditGovtMenu")]
         public ObjectResultEx EditGovtMenu(RequestGovtMenu Param)
@@ -86,7 +89,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除角色
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveAuthor")]
         public ObjectResultEx RemoveAuthor(SimpleParam<Guid> Param)

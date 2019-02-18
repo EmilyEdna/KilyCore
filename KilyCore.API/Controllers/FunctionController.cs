@@ -13,6 +13,9 @@ using Microsoft.AspNetCore.Mvc;
 /// </summary>
 namespace KilyCore.API.Controllers
 {
+    /// <summary>
+    /// 系统功能接口
+    /// </summary>
     [Route("api/[controller]")]
     public class FunctionController : BaseController
     {
@@ -122,7 +125,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除二维码
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveTag")]
         public ObjectResultEx RemoveTag(SimpleParam<Guid> Param)
@@ -194,7 +197,6 @@ namespace KilyCore.API.Controllers
         /// 删除字典
         /// </summary>
         /// <param name="Param"></param>
-        /// <param name="Value"></param>
         /// <returns></returns>
         [HttpPost("RemoveDic")]
         public ObjectResultEx RemoveDic(SimpleParam<Guid> Param)
@@ -227,7 +229,6 @@ namespace KilyCore.API.Controllers
         /// 启用字典
         /// </summary>
         /// <param name="Param"></param>
-        /// <param name="Value"></param>
         /// <returns></returns>
         [HttpPost("IsEnable")]
         public ObjectResultEx IsEnable(RequestDisDictionary Param)
@@ -237,7 +238,8 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 区域版本
         /// </summary>
-        /// <param name="Param"></param>
+        /// <param name="Key"></param>
+        /// <param name="Value"></param>
         /// <returns></returns>
         [HttpPost("GetAreaVersion")]
         public ObjectResultEx GetAreaVersion(SimpleParam<String> Key, SimpleParam<int> Value)
@@ -247,7 +249,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 获取功能描述
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetVersionById")]
         public ObjectResultEx GetVersionById(SimpleParam<Guid> Param)
@@ -257,7 +259,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 获取分配详情
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetAreaDicDetail")]
         public ObjectResultEx GetAreaDicDetail(SimpleParam<Guid> Param)
@@ -308,7 +310,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除消息
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveMsg")]
         public ObjectResultEx RemoveMsg(SimpleParam<Guid> Param)

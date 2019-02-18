@@ -18,6 +18,9 @@ using Microsoft.AspNetCore.Mvc;
 /// </summary>
 namespace KilyCore.API.Controllers
 {
+    /// <summary>
+    /// 系统餐饮接口
+    /// </summary>
     [Route("api/[controller]")]
     public class RepastController : BaseController
     {
@@ -206,7 +209,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 获取认证审核详情
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetDiningIdentDetail")]
         public ObjectResultEx GetDiningIdentDetail(SimpleParam<Guid> Param)

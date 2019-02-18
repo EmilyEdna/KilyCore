@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Mvc;
 /// </summary>
 namespace KilyCore.API.Controllers
 {
+    /// <summary>
+    /// 系统企业后台接口
+    /// </summary>
     [Route("api/[controller]")]
     public class EnterpriseController : BaseController
     {
@@ -21,7 +24,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 修改新增菜单
         /// </summary>
-        /// <param name="param"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("EditEnterpriseMenu")]
         public ObjectResultEx EditEnterpriseMenu(RequestEnterpriseMenu Param)
@@ -31,7 +34,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 获取菜单详情
         /// </summary>
-        /// <param name="param"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetEnterpriseMenuDetail")]
         public ObjectResultEx GetEnterpriseMenuDetail(SimpleParam<Guid> Param)
@@ -60,7 +63,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除企业菜单
         /// </summary>
-        /// <param name="param"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveEnterpriseMenu")]
         public ObjectResultEx RemoveEnterpriseMenu(SimpleParam<Guid> Param)
@@ -152,7 +155,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 获取角色详情
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetEnterpriseRoleAuthorDetail")]
         public ObjectResultEx GetEnterpriseRoleAuthorDetail(SimpleParam<Guid> Param)
@@ -240,7 +243,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 企业注册
         /// </summary>
-        /// <param name="Parameter"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("RegistCompanyAccount")]
@@ -347,7 +350,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 审核产品
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("AuditGoodSuccess")]
         public ObjectResultEx AuditGoodSuccess(SimpleParam<Guid> Param)

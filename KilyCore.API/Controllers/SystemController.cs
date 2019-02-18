@@ -20,6 +20,9 @@ using Microsoft.Extensions.Options;
 /// </summary>
 namespace KilyCore.API.Controllers
 {
+    /// <summary>
+    /// 系统接口
+    /// </summary>
     [Route("api/[controller]")]
     public class SystemController : BaseController
     {
@@ -55,7 +58,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 删除菜单
         /// </summary>
-        /// <param name="param"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveMenu")]
         public ObjectResultEx RemoveMenu(SimpleParam<Guid> Param)
@@ -65,7 +68,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 修改新增菜单
         /// </summary>
-        /// <param name="param"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("EditMenu")]
         public ObjectResultEx EditMenu(RequestMenu Param)
@@ -75,7 +78,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 获取菜单详情
         /// </summary>
-        /// <param name="param"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetMenuDetail")]
         public ObjectResultEx GetMenuDetail(SimpleParam<Guid> Param)
@@ -136,7 +139,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 登录
         /// </summary>
-        /// <param name="username"></param>
+        /// <param name="LoginValidate"></param>
         /// <returns></returns>
         [HttpPost("SystemLogin")]
         [AllowAnonymous]
@@ -287,7 +290,6 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 获取银行卡信息
         /// </summary>
-        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetBankInfo")]
         public ObjectResultEx GetBankInfo()
@@ -297,7 +299,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 回收或开启网签
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="key"></param>
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("CG")]
@@ -308,7 +310,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 获取可以签到合同的代理商
         /// </summary>
-        /// <param name="mm"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetAuthorAdmin")]
         public ObjectResultEx GetAuthorAdmin(SimpleParam<String> Param)
@@ -350,13 +352,13 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 获取乡镇
         /// </summary>
-        /// <param name="param"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetTown")]
         [AllowAnonymous]
-        public ObjectResultEx GetTown(SimpleParam<int> param)
+        public ObjectResultEx GetTown(SimpleParam<int> Param)
         {
-            return ObjectResultEx.Instance(SystemService.GetTown(param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(SystemService.GetTown(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 任务调度
@@ -497,7 +499,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 审核合同
         /// </summary>
-        /// <param name="pageParam"></param>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("AuditContract")]
         public ObjectResultEx AuditContract(RequestAudit Param)
@@ -527,12 +529,13 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 确认缴费
         /// </summary>
+        /// <param name="Key"></param>
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("EditContract")]
-        public ObjectResultEx EditContract(SimpleParam<Guid> Param, SimpleParam<decimal> Key)
+        public ObjectResultEx EditContract(SimpleParam<Guid> Key, SimpleParam<decimal> Param)
         {
-            return ObjectResultEx.Instance(SystemService.EditContract(Param.Id, Key.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(SystemService.EditContract(Key.Id, Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 支付宝微信银行支付
@@ -566,6 +569,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.AliQueryPay(Key.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 更新支付
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
         [HttpPost("EditPay")]
         public ObjectResultEx EditPay(RequestStayContract Param)
         {

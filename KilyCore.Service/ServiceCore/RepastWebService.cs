@@ -2739,6 +2739,11 @@ namespace KilyCore.Service.ServiceCore
         #endregion
 
         #region 手机端扫码信息
+        /// <summary>
+        /// 商家的二维码
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
         public ResponseRepastScanInfos GetMobileScanInfo(Guid Id)
         {
             SqlParameter[] Param = {

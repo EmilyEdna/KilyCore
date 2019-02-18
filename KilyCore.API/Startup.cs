@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Loader;
@@ -15,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using NLog.Extensions.Logging;
 using NLog.Web;
+using Swashbuckle.AspNetCore.Swagger;
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点13分
@@ -75,6 +77,11 @@ namespace KilyCore.API
                 //Session 5分钟后过期
                 t.IdleTimeout = TimeSpan.FromMinutes(5);
             });
+            //启用Swagger
+            services.AddSwaggerGen(opt => {
+                opt.SwaggerDoc("v1", new Info { Title = "Api", Version = "v1" });
+                opt.IncludeXmlComments(Path.Combine(Directory.GetCurrentDirectory(), "Kily.ApiCore.xml"));
+            });
             IServiceProvider IocProviderService = Engine.ServiceProvider(services);
             //持久化任务
             IocProviderServices.Instance.IocProviderService.RestartQuartz();
@@ -93,6 +100,11 @@ namespace KilyCore.API
             app.UsePaySharp();
             //启用Session
             app.UseSession();
+            app.UseSwagger();
+            app.UseSwaggerUI(opt =>
+            {
+                opt.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
+            });
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
