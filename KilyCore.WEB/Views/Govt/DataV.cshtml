@@ -1,0 +1,222 @@
+﻿
+@{
+    ViewData["Title"] = "DataV";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+    <style>
+        #cbody {
+            background-image: url('/statichtml/staticimg/backdatav.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+    </style>
+}
+@section script{
+    <script src="~/Content/Echarts/dark.js"></script>
+    <script>
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            InitDom: function () {
+                //企业统计
+                controller.ajax({
+                    url: "GovtWeb/GetPieDataForCompany",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        echarts.init($("#echarts-pie-chart-com")[0], "dark").setOption(OptionPie = {
+                            tooltip: {
+                                trigger: 'item',
+                                formatter: "{a} <br/>{b}: {c} ({d}%)"
+                            },
+                            legend: {
+                                orient: 'vertical',
+                                x: 'left',
+                                data: result.data.DataTitle
+                            },
+                            series: [
+                                {
+                                    name: (result.data.Name == null ? '未审核统计' : result.data.Name),
+                                    type: 'pie',
+                                    selectedMode: 'single',
+                                    radius: [0, '30%'],
+                                    data: result.data.InSideData
+                                },
+                                {
+                                    name: (result.data.Name == null ? '已审核统计' : result.data.Name),
+                                    type: 'pie',
+                                    radius: ['40%', '55%'],
+                                    data: result.data.OutSideData
+                                }
+                            ],
+                            backgroundColor: 'rgba(255,255,255,0)'
+                        });
+                    }
+                });
+                //产品统计
+                controller.ajax({
+                    url: "GovtWeb/GetPieDataForProduct",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        echarts.init($("#echarts-pie-chart-pro")[0], "dark").setOption(OptionPie = {
+                            tooltip: {
+                                trigger: 'item',
+                                formatter: "{a} <br/>{b}: {c} ({d}%)"
+                            },
+                            legend: {
+                                orient: 'vertical',
+                                x: 'left',
+                                data: result.data.DataTitle
+                            },
+                            series: [
+                                {
+                                    name: (result.data.Name == null ? '未审核统计' : result.data.Name),
+                                    type: 'pie',
+                                    selectedMode: 'single',
+                                    radius: [0, '30%'],
+                                    data: result.data.InSideData
+                                },
+                                {
+                                    name: (result.data.Name == null ? '已审核统计' : result.data.Name),
+                                    type: 'pie',
+                                    radius: ['40%', '55%'],
+                                    data: result.data.OutSideData
+                                },
+                            ],
+                            backgroundColor: 'rgba(255,255,255,0)'
+                        });
+                    }
+                });
+                //地图
+                controller.ajax({
+                    url: "GovtWeb/GetAllCityMerchantCount",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        OptionMap = {
+                            title: {
+                                text: '入住企业区域分布',
+                            },
+                            backgroundColor: 'rgba(7,31,65,0)',
+                            tooltip: {
+                                trigger: 'item',
+                                formatter: '{b}<br/>{c} (家企业)'
+                            },
+                            visualMap: {
+                                min: 1,
+                                max: 10000,
+                                text: ['High', 'Low'],
+                                realtime: false,
+                                calculable: true,
+                                inRange: {
+                                    color: ['lightskyblue', 'yellow', 'orangered']
+                                }
+                            },
+                            series: [
+                                {
+                                    name: '入住企业区域分布',
+                                    type: 'map',
+                                    mapType: result.data.CityName,
+                                    itemStyle: {
+                                        normal: { label: { show: true } },
+                                        emphasis: { label: { show: true } }
+                                    },
+                                    data: result.data.DataList,
+                                }
+                            ]
+                        }
+                        $.getJSON("/CityMap/" + result.data.City + "00.json", function (res) {
+                            echarts.registerMap(result.data.CityName, res);
+                            echarts.init($("#echarts-map-chart")[0], "dark").setOption(OptionMap);
+                        });
+                        var Names = [];
+                        var Counts = [];
+                        for (var i = 0; i < result.data.DataList.length; i++) {
+                            Names.push(result.data.DataList[i].name);
+                            Counts.push(result.data.DataList[i].value);
+                        }
+                        echarts.init($("#echarts-pie-chart-Lin")[0], "dark").setOption(OptionPie = {
+                            title: {
+                                text: '入住企业总量排行',
+                            },
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'shadow'
+                                }
+                            },
+                            legend: {
+                                data: ['企业入住数']
+                            },
+                            grid: {
+                                left: '3%',
+                                right: '4%',
+                                bottom: '3%',
+                                containLabel: true
+                            },
+                            xAxis: {
+                                type: 'value',
+                                boundaryGap: [0, 0.01],
+                                axisLine: {
+                                    lineStyle: {
+                                        color: '#000',
+                                        width: 2,
+                                    }
+                                }
+                            },
+                            yAxis: {
+                                type: 'category',
+                                data: Names,
+                                axisLine: {
+                                    lineStyle: {
+                                        color: '#000',
+                                        width: 2,
+                                    }
+                                }
+                            },
+                            series: [{
+                                name: '企业数量',
+                                type: 'bar',
+                                data: Counts
+                            }],
+                            backgroundColor: 'rgba(7,31,65,0)'
+                        });
+                    }
+                });
+
+
+            },
+            InitEvents: function () {
+
+            }
+        }
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+    <div id="cbody" style="height:100%;width:100%">
+        <!--企业统计-->
+        <div class="col-sm-3" style="margin-top:5%;">
+            <div class="echarts" id="echarts-pie-chart-com"></div>
+        </div>
+        <!--产品统计-->
+        <div class="col-sm-3" style="margin-top:5%;">
+            <div class="echarts" id="echarts-pie-chart-pro"></div>
+        </div>
+        <!--排名统计-->
+        <div class="col-sm-3" style="margin-top:5%;">
+            <div class="echarts" id="echarts-pie-chart-Lin"></div>
+        </div>
+        <!--地图-->
+        <div class="col-sm-6" style="margin-top:10%;">
+            <div class="echarts" id="echarts-map-chart"></div>
+        </div>
+    </div>
