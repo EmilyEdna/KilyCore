@@ -21,6 +21,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 /// <summary>
 /// 作者：刘泽华
@@ -541,7 +542,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<SystemRoleAuthor> queryable = Kily.Set<SystemRoleAuthor>().Where(t => t.IsDelete == false).AsNoTracking();
             IQueryable<SystemRoleLevel> queryables = Kily.Set<SystemRoleLevel>().Where(t => t.IsDelete == false).AsNoTracking();
-            if (UserInfo().AccountType <=AccountEnum.Country)
+            if (UserInfo().AccountType <= AccountEnum.Country)
             {
                 var data = queryable.Join(queryables.Where(t => t.RoleLv <= RoleEnum.LV3), t => t.AuthorRoleLvId, x => x.Id, (t, x) => new ResponseAuthorRole()
                 {

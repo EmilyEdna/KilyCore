@@ -132,6 +132,10 @@
                                 }
                             ]
                         }
+                        $.getJSON("https://geo.datav.aliyun.com/areas/bound/" + result.data.City + "00_full.json", function (res) {
+                            var de = res;
+                            debugger;
+                        });
                         $.getJSON("/CityMap/" + result.data.City + "00.json", function (res) {
                             echarts.registerMap(result.data.CityName, res);
                             echarts.init($("#echarts-map-chart")[0], "dark").setOption(OptionMap);
