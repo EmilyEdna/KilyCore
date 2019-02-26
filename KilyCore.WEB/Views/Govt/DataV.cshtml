@@ -13,7 +13,6 @@
     </style>
 }
 @section script{
-    <script src="~/Content/Echarts/dark.js"></script>
     <script>
         var options = {
             Init: function () {
@@ -28,7 +27,10 @@
                     type: "post",
                     async: false,
                     success: function (result) {
-                        echarts.init($("#echarts-pie-chart-com")[0], "dark").setOption(OptionPie = {
+                        echarts.init($("#echarts-pie-chart-com")[0],"infographic").setOption(OptionPie = {
+                            title: {
+                                textStyle: {color:'#ffffff'}
+                            },
                             tooltip: {
                                 trigger: 'item',
                                 formatter: "{a} <br/>{b}: {c} ({d}%)"
@@ -44,7 +46,7 @@
                                     type: 'pie',
                                     selectedMode: 'single',
                                     radius: [0, '30%'],
-                                    data: result.data.InSideData
+                                    data: result.data.InSideData,
                                 },
                                 {
                                     name: (result.data.Name == null ? '已审核统计' : result.data.Name),
@@ -53,7 +55,8 @@
                                     data: result.data.OutSideData
                                 }
                             ],
-                            backgroundColor: 'rgba(255,255,255,0)'
+                            backgroundColor: 'rgba(255,255,255,0)',
+                            color: ["#fc97af", "#87f7cf", '#f7f494', '#72ccff', '#f7c5a0', '#d4a4eb', '#d2f5a6','#76f2f2']
                         });
                     }
                 });
@@ -64,7 +67,10 @@
                     type: "post",
                     async: false,
                     success: function (result) {
-                        echarts.init($("#echarts-pie-chart-pro")[0], "dark").setOption(OptionPie = {
+                        echarts.init($("#echarts-pie-chart-pro")[0]).setOption(OptionPie = {
+                            title: {
+                                textStyle: { color: '#ffffff' }
+                            },
                             tooltip: {
                                 trigger: 'item',
                                 formatter: "{a} <br/>{b}: {c} ({d}%)"
@@ -89,7 +95,8 @@
                                     data: result.data.OutSideData
                                 },
                             ],
-                            backgroundColor: 'rgba(255,255,255,0)'
+                            backgroundColor: 'rgba(255,255,255,0)',
+                            color: ["#fc97af", "#87f7cf", '#f7f494', '#72ccff', '#f7c5a0', '#d4a4eb', '#d2f5a6', '#76f2f2']
                         });
                     }
                 });
@@ -109,15 +116,19 @@
                                 trigger: 'item',
                                 formatter: '{b}<br/>{c} (家企业)'
                             },
-                            visualMap: {
-                                min: 1,
-                                max: 10000,
-                                text: ['High', 'Low'],
-                                realtime: false,
-                                calculable: true,
-                                inRange: {
-                                    color: ['lightskyblue', 'yellow', 'orangered']
-                                }
+                            dataRange: {
+                                x: 'left',
+                                y: 'bottom',
+                                splitList: [
+                                    { start: 10000 },
+                                    { start: 5000,end:10000 },
+                                    { start: 3000,end:5000 },
+                                    { start: 1000, end: 3000 },
+                                    { start: 500, end: 1000 },
+                                    { start: 100, end: 500 },
+                                    { start: 1, end: 100 },
+                                ],
+                                color: ['#fb2a00', '#ff9900', '#67ff00', '#00f5e1', '#0067f5', '#7c00f5', '#4b2b5a','#000000']
                             },
                             series: [
                                 {
@@ -132,13 +143,9 @@
                                 }
                             ]
                         }
-                        $.getJSON("https://geo.datav.aliyun.com/areas/bound/" + result.data.City + "00_full.json", function (res) {
-                            var de = res;
-                            debugger;
-                        });
                         $.getJSON("/CityMap/" + result.data.City + "00.json", function (res) {
                             echarts.registerMap(result.data.CityName, res);
-                            echarts.init($("#echarts-map-chart")[0], "dark").setOption(OptionMap);
+                            echarts.init($("#echarts-map-chart")[0]).setOption(OptionMap);
                         });
                         var Names = [];
                         var Counts = [];
@@ -146,7 +153,7 @@
                             Names.push(result.data.DataList[i].name);
                             Counts.push(result.data.DataList[i].value);
                         }
-                        echarts.init($("#echarts-pie-chart-Lin")[0], "dark").setOption(OptionPie = {
+                        echarts.init($("#echarts-pie-chart-Lin")[0]).setOption(OptionPie = {
                             title: {
                                 text: '入住企业总量排行',
                             },
@@ -190,11 +197,35 @@
                                 type: 'bar',
                                 data: Counts
                             }],
-                            backgroundColor: 'rgba(7,31,65,0)'
+                            backgroundColor: 'rgba(7,31,65,0)',
+                            color: ["#fc97af", "#87f7cf", '#f7f494', '#72ccff', '#f7c5a0', '#d4a4eb', '#d2f5a6', '#76f2f2']
                         });
                     }
                 });
-
+                //投诉率
+                controller.ajax({
+                    url: "GovtWeb/GetComplainCount",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        OptionGauge = {
+                            tooltip: {
+                                formatter: "{a} <br/>{b} : {c}%"
+                            },
+                            series: [
+                                {
+                                    name: '投诉率',
+                                    type: 'gauge',
+                                    detail: { formatter: '{value}%' },
+                                    data: result.data
+                                }
+                            ]
+                        };
+                        echarts.init($("#echarts-gauge-chart")[0]).setOption(OptionGauge);
+                    }
+                });
+               
 
             },
             InitEvents: function () {
@@ -222,5 +253,14 @@
         <!--地图-->
         <div class="col-sm-6" style="margin-top:10%;">
             <div class="echarts" id="echarts-map-chart"></div>
+        </div>
+        <!--投诉-->
+        <div class="col-sm-6">
+            <div class="row">
+                <div class="col-sm-12">
+                    <label class="label label-info">投诉率统计</label>
+                    <div class="echarts" id="echarts-gauge-chart" style="height:500px;"></div>
+                </div>
+            </div>
         </div>
     </div>

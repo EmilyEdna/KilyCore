@@ -66,5 +66,9 @@ namespace KilyCore.DataEntity.RequestMapper.Govt
         /// 所属区域
         /// </summary>
         public string TypePath{ get;set;}
+        /// <summary>
+        /// 验证码
+        /// </summary>
+        public string Code { get; set; }
     }
 }

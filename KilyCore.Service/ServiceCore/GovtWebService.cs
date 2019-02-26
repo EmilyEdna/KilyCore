@@ -1742,7 +1742,8 @@ namespace KilyCore.Service.ServiceCore
                 ComplainUserPhone = t.ComplainUserPhone,
                 ProductName = t.ProductName,
                 ComplainUser = t.ComplainUser,
-                HandlerContent = t.HandlerContent
+                HandlerContent = t.HandlerContent,
+                SendStatus=t.IsDelete==true?"已推送":"待推送"
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -1775,6 +1776,7 @@ namespace KilyCore.Service.ServiceCore
         public string ReportComplain(Guid Id)
         {
             GovtComplain complain = Kily.Set<GovtComplain>().Where(t => t.Id == Id).FirstOrDefault();
+            Delete<GovtComplain>(t => t.Id == Id);
             SystemMessage message = new SystemMessage
             {
                 ComplainId = complain.Id,

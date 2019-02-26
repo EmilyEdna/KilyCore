@@ -62,5 +62,9 @@ namespace KilyCore.DataEntity.ResponseMapper.Govt
         /// 状态
         /// </summary>
         public string Status { get; set; }
+        /// <summary>
+        /// 推送状态
+        /// </summary>
+        public string SendStatus { get; set; }
     }
 }

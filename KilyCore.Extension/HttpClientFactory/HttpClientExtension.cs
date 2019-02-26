@@ -28,17 +28,6 @@ namespace KilyCore.Extension.HttpClientFactory
     /// </summary>
     public class HttpClientExtension
     {
-        // 定义一个标识确保线程同步
-        private static readonly object locker = new object();
-        private static HttpClient Client;
-        public static HttpClient CreateInstance()
-        {
-            if (Client == null)
-                lock (locker)
-                    if (Client == null)
-                        Client = new HttpClient();
-            return Client;
-        }
         /// <summary>
         /// 将数据制作表单数据
         /// </summary>
@@ -75,30 +64,32 @@ namespace KilyCore.Extension.HttpClientFactory
         /// <returns></returns>
         public static async Task<String> HttpPostAsync(string url, string data, IList<KeyValuePair<String, String>> datas = null, Dictionary<string, string> headers = null, string contentType = null, int timeout = 0, Encoding encoding = null)
         {
-            Client = Client ?? CreateInstance();
-            if (headers != null)
-                foreach (KeyValuePair<string, string> header in headers)
+            using (HttpClient Client = new HttpClient())
+            {
+                if (headers != null)
+                    foreach (KeyValuePair<string, string> header in headers)
+                    {
+                        Client.DefaultRequestHeaders.Add(header.Key, header.Value);
+                    }
+                if (timeout > 0)
+                    Client.Timeout = new TimeSpan(0, 0, timeout);
+                HttpContent content = null;
+                if (datas != null)
                 {
-                    Client.DefaultRequestHeaders.Add(header.Key, header.Value);
+                    content = new FormUrlEncodedContent(datas);
+                    contentType = "application/x-www-form-urlencoded";
                 }
-            if (timeout > 0)
-                Client.Timeout = new TimeSpan(0, 0, timeout);
-            HttpContent content = null;
-            if (datas != null)
-            {
-                content = new FormUrlEncodedContent(datas);
-                contentType = "application/x-www-form-urlencoded";
+                else
+                {
+                    content = new StringContent(data ?? "", encoding ?? Encoding.UTF8);
+                    contentType = "application/json";
+                }
+                if (contentType != null)
+                    content.Headers.ContentType = new MediaTypeHeaderValue(contentType);
+                HttpResponseMessage responseMessage = await Client.PostAsync(url, content);
+                Byte[] resultBytes = await responseMessage.Content.ReadAsByteArrayAsync();
+                return Encoding.UTF8.GetString(resultBytes);
             }
-            else
-            {
-                content = new StringContent(data ?? "", encoding ?? Encoding.UTF8);
-                contentType = "application/json";
-            }
-            if (contentType != null)
-                content.Headers.ContentType = new MediaTypeHeaderValue(contentType);
-            HttpResponseMessage responseMessage = await Client.PostAsync(url, content);
-            Byte[] resultBytes = await responseMessage.Content.ReadAsByteArrayAsync();
-            return Encoding.UTF8.GetString(resultBytes);
         }
         /// <summary>
         /// Get异步请求
@@ -109,16 +100,18 @@ namespace KilyCore.Extension.HttpClientFactory
         /// <returns></returns>
         public static async Task<String> HttpGetAsync(string url, Dictionary<string, string> headers = null, int timeout = 0)
         {
-            Client = Client ?? CreateInstance();
-            if (headers != null)
-                foreach (KeyValuePair<string, string> header in headers)
-                {
-                    Client.DefaultRequestHeaders.Add(header.Key, header.Value);
-                }
-            if (timeout > 0)
-                Client.Timeout = new TimeSpan(0, 0, timeout);
-            Byte[] resultBytes = await Client.GetByteArrayAsync(url);
-            return Encoding.Default.GetString(resultBytes);
+            using (HttpClient Client = new HttpClient())
+            {
+                if (headers != null)
+                    foreach (KeyValuePair<string, string> header in headers)
+                    {
+                        Client.DefaultRequestHeaders.Add(header.Key, header.Value);
+                    }
+                if (timeout > 0)
+                    Client.Timeout = new TimeSpan(0, 0, timeout);
+                Byte[] resultBytes = await Client.GetByteArrayAsync(url);
+                return Encoding.Default.GetString(resultBytes);
+            }
         }
     }
 }

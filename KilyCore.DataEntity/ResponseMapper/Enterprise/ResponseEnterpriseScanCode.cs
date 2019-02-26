@@ -123,6 +123,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
     {
         public string 成长档案质检报告 { get; set; }
         public string 批次编号 { get; set; }
+        public DateTime? 收获时间 { get; set; }
     }
     public class ResponseEnterpriseScanCodeBaseInfos
     {

@@ -660,6 +660,14 @@ namespace KilyCore.Service.ServiceCore
             SystemStayContract contract = Param.MapToEntity<SystemStayContract>();
             contract.EnterpriseOrMerchant = 2;
             RepastInfo info = Kily.Set<RepastInfo>().Where(t => t.Id == contract.CompanyId).FirstOrDefault();
+            var Demo = Kily.Set<SystemStayContract>().Where(t => t.CompanyId == info.Id).Where(t => t.EnterpriseOrMerchant == 2).FirstOrDefault();
+            if (Demo != null)
+                return new ResponseStayContract()
+                {
+                    Id = contract.Id,
+                    VersionType = Param.VersionType,
+                    PayInfoMsg = "请勿重复提交合同"
+                };
             info.IsPayContract = true;
             if (Param.VersionType == SystemVersionEnum.Test)
             {

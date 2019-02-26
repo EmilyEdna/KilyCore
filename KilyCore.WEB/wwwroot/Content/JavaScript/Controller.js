@@ -158,31 +158,31 @@ controller.SetCtrlValue = function (element, option) {
         for (var i = 0; i < node.length; i++) {
             var type = $(node[i]).attr("type");
             var value = option[key];
-            switch (type) {
-                case "checkbox":
-                    if (value == 1)
-                        $(node[i]).prop("checked", true);
-                    else
-                        $(node[i]).prop("checked", false);
-                    break;
-                case "select":
-                    $(node[i]).find("option[value='" + value + "']").attr("selected", true);
-                    break;
-                case "image":
-                    if (value != null) {
-                        if (value.indexOf(",") >= 0)
-                            $(node[i]).attr("src", value.split(",")[0]);
-                        else
-                            $(node[i]).attr("src", value);
-                    }
-                    break;
-                case "radio":
-                    if ($(node[i]).val() == value)
-                        $(node[i]).attr("checked", "true");
-                default:
-                    $(node[i]).val(value);
-                    break;
+            if (type == "checkbox") {
+                if (value == 1)
+                    $(node[i]).prop("checked", true);
+                else
+                    $(node[i]).prop("checked", false);
+            } else if (type == "select") {
+                $(node[i]).find("option[value='" + value + "']").attr("selected", true);
             }
+            else if (type == "image") {
+                if (value != null) {
+                    if (value.indexOf(",") >= 0)
+                        $(node[i]).attr("src", value.split(",")[0]);
+                    else
+                        $(node[i]).attr("src", value);
+                }
+            }
+            else if (type == "radio") {
+                if ($(node[i]).val() == value)
+                    $(node[i]).attr("checked", "true");
+            } else if (type == "text") {
+                $(node[i]).val(value);
+            } else if (type == "hidden") {
+                $(node[i]).val(value);
+            }
+
         }
     }
 }
