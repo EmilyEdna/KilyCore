@@ -105,6 +105,7 @@
                 },
                 TableFormatter: function (val, row, index) {
                     var action = [];
+                    //入库
                     if (row.InStockNum != undefined) {
                         if (row.CheckGoodsId === '00000000-0000-0000-0000-000000000000')
                             action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>添加产品质检</button>');
@@ -118,6 +119,7 @@
                         if (!row.IsBindBoxCode)
                             action.push('<button class="btn btn-sm btn-primary pack"><i class="fa fa-pencil-square-o"></i>装箱</button>');
                     }
+                    //出库
                     if (row.InStockNum == undefined)
                     {
                         if (row.BoxCount == null)

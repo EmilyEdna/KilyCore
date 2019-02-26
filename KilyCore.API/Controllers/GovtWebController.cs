@@ -75,7 +75,8 @@ namespace KilyCore.API.Controllers
                     else
                         return ObjectResultEx.Instance(null, -1, "登录失败或账户冻结", HttpCode.NoAuth);
                 }
-                else {
+                else
+                {
                     if (GovtAdmin != null)
                     {
                         CookieInfo cookie = new CookieInfo();
@@ -648,7 +649,7 @@ namespace KilyCore.API.Controllers
         [HttpPost("GetTemplateContentList")]
         public ObjectResultEx GetTemplateContentList(SimpleParam<String> Key, SimpleParam<String> Param)
         {
-            return ObjectResultEx.Instance(GovtWebService.GetTemplateContentList(Key.Id,Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(GovtWebService.GetTemplateContentList(Key.Id, Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 自查模板分页
@@ -830,7 +831,7 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx EditComplain(RequestGovtComplain Param)
         {
             var SessionCode = HttpContext.Session.GetSession<String>("PhoneCode");
-            if(SessionCode.Equals(Param.Code))
+            if (SessionCode.Equals(Param.Code))
                 return ObjectResultEx.Instance(GovtWebService.EditComplain(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
             else
                 return ObjectResultEx.Instance("验证码不正确!", 1, RetrunMessge.SUCCESS, HttpCode.Success);
@@ -886,6 +887,15 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetComplainCount()
         {
             return ObjectResultEx.Instance(GovtWebService.GetComplainCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 回去反馈率
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetComplainHandler")]
+        public ObjectResultEx GetComplainHandler()
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetComplainHandler(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 获取入驻的企业地图

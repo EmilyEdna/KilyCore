@@ -2828,6 +2828,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetComplainHandler">
+            <summary>
+            回去反馈率
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:KilyCore.API.Controllers.GovtWebController.GetAllCityMerchantCount">
             <summary>
             获取入驻的企业地图

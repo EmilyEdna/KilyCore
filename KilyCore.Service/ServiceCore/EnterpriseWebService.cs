@@ -2480,9 +2480,14 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseEnterpriseBoxing> GetBoxPage(PageParamList<RequestEnterpriseBoxing> pageParam)
         {
+           IQueryable<EnterpriseBoxing> queryable = Kily.Set<EnterpriseBoxing>().Where(t => t.IsDelete == false);
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             Int64 Star = Convert.ToInt64(pageParam.QueryParam.StarCode.Split("B")[1]);
             Int64 End = Convert.ToInt64(pageParam.QueryParam.EndCode.Split("B")[1]);
-            var data = Kily.Set<EnterpriseBoxing>().Where(t => t.BoxCodeSort >= Star && t.BoxCodeSort <= End).Select(t => new ResponseEnterpriseBoxing
+            var data = queryable.Where(t => t.BoxCodeSort >= Star && t.BoxCodeSort <= End).Select(t => new ResponseEnterpriseBoxing
             {
                 Id = t.Id,
                 BoxCode = t.BoxCode,
@@ -3482,13 +3487,60 @@ namespace KilyCore.Service.ServiceCore
             EnterpriseBoxing Box = Param.MapToEntity<EnterpriseBoxing>();
             EnterpriseGoodsStock Stock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.GoodsBatchNo == Param.StockBatchNo).AsNoTracking().FirstOrDefault();
             EnterpriseGoodsStockAttach StockAttach = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.GoodsBatchNo == Param.StockBatchNo).AsNoTracking().FirstOrDefault();
+            var TotalSum = Kily.Set<EnterpriseBoxing>().Where(t => t.StockBatchNo == Param.StockBatchNo).Sum(t => Convert.ToInt32(t.BoxCount));
             if (Stock != null)
             {
-                Stock.IsBindBoxCode = true;
-                UpdateField(Stock, "IsBindBoxCode");
+                var Tag = Kily.Set<EnterpriseTagAttach>().Where(t => t.StockNo == Param.StockBatchNo).AsNoTracking().ToList();
+                if (Num.Any(t => t.Contains("W") || t.Contains("P")))
+                    foreach (var item in Num)
+                    {
+                        int Temp = 0;
+                        string Host = string.Empty;
+                        if (item.Contains("W"))
+                        {
+                            Temp = Convert.ToInt32(item.Split("W")[1].Substring(0, 12));
+                            Host = item.Split("W")[0] + "W";
+                        }
+                        else
+                        {
+                            Temp = Convert.ToInt32(item.Split("P")[1].Substring(0, 12));
+                            Host = item.Split("P")[0] + "P";
+                        }
+                        var TempEntity = Tag.Where(t => t.StarSerialNo <= Temp || t.EndSerialNo >= Temp).FirstOrDefault();
+                        if (TempEntity == null)
+                            return $"{Host+Temp}溯源号段不在此批次中";
+                    }
+                if (TotalSum + Num.Count > Stock.InStockNum)
+                    return "超出库存!";
+                else if (TotalSum + Num.Count == Stock.InStockNum)
+                {
+                    Stock.IsBindBoxCode = true;
+                    UpdateField(Stock, "IsBindBoxCode");
+                }
             }
             else
             {
+                var InStockNo = Kily.Set<EnterpriseGoodsStock>().Where(t => t.Id == StockAttach.StockId).Select(t => t.GoodsBatchNo).AsNoTracking().FirstOrDefault();
+                var Tag = Kily.Set<EnterpriseTagAttach>().Where(t => t.StockNo == Param.StockBatchNo).AsNoTracking().ToList();
+                if (Num.Any(t => t.Contains("W") || t.Contains("P")))
+                    foreach (var item in Num)
+                    {
+                        int Temp = 0;
+                        string Host = string.Empty;
+                        if (item.Contains("W"))
+                        {
+                            Temp = Convert.ToInt32(item.Split("W")[1].Substring(0, 12));
+                            Host = item.Split("W")[0] + "W";
+                        }
+                        else
+                        {
+                            Temp = Convert.ToInt32(item.Split("P")[1].Substring(0, 12));
+                            Host = item.Split("P")[0] + "P";
+                        }
+                        var TempEntity = Tag.Where(t => t.StarSerialNo <= Temp || t.EndSerialNo >= Temp).FirstOrDefault();
+                        if (TempEntity == null)
+                            return $"{Host + Temp}溯源号段不在此批次中";
+                    }
                 StockAttach.BoxCodeNo = Param.BoxCode;
                 StockAttach.BoxCount = Param.BoxCount;
                 List<String> Field = new List<String> { "BoxCodeNo", "BoxCount" };

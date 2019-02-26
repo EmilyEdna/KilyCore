@@ -1916,8 +1916,8 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public Object GetComplainCount()
         {
-            IQueryable<GovtComplain> queryable = Kily.Set<GovtComplain>().Where(t => t.IsDelete == false).AsNoTracking();
-            IQueryable<GovtComplain> queryables = Kily.Set<GovtComplain>().Where(t => t.IsDelete == false).AsNoTracking();
+            IQueryable<GovtComplain> queryable = Kily.Set<GovtComplain>().AsNoTracking();
+            IQueryable<GovtComplain> queryables = Kily.Set<GovtComplain>().AsNoTracking();
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
             IList<string> Areas = GetDepartArea();
@@ -1935,9 +1935,37 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
             var total = queryables.Select(t => t.Id).Count() == 0 ? 1.0 : Convert.ToDouble(queryables.Select(t => t.Id).Count());
             var Count = (queryable.Select(t => t.Id).Count() / total) * 100;
-            Object data = new { value = Count, name = "投诉率" };
-            List<Object> Lo = new List<Object> { data };
-            return Lo;
+            Object data = new { value = Math.Round(Count, 2), name = "投诉率" };
+            List<Object> Complain = new List<Object> { data };
+            return Complain;
+        }
+        /// <summary>
+        /// 反馈率
+        /// </summary>
+        /// <returns></returns>
+        public Object GetComplainHandler() {
+            IQueryable<GovtComplain> queryable = Kily.Set<GovtComplain>().Where(t=>string.IsNullOrEmpty(t.HandlerContent)==false).AsNoTracking();
+            IQueryable<GovtComplain> queryables = Kily.Set<GovtComplain>().AsNoTracking();
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
+            {
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        queryable = queryable.Where(t => t.TypePath.Contains(item));
+                    }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+            }
+            else
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            var total = queryables.Select(t => t.Id).Count() == 0 ? 1.0 : Convert.ToDouble(queryables.Select(t => t.Id).Count());
+            var Count = (queryable.Select(t => t.Id).Count() / total) * 100;
+            Object data = new { value = Math.Round(Count,2), name = "反馈率" };
+            List<Object> Complain = new List<Object> { data };
+            return Complain;
         }
         /// <summary>
         /// 获取入驻的企业地图
