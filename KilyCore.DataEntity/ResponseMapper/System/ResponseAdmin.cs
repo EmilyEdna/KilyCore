@@ -21,7 +21,8 @@ namespace KilyCore.DataEntity.ResponseMapper.System
         public string TableName { get; set; }
         public bool OpenNet { get; set; }
         public string Chapter { get; set; }
-        public  string Address { get; set; }
+        public string Address { get; set; }
+        public string AccountStatus { get; set; }
         public string CommunityCode { get; set; }
         /// <summary>
         /// 所属区域
@@ -64,5 +65,6 @@ namespace KilyCore.DataEntity.ResponseMapper.System
                 return !string.IsNullOrEmpty(TypePath) ? (TypePath.Split(',').Length >= 4 ? (TypePath.Split(',')[3]) : null) : null;
             }
         }
+        public bool? IsUse { get; set; }
     }
 }

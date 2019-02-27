@@ -35,7 +35,7 @@ namespace KilyCore.DataEntity.RequestMapper.System
         /// <summary>
         /// 审核类型
         /// </summary>
-        public  AuditEnum AuditType { get; set; }
+        public  AuditEnum? AuditType { get; set; }
         /// <summary>
         /// 合同年限
         /// </summary>

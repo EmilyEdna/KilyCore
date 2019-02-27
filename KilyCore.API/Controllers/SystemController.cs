@@ -278,6 +278,16 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(SystemService.RemoveAdmin(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
+        /// 启用账户
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("OpenAdmin")]
+        public ObjectResultEx OpenAdmin(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(SystemService.OpenAdmin(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 获取用户详情
         /// </summary>
         /// <param name="Param"></param>

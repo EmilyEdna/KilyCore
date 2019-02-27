@@ -2830,7 +2830,7 @@
         </member>
         <member name="M:KilyCore.API.Controllers.GovtWebController.GetComplainHandler">
             <summary>
-            回去反馈率
+            获取反馈率
             </summary>
             <returns></returns>
         </member>
@@ -2843,6 +2843,12 @@
         <member name="M:KilyCore.API.Controllers.GovtWebController.GetIndexStatistics">
             <summary>
             获取区域信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetComplainLine">
+            <summary>
+            投诉折线图
             </summary>
             <returns></returns>
         </member>

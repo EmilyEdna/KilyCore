@@ -52,6 +52,7 @@ namespace KilyCore.Service.IServiceCore
         String EditAdmin(RequestAdmin Param);
         PagedResult<ResponseAdmin> GetAdminPage(PageParamList<RequestAdmin> pageParam);
         String RemoveAdmin(Guid Id);
+        String OpenAdmin(Guid Id);
         ResponseAdmin GetAdminDetail(Guid Id);
         IList<ResponseAdmin> GetBankInfo();
         String CG(Guid Id, bool Param);

@@ -889,7 +889,7 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(GovtWebService.GetComplainCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
-        /// 回去反馈率
+        /// 获取反馈率
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetComplainHandler")]
@@ -914,6 +914,14 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetIndexStatistics()
         {
             return ObjectResultEx.Instance(GovtWebService.GetIndexStatistics(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 投诉折线图
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetComplainLine")]
+        public ObjectResultEx GetComplainLine() {
+            return ObjectResultEx.Instance(GovtWebService.GetComplainLine(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
 

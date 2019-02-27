@@ -223,6 +223,12 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<GovtInfo> queryable = Kily.Set<GovtInfo>().Where(t => t.IsDelete == false);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.DepartName))
                 queryable = queryable.Where(t => t.DepartName.Contains(pageParam.QueryParam.DepartName));
+            if (UserInfo().AccountType > AccountEnum.Country)
+            {
+                queryable=queryable.Where(t=>t.TypePath.Contains(UserInfo().Province)||
+                    t.TypePath.Contains(UserInfo().City)||
+                    t.TypePath.Contains(UserInfo().Area));
+            }
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseGovtInfo()
             {
                 Id = t.Id,

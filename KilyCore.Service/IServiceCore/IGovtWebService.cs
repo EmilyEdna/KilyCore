@@ -164,6 +164,7 @@ namespace KilyCore.Service.IServiceCore
         Object GetComplainHandler();
         ResponseGovtMap GetAllCityMerchantCount();
         Object GetIndexStatistics();
+        Object GetComplainLine();
         #endregion
 
         #region 责任协议

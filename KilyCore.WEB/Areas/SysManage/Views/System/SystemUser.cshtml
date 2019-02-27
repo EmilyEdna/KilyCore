@@ -61,16 +61,33 @@
                         else
                             action.push('<button class="btn btn-sm btn-primary open"><i class="fa fa-cog"></i>开启网签</button>');
                     }
-                    action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
+                    if (!row.IsDelete)
+                        action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>禁用</button>');
+                    else
+                        action.push('<button class="btn btn-sm btn-primary use"><i class="fa ffa-pencil-square-o"></i>启用</button>');
                     action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
                     "click .del": function (event, val, row, index) {
-                        controller.Confirm("确认删除？", function (bool) {
+                        controller.Confirm("确认禁用？", function (bool) {
                             if (bool) {
                                 controller.ajax({
                                     url: "System/RemoveAdmin",
+                                    data: { Id: row.Id },
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    "click .del": function (event, val, row, index) {
+                        controller.Confirm("确认启用？", function (bool) {
+                            if (bool) {
+                                controller.ajax({
+                                    url: "System/OpenAdmin",
                                     data: { Id: row.Id },
                                     type: 'post',
                                     success: function (result) {
@@ -173,6 +190,7 @@
                                 <th data-field="AccountTypeName" data-halign="center" data-align="center" data-valign="middle">账号类型</th>
                                 <th data-field="Phone" data-halign="center" data-align="center" data-valign="middle">电话</th>
                                 <th data-field="CommunityCode" data-halign="center" data-align="center" data-valign="middle">工商代码</th>
+                                <th data-field="AccountStatus" data-halign="center" data-align="center" data-valign="middle">账号状态</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>

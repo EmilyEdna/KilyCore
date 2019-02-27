@@ -25,6 +25,8 @@
             },
             //事件
             InitEvents: function () {
+                if (SysUserInfo.AccountType > 20)
+                    $("#add").css("display", "none");
                 $("#add").on('click', function () {
                     controller.OpenWindow({
                         title: "新增用户",

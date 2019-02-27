@@ -1743,7 +1743,7 @@ namespace KilyCore.Service.ServiceCore
                 ProductName = t.ProductName,
                 ComplainUser = t.ComplainUser,
                 HandlerContent = t.HandlerContent,
-                SendStatus=t.IsDelete==true?"已推送":"待推送"
+                SendStatus = t.IsDelete == true ? "已推送" : "待推送"
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -1943,8 +1943,9 @@ namespace KilyCore.Service.ServiceCore
         /// 反馈率
         /// </summary>
         /// <returns></returns>
-        public Object GetComplainHandler() {
-            IQueryable<GovtComplain> queryable = Kily.Set<GovtComplain>().Where(t=>string.IsNullOrEmpty(t.HandlerContent)==false).AsNoTracking();
+        public Object GetComplainHandler()
+        {
+            IQueryable<GovtComplain> queryable = Kily.Set<GovtComplain>().Where(t => string.IsNullOrEmpty(t.HandlerContent) == false).AsNoTracking();
             IQueryable<GovtComplain> queryables = Kily.Set<GovtComplain>().AsNoTracking();
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
@@ -1963,7 +1964,7 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
             var total = queryables.Select(t => t.Id).Count() == 0 ? 1.0 : Convert.ToDouble(queryables.Select(t => t.Id).Count());
             var Count = (queryable.Select(t => t.Id).Count() / total) * 100;
-            Object data = new { value = Math.Round(Count,2), name = "反馈率" };
+            Object data = new { value = Math.Round(Count, 2), name = "反馈率" };
             List<Object> Complain = new List<Object> { data };
             return Complain;
         }
@@ -2051,6 +2052,108 @@ namespace KilyCore.Service.ServiceCore
             Object obj = new { Temp, ComCount, SmallComCount, CookCount, RiskCount, PotrolCount, BulletinCount, CompCount };
             return obj;
         }
+        /// <summary>
+        /// 投诉折线图
+        /// </summary>
+        /// <returns></returns>
+        public Object GetComplainLine()
+        {
+            IQueryable<GovtComplain> queryable = Kily.Set<GovtComplain>().AsNoTracking();
+            //分组
+            var ZZ_Com = queryable.Where(t => t.CompanyType.Equals("种植企业")).OrderByDescending(t => t.CreateTime).ToList();
+            var YZ_Com = queryable.Where(t => t.CompanyType.Equals("养殖企业")).OrderByDescending(t => t.CreateTime).ToList();
+            var SC_Com = queryable.Where(t => t.CompanyType.Equals("生产企业")).OrderByDescending(t => t.CreateTime).ToList();
+            var LT_Com = queryable.Where(t => t.CompanyType.Equals("流通企业")).OrderByDescending(t => t.CreateTime).ToList();
+            //时间分组
+            #region 种植
+            //近3天投诉
+            var Z3 = ZZ_Com.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                 .Where(t => DateTime.Now.Day - t.CreateTime.Value.Day <= 3).Count();
+            //近7天投诉
+            var Z7 = ZZ_Com.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Day - t.CreateTime.Value.Day <= 7).Count();
+            //近15天投诉
+            var Z15 = ZZ_Com.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Day - t.CreateTime.Value.Day <= 15).Count();
+            //近30天投诉
+            var Z30 = ZZ_Com.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Month - t.CreateTime.Value.Month <= 1).Count();
+            //近180天投诉
+            var Z180 = ZZ_Com.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Month - t.CreateTime.Value.Month <= 6).Count();
+            //近365天投诉
+            var Z365 = ZZ_Com.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Year - t.CreateTime.Value.Year <= 1).Count();
+            #endregion
+            #region 养殖
+            //近3天投诉
+            var Y3 = YZ_Com.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Day - t.CreateTime.Value.Day <= 3).Count();
+            //近7天投诉
+            var Y7 = YZ_Com.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Day - t.CreateTime.Value.Day <= 7).Count();
+            //近15天投诉
+            var Y15 = YZ_Com.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Day - t.CreateTime.Value.Day <= 15).Count();
+            //近30天投诉
+            var Y30 = YZ_Com.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Month - t.CreateTime.Value.Month <= 1).Count();
+            //近180天投诉
+            var Y180 = YZ_Com.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Month - t.CreateTime.Value.Month <= 6).Count();
+            //近365天投诉
+            var Y365 = YZ_Com.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Year - t.CreateTime.Value.Year <= 1).Count();
+            #endregion
+            #region 生产
+            //近3天投诉
+            var S3 = SC_Com.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Day - t.CreateTime.Value.Day <= 3).Count();
+            //近7天投诉
+            var S7 = SC_Com.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Day - t.CreateTime.Value.Day <= 7).Count();
+            //近15天投诉
+            var S15 = SC_Com.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Day - t.CreateTime.Value.Day <= 15).Count();
+            //近30天投诉
+            var S30 = SC_Com.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Month - t.CreateTime.Value.Month <= 1).Count();
+            //近180天投诉
+            var S180 = SC_Com.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Month - t.CreateTime.Value.Month <= 6).Count();
+            //近365天投诉
+            var S365 = SC_Com.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Year - t.CreateTime.Value.Year <= 1).Count();
+            #endregion
+            #region 流通
+            //近3天投诉
+            var L3 = LT_Com.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Day - t.CreateTime.Value.Day <= 3).Count();
+            //近7天投诉
+            var L7 = LT_Com.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Day - t.CreateTime.Value.Day <= 7).Count();
+            //近15天投诉
+            var L15 = LT_Com.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Day - t.CreateTime.Value.Day <= 15).Count();
+            //近30天投诉
+            var L30 = LT_Com.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Month - t.CreateTime.Value.Month <= 1).Count();
+            //近180天投诉
+            var L180 = LT_Com.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Month - t.CreateTime.Value.Month <= 6).Count();
+            //近365天投诉
+            var L365 = LT_Com.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Year - t.CreateTime.Value.Year <= 1).Count();
+            #endregion
+            List<int> ZCom = new List<int> { Z3, Z7, Z15, Z30, Z180, Z365 };
+            List<int> YCom = new List<int> { Y3, Y7, Y15, Y30, Y180, Y365 };
+            List<int> SCom = new List<int> { S3, S7, S15, S30, S180, S365 };
+            List<int> LCom = new List<int> { L3, L7, L15, L30, L180, L365 };
+            return new { ZCom, YCom, SCom, LCom };
+        }
+
+
+
         #endregion
 
         #region 责任协议

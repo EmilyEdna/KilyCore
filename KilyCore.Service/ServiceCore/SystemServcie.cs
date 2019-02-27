@@ -275,7 +275,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseAdmin> GetAdminPage(PageParamList<RequestAdmin> pageParam)
         {
-            IQueryable<SystemAdmin> queryable = Kily.Set<SystemAdmin>().Where(t => t.IsDelete == false).AsNoTracking().AsQueryable();
+            IQueryable<SystemAdmin> queryable = Kily.Set<SystemAdmin>().AsNoTracking().AsQueryable();
             if (!string.IsNullOrEmpty(pageParam.QueryParam.TrueName))
                 queryable = queryable.Where(t => t.TrueName.Contains(pageParam.QueryParam.TrueName));
             if (!string.IsNullOrEmpty(pageParam.QueryParam.AreaTree))
@@ -299,7 +299,9 @@ namespace KilyCore.Service.ServiceCore
                 AccountTypeName = AttrExtension.GetSingleDescription<AccountEnum, DescriptionAttribute>(t.AccountType),
                 Phone = t.Phone,
                 OpenNet = t.OpenNet,
-                CommunityCode = t.CommunityCode
+                CommunityCode = t.CommunityCode,
+                AccountStatus=t.IsDelete.Value?"已禁用":"已启用",
+                IsUse=t.IsDelete
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -314,6 +316,17 @@ namespace KilyCore.Service.ServiceCore
                 return ServiceMessage.REMOVESUCCESS;
             else
                 return ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 启用账户
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string OpenAdmin(Guid Id)
+        {
+            SystemAdmin Admin = Kily.Set<SystemAdmin>().Where(t => t.Id == Id).AsNoTracking().FirstOrDefault();
+            Admin.IsDelete = false;
+            return UpdateField(Admin, "IsDelete") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         /// <summary>
         /// 获取用户详情
@@ -1153,6 +1166,8 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<SystemStayContract> queryable = Kily.Set<SystemStayContract>().Where(t => t.EnterpriseOrMerchant == pageParam.QueryParam.EnterpriseOrMerchant).Where(t => t.IsDelete == false);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.CompanyName))
                 queryable = queryable.Where(t => t.CompanyName.Contains(pageParam.QueryParam.CompanyName));
+            if(pageParam.QueryParam.AuditType.HasValue)
+                queryable = queryable.Where(t => t.AuditType== pageParam.QueryParam.AuditType);
             if (UserInfo().AccountType == AccountEnum.Province)
                 queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().Province));
             if (UserInfo().AccountType == AccountEnum.City)

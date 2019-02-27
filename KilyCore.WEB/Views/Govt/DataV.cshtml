@@ -1,18 +1,18 @@
 ﻿
 @{
-    ViewData["Title"] = "DataV";
+    ViewData["Title"] = "大屏数据";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section css{
-<style>
-    #cbody {
-        background: url('/statichtml/staticimg/backdatav.png') no-repeat;
-        background-size: 100% 100%;
-        overflow: hidden;
-        position: relative;
-        height: 100%;
-        width: 100%;
-    }
+    <style>
+        #cbody {
+            background: url('/statichtml/staticimg/backdatav.png') no-repeat;
+            background-size: 100% 100%;
+            overflow: hidden;
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
 
         .width-33 {
             width: 33%;
@@ -20,36 +20,52 @@
             float: left;
             padding: 0 4%;
         }
-        #complain .echarts{
-            height: 500px;
+
+        #complain .echarts {
+            height: 420px;
         }
-        #map .echarts{
+
+        #map .echarts {
             height: 540px;
         }
+
+        #rank .echarts {
+            height: 400px;
+        }
+
+        #replay .echarts {
+            height: 350px;
+        }
+
         #company {
             margin-top: 5%;
         }
+
         #product {
-            margin-top: 4%;
+            margin-top: 2.5%
         }
+
         #replay {
             margin-top: 5%;
             padding-left: 5%;
         }
+
         #rank {
-            margin-top: 6%;
+            margin-top: -1%;
+            padding-left: 1%;
         }
+
         #map {
-            margin-top: 0%;
+            margin-top: -8%;
             padding-left: 4%;
             padding-right: 0;
         }
+
         #complain {
-            margin-top: 2%;
+            margin-top: -1%;
             padding-left: 6%;
         }
-        
-</style>
+    </style>
 }
 @section script{
     <script>
@@ -78,7 +94,7 @@
                                 orient: 'vertical',
                                 x: 'left',
                                 data: result.data.DataTitle,
-                                 textStyle: { color: "#ffffff" }
+                                textStyle: { color: "#ffffff" }
                             },
                             series: [
                                 {
@@ -116,11 +132,12 @@
                                 formatter: "{a} <br/>{b}: {c} ({d}%)"
                             },
                             legend: {
-                                type:'scroll',
+                                type: 'scroll',
                                 orient: 'horizontal',
                                 x: 'left',
                                 data: result.data.DataTitle,
-                                textStyle: {color:"#ffffff"}
+                                top: '10%',
+                                textStyle: { color: "#ffffff" }
                             },
                             series: [
                                 {
@@ -156,8 +173,8 @@
                                 formatter: '{b}<br/>{c} (家企业)'
                             },
                             dataRange: {
-                                x: 'left',
-                                y: 'top',
+                                bottom: 20,
+                                textStyle: { color: "#ffffff" },
                                 splitList: [
                                     { start: 10000 },
                                     { start: 5000, end: 10000 },
@@ -165,9 +182,9 @@
                                     { start: 1000, end: 3000 },
                                     { start: 500, end: 1000 },
                                     { start: 100, end: 500 },
-                                    { start: 1, end: 100 },
+                                    { start: 0, end: 100 },
                                 ],
-                                color: ['#fb2a00', '#ff9900', '#67ff00', '#00f5e1', '#0067f5', '#7c00f5', '#4b2b5a', '#000000']
+                                color: ["#fc97af", "#87f7cf", '#f7f494', '#72ccff', '#f7c5a0', '#d4a4eb', '#d2f5a6', '#76f2f2']
                             },
                             series: [
                                 {
@@ -187,51 +204,39 @@
                             echarts.init($("#echarts-map-chart")[0]).setOption(OptionMap);
                         });
                         var Names = [];
-                        var Counts = [];
+                        var Datas = [];
                         for (var i = 0; i < result.data.DataList.length; i++) {
                             Names.push(result.data.DataList[i].name);
-                            Counts.push(result.data.DataList[i].value);
+                            Datas.push({ "value": result.data.DataList[i].value, "name": result.data.DataList[i].name });
                         }
                         echarts.init($("#echarts-pie-chart-Lin")[0]).setOption(OptionPie = {
                             tooltip: {
-                                trigger: 'axis',
-                                axisPointer: {
-                                    type: 'shadow'
-                                }
+                                trigger: 'item',
+                                formatter: "{a} <br />{b} : {c} ({d}%)"
                             },
                             legend: {
-                                data: ['企业入住数']
-                            },
-                            grid: {
-                                left: '3%',
-                                right: '4%',
-                                bottom: '3%',
-                                containLabel: true
-                            },
-                            xAxis: {
-                                type: 'value',
-                                boundaryGap: [0, 0.01],
-                                axisLine: {
-                                    lineStyle: {
-                                        color: '#000',
-                                        width: 2,
-                                    }
-                                }
-                            },
-                            yAxis: {
-                                type: 'category',
+                                type: 'scroll',
+                                orient: 'vertical',
+                                right: 10,
+                                top: 0,
+                                bottom: 20,
                                 data: Names,
-                                axisLine: {
-                                    lineStyle: {
-                                        color: '#000',
-                                        width: 2,
-                                    }
-                                }
+                                textStyle: { color: "#ffffff" }
                             },
                             series: [{
-                                name: '企业数量',
-                                type: 'bar',
-                                data: Counts
+                                name: "排名统计",
+                                type: 'pie',
+                                radius: '65%',
+                                center: ['50%', '50%'],
+                                selectedMode: 'single',
+                                data: Datas,
+                                itemStyle: {
+                                    emphasis: {
+                                        shadowBlur: 10,
+                                        shadowOffsetX: 0,
+                                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                    }
+                                }
                             }],
                             backgroundColor: 'rgba(7,31,65,0)',
                             color: ["#fc97af", "#87f7cf", '#f7f494', '#72ccff', '#f7c5a0', '#d4a4eb', '#d2f5a6', '#76f2f2']
@@ -240,25 +245,87 @@
                 });
                 //投诉率
                 controller.ajax({
-                    url: "GovtWeb/GetComplainCount",
+                    url: "GovtWeb/GetComplainLine",
                     data: {},
                     type: "post",
                     async: false,
                     success: function (result) {
-                        OptionGauge = {
+                        OptionLine = {
                             tooltip: {
-                                formatter: "{a} <br/>{b} : {c}%"
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'cross',
+                                    label: {
+                                        backgroundColor: '#6a7985'
+                                    }
+                                }
                             },
+                            legend: {
+                                textStyle: { color: "#ffffff" },
+                                data: ['种植企业', '养殖企业', '生产企业', '流通企业']
+                            },
+                            grid: {
+                                left: '3%',
+                                right: '4%',
+                                bottom: '3%',
+                                containLabel: true
+                            },
+                            xAxis: [
+                                {
+                                    type: 'category',
+                                    boundaryGap: false,
+                                    data: ['近3天', '', '近7天', '近15天', '近30天', '近180天', '近365天'],
+                                    axisLine: {
+                                        lineStyle: {
+                                            color: '#fff'
+                                        }
+                                    }
+                                }
+                            ],
+                            yAxis: [
+                                {
+                                    type: 'value',
+                                    axisLine: {
+                                        lineStyle: {
+                                            color: '#fff'
+                                        }
+                                    }
+                                }
+                            ],
                             series: [
                                 {
-                                    name: '投诉率',
-                                    type: 'gauge',
-                                    detail: { formatter: '{value}%' },
-                                    data: result.data
+                                    name: '种植企业',
+                                    type: 'line',
+                                    stack: '总量',
+                                    areaStyle: {},
+                                    data: result.data.ZCom
+                                },
+                                {
+                                    name: '养殖企业',
+                                    type: 'line',
+                                    stack: '总量',
+                                    areaStyle: {},
+                                    data: result.data.YCom
+                                },
+                                {
+                                    name: '生产企业',
+                                    type: 'line',
+                                    stack: '总量',
+                                    areaStyle: {},
+                                    data: result.data.SCom
+                                },
+                                {
+                                    name: '流通企业',
+                                    type: 'line',
+                                    stack: '总量',
+                                    areaStyle: { normal: {} },
+                                    data: result.data.LCom
                                 }
-                            ]
+                            ],
+                            backgroundColor: 'rgba(7,31,65,0)',
+                            color: ["#fc97af", "#87f7cf", '#f7f494', '#72ccff', '#f7c5a0', '#d4a4eb', '#d2f5a6', '#76f2f2']
                         };
-                        echarts.init($("#echarts-gauge-chart")[0]).setOption(OptionGauge);
+                        echarts.init($("#echarts-Line-chart")[0]).setOption(OptionLine);
                     }
                 });
                 //反馈率
@@ -276,8 +343,13 @@
                                 {
                                     name: '处理率',
                                     type: 'gauge',
+                                    splitNumber: 10,
                                     detail: { formatter: '{value}%' },
-                                    data: result.data
+                                    data: result.data,
+                                    title: {
+                                        color: 'fff',
+                                        fontSize: '12px'
+                                    }
                                 }
                             ]
                         };
@@ -286,7 +358,25 @@
                 });
             },
             InitEvents: function () {
+                //恢复高度
+                $(window).resize(function (e) {
+                    if ($(window).height() < 900) {
 
+                        $("#map").css("margin-top", "-10%");
+                    }
+                    window.setTimeout(function () {
+                        window.location.reload();
+                        var viewHeight = $(window).height();
+                        var bodyHeight = $("body").height();
+                        $("#company .echarts").css("height", viewHeight / 3);
+                        $("#product .echarts").css("height", viewHeight / 4);
+                        $("#replay .echarts").css("height", viewHeight / 3);
+                        $("#rank .echarts").css("height", (viewHeight / 3) * 2);
+                        $("#map .echarts").css("height", viewHeight / 2);
+                        $("#complain .echarts").css("height", viewHeight / 2);
+                    }, 200);
+                    e.stopPropagation();
+                });
             }
         }
         $(document).ready(function () {
@@ -295,8 +385,9 @@
     </script>
 }
 <div id="cbody" style="height:100%;width:100%">
+
     <!--企业统计-->
-    <div class="col-sm-4 width-33"id="company">
+    <div class="col-sm-4 width-33" id="company">
         <div class="echarts" id="echarts-pie-chart-com"></div>
     </div>
     <!--产品统计-->
@@ -317,7 +408,7 @@
     </div>
     <!--投诉-->
     <div class="col-sm-4  width-33" id="complain">
-        <div class="echarts" id="echarts-gauge-chart"></div>
+        <div class="echarts" id="echarts-Line-chart"></div>
     </div>
 
 </div>
