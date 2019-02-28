@@ -4029,6 +4029,13 @@
             <param name="Param"></param>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.OpenAdmin(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            启用账户
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
         <member name="M:KilyCore.API.Controllers.SystemController.GetAdminDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
             <summary>
             获取用户详情

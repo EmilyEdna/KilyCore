@@ -300,8 +300,8 @@ namespace KilyCore.Service.ServiceCore
                 Phone = t.Phone,
                 OpenNet = t.OpenNet,
                 CommunityCode = t.CommunityCode,
-                AccountStatus=t.IsDelete.Value?"已禁用":"已启用",
-                IsUse=t.IsDelete
+                AccountStatus = t.IsDelete.Value ? "已禁用" : "已启用",
+                IsUse = t.IsDelete
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -1166,8 +1166,8 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<SystemStayContract> queryable = Kily.Set<SystemStayContract>().Where(t => t.EnterpriseOrMerchant == pageParam.QueryParam.EnterpriseOrMerchant).Where(t => t.IsDelete == false);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.CompanyName))
                 queryable = queryable.Where(t => t.CompanyName.Contains(pageParam.QueryParam.CompanyName));
-            if(pageParam.QueryParam.AuditType.HasValue)
-                queryable = queryable.Where(t => t.AuditType== pageParam.QueryParam.AuditType);
+            if (pageParam.QueryParam.AuditType.HasValue)
+                queryable = queryable.Where(t => t.AuditType == pageParam.QueryParam.AuditType);
             if (UserInfo().AccountType == AccountEnum.Province)
                 queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().Province));
             if (UserInfo().AccountType == AccountEnum.City)
@@ -1489,11 +1489,21 @@ namespace KilyCore.Service.ServiceCore
             var ComVein = queryables.Where(t => t.AllotType == 1).Join(InfoTemp, t => t.AcceptUser, x => x.Id.ToString(), (t, x) => new { t, x });
             var AdmVein = queryables.Where(t => t.AllotType == 2).Join(AdminTemp, t => t.AcceptUser, x => x.Id.ToString(), (t, x) => new { t, x });
             IList<ResponseSystemCodeCount> CodeCountList = new List<ResponseSystemCodeCount>();
-            Kily.Set<SystemProvince>().Where(t => t.IsDelete == false).AsNoTracking().ToList().ForEach(o =>
+            List<TmepArea> areas = null;
+            if (UserInfo().AccountType <= AccountEnum.Country)
+                areas = Kily.Set<SystemProvince>().Where(t => t.IsDelete == false).AsNoTracking()
+                    .Select(t => new TmepArea() { Id = t.Id.ToString(), Name = t.Name }).ToList();
+            else if (UserInfo().AccountType == AccountEnum.Province)
+                areas = Kily.Set<SystemCity>().Where(t => t.IsDelete == false).AsNoTracking()
+                    .Select(t => new TmepArea() { Id = t.Id.ToString(), Name = t.Name }).ToList();
+            else if (UserInfo().AccountType == AccountEnum.City)
+                areas = Kily.Set<SystemArea>().Where(t => t.IsDelete == false).AsNoTracking()
+                    .Select(t => new TmepArea() { Id = t.Id.ToString(), Name = t.Name }).ToList();
+            areas.ForEach(o =>
             {
-                var Temp = ApplyTag.Where(t => t.x.TypePath.Contains(o.Id.ToString()));
-                var VempCom = ComVein.Where(t => t.x.TypePath.Contains(o.Id.ToString()));
-                var VempAdm = AdmVein.Where(t => t.x.TypePath.Contains(o.Id.ToString()));
+                var Temp = ApplyTag.Where(t => t.x.TypePath.Contains(o.Id));
+                var VempCom = ComVein.Where(t => t.x.TypePath.Contains(o.Id));
+                var VempAdm = AdmVein.Where(t => t.x.TypePath.Contains(o.Id));
                 //历史累计
                 int HistoryThing = Temp.Where(t => t.t.CreateTime < DateTime.Now.AddDays(-DateTime.Now.Day)).Where(t => t.t.TagType == TagEnum.OneThing).Sum(t => Convert.ToInt32(t.t.ApplyNum));
                 int HistoryBrand = Temp.Where(t => t.t.CreateTime < DateTime.Now.AddDays(-DateTime.Now.Day)).Where(t => t.t.TagType == TagEnum.OneBrand).Sum(t => Convert.ToInt32(t.t.ApplyNum));
@@ -1530,11 +1540,21 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<RepastInfo> Merchant = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false);
             IQueryable<CookInfo> Cook = Kily.Set<CookInfo>().Where(t => t.IsDelete == false);
             IList<ResponseSystemCompanyCount> CompanyCountList = new List<ResponseSystemCompanyCount>();
-            Kily.Set<SystemProvince>().Where(t => t.IsDelete == false).AsNoTracking().ToList().ForEach(o =>
+            List<TmepArea> areas = null;
+            if (UserInfo().AccountType <= AccountEnum.Country)
+                areas = Kily.Set<SystemProvince>().Where(t => t.IsDelete == false).AsNoTracking()
+                    .Select(t => new TmepArea() { Id = t.Id.ToString(), Name = t.Name }).ToList();
+            else if (UserInfo().AccountType == AccountEnum.Province)
+                areas = Kily.Set<SystemCity>().Where(t => t.IsDelete == false).AsNoTracking()
+                    .Select(t => new TmepArea() { Id = t.Id.ToString(), Name = t.Name }).ToList();
+            else if (UserInfo().AccountType == AccountEnum.City)
+                areas = Kily.Set<SystemArea>().Where(t => t.IsDelete == false).AsNoTracking()
+                    .Select(t => new TmepArea() { Id = t.Id.ToString(), Name = t.Name }).ToList();
+            areas.ForEach(o =>
             {
-                var ComTemp = Enterprise.Where(t => t.TypePath.Contains(o.Id.ToString()));
-                var MerTemp = Merchant.Where(t => t.TypePath.Contains(o.Id.ToString()));
-                var CookTemp = Cook.Where(t => t.TypePath.Contains(o.Id.ToString()));
+                var ComTemp = Enterprise.Where(t => t.TypePath.Contains(o.Id));
+                var MerTemp = Merchant.Where(t => t.TypePath.Contains(o.Id));
+                var CookTemp = Cook.Where(t => t.TypePath.Contains(o.Id));
                 //历史累计
                 var HistoryPlant = ComTemp.Where(t => t.CreateTime < DateTime.Now.AddDays(-DateTime.Now.Day)).Where(t => t.CompanyType == CompanyEnum.Plant).AsNoTracking().Count();
                 var HistoryCulture = ComTemp.Where(t => t.CreateTime < DateTime.Now.AddDays(-DateTime.Now.Day)).Where(t => t.CompanyType == CompanyEnum.Culture).AsNoTracking().Count();
@@ -1590,9 +1610,19 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseGoods> queryable = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess);
             IQueryable<EnterpriseInfo> Enterprise = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
             IList<ResponseSystemProductCount> ProductCountList = new List<ResponseSystemProductCount>();
-            Kily.Set<SystemProvince>().Where(t => t.IsDelete == false).AsNoTracking().ToList().ForEach(o =>
+            List<TmepArea> areas = null;
+            if (UserInfo().AccountType <= AccountEnum.Country)
+                areas = Kily.Set<SystemProvince>().Where(t => t.IsDelete == false).AsNoTracking()
+                    .Select(t => new TmepArea() { Id = t.Id.ToString(), Name = t.Name }).ToList();
+            else if (UserInfo().AccountType == AccountEnum.Province)
+                areas = Kily.Set<SystemCity>().Where(t => t.IsDelete == false).AsNoTracking()
+                    .Select(t => new TmepArea() { Id = t.Id.ToString(), Name = t.Name }).ToList();
+            else if (UserInfo().AccountType == AccountEnum.City)
+                areas = Kily.Set<SystemArea>().Where(t => t.IsDelete == false).AsNoTracking()
+                    .Select(t => new TmepArea() { Id = t.Id.ToString(), Name = t.Name }).ToList();
+            areas.ForEach(o =>
             {
-                var Temp = queryable.Join(Enterprise, t => t.CompanyId, x => x.Id, (t, x) => new { t, x }).Where(t => t.x.TypePath.Contains(o.Id.ToString()));
+                var Temp = queryable.Join(Enterprise, t => t.CompanyId, x => x.Id, (t, x) => new { t, x }).Where(t => t.x.TypePath.Contains(o.Id));
                 //历史累计
                 int HistoryFarmer = Temp.Where(t => t.t.CreateTime < DateTime.Now.AddDays(-DateTime.Now.Day)).Where(t => t.t.ProductType.Equals("农产品")).Count();
                 int HistoryFood = Temp.Where(t => t.t.CreateTime < DateTime.Now.AddDays(-DateTime.Now.Day)).Where(t => t.t.ProductType.Equals("食品")).Count();

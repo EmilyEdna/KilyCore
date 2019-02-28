@@ -502,7 +502,7 @@ namespace KilyCore.Service.ServiceCore
             if (Param.Id == Guid.Empty)
                 return Insert<EnterpriseInsideFile>(insideFile) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
             else
-                return Update<EnterpriseInsideFile, RequestEnterpriseInsideFile>(insideFile, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+                return ServiceMessage.HANDLESUCCESS;
         }
         #endregion
 

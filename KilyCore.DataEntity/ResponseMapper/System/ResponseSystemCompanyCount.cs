@@ -50,4 +50,8 @@ namespace KilyCore.DataEntity.ResponseMapper.System
         public int Total => NowPlant + NowCulture + NowCirculation + NowProduction + NowOther + NowNormal + NowUnitCanteen + NowSmall + NowCook + HistorySmall
     + HistoryPlant + HistoryCulture + HistoryProduction + HistoryCirculation + HistoryOther + HistoryUnitCanteen + HistoryNormal + HistoryCook;
     }
+    public class TmepArea {
+        public string Id { get; set; }
+        public string Name { get; set; }
+    }
 }
