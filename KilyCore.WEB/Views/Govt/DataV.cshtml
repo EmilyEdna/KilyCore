@@ -5,15 +5,20 @@
 }
 @section css{
     <style>
-        #cbody {
+        /*#cbody {
             background: url('/statichtml/staticimg/backdatav.png') no-repeat;
             background-size: 100% 100%;
             overflow: hidden;
             position: relative;
             height: 100%;
             width: 100%;
+        }*/
+        #backImg{
+            position:fixed;
+            width:100%;
+            height: 100%;
         }
-
+        
         .width-33 {
             width: 33%;
             display: inline-block;
@@ -22,7 +27,7 @@
         }
 
         #complain .echarts {
-            height: 420px;
+            height: 400px;
         }
 
         #map .echarts {
@@ -37,33 +42,56 @@
             height: 350px;
         }
 
+        #cbody > div {
+            position: fixed;
+        }
         #company {
             margin-top: 5%;
+            left: 1%;
+            top : 0.5%;
         }
 
         #product {
-            margin-top: 2.5%
+            margin-top: 2.5%;
+            left: 33%;
+            top: 2%;
         }
 
         #replay {
-            margin-top: 5%;
+            margin-top: 2.5%;
             padding-left: 5%;
+            left: 66%;
+            top: 5%;
         }
 
         #rank {
             margin-top: -1%;
             padding-left: 1%;
+            left: 1%;
+            top: 50%;
         }
 
         #map {
             margin-top: -8%;
             padding-left: 4%;
             padding-right: 0;
+            left: 33%;
+            top: 45%;
         }
 
         #complain {
             margin-top: -1%;
             padding-left: 6%;
+            left: 66%;
+            top: 48%;
+        }
+        .btn:hover {
+        color:#fff;
+        }
+        #add{
+            position:fixed;
+            top: 10px;
+            right: 0px;
         }
     </style>
 }
@@ -358,16 +386,12 @@
                 });
             },
             InitEvents: function () {
+                $("img").css({ width: $(window).width(), height: $(window).height });
                 //恢复高度
                 $(window).resize(function (e) {
-                    if ($(window).height() < 900) {
-
-                        $("#map").css("margin-top", "-10%");
-                    }
                     window.setTimeout(function () {
                         window.location.reload();
                         var viewHeight = $(window).height();
-                        var bodyHeight = $("body").height();
                         $("#company .echarts").css("height", viewHeight / 3);
                         $("#product .echarts").css("height", viewHeight / 4);
                         $("#replay .echarts").css("height", viewHeight / 3);
@@ -384,31 +408,32 @@
         });
     </script>
 }
-<div id="cbody" style="height:100%;width:100%">
+    <div id="cbody" style="height:100%;width:100%">
+        <img src="~/StaticHtml/StaticImg/backDatav.png" id="backImg"/>
+        <a href="/Govt/Home" class="btn btn-lg layui-layer-btn-l" id="add">进入系统<i class="fa fa-long-arrow-right"></i></a>
+        <!--企业统计-->
+        <div class="col-sm-4 width-33" id="company">
+            <div class="echarts" id="echarts-pie-chart-com"></div>
+        </div>
+        <!--产品统计-->
+        <div class="col-sm-4  width-33" id="product">
+            <div class="echarts" id="echarts-pie-chart-pro"></div>
+        </div>
+        <!--反馈率-->
+        <div class="col-sm-4  width-33" id="replay">
+            <div class="echarts" id="echarts-hand-chart"></div>
+        </div>
+        <!--排名统计-->
+        <div class="col-sm-4  width-33" id="rank">
+            <div class="echarts" id="echarts-pie-chart-Lin"></div>
+        </div>
+        <!--地图-->
+        <div class="col-sm-4  width-33" id="map">
+            <div class="echarts" id="echarts-map-chart"></div>
+        </div>
+        <!--投诉-->
+        <div class="col-sm-4  width-33" id="complain">
+            <div class="echarts" id="echarts-Line-chart"></div>
+        </div>
 
-    <!--企业统计-->
-    <div class="col-sm-4 width-33" id="company">
-        <div class="echarts" id="echarts-pie-chart-com"></div>
     </div>
-    <!--产品统计-->
-    <div class="col-sm-4  width-33" id="product">
-        <div class="echarts" id="echarts-pie-chart-pro"></div>
-    </div>
-    <!--反馈率-->
-    <div class="col-sm-4  width-33" id="replay">
-        <div class="echarts" id="echarts-hand-chart"></div>
-    </div>
-    <!--排名统计-->
-    <div class="col-sm-4  width-33" id="rank">
-        <div class="echarts" id="echarts-pie-chart-Lin"></div>
-    </div>
-    <!--地图-->
-    <div class="col-sm-4  width-33" id="map">
-        <div class="echarts" id="echarts-map-chart"></div>
-    </div>
-    <!--投诉-->
-    <div class="col-sm-4  width-33" id="complain">
-        <div class="echarts" id="echarts-Line-chart"></div>
-    </div>
-
-</div>
