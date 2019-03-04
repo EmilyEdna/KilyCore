@@ -150,5 +150,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 企业形象
         /// </summary>
         public virtual string ComImage { get; set; }
+        /// <summary>
+        /// 投诉电话
+        /// </summary>
+        public virtual string ComplainPhone { get; set; }
     }
 }

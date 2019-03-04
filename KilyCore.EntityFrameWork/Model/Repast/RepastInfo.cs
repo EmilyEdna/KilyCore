@@ -118,5 +118,9 @@ namespace KilyCore.EntityFrameWork.Model.Repast
         /// 安全等级
         /// </summary>
         public virtual string MerchantSafeLv { get; set; }
+        /// <summary>
+        /// 投诉电话
+        /// </summary>
+        public virtual string ComplainPhone { get; set; }
     }
 }

@@ -831,6 +831,7 @@ namespace KilyCore.Service.ServiceCore
                     SafeCompany = t.SafeCompany,
                     ComImage = t.ComImage,
                     MainPro = t.MainPro,
+                    ComplainPhone=t.ComplainPhone,
                     MainProRemark = t.MainProRemark
                 }).FirstOrDefault();
             return data;

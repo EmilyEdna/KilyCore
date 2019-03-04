@@ -112,6 +112,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// 企业形象
         /// </summary>
         public string ComImage { get; set; }
+        public string ComplainPhone { get; set; }
         public IDictionary<String, String> MainProduncts
         {
             get

@@ -145,6 +145,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public int 企业类型 { get; set; }
         public string 企业类型名称 { get; set; }
         public string 所属区域 { get; set; }
+        public string 投诉电话 { get; set; }
         public DateTime? 生产时间 { get; set; }
         public string 生产批次 { get; set; }
         public string 生产负责人 { get; set; }

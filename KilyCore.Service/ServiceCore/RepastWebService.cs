@@ -631,7 +631,8 @@ namespace KilyCore.Service.ServiceCore
                     ImplUser = t.ImplUser,
                     AllowUnit = t.AllowUnit,
                     IdCard = t.IdCard,
-                    Remark = t.Remark
+                    Remark = t.Remark,
+                    ComplainPhone=t.ComplainPhone
                 }).FirstOrDefault();
             return data;
         }
