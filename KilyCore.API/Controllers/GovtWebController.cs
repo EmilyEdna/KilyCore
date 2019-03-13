@@ -72,6 +72,8 @@ namespace KilyCore.API.Controllers
                         VerificationExtension.WriteToken(cookie, GovtAdmin);
                         return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ResponseCookieInfo.RSASysKey, GovtAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
                     }
+                    else if (!Code.ToUpper().Equals(Param.ValidateCode.Trim().ToUpper()))
+                        return ObjectResultEx.Instance(null, -1, "验证码错误", HttpCode.NoAuth);
                     else
                         return ObjectResultEx.Instance(null, -1, "登录失败或账户冻结", HttpCode.NoAuth);
                 }
@@ -83,6 +85,8 @@ namespace KilyCore.API.Controllers
                         VerificationExtension.WriteToken(cookie, GovtAdmin);
                         return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ResponseCookieInfo.RSASysKey, GovtAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
                     }
+                    else if (!Code.ToUpper().Equals(Param.ValidateCode.Trim().ToUpper()))
+                        return ObjectResultEx.Instance(null, -1, "验证码错误", HttpCode.NoAuth);
                     else
                         return ObjectResultEx.Instance(null, -1, "登录失败或账户冻结", HttpCode.NoAuth);
                 }

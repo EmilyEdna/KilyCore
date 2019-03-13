@@ -26,12 +26,12 @@ namespace KilyCore.EntityFrameWork.ModelEnum
         /// <summary>
         /// 省份管理员
         /// </summary>
-        [Description("省份管理员")]
+        [Description("省级管理员")]
         Province = 30,
         /// <summary>
         /// 城市管理员
         /// </summary>
-        [Description("城市管理员")]
+        [Description("市级管理员")]
         City = 40,
         /// <summary>
         /// 区域管理员

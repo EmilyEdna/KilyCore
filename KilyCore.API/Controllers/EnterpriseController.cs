@@ -272,6 +272,8 @@ namespace KilyCore.API.Controllers
                         VerificationExtension.WriteToken(cookie, ComAdmin);
                         return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ResponseCookieInfo.RSASysKey, ComAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
                     }
+                    else if(!Code.ToUpper().Equals(LoginValidate.ValidateCode.Trim().ToUpper()))
+                        return ObjectResultEx.Instance(null, -1, "验证码错误", HttpCode.NoAuth);
                     else
                         return ObjectResultEx.Instance(null, -1, "登录失败或账户冻结", HttpCode.NoAuth);
                 }
@@ -283,6 +285,8 @@ namespace KilyCore.API.Controllers
                         VerificationExtension.WriteToken(cookie, ComAdmin);
                         return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ResponseCookieInfo.RSASysKey, ComAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
                     }
+                    else if (!Code.ToUpper().Equals(LoginValidate.ValidateCode.Trim().ToUpper()))
+                        return ObjectResultEx.Instance(null, -1, "验证码错误", HttpCode.NoAuth);
                     else
                         return ObjectResultEx.Instance(null, -1, "登录失败或账户冻结", HttpCode.NoAuth);
                 }

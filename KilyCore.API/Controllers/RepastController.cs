@@ -271,8 +271,10 @@ namespace KilyCore.API.Controllers
                         VerificationExtension.WriteToken(cookie, RepAdmin);
                         return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ResponseCookieInfo.RSASysKey, RepAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
                     }
+                    else if (!Code.ToUpper().Equals(LoginValidate.ValidateCode.Trim().ToUpper()))
+                        return ObjectResultEx.Instance(null, -1, "验证码错误", HttpCode.NoAuth);
                     else
-                        return ObjectResultEx.Instance(null, -1, "登录失败", HttpCode.NoAuth);
+                        return ObjectResultEx.Instance(null, -1, "登录失败或账户冻结", HttpCode.NoAuth);
                 }
                 else {
                     if (RepAdmin != null)
@@ -281,8 +283,10 @@ namespace KilyCore.API.Controllers
                         VerificationExtension.WriteToken(cookie, RepAdmin);
                         return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ResponseCookieInfo.RSASysKey, RepAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
                     }
+                    else if (!Code.ToUpper().Equals(LoginValidate.ValidateCode.Trim().ToUpper()))
+                        return ObjectResultEx.Instance(null, -1, "验证码错误", HttpCode.NoAuth);
                     else
-                        return ObjectResultEx.Instance(null, -1, "登录失败", HttpCode.NoAuth);
+                        return ObjectResultEx.Instance(null, -1, "登录失败或账户冻结", HttpCode.NoAuth);
                 }
             }
             catch (Exception)
