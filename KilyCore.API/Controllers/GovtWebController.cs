@@ -884,15 +884,6 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(GovtWebService.GetPieDataForProduct(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
-        /// 获取投诉率
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost("GetComplainCount")]
-        public ObjectResultEx GetComplainCount()
-        {
-            return ObjectResultEx.Instance(GovtWebService.GetComplainCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }
-        /// <summary>
         /// 获取反馈率
         /// </summary>
         /// <returns></returns>
@@ -924,8 +915,27 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetComplainLine")]
-        public ObjectResultEx GetComplainLine() {
+        public ObjectResultEx GetComplainLine()
+        {
             return ObjectResultEx.Instance(GovtWebService.GetComplainLine(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 板块占比
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetComDataRatio")]
+        public ObjectResultEx GetComDataRatio()
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetComDataRatio(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 投诉占比
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetComplainDataRatio")]
+        public ObjectResultEx GetComplainDataRatio()
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetComplainDataRatio(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
 

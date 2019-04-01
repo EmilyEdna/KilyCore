@@ -160,11 +160,12 @@ namespace KilyCore.Service.IServiceCore
         #region 数据统计
         ResponseDataCount GetPieDataForCompany();
         ResponseDataCount GetPieDataForProduct();
-        Object GetComplainCount();
         Object GetComplainHandler();
         ResponseGovtMap GetAllCityMerchantCount();
         Object GetIndexStatistics();
         Object GetComplainLine();
+        Object GetComDataRatio();
+        Object GetComplainDataRatio();
         #endregion
 
         #region 责任协议

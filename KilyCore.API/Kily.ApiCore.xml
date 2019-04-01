@@ -2822,12 +2822,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:KilyCore.API.Controllers.GovtWebController.GetComplainCount">
-            <summary>
-            获取投诉率
-            </summary>
-            <returns></returns>
-        </member>
         <member name="M:KilyCore.API.Controllers.GovtWebController.GetComplainHandler">
             <summary>
             获取反馈率
@@ -2849,6 +2843,18 @@
         <member name="M:KilyCore.API.Controllers.GovtWebController.GetComplainLine">
             <summary>
             投诉折线图
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetComDataRatio">
+            <summary>
+            板块占比
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetComplainDataRatio">
+            <summary>
+            投诉占比
             </summary>
             <returns></returns>
         </member>

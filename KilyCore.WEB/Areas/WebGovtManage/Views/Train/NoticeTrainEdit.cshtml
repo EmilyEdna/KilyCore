@@ -14,7 +14,7 @@
             //元素
             InitDom: function () {
                 $("#GovtId").val(GovtInfo.Id);
-                controller.LayDate({ elem: "input[name='TrainTime']" });
+                controller.LayDate({ elem: "input[name='TrainTime']", max: controller.GetDate(10) });
                 options.Editor = controller.Editor(".summernote");
                 var Id = controller.GetParam("Id");
                 if (Id != null && Id != undefined && Id != "")

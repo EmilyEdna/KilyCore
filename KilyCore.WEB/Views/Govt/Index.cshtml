@@ -42,16 +42,6 @@
                         controller.Echarts("#echarts-pie-chart-pro", result.data);
                     }
                 });
-                //投诉率
-                controller.ajax({
-                    url: "GovtWeb/GetComplainCount",
-                    data: {},
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        controller.Echarts("#echarts-gauge-chart", result, 1);
-                    }
-                });
                 //地图
                 controller.ajax({
                     url: "GovtWeb/GetAllCityMerchantCount",
@@ -150,7 +140,6 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <label class="label label-info">投诉率统计</label>
-                                    <div class="echarts" id="echarts-gauge-chart" style="height:500px;"></div>
                                 </div>
                             </div>
                         </div>

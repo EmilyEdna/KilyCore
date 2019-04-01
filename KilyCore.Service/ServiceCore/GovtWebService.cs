@@ -1911,35 +1911,6 @@ namespace KilyCore.Service.ServiceCore
             return dataCount;
         }
         /// <summary>
-        /// 获取投诉率
-        /// </summary>
-        /// <returns></returns>
-        public Object GetComplainCount()
-        {
-            IQueryable<GovtComplain> queryable = Kily.Set<GovtComplain>().AsNoTracking();
-            IQueryable<GovtComplain> queryables = Kily.Set<GovtComplain>().AsNoTracking();
-            if (GovtInfo().AccountType <= GovtAccountEnum.City)
-                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
-            IList<string> Areas = GetDepartArea();
-            if (Areas != null)
-            {
-                if (Areas.Count > 1)
-                    foreach (var item in Areas)
-                    {
-                        queryable = queryable.Where(t => t.TypePath.Contains(item));
-                    }
-                else
-                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-            }
-            else
-                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
-            var total = queryables.Select(t => t.Id).Count() == 0 ? 1.0 : Convert.ToDouble(queryables.Select(t => t.Id).Count());
-            var Count = (queryable.Select(t => t.Id).Count() / total) * 100;
-            Object data = new { value = Math.Round(Count, 2), name = "投诉率" };
-            List<Object> Complain = new List<Object> { data };
-            return Complain;
-        }
-        /// <summary>
         /// 反馈率
         /// </summary>
         /// <returns></returns>
@@ -2059,6 +2030,21 @@ namespace KilyCore.Service.ServiceCore
         public Object GetComplainLine()
         {
             IQueryable<GovtComplain> queryable = Kily.Set<GovtComplain>().AsNoTracking();
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
+            {
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        queryable = queryable.Where(t => t.TypePath.Contains(item));
+                    }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+            }
+            else
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
             //分组
             var ZZ_Com = queryable.Where(t => t.CompanyType.Equals("种植企业")).OrderByDescending(t => t.CreateTime).ToList();
             var YZ_Com = queryable.Where(t => t.CompanyType.Equals("养殖企业")).OrderByDescending(t => t.CreateTime).ToList();
@@ -2151,9 +2137,101 @@ namespace KilyCore.Service.ServiceCore
             List<int> LCom = new List<int> { L3, L7, L15, L30, L180, L365 };
             return new { ZCom, YCom, SCom, LCom };
         }
-
-
-
+        /// <summary>
+        /// 板块占比
+        /// </summary>
+        /// <returns></returns>
+        public Object GetComDataRatio()
+        {
+            IQueryable<EnterpriseInfo> Enterprise = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess);
+            IQueryable<RepastInfo> Merchant = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess);
+            IQueryable<CookBanquet> Banquet = Kily.Set<CookBanquet>();
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+            {
+                //外环
+                Merchant = Merchant.Where(t => t.TypePath.Contains(GovtInfo().City));
+                //内环
+                Enterprise = Enterprise.Where(t => t.TypePath.Contains(GovtInfo().City));
+                Banquet = Banquet.Where(t => t.TypePath.Contains(GovtInfo().City));
+            }
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
+            {
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        //外环
+                        Merchant = Merchant.Where(t => t.TypePath.Contains(item));
+                        //内环
+                        Enterprise = Enterprise.Where(t => t.TypePath.Contains(item));
+                        Banquet = Banquet.Where(t => t.TypePath.Contains(item));
+                    }
+                else
+                {
+                    //外环
+                    Merchant = Merchant.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    //内环
+                    Enterprise = Enterprise.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    Banquet = Banquet.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                }
+            }
+            else
+            {
+                //外环
+                Merchant = Merchant.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                //内环
+                Enterprise = Enterprise.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                Banquet = Banquet.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            }
+            //月入住
+            int CMSum = Enterprise.Where(t => t.CreateTime >= DateTime.Now.AddMonths(-1)).Count() + Merchant.Where(t => t.CreateTime >= DateTime.Now.AddMonths(-1)).Count();
+            decimal CMTotal = Math.Round((CMSum / (Enterprise.Count() + Merchant.Count())) * 100M, 2);
+            //月产品总数
+            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
+            int CGSum = goods.Join(Enterprise, t => t.CompanyId, x => x.Id, (t, x) => new { t.CreateTime }).Where(t => t.CreateTime >= DateTime.Now.AddMonths(-1)).Count();
+            decimal CGTotal = Math.Round((CGSum / goods.Join(Enterprise, t => t.CompanyId, x => x.Id, (t, x) => new { t.CreateTime }).Count()) * 100M, 2);
+            //月移动执法总数
+            IQueryable<GovtMovePatrol> MovePatrol = Kily.Set<GovtMovePatrol>().Where(t => t.GovtId == GovtInfo().Id);
+            int CPSum = MovePatrol.Where(t => t.CreateTime >= DateTime.Now.AddMonths(-1)).Count();
+            decimal CPTotal = Math.Round((CPSum / (MovePatrol.Count()==0?1: MovePatrol.Count())) * 100M, 2);
+            //月群宴数
+            int CBSum = Banquet.Where(t => t.CreateTime >= DateTime.Now.AddMonths(-1)).Count();
+            decimal CBTotal = Math.Round((CPSum / (Banquet.Count()==0?1: Banquet.Count())) * 100M, 2);
+            return new{CMSum, CMTotal,CGSum, CGTotal,CPSum,CPTotal,CBSum,CBTotal};
+        }
+        /// <summary>
+        /// 投诉占比
+        /// </summary>
+        /// <returns></returns>
+        public Object GetComplainDataRatio()
+        {
+            IQueryable<GovtComplain> queryable = Kily.Set<GovtComplain>().AsNoTracking();
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
+            {
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        queryable = queryable.Where(t => t.TypePath.Contains(item));
+                    }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+            }
+            else
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            //计算周投诉
+           int WG = queryable.Where(t => t.CreateTime >= DateTime.Now.AddDays(-7)).Count();
+           decimal WGSum = Math.Round((WG / queryable.Count()) * 100M, 2);
+            //计算月投诉
+            int MG = queryable.Where(t => t.CreateTime >= DateTime.Now.AddMonths(-1)).Count();
+            decimal MGSum = Math.Round((MG / queryable.Count()) * 100M, 2);
+            //计算总数
+            int Total = WG + MG;
+            decimal Sum = WGSum + MGSum;
+            return new { WG, WGSum, MG, MGSum, Total, Sum };
+        }
         #endregion
 
         #region 责任协议
