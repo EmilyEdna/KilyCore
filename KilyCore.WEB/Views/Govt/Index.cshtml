@@ -1,18 +1,7 @@
 ﻿
 @{
-    ViewData["Title"] = "首页";
+    ViewData["Title"] = "Index2";
     Layout = "~/Views/Shared/BaseView.cshtml";
-}
-@section css{
-    <style>
-        th {
-            text-align: center;
-        }
-
-        td {
-            text-align: center;
-        }
-    </style>
 }
 @section script{
     <script>
@@ -20,69 +9,181 @@
             Init: function () {
                 this.InitDom();
                 this.InitEvents();
-            }, 
-            InitDom: function() {
-                //企业统计
+            },
+            InitDom: function () {
+                //板块占比
                 controller.ajax({
-                    url: "GovtWeb/GetPieDataForCompany",
+                    url: "GovtWeb/GetComDataRatio",
                     data: {},
                     type: "post",
                     async: false,
                     success: function (result) {
-                        controller.Echarts("#echarts-pie-chart-com", result.data);
+                        $("#A1").html(result.data.CMSum);
+                        $("#A2").html(result.data.CGSum);
+                        $("#A3").html(result.data.CPSum);
+                        $("#A4").html(result.data.CBSum);
+                        $("#B1").prepend(result.data.CMTotal + "%");
+                        $("#B2").prepend(result.data.CGTotal + "%");
+                        $("#B3").prepend(result.data.CPTotal + "%");
+                        $("#B4").prepend(result.data.CBTotal + "%");
                     }
                 });
-                //产品统计
+                //投诉占比
                 controller.ajax({
-                    url: "GovtWeb/GetPieDataForProduct",
+                    url: "GovtWeb/GetComplainDataRatio",
                     data: {},
                     type: "post",
                     async: false,
                     success: function (result) {
-                        controller.Echarts("#echarts-pie-chart-pro", result.data);
+                        $("#Total").html(result.data.Total);
+                        $("#WG").html(result.data.WG);
+                        $("#MG").html(result.data.MG);
+                        $("#Sum").prepend(result.data.Sum + "%");
+                        $("#Sum").next("div").find("div").css("width", result.data.Sum)
+                        $("#WGSum").prepend(result.data.WGSum + "%");
+                        $("#WGSum").next("div").find("div").css("width", result.data.WGSum)
+                        $("#MGSum").prepend(result.data.MGSum + "%");
+                        $("#MGSum").next("div").find("div").css("width", result.data.MGSum)
                     }
                 });
-                //地图
+                //培训通知
                 controller.ajax({
-                    url: "GovtWeb/GetAllCityMerchantCount",
-                    data: {},
+                    url: "GovtWeb/GetTrainNoticePage",
+                    data: { pageSize: 10, pageNumber: 1 },
+                    async: false,
                     type: "post",
-                    async: false,
                     success: function (result) {
-                        controller.Echarts("#echarts-map-chart", result.data, 2);
-                        var html = '';
-                        for (var i = 0; i < result.data.DataList.length; i++) {
-                            html += '<tr><td>' + result.data.DataList[i].name + '</td>';
-                            html += '<td>' + result.data.DataList[i].value + '</td>';
-                            html += '<td>' + (i + 1) + '</td></tr>'
-                        }
-                        $("#Raking").html(html);
-                    }
-                });
-                //区域信息
-                controller.ajax({
-                    url: "GovtWeb/GetIndexStatistics",
-                    data: {},
-                    async: false,
-                    success: function (result) {
-                        var html = '';
-                        $.each(result.data.Temp, function (i, obj) {
-                            html += "<tr>";
-                            html += "<td>" + obj.ProvinceName + "</td>";
-                            html += "<td>" + result.data.ComCount[i] + "</td>";
-                            html += "<td>" + result.data.SmallComCount[i] + "</td>";
-                            html += "<td>" + result.data.CookCount[i] + "</td>";
-                            html += "<td>" + result.data.RiskCount[i] + "</td>";
-                            html += "<td>" + result.data.PotrolCount[i] + "</td>";
-                            html += "<td>" + result.data.BulletinCount[i] + "</td>";
-                            html += "<td>" + result.data.CompCount[i] + "</td>";
-                            html += "</tr>";
+                        var html = "";
+                        $.each(result.data.rows, function (i, obj) {
+                            html += '<tr><td class="text-info">' + obj.TrainTitle + '</td>';
+                            html += '<td class="text-info">' + obj.TrainPlace + '</td>';
+                            html += '<td class="text-info">' + obj.CompanyType + '</td>';
+                            html += '<td class="text-warning">' + obj.TrainTime + '</td></tr >';
                         });
-                        $("#AreaCount").html(html);
+                        $("#Train").html(html);
+                    }
+                });
+                //投诉通知
+                controller.ajax({
+                    url: "GovtWeb/GetComplainPage",
+                    data: { pageSize: 10, pageNumber: 1 },
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        var html = "";
+                        $.each(result.data.rows, function (i, obj) {
+                            html += '<tr><td class="text-info">' + obj.CompanyName + '</td>';
+                            html += '<td class="text-info">' + obj.ProductName + '</td>';
+                            html += '<td class="text-info">' + obj.ComplainUser + '</td>';
+                            html += '<td class="text-warning">' + obj.Status + '</td></tr >';
+                        });
+                        $("#Complain").html(html);
+                    }
+                });
+                //风险预警
+                controller.ajax({
+                    url: "GovtWeb/GetWaringRiskPage",
+                    data: { pageSize: 10, pageNumber: 1 },
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        var html = "";
+                        $.each(result.data.rows, function (i, obj) {
+                            html += '<tr><td class="text-info">' + obj.EventName + '</td>';
+                            html += '<td class="text-info">' + obj.WaringLv + '</td>';
+                            html += '<td class="text-info">' + obj.TradeType + '</td>';
+                            html += '<td class="text-warning">' + obj.ReleaseTime + '</td></tr >';
+                        });
+                        $("#Risk").html(html);
                     }
                 });
             },
             InitEvents: function () {
+                //投诉率
+                controller.ajax({
+                    url: "GovtWeb/GetComplainLine",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        OptionLine = {
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'cross',
+                                    label: {
+                                        backgroundColor: '#6a7985'
+                                    }
+                                }
+                            },
+                            legend: {
+                                textStyle: { color: "#000000" },
+                                data: ['种植企业', '养殖企业', '生产企业', '流通企业']
+                            },
+                            grid: {
+                                left: '3%',
+                                right: '4%',
+                                bottom: '3%',
+                                containLabel: true
+                            },
+                            xAxis: [
+                                {
+                                    type: 'category',
+                                    boundaryGap: false,
+                                    data: ['近3天', '', '近7天', '近15天', '近30天', '近180天', '近365天'],
+                                    axisLine: {
+                                        lineStyle: {
+                                            color: '#000'
+                                        }
+                                    }
+                                }
+                            ],
+                            yAxis: [
+                                {
+                                    type: 'value',
+                                    axisLine: {
+                                        lineStyle: {
+                                            color: '#000'
+                                        }
+                                    }
+                                }
+                            ],
+                            series: [
+                                {
+                                    name: '种植企业',
+                                    type: 'line',
+                                    stack: '总量',
+                                    areaStyle: {},
+                                    data: result.data.ZCom
+                                },
+                                {
+                                    name: '养殖企业',
+                                    type: 'line',
+                                    stack: '总量',
+                                    areaStyle: {},
+                                    data: result.data.YCom
+                                },
+                                {
+                                    name: '生产企业',
+                                    type: 'line',
+                                    stack: '总量',
+                                    areaStyle: {},
+                                    data: result.data.SCom
+                                },
+                                {
+                                    name: '流通企业',
+                                    type: 'line',
+                                    stack: '总量',
+                                    areaStyle: { normal: {} },
+                                    data: result.data.LCom
+                                }
+                            ],
+                            backgroundColor: 'rgba(7,31,65,0)',
+                            color: ["#fc97af", "#87f7cf", '#f7f494', '#72ccff', '#f7c5a0', '#d4a4eb', '#d2f5a6', '#76f2f2']
+                        };
+                        echarts.init($("#echarts-Line-chart")[0]).setOption(OptionLine);
+                    }
+                });
                 //显示或隐藏
                 $(".collapse-link").on('click', function () {
                     var ibox = $(this.closest('div.ibox'));
@@ -107,12 +208,128 @@
             options.Init();
         });
     </script>
+
 }
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-success pull-right">月</span>
+                    <h5>入住</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins" id="A1"></h1>
+                    <div class="stat-percent font-bold text-success" id="B1">
+                        <i class="fa fa-bolt"></i>
+                    </div>
+                    <small>月入住</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-info pull-right">月</span>
+                    <h5>产品</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins" id="A2"></h1>
+                    <div class="stat-percent font-bold text-info" id="B2">
+                        <i class="fa fa-level-up"></i>
+                    </div>
+                    <small>月产量</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-warning pull-right">月</span>
+                    <h5>抽查</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins" id="A3"></h1>
+                    <div class="stat-percent font-bold text-warning" id="B3">
+                        <i class="fa fa-level-up"></i>
+                    </div>
+                    <small>月抽查</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-danger pull-right">月</span>
+                    <h5>群宴</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins" id="A4"></h1>
+                    <div class="stat-percent font-bold text-danger" id="B4">
+                        <i class="fa fa-level-up"></i>
+                    </div>
+                    <small>月报备</small>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>综合统计</h5>
+                    <h5>投诉</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <div class="flot-chart">
+                                <div style="height:200px;" id="echarts-Line-chart"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <ul class="stat-list">
+                                <li>
+                                    <h2 class="no-margins" id="Total"></h2>
+                                    <small>投诉总数</small>
+                                    <div class="stat-percent" id="Sum">
+                                        <i class="fa fa-bolt text-navy"></i>
+                                    </div>
+                                    <div class="progress progress-mini">
+                                        <div style="width: 48%;" class="progress-bar"></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <h2 class="no-margins" id="WG"></h2>
+                                    <small>周投诉</small>
+                                    <div class="stat-percent" id="WGSum">
+                                        <i class="fa fa-bolt text-navy"></i>
+                                    </div>
+                                    <div class="progress progress-mini">
+                                        <div style="width: 60%;" class="progress-bar"></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <h2 class="no-margins " id="MG"></h2>
+                                    <small>月投诉</small>
+                                    <div class="stat-percent" id="MGSum">
+                                        <i class="fa fa-bolt text-navy"></i>
+                                    </div>
+                                    <div class="progress progress-mini">
+                                        <div style="width: 22%;" class="progress-bar"></div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>培训通知</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -124,65 +341,25 @@
                 </div>
                 <div class="ibox-content">
                     <div class="row">
-                        <div class="col-sm-6">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <label class="label label-info">企业统计</label>
-                                    <div class="echarts" id="echarts-pie-chart-com"></div>
-                                </div>
-                                <div class="col-sm-12">
-                                    <label class="label label-info">产品统计</label>
-                                    <div class="echarts" id="echarts-pie-chart-pro"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <label class="label label-info">投诉率统计</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>企业统计</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="ibox-content">
-                    <div class="col-sm-4">
-                        <table class="table table-bordered">
+                        <table class="table table-hover no-margins">
                             <thead>
                                 <tr>
-                                    <th>区域名称</th>
-                                    <th>入住数量</th>
-                                    <th>名次</th>
+                                    <th>培训名称</th>
+                                    <th>培训地址</th>
+                                    <th>所属行业</th>
+                                    <th>培训日期</th>
                                 </tr>
                             </thead>
-                            <tbody id="Raking">
-                            </tbody>
+                            <tbody id="Train"></tbody>
                         </table>
                     </div>
-                    <div class="col-sm-8"><div class="echarts" id="echarts-map-chart" style="height:600px;"></div></div>
-
                 </div>
             </div>
         </div>
-        <div class="col-sm-12">
+        <div class="col-sm-4">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>区域信息一览</h5>
+                    <h5>投诉信息</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -193,22 +370,51 @@
                     </div>
                 </div>
                 <div class="ibox-content">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>区域名称</th>
-                                <th>企业数量</th>
-                                <th>三小数量</th>
-                                <th>群宴数量</th>
-                                <th>风险预警</th>
-                                <th>抽查次数</th>
-                                <th>通报次数</th>
-                                <th>投诉次数</th>
-                            </tr>
-                        </thead>
-                        <tbody id="AreaCount"></tbody>
-                    </table>
+                    <div class="row">
+                        <table class="table table-hover no-margins">
+                            <thead>
+                                <tr>
+                                    <th>投诉公司</th>
+                                    <th>投诉产品</th>
+                                    <th>投诉人</th>
+                                    <th>处理状态</th>
+                                </tr>
+                            </thead>
+                            <tbody id="Complain"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>预警信息</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <table class="table table-hover no-margins">
+                            <thead>
+                                <tr>
+                                    <th>事件名称</th>
+                                    <th>风险等级</th>
+                                    <th>行业类型</th>
+                                    <th>发布时间</th>
+                                </tr>
+                            </thead>
+                            <tbody id="Risk"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+</div>

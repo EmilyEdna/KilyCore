@@ -902,15 +902,6 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(GovtWebService.GetAllCityMerchantCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
-        /// 获取区域信息
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("GetIndexStatistics")]
-        public ObjectResultEx GetIndexStatistics()
-        {
-            return ObjectResultEx.Instance(GovtWebService.GetIndexStatistics(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }
-        /// <summary>
         /// 投诉折线图
         /// </summary>
         /// <returns></returns>

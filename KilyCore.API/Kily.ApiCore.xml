@@ -2834,12 +2834,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:KilyCore.API.Controllers.GovtWebController.GetIndexStatistics">
-            <summary>
-            获取区域信息
-            </summary>
-            <returns></returns>
-        </member>
         <member name="M:KilyCore.API.Controllers.GovtWebController.GetComplainLine">
             <summary>
             投诉折线图

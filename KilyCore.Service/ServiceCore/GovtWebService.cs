@@ -1968,62 +1968,6 @@ namespace KilyCore.Service.ServiceCore
             return new ResponseGovtMap { CityName = City.CityName, City = City.CityId, DataList = data };
         }
         /// <summary>
-        /// 获取区域信息
-        /// </summary>
-        /// <returns></returns>
-        public Object GetIndexStatistics()
-        {
-            List<ResponseProvince> Temp = null;
-            if (GovtInfo().AccountType <= GovtAccountEnum.City)
-            {
-                var Code = Kily.Set<SystemCity>().Where(t => t.Id.ToString() == GovtInfo().City).Select(t => t.Code).FirstOrDefault();
-                Temp = Kily.Set<SystemArea>().Where(t => t.CityCode == Code).Select(t => new ResponseProvince
-                {
-                    ProvinceName = t.Name,
-                    Id = t.Id
-                }).ToList();
-            }
-            else if (GovtInfo().AccountType == GovtAccountEnum.Area)
-            {
-                var Code = Kily.Set<SystemArea>().Where(t => t.Id.ToString() == GovtInfo().Area).Select(t => t.Code).FirstOrDefault();
-                Temp = Kily.Set<SystemTown>().Where(t => t.AreaCode == Code).Select(t => new ResponseProvince
-                {
-                    ProvinceName = t.Name,
-                    Id = t.Id
-                }).ToList();
-            }
-            else
-                return null;
-            List<int> ComCount = new List<int>();
-            List<int> SmallComCount = new List<int>();
-            List<int> CookCount = new List<int>();
-            List<int> RiskCount = new List<int>();
-            List<int> PotrolCount = new List<int>();
-            List<int> BulletinCount = new List<int>();
-            List<int> CompCount = new List<int>();
-            Temp.ForEach(x =>
-            {
-                ComCount.Add(Kily.Set<RepastInfo>()
-               .Where(t => t.TypePath.Contains(x.Id.ToString()) && t.IsDelete == false && t.AuditType == AuditEnum.AuditSuccess)
-               .Where(t => t.DiningType <= MerchantEnum.UnitCanteen)
-               .Select(t => t.Id).Count() +
-               Kily.Set<EnterpriseInfo>()
-               .Where(t => t.TypePath.Contains(x.Id.ToString()))
-               .Where(t => t.IsDelete == false && t.AuditType == AuditEnum.AuditSuccess)
-               .Select(t => t.Id).Count());
-                SmallComCount.Add(Kily.Set<RepastInfo>()
-               .Where(t => t.TypePath.Contains(x.Id.ToString()) && t.IsDelete == false && t.AuditType == AuditEnum.AuditSuccess)
-               .Where(t => t.DiningType > MerchantEnum.UnitCanteen).Select(t => t.Id).Count());
-                CookCount.Add(Kily.Set<CookBanquet>().Where(t => t.TypePath.Contains(x.Id.ToString())).Select(t => t.Id).Count());
-                RiskCount.Add(Kily.Set<GovtRisk>().Where(t => t.TypePath.Contains(x.Id.ToString())).Select(t => t.Id).Count());
-                PotrolCount.Add(Kily.Set<GovtNetPatrol>().Where(t => t.TypePath.Contains(x.Id.ToString())).Sum(t => t.PotrolNum));
-                BulletinCount.Add(Kily.Set<GovtNetPatrol>().Where(t => t.TypePath.Contains(x.Id.ToString())).Sum(t => t.BulletinNum));
-                CompCount.Add(Kily.Set<GovtComplain>().Where(t => t.TypePath.Contains(x.Id.ToString())).Select(t => t.Id).Count());
-            });
-            Object obj = new { Temp, ComCount, SmallComCount, CookCount, RiskCount, PotrolCount, BulletinCount, CompCount };
-            return obj;
-        }
-        /// <summary>
         /// 投诉折线图
         /// </summary>
         /// <returns></returns>
