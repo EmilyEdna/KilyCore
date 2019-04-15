@@ -161,6 +161,8 @@ namespace KilyCore.Service.IServiceCore
         ResponseDataCount GetPieDataForCompany();
         ResponseDataCount GetPieDataForProduct();
         Object GetComplainHandler();
+
+        IList<ResponseGovtRanking> GetAreaRank();
         ResponseGovtMap GetAllCityMerchantCount();
         Object GetComplainLine();
         Object GetComDataRatio();

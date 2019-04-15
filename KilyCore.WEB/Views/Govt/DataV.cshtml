@@ -1,101 +1,13 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "大屏数据";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section css{
-    <style>
-        /*#cbody {
-            background: url('/statichtml/staticimg/backdatav.png') no-repeat;
-            background-size: 100% 100%;
-            overflow: hidden;
-            position: relative;
-            height: 100%;
-            width: 100%;
-        }*/
-        #backImg{
-            position:fixed;
-            width:100%;
-            height: 100%;
-        }
-        
-        .width-33 {
-            width: 33%;
-            display: inline-block;
-            float: left;
-            padding: 0 4%;
-        }
-
-        #complain .echarts {
-            height: 400px;
-        }
-
-        #map .echarts {
-            height: 540px;
-        }
-
-        #rank .echarts {
-            height: 400px;
-        }
-
-        #replay .echarts {
-            height: 350px;
-        }
-
-        #cbody > div {
-            position: fixed;
-        }
-        #company {
-            margin-top: 5%;
-            left: 1%;
-            top : 0.5%;
-        }
-
-        #product {
-            margin-top: 2.5%;
-            left: 33%;
-            top: 2%;
-        }
-
-        #replay {
-            margin-top: 2.5%;
-            padding-left: 5%;
-            left: 66%;
-            top: 5%;
-        }
-
-        #rank {
-            margin-top: -1%;
-            padding-left: 1%;
-            left: 1%;
-            top: 50%;
-        }
-
-        #map {
-            margin-top: -8%;
-            padding-left: 4%;
-            padding-right: 0;
-            left: 33%;
-            top: 45%;
-        }
-
-        #complain {
-            margin-top: -1%;
-            padding-left: 6%;
-            left: 66%;
-            top: 48%;
-        }
-        .btn:hover {
-        color:#fff;
-        }
-        #add{
-            position:fixed;
-            top: 10px;
-            right: 0px;
-        }
-    </style>
+    <link href="~/Content/DataView/Css/Application.css" rel="stylesheet" />
 }
 @section script{
+    <script src="~/Content/DataView/JS/countUp.min.js"></script>
+    <script src="~/Content/DataView/JS/echarts-theme-shine.js"></script>
     <script>
         var options = {
             Init: function () {
@@ -103,303 +15,110 @@
                 this.InitEvents();
             },
             InitDom: function () {
-                //企业统计
-                controller.ajax({
-                    url: "GovtWeb/GetPieDataForCompany",
-                    data: {},
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        echarts.init($("#echarts-pie-chart-com")[0], "infographic").setOption(OptionPie = {
-                            title: {
-                                textStyle: { color: '#ffffff' }
-                            },
-                            tooltip: {
-                                trigger: 'item',
-                                formatter: "{a} <br/>{b}: {c} ({d}%)"
-                            },
-                            legend: {
-                                orient: 'vertical',
-                                x: 'left',
-                                data: result.data.DataTitle,
-                                textStyle: { color: "#ffffff" }
-                            },
-                            series: [
-                                {
-                                    name: (result.data.Name == null ? '未审核统计' : result.data.Name),
-                                    type: 'pie',
-                                    selectedMode: 'single',
-                                    radius: [0, '30%'],
-                                    data: result.data.InSideData,
-                                },
-                                {
-                                    name: (result.data.Name == null ? '已审核统计' : result.data.Name),
-                                    type: 'pie',
-                                    radius: ['40%', '55%'],
-                                    data: result.data.OutSideData
-                                }
-                            ],
-                            backgroundColor: 'rgba(255,255,255,0)',
-                            color: ["#fc97af", "#87f7cf", '#f7f494', '#72ccff', '#f7c5a0', '#d4a4eb', '#d2f5a6', '#76f2f2']
-                        });
-                    }
-                });
-                //产品统计
-                controller.ajax({
-                    url: "GovtWeb/GetPieDataForProduct",
-                    data: {},
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        echarts.init($("#echarts-pie-chart-pro")[0]).setOption(OptionPie = {
-                            title: {
-                                textStyle: { color: '#ffffff' }
-                            },
-                            tooltip: {
-                                trigger: 'item',
-                                formatter: "{a} <br/>{b}: {c} ({d}%)"
-                            },
-                            legend: {
-                                type: 'scroll',
-                                orient: 'horizontal',
-                                x: 'left',
-                                data: result.data.DataTitle,
-                                top: '10%',
-                                textStyle: { color: "#ffffff" }
-                            },
-                            series: [
-                                {
-                                    name: (result.data.Name == null ? '未审核统计' : result.data.Name),
-                                    type: 'pie',
-                                    selectedMode: 'single',
-                                    radius: [0, '30%'],
-                                    data: result.data.InSideData
-                                },
-                                {
-                                    name: (result.data.Name == null ? '已审核统计' : result.data.Name),
-                                    type: 'pie',
-                                    radius: ['40%', '55%'],
-                                    data: result.data.OutSideData
-                                },
-                            ],
-                            backgroundColor: 'rgba(255,255,255,0)',
-                            color: ["#fc97af", "#87f7cf", '#f7f494', '#72ccff', '#f7c5a0', '#d4a4eb', '#d2f5a6', '#76f2f2']
-                        });
-                    }
-                });
-                //地图
-                controller.ajax({
-                    url: "GovtWeb/GetAllCityMerchantCount",
-                    data: {},
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        OptionMap = {
-                            backgroundColor: 'rgba(7,31,65,0)',
-                            tooltip: {
-                                trigger: 'item',
-                                formatter: '{b}<br/>{c} (家企业)'
-                            },
-                            dataRange: {
-                                bottom: 20,
-                                textStyle: { color: "#ffffff" },
-                                splitList: [
-                                    { start: 10000 },
-                                    { start: 5000, end: 10000 },
-                                    { start: 3000, end: 5000 },
-                                    { start: 1000, end: 3000 },
-                                    { start: 500, end: 1000 },
-                                    { start: 100, end: 500 },
-                                    { start: 0, end: 100 },
-                                ],
-                                color: ["#fc97af", "#87f7cf", '#f7f494', '#72ccff', '#f7c5a0', '#d4a4eb', '#d2f5a6', '#76f2f2']
-                            },
-                            series: [
-                                {
-                                    name: '入住企业区域分布',
-                                    type: 'map',
-                                    mapType: result.data.CityName,
-                                    itemStyle: {
-                                        normal: { label: { show: true } },
-                                        emphasis: { label: { show: true } }
-                                    },
-                                    data: result.data.DataList,
-                                }
-                            ]
-                        }
-                        $.getJSON("/CityMap/" + result.data.City + "00.json", function (res) {
-                            echarts.registerMap(result.data.CityName, res);
-                            echarts.init($("#echarts-map-chart")[0]).setOption(OptionMap);
-                        });
-                        var Names = [];
-                        var Datas = [];
-                        for (var i = 0; i < result.data.DataList.length; i++) {
-                            Names.push(result.data.DataList[i].name);
-                            Datas.push({ "value": result.data.DataList[i].value, "name": result.data.DataList[i].name });
-                        }
-                        echarts.init($("#echarts-pie-chart-Lin")[0]).setOption(OptionPie = {
-                            tooltip: {
-                                trigger: 'item',
-                                formatter: "{a} <br />{b} : {c} ({d}%)"
-                            },
-                            legend: {
-                                type: 'scroll',
-                                orient: 'vertical',
-                                right: 10,
-                                top: 0,
-                                bottom: 20,
-                                data: Names,
-                                textStyle: { color: "#ffffff" }
-                            },
-                            series: [{
-                                name: "排名统计",
-                                type: 'pie',
-                                radius: '65%',
-                                center: ['50%', '50%'],
-                                selectedMode: 'single',
-                                data: Datas,
-                                itemStyle: {
-                                    emphasis: {
-                                        shadowBlur: 10,
-                                        shadowOffsetX: 0,
-                                        shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                    }
-                                }
-                            }],
-                            backgroundColor: 'rgba(7,31,65,0)',
-                            color: ["#fc97af", "#87f7cf", '#f7f494', '#72ccff', '#f7c5a0', '#d4a4eb', '#d2f5a6', '#76f2f2']
-                        });
-                    }
-                });
-                //投诉率
-                controller.ajax({
-                    url: "GovtWeb/GetComplainLine",
-                    data: {},
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        OptionLine = {
-                            tooltip: {
-                                trigger: 'axis',
-                                axisPointer: {
-                                    type: 'cross',
-                                    label: {
-                                        backgroundColor: '#6a7985'
-                                    }
-                                }
-                            },
-                            legend: {
-                                textStyle: { color: "#ffffff" },
-                                data: ['种植企业', '养殖企业', '生产企业', '流通企业']
-                            },
-                            grid: {
-                                left: '3%',
-                                right: '4%',
-                                bottom: '3%',
-                                containLabel: true
-                            },
-                            xAxis: [
-                                {
-                                    type: 'category',
-                                    boundaryGap: false,
-                                    data: ['近3天', '', '近7天', '近15天', '近30天', '近180天', '近365天'],
-                                    axisLine: {
-                                        lineStyle: {
-                                            color: '#fff'
-                                        }
-                                    }
-                                }
-                            ],
-                            yAxis: [
-                                {
-                                    type: 'value',
-                                    axisLine: {
-                                        lineStyle: {
-                                            color: '#fff'
-                                        }
-                                    }
-                                }
-                            ],
-                            series: [
-                                {
-                                    name: '种植企业',
-                                    type: 'line',
-                                    stack: '总量',
-                                    areaStyle: {},
-                                    data: result.data.ZCom
-                                },
-                                {
-                                    name: '养殖企业',
-                                    type: 'line',
-                                    stack: '总量',
-                                    areaStyle: {},
-                                    data: result.data.YCom
-                                },
-                                {
-                                    name: '生产企业',
-                                    type: 'line',
-                                    stack: '总量',
-                                    areaStyle: {},
-                                    data: result.data.SCom
-                                },
-                                {
-                                    name: '流通企业',
-                                    type: 'line',
-                                    stack: '总量',
-                                    areaStyle: { normal: {} },
-                                    data: result.data.LCom
-                                }
-                            ],
-                            backgroundColor: 'rgba(7,31,65,0)',
-                            color: ["#fc97af", "#87f7cf", '#f7f494', '#72ccff', '#f7c5a0', '#d4a4eb', '#d2f5a6', '#76f2f2']
-                        };
-                        echarts.init($("#echarts-Line-chart")[0]).setOption(OptionLine);
-                    }
-                });
-                //反馈率
-                controller.ajax({
-                    url: "GovtWeb/GetComplainHandler",
-                    data: {},
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        OptionGauge = {
-                            tooltip: {
-                                formatter: "{a} <br/>{b} : {c}%"
-                            },
-                            series: [
-                                {
-                                    name: '处理率',
-                                    type: 'gauge',
-                                    splitNumber: 10,
-                                    detail: { formatter: '{value}%' },
-                                    data: result.data,
-                                    title: {
-                                        color: 'fff',
-                                        fontSize: '12px'
-                                    }
-                                }
-                            ]
-                        };
-                        echarts.init($("#echarts-hand-chart")[0]).setOption(OptionGauge);
-                    }
-                });
+                $(".header-title").text(GovtInfo.TrueName + "可视化大屏");
+                //获取数据时间
+                options.GetNowDate();
+                //获取区域排行
+                options.GetAreaRank();
             },
             InitEvents: function () {
-                $("img").css({ width: $(window).width(), height: $(window).height });
-                //恢复高度
-                $(window).resize(function (e) {
-                    window.setTimeout(function () {
-                        window.location.reload();
-                        var viewHeight = $(window).height();
-                        $("#company .echarts").css("height", viewHeight / 3);
-                        $("#product .echarts").css("height", viewHeight / 4);
-                        $("#replay .echarts").css("height", viewHeight / 3);
-                        $("#rank .echarts").css("height", (viewHeight / 3) * 2);
-                        $("#map .echarts").css("height", viewHeight / 2);
-                        $("#complain .echarts").css("height", viewHeight / 2);
-                    }, 200);
-                    e.stopPropagation();
+            },
+            GetNowDate: function () {
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = now.getMonth() + 1;
+                const day = now.getDate();
+                $("#nowDate").html(year + "年" + month + "月" + day + "日");
+            },
+            GetAreaRank: function () {
+                controller.ajax({
+                    url: "GovtWeb/GetAreaRank",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var name = [];
+                        var value = [];
+                        var rank = [];
+                        $.each(result.data, function (i, obj) {
+                            rank.push(i + 1);
+                            name.push(obj.name);
+                            value.push(obj.value);
+                        })
+                        echarts.init($("#rankChart")[0], "shine").setOption({
+                            tooltip: {
+                                trigger: "axis",
+                                axisPointer: {
+                                    type: "shadow"
+                                },
+                                formatter: function (params) {
+                                    const param = params[0];
+                                    const marker = '<span style="display:inline-block;margin-right:5px;border-radius:10px;width:10px;height:10px;background-color:#e6b600;"></span>';
+                                    const suffix = '<span style="margin-left:5px;font-size:12px;">家</span>';
+                                    return param.name + "<br />" +
+                                        marker + "排名：" + (param.dataIndex + 1) + "<br />" +
+                                        marker + "企业入驻数量：" + param.value + suffix;
+                                }
+                            },
+                            grid: {
+                                top: 10,
+                                bottom: 10,
+                                left: 60
+                            },
+                            xAxis: {
+                                show: false,
+                                type: "value"
+                            },
+                            yAxis: {
+                                data: name,
+                                type: "category",
+                                inverse: true,
+                                axisLine: { show: false },
+                                axisTick: { show: false },
+                                axisLabel: {
+                                    fontSize: 12,
+                                    color: "#b0c2f9"
+                                }
+                            },
+                            series: [{
+                                name: "区域排行",
+                                type: "bar",
+                                barCategoryGap: "60%",
+                                label: {
+                                    show: true,
+                                    position: "right",
+                                    fontSize: 12,
+                                    color: "#188df0",
+                                    emphasis: {
+                                        color: "#e6b600"
+                                    }
+                                },
+                                data: value,
+                                itemStyle: {
+                                    normal: {
+                                        color: new echarts.graphic.LinearGradient(
+                                            0, 1, 1, 1,
+                                            [
+                                                { offset: 0, color: '#b0c2f9' },
+                                                { offset: 0.5, color: '#188df0' },
+                                                { offset: 1, color: '#185bff' }
+                                            ]
+                                        )
+                                    },
+                                    emphasis: {
+                                        color: new echarts.graphic.LinearGradient(
+                                            0, 1, 1, 1,
+                                            [
+                                                { offset: 0, color: '#b0c2f9' },
+                                                { offset: 0.7, color: '#e6b600' },
+                                                { offset: 1, color: '#ceac09' }
+                                            ]
+                                        )
+                                    }
+                                }
+                            }]
+                        })
+                    }
                 });
             }
         }
@@ -408,32 +127,98 @@
         });
     </script>
 }
-    <div id="cbody" style="height:100%;width:100%">
-        <img src="~/StaticHtml/StaticImg/backDatav.png" id="backImg"/>
-        <a href="/Govt/Home" class="btn btn-lg layui-layer-btn-l" id="add">进入系统<i class="fa fa-long-arrow-right"></i></a>
-        <!--企业统计-->
-        <div class="col-sm-4 width-33" id="company">
-            <div class="echarts" id="echarts-pie-chart-com"></div>
-        </div>
-        <!--产品统计-->
-        <div class="col-sm-4  width-33" id="product">
-            <div class="echarts" id="echarts-pie-chart-pro"></div>
-        </div>
-        <!--反馈率-->
-        <div class="col-sm-4  width-33" id="replay">
-            <div class="echarts" id="echarts-hand-chart"></div>
-        </div>
-        <!--排名统计-->
-        <div class="col-sm-4  width-33" id="rank">
-            <div class="echarts" id="echarts-pie-chart-Lin"></div>
-        </div>
-        <!--地图-->
-        <div class="col-sm-4  width-33" id="map">
-            <div class="echarts" id="echarts-map-chart"></div>
-        </div>
-        <!--投诉-->
-        <div class="col-sm-4  width-33" id="complain">
-            <div class="echarts" id="echarts-Line-chart"></div>
-        </div>
+<body>
+    <header id="header">
+        <h3 class="header-title"></h3>
+        <div class="header-info header-info-l">进入系统</div>
+        <div class="header-info header-info-r">数据日期：<span id="nowDate"></span></div>
+    </header>
 
+    <footer id="footer"></footer>
+
+    <div id="container">
+        <div id="flexCon">
+            <div class="flex-row">
+                <div class="flex-cell flex-cell-l">
+                    <div class="chart-wrapper">
+                        <h3 class="chart-title">区域排名</h3>
+                        <div class="chart-div chart-done" id="rankChart">
+                            <div class="chart-loader"><div class="loader"></div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-cell flex-cell-c" style="padding-right:0;">
+                    <div class="chart-wrapper">
+                        <h3 class="chart-title">统计数据</h3>
+                        <div class="chart-div chart-done">
+                            <table class="data-t">
+                                <tr>
+                                    <th><img src="~/Content/DataView/img/icon-01.png" /></th>
+                                    <td>
+                                        <p><span id="listedCompany">0</span></p>
+                                        <p>上市公司数</p>
+                                    </td>
+                                    <th><img src="~/Content/DataView/img/icon-02.png" /></th>
+                                    <td>
+                                        <p><span id="listedSecurity">0</span></p>
+                                        <p>上市证券数</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><img src="~/Content/DataView/img/icon-03.png" /></th>
+                                    <td>
+                                        <p><span id="totalMarket">0</span></p>
+                                        <p>股票总市值（亿元）</p>
+                                    </td>
+                                    <th><img src="~/Content/DataView/img/icon-04.png" /></th>
+                                    <td>
+                                        <p><span id="circulationMarket">0</span></p>
+                                        <p>股票流通市值（亿元）</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><img src="~/Content/DataView/img/icon-05.png" /></th>
+                                    <td>
+                                        <p><span id="shRatio">0</span></p>
+                                        <p>上市平均市盈率</p>
+                                    </td>
+                                    <th><img src="~/Content/DataView/img/icon-06.png" /></th>
+                                    <td>
+                                        <p><span id="szRatio">0</span></p>
+                                        <p>深市平均市盈率</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-cell flex-cell-r" style="padding-left:0;">
+                    <div class="chart-wrapper">
+                        <h3 class="chart-title">上市公司地域分布</h3>
+                        <div class="chart-div" id="mapChart">
+                            <div class="chart-loader"><div class="loader"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="flex-cell flex-cell-lc" style="padding-bottom:0;">
+                    <div class="chart-wrapper">
+                        <h3 class="chart-title">2018年月度股票情况及预测</h3>
+                        <div class="chart-div" id="trendChart">
+                            <div class="chart-loader"><div class="loader"></div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-cell flex-cell-r" style="padding-bottom:0;">
+                    <div class="chart-wrapper">
+                        <h3 class="chart-title">CSRC行业分类</h3>
+                        <div class="chart-div" id="csrcChart">
+                            <div class="chart-loader"><div class="loader"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</body>

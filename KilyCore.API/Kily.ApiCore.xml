@@ -2828,6 +2828,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetAreaRank">
+            <summary>
+            区域入住分布排行
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:KilyCore.API.Controllers.GovtWebController.GetAllCityMerchantCount">
             <summary>
             获取入驻的企业地图

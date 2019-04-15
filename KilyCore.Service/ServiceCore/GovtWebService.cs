@@ -1939,6 +1939,35 @@ namespace KilyCore.Service.ServiceCore
             List<Object> Complain = new List<Object> { data };
             return Complain;
         }
+
+
+        /// <summary>
+        /// 区域入住分布排行
+        /// </summary>
+        /// <returns></returns>
+        public IList<ResponseGovtRanking> GetAreaRank()
+        {
+            ResponseCity City = Kily.Set<SystemCity>().Where(t => t.Id.ToString() == GovtInfo().City).Select(t => new ResponseCity
+            {
+                CityId = t.Code,
+                CityName = t.Name
+            }).FirstOrDefault();
+            List<ResponseArea> Area = Kily.Set<SystemArea>().Where(t => t.CityCode == City.CityId).AsNoTracking().Select(t => new ResponseArea
+            {
+                Id = t.Id,
+                AreaName = t.Name
+            }).ToList();
+            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
+            IQueryable<RepastInfo> queryables = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false);
+            List<ResponseGovtRanking> data = new List<ResponseGovtRanking>();
+            Area.ForEach(t =>
+            {
+                int TotalCompany = queryable.Where(x => x.TypePath.Contains(t.Id.ToString())).Select(x => x.Id).Count();
+                int TotalMerchant = queryables.Where(x => x.TypePath.Contains(t.Id.ToString())).Select(x => x.Id).Count();
+                data.Add(new ResponseGovtRanking { AreaName = t.AreaName, TotalCount = TotalCompany + TotalMerchant });
+            });
+            return data.OrderByDescending(t=>t.TotalCount).ToList();
+        }
         /// <summary>
         /// 获取入驻的企业地图
         /// </summary>
