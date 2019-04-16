@@ -20,8 +20,116 @@
                 options.GetNowDate();
                 //获取区域排行
                 options.GetAreaRank();
+                //区域分布
+                options.GetMap();
+                //数据统计
+                controller.ajax({
+                    url: "GovtWeb/GetCountNum",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        options.DynamicNum("listedCompany", 0, result.data.Com);
+                        options.DynamicNum("listedSecurity", 0, result.data.Mer);
+                        options.DynamicNum("totalMarket", 0, result.data.Plain);
+                        options.DynamicNum("circulationMarket", 0, result.data.Risk);
+                        options.DynamicNum("shRatio", 0, result.data.Pw, 2);
+                        options.DynamicNum("szRatio", 0, result.data.Rw, 2);
+                    }
+                });
+                //产品统计
+                options.GetProductRank();
             },
             InitEvents: function () {
+               //浏览器窗口大小变化时，重置报表大小
+                $(window).resize(function () {
+                    options.Pro.resize();
+                    options.Map.resize();
+                    options.Area.resize();
+					//csrcChart.resize();
+				});
+            },
+            GetProductRank: function () {
+                controller.ajax({
+                    url: "GovtWeb/GetProductRank",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        options.Pro = echarts.init($("#csrcChart")[0], "shine");
+                        options.Pro.setOption({
+                            tooltip: {
+                                trigger: "item",
+                                formatter: "{b0}<br />产品数：{c0}<br />占比：{d0}%"
+                            },
+                            legend: {
+                                type: "scroll",
+                                orient: "vertical",
+                                padding: 0,
+                                top: 15,
+                                right: 0,
+                                itemGap: 5,
+                                itemWidth: 10,
+                                itemHeight: 10,
+                                textStyle: {
+                                    fontSize: 10,
+                                    color: "#b0c2f9"
+                                }
+                            },
+                            series: [{
+                                name: "产品统计",
+                                type: "pie",
+                                center: ["47%", "55%"],
+                                radius: ["30%", "85%"],
+                                data: result.data
+                            }]
+                        });
+                    }
+                });
+            },
+            GetMap: function () {
+                controller.ajax({
+                    url: "GovtWeb/GetAllCityMerchantCount",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        OptionMap = {
+                            backgroundColor: 'rgba(7,31,65,0)',
+                            tooltip: {
+                                trigger: 'item',
+                                formatter: '{b}<br/>{c} (家企业)'
+                            },
+                            dataRange: {
+                                bottom: 20,
+                                textStyle: { color: "#ffffff" },
+                                splitList: [
+                                    { start: 10000 },
+                                    { start: 5000, end: 10000 },
+                                    { start: 1000, end: 5000 },
+                                    { start: 0, end: 1000 },
+                                ],
+                            },
+                            series: [
+                                {
+                                    name: '区域分布概况图',
+                                    type: 'map',
+                                    mapType: result.data.CityName,
+                                    itemStyle: {
+                                        normal: { label: { show: true } },
+                                        emphasis: { label: { show: true } }
+                                    },
+                                    data: result.data.DataList,
+                                }
+                            ]
+                        }
+                        $.getJSON("/CityMap/" + result.data.City + "00.json", function (res) {
+                            echarts.registerMap(result.data.CityName, res);
+                            options.Map = echarts.init($("#mapChart")[0], "shine");
+                            options.Map.setOption(OptionMap);
+                        });
+                    }
+                });
             },
             GetNowDate: function () {
                 const now = new Date();
@@ -45,7 +153,8 @@
                             name.push(obj.name);
                             value.push(obj.value);
                         })
-                        echarts.init($("#rankChart")[0], "shine").setOption({
+                        options.Area = echarts.init($("#rankChart")[0], "shine");
+                        options.Area.setOption({
                             tooltip: {
                                 trigger: "axis",
                                 axisPointer: {
@@ -117,9 +226,20 @@
                                     }
                                 }
                             }]
-                        })
+                        });
                     }
                 });
+            },
+            DynamicNum: function (element, startVal, endVal, decimalNum) {
+                let n = decimalNum || 0;
+                let countUp = new CountUp(element, startVal, endVal, n, 2.5, {
+                    useEasing: true,
+                    useGrouping: true,
+                    separator: ',',
+                    decimal: '.'
+                });
+                if (!countUp.error)
+                    countUp.start();
             }
         }
         $(document).ready(function () {
@@ -156,36 +276,36 @@
                                     <th><img src="~/Content/DataView/img/icon-01.png" /></th>
                                     <td>
                                         <p><span id="listedCompany">0</span></p>
-                                        <p>上市公司数</p>
+                                        <p>今日企业入驻量</p>
                                     </td>
-                                    <th><img src="~/Content/DataView/img/icon-02.png" /></th>
+                                    <th><img src="~/Content/DataView/img/icon-01.png" /></th>
                                     <td>
                                         <p><span id="listedSecurity">0</span></p>
-                                        <p>上市证券数</p>
+                                        <p>今日商家入驻量</p>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th><img src="~/Content/DataView/img/icon-03.png" /></th>
+                                    <th><img src="~/Content/DataView/img/icon-02.png" /></th>
                                     <td>
                                         <p><span id="totalMarket">0</span></p>
-                                        <p>股票总市值（亿元）</p>
+                                        <p>今日投诉</p>
                                     </td>
-                                    <th><img src="~/Content/DataView/img/icon-04.png" /></th>
+                                    <th><img src="~/Content/DataView/img/icon-02.png" /></th>
                                     <td>
                                         <p><span id="circulationMarket">0</span></p>
-                                        <p>股票流通市值（亿元）</p>
+                                        <p>今日风险</p>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th><img src="~/Content/DataView/img/icon-05.png" /></th>
                                     <td>
                                         <p><span id="shRatio">0</span></p>
-                                        <p>上市平均市盈率</p>
+                                        <p>今日投诉周比</p>
                                     </td>
                                     <th><img src="~/Content/DataView/img/icon-06.png" /></th>
                                     <td>
                                         <p><span id="szRatio">0</span></p>
-                                        <p>深市平均市盈率</p>
+                                        <p>今日风险周比</p>
                                     </td>
                                 </tr>
                             </table>
@@ -194,8 +314,8 @@
                 </div>
                 <div class="flex-cell flex-cell-r" style="padding-left:0;">
                     <div class="chart-wrapper">
-                        <h3 class="chart-title">上市公司地域分布</h3>
-                        <div class="chart-div" id="mapChart">
+                        <h3 class="chart-title">地域分布</h3>
+                        <div class="chart-div chart-done" id="mapChart">
                             <div class="chart-loader"><div class="loader"></div></div>
                         </div>
                     </div>
@@ -205,15 +325,15 @@
                 <div class="flex-cell flex-cell-lc" style="padding-bottom:0;">
                     <div class="chart-wrapper">
                         <h3 class="chart-title">2018年月度股票情况及预测</h3>
-                        <div class="chart-div" id="trendChart">
+                        <div class="chart-div chart-done" id="trendChart">
                             <div class="chart-loader"><div class="loader"></div></div>
                         </div>
                     </div>
                 </div>
                 <div class="flex-cell flex-cell-r" style="padding-bottom:0;">
                     <div class="chart-wrapper">
-                        <h3 class="chart-title">CSRC行业分类</h3>
-                        <div class="chart-div" id="csrcChart">
+                        <h3 class="chart-title">产品统计</h3>
+                        <div class="chart-div chart-done" id="csrcChart">
                             <div class="chart-loader"><div class="loader"></div></div>
                         </div>
                     </div>

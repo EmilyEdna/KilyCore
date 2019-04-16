@@ -158,15 +158,14 @@ namespace KilyCore.Service.IServiceCore
         #endregion
 
         #region 数据统计
-        ResponseDataCount GetPieDataForCompany();
-        ResponseDataCount GetPieDataForProduct();
-        Object GetComplainHandler();
-
+        IList<DataPie> GetProductRank();
+        Object GetCountNum();
         IList<ResponseGovtRanking> GetAreaRank();
         ResponseGovtMap GetAllCityMerchantCount();
         Object GetComplainLine();
         Object GetComDataRatio();
         Object GetComplainDataRatio();
+        Object GetLawRank();
         #endregion
 
         #region 责任协议

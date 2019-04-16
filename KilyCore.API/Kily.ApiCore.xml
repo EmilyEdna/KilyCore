@@ -2810,13 +2810,7 @@
             <param name="Param"></param>
             <returns></returns>
         </member>
-        <member name="M:KilyCore.API.Controllers.GovtWebController.GetPieDataForCompany">
-            <summary>
-            获取公司统计
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:KilyCore.API.Controllers.GovtWebController.GetPieDataForProduct">
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetProductRank">
             <summary>
             获取产品统计
             </summary>
@@ -2825,6 +2819,12 @@
         <member name="M:KilyCore.API.Controllers.GovtWebController.GetComplainHandler">
             <summary>
             获取反馈率
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetCountNum">
+            <summary>
+            统计数据
             </summary>
             <returns></returns>
         </member>

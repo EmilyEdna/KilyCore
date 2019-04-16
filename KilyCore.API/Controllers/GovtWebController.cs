@@ -866,31 +866,21 @@ namespace KilyCore.API.Controllers
 
         #region 数据统计
         /// <summary>
-        /// 获取公司统计
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost("GetPieDataForCompany")]
-        public ObjectResultEx GetPieDataForCompany()
-        {
-            return ObjectResultEx.Instance(GovtWebService.GetPieDataForCompany(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }
-        /// <summary>
         /// 获取产品统计
         /// </summary>
         /// <returns></returns>
-        [HttpPost("GetPieDataForProduct")]
-        public ObjectResultEx GetPieDataForProduct()
+        [HttpPost("GetProductRank")]
+        public ObjectResultEx GetProductRank()
         {
-            return ObjectResultEx.Instance(GovtWebService.GetPieDataForProduct(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(GovtWebService.GetProductRank(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
-        /// 获取反馈率
+        /// 统计数据
         /// </summary>
         /// <returns></returns>
-        [HttpPost("GetComplainHandler")]
-        public ObjectResultEx GetComplainHandler()
-        {
-            return ObjectResultEx.Instance(GovtWebService.GetComplainHandler(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        [HttpPost("GetCountNum")]
+        public ObjectResultEx GetCountNum() {
+            return ObjectResultEx.Instance(GovtWebService.GetCountNum(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 区域入住分布排行
