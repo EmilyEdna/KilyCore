@@ -875,6 +875,14 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(GovtWebService.GetProductRank(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
+        /// 获取执行检查统计
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetLawRank")]
+        public ObjectResultEx GetLawRank() {
+            return ObjectResultEx.Instance(GovtWebService.GetLawRank(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 统计数据
         /// </summary>
         /// <returns></returns>

@@ -1181,7 +1181,9 @@ namespace KilyCore.Service.ServiceCore
         {
             GovtNetPatrol govtNet = Kily.Set<GovtNetPatrol>().Where(t => t.Id == Param.Id).AsNoTracking().FirstOrDefault();
             govtNet.BulletinNum += 1;
-            UpdateField(govtNet, "BulletinNum");
+            govtNet.QualifiedNum = ((govtNet.PotrolNum * 1.0) / govtNet.BulletinNum).ToString();
+            List<String> Fields = new List<String> { "BulletinNum", "QualifiedNum" };
+            UpdateField(govtNet, null, Fields);
             SystemMessage message = new SystemMessage
             {
                 CompanyId = govtNet.CompanyId,
@@ -1841,7 +1843,31 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public Object GetLawRank()
         {
-            Kily.Set<GovtNetPatrol>
+            IQueryable<GovtNetPatrol> Patrol = Kily.Set<GovtNetPatrol>()
+                .Where(t => t.CreateTime.Value.Year == DateTime.Now.Year);
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+                Patrol = Patrol.Where(t => t.TypePath.Contains(GovtInfo().City));
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
+            {
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        //外环
+                        Patrol = Patrol.Where(t => t.TypePath.Contains(item));
+                    }
+                else
+                    Patrol = Patrol.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+            }
+            else
+                Patrol = Patrol.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            return Patrol.GroupBy(t => t.CreateTime.Value.Month).Select(t => new
+            {
+                Month = t.Key,
+                MonthCount = t.Count(),
+                MonthAvg = t.Select(m => Convert.ToDouble(m.QualifiedNum)).Sum() / (t.Count() == 0 ? 1 : t.Count()),
+                MonthPlain = t.Select(m => m.BulletinNum).Sum() / (t.Count() == 0 ? 1 : t.Count())
+            }).ToList();
         }
         /// <summary>
         /// 统计数据
@@ -1890,8 +1916,8 @@ namespace KilyCore.Service.ServiceCore
             }
             var week_risk = Kily.Set<GovtRisk>().Where(t => t.ReleaseTime >= today.AddDays(-7));
             var week_plain = Kily.Set<GovtComplain>().Where(t => t.ComplainTime >= today.AddDays(-7));
-            double Rw = (risk.Count()*1.0) / (week_risk.Count() == 0 ? 1 : week_risk.Count());
-            double Pw = (plain.Count()*1.0) / (week_plain.Count() == 0 ? 1 : week_plain.Count());
+            double Rw = (risk.Count() * 1.0) / (week_risk.Count() == 0 ? 1 : week_risk.Count());
+            double Pw = (plain.Count() * 1.0) / (week_plain.Count() == 0 ? 1 : week_plain.Count());
             var data = new { Com = com.Count(), Mer = mer.Count(), Risk = risk.Count(), Plain = plain.Count(), Rw, Pw };
             return data;
         }

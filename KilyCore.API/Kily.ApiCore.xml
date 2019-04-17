@@ -2816,9 +2816,9 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:KilyCore.API.Controllers.GovtWebController.GetComplainHandler">
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetLawRank">
             <summary>
-            获取反馈率
+            获取执行检查统计
             </summary>
             <returns></returns>
         </member>

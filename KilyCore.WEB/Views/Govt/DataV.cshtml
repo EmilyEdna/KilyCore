@@ -16,6 +16,10 @@
             },
             InitDom: function () {
                 $(".header-title").text(GovtInfo.TrueName + "可视化大屏");
+                $("#line-title").text(new Date().getFullYear() + "巡查一览");
+                options.InitEle();
+            },
+            InitEle: function () {
                 //获取数据时间
                 options.GetNowDate();
                 //获取区域排行
@@ -39,15 +43,213 @@
                 });
                 //产品统计
                 options.GetProductRank();
+                //巡查统计
+                options.GetLawRank();
             },
             InitEvents: function () {
-               //浏览器窗口大小变化时，重置报表大小
+                //浏览器窗口大小变化时，重置报表大小
                 $(window).resize(function () {
                     options.Pro.resize();
                     options.Map.resize();
                     options.Area.resize();
-					//csrcChart.resize();
-				});
+                    options.Law.resize();
+                });
+            },
+            GetLawRank: function () {
+                options.Law = echarts.init($("#trendChart")[0], "shine");
+                options.Law.setOption({
+                    tooltip: {
+                        trigger: "axis",
+                        axisPointer: {
+                            type: "none"
+                        }
+                    },
+                    legend: {
+                        left: "center",
+                        bottom: 3,
+                        itemWidth: 15,
+                        itemHeight: 10,
+                        textStyle: {
+                            fontSize: 12,
+                            color: "#b0c2f9"
+                        },
+                        data: ["市价总值", "成交总额", "平均市盈率"]
+                    },
+                    grid: {
+                        top: 40,
+                        bottom: 50,
+                        left: 60,
+                        right: 60
+                    },
+                    xAxis: {
+                        type: "category",
+                        axisLine: {
+                            lineStyle: { color: "#b0c2f9" }
+                        },
+                        axisTick: { show: false },
+                        axisLabel: {
+                            fontSize: 12,
+                            color: "#b0c2f9"
+                        }
+                    },
+                    yAxis: [{
+                        name: "月查数",
+                        type: "value",
+                        splitNumber: 5,
+                        axisLine: {
+                            lineStyle: { color: "#b0c2f9" }
+                        },
+                        splitLine: { show: false },
+                        axisTick: { color: "#b0c2f9" },
+                        axisLabel: {
+                            fontSize: 12,
+                            color: "#b0c2f9",
+                            formatter: (value, index) => {
+                                return value;
+                            }
+                        }
+                    }, {
+                        name: "月指数",
+                        type: "value",
+                        splitNumber: 5,
+                        maxInterval: 5,
+                        minInterval: 5,
+                        interval: 5,
+                        axisLine: {
+                            lineStyle: { color: "#b0c2f9" }
+                        },
+                        splitLine: { show: false },
+                        axisTick: { color: "#b0c2f9" },
+                        axisLabel: {
+                            fontSize: 12,
+                            color: "#b0c2f9"
+                        }
+                    }],
+                    visualMap: {
+                        show: false,
+                        seriesIndex: 2,
+                        dimension: 0,
+                        pieces: [{
+                            lte: 9,
+                            color: "rgba(176, 58, 91, 1)"
+                        }, {
+                            gt: 9,
+                            lte: 11,
+                            color: "rgba(176, 58, 91, 0.5)"
+                        }]
+                    },
+                    series: [
+                        {
+                            name: "月巡查数",
+                            type: "pictorialBar",
+                            symbol: 'path://d="M150 50 L130 130 L170 130  Z"',
+                            barCategoryGap: "40%",
+                            itemStyle: {
+                                color: function (params) {
+                                    if (params.dataIndex >= 10) {
+                                        return "rgba(119, 96, 246, 0.5)";
+                                    }
+                                    return "rgba(119, 96, 246, 1)";
+                                }
+                            },
+                            markPoint: {
+                                itemStyle: {
+                                    color: "rgba(119, 96, 246, 1)"
+                                },
+                                data: [{
+                                    name: "最大值",
+                                    type: "max"
+                                }]
+                            },
+                            markLine: {
+                                lineStyle: {
+                                    color: "rgba(119, 96, 246, 1)"
+                                },
+                                label: {
+                                    position: "middle",
+                                    formatter: "月度平均巡查数：{c}%"
+                                },
+                                data: [{
+                                    name: "平均值",
+                                    type: "average"
+                                }]
+                            }
+                        },
+                        {
+                            name: "月不合格率",
+                            type: "pictorialBar",
+                            symbol: 'path://d="M150 50 L130 130 L170 130  Z"',
+                            barCategoryGap: "40%",
+                            itemStyle: {
+                                color: function (params) {
+                                    if (params.dataIndex >= 10) {
+                                        return "rgba(230, 182, 0, 0.5)";
+                                    }
+                                    return "rgba(230, 182, 0, 1)";
+                                }
+                            },
+                            markPoint: {
+                                itemStyle: {
+                                    color: "rgba(230, 182, 0, 1)"
+                                },
+                                data: [{
+                                    name: "最大值",
+                                    type: "max"
+                                }]
+                            },
+                            markLine: {
+                                lineStyle: {
+                                    color: "rgba(230, 182, 0, 1)"
+                                },
+                                label: {
+                                    position: "middle",
+                                    formatter: "月度平均不合格率：{c}%"
+                                },
+                                data: [{
+                                    name: "平均值",
+                                    type: "average"
+                                }]
+                            }
+                        },
+                        {
+                            name: "平均合格率",
+                            type: "line",
+                            yAxisIndex: 1
+                        }]
+                });
+                controller.ajax({
+                    url: "GovtWeb/GetLawRank",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var Month = [];
+                        var MonthCount = [];
+                        var MonthAvg = [];
+                        var MonthPlain = [];
+                        $.each(result.data, function (i, obj) {
+                            Month.push(obj.Month + "月");
+                            MonthCount.push(obj.MonthCount);
+                            MonthAvg.push(obj.MonthAvg);
+                            MonthPlain.push(obj.MonthPlain);
+                        });
+                        options.Law.setOption({
+                            xAxis: {
+                                data: Month,
+                            },
+                            series: [{
+                                name: "月巡查数",
+                                data: MonthCount
+                            }, {
+                                name: "月不合格率",
+                                data: MonthPlain
+                            }, {
+                                name: "平均合格率",
+                                data: MonthAvg
+                            }]
+                        });
+                    }
+                });
             },
             GetProductRank: function () {
                 controller.ajax({
@@ -250,12 +452,9 @@
 <body>
     <header id="header">
         <h3 class="header-title"></h3>
-        <div class="header-info header-info-l">进入系统</div>
+        <div class="header-info header-info-l"><a href="@Url.Action("Home")"> 进入系统</a></div>
         <div class="header-info header-info-r">数据日期：<span id="nowDate"></span></div>
     </header>
-
-    <footer id="footer"></footer>
-
     <div id="container">
         <div id="flexCon">
             <div class="flex-row">
@@ -324,7 +523,7 @@
             <div class="flex-row">
                 <div class="flex-cell flex-cell-lc" style="padding-bottom:0;">
                     <div class="chart-wrapper">
-                        <h3 class="chart-title">2018年月度股票情况及预测</h3>
+                        <h3 class="chart-title" id="line-title"></h3>
                         <div class="chart-div chart-done" id="trendChart">
                             <div class="chart-loader"><div class="loader"></div></div>
                         </div>
