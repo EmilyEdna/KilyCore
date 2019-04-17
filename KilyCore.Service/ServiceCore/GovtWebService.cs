@@ -1946,7 +1946,7 @@ namespace KilyCore.Service.ServiceCore
                 int TotalMerchant = queryables.Where(x => x.TypePath.Contains(t.Id.ToString())).Select(x => x.Id).Count();
                 data.Add(new ResponseGovtRanking { AreaName = t.AreaName, TotalCount = TotalCompany + TotalMerchant });
             });
-            return data.OrderByDescending(t => t.TotalCount).ToList();
+            return data.OrderByDescending(t => t.TotalCount).Take(10).ToList();
         }
         /// <summary>
         /// 获取入驻的企业地图
