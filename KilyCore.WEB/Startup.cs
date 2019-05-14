@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
- 
+using Microsoft.AspNetCore.HttpOverrides;
+
 namespace KilyCore.WEB
 {
     public class Startup
@@ -40,7 +41,10 @@ namespace KilyCore.WEB
             }
 
             app.UseStaticFiles();
-
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

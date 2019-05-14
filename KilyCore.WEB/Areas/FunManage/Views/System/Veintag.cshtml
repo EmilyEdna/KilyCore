@@ -60,7 +60,8 @@
                     action.push('<button class="btn btn-sm btn-primary com"><i class="fa fa-pencil-square-o"></i>公司签收信息</button>');
                     action.push('<button class="btn btn-sm btn-primary amd"><i class="fa fa-pencil-square-o"></i>营运中心签收信息</button>');
                     if (SysUserInfo.AccountType > 20)
-                        action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>签收</button>');
+                        if(!row.IsAccept)
+                            action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>签收</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {

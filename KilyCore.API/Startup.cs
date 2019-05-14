@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using NLog.Extensions.Logging;
 using NLog.Web;
+using Microsoft.AspNetCore.HttpOverrides;
 using Swashbuckle.AspNetCore.Swagger;
 /// <summary>
 /// 作者：刘泽华
@@ -78,7 +79,8 @@ namespace KilyCore.API
                 t.IdleTimeout = TimeSpan.FromMinutes(5);
             });
             //启用Swagger
-            services.AddSwaggerGen(opt => {
+            services.AddSwaggerGen(opt =>
+            {
                 opt.SwaggerDoc("v1", new Info { Title = "Api", Version = "v1" });
                 opt.IncludeXmlComments(Path.Combine(Directory.GetCurrentDirectory(), "Kily.ApiCore.xml"));
             });
@@ -109,6 +111,10 @@ namespace KilyCore.API
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
             app.UseMvc();
         }
         /// <summary>

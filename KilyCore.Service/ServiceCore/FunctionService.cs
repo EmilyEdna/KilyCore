@@ -256,6 +256,7 @@ namespace KilyCore.Service.ServiceCore
                     StarSerialNo = t.StarSerialNo,
                     EndSerialNo = t.EndSerialNo,
                     TotalNo = t.TotalNo,
+                    IsAccept = t.IsAccept,
                     AcceptUser = t.AcceptUser,
                 }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
                 return data;
@@ -269,6 +270,7 @@ namespace KilyCore.Service.ServiceCore
                     StarSerialNo = t.StarSerialNo,
                     EndSerialNo = t.EndSerialNo,
                     TotalNo = t.TotalNo,
+                    IsAccept=t.IsAccept,
                     AcceptUser = t.AcceptUser,
                 }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
                 return data;
@@ -436,7 +438,7 @@ namespace KilyCore.Service.ServiceCore
                 return queryable.Select(t => new ResponseVienTagPreson()
                 {
                     Id = t.Id,
-                    Name = t.TrueName
+                    Name = t.CompanyName
                 }).ToList();
             }
         }
