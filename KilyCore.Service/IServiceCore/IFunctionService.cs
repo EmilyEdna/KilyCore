@@ -34,6 +34,7 @@ namespace KilyCore.Service.IServiceCore
         IList<ResponseVienTagPreson> GetAcceptUser(int flag);
         IList<ResponseVeinTag> GetTagBatchList();
         String AcceptTag(Guid Id);
+        bool IsVenTag(int Param);
         #endregion
         #region 系统码表
         PagedResult<ResponseDictionary> GetSysDicPage(PageParamList<RequestDictionary> pageParam);

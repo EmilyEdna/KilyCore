@@ -258,6 +258,7 @@ namespace KilyCore.Service.ServiceCore
                     TotalNo = t.TotalNo,
                     IsAccept = t.IsAccept,
                     AcceptUser = t.AcceptUser,
+                    AllotNum = t.AllotNum,
                 }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
                 return data;
             }
@@ -270,8 +271,9 @@ namespace KilyCore.Service.ServiceCore
                     StarSerialNo = t.StarSerialNo,
                     EndSerialNo = t.EndSerialNo,
                     TotalNo = t.TotalNo,
-                    IsAccept=t.IsAccept,
+                    IsAccept = t.IsAccept,
                     AcceptUser = t.AcceptUser,
+                    AllotNum = t.AllotNum,
                 }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
                 return data;
             }
@@ -345,7 +347,7 @@ namespace KilyCore.Service.ServiceCore
             //查询字表当权限等级为全国以下
             var Customer = Kily.Set<FunctionVeinTagAttach>().Where(t => t.IsDelete == false).Where(t => t.SingleBatchNo == Param.BatchNo).FirstOrDefault();
             if (Customer != null)
-                if (Customer.IsAccept)
+                if (!Customer.IsAccept)
                     return "请先签收";
             //检测企业有没有分配记录
             var Sum = Kily.Set<EnterpriseVeinTag>().Where(t => t.IsDelete == false).Where(t => t.BatchNo == Param.BatchNo).AsNoTracking().Select(t => t.TotalNo).Sum();
@@ -375,13 +377,11 @@ namespace KilyCore.Service.ServiceCore
             else
             {
                 Customer.AllotNum += Param.TotalNo;
-                Customer.AllotNum += Param.TotalNo;
                 Customer.AllotType = Param.AllotType;
-                Customer.AcceptUser = Param.AcceptUser;
                 Customer.AcceptUserName = Param.AcceptUserName;
+                IList<String> Fields = new List<String> { "AllotNum", "AcceptUserName", "AllotType" };
                 if (Customer.AllotNum > Customer.TotalNo)
                     return $"当前纹理二维码配额已用完";
-                IList<String> Fields = new List<String> { "AllotNum", "AcceptUser", "AcceptUserName", "AllotType" };
                 UpdateField<FunctionVeinTagAttach>(Customer, null, Fields);
                 if (Param.AllotType == 1)
                     return Insert<EnterpriseVeinTag>(Tag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
@@ -475,6 +475,11 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.UPDATEFAIL;
         }
+        public bool IsVenTag(int Param)
+        {
+            var data = Kily.Set<EnterpriseTagAttach>().Where(t => t.StarSerialNo <= Param && t.EndSerialNo >= Param).FirstOrDefault();
+            return data == null ? false : true;
+        }
         #endregion
         #region 系统字典
         /// <summary>
@@ -543,7 +548,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseAreaDictionary> GetAreaDicPage(PageParamList<RequestAreaDictionary> pageParam)
         {
-            IQueryable<FunctionAreaDictionary> queryable = Kily.Set<FunctionAreaDictionary>().OrderByDescending(t=>t.CreateTime).AsNoTracking();
+            IQueryable<FunctionAreaDictionary> queryable = Kily.Set<FunctionAreaDictionary>().OrderByDescending(t => t.CreateTime).AsNoTracking();
             IQueryable<FunctionDisDictionary> queryables = Kily.Set<FunctionDisDictionary>().AsNoTracking();
             if (UserInfo().AccountType != AccountEnum.Admin && UserInfo().AccountType != AccountEnum.Country)
             {
@@ -556,9 +561,9 @@ namespace KilyCore.Service.ServiceCore
                 DicValue = x.DicValue,
                 Id = t.Id,
                 AttachArea = string.Join("*", Kily.Set<SystemProvince>().Where(o => t.ProvinceId.Contains(o.Id.ToString())).Select(o => o.Name).ToArray()),
-                ProvinceKeyValue = Kily.Set<SystemProvince>().Where(o => t.ProvinceId.Contains(o.Id.ToString())).ToDictionary(o=>o.Id.ToString(),o=>o.Name),
-                DisArea = string.Join("*",queryables.Where(m => m.AreaDicId == t.Id).Select(m=>m.ProvinceId).ToArray()),
-                IsEnable = (queryables.Where(o=>o.AreaDicId==t.Id).Select(o=>o.IsEnable).FirstOrDefault()==null?false: queryables.Where(o => o.AreaDicId == t.Id).Select(o => o.IsEnable).FirstOrDefault())
+                ProvinceKeyValue = Kily.Set<SystemProvince>().Where(o => t.ProvinceId.Contains(o.Id.ToString())).ToDictionary(o => o.Id.ToString(), o => o.Name),
+                DisArea = string.Join("*", queryables.Where(m => m.AreaDicId == t.Id).Select(m => m.ProvinceId).ToArray()),
+                IsEnable = (queryables.Where(o => o.AreaDicId == t.Id).Select(o => o.IsEnable).FirstOrDefault() == null ? false : queryables.Where(o => o.AreaDicId == t.Id).Select(o => o.IsEnable).FirstOrDefault())
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -591,7 +596,7 @@ namespace KilyCore.Service.ServiceCore
             }
             else
             {
-                return Remove<FunctionDisDictionary>(t=>t.AreaDicId==Param.AreaDicId&&t.ProvinceId==Param.ProvinceId)? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
+                return Remove<FunctionDisDictionary>(t => t.AreaDicId == Param.AreaDicId && t.ProvinceId == Param.ProvinceId) ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
             }
         }
         /// <summary>
@@ -624,7 +629,7 @@ namespace KilyCore.Service.ServiceCore
                     queryable = queryable.Where(t => t.DicName.Contains("餐饮"));
                 if ((MerchantEnum)Param == MerchantEnum.UnitCanteen)
                     queryable = queryable.Where(t => t.DicName.Contains("单位"));
-                if((MerchantEnum)Param!= MerchantEnum.Normal&& (MerchantEnum)Param == MerchantEnum.UnitCanteen)
+                if ((MerchantEnum)Param != MerchantEnum.Normal && (MerchantEnum)Param == MerchantEnum.UnitCanteen)
                     queryable = queryable.Where(t => t.DicName.Contains("三小"));
                 queryable = queryable.Where(t => !t.DicName.Contains("生产")
                   && !t.DicName.Contains("种植")
@@ -637,12 +642,12 @@ namespace KilyCore.Service.ServiceCore
                   .GroupJoin(queryables, m => m.Id, n => n.AreaDicId, (m, n) => new { m.x, n.FirstOrDefault().IsEnable })
                   .Select(t => new ResponseAreaDictionary()
                   {
-                      Id=t.x.Id,
+                      Id = t.x.Id,
                       DicName = t.x.DicName,
                       DicValue = t.x.DicValue,
                       AttachInfo = t.x.AttachInfo,
-                      IsEnable = (t.IsEnable==null?false:t.IsEnable)
-                  }).ToList().Where(t=>t.IsEnable==false).ToList();
+                      IsEnable = (t.IsEnable == null ? false : t.IsEnable)
+                  }).ToList().Where(t => t.IsEnable == false).ToList();
             return data;
         }
         /// <summary>
@@ -652,7 +657,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string GetVersionById(Guid Id)
         {
-           return Kily.Set<FunctionDictionary>().Where(t => t.Id == Id).Select(t => t.DicDescript).FirstOrDefault();
+            return Kily.Set<FunctionDictionary>().Where(t => t.Id == Id).Select(t => t.DicDescript).FirstOrDefault();
         }
         /// <summary>
         /// 获取分配详情

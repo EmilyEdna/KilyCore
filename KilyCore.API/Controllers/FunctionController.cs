@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using KilyCore.DataEntity.RequestMapper.Function;
 using KilyCore.Extension.ResultExtension;
 using KilyCore.Service.QueryExtend;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 /// <summary>
@@ -160,6 +161,17 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx AcceptTag(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(FunctionService.AcceptTag(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 判断是否存在纹理标签
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpGet("IsVenTag")]
+        [AllowAnonymous]
+        public ObjectResultEx IsVenTag(SimpleParam<int> Param)
+        {
+            return ObjectResultEx.Instance(FunctionService.IsVenTag(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 系统码表
