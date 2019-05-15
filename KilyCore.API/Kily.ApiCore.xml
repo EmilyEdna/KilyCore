@@ -2100,6 +2100,13 @@
             <param name="Param"></param>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.IsVenTag(KilyCore.Service.QueryExtend.SimpleParam{System.Int32})">
+            <summary>
+            判断是否存在纹理标签
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
         <member name="M:KilyCore.API.Controllers.FunctionController.GetSysDicPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Function.RequestDictionary})">
             <summary>
             系统码表分页

@@ -257,6 +257,7 @@ namespace KilyCore.Service.ServiceCore
                     EndSerialNo = t.EndSerialNo,
                     TotalNo = t.TotalNo,
                     IsAccept = t.IsAccept,
+                    SingleBatchNo=t.BatchNo,
                     AcceptUser = t.AcceptUser,
                     AllotNum = t.AllotNum,
                 }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -271,6 +272,7 @@ namespace KilyCore.Service.ServiceCore
                     StarSerialNo = t.StarSerialNo,
                     EndSerialNo = t.EndSerialNo,
                     TotalNo = t.TotalNo,
+                    SingleBatchNo=t.SingleBatchNo,
                     IsAccept = t.IsAccept,
                     AcceptUser = t.AcceptUser,
                     AllotNum = t.AllotNum,
@@ -455,7 +457,7 @@ namespace KilyCore.Service.ServiceCore
                 {
                     BatchNo = t.BatchNo,
                 }).ToList();
-            return queryables.Where(t => t.AcceptUser.Contains(UserInfo().Id.ToString())).Select(t => new ResponseVeinTag()
+            return queryables.Where(t=>t.TotalNo>t.AllotNum).Where(t => t.AcceptUser.Contains(UserInfo().Id.ToString())).Select(t => new ResponseVeinTag()
             {
                 SingleBatchNo = t.SingleBatchNo,
             }).ToList();
