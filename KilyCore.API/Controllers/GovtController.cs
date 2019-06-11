@@ -135,7 +135,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpGet("PushInfo")]
+        [HttpPost("PushInfo")]
         [AllowAnonymous]
         public ObjectResultEx PushInfo(RequestGovtInfo Param)
         {

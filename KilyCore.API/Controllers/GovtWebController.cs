@@ -157,6 +157,15 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetRepastDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(GovtWebService.GetRepastDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }/// <summary>
+        /// 获取所有企业
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpGet("GetAllCom")]
+        public ObjectResultEx GetAllCom(RequestEnterprise Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetAllCom(Param.TypePath,(int)Param.CompanyType), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
 

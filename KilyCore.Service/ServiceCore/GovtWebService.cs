@@ -316,6 +316,23 @@ namespace KilyCore.Service.ServiceCore
             }).AsNoTracking().FirstOrDefault();
             return data;
         }
+        /// <summary>
+        /// 获取所有企业
+        /// </summary>
+        /// <param name="Area"></param>
+        /// <param name="ComType"></param>
+        /// <returns></returns>
+        public object GetAllCom(string Area, int ComType)
+        {
+            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>()
+                 .Where(t => t.AuditType == AuditEnum.AuditSuccess)
+                 .OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(Area))
+                queryable = queryable.Where(t => t.TypePath.Contains(Area));
+            if (ComType != 0)
+                queryable = queryable.Where(t => t.CompanyType == (CompanyEnum)ComType);
+            return queryable.ToList();
+        }
         #endregion
 
         #region 部门信息
