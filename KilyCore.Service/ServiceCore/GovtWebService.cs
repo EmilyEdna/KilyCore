@@ -487,6 +487,14 @@ namespace KilyCore.Service.ServiceCore
                 return Insert(Info) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
             }
         }
+        /// <summary>
+        /// 获取所有政府用户
+        /// </summary>
+        /// <returns></returns>
+        public List<ResponseGovtInfo> GetAllGovt()
+        {
+           return Kily.Set<GovtInfo>().Where(t => t.IsDelete == false).ToList().MapToList<GovtInfo, ResponseGovtInfo>();
+        }
         #endregion
 
         #region 管辖区域

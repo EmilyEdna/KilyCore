@@ -49,6 +49,7 @@ namespace KilyCore.Service.IServiceCore
         #region 政府账号
         PagedResult<ResponseGovtInfo> GetInfoPage(PageParamList<RequestGovtInfo> pageParam);
         String EditInfo(RequestGovtInfo Param);
+        String PushInfo (RequestGovtInfo Param);
         #endregion
     }
 }

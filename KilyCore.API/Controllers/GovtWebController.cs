@@ -162,6 +162,16 @@ namespace KilyCore.API.Controllers
 
         #region 部门信息
         /// <summary>
+        /// 获取或有企业
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetAllGovt")]
+        [AllowAnonymous]
+        public ObjectResultEx GetAllGovt()
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetAllGovt(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 机构分页
         /// </summary>
         /// <param name="pageParam"></param>
@@ -879,7 +889,8 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetLawRank")]
-        public ObjectResultEx GetLawRank() {
+        public ObjectResultEx GetLawRank()
+        {
             return ObjectResultEx.Instance(GovtWebService.GetLawRank(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -887,7 +898,8 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetCountNum")]
-        public ObjectResultEx GetCountNum() {
+        public ObjectResultEx GetCountNum()
+        {
             return ObjectResultEx.Instance(GovtWebService.GetCountNum(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>

@@ -2,6 +2,7 @@
 using KilyCore.DataEntity.RequestMapper.Govt;
 using KilyCore.Extension.ResultExtension;
 using KilyCore.Service.QueryExtend;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KilyCore.API.Controllers
@@ -128,6 +129,17 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx EditInfo(RequestGovtInfo Param)
         {
             return ObjectResultEx.Instance(GovtService.EditInfo(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 推送账号
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpGet("PushInfo")]
+        [AllowAnonymous]
+        public ObjectResultEx PushInfo(RequestGovtInfo Param)
+        {
+            return ObjectResultEx.Instance(GovtService.PushInfo(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

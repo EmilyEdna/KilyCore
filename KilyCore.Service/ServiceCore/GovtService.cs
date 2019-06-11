@@ -264,6 +264,16 @@ namespace KilyCore.Service.ServiceCore
             GovtInfo Info = Param.MapToEntity<GovtInfo>();
             return Insert(Info) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
+        /// <summary>
+        /// 推送账号
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string PushInfo(RequestGovtInfo Param)
+        {
+            GovtInfo Info = Param.MapToEntity<GovtInfo>();
+            return Insert(Info) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
         #endregion
     }
 }

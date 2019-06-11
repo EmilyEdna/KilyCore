@@ -65,6 +65,7 @@ namespace KilyCore.Service.IServiceCore
         String RemoveGovtInfo(Guid Id);
         ResponseGovtInfo GetGovtInfoDetail(Guid Id);
         String EditUser(RequestGovtInfo Param);
+        List<ResponseGovtInfo> GetAllGovt();
         #endregion
 
         #region 管辖区域
