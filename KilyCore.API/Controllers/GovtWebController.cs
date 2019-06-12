@@ -157,7 +157,8 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetRepastDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(GovtWebService.GetRepastDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }/// <summary>
+        }
+        /// <summary>
         /// 获取所有企业
         /// </summary>
         /// <param name="Param"></param>
@@ -165,7 +166,37 @@ namespace KilyCore.API.Controllers
         [HttpGet("GetAllCom")]
         public ObjectResultEx GetAllCom(RequestEnterprise Param)
         {
-            return ObjectResultEx.Instance(GovtWebService.GetAllCom(Param.TypePath,(int)Param.CompanyType), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(GovtWebService.GetAllCom(Param.TypePath, (int)Param.CompanyType), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取所有商家
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpGet("GetAllMer")]
+        public ObjectResultEx GetAllMer(RequestMerchant Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetAllMer(Param.TypePath, (int)Param.DiningType), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取企业视频
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpGet("GetComVideo")]
+        public ObjectResultEx GetComVideo(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetComVideo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取商家视频
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpGet("GetMerVideo")]
+        public ObjectResultEx GetMerVideo(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetMerVideo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
 

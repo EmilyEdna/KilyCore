@@ -333,6 +333,43 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.CompanyType == (CompanyEnum)ComType);
             return queryable.ToList();
         }
+        /// <summary>
+        /// 获取所有商家
+        /// </summary>
+        /// <param name="Area"></param>
+        /// <param name="ComType"></param>
+        /// <returns></returns>
+        public object GetAllMer(string Area, int ComType)
+        {
+            IQueryable<RepastInfo> queryable = Kily.Set<RepastInfo>()
+                 .Where(t => t.AuditType == AuditEnum.AuditSuccess)
+                 .OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(Area))
+                queryable = queryable.Where(t => t.TypePath.Contains(Area));
+            if (ComType != 0)
+                queryable = queryable.Where(t => t.DiningType == (MerchantEnum)ComType);
+            return queryable.ToList();
+        }
+        /// <summary>
+        /// 企业视频
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public object GetComVideo(Guid Id)
+        {
+            return Kily.Set<EnterpriseVedio>().Where(x => x.CompanyId == Id && x.IsIndex == true)
+                 .OrderByDescending(x => x.CreateTime).Take(4).ToList();
+        }
+        /// <summary>
+        /// 商家视频
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public object GetMerVideo(Guid Id)
+        {
+            return Kily.Set<RepastVideo>().Where(x => x.InfoId == Id && x.IsIndex == true)
+                .OrderByDescending(x => x.CreateTime).Take(4).ToList();
+        }
         #endregion
 
         #region 部门信息
@@ -510,7 +547,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public List<ResponseGovtInfo> GetAllGovt()
         {
-           return Kily.Set<GovtInfo>().Where(t => t.IsDelete == false).ToList().MapToList<GovtInfo, ResponseGovtInfo>();
+            return Kily.Set<GovtInfo>().Where(t => t.IsDelete == false).ToList().MapToList<GovtInfo, ResponseGovtInfo>();
         }
         #endregion
 

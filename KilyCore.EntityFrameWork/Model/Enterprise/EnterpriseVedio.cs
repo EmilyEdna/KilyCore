@@ -31,7 +31,7 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual string VedioAddr { get; set; }
         /// <summary>
-        /// 视频地址3
+        /// 视频封面
         /// </summary>
         public virtual string VedioCover { get; set; }
         /// <summary>
