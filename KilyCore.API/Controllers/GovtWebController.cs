@@ -179,24 +179,15 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(GovtWebService.GetAllMer(Param.TypePath, (int)Param.DiningType), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
-        /// 获取企业视频
+        /// 获取所有视频
         /// </summary>
         /// <param name="Param"></param>
+        /// <param name="Type"></param>
         /// <returns></returns>
-        [HttpGet("GetComVideo")]
-        public ObjectResultEx GetComVideo(SimpleParam<Guid> Param)
+        [HttpGet("GetAllVideo")]
+        public ObjectResultEx GetAllVideo(SimpleParam<Guid> Param, SimpleParam<int> Type)
         {
-            return ObjectResultEx.Instance(GovtWebService.GetComVideo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }
-        /// <summary>
-        /// 获取商家视频
-        /// </summary>
-        /// <param name="Param"></param>
-        /// <returns></returns>
-        [HttpGet("GetMerVideo")]
-        public ObjectResultEx GetMerVideo(SimpleParam<Guid> Param)
-        {
-            return ObjectResultEx.Instance(GovtWebService.GetMerVideo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(GovtWebService.GetAllVideo(Param.Id,Type.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
 

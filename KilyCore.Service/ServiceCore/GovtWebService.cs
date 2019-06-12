@@ -347,28 +347,28 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(Area))
                 queryable = queryable.Where(t => t.TypePath.Contains(Area));
             if (ComType != 0)
-                queryable = queryable.Where(t => t.DiningType == (MerchantEnum)ComType);
+            {
+                if(ComType<=20)
+                    queryable = queryable.Where(t => t.DiningType == (MerchantEnum)ComType);
+                else
+                    queryable = queryable.Where(t => t.DiningType >= (MerchantEnum)ComType);
+            }
             return queryable.ToList();
         }
         /// <summary>
-        /// 企业视频
+        /// 所有视频
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public object GetComVideo(Guid Id)
+        public object GetAllVideo(Guid Id,int Type)
         {
+            if(Type==10)
             return Kily.Set<EnterpriseVedio>().Where(x => x.CompanyId == Id && x.IsIndex == true)
                  .OrderByDescending(x => x.CreateTime).Take(4).ToList();
-        }
-        /// <summary>
-        /// 商家视频
-        /// </summary>
-        /// <param name="Id"></param>
-        /// <returns></returns>
-        public object GetMerVideo(Guid Id)
-        {
-            return Kily.Set<RepastVideo>().Where(x => x.InfoId == Id && x.IsIndex == true)
-                .OrderByDescending(x => x.CreateTime).Take(4).ToList();
+            if(Type!=10)
+                return Kily.Set<RepastVideo>().Where(x => x.InfoId == Id && x.IsIndex == true)
+                     .OrderByDescending(x => x.CreateTime).Take(4).ToList();
+            return null;
         }
         #endregion
 

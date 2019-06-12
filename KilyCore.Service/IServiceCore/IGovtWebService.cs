@@ -55,8 +55,7 @@ namespace KilyCore.Service.IServiceCore
         ResponseMerchant GetRepastDetail(Guid Id);
         object GetAllCom(string Area, int ComType);
         object GetAllMer(string Area, int ComType);
-        object GetComVideo(Guid Id);
-        object GetMerVideo(Guid Id);
+        object GetAllVideo(Guid Id, int Type);
         #endregion
 
         #region 部门信息
