@@ -166,7 +166,7 @@ namespace KilyCore.API.Controllers
         [HttpGet("GetAllCom")]
         public ObjectResultEx GetAllCom(RequestEnterprise Param)
         {
-            return ObjectResultEx.Instance(GovtWebService.GetAllCom(Param.TypePath, (int)Param.CompanyType), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(GovtWebService.GetAllCom(Param.AreaTree, (int)Param.CompanyType), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 获取所有商家
@@ -176,7 +176,7 @@ namespace KilyCore.API.Controllers
         [HttpGet("GetAllMer")]
         public ObjectResultEx GetAllMer(RequestMerchant Param)
         {
-            return ObjectResultEx.Instance(GovtWebService.GetAllMer(Param.TypePath, (int)Param.DiningType), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(GovtWebService.GetAllMer(Param.AreaTree, (int)Param.DiningType), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 获取所有视频
