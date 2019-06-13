@@ -1009,6 +1009,8 @@ namespace KilyCore.Service.ServiceCore
                 WaringLv = t.WaringLv,
                 ReleaseTime = t.ReleaseTime,
                 ReportPlay = t.ReportPlay,
+                Remark=t.Remark,
+                TypePath=t.TypePath
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
