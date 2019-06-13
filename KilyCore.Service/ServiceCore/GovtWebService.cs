@@ -1616,7 +1616,8 @@ namespace KilyCore.Service.ServiceCore
                 TrainTitle = t.TrainTitle,
                 TrainPlace = t.TrainPlace,
                 TrainTime = t.TrainTime,
-                CompanyType = t.CompanyType
+                CompanyType = t.CompanyType,
+                Remark=t.Remark
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
