@@ -49,6 +49,7 @@ namespace KilyCore.Service.IServiceCore
         IList<ResponseTown> GetTown(int Aid);
         #endregion
         #region 用户管理
+        String InsertAdmin(RequestAdmin Param);
         String EditAdmin(RequestAdmin Param);
         PagedResult<ResponseAdmin> GetAdminPage(PageParamList<RequestAdmin> pageParam);
         String RemoveAdmin(Guid Id);

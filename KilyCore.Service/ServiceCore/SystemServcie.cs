@@ -213,6 +213,20 @@ namespace KilyCore.Service.ServiceCore
 
         #region 用户管理
         /// <summary>
+        /// 中间系统调用
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string InsertAdmin(RequestAdmin Param)
+        {
+            Param.RoleAuthorType = Guid.NewGuid();
+            SystemAdmin Admin = Param.MapToEntity<SystemAdmin>();
+            if (Insert<SystemAdmin>(Admin))
+                return ServiceMessage.INSERTSUCCESS;
+            else
+                return ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
         /// 编辑用户
         /// </summary>
         /// <param name="Param"></param>

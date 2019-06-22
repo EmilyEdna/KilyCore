@@ -252,6 +252,16 @@ namespace KilyCore.API.Controllers
         #endregion
         #region 用户管理
         /// <summary>
+        /// 中间系统调用
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [AllowAnonymous]
+        public ObjectResultEx InsertAdmin(RequestAdmin Param) {
+            return ObjectResultEx.Instance(SystemService.InsertAdmin(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 编辑用户
         /// </summary>
         /// <param name="Param"></param>
