@@ -2203,12 +2203,14 @@ namespace KilyCore.Service.ServiceCore
                 Banquet = Banquet.Where(t => t.TypePath.Contains(GovtInfo().Area));
             }
             //月入住
+            var CompanyTotal = (Enterprise.Count() + Merchant.Count()) == 0 ? 1 : (Enterprise.Count() + Merchant.Count());
             int CMSum = Enterprise.Where(t => t.CreateTime >= DateTime.Now.AddMonths(-1)).Count() + Merchant.Where(t => t.CreateTime >= DateTime.Now.AddMonths(-1)).Count();
-            decimal CMTotal = Math.Round((CMSum / (Enterprise.Count() + Merchant.Count())) * 100M, 2);
+            decimal CMTotal = Math.Round((CMSum / CompanyTotal) * 100M, 2);
             //月产品总数
             IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
             int CGSum = goods.Join(Enterprise, t => t.CompanyId, x => x.Id, (t, x) => new { t.CreateTime }).Where(t => t.CreateTime >= DateTime.Now.AddMonths(-1)).Count();
-            decimal CGTotal = Math.Round((CGSum / goods.Join(Enterprise, t => t.CompanyId, x => x.Id, (t, x) => new { t.CreateTime }).Count()) * 100M, 2);
+            var TotalPro = goods.Join(Enterprise, t => t.CompanyId, x => x.Id, (t, x) => new { t.CreateTime }).Count();
+            decimal CGTotal = Math.Round((CGSum / (TotalPro==0?1: TotalPro)) * 100M, 2);
             //月移动执法总数
             IQueryable<GovtMovePatrol> MovePatrol = Kily.Set<GovtMovePatrol>().Where(t => t.GovtId == GovtInfo().Id);
             int CPSum = MovePatrol.Where(t => t.CreateTime >= DateTime.Now.AddMonths(-1)).Count();
