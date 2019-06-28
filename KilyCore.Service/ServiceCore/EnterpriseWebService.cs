@@ -3350,6 +3350,7 @@ namespace KilyCore.Service.ServiceCore
                         InStockNum = p.t.InStockNum,
                         ProBatch = o.FirstOrDefault().BatchNo,
                         GoodsId = p.x.Id,
+                        ImgUrl=p.t.ImgUrl,
                         IsBindBoxCode = p.t.IsBindBoxCode,
                         Manager = p.t.Manager,
                         CheckGoodsId = p.t.CheckGoodsId,
@@ -3368,6 +3369,7 @@ namespace KilyCore.Service.ServiceCore
                         InStockNum = p.t.InStockNum,
                         ProBatch = o.FirstOrDefault().BatchNo,
                         GoodsId = p.x.Id,
+                        ImgUrl=p.t.ImgUrl,
                         Manager = p.t.Manager,
                         CheckGoodsId = p.t.CheckGoodsId,
                         MaterialId = o.FirstOrDefault().MaterialId,
@@ -3385,6 +3387,7 @@ namespace KilyCore.Service.ServiceCore
                         InStockNum = p.t.InStockNum,
                         ProBatch = o.FirstOrDefault().BatchNo,
                         GoodsId = p.x.Id,
+                        ImgUrl = p.t.ImgUrl,
                         IsBindBoxCode = p.t.IsBindBoxCode,
                         CheckGoodsId = p.t.CheckGoodsId,
                         Manager = p.t.Manager,
@@ -3408,6 +3411,7 @@ namespace KilyCore.Service.ServiceCore
                         InStockNum = p.t.InStockNum,
                         ProBatch = o.FirstOrDefault().BatchNo,
                         GoodsId = p.x.Id,
+                        ImgUrl = p.t.ImgUrl,
                         CheckGoodsId = p.t.CheckGoodsId,
                         Manager = p.t.Manager,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
@@ -3423,6 +3427,7 @@ namespace KilyCore.Service.ServiceCore
                         StockType = p.t.StockType,
                         IsBindBoxCode = p.t.IsBindBoxCode,
                         InStockNum = p.t.InStockNum,
+                        ImgUrl = p.t.ImgUrl,
                         ProBatch = o.FirstOrDefault().BatchNo,
                         GoodsId = p.x.Id,
                         MaterialId = o.FirstOrDefault().MaterialId,
@@ -3439,6 +3444,7 @@ namespace KilyCore.Service.ServiceCore
                         GoodsName = p.x.ProductName,
                         GoodsBatchNo = p.t.GoodsBatchNo,
                         StockType = p.t.StockType,
+                        ImgUrl = p.t.ImgUrl,
                         IsBindBoxCode = p.t.IsBindBoxCode,
                         InStockNum = p.t.InStockNum,
                         ProBatch = o.FirstOrDefault().BatchNo,
@@ -4926,8 +4932,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public ResponseEnterpriseBoxing GetScanBoxInfo(Guid? Id, String Code)
         {
-            String HostCode = Code.Substring(0, 15);
-            IQueryable<EnterpriseBoxing> queryable = Kily.Set<EnterpriseBoxing>().Where(t => t.BoxCode.Contains(HostCode)).Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseBoxing> queryable = Kily.Set<EnterpriseBoxing>().Where(t => Code.Contains(Code)).Where(t => t.IsDelete == false);
             if (Id.HasValue)
                 queryable = queryable.Where(t => t.Id == Id);
             var data = queryable.FirstOrDefault().MapToEntity<ResponseEnterpriseBoxing>();
