@@ -288,6 +288,7 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 发货收货
         PagedResult<ResponseEnterpriseLogistics> GetLogisticsPage(PageParamList<RequestEnterpriseLogistics> pageParam);
+        PagedResult<ResponseEnterpriseScanCodeInfo> GetLogisticsErrorPage(PageParamList<RequestEnterpriseScanCodeInfo> pageParam);
         IList<ResponseEnterpriseLogistics> GetReceipt();
         String EditLogistics(RequestEnterpriseLogistics Param);
         String RemoveLogistics(Guid Id);

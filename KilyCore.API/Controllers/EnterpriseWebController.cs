@@ -1909,6 +1909,16 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.GetLogisticsPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
+        /// 串货分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetLogisticsErrorPage")]
+        public ObjectResultEx GetLogisticsErrorPage(PageParamList<RequestEnterpriseScanCodeInfo> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetLogisticsErrorPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 获取收货地址
         /// </summary>
         /// <returns></returns>

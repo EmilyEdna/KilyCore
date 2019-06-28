@@ -831,7 +831,7 @@ namespace KilyCore.Service.ServiceCore
                     SafeCompany = t.SafeCompany,
                     ComImage = t.ComImage,
                     MainPro = t.MainPro,
-                    ComplainPhone=t.ComplainPhone,
+                    ComplainPhone = t.ComplainPhone,
                     MainProRemark = t.MainProRemark
                 }).FirstOrDefault();
             return data;
@@ -868,7 +868,7 @@ namespace KilyCore.Service.ServiceCore
             contract.EnterpriseOrMerchant = 1;
             EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == contract.CompanyId).FirstOrDefault();
             var Demo = Kily.Set<SystemStayContract>().Where(t => t.CompanyId == info.Id).Where(t => t.EnterpriseOrMerchant == 1).FirstOrDefault();
-            if(Demo!=null)
+            if (Demo != null)
                 return new ResponseStayContract()
                 {
                     Id = contract.Id,
@@ -2481,7 +2481,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseEnterpriseBoxing> GetBoxPage(PageParamList<RequestEnterpriseBoxing> pageParam)
         {
-           IQueryable<EnterpriseBoxing> queryable = Kily.Set<EnterpriseBoxing>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseBoxing> queryable = Kily.Set<EnterpriseBoxing>().Where(t => t.IsDelete == false);
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
@@ -3495,21 +3495,21 @@ namespace KilyCore.Service.ServiceCore
                 if (Num.Any(t => t.Contains("W") || t.Contains("P")))
                     foreach (var item in Num)
                     {
-                        int Temp = 0;
+                        long Temp = 0;
                         string Host = string.Empty;
                         if (item.Contains("W"))
                         {
-                            Temp = Convert.ToInt32(item.Split("W")[1].Substring(0, 12));
+                            Temp = Convert.ToInt64(item.Split("W")[1].Substring(0, 12));
                             Host = item.Split("W")[0] + "W";
                         }
                         else
                         {
-                            Temp = Convert.ToInt32(item.Split("P")[1].Substring(0, 12));
+                            Temp = Convert.ToInt64(item.Split("P")[1].Substring(0, 12));
                             Host = item.Split("P")[0] + "P";
                         }
                         var TempEntity = Tag.Where(t => t.StarSerialNo <= Temp || t.EndSerialNo >= Temp).FirstOrDefault();
                         if (TempEntity == null)
-                            return $"{Host+Temp}溯源号段不在此批次中";
+                            return $"{Host + Temp}溯源号段不在此批次中";
                     }
                 if (TotalSum + Num.Count > Stock.InStockNum)
                     return "超出库存!";
@@ -3522,20 +3522,20 @@ namespace KilyCore.Service.ServiceCore
             else
             {
                 var InStockNo = Kily.Set<EnterpriseGoodsStock>().Where(t => t.Id == StockAttach.StockId).Select(t => t.GoodsBatchNo).AsNoTracking().FirstOrDefault();
-                var Tag = Kily.Set<EnterpriseTagAttach>().Where(t => t.StockNo == Param.StockBatchNo).AsNoTracking().ToList();
+                var Tag = Kily.Set<EnterpriseTagAttach>().Where(t => t.StockNo == InStockNo).AsNoTracking().ToList();
                 if (Num.Any(t => t.Contains("W") || t.Contains("P")))
                     foreach (var item in Num)
                     {
-                        int Temp = 0;
+                        long Temp = 0;
                         string Host = string.Empty;
                         if (item.Contains("W"))
                         {
-                            Temp = Convert.ToInt32(item.Split("W")[1].Substring(0, 12));
+                            Temp = Convert.ToInt64(item.Split("W")[1].Substring(0, 12));
                             Host = item.Split("W")[0] + "W";
                         }
                         else
                         {
-                            Temp = Convert.ToInt32(item.Split("P")[1].Substring(0, 12));
+                            Temp = Convert.ToInt64(item.Split("P")[1].Substring(0, 12));
                             Host = item.Split("P")[0] + "P";
                         }
                         var TempEntity = Tag.Where(t => t.StarSerialNo <= Temp || t.EndSerialNo >= Temp).FirstOrDefault();
@@ -3545,7 +3545,7 @@ namespace KilyCore.Service.ServiceCore
                 StockAttach.BoxCodeNo = Param.BoxCode;
                 StockAttach.BoxCount = Param.BoxCount;
                 List<String> Field = new List<String> { "BoxCodeNo", "BoxCount" };
-                UpdateField(Stock, null, Field);
+                UpdateField(StockAttach, null, Field);
             }
             return Insert(Box) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
@@ -4260,9 +4260,29 @@ namespace KilyCore.Service.ServiceCore
                 SendTime = t.SendTime,
                 Flag = t.Flag,
                 Traffic = t.Traffic,
+                PackageNo = t.PackageNo,
                 TransportWay = t.TransportWay,
                 CorrectError = t.Error / ((t.Error + t.Correct) == 0 ? 1 : (t.Error + t.Correct))
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 串货详情
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseEnterpriseScanCodeInfo> GetLogisticsErrorPage(PageParamList<RequestEnterpriseScanCodeInfo> pageParam)
+        {
+            var data = Kily.Set<EnterpriseScanCodeInfo>()
+                 .Where(t => t.ScanPackageNo.Contains(pageParam.QueryParam.ScanPackageNo))
+                 .OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseScanCodeInfo
+                 {
+                     ScanAddress=t.ScanAddress,
+                     ScanCode=t.ScanCode,
+                     ScanIP=t.ScanIP,
+                     ScanNum=t.ScanNum,
+                     ScanPackageNo=t.ScanPackageNo
+                 }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
         /// <summary>
@@ -4819,6 +4839,8 @@ namespace KilyCore.Service.ServiceCore
                 ComImage = t.ComImage,
                 Certification = t.Certification,
                 Honor = t.HonorCertification,
+                TypePath = t.TypePath,
+                CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
                 VideoMap = x.ToDictionary(o => o.VedioName, o => o.VedioAddr)
             }).AsNoTracking().FirstOrDefault();
             return data;
@@ -4874,7 +4896,7 @@ namespace KilyCore.Service.ServiceCore
             EnterpriseScanCodeInfo Code = Kily.Set<EnterpriseScanCodeInfo>()
                 .Where(t => t.ScanPackageNo.Equals(CodeInfo.ScanPackageNo))
                 .Where(t => t.TakeCarId == Param.TakeCarId)
-                .Where(t=>t.ScanIP==Param.ScanIP)
+                .Where(t => t.ScanIP == Param.ScanIP)
                 .AsNoTracking().FirstOrDefault();
             if (Code != null)
             {
@@ -4949,7 +4971,7 @@ namespace KilyCore.Service.ServiceCore
         {
             var data = Kily.Set<EnterpriseGoodsPackage>().Where(t => t.Id == Id)
                 .AsNoTracking().FirstOrDefault().MapToEntity<ResponseEnterpriseGoodsPackage>();
-            List<Guid> StockIds = Kily.Set<EnterpriseGoodsStockAttach>().Where(t=> data.ProductOutStockNo.Contains(t.GoodsBatchNo)).Select(t => t.StockId).ToList();
+            List<Guid> StockIds = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => data.ProductOutStockNo.Contains(t.GoodsBatchNo)).Select(t => t.StockId).ToList();
             List<Guid> GoodsIds = Kily.Set<EnterpriseGoodsStock>().Where(t => StockIds.Contains(t.Id)).Select(t => t.GoodsId).ToList();
             data.ProductName = string.Join(",", Kily.Set<EnterpriseGoods>().Where(t => GoodsIds.Contains(t.Id)).Select(t => t.ProductName).ToArray());
             return data;

@@ -260,3 +260,4 @@ paket-files/
 __pycache__/
 *.pyc
 /KilyCore.WEB/Properties/PublishProfiles
+/KilyCore.WEB/wwwroot/Upload/Images/成都研成/20190626
