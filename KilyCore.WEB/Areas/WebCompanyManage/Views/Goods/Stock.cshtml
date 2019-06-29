@@ -110,8 +110,8 @@
                         if (row.CheckGoodsId === '00000000-0000-0000-0000-000000000000')
                             action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>添加产品质检</button>');
                         action.push('<button class="btn btn-sm btn-primary out"><i class="fa fa-pencil-square-o"></i>出库</button>');
-                        if (row.AuditTypeName != "审核通过") {
-                            if (row.AuditTypeName=="等待审核")
+                        if ( row.ImgUrl == null) {
+                            if (row.AuditTypeName == "等待审核" || row.ImgUrl == null)
                                 action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-pencil-square-o"></i>提交审核</button>');
                             else
                                 action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-pencil-square-o"></i>提交修改</button>');
@@ -120,8 +120,7 @@
                             action.push('<button class="btn btn-sm btn-primary pack"><i class="fa fa-pencil-square-o"></i>装箱</button>');
                     }
                     //出库
-                    if (row.InStockNum == undefined)
-                    {
+                    if (row.InStockNum == undefined) {
                         if (row.BoxCount == null)
                             action.push('<button class="btn btn-sm btn-primary pack"><i class="fa fa-pencil-square-o"></i>装箱</button>');
                     }
@@ -183,7 +182,7 @@
                         });
                     },
                     "click .pack": function (event, val, row, index) {
-                       var host = "WebCompanyManage/Goods/GoodPack";
+                        var host = "WebCompanyManage/Goods/GoodPack";
                         if (row.ProBatch != undefined)
                             host = host + '?StockNo=' + row.GoodsBatchNo + '&ProNo=' + row.ProBatch + '&Good=' + row.GoodsName;
                         else {

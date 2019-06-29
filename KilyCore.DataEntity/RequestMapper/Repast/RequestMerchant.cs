@@ -55,5 +55,6 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
         /// 安全等级
         /// </summary>
         public string MerchantSafeLv { get; set; }
+        public string ComplainPhone { get; set; }
     }
 }

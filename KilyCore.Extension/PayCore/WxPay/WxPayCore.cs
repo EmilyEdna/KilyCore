@@ -34,11 +34,11 @@ namespace KilyCore.Extension.PayCore.WxPay
         {
             return new Merchant
             {
-                AppId = WxPayModel.AppId,
-                AppSecret = WxPayModel.AppSecret,
-                Key = WxPayModel.MerchantPayKey,
-                MchId = WxPayModel.MerchantAccount,
-                NotifyUrl = WxPayModel.NotifyUrl
+                AppId = null, //WxPayModel.AppId,
+                AppSecret = null, //WxPayModel.AppSecret,
+                Key = null, //WxPayModel.MerchantPayKey,
+                MchId = null, //WxPayModel.MerchantAccount,
+                NotifyUrl = null, //WxPayModel.NotifyUrl
             };
         }
         /// <summary>
@@ -94,7 +94,8 @@ namespace KilyCore.Extension.PayCore.WxPay
         /// </summary>
         /// <param name="TradeNo"></param>
         /// <returns></returns>
-        public string QueryWxPay(String TradeNo) {
+        public string QueryWxPay(String TradeNo)
+        {
             QueryRequest Request = new QueryRequest();
             Request.AddGatewayData(new QueryModel()
             {

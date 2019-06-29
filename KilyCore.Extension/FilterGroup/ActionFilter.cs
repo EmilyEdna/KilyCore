@@ -72,6 +72,8 @@ namespace KilyCore.Extension.FilterGroup
                         return;
                     }
                 }
+                if (RequestPath.Contains("RemoveScan"))
+                    return;
                 context.Result = new StatusCodeResult(403);
             }
             if (context.Filters.Any(t => (t as AllowAnonymousFilter) != null))

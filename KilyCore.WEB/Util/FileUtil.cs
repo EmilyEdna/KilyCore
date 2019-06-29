@@ -144,53 +144,34 @@ namespace KilyCore.WEB.Util
                 PayModel = "银行转账";
             else
                 PayModel = "营运中心试用";
-            if (help.ContractType == 1 && help.AuthorCompany == "成都研成科技有限公司")
-                HTMLContent = HTMLContent.Replace("{CompanySelf}", Configer.CompanySelf)
-                    .Replace("{CodeSelf}", Configer.CodeSelf)
-                    .Replace("{AddressSelf}", Configer.AddressSelf)
-                    .Replace("{Chapter}", Configer.Chapter)
-                    .Replace("{CompanyCategory}", help.CompanyName)
-                    .Replace("{PathNo}", help.PathNo)
-                    .Replace("{CompanyName}", help.CompanyName)
-                    .Replace("{CompanyCode}", help.CommunityCode)
-                    .Replace("{CompanyAddress}", help.CompanyAddress)
-                    .Replace("{StartTimeYear}", help.StarYear.ToString())
-                    .Replace("{StartTimeMonth}", help.StarMonth.ToString())
-                    .Replace("{StartTimeDay}", help.StarDay.ToString())
-                    .Replace("{EndTimeYear}", help.EndYear.ToString())
-                    .Replace("{EndTimeMonth}", help.EndMonth.ToString())
-                    .Replace("{EndTimeDay}", help.EndDay.ToString())
-                    .Replace("{Years}", help.ContractYear.ToString())
-                    .Replace("{CompanyVersion}", help.VersionName)
-                    .Replace("{Moneys}", Money(help).ToString())
-                    .Replace("{ServerItems}", help.VersionDes)
-                    .Replace("{PayModel}", PayModel);
-            else
-                HTMLContent = HTMLContent.Replace("{CompanySelf}", help.AuthorCompany)
-                   .Replace("{CodeSelf}", help.Code)
-                   .Replace("{Chapter}", help.Chapter)
-                   .Replace("{AddressSelf}", help.Address)
-                   .Replace("{CompanyCategory}", help.CompanyName)
-                   .Replace("{PathNo}", help.PathNo)
-                   .Replace("{CompanyName}", help.CompanyName)
-                   .Replace("{CompanyCode}", help.CommunityCode)
-                   .Replace("{CompanyAddress}", help.CompanyAddress)
-                   .Replace("{StartTimeYear}", help.StarYear.ToString())
-                   .Replace("{StartTimeMonth}", help.StarMonth.ToString())
-                   .Replace("{StartTimeDay}", help.StarDay.ToString())
-                   .Replace("{EndTimeYear}", help.EndYear.ToString())
-                   .Replace("{EndTimeMonth}", help.EndMonth.ToString())
-                   .Replace("{EndTimeDay}", help.EndDay.ToString())
-                   .Replace("{Years}", help.ContractYear.ToString())
-                   .Replace("{CompanyVersion}", help.VersionName)
-                   .Replace("{Moneys}", Money(help).ToString())
-                   .Replace("{ServerItems}", help.VersionDes)
-                   .Replace("{PayModel}", PayModel);
+            HTMLContent = HTMLContent.Replace("{CompanyCategory}", help.CompanyName)
+                .Replace("{PathNo}", help.PathNo)
+                .Replace("{CompanyName}", help.CompanyName)
+                .Replace("{CompanyCode}", help.CommunityCode)
+                .Replace("{CompanyAddress}", help.CompanyAddress)
+                .Replace("{StartTimeYear}", help.StarYear.ToString())
+                .Replace("{StartTimeMonth}", help.StarMonth.ToString())
+                .Replace("{StartTimeDay}", help.StarDay.ToString())
+                .Replace("{EndTimeYear}", help.EndYear.ToString())
+                .Replace("{EndTimeMonth}", help.EndMonth.ToString())
+                .Replace("{EndTimeDay}", help.EndDay.ToString())
+                .Replace("{Years}", help.ContractYear.ToString())
+                .Replace("{CompanyVersion}", help.VersionName)
+                .Replace("{Moneys}", Money(help).ToString())
+                .Replace("{MeneyUp}",XExten.XPlus.XPlusEx.XConvertCHN(Money(help)))
+                .Replace("{ServerItems}", help.VersionDes)
+                .Replace("{PayModel}", PayModel);
             HtmlToPdf converter = new HtmlToPdf();
             converter.Options.PdfPageSize = PdfPageSize.A4;
             converter.Options.PdfPageOrientation = PdfPageOrientation.Portrait;
             converter.Options.WebPageWidth = 1024;
             converter.Options.WebPageHeight = 0;
+            converter.Options.EmbedFonts = true;
+            converter.Options.MarginLeft = 10;
+            converter.Options.MarginRight = 10;
+            converter.Options.MarginTop = 20;
+            converter.Options.MarginBottom = 20;
+
             SelectPdf.PdfDocument doc = converter.ConvertHtmlString(HTMLContent);
             byte[] bytes = doc.Save();
             doc.Close();
@@ -285,7 +266,7 @@ namespace KilyCore.WEB.Util
             {
                 for (long i = region; i > 0; i--)
                 {
-                    Address.Add(string.Format(Configer.WebHostBox, model.CodeHost + (model.SCode + i) + GetRandom(),model.Id));
+                    Address.Add(string.Format(Configer.WebHostBox, model.CodeHost + (model.SCode + i) + GetRandom(), model.Id));
                 }
                 Address.Add(string.Format(Configer.WebHostBox, model.CodeHost + model.SCode + GetRandom(), model.Id));
                 Content = String.Join("\r\n", Address);
@@ -311,7 +292,7 @@ namespace KilyCore.WEB.Util
         public static byte[] ExportMerTxt(String Id, String WebRootPath)
         {
             String FileName = String.Empty;
-            String MerchantCode = $@"http://phone.cfdacx.com/beverage.html?Id={Id}";
+            String MerchantCode = $@"http://106.58.174.64:8013/NewPhone/MerCode.html?Id={Id}";
             FileName = WebRootPath + @"\Template\MerchantLink.txt";
             using (StreamWriter str = File.CreateText(FileName))
             {

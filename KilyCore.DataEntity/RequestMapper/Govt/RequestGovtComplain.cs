@@ -70,5 +70,9 @@ namespace KilyCore.DataEntity.RequestMapper.Govt
         /// 验证码
         /// </summary>
         public string Code { get; set; }
+        /// <summary>
+        /// 是否中间系统
+        /// </summary>
+        public string Center { get; set; }
     }
 }

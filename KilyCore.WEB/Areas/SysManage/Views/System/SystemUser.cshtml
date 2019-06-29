@@ -61,7 +61,7 @@
                         else
                             action.push('<button class="btn btn-sm btn-primary open"><i class="fa fa-cog"></i>开启网签</button>');
                     }
-                    if (!row.IsDelete)
+                    if (!row.IsUse)
                         action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>禁用</button>');
                     else
                         action.push('<button class="btn btn-sm btn-primary use"><i class="fa ffa-pencil-square-o"></i>启用</button>');
@@ -83,7 +83,7 @@
                             }
                         });
                     },
-                    "click .del": function (event, val, row, index) {
+                    "click .use": function (event, val, row, index) {
                         controller.Confirm("确认启用？", function (bool) {
                             if (bool) {
                                 controller.ajax({
@@ -124,7 +124,7 @@
                         });
                     },
                     "click .cancel": function (event, val, row, index) {
-                        controller.Confirm("确认开启？", function (bool) {
+                        controller.Confirm("确认关闭？", function (bool) {
                             if (bool) {
                                 controller.ajax({
                                     url: "System/CG",

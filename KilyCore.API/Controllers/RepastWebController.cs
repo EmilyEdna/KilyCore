@@ -68,6 +68,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetMerchantDetail")]
+        [AllowAnonymous]
         public ObjectResultEx GetMerchantDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(RepastWebService.GetMerchantDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);

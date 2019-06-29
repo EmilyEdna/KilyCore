@@ -42,8 +42,11 @@
             action: {
                 ImgFormatter: function (val, row, index) {
                     var action = [];
-                    if (row.Certification != null)
-                        action.push('<img class="photo" src="' + row.Certification + '" style="width:48px;height:32px;"">')
+                    if (row.Certification != null) {
+                        for (var i = 0; i < row.Certification.split(',').length; i++) {
+                            action.push('<img class="photo" src="' + row.Certification[i] + '" style="width:48px;height:32px;"">')
+                        }
+                    }
                     return action.join("&nbsp;");
                 },
                 ImgEvents: {

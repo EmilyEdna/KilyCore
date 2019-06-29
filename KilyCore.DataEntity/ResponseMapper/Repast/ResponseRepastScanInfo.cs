@@ -87,6 +87,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
     public class ResponseRepastInfoScan
     {
         public string 商家名称 { get; set; }
+        public Guid 商家Id { get; set; }
         public string 营业执照 { get; set; }
         public string 商家地址 { get; set; }
         public string 商家电话 { get; set; }

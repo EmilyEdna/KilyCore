@@ -59,10 +59,6 @@ namespace KilyCore.WEB
 
         public void GetSystemConfiger()
         {
-            Configer.CompanySelf = Configuration["Company:Name"];
-            Configer.CodeSelf = Configuration["Company:Code"];
-            Configer.AddressSelf = Configuration["Company:Address"];
-            Configer.Chapter = Configuration["Company:Chapter"];
             Configer.Host = Configuration["Host:ApiHost"];
             Configer.WebHost = Configuration["Host:WebHost"];
             Configer.WebHost = Configuration["Host:WebHostClass"];

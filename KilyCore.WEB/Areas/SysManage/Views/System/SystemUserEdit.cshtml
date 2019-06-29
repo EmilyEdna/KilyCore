@@ -193,7 +193,7 @@
                 controller.Upload({
                     url: "File/UploadImg",
                     element: ".upload-input",
-                    maxNum: 1,
+                    maxNum: 2,
                     maxSize: 10,
                     node: '.image-box',
                     success: function (result) {
@@ -207,11 +207,13 @@
             InitArea: function () {
                 if (SysUserInfo.AccountType == 30) {
                     $("#province").attr("disabled", true).find("option[value='" + SysUserInfo.Province + "']").attr("selected", true);
+                    options.SetCity();
                 }
                 if (SysUserInfo.AccountType == 40) {
                     $("#province").attr("disabled", true).find("option[value='" + SysUserInfo.Province + "']").attr("selected", true);
                     options.SetCity();
                     $("#city").attr("disabled", true).find("option[value='" + SysUserInfo.City + "']").attr("selected", true);
+                    options.SetArea();
                 }
                 if (SysUserInfo.AccountType == 50) {
                     $("#province").attr("disabled", true).find("option[value='" + SysUserInfo.Province + "']").attr("selected", true);

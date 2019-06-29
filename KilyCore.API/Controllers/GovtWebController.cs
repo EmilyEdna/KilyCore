@@ -351,6 +351,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetWorkDetail")]
+        [AllowAnonymous]
         public ObjectResultEx GetWorkDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(GovtWebService.GetWorkDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
@@ -876,11 +877,17 @@ namespace KilyCore.API.Controllers
         [AllowAnonymous]
         public ObjectResultEx EditComplain(RequestGovtComplain Param)
         {
-            var SessionCode = HttpContext.Session.GetSession<String>("PhoneCode");
-            if (SessionCode.Equals(Param.Code))
+            if (string.IsNullOrEmpty(Param.Center))
+            {
+                var SessionCode = HttpContext.Session.GetSession<String>("PhoneCode");
+                if (SessionCode.Equals(Param.Code))
+                    return ObjectResultEx.Instance(GovtWebService.EditComplain(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+                else
+                    return ObjectResultEx.Instance("验证码不正确!", 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            }
+            else {
                 return ObjectResultEx.Instance(GovtWebService.EditComplain(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-            else
-                return ObjectResultEx.Instance("验证码不正确!", 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            }
         }
         /// <summary>
         /// 推送投诉

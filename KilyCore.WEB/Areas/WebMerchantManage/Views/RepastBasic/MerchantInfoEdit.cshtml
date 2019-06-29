@@ -50,7 +50,7 @@
                 controller.Upload({
                     url: "File/UploadImg",
                     element: "#upload-input-1",
-                    maxNum: 1,
+                    maxNum: 2,
                     node: '#Img1',
                     success: function (result) {
                         controller.Alter(result.msg);
@@ -83,7 +83,7 @@
                 controller.Upload({
                     url: "File/UploadImg",
                     element: "#upload-input-4",
-                    maxNum: 1,
+                    maxNum: 2,
                     node: '#Img4',
                     success: function (result) {
                         controller.Alter(result.msg);
@@ -211,13 +211,10 @@
                             <option value="C级">C级</option>
                         </select>
                     </td>
-                <tr>
                     <th><label class="control-label">投诉电话</label></th>
                     <td class="has-warning">
                         <input type="text" class="form-control" name="ComplainPhone">
                     </td>
-                </tr>
-                </tr>
                 <tr>
                     <th><label class="control-label">商家介绍</label></th>
                     <td class="has-warning" colspan="3">

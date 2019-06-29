@@ -66,7 +66,7 @@
                 controller.Upload({
                     url: "File/UploadImg",
                     element: ".upload-input",
-                    maxNum: 1,
+                    maxNum: 2,
                     node: '.image-box',
                     success: function (result) {
                         controller.Alter(result.msg);
@@ -94,10 +94,11 @@
                 <tr>
                     <th><label class="control-label">收款方</label></th>
                     <td class="has-warning" colspan="3">
-                        <input  type="text" class="form-control" value="成都研成科技有限公司" readonly/>
+                        <input  type="text" class="form-control" value="成都溯本源科技有限公司" readonly/>
                     </td>
                 </tr>
-                <tr>
+                <!--我是测试-->
+                @*<tr>
                     <th><label class="control-label">银行名称</label></th>
                     <td class="has-warning">
                         <input type="text" class="form-control" readonly  value="中国农业银行股份有限公司成都高新技术产业开发区支行" />
@@ -106,7 +107,7 @@
                     <td class="has-warning">
                         <input type="text" class="form-control" readonly value="22808801040014164" />
                     </td>
-                </tr>
+                </tr>*@
                 <tr>
                     <th><label class="control-label">批次编号</label></th>
                     <td class="has-warning">

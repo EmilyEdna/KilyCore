@@ -29,7 +29,7 @@
                     title: "新增留样信息",
                     type: 2,
                     height: "90%",
-                    width: "80%",  
+                    width: "80%",
                     url: "WebMerchantManage/Source/MerchantSampleEdit",
                     callBack: function (result) {
                         result.$("#Edit").submit();
@@ -41,7 +41,11 @@
         action: {
             ImgFormatter: function (val, row, index) {
                 var action = [];
-                action.push('<img class="photo" src="' + row.HandleImg + '" style="width:48px;height:32px;"">')
+                if (row.HealthCard != null) {
+                    for (var i = 0; i < row.HandleImg.split(',').length; i++) {
+                        action.push('<img class="photo" src="' + row.HandleImg[i] + '" style="width:48px;height:32px;"">')
+                    }
+                }
                 return action.join("&nbsp;");
             },
             ImgEvents: {
