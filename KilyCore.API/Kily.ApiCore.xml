@@ -2289,6 +2289,13 @@
             <param name="Param"></param>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.GovtController.PushInfo(KilyCore.DataEntity.RequestMapper.Govt.RequestGovtInfo)">
+            <summary>
+            推送账号
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
         <member name="T:KilyCore.API.Controllers.GovtWebController">
             <summary>
             政府后台接口
@@ -2353,6 +2360,34 @@
             商家详情
             </summary>
             <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetAllCom(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterprise)">
+            <summary>
+            获取所有企业
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetAllMer(KilyCore.DataEntity.RequestMapper.Repast.RequestMerchant)">
+            <summary>
+            获取所有商家
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetAllVideo(KilyCore.Service.QueryExtend.SimpleParam{System.Guid},KilyCore.Service.QueryExtend.SimpleParam{System.Int32})">
+            <summary>
+            获取所有视频
+            </summary>
+            <param name="Param"></param>
+            <param name="Type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetAllGovt">
+            <summary>
+            获取或有企业
+            </summary>
             <returns></returns>
         </member>
         <member name="M:KilyCore.API.Controllers.GovtWebController.GetInsPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Govt.RequestGovtInstitution})">
@@ -4019,6 +4054,13 @@
             <summary>
             权限区域树
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.InsertAdmin(KilyCore.DataEntity.RequestMapper.System.RequestAdmin)">
+            <summary>
+            中间系统调用
+            </summary>
+            <param name="Param"></param>
             <returns></returns>
         </member>
         <member name="M:KilyCore.API.Controllers.SystemController.EditAdmin(KilyCore.DataEntity.RequestMapper.System.RequestAdmin)">
