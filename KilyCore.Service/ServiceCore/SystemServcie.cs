@@ -395,22 +395,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public IList<ResponseAdmin> GetAuthorAdmin(string TypePath)
         {
-            var TypePathList = TypePath.Split(',');
-            var data = Kily.Set<SystemAdmin>().Where(t => t.IsDelete == false).Where(t =>
-            t.TypePath.Contains(TypePathList[0])
-            || t.TypePath.Contains(TypePathList[1])
-            || t.TypePath.Contains(TypePathList[2]))
-            .Where(t => t.OpenNet == true).Where(t => t.AccountType > AccountEnum.Country).AsNoTracking().Select(t => new ResponseAdmin()
-            {
-                Id = t.Id,
-                CommunityCode = t.CommunityCode,
-                CompanyName = t.CompanyName,
-                Chapter = t.Chapter,
-                Address = t.Address,
-                BankCard = t.BankCard,
-                BankName = t.BankName
-            }).ToList();
-            ResponseAdmin admin = Kily.Set<SystemAdmin>().Where(t => t.IsDelete == false)
+            List<ResponseAdmin> admin = Kily.Set<SystemAdmin>().Where(t => t.IsDelete == false)
                 .Where(t => t.OpenNet == true).Where(t => t.AccountType == AccountEnum.Country).Select(t => new ResponseAdmin()
                 {
                     Id = t.Id,
@@ -420,9 +405,8 @@ namespace KilyCore.Service.ServiceCore
                     Address = t.Address,
                     BankCard = t.BankCard,
                     BankName = t.BankName
-                }).FirstOrDefault();
-            data.Add(admin);
-            return data;
+                }).ToList();
+            return admin;
         }
         /// <summary>
         /// 获取银行账户信息

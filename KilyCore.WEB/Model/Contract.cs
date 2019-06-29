@@ -95,10 +95,6 @@ namespace KilyCore.WEB.Model
     }
     public static class Configer
     {
-        public static String CompanySelf { get; set; }
-        public static String CodeSelf { get; set; }
-        public static String AddressSelf { get; set; }
-        public static String Chapter { get; set; }
         public static String Host { get; set; }
         public static String WebHost { get; set; }
         public static String WebHostClass { get; set; }

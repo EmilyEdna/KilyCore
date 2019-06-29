@@ -33,7 +33,7 @@
                 controller.Upload({
                     url: "File/UploadImg",
                     element: ".upload-input",
-                    maxNum: 1,
+                    maxNum: 2,
                     success: function (result) {
                         controller.Alter(result.msg);
                         $("#PayTicket").val(result.data);

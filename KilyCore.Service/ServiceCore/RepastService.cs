@@ -584,6 +584,7 @@ namespace KilyCore.Service.ServiceCore
                 TypePath = t.TypePath,
                 Certification = t.Certification,
                 Email = t.Email,
+                Address=t.Address,
                 ImplUser = t.ImplUser,
                 TableName = typeof(ResponseMerchant).Name
             }).FirstOrDefault();

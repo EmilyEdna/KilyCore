@@ -38,11 +38,11 @@ namespace KilyCore.Extension.PayCore.AliPay
         {
             return new Merchant
             {
-                AppId = AliPayModel.AppId,
-                Privatekey = AliPayModel.PrivateKey,
-                AlipayPublicKey = AliPayModel.PublicKey,
-                ReturnUrl = AliPayModel.ReturnUrl,
-                NotifyUrl = AliPayModel.NotifyUrl
+                AppId = null, //AliPayModel.AppId,
+                Privatekey = null, //AliPayModel.PrivateKey,
+                AlipayPublicKey = null,//AliPayModel.PublicKey,
+                ReturnUrl = null, //AliPayModel.ReturnUrl,
+                NotifyUrl = null, //AliPayModel.NotifyUrl
             };
         }
         /// <summary>
@@ -100,12 +100,12 @@ namespace KilyCore.Extension.PayCore.AliPay
         /// <returns></returns>
         public string QueryAliPay(String TradeNo)
         {
-             QueryRequest Request = new QueryRequest();
+            QueryRequest Request = new QueryRequest();
             Request.AddGatewayData(new QueryModel()
             {
                 OutTradeNo = TradeNo
             });
-          return GetGatewayData().Execute(Request).TradeStatus;//TRADE_SUCCESS
+            return GetGatewayData().Execute(Request).TradeStatus;//TRADE_SUCCESS
         }
     }
 }
