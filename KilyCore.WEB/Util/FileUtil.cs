@@ -144,7 +144,7 @@ namespace KilyCore.WEB.Util
                 PayModel = "银行转账";
             else
                 PayModel = "营运中心试用";
-            if (help.ContractType == 1 && help.AuthorCompany == "成都研成科技有限公司")
+            if (help.ContractType == 1 && help.AuthorCompany == "成都溯本源科技有限公司")
                 HTMLContent = HTMLContent.Replace("{CompanySelf}", Configer.CompanySelf)
                     .Replace("{CodeSelf}", Configer.CodeSelf)
                     .Replace("{AddressSelf}", Configer.AddressSelf)
@@ -311,7 +311,7 @@ namespace KilyCore.WEB.Util
         public static byte[] ExportMerTxt(String Id, String WebRootPath)
         {
             String FileName = String.Empty;
-            String MerchantCode = $@"http://phone.cfdacx.com/beverage.html?Id={Id}";
+            String MerchantCode = $@"http://www.cfda.vip/NewPhone/MerCode.html?Id={Id}";
             FileName = WebRootPath + @"\Template\MerchantLink.txt";
             using (StreamWriter str = File.CreateText(FileName))
             {

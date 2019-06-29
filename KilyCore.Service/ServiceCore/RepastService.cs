@@ -93,7 +93,16 @@ namespace KilyCore.Service.ServiceCore
                 VersionTypeName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.VersionType),
                 AuditInfo = Kily.Set<SystemAudit>()
                     .Where(x => x.IsDelete == false)
-                    .Where(x => x.TableId == t.Id).ToList().MapToList<SystemAudit, ResponseAudit>()
+                    .Where(x => x.TableId == t.Id).Select(x => new ResponseAudit
+                    {
+                        Id = x.Id,
+                        TableId = t.Id,
+                        TabelName = t.GetType().Name,
+                        CreateTime = x.CreateTime,
+                        AuditSuggestion = x.AuditSuggestion,
+                        AuditName = x.AuditName,
+                        CreateUser = x.CreateUser
+                    }).ToList()
             }).FirstOrDefault();
             return data;
         }
@@ -541,7 +550,8 @@ namespace KilyCore.Service.ServiceCore
                 else
                     return ServiceMessage.INSERTFAIL;
             }
-            else {
+            else
+            {
                 return "账号不能包含中文和特殊字符";
             }
         }

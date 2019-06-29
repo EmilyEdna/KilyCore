@@ -181,6 +181,10 @@ controller.SetCtrlValue = function (element, option) {
                 $(node[i]).val(value);
             } else if (type == "hidden") {
                 $(node[i]).val(value);
+            } else if (type == "email") {
+                $(node[i]).val(value);
+            } else if (type == "password") {
+                $(node[i]).val(value);
             }
 
         }

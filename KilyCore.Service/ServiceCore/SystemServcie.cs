@@ -235,6 +235,8 @@ namespace KilyCore.Service.ServiceCore
         {
             //根据角色权限类型获取角色权限等级
             SystemRoleAuthor Author = Kily.Set<SystemRoleAuthor>().Where(t => t.Id == Param.RoleAuthorType).AsNoTracking().FirstOrDefault();
+            if (Author == null)
+                return "请选择账户权限";
             SystemRoleLevel Level = Kily.Set<SystemRoleLevel>().Where(t => t.Id == Author.AuthorRoleLvId).AsNoTracking().FirstOrDefault();
             switch (Level.RoleLv)
             {
