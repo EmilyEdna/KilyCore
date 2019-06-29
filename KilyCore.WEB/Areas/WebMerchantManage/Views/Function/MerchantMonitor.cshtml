@@ -42,7 +42,7 @@
             action: {
                 ImgFormatter: function (val, row, index) {
                     var action = [];
-                    action.push('<img class="photo" src="' + row.CoverPhoto + '" style="width:48px;height:32px;"">')
+                    action.push('<img class="photo" src="' + row.CoverPhoto.split(",")[0] + '" style="width:48px;height:32px;"">')
                     return action.join("&nbsp;");
                 },
                 ImgEvents: {

@@ -59,8 +59,11 @@
             action: {
                 ImgFormatter: function (val, row, index) {
                     var action = [];
-                    if (row.LvImg != null)
-                        action.push('<img class="photo" src="' + row.LvImg + '" style="width:48px;height:32px;"">')
+                    if (row.LvImg != null) {
+                        for (var i = 0; i < row.LvImg.split(',').length; i++) {
+                            action.push('<img class="photo" src="' + row.LvImg[i] + '" style="width:48px;height:32px;"">')
+                        }
+                    }
                     return action.join("&nbsp;");
                 },
                 ImgEvents: {

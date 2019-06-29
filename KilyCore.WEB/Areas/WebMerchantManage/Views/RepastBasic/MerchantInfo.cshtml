@@ -30,8 +30,11 @@
             action: {
                 ImgFormatter: function (val, row, index) {
                     var action = [];
-                    if (row.Certification != null)
-                        action.push('<img class="photo" src="' + row.Certification + '" style="width:48px;height:32px;"">')
+                    if (row.HealthCard != null) {
+                        for (var i = 0; i < row.HealthCard.split(',').length; i++) {
+                            action.push('<img class="photo" src="' + row.HealthCard[i] + '" style="width:48px;height:32px;"">')
+                        }
+                    }
                     return action.join("&nbsp;");
                 },
                 ImgEvents: {
@@ -60,7 +63,7 @@
                             title: "完善资料",
                             type: 2,
                             height: "90%",
-                            width: "80%",  
+                            width: "80%",
                             url: "WebMerchantManage/RepastBasic/MerchantInfoEdit",
                             callBack: function (result) {
                                 result.$("#Edit").submit();
@@ -72,7 +75,7 @@
                             title: "缴费",
                             type: 2,
                             height: "90%",
-                            width: "80%",  
+                            width: "80%",
                             url: "WebMerchantManage/RepastBasic/Payment?Id=" + row.Id + "&TypePath=" + row.TypePath + "&MerchantName=" + row.MerchantName,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
@@ -84,7 +87,7 @@
                             title: "合同状态",
                             type: 2,
                             height: "90%",
-                            width: "80%",  
+                            width: "80%",
                             url: "WebMerchantManage/RepastBasic/MerchantAudit",
                             callBack: function (result) {
                                 result.$("#Edit").submit();
