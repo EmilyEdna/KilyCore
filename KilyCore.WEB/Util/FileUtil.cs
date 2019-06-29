@@ -292,7 +292,7 @@ namespace KilyCore.WEB.Util
         public static byte[] ExportMerTxt(String Id, String WebRootPath)
         {
             String FileName = String.Empty;
-            String MerchantCode = $@"http://www.cfda.vip/NewPhone/MerCode.html?Id={Id}";
+            String MerchantCode = $@"http://106.58.174.64:8013/NewPhone/MerCode.html?Id={Id}";
             FileName = WebRootPath + @"\Template\MerchantLink.txt";
             using (StreamWriter str = File.CreateText(FileName))
             {
