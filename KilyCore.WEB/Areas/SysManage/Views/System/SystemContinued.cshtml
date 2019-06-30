@@ -21,7 +21,7 @@
                     e.stopPropagation();
                 });
                 var pre = controller.GetParam("Flag") == "true" ? "EnterpriseWeb" : "RepastWeb";
-                var obj = controller.GetParam("Flag") == "true"  ? { CompanyId: controller.GetParam("Id") } : { InfoId: controller.GetParam("Id") }
+                var obj = controller.GetParam("Flag") == "true" ? { CompanyId: controller.GetParam("Id") } : { InfoId: controller.GetParam("Id") }
                 //设置表单
                 this.$table = controller.Table("#tableList", { url: pre + "/GetContinuedPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: obj });
             },
@@ -32,8 +32,11 @@
             action: {
                 ImgFormatter: function (val, row, index) {
                     var action = [];
-                    if (row.PaytTicket != null)
-                        action.push('<img class="photo" src="' + row.PayTicket + '" style="width:48px;height:32px;"">')
+                    if (row.PaytTicket != null) {
+                        for (var i = 0; i < row.PaytTicket.split(',').length; i++) {
+                            action.push('<img class="photo" src="' + row.PaytTicket.split(',')[i] + '" style="width:48px;height:32px;"">')
+                        }
+                    }
                     return action.join("&nbsp;");
                 },
                 ImgEvents: {
@@ -59,7 +62,7 @@
                             var pre = controller.GetParam("Flag") == "true" ? "EnterpriseWeb" : "RepastWeb";
                             if (bool) {
                                 controller.ajax({
-                                    url: pre +"/AuditContinuedAndLevel",
+                                    url: pre + "/AuditContinuedAndLevel",
                                     data: { Id: row.Id, Parameter: true },
                                     type: 'post',
                                     success: function (result) {

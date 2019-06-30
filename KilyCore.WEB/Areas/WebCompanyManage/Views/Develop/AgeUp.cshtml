@@ -61,7 +61,7 @@
                     var action = [];
                     if (row.LvImg != null) {
                         for (var i = 0; i < row.LvImg.split(',').length; i++) {
-                            action.push('<img class="photo" src="' + row.LvImg[i] + '" style="width:48px;height:32px;"">')
+                            action.push('<img class="photo" src="' + row.LvImg.split(',')[i] + '" style="width:48px;height:32px;"">')
                         }
                     }
                     return action.join("&nbsp;");

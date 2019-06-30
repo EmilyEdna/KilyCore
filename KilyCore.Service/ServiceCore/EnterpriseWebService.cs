@@ -3894,17 +3894,21 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
-            var data = queryable.Join(queryables, t => t.GoodsId, x => x.Id, (t, x) => new ResponseEnterpriseCheckGoods()
+            if (queryables.ToList().Count() != 0)
             {
-                Id = t.Id,
-                CheckName = t.CheckName,
-                GoodsName = Kily.Set<EnterpriseProductSeries>().Where(o => o.Id == x.SeriesId).Select(o => o.SeriesName).FirstOrDefault(),
-                CheckResult = t.CheckResult,
-                CheckUint = t.CheckUint,
-                CheckUser = t.CheckUser,
-                CheckReport = t.CheckReport
-            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
-            return data;
+                var data = queryable.Join(queryables, t => t.GoodsId, x => x.Id, (t, x) => new ResponseEnterpriseCheckGoods()
+                {
+                    Id = t.Id,
+                    CheckName = t.CheckName,
+                    GoodsName = Kily.Set<EnterpriseProductSeries>().Where(o => o.Id == x.SeriesId).Select(o => o.SeriesName).FirstOrDefault(),
+                    CheckResult = t.CheckResult,
+                    CheckUint = t.CheckUint,
+                    CheckUser = t.CheckUser,
+                    CheckReport = t.CheckReport
+                }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                return data;
+            }
+            return null;
         }
         /// <summary>
         /// 编辑产品质检
@@ -4424,7 +4428,8 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.Select(t => new ResponseEnterpriseBuyer()
             {
                 Id = t.Id,
-                BatchNo = t.BatchNo
+                BatchNo = t.BatchNo,
+                GoodName=t.GoodName
             }).ToList();
             return data;
         }

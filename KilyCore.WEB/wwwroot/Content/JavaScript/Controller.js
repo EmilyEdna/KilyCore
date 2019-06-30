@@ -558,6 +558,7 @@ controller.ValidateConfirm = function (element, option) {
                 crossDomain: option.crossDomain,
                 xhrFields: option.xhrFields,
                 success: function (data) {
+                    debugger;
                     if (data.HttpCode != 10) {
                         controller.Alter(data.data);
                         return;
@@ -570,8 +571,10 @@ controller.ValidateConfirm = function (element, option) {
                         $("#ContractHidden").find("#tag").val(data.data.TagNum);
                         $("#ContractHidden").find("#gid").val(data.data.Id);
                         $("#ContractHidden").find("#ver").val(data.data.VersionType);
-                        if (!controller.CheckJsonFormat(data.data.PayInfoMsg))
+                        if (!controller.CheckJsonFormat(data.data.PayInfoMsg)) {
+                            controller.Msg(data.data.PayInfoMsg);
                             return;
+                        }
                         var obj = JSON.parse(data.data.PayInfoMsg);
                         $("#ContractHidden").find("#flag").val(obj.PayType);
                         if (obj.PayType)//支付宝

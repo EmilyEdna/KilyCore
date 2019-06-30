@@ -53,6 +53,8 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseMerchant> GetMerchantPage(PageParamList<RequestMerchant> pageParam);
         ResponseEnterprise GetCompanyDetail(Guid Id);
         ResponseMerchant GetRepastDetail(Guid Id);
+        object GetAllComWithKeyWord(string KeyWord);
+        object GetAllMerWithKeyWord(string KeyWord);
         object GetAllCom(string Area, int ComType);
         object GetAllMer(string Area, int ComType);
         object GetAllVideo(Guid Id, int Type);

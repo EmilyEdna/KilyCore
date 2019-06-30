@@ -35,7 +35,21 @@
                     }
                 });
             },
-          
+            GetCarBatchNo: function () {
+                  controller.ajax({
+                    url: "EnterpriseWeb/GetBuyerList",
+                    data: { },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择进货产品==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.GoodName +'(' + obj.BatchNo+ ')</option>';
+                        });
+                        $("#GoodsId").html(html);
+                    }
+                });
+            },
             //设置文件值
             SetFileValue: function (data, elememt) {
                 var files = $(elememt).val();

@@ -61,7 +61,7 @@ namespace KilyCore.WEB
         {
             Configer.Host = Configuration["Host:ApiHost"];
             Configer.WebHost = Configuration["Host:WebHost"];
-            Configer.WebHost = Configuration["Host:WebHostClass"];
+            Configer.WebHostClass = Configuration["Host:WebHostClass"];
             Configer.WebHostBox = Configuration["Host:WebHostBox"];
         } 
     }

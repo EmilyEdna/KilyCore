@@ -34,7 +34,7 @@
                     var action = [];
                     if (row.PaytTicket != null) {
                         for (var i = 0; i < row.PaytTicket.split(',').length; i++) {
-                            action.push('<img class="photo" src="' + row.PaytTicket[i] + '" style="width:48px;height:32px;"">')
+                            action.push('<img class="photo" src="' + row.PaytTicket.split(',')[i] + '" style="width:48px;height:32px;"">')
                         }
                     }
                     return action.join("&nbsp;");

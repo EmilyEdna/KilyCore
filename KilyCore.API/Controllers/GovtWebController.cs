@@ -159,6 +159,26 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(GovtWebService.GetRepastDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
+        /// 查询企业
+        /// </summary>
+        /// <param name="KeyWord"></param>
+        /// <returns></returns>
+        [HttpGet("GetAllComWithKeyWord")]
+        [AllowAnonymous]
+        public ObjectResultEx GetAllComWithKeyWord(SimpleParam<string> KeyWord) {
+            return ObjectResultEx.Instance(GovtWebService.GetAllComWithKeyWord(KeyWord.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 查询商家
+        /// </summary>
+        /// <param name="KeyWord"></param>
+        /// <returns></returns>
+        [HttpGet("GetAllMerWithKeyWord")]
+        [AllowAnonymous]
+        public ObjectResultEx GetAllMerWithKeyWord(SimpleParam<string> KeyWord) {
+            return ObjectResultEx.Instance(GovtWebService.GetAllMerWithKeyWord(KeyWord.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 获取所有企业
         /// </summary>
         /// <param name="Param"></param>
@@ -185,6 +205,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Type"></param>
         /// <returns></returns>
         [HttpGet("GetAllVideo")]
+        [AllowAnonymous]
         public ObjectResultEx GetAllVideo(SimpleParam<Guid> Param, SimpleParam<int> Type)
         {
             return ObjectResultEx.Instance(GovtWebService.GetAllVideo(Param.Id,Type.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);

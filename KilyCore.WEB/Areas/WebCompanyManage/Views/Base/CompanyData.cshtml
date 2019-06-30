@@ -44,7 +44,7 @@
                     var action = [];
                     if (row.Certification != null) {
                         for (var i = 0; i < row.Certification.split(',').length; i++) {
-                            action.push('<img class="photo" src="' + row.Certification[i] + '" style="width:48px;height:32px;"">')
+                            action.push('<img class="photo" src="' + row.Certification.split(',')[i] + '" style="width:48px;height:32px;"">')
                         }
                     }
                     return action.join("&nbsp;");

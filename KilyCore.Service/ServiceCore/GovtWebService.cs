@@ -317,6 +317,34 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         /// <summary>
+        /// 查询企业
+        /// </summary>
+        /// <param name="KeyWord"></param>
+        /// <returns></returns>
+        public object GetAllComWithKeyWord(string KeyWord)
+        {
+            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>()
+              .Where(t => t.AuditType == AuditEnum.AuditSuccess)
+              .OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(KeyWord))
+               queryable = queryable.Where(t => t.CompanyName.Contains(KeyWord));
+            return queryable.ToList();
+        }
+        /// <summary>
+        /// 查询餐饮
+        /// </summary>
+        /// <param name="KeyWord"></param>
+        /// <returns></returns>
+        public object GetAllMerWithKeyWord(string KeyWord)
+        {
+            IQueryable<RepastInfo> queryable = Kily.Set<RepastInfo>()
+              .Where(t => t.AuditType == AuditEnum.AuditSuccess)
+              .OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(KeyWord))
+                queryable = queryable.Where(t => t.MerchantName.Contains(KeyWord));
+            return queryable.ToList();
+        }
+        /// <summary>
         /// 获取所有企业
         /// </summary>
         /// <param name="Area"></param>

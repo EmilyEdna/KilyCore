@@ -44,7 +44,7 @@
                     var action = [];
                    if (row.HealthCard != null) {
                         for (var i = 0; i < row.HealthCard.split(',').length; i++) {
-                            action.push('<img class="photo" src="' + row.HealthCard[i] + '" style="width:48px;height:32px;"">')
+                            action.push('<img class="photo" src="' + row.HealthCard.split(',')[i] + '" style="width:48px;height:32px;"">')
                         }
                     }
                     return action.join("&nbsp;");
