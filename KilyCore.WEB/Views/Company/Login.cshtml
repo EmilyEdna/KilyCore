@@ -30,6 +30,7 @@
             EnterLogin();
             UserLogin();
             GetValidateCode();
+            AutoLogin();
         });
         //键盘登录事件
         function EnterLogin() {
@@ -69,6 +70,7 @@
                     url: "System/GetCode",
                     type: 'get',
                     data: {},
+                    async: false,
                     xhrFields: {
                         withCredentials: true
                     },
@@ -78,6 +80,37 @@
                     }
                 });
             }).click();
+        }
+        //自动登录
+        function AutoLogin() {
+            let u = controller.GetParam("u");
+            let p = controller.GetParam("p");
+            if (controller.CheckFeild(u) || controller.CheckFeild(p)) {
+                $("input[name='Account']").val(u);
+                $("input[name='PassWord']").val(p);
+                $("input[name='ValidateCode']").val($('.btn-info').val());
+                $('#loading').on('click', function () {
+                    controller.ajax({
+                        url: "Enterprise/EnterpriseLogin",
+                        type: 'post',
+                        xhrFields: {
+                            withCredentials: true
+                        },
+                        crossDomain: true,
+                        data: $('#Login').SerializeJson(),
+                        success: function (result) {
+                            if (result.flag != -1) {
+                                controller.SetCookie(result.data);
+                                controller.SetHref("Home");
+                            }
+                            else {
+                                controller.Msg(result.msg + ":请检查账户信息是否正确!");
+                                $('.btn-info').click();
+                            }
+                        }
+                    });
+                }).click();
+            }
         }
     </script>
 </head>
