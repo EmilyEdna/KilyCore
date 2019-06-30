@@ -256,7 +256,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost("InsertAdmin")]
         [AllowAnonymous]
         public ObjectResultEx InsertAdmin(RequestAdmin Param) {
             return ObjectResultEx.Instance(SystemService.InsertAdmin(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
