@@ -42,6 +42,7 @@
                         },
                         crossDomain: true,
                         success: function (result) {
+                            $("input[name='PhoneCode']").val(result.data);
                             options.SetTime();
                         }
                     });
@@ -144,7 +145,7 @@
     <!--头部-->
     <header>
         <div class="logo">
-            <a href="#"><img src="~/Content/Enterprise/img/logo.png" alt="" /></a>
+            <a href="#"><img src="~/Content/Enterprise/img/logo.png" alt=""  width="80" height="80"/></a>
             <span>中食药追溯管理平台-餐饮企业注册</span>
         </div>
     </header>
