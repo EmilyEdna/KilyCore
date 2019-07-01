@@ -12,41 +12,45 @@
             Init: function () {
                 this.InitDom();
                 this.InitEvents();
-               
+
             },
             //元素
             InitDom: function () {
                 $("#CompanyId").val(CompanyInfo.Id);
-                this.GetGoods();
+                if (CompanyInfo.CompanyType == 30)
+                    this.GetGoods();
+                if (CompanyInfo.CompanyType == 40)
+                    this.GetCarBatchNo();
             },
             //获取产品
             GetGoods: function () {
                 controller.ajax({
                     url: "EnterpriseWeb/GetProBatchList",
-                    data: { },
+                    data: {},
                     type: "post",
                     async: false,
                     success: function (result) {
                         var html = '<option>==请选择产品==</option>';
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '">' + obj.SeriesName +'(' + obj.BatchNo+ ')</option>';
+                            html += '<option value="' + obj.Id + '">' + obj.SeriesName + '(' + obj.BatchNo + ')</option>';
                         });
                         $("#GoodsId").html(html);
                     }
                 });
             },
+            //获取进货批次
             GetCarBatchNo: function () {
-                  controller.ajax({
+                controller.ajax({
                     url: "EnterpriseWeb/GetBuyerList",
-                    data: { },
+                    data: {},
                     type: "post",
                     async: false,
                     success: function (result) {
                         var html = '<option>==请选择进货产品==</option>';
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '">' + obj.GoodName +'(' + obj.BatchNo+ ')</option>';
+                            html += '<option value="' + obj.Id + '">' + obj.GoodName + '(' + obj.BatchNo + ')</option>';
                         });
-                        $("#GoodsId").html(html);
+                        $("#BuyerId").html(html);
                     }
                 });
             },
@@ -59,7 +63,7 @@
                 } else {
                     $(elememt).val(data);
                 }
-            },            
+            },
             //事件
             InitEvents: function () {
                 //文件上传
@@ -72,7 +76,7 @@
                         controller.Alter(result.msg);
                         $("#CheckReport").val(result.data);
                     }
-                });               
+                });
                 //验证
                 controller.ValidateConfirm("#Edit");
             },
@@ -97,24 +101,28 @@
                     <td class="has-warning">
                         <input type="text" class="form-control" name="CheckName" id="CheckName" />
                     </td>
-                    <th><label class="control-label">产品名称</label></th>
-                    <td class="has-warning">
-                        <select type="select" class="form-control" name="GoodsId" id="GoodsId"></select>
-                    </td>
-                </tr>
-                <tr>
                     <th><label class="control-label">质检单位</label></th>
                     <td class="has-warning">
                         <input type="text" class="form-control" name="CheckUint" />
                     </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">产品名称</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="GoodsId" id="GoodsId"></select>
+                    </td>
+                    <th><label class="control-label">进货产品名称</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="BuyerId" id="BuyerId"></select>
+                    </td>
+                </tr>
+                <tr>
                     <th><label class="control-label">质检人</label></th>
                     <td class="has-warning">
                         <input type="text" class="form-control" name="CheckUser" />
                     </td>
-                </tr>
-                <tr>
                     <th><label class="control-label">质检结果</label></th>
-                    <td class="has-warning" colspan="3">
+                    <td class="has-warning">
                         <input type="text" class="form-control" name="CheckResult" />
                     </td>
                 </tr>

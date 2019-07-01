@@ -31,7 +31,11 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// <summary>
         /// 产品表Id
         /// </summary>
-        public virtual Guid GoodsId { get; set; }
+        public virtual Guid? GoodsId { get; set; }
+        /// <summary>
+        /// 进货表Id
+        /// </summary>
+        public virtual Guid? BuyerId { get; set; }
         /// <summary>
         /// 质检单位
         /// </summary>

@@ -3350,7 +3350,7 @@ namespace KilyCore.Service.ServiceCore
                         InStockNum = p.t.InStockNum,
                         ProBatch = o.FirstOrDefault().BatchNo,
                         GoodsId = p.x.Id,
-                        ImgUrl=p.t.ImgUrl,
+                        ImgUrl = p.t.ImgUrl,
                         IsBindBoxCode = p.t.IsBindBoxCode,
                         Manager = p.t.Manager,
                         CheckGoodsId = p.t.CheckGoodsId,
@@ -3369,7 +3369,7 @@ namespace KilyCore.Service.ServiceCore
                         InStockNum = p.t.InStockNum,
                         ProBatch = o.FirstOrDefault().BatchNo,
                         GoodsId = p.x.Id,
-                        ImgUrl=p.t.ImgUrl,
+                        ImgUrl = p.t.ImgUrl,
                         Manager = p.t.Manager,
                         CheckGoodsId = p.t.CheckGoodsId,
                         MaterialId = o.FirstOrDefault().MaterialId,
@@ -3561,7 +3561,8 @@ namespace KilyCore.Service.ServiceCore
                 }
                 return Insert(Box) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
             }
-            catch {
+            catch
+            {
                 return "请填入正确的二维码格式 xxW13000...01X";
             }
         }
@@ -3888,6 +3889,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseCheckGoods> queryable = Kily.Set<EnterpriseCheckGoods>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
             IQueryable<EnterpriseProductionBatch> queryables = Kily.Set<EnterpriseProductionBatch>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseBuyer> buyers = Kily.Set<EnterpriseBuyer>().Where(t => t.IsDelete == false);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.CheckName))
                 queryable = queryable.Where(t => t.CheckName.Contains(pageParam.QueryParam.CheckName));
             if (CompanyInfo() != null)
@@ -3908,7 +3910,16 @@ namespace KilyCore.Service.ServiceCore
                 }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
                 return data;
             }
-            return null;
+            return queryable.Join(buyers, t => t.BuyerId, x => x.Id, (t, x) => new ResponseEnterpriseCheckGoods()
+            {
+                Id = t.Id,
+                CheckName = t.CheckName,
+                GoodsName = x.GoodName,
+                CheckResult = t.CheckResult,
+                CheckUint = t.CheckUint,
+                CheckUser = t.CheckUser,
+                CheckReport = t.CheckReport
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
         }
         /// <summary>
         /// 编辑产品质检
@@ -4297,11 +4308,11 @@ namespace KilyCore.Service.ServiceCore
                  .Where(t => t.ScanPackageNo.Contains(pageParam.QueryParam.ScanPackageNo))
                  .OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseScanCodeInfo
                  {
-                     ScanAddress=t.ScanAddress,
-                     ScanCode=t.ScanCode,
-                     ScanIP=t.ScanIP,
-                     ScanNum=t.ScanNum,
-                     ScanPackageNo=t.ScanPackageNo
+                     ScanAddress = t.ScanAddress,
+                     ScanCode = t.ScanCode,
+                     ScanIP = t.ScanIP,
+                     ScanNum = t.ScanNum,
+                     ScanPackageNo = t.ScanPackageNo
                  }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -4429,7 +4440,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 BatchNo = t.BatchNo,
-                GoodName=t.GoodName
+                GoodName = t.GoodName
             }).ToList();
             return data;
         }
@@ -4861,6 +4872,7 @@ namespace KilyCore.Service.ServiceCore
                 Certification = t.Certification,
                 Honor = t.HonorCertification,
                 TypePath = t.TypePath,
+                CompanyType=t.CompanyType,
                 CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
                 VideoMap = x.ToDictionary(o => o.VedioName, o => o.VedioAddr)
             }).AsNoTracking().FirstOrDefault();
