@@ -158,19 +158,20 @@ namespace KilyCore.WEB.Util
                 .Replace("{Years}", help.ContractYear.ToString())
                 .Replace("{CompanyVersion}", help.VersionName)
                 .Replace("{Moneys}", Money(help).ToString())
-                .Replace("{MeneyUp}",XExten.XPlus.XPlusEx.XConvertCHN(Money(help)))
+                .Replace("{MeneyUp}", XExten.XPlus.XPlusEx.XConvertCHN(Money(help)))
                 .Replace("{ServerItems}", help.VersionDes)
                 .Replace("{PayModel}", PayModel);
             HtmlToPdf converter = new HtmlToPdf();
             converter.Options.PdfPageSize = PdfPageSize.A4;
+            converter.Options.PdfStandard = PdfStandard.Full;
             converter.Options.PdfPageOrientation = PdfPageOrientation.Portrait;
             converter.Options.WebPageWidth = 1024;
             converter.Options.WebPageHeight = 0;
             converter.Options.EmbedFonts = true;
-            converter.Options.MarginLeft = 10;
-            converter.Options.MarginRight = 10;
-            converter.Options.MarginTop = 20;
-            converter.Options.MarginBottom = 20;
+            converter.Options.MarginLeft = 60;
+            converter.Options.MarginRight = 60;
+            converter.Options.MarginTop = 60;
+            converter.Options.MarginBottom = 60;
 
             SelectPdf.PdfDocument doc = converter.ConvertHtmlString(HTMLContent);
             byte[] bytes = doc.Save();
@@ -186,7 +187,8 @@ namespace KilyCore.WEB.Util
         {
             try
             {
-                return Convert.ToInt32(help.AttachInfo) * help.ContractYear;
+                var price = help.AttachInfo.Replace("元", "").Trim();
+                return Convert.ToInt32(price) * help.ContractYear;
             }
             catch (Exception ex)
             {

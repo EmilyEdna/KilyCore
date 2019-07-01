@@ -4293,7 +4293,7 @@ namespace KilyCore.Service.ServiceCore
                 Traffic = t.Traffic,
                 PackageNo = t.PackageNo,
                 TransportWay = t.TransportWay,
-                CorrectError = t.Error / ((t.Error + t.Correct) == 0 ? 1 : (t.Error + t.Correct))
+                CorrectError = (t.Error / ((t.Error + t.Correct) == 0 ? 1 : (t.Error + t.Correct)))*100
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
