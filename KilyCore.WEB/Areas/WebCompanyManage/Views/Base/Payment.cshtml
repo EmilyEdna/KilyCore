@@ -37,11 +37,13 @@
                     async: false,
                     type: "post",
                     success: function (result) {
-                        var html = '<option>===请选择===</option>'
+                        var html = '<option>===请选择===</option>';
+                         let lihtml = '';
                         $.each(result.data, function (i, obj) {
-                            options.Editor.summernote('code', obj.DicDescript);
-                            html += '<option value="' + obj.DicValue + '" data-value="' + obj.Id + '"  data-attach="' + obj.AttachInfo + '">' + obj.DicName + '</option>';
+                            html += '<option value="' + obj.DicValue + '" data-value="' + obj.Id + '" data-attach="' + obj.AttachInfo + '">' + obj.DicName + '</option>';
+                            lihtml += '<li id="' + obj.AttachInfo + '">' + obj.DicDescript + '</li>';
                         });
+                        $("#hidden").html(lihtml);
                         $("#VersionType").html(html);
                     }
                 });
@@ -66,6 +68,7 @@
                 $("#VersionType").on("change", function () {
                     var selector = $(this).find("option:selected");
                     var html = "版本费用：" + selector.data().attach + "/年。";
+                    var func = html +"<br/>当前版本功能为：" + $("#" + selector.data().attach).text();
                     controller.ajax({
                         url: "Function/GetVersionById",
                         data: { Id: selector.data().value },
@@ -76,7 +79,7 @@
                             options.Editor.summernote('code', result.data);
                         }
                     });
-                    controller.Alter(html);
+                     controller.Alter(func);
                 });
                 //合同模式
                 $("input:radio[name='ContractType']").on('click', function () {
@@ -295,4 +298,7 @@
 </div>
 <div class="text-center">
     <div id="QRCode"></div>
+</div>
+<div class="hidden">
+    <ul id="hidden"></ul>
 </div>

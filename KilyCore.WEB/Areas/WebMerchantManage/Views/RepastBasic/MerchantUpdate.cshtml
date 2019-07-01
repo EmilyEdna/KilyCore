@@ -25,10 +25,14 @@
                     type: "post",
                     success: function (result) {
                         var html = '<option>===请选择===</option>'
+                        let lihtml = '';
                         $.each(result.data, function (i, obj) {
-                            if (Number(obj.DicValue) > RepastUser.Version)
-                                html += '<option value="' + obj.DicValue + '" data-value="' + obj.DicDescript + '" data-attach="' + obj.AttachInfo + '">' + obj.DicName + '</option>';
+                            if (Number(obj.DicValue) > RepastUser.Version) {
+                                 html += '<option value="' + obj.DicValue + '" data-attach="' + obj.AttachInfo + '">' + obj.DicName + '</option>';
+                                 lihtml += '<li id="' + obj.AttachInfo + '">' + obj.DicDescript + '</li>';
+                            }
                         });
+                         $("#hidden").html(lihtml);
                         $("#VersionType").html(html);
                     }
                 });
@@ -69,8 +73,9 @@
                 //显示版本详情
                 $("#VersionType").on("change", function () {
                     var selector = $(this).find("option:selected");
-                    var html = "版本费用：" + selector.data().attach + "/年。</br>当前版本功能为：" + selector.data().value;
-                    controller.Alter(html);
+                    var html = "版本费用：" + selector.data().attach + "/年。";
+                    var func = html +"<br/>当前版本功能为：" + $("#" + selector.data().attach).text();
+                    controller.Alter(func);
                 });
                 //文件上传-票据
                 controller.Upload({
@@ -159,13 +164,13 @@
                     <th><label class="control-label">支付方式</label></th>
                     <td class="has-warning" colspan="3">
                         @*<label class="radio-inline">
-                            <input type="radio" name="PayType" value="10" style="margin-top:3px" checked />
-                            <text title="支付宝">支付宝</text>
-                        </label>
-                        <label class="radio-inline">
-                            <input type="radio" name="PayType" value="20" style="margin-top:3px" />
-                            <text title="微信">微信</text>
-                        </label>*@
+                                <input type="radio" name="PayType" value="10" style="margin-top:3px" checked />
+                                <text title="支付宝">支付宝</text>
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="PayType" value="20" style="margin-top:3px" />
+                                <text title="微信">微信</text>
+                            </label>*@
                         <label class="radio-inline">
                             <input type="radio" name="PayType" value="30" style="margin-top:3px" />
                             <text title="银行转账">银行转账</text>
@@ -229,4 +234,7 @@
 </div>
 <div class="text-center">
     <div id="QRCode"></div>
+</div>
+<div class="hidden">
+    <ul id="hidden"></ul>
 </div>

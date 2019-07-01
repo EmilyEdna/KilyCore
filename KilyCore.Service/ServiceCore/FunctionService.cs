@@ -648,6 +648,7 @@ namespace KilyCore.Service.ServiceCore
                       DicName = t.x.DicName,
                       DicValue = t.x.DicValue,
                       AttachInfo = t.x.AttachInfo,
+                      DicDescript=t.x.DicDescript,
                       IsEnable = (t.IsEnable == null ? false : t.IsEnable)
                   }).ToList().Where(t => t.IsEnable == false).ToList();
             return data;
