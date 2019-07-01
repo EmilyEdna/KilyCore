@@ -4970,9 +4970,9 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public RequestEnterpriseLogistics GetScanSendInfo(Guid Id)
+        public RequestEnterpriseLogistics GetScanSendInfo(String Id)
         {
-            var data = Kily.Set<EnterpriseLogistics>().Where(t => t.Id == Id)
+            var data = Kily.Set<EnterpriseLogistics>().Where(t => t.GainUser.Equals(Id))
                  .AsNoTracking().FirstOrDefault().MapToEntity<RequestEnterpriseLogistics>();
             return data;
         }

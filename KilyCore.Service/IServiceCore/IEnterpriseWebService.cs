@@ -321,7 +321,7 @@ namespace KilyCore.Service.IServiceCore
         ResponseEnterpriseScanCodeContent GetScanCodeInfo(Guid? Id, String Code);
         String EditScanInfo(RequestEnterpriseScanCodeInfo Param);
         ResponseEnterpriseBoxing GetScanBoxInfo(Guid? Id, String Code);
-        RequestEnterpriseLogistics GetScanSendInfo(Guid Id);
+        RequestEnterpriseLogistics GetScanSendInfo(String Id);
         String CheckLogistics(RequestEnterpriseLogistics Param);
         ResponseEnterpriseGoodsPackage GetScanPackageInfo(Guid Id);
         #endregion
