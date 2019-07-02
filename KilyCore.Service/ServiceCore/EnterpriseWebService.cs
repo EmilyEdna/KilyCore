@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Text;
 using System.Data.SqlClient;
 using KilyCore.Extension.UtilExtension;
@@ -3486,9 +3487,15 @@ namespace KilyCore.Service.ServiceCore
             try
             {
                 Param.ThingCode = Param.ThingCode.Replace("\r\n", ",");
-                var Num = Param.ThingCode.Split(",").ToList();
-                if (string.IsNullOrEmpty(Num[Num.Count - 1]))
-                    Num.RemoveAt(Num.Count - 1);
+                var Nums = Param.ThingCode.Split(",").ToList();
+                //移除空的
+                if (string.IsNullOrEmpty(Nums[Nums.Count - 1]))
+                    Nums.RemoveAt(Nums.Count - 1);
+                List<string> Num = new List<string>();
+                foreach (var item in Nums)
+                {
+                    Num.Add(Regex.Match(item, "(^|&)Code=([^&]*)(&|$)").Groups[2].Value);
+                }
                 if (Num.Count > 100)
                     return "装箱数量最大支持每箱100个物件";
                 Param.BoxCount = Num.Count.ToString();
@@ -3726,7 +3733,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
             return queryable.Where(t => !string.IsNullOrEmpty(t.BoxCodeNo))
-                .Where(t=>!data.Contains(t.GoodsBatchNo))
+                .Where(t => !data.Contains(t.GoodsBatchNo))
                 .Select(t => new ResponseEnterpriseGoodsStockAttach()
                 {
                     GoodsBatchNo = t.GoodsBatchNo,
@@ -4352,28 +4359,58 @@ namespace KilyCore.Service.ServiceCore
         public string EditLogistics(RequestEnterpriseLogistics Param)
         {
             IQueryable<EnterpriseGoodsPackage> queryable = Kily.Set<EnterpriseGoodsPackage>().Where(t => t.IsDelete == false);
-            if (Param.PackageNo.Contains("_"))
+            if (Param.SendType == 1)
             {
-                int count = 0;
-                if (!Param.PackageNo.Contains(","))
+                if (Param.PackageNo.Contains("_"))
                 {
-                    Param.GoodsName = Param.PackageNo.Split("_")[1];
-                    Param.PackageNo = Param.PackageNo.Split("_")[0];
-                    Param.SendGoodsNum = queryable.Where(t => t.PackageNo == Param.PackageNo).Select(t => t.PackageNum).FirstOrDefault().ToString();
-                }
-                else
-                {
-                    Param.PackageNo.Split(",").ToList().ForEach(t =>
+                    int count = 0;
+                    if (!Param.PackageNo.Contains(","))
                     {
-                        Param.GoodsName += t.Split("_")[1] + "|";
-                        Param.PackageNo = t.Split("_")[0] + ",";
-                        count += queryable.Where(x => x.PackageNo == Param.PackageNo).Select(x => x.PackageNum).FirstOrDefault();
-                    });
-                    Param.SendGoodsNum = count.ToString();
+                        Param.GoodsName = Param.PackageNo.Split("_")[1];
+                        Param.PackageNo = Param.PackageNo.Split("_")[0];
+                        Param.SendGoodsNum = queryable.Where(t => t.PackageNo == Param.PackageNo).Select(t => t.PackageNum).FirstOrDefault().ToString();
+                    }
+                    else
+                    {
+                        Param.PackageNo.Split(",").ToList().ForEach(t =>
+                        {
+                            Param.GoodsName += t.Split("_")[1] + "|";
+                            Param.PackageNo = t.Split("_")[0] + ",";
+                            count += queryable.Where(x => x.PackageNo == Param.PackageNo).Select(x => x.PackageNum).FirstOrDefault();
+                        });
+                        Param.SendGoodsNum = count.ToString();
+                    }
+                }
+            }
+            else if (Param.SendType == 2)
+            {
+                Param.BoxCode = Param.BoxCode.Replace("\r\n", ",");
+                var temp = Param.BoxCode.Split(",");
+                for (int i = 0; i < temp.Length; i++)
+                {
+                    var tempCode = Regex.Match(temp[i], "(^|&)Code=([^&]*)(&|$)").Groups[2].Value;
+                    var box = Kily.Set<EnterpriseBoxing>().Where(t => t.IsDelete == false).Where(t => t.BoxCode.Contains(tempCode)).FirstOrDefault();
+                    if (box == null)
+                        return $"当前号段：{tempCode}，未绑定！";
+                }
+            }
+            else
+            {
+                Param.OneCode = Param.OneCode.Replace("\r\n", ",");
+                var temp = Param.OneCode.Split(",");
+                for (int i = 0; i < temp.Length; i++)
+                {
+                    var tempCode = Regex.Match(temp[i], "(^|&)Code=([^&]*)(&|$)").Groups[2].Value;
+                    var Codes = Convert.ToInt64(tempCode.Substring(3, tempCode.Length - 4));
+                    var Host = tempCode.Substring(0, 3);
+                    var attach = Kily.Set<EnterpriseTagAttach>().Where(t => t.StarSerialNo <= Codes && t.EndSerialNo >= Codes && t.StarSerialNos.Contains(Host)).FirstOrDefault();
+                    if(attach==null)
+                        return $"当前号段：{tempCode}，未绑定！";
                 }
             }
             EnterpriseLogistics logistics = Param.MapToEntity<EnterpriseLogistics>();
             return Insert<EnterpriseLogistics>(logistics) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            return "失败";
         }
         /// <summary>
         /// 删除发货

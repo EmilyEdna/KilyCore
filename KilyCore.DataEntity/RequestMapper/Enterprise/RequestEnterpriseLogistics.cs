@@ -79,5 +79,17 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// 收货时间
         /// </summary>
         public DateTime? GetGoodTime { get; set; }
+        /// <summary>
+        /// 发货方式
+        /// </summary>
+        public int? SendType { get; set; }
+        /// <summary>
+        /// 追溯码
+        /// </summary>
+        public string OneCode { get; set; }
+        /// <summary>
+        /// 箱码
+        /// </summary>
+        public string BoxCode { get; set; }
     }
 }

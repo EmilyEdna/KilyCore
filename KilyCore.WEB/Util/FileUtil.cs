@@ -268,9 +268,9 @@ namespace KilyCore.WEB.Util
             {
                 for (long i = region; i > 0; i--)
                 {
-                    Address.Add(string.Format(Configer.WebHostBox, model.CodeHost + (model.SCode + i) + GetRandom(), model.Id));
+                    Address.Add(string.Format(Configer.WebHostBox, model.Id, model.CodeHost + (model.SCode + i) + GetRandom()));
                 }
-                Address.Add(string.Format(Configer.WebHostBox, model.CodeHost + model.SCode + GetRandom(), model.Id));
+                Address.Add(string.Format(Configer.WebHostBox, model.Id, model.CodeHost + model.SCode + GetRandom()));
                 Content = String.Join("\r\n", Address);
                 FileName = WebRootPath + @"\Template\ScanLinkBox.txt";
             }

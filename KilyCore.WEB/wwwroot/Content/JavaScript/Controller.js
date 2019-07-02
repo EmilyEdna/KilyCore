@@ -558,7 +558,6 @@ controller.ValidateConfirm = function (element, option) {
                 crossDomain: option.crossDomain,
                 xhrFields: option.xhrFields,
                 success: function (data) {
-                    debugger;
                     if (data.HttpCode != 10) {
                         controller.Alter(data.data);
                         return;
@@ -592,7 +591,7 @@ controller.ValidateConfirm = function (element, option) {
                         }
                     }
                     controller.Confirm(controller.JsonObject(data.data) ? data.msg : data.data, function () {
-                        window.popClose();
+                        layer.close();
                     });
                 },
                 fail: option.ajaxFail

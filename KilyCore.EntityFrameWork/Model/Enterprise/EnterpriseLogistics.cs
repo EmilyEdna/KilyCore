@@ -92,5 +92,17 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 收货时间
         /// </summary>
         public virtual DateTime? GetGoodTime{ get; set; }
+        /// <summary>
+        /// 发货方式
+        /// </summary>
+        public virtual int? SendType { get; set; }
+        /// <summary>
+        /// 追溯码
+        /// </summary>
+        public virtual string OneCode { get; set; }
+        /// <summary>
+        /// 箱码
+        /// </summary>
+        public virtual string BoxCode { get; set; }
     }
 }
