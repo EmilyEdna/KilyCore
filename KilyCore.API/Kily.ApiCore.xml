@@ -1739,6 +1739,13 @@
             <param name="pageParam"></param>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetLogisticsErrorPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseScanCodeInfo})">
+            <summary>
+            串货分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
         <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetReceipt">
             <summary>
             获取收货地址
@@ -1885,7 +1892,7 @@
             <param name="Param"></param>
             <returns></returns>
         </member>
-        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetScanSendInfo(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetScanSendInfo(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
             <summary>
             发货二维码
             </summary>
@@ -2360,6 +2367,20 @@
             商家详情
             </summary>
             <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetAllComWithKeyWord(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            查询企业
+            </summary>
+            <param name="KeyWord"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetAllMerWithKeyWord(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            查询商家
+            </summary>
+            <param name="KeyWord"></param>
             <returns></returns>
         </member>
         <member name="M:KilyCore.API.Controllers.GovtWebController.GetAllCom(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterprise)">
@@ -4342,6 +4363,25 @@
             <summary>
             产品统计
             </summary>
+            <returns></returns>
+        </member>
+        <member name="T:KilyCore.API.Controllers.TempController">
+            <summary>
+            中继系统接口
+            </summary>
+        </member>
+        <member name="M:KilyCore.API.Controllers.TempController.GetAllUser(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取所有人员
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.TempController.GetAllSupply(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取所有供应商
+            </summary>
+            <param name="Param"></param>
             <returns></returns>
         </member>
         <member name="M:KilyCore.API.Startup.GetAssembly">
