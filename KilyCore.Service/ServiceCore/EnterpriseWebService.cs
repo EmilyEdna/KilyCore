@@ -382,8 +382,11 @@ namespace KilyCore.Service.ServiceCore
             EnterpriseUser User = Param.MapToObj<RequestEnterpriseUser, EnterpriseUser>();
             if (NormalUtil.CheckStringChineseUn(User.Account))
                 return "账号不能包含中文和特殊字符";
-            var Users = Kily.Set<EnterpriseUser>().Where(t => t.Account.Equals(Param.Account)).AsNoTracking().FirstOrDefault();
-            if (Users != null) return "该账号已经存在!";
+            if (Param.Id == Guid.Empty)
+            {
+                var Users = Kily.Set<EnterpriseUser>().Where(t => t.Account.Equals(Param.Account)).AsNoTracking().FirstOrDefault();
+                if (Users != null) return "该账号已经存在!";
+            }
             if (CompanyInfo() != null)
                 User.TypePath = CompanyInfo().TypePath;
             else

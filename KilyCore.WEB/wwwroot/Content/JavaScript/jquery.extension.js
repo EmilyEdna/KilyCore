@@ -35,13 +35,15 @@ $.fn.SetTree = function (data) {
 $.fn.SerializeJson = function () {
     var serializeObj = {};
     var array = this.serializeArray();
-    var str = this.serialize();
+    var form = this;
     $(array).each(function () {
         if (serializeObj[this.name]) {
             if ($.isArray(serializeObj[this.name])) {
+                debugger
                 serializeObj[this.name].push(this.value);
             } else {
                 serializeObj[this.name] = [serializeObj[this.name], this.value];
+                serializeObj[this.name]= $(form).find("input[name='" + this.name + "']:checked").val();
             }
         } else {
             serializeObj[this.name] = this.value;

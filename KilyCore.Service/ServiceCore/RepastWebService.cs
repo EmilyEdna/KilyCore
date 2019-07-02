@@ -370,8 +370,11 @@ namespace KilyCore.Service.ServiceCore
         public string SaveUser(RequestMerchantUser Param)
         {
             RepastInfoUser User = Param.MapToObj<RequestMerchantUser, RepastInfoUser>();
-            var Users = Kily.Set<RepastInfoUser>().Where(t => t.Account.Equals(Param.Account)).AsNoTracking().FirstOrDefault();
+            if (Param.Id == Guid.Empty)
+            {
+                var Users = Kily.Set<RepastInfoUser>().Where(t => t.Account.Equals(Param.Account)).AsNoTracking().FirstOrDefault();
             if (Users != null) return "该账号已经存在!";
+            }
             if (MerchantInfo() != null)
                 User.TypePath = MerchantInfo().TypePath;
             else

@@ -71,5 +71,9 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// 企业形象
         /// </summary>
         public string ComImage { get; set; }
+        /// <summary>
+        /// 投诉电话
+        /// </summary>
+        public string ComplainPhone { get; set; }
     }
 }
