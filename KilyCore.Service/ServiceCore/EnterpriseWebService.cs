@@ -4413,7 +4413,6 @@ namespace KilyCore.Service.ServiceCore
             }
             EnterpriseLogistics logistics = Param.MapToEntity<EnterpriseLogistics>();
             return Insert<EnterpriseLogistics>(logistics) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
-            return "失败";
         }
         /// <summary>
         /// 删除发货

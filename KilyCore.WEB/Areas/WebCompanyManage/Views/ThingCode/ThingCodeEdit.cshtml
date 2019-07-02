@@ -19,20 +19,28 @@
                 if (Flag == 1) {
                     $("#BatchNo").val("G" + controller.FormatDate("YYMMDDHHmmss"));
                     $("input[name='TagType']").eq(0).attr("checked", true);
+                    var other = $("input[name='TagType']").not($("input[name='TagType']:checked"));
+                    $(other).attr("disabled", "disabled");
                 }
                 else if (Flag == 2) {
                     $("#BatchNo").val("P" + controller.FormatDate("YYMMDDHHmmss"));
                     $("input[name='TagType']").eq(1).attr("checked", true);
+                    var other = $("input[name='TagType']").not($("input[name='TagType']:checked"));
+                    $(other).attr("disabled", "disabled");
                 }
                 else if (Flag == 3) {
                     $("#BatchNo").val("C" + controller.FormatDate("YYMMDDHHmmss"));
                     $("#TotalNo").val(1);
                     $("#TotalNo").attr("readonly", true);
                     $("input[name='TagType']").eq(2).attr("checked", true);
+                    var other = $("input[name='TagType']").not($("input[name='TagType']:checked"));
+                    $(other).attr("disabled", "disabled");
                 }
                 else {
                     $("#BatchNo").val("B" + controller.FormatDate("YYMMDDHHmmss"));
                     $("input[name='TagType']").eq(3).attr("checked", true);
+                    var other = $("input[name='TagType']").not($("input[name='TagType']:checked"));
+                    $(other).attr("disabled", "disabled");
                 }
                 $("#CompanyId").val(CompanyInfo.Id);
                 $("#CodeStar").val(CompanyInfo.CodeStar);
@@ -55,7 +63,7 @@
     <div class="ibox-content">
         <form class="form-horizontal" method="post" action="EnterpriseWeb/CreateTag" id="Edit">
             <input type="hidden" id="CompanyId" name="CompanyId" />
-            <input  type="hidden" id="CodeStar" name="CodeStar"/>
+            <input type="hidden" id="CodeStar" name="CodeStar" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">标签类型</label></th>
