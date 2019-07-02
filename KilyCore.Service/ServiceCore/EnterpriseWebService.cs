@@ -3720,18 +3720,21 @@ namespace KilyCore.Service.ServiceCore
         public IList<ResponseEnterpriseGoodsStockAttach> GetStockOutNoList()
         {
             IQueryable<EnterpriseGoodsStockAttach> queryable = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false).AsNoTracking();
+            var data = Kily.Set<EnterpriseGoodsPackage>().Where(t => t.IsDelete == false).Select(t => t.ProductOutStockNo).ToList();
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
-            return queryable.Select(t => new ResponseEnterpriseGoodsStockAttach()
-            {
-                GoodsBatchNo = t.GoodsBatchNo,
-                GoodsName = Kily.Set<EnterpriseGoods>()
-                .Where(o => o.Id == Kily.Set<EnterpriseGoodsStock>()
-                .Where(x => x.Id == t.StockId).Select(x => x.GoodsId)
-                .FirstOrDefault()).Select(o => o.ProductName).FirstOrDefault()
-            }).ToList();
+            return queryable.Where(t => !string.IsNullOrEmpty(t.BoxCodeNo))
+                .Where(t=>!data.Contains(t.GoodsBatchNo))
+                .Select(t => new ResponseEnterpriseGoodsStockAttach()
+                {
+                    GoodsBatchNo = t.GoodsBatchNo,
+                    GoodsName = Kily.Set<EnterpriseGoods>()
+                  .Where(o => o.Id == Kily.Set<EnterpriseGoodsStock>()
+                  .Where(x => x.Id == t.StockId).Select(x => x.GoodsId)
+                  .FirstOrDefault()).Select(o => o.ProductName).FirstOrDefault()
+                }).ToList();
         }
         /// <summary>
         /// 添加产品检测
@@ -4176,22 +4179,29 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string EditGoodsPackage(RequestEnterpriseGoodsPackage Param)
         {
-            Param.BoxCode = Param.BoxCode.Replace("\r\n", ",");
-            var Num = Param.BoxCode.Split(",").ToList();
-            if (string.IsNullOrEmpty(Num[Num.Count - 1]))
-                Num.RemoveAt(Num.Count - 1);
-            Param.PackageNum = Num.Count;
-            var data = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => Param.ProductOutStockNo.Contains(t.GoodsBatchNo)).Select(t => t.BoxCodeNo).ToList();
-            foreach (var item in data)
+            try
             {
-                if (!Param.BoxCode.Contains(item))
-                    return "当前批次不包括装箱码：" + item;
+                Param.BoxCode = Param.BoxCode.Replace("\r\n", ",");
+                var Num = Param.BoxCode.Split(",").ToList();
+                if (string.IsNullOrEmpty(Num[Num.Count - 1]))
+                    Num.RemoveAt(Num.Count - 1);
+                Param.PackageNum = Num.Count;
+                var data = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => Param.ProductOutStockNo.Contains(t.GoodsBatchNo)).Select(t => t.BoxCodeNo).ToList();
+                foreach (var item in data)
+                {
+                    if (!Param.BoxCode.Contains(item))
+                        return "当前批次不包括装箱码：" + item;
+                }
+                EnterpriseGoodsPackage package = Param.MapToEntity<EnterpriseGoodsPackage>();
+                if (Param.Id == Guid.Empty)
+                    return Insert(package) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+                else
+                    return Update(package, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
             }
-            EnterpriseGoodsPackage package = Param.MapToEntity<EnterpriseGoodsPackage>();
-            if (Param.Id == Guid.Empty)
-                return Insert(package) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
-            else
-                return Update(package, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            catch
+            {
+                return "请扫入装箱码";
+            }
         }
         /// <summary>
         /// 装车详情
@@ -4293,7 +4303,7 @@ namespace KilyCore.Service.ServiceCore
                 Traffic = t.Traffic,
                 PackageNo = t.PackageNo,
                 TransportWay = t.TransportWay,
-                CorrectError = (t.Error / ((t.Error + t.Correct) == 0 ? 1 : (t.Error + t.Correct)))*100
+                CorrectError = (t.Error / ((t.Error + t.Correct) == 0 ? 1 : (t.Error + t.Correct))) * 100
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -4872,7 +4882,7 @@ namespace KilyCore.Service.ServiceCore
                 Certification = t.Certification,
                 Honor = t.HonorCertification,
                 TypePath = t.TypePath,
-                CompanyType=t.CompanyType,
+                CompanyType = t.CompanyType,
                 CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
                 VideoMap = x.ToDictionary(o => o.VedioName, o => o.VedioAddr)
             }).AsNoTracking().FirstOrDefault();

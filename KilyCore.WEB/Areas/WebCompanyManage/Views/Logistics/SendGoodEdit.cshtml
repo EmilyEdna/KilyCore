@@ -12,6 +12,7 @@
             Init: function () {
                 this.InitDom();
                 this.InitEvents();
+                this.InitType();
             },
             //元素
             InitDom: function () {
@@ -19,7 +20,7 @@
                 $("input[name='BatchNo']").val("No." + controller.FormatDate("YYYYMMDDHHmmss"));
                 controller.LayDate({ elem: "input[name='SendTime']" });
                 controller.Select({
-                    document: '.selectpicker',
+                    document: '#PackageNo',
                     arrelemnt: ['#PackageNo',],
                     url: 'EnterpriseWeb/GetPackagesList',
                     flag: false,
@@ -44,7 +45,7 @@
                     effectiveFieldsAlias: { SupplierName: "收货人" },
                     idField: "Id",
                     keyField: "SupplierName",
-                    AttachField:"Address",
+                    AttachField: "Address",
                     processData: function (result) {
                         var data = { value: [] };
                         $.each(result.data, function (i, obj) {
@@ -60,6 +61,23 @@
                 //验证
                 controller.ValidateConfirm("#Edit");
             },
+            InitType: function () {
+                $("input[type='radio']").click(function () {
+                    if ($(this).val() == 1) {
+                        $("#car").css({ display: "table-row" });
+                        $("#one").css({ display: "none" });
+                        $("#box").css({ display: "none" });
+                    } else if ($(this).val() == 2) {
+                        $("#box").css({ display: "table-row" });
+                        $("#car").css({ display: "none" });
+                        $("#one").css({ display: "none" });
+                    } else {
+                        $("#one").css({ display: "table-row" });
+                        $("#car").css({ display: "none" });
+                        $("#box").css({ display: "none" });
+                    }
+                });
+            }
         };
         //初始化
         $(document).ready(function () {
@@ -76,7 +94,24 @@
             <input type="hidden" name="GainId" id="GainId" />
             <table class="table table-hover table-bordered">
                 <tr>
-                    <th><label class="control-label">打包批次</label></th>
+                    <th><label class="control-label">发货方式</label></th>
+                    <td class="has-warning" colspan="3">
+                        <label class="radio-inline">
+                            <input type="radio" name="SendType" value="1" style="margin-top:3px" checked />
+                            <text title="车码批次方式">车码批次方式</text>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="SendType" value="2" style="margin-top:3px" />
+                            <text title="箱码发货方式">箱码发货方式</text>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="SendType" value="3" style="margin-top:3px" />
+                            <text title="追溯码发货方式">追溯码发货方式</text>
+                        </label>
+                    </td>
+                </tr>
+                <tr id="car">
+                    <th><label class="control-label">装车批次</label></th>
                     <td class="has-warning" colspan="3">
                         <select type="select" class="selectpicker form-control" id="PackageNo" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
                     </td>
@@ -127,6 +162,18 @@
                     <th><label class="control-label">交通工具</label></th>
                     <td class="has-warning">
                         <input type="text" class="form-control" name="Traffic" />
+                    </td>
+                </tr>
+                <tr style="display:none" id="one">
+                    <th><label class="control-label">追溯码</label><span style="color:red">*</span></th>
+                    <td class="has-warning" colspan="3">
+                        <textarea class="form-control" name="OneCode" rows="30" cols="30" placeholder="每箱最大扫入100个物品"></textarea>
+                    </td>
+                </tr>
+                <tr style="display:none" id="box">
+                    <th><label class="control-label">箱码</label><span style="color:red">*</span></th>
+                    <td class="has-warning" colspan="3">
+                        <textarea class="form-control" name="BoxCode" rows="30" cols="30" placeholder="最大扫入100个箱码"></textarea>
                     </td>
                 </tr>
             </table>
