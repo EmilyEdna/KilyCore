@@ -17,6 +17,7 @@
             //元素
             InitDom: function () {
                 $("input[name='CompanyId']").val(CompanyInfo.Id);
+                 $("input[name='CompanyType']").val(CompanyInfo.CompanyType);
                 $("input[name='BatchNo']").val("No." + controller.FormatDate("YYYYMMDDHHmmss"));
                 controller.LayDate({ elem: "input[name='SendTime']" });
                 controller.Select({
@@ -67,14 +68,17 @@
                         $("#car").css({ display: "table-row" });
                         $("#one").css({ display: "none" });
                         $("#box").css({ display: "none" });
+                         $("#model").css({ display: "none" });
                     } else if ($(this).val() == 2) {
                         $("#box").css({ display: "table-row" });
                         $("#car").css({ display: "none" });
                         $("#one").css({ display: "none" });
+                        $("#model").css({ display: "table-row" });
                     } else {
                         $("#one").css({ display: "table-row" });
                         $("#car").css({ display: "none" });
                         $("#box").css({ display: "none" });
+                         $("#model").css({ display: "table-row" });
                     }
                 });
             }
@@ -92,6 +96,7 @@
             <input type="hidden" name="CompanyId" />
             <input type="hidden" name="Flag" value="false" />
             <input type="hidden" name="GainId" id="GainId" />
+            <input type="hidden" name="CompanyType" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">发货方式</label></th>
@@ -114,6 +119,12 @@
                     <th><label class="control-label">装车批次</label></th>
                     <td class="has-warning" colspan="3">
                         <select type="select" class="selectpicker form-control" id="PackageNo" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
+                    </td>
+                </tr>
+                <tr id="model">
+                    <th><label class="control-label">产品名称</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" class="form-control" name="GoodsName" />
                     </td>
                 </tr>
                 <tr>

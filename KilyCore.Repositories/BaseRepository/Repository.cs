@@ -431,7 +431,7 @@ namespace KilyCore.Repositories.BaseRepository
         /// <summary>
         /// 执行存储过程返回DataSet数据集
         /// </summary>
-        public static DataSet Execute(this KilyContext db, string sql, SqlParameter[] sqlParams,IList<String> PropertyNames=null) 
+        public static DataSet Execute(this KilyContext db, string sql, SqlParameter[] sqlParams, IList<String> PropertyNames = null)
         {
             DbConnection connection = db.Database.GetDbConnection();
             SqlCommand cmd = connection.CreateCommand() as SqlCommand;
@@ -453,13 +453,62 @@ namespace KilyCore.Repositories.BaseRepository
                         if (i == 0)
                             adapter.TableMappings.Add(Table, PropertyNames[i]);
                         else
-                            adapter.TableMappings.Add(Table+i, PropertyNames[i]);
+                            adapter.TableMappings.Add(Table + i, PropertyNames[i]);
                     }
                 }
                 adapter.Fill(ds);
             }
             db.Database.CloseConnection();
             return ds;
+        }
+        /// <summary>
+        /// 执行SQL返回DataTable
+        /// </summary>
+        public static DataTable ExecuteTable(this KilyContext db, string sql, SqlParameter[] sqlParams)
+        {
+            DbConnection connection = db.Database.GetDbConnection();
+            SqlCommand cmd = connection.CreateCommand() as SqlCommand;
+            db.Database.OpenConnection();
+            cmd.CommandText = sql;
+            if (sqlParams != null)
+            {
+                cmd.Parameters.AddRange(sqlParams);
+            }
+            DataTable dt = new DataTable();
+            using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+            {
+                adapter.Fill(dt);
+            }
+            db.Database.CloseConnection();
+            return dt;
+        }
+        /// <summary>
+        /// DataTable转List
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public static List<T> ToList<T>(this DataTable dt)
+        {
+            var lst = new List<T>();
+            var plist = new List<PropertyInfo>(typeof(T).GetProperties());
+            foreach (DataRow item in dt.Rows)
+            {
+                T t = Activator.CreateInstance<T>();
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    PropertyInfo info = plist.Find(p => p.Name == dt.Columns[i].ColumnName);
+                    if (info != null)
+                    {
+                        if (!Convert.IsDBNull(item[i]))
+                        {
+                            info.SetValue(t, item[i].ToString());
+                        }
+                    }
+                }
+                lst.Add(t);
+            }
+            return lst;
         }
         /// <summary>
         /// DateSet转IEnumerable

@@ -6,6 +6,7 @@ using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.Function;
 using KilyCore.DataEntity.ResponseMapper.Govt;
+using KilyCore.DataEntity.ResponseMapper.Phone;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.Service.QueryExtend;
 using System;
@@ -318,7 +319,7 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 手机扫描页面
         ResponseEnterprise GetScanCompanyFirst(Guid Id);
-        ResponseEnterpriseScanCodeContent GetScanCodeInfo(Guid? Id, String Code);
+        BaseInfo GetScanCodeInfo(Guid? Id, String Code);
         String EditScanInfo(RequestEnterpriseScanCodeInfo Param);
         ResponseEnterpriseBoxing GetScanBoxInfo(Guid? Id, String Code);
         RequestEnterpriseLogistics GetScanSendInfo(String Id);

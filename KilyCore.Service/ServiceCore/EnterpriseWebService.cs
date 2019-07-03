@@ -21,6 +21,7 @@ using KilyCore.Service.IServiceCore;
 using KilyCore.Service.QueryExtend;
 using Microsoft.EntityFrameworkCore;
 using System;
+using KilyCore.DataEntity.ResponseMapper.Phone;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -110,6 +111,10 @@ namespace KilyCore.Service.ServiceCore
         public IList<ResponseEnterpriseSeller> GetSellerInEnterprise(string Param)
         {
             IQueryable<EnterpriseSeller> Seller = Kily.Set<EnterpriseSeller>().Where(t => t.IsDelete == false).Where(t => t.SellerType == SellerEnum.Sale);
+            if (CompanyInfo() != null)
+                Seller = Seller.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
+            else
+                Seller = Seller.Where(t => t.CompanyId == CompanyUser().Id);
             if (!string.IsNullOrEmpty(Param))
                 Seller = Seller.Where(t => t.SupplierName.Contains(Param));
             var data = Seller.Select(t => new ResponseEnterpriseSeller()
@@ -3689,8 +3694,13 @@ namespace KilyCore.Service.ServiceCore
                     var Num = Param.BoxCodeNo.Split(",").ToList();
                     if (string.IsNullOrEmpty(Num[Num.Count - 1]))
                         Num.RemoveAt(Num.Count - 1);
-                    Param.BoxCount = Num.Count.ToString();
-                    Param.OutStockNum = Kily.Set<EnterpriseBoxing>().Where(t => Num.Contains(t.BoxCode)).Select(t => t.ThingCode).ToList().SelectMany(t => t.Split(",")).Count();
+                    List<string> Nums = new List<string>();
+                    foreach (var item in Num)
+                    {
+                        Nums.Add(Regex.Match(item, "(^|&)Code=([^&]*)(&|$)").Groups[2].Value);
+                    }
+                    Param.BoxCount = Nums.Count.ToString();
+                    Param.OutStockNum = Kily.Set<EnterpriseBoxing>().Where(t => Nums.Contains(t.BoxCode)).Select(t => t.ThingCode).ToList().SelectMany(t => t.Split(",")).Count();
                 }
             }
             else
@@ -3701,7 +3711,12 @@ namespace KilyCore.Service.ServiceCore
                     var Num = Param.SourceCodeNo.Split(",").ToList();
                     if (string.IsNullOrEmpty(Num[Num.Count - 1]))
                         Num.RemoveAt(Num.Count - 1);
-                    Param.OutStockNum = Num.Count;
+                    List<string> Nums = new List<string>();
+                    foreach (var item in Num)
+                    {
+                        Nums.Add(Regex.Match(item, "(^|&)Code=([^&]*)(&|$)").Groups[2].Value);
+                    }
+                    Param.OutStockNum = Nums.Count;
                 }
             }
             if (Param.OutStockNum <= 0)
@@ -4406,6 +4421,7 @@ namespace KilyCore.Service.ServiceCore
                     var box = Kily.Set<EnterpriseBoxing>().Where(t => t.IsDelete == false).Where(t => t.BoxCode.Contains(tempCode)).FirstOrDefault();
                     if (box == null)
                         return $"当前号段：{tempCode}，未绑定！";
+                    Param.SendGoodsNum += box.ThingCode.Split(",").Count();
                 }
             }
             else
@@ -4421,6 +4437,7 @@ namespace KilyCore.Service.ServiceCore
                     if (attach == null)
                         return $"当前号段：{tempCode}，未绑定！";
                 }
+                Param.SendGoodsNum = temp.Count().ToString();
             }
             EnterpriseLogistics logistics = Param.MapToEntity<EnterpriseLogistics>();
             return Insert<EnterpriseLogistics>(logistics) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
@@ -4943,7 +4960,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Id"></param>
         /// <param name="Code"></param>
-        public ResponseEnterpriseScanCodeContent GetScanCodeInfo(Guid? Id, String Code)
+        public BaseInfo GetScanCodeInfo(Guid? Id, String Code)
         {
             String SearchCode = String.Empty;
             String PreFix = String.Empty;
@@ -4966,17 +4983,118 @@ namespace KilyCore.Service.ServiceCore
                 CodeType = 1;
             }
             SqlParameter[] Param = {
-             new SqlParameter("@Id", Id),
              new SqlParameter("@Code",SearchCode),
              new SqlParameter("@CodeType",CodeType),
-             new SqlParameter("@PreFix",PreFix),
+              new SqlParameter("@Fix",PreFix),
             };
-            if (!Id.HasValue)
-                Param[0].Value = DBNull.Value;
-            if (String.IsNullOrEmpty(PreFix))
-                Param[3].Value = DBNull.Value;
-            var data = Kily.Execute("Sp_GetScanCodeInfo", Param).ToCollection<ResponseEnterpriseScanCodeContent>().FirstOrDefault();
-            return data;
+            BaseInfo Base = Kily.ExecuteTable(SQLHelper.SQLBase, Param).ToList<BaseInfo>().FirstOrDefault();
+            EnterpriseGoodsPackage 装车 = Kily.Set<EnterpriseGoodsPackage>().Where(t => t.IsDelete == false).Where(t => t.ProductOutStockNo == Base.出库批次).FirstOrDefault();
+            Base.装车编号 = 装车 != null ? 装车.PackageNo : "";
+            IQueryable<EnterpriseLogistics> 预发货 = Kily.Set<EnterpriseLogistics>().Where(t => t.IsDelete == false);
+            if (!string.IsNullOrEmpty(Base.装车编号))
+                预发货 = 预发货.Where(t => t.PackageNo.Equals(Base.装车编号));
+            else
+            {
+                var 预发货列表 = 预发货.Select(t => new BaseInfo
+                {
+                    发货绑定码 = (t.OneCode.ToUpper().Replace("http://www.cfda.vip/newphone/codeindex.html?id=null&Code=".ToUpper(), "")).Substring(3, 12),
+                    发货批次 = t.BatchNo,
+                    运单号 = t.WayBill,
+                    发货时间 = t.SendTime.ToString(),
+                    收货人 = t.GainUser,
+                    收货地址 = t.Address,
+                    发货地址 = t.SendAddress,
+                    交通工具 = t.Traffic,
+                    运输方式 = t.TransportWay,
+                    收货标志 = t.Flag
+                }).ToList();
+                var 预发货实体 = 预发货列表.Where(t => t.发货绑定码整型 >= Base.开始整型 && t.发货绑定码整型 <= Base.结束整型).FirstOrDefault();
+                Base.发货批次 = 预发货实体.发货批次;
+                Base.运单号 = 预发货实体.运单号;
+                Base.发货时间 = 预发货实体.发货时间;
+                Base.收货人 = 预发货实体.收货人;
+                Base.收货地址 = 预发货实体.收货地址;
+                Base.发货地址 = 预发货实体.发货地址;
+                Base.交通工具 = 预发货实体.交通工具;
+                Base.运输方式 = 预发货实体.运输方式;
+                Base.收货标志 = 预发货实体.收货标志;
+            }
+            var 生产批次 = Kily.Set<EnterpriseProductionBatch>().Where(t => t.SeriesId.ToString() == Base.产品系列).FirstOrDefault();
+            if (生产批次 != null)
+            {
+                var 设备 = Kily.Set<EnterpriseDevice>().Where(t => t.DeviceName.Equals(生产批次.DeviceName)).FirstOrDefault();
+                var 设施 = Kily.Set<EnterpriseFacilities>().Where(t => t.Id == 生产批次.FacId).FirstOrDefault();
+                Base.设备名称 = 设备.DeviceName;
+                Base.设备供应商 = 设备.SupplierName;
+                Base.车间名称 = 设施.WorkShopName;
+                Base.环境信息 = 设施.Environment;
+                SqlParameter[] Mater = {
+                    new SqlParameter("@Ids",生产批次.MaterialId)
+                };
+                Base.Materials = Kily.ExecuteTable(SQLHelper.SQLMaterial, Mater).ToList<Material>();
+            }
+            if (Base.企业类型 == "10" || Base.企业类型 == "20")//种植养殖
+            {
+                var No = Kily.Set<EnterpriseNote>().Where(t => t.Id.ToString() == Base.成长档案).Select(t => t.BatchNo).FirstOrDefault();
+                var Plants = Kily.Set<EnterprisePlanting>().AsQueryable();
+                var Drugs = Kily.Set<EnterpriseDrug>().AsQueryable();
+                if (Base.企业类型 == "10")
+                {
+                    Base.Plants = Plants.Where(t => t.IsType == 1).Select(t => new Plant
+                    {
+                        PlantTime = t.PlantTime,
+                        FeedName = t.FeedName,
+                        Producter = t.Producter
+                    }).ToList();
+                    Base.Drugs = Drugs.Where(t => t.IsType == 1).Select(t => new Drug
+                    {
+                        DrugName = t.DrugName,
+                        PlantTime = t.PlantTime,
+                        Producter = t.Producter
+                    }).ToList();
+                }
+                else
+                {
+                    Base.Plants = Plants.Where(t => t.IsType == 2).Select(t => new Plant
+                    {
+                        PlantTime = t.PlantTime,
+                        FeedName = t.FeedName,
+                        Producter = t.Producter
+                    }).ToList();
+                    Base.Drugs = Drugs.Where(t => t.IsType == 2).Select(t => new Drug
+                    {
+                        DrugName = t.DrugName,
+                        PlantTime = t.PlantTime,
+                        Producter = t.Producter
+                    }).ToList();
+                }
+                Base.Environs = Kily.Set<EnterpriseEnvironment>().Where(t => t.BatchNo == No).Select(t => new Environ
+                {
+                    AirEnv = t.AirEnv,
+                    AirHdy = t.AirHdy,
+                    SoilEnv = t.SoilEnv,
+                    SoilHdy = t.SoilHdy
+                }).ToList();
+            }
+            BaseInfo Patrol = Kily.Set<GovtNetPatrol>().Where(t => t.CompanyId.ToString() == Base.企业).Select(t => new BaseInfo
+            {
+                抽查次数 = t.PotrolNum,
+                通报次数 = t.BulletinNum,
+                合格率 = t.QualifiedNum
+            }).FirstOrDefault();
+            Base.抽查次数 = Patrol != null ? Patrol.抽查次数 : 0;
+            Base.通报次数 = Patrol != null ? Patrol.通报次数 : 0;
+            Base.合格率 = Patrol != null ? Patrol.合格率 : "";
+            Base.投诉次数 = Kily.Set<GovtComplain>().Where(t => t.CompanyId.ToString() == Base.企业).Count();
+            EnterpriseRecover Recover = Kily.Set<EnterpriseRecover>().Where(t => t.CompanyId.ToString() == Base.企业).Where(t => t.RecoverGoodsName == Base.产品名称).Select(t => new EnterpriseRecover
+            {
+                RecoverStarTime = t.RecoverStarTime,
+                RecoverEndTime = t.RecoverEndTime
+            }).FirstOrDefault();
+            Base.召回开始时间 = Recover.RecoverStarTime.ToString();
+            Base.召回截至时间 = Recover.RecoverEndTime.ToString();
+            Base.扫码次数 = Kily.Set<EnterpriseScanCodeInfo>().Where(t => t.ScanCode.Equals(Code)).Select(t => t.ScanNum).Sum();
+            return Base;
         }
         /// <summary>
         /// 新增扫码记录

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KilyCore.EntityFrameWork.ModelEnum;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -91,5 +92,9 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// 箱码
         /// </summary>
         public string BoxCode { get; set; }
+        /// <summary>
+        /// 企业类型
+        /// </summary>
+        public CompanyEnum CompanyType { get; set; }
     }
 }
