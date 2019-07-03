@@ -17,10 +17,21 @@
             //元素
             InitDom: function () {
                 $("#CompanyId").val(CompanyInfo.Id);
-                if (CompanyInfo.CompanyType == 30)
+                if (CompanyInfo.CompanyType == 20 || CompanyInfo.CompanyType == 10) {
+                    $("#pro").css("display", "none");
+                    $("#buy").css("display", "none");
+                    this.GetNoteList();
+                }
+                if (CompanyInfo.CompanyType == 30) {
+                    $("#buy").css("display", "none");
+                    $("#plant").css("display", "none");
                     this.GetGoods();
-                if (CompanyInfo.CompanyType == 40)
+                }
+                if (CompanyInfo.CompanyType == 40) {
+                    $("#pro").css("display", "none");
+                    $("#plant").css("display", "none");
                     this.GetCarBatchNo();
+                }
             },
             //获取产品
             GetGoods: function () {
@@ -46,11 +57,27 @@
                     type: "post",
                     async: false,
                     success: function (result) {
-                        var html = '<option>==请选择进货产品==</option>';
+                        var html = '<option>==请选择产品==</option>';
                         $.each(result.data, function (i, obj) {
                             html += '<option value="' + obj.Id + '">' + obj.GoodName + '(' + obj.BatchNo + ')</option>';
                         });
                         $("#BuyerId").html(html);
+                    }
+                });
+            },
+            //获取成长档案
+            GetNoteList: function () {
+                controller.ajax({
+                    url: "EnterpriseWeb/GetNoteList",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        var html = '<option>==请选择产品==</option>';
+                        $.each(result.data, function (i, obj) {
+                            html += '<option value="' + obj.Id + '">' + obj.NoteName + '(' + obj.BatchNo + ')</option>';
+                        });
+                        $("#NoteId").html(html);
                     }
                 });
             },
@@ -106,14 +133,22 @@
                         <input type="text" class="form-control" name="CheckUint" />
                     </td>
                 </tr>
-                <tr>
+                <tr id="pro">
                     <th><label class="control-label">产品名称</label></th>
-                    <td class="has-warning">
+                    <td class="has-warning" colspan="3">
                         <select type="select" class="form-control" name="GoodsId" id="GoodsId"></select>
                     </td>
-                    <th><label class="control-label">进货产品名称</label></th>
-                    <td class="has-warning">
+                </tr>
+                <tr id="buy">
+                    <th><label class="control-label">产品名称</label></th>
+                    <td class="has-warning" colspan="3">
                         <select type="select" class="form-control" name="BuyerId" id="BuyerId"></select>
+                    </td>
+                </tr>
+                <tr id="plant">
+                    <th><label class="control-label">产品名称</label></th>
+                    <td class="has-warning" colspan="3">
+                        <select type="select" class="form-control" name="NoteId" id="NoteId"></select>
                     </td>
                 </tr>
                 <tr>

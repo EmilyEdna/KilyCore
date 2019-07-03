@@ -37,6 +37,10 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual Guid? BuyerId { get; set; }
         /// <summary>
+        /// 日记表Id
+        /// </summary>
+        public Guid? NoteId { get; set; }
+        /// <summary>
         /// 质检单位
         /// </summary>
         public virtual string CheckUint { get; set; }

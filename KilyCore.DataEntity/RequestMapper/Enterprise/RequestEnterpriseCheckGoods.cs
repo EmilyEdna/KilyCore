@@ -29,7 +29,15 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// <summary>
         /// 产品表Id
         /// </summary>
-        public Guid GoodsId { get; set; }
+        public Guid? GoodsId { get; set; }
+        /// <summary>
+        /// 进货表Id
+        /// </summary>
+        public Guid? BuyerId { get; set; }
+        /// <summary>
+        /// 日记表Id
+        /// </summary>
+        public Guid? NoteId { get; set; }
         /// <summary>
         /// 质检单位
         /// </summary>
@@ -46,5 +54,9 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// 质检报告
         /// </summary>
         public string CheckReport { get; set; }
+        /// <summary>
+        /// 类型
+        /// </summary>
+        public int Type { get; set; }
     }
 }

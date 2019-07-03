@@ -2000,6 +2000,7 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.Select(t => new ResponseEnterpriseNote()
             {
                 Id = t.Id,
+                BatchNo = t.BatchNo,
                 NoteName = t.NoteName
             }).ToList();
             return data;
@@ -3903,15 +3904,26 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseCheckGoods> queryable = Kily.Set<EnterpriseCheckGoods>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
             IQueryable<EnterpriseProductionBatch> queryables = Kily.Set<EnterpriseProductionBatch>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseBuyer> buyers = Kily.Set<EnterpriseBuyer>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseNote> note = Kily.Set<EnterpriseNote>().Where(t => t.IsDelete == false);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.CheckName))
                 queryable = queryable.Where(t => t.CheckName.Contains(pageParam.QueryParam.CheckName));
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
                 queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id);
-            if (queryables.ToList().Count() != 0)
-            {
-                var data = queryable.Join(queryables, t => t.GoodsId, x => x.Id, (t, x) => new ResponseEnterpriseCheckGoods()
+            if (pageParam.QueryParam.Type == 10 || pageParam.QueryParam.Type == 20)
+                return queryable.Join(note, t => t.NoteId, x => x.Id, (t, x) => new ResponseEnterpriseCheckGoods()
+                {
+                    Id = t.Id,
+                    CheckName = t.CheckName,
+                    GoodsName = x.NoteName,
+                    CheckResult = t.CheckResult,
+                    CheckUint = t.CheckUint,
+                    CheckUser = t.CheckUser,
+                    CheckReport = t.CheckReport
+                }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            if (pageParam.QueryParam.Type == 30)
+                return queryable.Join(queryables, t => t.GoodsId, x => x.Id, (t, x) => new ResponseEnterpriseCheckGoods()
                 {
                     Id = t.Id,
                     CheckName = t.CheckName,
@@ -3921,18 +3933,17 @@ namespace KilyCore.Service.ServiceCore
                     CheckUser = t.CheckUser,
                     CheckReport = t.CheckReport
                 }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
-                return data;
-            }
-            return queryable.Join(buyers, t => t.BuyerId, x => x.Id, (t, x) => new ResponseEnterpriseCheckGoods()
-            {
-                Id = t.Id,
-                CheckName = t.CheckName,
-                GoodsName = x.GoodName,
-                CheckResult = t.CheckResult,
-                CheckUint = t.CheckUint,
-                CheckUser = t.CheckUser,
-                CheckReport = t.CheckReport
-            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            else
+                return queryable.Join(buyers, t => t.BuyerId, x => x.Id, (t, x) => new ResponseEnterpriseCheckGoods()
+                {
+                    Id = t.Id,
+                    CheckName = t.CheckName,
+                    GoodsName = x.GoodName,
+                    CheckResult = t.CheckResult,
+                    CheckUint = t.CheckUint,
+                    CheckUser = t.CheckUser,
+                    CheckReport = t.CheckReport
+                }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
         }
         /// <summary>
         /// 编辑产品质检
@@ -4407,7 +4418,7 @@ namespace KilyCore.Service.ServiceCore
                     var Codes = Convert.ToInt64(tempCode.Substring(3, tempCode.Length - 4));
                     var Host = tempCode.Substring(0, 3);
                     var attach = Kily.Set<EnterpriseTagAttach>().Where(t => t.StarSerialNo <= Codes && t.EndSerialNo >= Codes && t.StarSerialNos.Contains(Host)).FirstOrDefault();
-                    if(attach==null)
+                    if (attach == null)
                         return $"当前号段：{tempCode}，未绑定！";
                 }
             }

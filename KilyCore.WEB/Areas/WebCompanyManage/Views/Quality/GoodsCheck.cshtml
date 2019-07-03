@@ -21,7 +21,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetCheckGoodsPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetCheckGoodsPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { Type: CompanyInfo.CompanyType } });
             },
             //事件
             InitEvents: function () {
@@ -42,14 +42,16 @@
             action: {
                 ImgFormatter: function (val, row, index) {
                     var action = [];
-                    if (row.CheckReport.indexOf(",") < 0)
-                        action.push('<img class="photoimg" src="' + row.CheckReport + '" style="height:32px;width:48px;"/>');
-                    else {
-                        for (var i = 0; i <= row.CheckReport.split(",").length; i++) {
-                            action.push('<img class="photoimg" src="' + row.CheckReport.split(",")[i] + '" style="height:32px;width:48px;"/>');
+                    if (row.CheckReport != null) {
+                        if (row.CheckReport.indexOf(",") < 0)
+                            action.push('<img class="photoimg" src="' + row.CheckReport + '" style="height:32px;width:48px;"/>');
+                        else {
+                            for (var i = 0; i <= row.CheckReport.split(",").length; i++) {
+                                action.push('<img class="photoimg" src="' + row.CheckReport.split(",")[i] + '" style="height:32px;width:48px;"/>');
+                            }
                         }
+                        return action;
                     }
-                    return action;
                 },
                 ImgEvents: {
                     "click .photoimg": function (event, val, row, index) {

@@ -22,7 +22,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
     {
         public Guid Id { get; set; }
         public Guid CompanyId { get; set; }
-        public Guid ProductSeriesId { get; set; }
+        public Guid? ProductSeriesId { get; set; }
         public string ProductType { get; set; }
         public string ProductName { get; set; }
         public string  ProductSeriesName { get; set; }

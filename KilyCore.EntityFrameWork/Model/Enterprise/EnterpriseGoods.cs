@@ -36,7 +36,7 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// <summary>
         /// 产品系列
         /// </summary>
-        public virtual Guid ProductSeriesId { get; set; }
+        public virtual Guid? ProductSeriesId { get; set; }
         /// <summary>
         /// 保质期
         /// </summary>
