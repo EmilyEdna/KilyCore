@@ -4990,9 +4990,31 @@ namespace KilyCore.Service.ServiceCore
             BaseInfo Base = Kily.ExecuteTable(SQLHelper.SQLBase, Param).ToList<BaseInfo>().FirstOrDefault();
             EnterpriseGoodsPackage 装车 = Kily.Set<EnterpriseGoodsPackage>().Where(t => t.IsDelete == false).Where(t => t.ProductOutStockNo == Base.出库批次).FirstOrDefault();
             Base.装车编号 = 装车 != null ? 装车.PackageNo : "";
+
             IQueryable<EnterpriseLogistics> 预发货 = Kily.Set<EnterpriseLogistics>().Where(t => t.IsDelete == false);
             if (!string.IsNullOrEmpty(Base.装车编号))
-                预发货 = 预发货.Where(t => t.PackageNo.Equals(Base.装车编号));
+            {
+                var 预发货实体 = 预发货.Where(t => t.PackageNo.Equals(Base.装车编号)).Select(t => new BaseInfo {
+                    发货批次 = t.BatchNo,
+                    运单号 = t.WayBill,
+                    发货时间 = t.SendTime.ToString(),
+                    收货人 = t.GainUser,
+                    收货地址 = t.Address,
+                    发货地址 = t.SendAddress,
+                    交通工具 = t.Traffic,
+                    运输方式 = t.TransportWay,
+                    收货标志 = t.Flag
+                }).FirstOrDefault();
+                Base.发货批次 = 预发货实体.发货批次;
+                Base.运单号 = 预发货实体.运单号;
+                Base.发货时间 = 预发货实体.发货时间;
+                Base.收货人 = 预发货实体.收货人;
+                Base.收货地址 = 预发货实体.收货地址;
+                Base.发货地址 = 预发货实体.发货地址;
+                Base.交通工具 = 预发货实体.交通工具;
+                Base.运输方式 = 预发货实体.运输方式;
+                Base.收货标志 = 预发货实体.收货标志;
+            }
             else
             {
                 var 预发货列表 = 预发货.Select(t => new BaseInfo
