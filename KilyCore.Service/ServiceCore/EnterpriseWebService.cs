@@ -4989,15 +4989,16 @@ namespace KilyCore.Service.ServiceCore
             };
             BaseInfo Base = Kily.ExecuteTable(SQLHelper.SQLBase, Param).ToList<BaseInfo>().FirstOrDefault();
             EnterpriseGoodsPackage 装车 = Kily.Set<EnterpriseGoodsPackage>().Where(t => t.IsDelete == false).Where(t => t.ProductOutStockNo == Base.出库批次).FirstOrDefault();
-            Base.装车编号 = 装车 != null ? 装车.PackageNo : "";
-
+            Base.装车编号 = 装车?.PackageNo;
             IQueryable<EnterpriseLogistics> 预发货 = Kily.Set<EnterpriseLogistics>().Where(t => t.IsDelete == false);
             if (!string.IsNullOrEmpty(Base.装车编号))
             {
-                var 预发货实体 = 预发货.Where(t => t.PackageNo.Equals(Base.装车编号)).Select(t => new BaseInfo {
+                var 预发货实体 = 预发货.Where(t => t.PackageNo.Equals(Base.装车编号)).Select(t => new BaseInfo
+                {
+                    装车标识 = t.Id.ToString(),
                     发货批次 = t.BatchNo,
                     运单号 = t.WayBill,
-                    发货时间 = t.SendTime.ToString(),
+                    发货时间 = t.SendTime,
                     收货人 = t.GainUser,
                     收货地址 = t.Address,
                     发货地址 = t.SendAddress,
@@ -5005,6 +5006,7 @@ namespace KilyCore.Service.ServiceCore
                     运输方式 = t.TransportWay,
                     收货标志 = t.Flag
                 }).FirstOrDefault();
+                Base.装车标识 = 预发货实体.装车标识;
                 Base.发货批次 = 预发货实体.发货批次;
                 Base.运单号 = 预发货实体.运单号;
                 Base.发货时间 = 预发货实体.发货时间;
@@ -5019,10 +5021,11 @@ namespace KilyCore.Service.ServiceCore
             {
                 var 预发货列表 = 预发货.Select(t => new BaseInfo
                 {
+                    装车标识 = t.Id.ToString(),
                     发货绑定码 = (t.OneCode.ToUpper().Replace("http://www.cfda.vip/newphone/codeindex.html?id=null&Code=".ToUpper(), "")).Substring(3, 12),
                     发货批次 = t.BatchNo,
                     运单号 = t.WayBill,
-                    发货时间 = t.SendTime.ToString(),
+                    发货时间 = t.SendTime,
                     收货人 = t.GainUser,
                     收货地址 = t.Address,
                     发货地址 = t.SendAddress,
@@ -5031,6 +5034,7 @@ namespace KilyCore.Service.ServiceCore
                     收货标志 = t.Flag
                 }).ToList();
                 var 预发货实体 = 预发货列表.Where(t => t.发货绑定码整型 >= Base.开始整型 && t.发货绑定码整型 <= Base.结束整型).FirstOrDefault();
+                Base.装车标识 = 预发货实体.装车标识;
                 Base.发货批次 = 预发货实体.发货批次;
                 Base.运单号 = 预发货实体.运单号;
                 Base.发货时间 = 预发货实体.发货时间;
@@ -5041,11 +5045,20 @@ namespace KilyCore.Service.ServiceCore
                 Base.运输方式 = 预发货实体.运输方式;
                 Base.收货标志 = 预发货实体.收货标志;
             }
-            var 生产批次 = Kily.Set<EnterpriseProductionBatch>().Where(t => t.SeriesId.ToString() == Base.产品系列).FirstOrDefault();
-            if (生产批次 != null)
+            //生产企业
+            if (Base.企业类型 == "30")
             {
+                var 生产批次 = Kily.Set<EnterpriseProductionBatch>().Where(t => t.SeriesId.ToString() == Base.产品系列).FirstOrDefault();
                 var 设备 = Kily.Set<EnterpriseDevice>().Where(t => t.DeviceName.Equals(生产批次.DeviceName)).FirstOrDefault();
                 var 设施 = Kily.Set<EnterpriseFacilities>().Where(t => t.Id == 生产批次.FacId).FirstOrDefault();
+                var 关键点 = Kily.Set<EnterpriseProductionBatchAttach>().Where(t => t.ProBatchId == 生产批次.Id).Select(t => new BaseInfo
+                {
+                    关键点结果 = t.Result,
+                    关键点指标 = t.TargetValue
+                }).FirstOrDefault();
+                Base.生产批次号 = 生产批次.BatchNo;
+                Base.关键点结果 = 关键点.关键点结果;
+                Base.关键点指标 = 关键点.关键点指标;
                 Base.设备名称 = 设备.DeviceName;
                 Base.设备供应商 = 设备.SupplierName;
                 Base.车间名称 = 设施.WorkShopName;
@@ -5055,7 +5068,8 @@ namespace KilyCore.Service.ServiceCore
                 };
                 Base.Materials = Kily.ExecuteTable(SQLHelper.SQLMaterial, Mater).ToList<Material>();
             }
-            if (Base.企业类型 == "10" || Base.企业类型 == "20")//种植养殖
+            //种养殖企业
+            if (Base.企业类型 == "10" || Base.企业类型 == "20")
             {
                 var No = Kily.Set<EnterpriseNote>().Where(t => t.Id.ToString() == Base.成长档案).Select(t => t.BatchNo).FirstOrDefault();
                 var Plants = Kily.Set<EnterprisePlanting>().AsQueryable();
@@ -5098,6 +5112,26 @@ namespace KilyCore.Service.ServiceCore
                     SoilHdy = t.SoilHdy
                 }).ToList();
             }
+            //流通企业
+            if (Base.企业类型 == "40")
+            {
+               var 进货信息 =  Kily.Set<EnterpriseBuyer>().Where(t => t.Id.ToString() == Base.进货信息).Select(t => new BaseInfo {
+                    进货批次 = t.BatchNo,
+                    进货产品 = t.GoodName,
+                    产品产地 = t.Address,
+                    进货产品供应商 = t.Supplier,
+                    进货时间 = t.GetGoodsTime,
+                    进货产品规格 = t.Spec,
+                    进货产品质检 = t.CheckReport
+                }).FirstOrDefault();
+                Base.进货批次 = 进货信息.进货批次;
+                Base.进货产品 = 进货信息.进货产品;
+                Base.产品产地 = 进货信息.产品产地;
+                Base.进货产品供应商 = 进货信息.进货产品供应商;
+                Base.进货时间 = 进货信息.进货时间;
+                Base.进货产品规格 = 进货信息.进货产品规格;
+                Base.进货产品质检 = 进货信息.进货产品质检;
+            }
             BaseInfo Patrol = Kily.Set<GovtNetPatrol>().Where(t => t.CompanyId.ToString() == Base.企业).Select(t => new BaseInfo
             {
                 抽查次数 = t.PotrolNum,
@@ -5106,16 +5140,22 @@ namespace KilyCore.Service.ServiceCore
             }).FirstOrDefault();
             Base.抽查次数 = Patrol != null ? Patrol.抽查次数 : 0;
             Base.通报次数 = Patrol != null ? Patrol.通报次数 : 0;
-            Base.合格率 = Patrol != null ? Patrol.合格率 : "";
+            Base.合格率 = Patrol?.合格率;
             Base.投诉次数 = Kily.Set<GovtComplain>().Where(t => t.CompanyId.ToString() == Base.企业).Count();
             EnterpriseRecover Recover = Kily.Set<EnterpriseRecover>().Where(t => t.CompanyId.ToString() == Base.企业).Where(t => t.RecoverGoodsName == Base.产品名称).Select(t => new EnterpriseRecover
             {
                 RecoverStarTime = t.RecoverStarTime,
                 RecoverEndTime = t.RecoverEndTime
             }).FirstOrDefault();
-            Base.召回开始时间 = Recover.RecoverStarTime.ToString();
-            Base.召回截至时间 = Recover.RecoverEndTime.ToString();
+            Base.召回开始时间 = Recover?.RecoverStarTime;
+            Base.召回截至时间 = Recover?.RecoverEndTime;
             Base.扫码次数 = Kily.Set<EnterpriseScanCodeInfo>().Where(t => t.ScanCode.Equals(Code)).Select(t => t.ScanNum).Sum();
+            Base.Vedios = Kily.Set<EnterpriseVedio>().Where(t => t.CompanyId.ToString() == Base.企业).Where(t => t.IsIndex == true).Take(4).Select(t => new Vedio
+            {
+                视频地址 = t.VedioAddr,
+                视频封面 = t.VedioCover,
+                显示区域 = t.VedioName
+            }).ToList();
             return Base;
         }
         /// <summary>

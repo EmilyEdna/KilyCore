@@ -587,8 +587,7 @@ namespace KilyCore.Service.ServiceCore
         {
             var Admin = Kily.Set<SystemAdmin>()
            .Where(t => t.Account.Equals(LoginValidate.Account) && t.PassWord.Equals(LoginValidate.PassWord))
-           .Where(t => t.IsDelete == false)
-           .AsNoTracking().AsQueryable().Select(t => new ResponseAdmin()
+           .Where(t => t.IsDelete == false).Select(t => new ResponseAdmin()
            {
                Id = t.Id,
                TrueName = t.TrueName,

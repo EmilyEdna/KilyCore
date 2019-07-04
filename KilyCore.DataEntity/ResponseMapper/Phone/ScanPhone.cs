@@ -19,6 +19,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Phone
         public string 成长档案 { get; set; }
         public string 产品图片 { get; set; }
         public string 产品介绍 { get; set; }
+        public string 进货信息 { get; set; }
         public string 出库批次 { get; set; }
         public string 出库时间 { get; set; }
         public string 企业 { get; set; }
@@ -29,6 +30,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Phone
         public string 企业电话 { get; set; }
         public string 投诉电话 { get; set; }
         public string 主要产品 { get; set; }
+        public string 主要经营 { get; set; }
         public string 主要介绍 { get; set; }
         public string 企业形象 { get; set; }
         public string 安全员 { get; set; }
@@ -53,9 +55,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Phone
         public string 质检报告 { get; set; }
         public string 装车编号 { get; set; }
         public string 发货绑定码 { get; set; }
+        public string 装车标识 { get; set; }
         public string 发货批次 { get; set; }
         public string 运单号 { get; set; }
-        public string 发货时间 { get; set; }
+        public DateTime? 发货时间 { get; set; }
         public string 收货人 { get; set; }
         public string 收货地址 { get; set; }
         public string 发货地址 { get; set; }
@@ -66,12 +69,13 @@ namespace KilyCore.DataEntity.ResponseMapper.Phone
         public long 开始整型 => string.IsNullOrEmpty(开始) ? 0 : Convert.ToInt64(开始);
         public long 发货绑定码整型 => string.IsNullOrEmpty(发货绑定码) ? 0 : Convert.ToInt64(发货绑定码);
         #region 生产企业
+        public string 生产批次号 { get; set; }
         public string 设备名称 { get; set; }
         public string 设备供应商 { get; set; }
         public string 车间名称 { get; set; }
         public string 环境信息 { get; set; }
-        public string 召回开始时间 { get; set; }
-        public string 召回截至时间 { get; set; }
+        public DateTime? 召回开始时间 { get; set; }
+        public DateTime? 召回截至时间 { get; set; }
         public List<Material> Materials { get; set; }
         #endregion
         #region 种养企业
@@ -85,7 +89,21 @@ namespace KilyCore.DataEntity.ResponseMapper.Phone
         public string 合格率 { get; set; }
         public int 投诉次数 { get; set; }
         #endregion
+        #region 流通企业
+        public string 进货批次 { get; set; }
+        public string 进货产品 { get; set; }
+        public string 产品产地 { get; set; }
+        public string 进货产品供应商 { get; set; }
+        public DateTime? 进货时间 { get; set; }
+        public string 进货产品规格 { get; set; }
+        public string 进货产品质检 { get; set; }
+        #endregion
+        #region 视频
+        public List<Vedio> Vedios { get; set; }
+        #endregion
         public int 扫码次数 { get; set; }
+        public string 关键点指标 { get; set; }
+        public string 关键点结果 { get; set; }
     }
     public class Material
     {
@@ -122,5 +140,11 @@ namespace KilyCore.DataEntity.ResponseMapper.Phone
         public string CO2 { get; set; }
         public decimal Lights => string.IsNullOrEmpty(Light) ? 0 : (Convert.ToDecimal(Light) / 100);
         public decimal CO2s => string.IsNullOrEmpty(CO2) ? 0 : (Convert.ToDecimal(CO2) / 100);
+    }
+    public class Vedio
+    {
+        public string 视频封面 { get; set; }
+        public string 视频地址 { get; set; }
+        public string 显示区域 { get; set; }
     }
 }

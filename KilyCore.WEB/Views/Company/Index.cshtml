@@ -8,15 +8,6 @@
     <script>
         var option = {
             Init: function () {
-                controller.ajax({
-                    url: "EnterpriseWeb/test",
-                    type: "get",
-                    async: false,
-                    data: {Parameter: "水禾W5110000000015"},
-                    success: function (r) {
-                        debugger;
-                    }
-                });
                 this.InitDom();
                 this.InitEvent();
                 this.InitDataCount(CompanyInfo.Id);
