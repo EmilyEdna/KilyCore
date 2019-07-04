@@ -5022,7 +5022,7 @@ namespace KilyCore.Service.ServiceCore
                 var 预发货列表 = 预发货.Select(t => new BaseInfo
                 {
                     装车标识 = t.Id.ToString(),
-                    发货绑定码 = (t.OneCode.ToUpper().Replace("http://www.cfda.vip/newphone/codeindex.html?id=null&Code=".ToUpper(), "")).Substring(3, 12),
+                    发货绑定码 = (t.OneCode.ToUpper().Replace("http://106.58.174.64:8012/newphone/codeindex.html?id=&Code=".ToUpper(), "")) == null ? "" : (t.OneCode.ToUpper().Replace("http://106.58.174.64:8012/newphone/codeindex.html?id=&Code=".ToUpper(), "")),
                     发货批次 = t.BatchNo,
                     运单号 = t.WayBill,
                     发货时间 = t.SendTime,
@@ -5033,7 +5033,7 @@ namespace KilyCore.Service.ServiceCore
                     运输方式 = t.TransportWay,
                     收货标志 = t.Flag
                 }).ToList();
-                var 预发货实体 = 预发货列表.Where(t => t.发货绑定码整型 >= Base.开始整型 && t.发货绑定码整型 <= Base.结束整型).FirstOrDefault();
+                var 预发货实体 = 预发货列表.Where(t=>t.发货绑定码.Contains(Code.ToUpper())).FirstOrDefault();
                 Base.装车标识 = 预发货实体.装车标识;
                 Base.发货批次 = 预发货实体.发货批次;
                 Base.运单号 = 预发货实体.运单号;

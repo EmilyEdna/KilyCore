@@ -7,8 +7,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Phone
     public class BaseInfo
     {
         public string 二维码 { get; set; }
-        public string 开始 { get; set; }
-        public string 结束 { get; set; }
         public string 产品名称 { get; set; }
         public string 产品类型 { get; set; }
         public string 保质期 { get; set; }
@@ -65,9 +63,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Phone
         public string 交通工具 { get; set; }
         public string 运输方式 { get; set; }
         public bool 收货标志 { get; set; }
-        public long 结束整型 => string.IsNullOrEmpty(结束) ? 0 : Convert.ToInt64(结束);
-        public long 开始整型 => string.IsNullOrEmpty(开始) ? 0 : Convert.ToInt64(开始);
-        public long 发货绑定码整型 => string.IsNullOrEmpty(发货绑定码) ? 0 : Convert.ToInt64(发货绑定码);
         #region 生产企业
         public string 生产批次号 { get; set; }
         public string 设备名称 { get; set; }
