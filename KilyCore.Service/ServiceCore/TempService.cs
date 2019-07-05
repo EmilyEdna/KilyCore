@@ -66,5 +66,37 @@ namespace KilyCore.Service.ServiceCore
             Esupper.AddRange(Rsupper);
             return Esupper;
         }
+        /// <summary>
+        /// 获取留样
+        /// </summary>
+        /// <param name="CompanyId"></param>
+        /// <returns></returns>
+        public object GetAllSample(Guid CompanyId)
+        {
+            return Kily.Set<RepastSample>().Where(t => t.InfoId == CompanyId).Select(t => new
+            {
+                FoodsName = t.DishName,
+                SavePerson = t.OperatUser,
+                SaveTime = t.SampleTime.Value.ToString("yyyy年MM月dd日"),
+                ReportImg = t.SampleImg,
+                t.Remark
+            }).ToList();
+        }
+        /// <summary>
+        /// 废物处理
+        /// </summary>
+        /// <param name="CompanyId"></param>
+        /// <returns></returns>
+        public object RepastDuck(Guid CompanyId)
+        {
+            return Kily.Set<RepastDuck>().Where(t => t.InfoId == CompanyId).Select(t => new {
+                BadType=t.HandleWays,
+                BadPhone=t.Phone,
+                BadTime=t.HandleTime.Value.ToString("yyyy年MM月dd日"),
+                ReportImg=t.HandleImg,
+                BadRemark=t.Remark,
+                BadPerson=t.HandleUser
+            }).ToList();
+        }
     }
 }

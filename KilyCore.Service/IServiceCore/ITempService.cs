@@ -9,5 +9,7 @@ namespace KilyCore.Service.IServiceCore
     {
         object GetAllUser(Guid CompanyId);
         object GetAllSupply(Guid CompanyId);
+        object GetAllSample(Guid CompanyId);
+        object RepastDuck(Guid CompanyId);
     }
 }

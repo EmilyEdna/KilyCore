@@ -41,6 +41,28 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(Temp.GetAllSupply(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 获取商家留样
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpGet("GetAllSample")]
+        [AllowAnonymous]
+        public ObjectResultEx GetAllSample(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(Temp.GetAllSample(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取商家留样
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpGet("RepastDuck")]
+        [AllowAnonymous]
+        public ObjectResultEx RepastDuck(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(Temp.RepastDuck(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
     }
 }
