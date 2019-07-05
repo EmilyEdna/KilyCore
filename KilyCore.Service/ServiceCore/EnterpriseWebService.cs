@@ -3318,7 +3318,7 @@ namespace KilyCore.Service.ServiceCore
         {
             EnterpriseGoodsStock stock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.Id == Param.Id).FirstOrDefault();
             EnterpriseGoods goods = Kily.Set<EnterpriseGoods>().Where(t => t.Id == stock.GoodsId).FirstOrDefault();
-            goods.AuditType = AuditEnum.AuditLoading;
+            goods.AuditType = AuditEnum.AuditSuccess;
             stock.ImgUrl = Param.ImgUrl;
             stock.Remark = Param.Remark;
             IList<String> Fields = new List<String> { "ImgUrl", "Remark" };
@@ -3700,7 +3700,7 @@ namespace KilyCore.Service.ServiceCore
                         Nums.Add(Regex.Match(item, "(^|&)Code=([^&]*)(&|$)").Groups[2].Value);
                     }
                     Param.BoxCount = Nums.Count.ToString();
-                    Param.OutStockNum = Kily.Set<EnterpriseBoxing>().Where(t => Nums.Contains(t.BoxCode)).Select(t => t.ThingCode).ToList().SelectMany(t => t.Split(",")).Count();
+                    Param.OutStockNum = Kily.Set<EnterpriseBoxing>().Where(t => Nums.Contains(t.BoxCode)).Select(t => t.ThingCode).ToList().SelectMany(t => t.Split(",")).Where(t=>!string.IsNullOrEmpty(t)).Count();
                 }
             }
             else
@@ -4225,7 +4225,7 @@ namespace KilyCore.Service.ServiceCore
                 var data = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => Param.ProductOutStockNo.Contains(t.GoodsBatchNo)).Select(t => t.BoxCodeNo).ToList();
                 foreach (var item in data)
                 {
-                    if (!Param.BoxCode.Contains(item))
+                    if (!Param.BoxCode.Contains(item.Split(",")[0]))
                         return "当前批次不包括装箱码：" + item;
                 }
                 EnterpriseGoodsPackage package = Param.MapToEntity<EnterpriseGoodsPackage>();
@@ -4411,7 +4411,7 @@ namespace KilyCore.Service.ServiceCore
                     }
                 }
             }
-            else if (Param.SendType == 2)
+            if (Param.SendType == 2)
             {
                 Param.BoxCode = Param.BoxCode.Replace("\r\n", ",");
                 var temp = Param.BoxCode.Split(",");
@@ -4424,8 +4424,7 @@ namespace KilyCore.Service.ServiceCore
                     Param.SendGoodsNum += box.ThingCode.Split(",").Count();
                 }
             }
-            else
-            {
+            if (Param.SendType != null) {
                 Param.OneCode = Param.OneCode.Replace("\r\n", ",");
                 var temp = Param.OneCode.Split(",");
                 for (int i = 0; i < temp.Length; i++)

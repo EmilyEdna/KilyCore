@@ -77,9 +77,7 @@ FROM dbo.EnterpriseTagAttach AS 绑定记录表
     JOIN dbo.EnterpriseInfo AS 企业表
         ON 企业表.Id = 绑定记录表.CompanyId
     JOIN dbo.EnterpriseCheckGoods AS 质检表
-        ON (质检表.NoteId = 入库表.GrowNoteId)
-           OR (质检表.BuyerId = 入库表.BuyId)
-           OR (质检表.GoodsId = 入库表.GoodsId)
+        ON 质检表.Id = 入库表.CheckGoodsId
 WHERE 绑定记录表.StarSerialNo <= @Code
       AND 绑定记录表.EndSerialNo >= @Code
       AND 产品表.AuditType = 40
