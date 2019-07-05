@@ -5021,7 +5021,7 @@ namespace KilyCore.Service.ServiceCore
                 var 预发货列表 = 预发货.Select(t => new BaseInfo
                 {
                     装车标识 = t.Id.ToString(),
-                    发货绑定码 = (t.OneCode.ToUpper().Replace("http://106.58.174.64:8012/newphone/codeindex.html?id=&Code=".ToUpper(), "")) == null ? "" : (t.OneCode.ToUpper().Replace("http://106.58.174.64:8012/newphone/codeindex.html?id=&Code=".ToUpper(), "")),
+                    发货绑定码 =(t.OneCode.ToUpper().Replace("http://106.58.174.64:8012/newphone/codeindex.html?id=&Code=".ToUpper(), "")),
                     发货批次 = t.BatchNo,
                     运单号 = t.WayBill,
                     发货时间 = t.SendTime,
@@ -5032,17 +5032,18 @@ namespace KilyCore.Service.ServiceCore
                     运输方式 = t.TransportWay,
                     收货标志 = t.Flag
                 }).ToList();
+                预发货列表 = 预发货列表.Where(t => !string.IsNullOrEmpty(t.发货绑定码)).ToList();
                 var 预发货实体 = 预发货列表.Where(t=>t.发货绑定码.Contains(Code.ToUpper())).FirstOrDefault();
-                Base.装车标识 = 预发货实体.装车标识;
-                Base.发货批次 = 预发货实体.发货批次;
-                Base.运单号 = 预发货实体.运单号;
-                Base.发货时间 = 预发货实体.发货时间;
-                Base.收货人 = 预发货实体.收货人;
-                Base.收货地址 = 预发货实体.收货地址;
-                Base.发货地址 = 预发货实体.发货地址;
-                Base.交通工具 = 预发货实体.交通工具;
-                Base.运输方式 = 预发货实体.运输方式;
-                Base.收货标志 = 预发货实体.收货标志;
+                Base.装车标识 = 预发货实体?.装车标识;
+                Base.发货批次 = 预发货实体?.发货批次;
+                Base.运单号 = 预发货实体?.运单号;
+                Base.发货时间 = 预发货实体?.发货时间;
+                Base.收货人 = 预发货实体?.收货人;
+                Base.收货地址 = 预发货实体?.收货地址;
+                Base.发货地址 = 预发货实体?.发货地址;
+                Base.交通工具 = 预发货实体?.交通工具;
+                Base.运输方式 = 预发货实体?.运输方式;
+                Base.收货标志 = 预发货实体==null?false: 预发货实体.收货标志;
             }
             //生产企业
             if (Base.企业类型 == "30")
