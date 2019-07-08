@@ -4384,6 +4384,20 @@
             <param name="Param"></param>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.TempController.GetAllSample(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取商家留样
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.TempController.RepastDuck(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取商家留样
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
         <member name="M:KilyCore.API.Startup.GetAssembly">
             <summary>
             加载所有程序集
