@@ -591,7 +591,7 @@ controller.ValidateConfirm = function (element, option) {
                         }
                     }
                     controller.Confirm(controller.JsonObject(data.data) ? data.msg : data.data, function () {
-                        layer.close();
+                        window.popClose();
                     });
                 },
                 fail: option.ajaxFail
