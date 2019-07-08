@@ -255,6 +255,18 @@ email:847432003@qq.com
             imageBox.delegate(".image-zoom","click",function(){
 
                 var src = $(this).siblings('img').attr('src');
+                layer.photos({
+                    photos: {
+                        title: "查看大图",
+                        id: 1,
+                        start: 0,
+                        data: [{
+                            alt: "查看大图",
+                            src: src
+                        }]
+                    },
+                    closeBtn: true
+                });
                 zoomBox.find('img').attr('src', src);
 
                 zoomShade.show();
