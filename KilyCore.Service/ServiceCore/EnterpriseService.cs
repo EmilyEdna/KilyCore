@@ -288,6 +288,11 @@ namespace KilyCore.Service.ServiceCore
             if (Param.EnterpriseRoleName.Contains("旗舰"))
                 info.Version = SystemVersionEnum.Enterprise;
             info.EnterpriseRoleId = Param.EnterpriseRoleId;
+          var Money =   Kily.Set<SystemStayContract>().Where(t => t.CompanyId == info.Id && t.IsPay == true).Select(t => t.ActualPrice).FirstOrDefault();
+            if (Money == null)
+            {
+                return "请先让财务确认实收金额";
+            }
             if (UpdateField<EnterpriseInfo>(info, "EnterpriseRoleId"))
                 return ServiceMessage.HANDLESUCCESS;
             else
