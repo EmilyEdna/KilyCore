@@ -1013,7 +1013,7 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(pageParam.QueryParam.DicType))
                 queryable = queryable.Where(t => t.DicType.Contains(pageParam.QueryParam.DicType));
             if (!string.IsNullOrEmpty(pageParam.QueryParam.DicName))
-                queryable = queryable.Where(t => t.DicType.Contains(pageParam.QueryParam.DicName));
+                queryable = queryable.Where(t => t.DicName.Contains(pageParam.QueryParam.DicName));
             if (MerchantInfo() != null)
                 queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
             else
