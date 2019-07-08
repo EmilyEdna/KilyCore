@@ -5212,7 +5212,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public RequestEnterpriseLogistics GetScanSendInfo(String Id)
         {
-            var data = Kily.Set<EnterpriseLogistics>().Where(t => t.GainId.ToString()==Id).FirstOrDefault().MapToEntity<RequestEnterpriseLogistics>();
+            var data = Kily.Set<EnterpriseLogistics>().Where(t => t.GainId.ToString()==Id||t.GainUser.Equals(Id)).FirstOrDefault().MapToEntity<RequestEnterpriseLogistics>();
             return data;
         }
         /// <summary>
