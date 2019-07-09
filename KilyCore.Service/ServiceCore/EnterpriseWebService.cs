@@ -3579,9 +3579,9 @@ namespace KilyCore.Service.ServiceCore
                 }
                 return Insert(Box) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
             }
-            catch
+            catch(Exception ex)
             {
-                return "请填入正确的二维码格式 xxW13000...01X";
+                return "请填入正确的二维码格式 xxW13000...01X"+ex.Message;
             }
         }
         /// <summary>
