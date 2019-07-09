@@ -92,7 +92,7 @@
                         controller.Confirm("确认生成二维码？", function (bool) {
                             if (bool) {
                                 $("#QRcode").html("");
-                                controller.QRCode("#QRcode", {
+                                controller.QRCode("#QRcode_" + index, {
                                     text: WebUrl + "StaticHtml/PackageList.html?Id=" + row.Id,
                                     height: 40,
                                     width: 40
@@ -102,11 +102,12 @@
                     },
                 },
                 CodeFormatter: function (val, row, index) {
-                    return "<span id='QRcode'><span>";
+                    var action = [];
+                    action.push("<span id='QRcode_" + index + "'><span>");
+                    return action.join("&nbsp;")
                 },
                 CodeEvents: {
                     'click span': function (event, val, row, index) {
-                        debugger;
                         controller.OpenWindow({
                             title: "查看二维码",
                             type: 2,
