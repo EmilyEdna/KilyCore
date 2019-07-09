@@ -5025,7 +5025,7 @@ namespace KilyCore.Service.ServiceCore
                 var 预发货列表 = 预发货.Select(t => new BaseInfo
                 {
                     装车标识 = t.Id.ToString(),
-                    发货绑定码 =(t.OneCode.ToUpper().Replace("http://106.58.174.64:8012/newphone/codeindex.html?id=&Code=".ToUpper(), "")),
+                    发货绑定码 =(t.OneCode.ToUpper().Replace("http://phone.cfda.vip/newphone/codeindex.html?id=&Code=".ToUpper(), "")),
                     发货批次 = t.BatchNo,
                     运单号 = t.WayBill,
                     发货时间 = t.SendTime,

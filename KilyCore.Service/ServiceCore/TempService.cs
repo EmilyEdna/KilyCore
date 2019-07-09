@@ -41,9 +41,10 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="CompanyId"></param>
         /// <returns></returns>
-        public object GetAllSupply(Guid CompanyId)
+        public object GetAllSupply(Guid CompanyId,int type)
         {
-            var Esupper = Kily.Set<EnterpriseSeller>().Where(t => t.SellerType == SellerEnum.Supplier)
+            var Types = (SellerEnum)type;
+            var Esupper = Kily.Set<EnterpriseSeller>().Where(t => t.SellerType == Types)
                  .Where(t => t.CompanyId == CompanyId)
                  .Select(t => new
                  {
