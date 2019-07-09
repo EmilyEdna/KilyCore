@@ -21,6 +21,7 @@ using KilyCore.Service.IServiceCore;
 using KilyCore.Service.QueryExtend;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Web;
 using KilyCore.DataEntity.ResponseMapper.Phone;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -3495,6 +3496,7 @@ namespace KilyCore.Service.ServiceCore
         {
             try
             {
+                Param.BoxCode = HttpUtility.UrlDecode(Regex.Match(Param.BoxCode, "(^|&)Code=([^&]*)(&|$)").Groups[2].Value);
                 Param.ThingCode = Param.ThingCode.Replace("\r\n", ",");
                 var Nums = Param.ThingCode.Split(",").ToList();
                 //移除空的
