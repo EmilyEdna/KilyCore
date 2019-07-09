@@ -53,5 +53,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 入库批次
         /// </summary>
         public virtual string StockNo { get; set; }
+        /// <summary>
+        /// 使用过的码
+        /// </summary>
+        public virtual string UseTag { get; set; }
     }
 }

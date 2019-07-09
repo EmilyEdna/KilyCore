@@ -3702,7 +3702,13 @@ namespace KilyCore.Service.ServiceCore
                         Nums.Add(Regex.Match(item, "(^|&)Code=([^&]*)(&|$)").Groups[2].Value);
                     }
                     Param.BoxCount = Nums.Count.ToString();
-                    Param.OutStockNum = Kily.Set<EnterpriseBoxing>().Where(t => Nums.Contains(t.BoxCode)).Select(t => t.ThingCode).ToList().SelectMany(t => t.Split(",")).Where(t=>!string.IsNullOrEmpty(t)).Count();
+                    Param.OutStockNum = Kily.Set<EnterpriseBoxing>().Where(t => Nums.Contains(t.BoxCode)).Select(t => t.ThingCode).ToList().SelectMany(t => t.Split(",")).Where(t => !string.IsNullOrEmpty(t)).Count();
+                    foreach (var item in Nums)
+                    {
+                        var IsUse = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.BoxCodeNo.Contains(item)).FirstOrDefault();
+                        if (IsUse != null)
+                            return $"请勿重复使用尾号为{item}的箱码";
+                    }
                 }
             }
             else
@@ -3719,6 +3725,18 @@ namespace KilyCore.Service.ServiceCore
                         Nums.Add(Regex.Match(item, "(^|&)Code=([^&]*)(&|$)").Groups[2].Value);
                     }
                     Param.OutStockNum = Nums.Count;
+                    foreach (var item in Num)
+                    {
+                        long No = Convert.ToInt64(item.Split("W")[1].Substring(0, 12));
+                        var TagAttach = Kily.Set<EnterpriseTagAttach>().Where(t => t.StarSerialNo <= No && t.EndSerialNo >= No).FirstOrDefault();
+                        if (TagAttach.UseTag.Contains(item))
+                            return $"号段{item}已经出库，请勿重复使用";
+                        else
+                        {
+                            TagAttach.UseTag = item + ",";
+                            UpdateField(TagAttach, "UseTag");
+                        }
+                    }
                 }
             }
             if (Param.OutStockNum <= 0)
@@ -4426,7 +4444,8 @@ namespace KilyCore.Service.ServiceCore
                     Param.SendGoodsNum += box.ThingCode.Split(",").Count();
                 }
             }
-            if (Param.SendType != null) {
+            if (Param.SendType != null)
+            {
                 Param.OneCode = Param.OneCode.Replace("\r\n", ",");
                 var temp = Param.OneCode.Split(",");
                 for (int i = 0; i < temp.Length; i++)
@@ -4938,8 +4957,8 @@ namespace KilyCore.Service.ServiceCore
             {
                 CompanyName = t.CompanyName,
                 CompanyAddress = t.CompanyAddress,
-                CommunityCode=t.CommunityCode,
-                SafeOffer=t.SafeOffer,
+                CommunityCode = t.CommunityCode,
+                SafeOffer = t.SafeOffer,
                 Scope = t.Scope,
                 NetAddress = t.NetAddress,
                 OfferLv = t.OfferLv,
@@ -5025,7 +5044,7 @@ namespace KilyCore.Service.ServiceCore
                 var 预发货列表 = 预发货.Select(t => new BaseInfo
                 {
                     装车标识 = t.Id.ToString(),
-                    发货绑定码 =(t.OneCode.ToUpper().Replace("http://phone.cfda.vip/newphone/codeindex.html?id=&Code=".ToUpper(), "")),
+                    发货绑定码 = (t.OneCode.ToUpper().Replace("http://phone.cfda.vip/newphone/codeindex.html?id=&Code=".ToUpper(), "")),
                     发货批次 = t.BatchNo,
                     运单号 = t.WayBill,
                     发货时间 = t.SendTime,
@@ -5037,7 +5056,7 @@ namespace KilyCore.Service.ServiceCore
                     收货标志 = t.Flag
                 }).ToList();
                 预发货列表 = 预发货列表.Where(t => !string.IsNullOrEmpty(t.发货绑定码)).ToList();
-                var 预发货实体 = 预发货列表.Where(t=>t.发货绑定码.Contains(Code.ToUpper())).FirstOrDefault();
+                var 预发货实体 = 预发货列表.Where(t => t.发货绑定码.Contains(Code.ToUpper())).FirstOrDefault();
                 Base.装车标识 = 预发货实体?.装车标识;
                 Base.发货批次 = 预发货实体?.发货批次;
                 Base.运单号 = 预发货实体?.运单号;
@@ -5047,7 +5066,7 @@ namespace KilyCore.Service.ServiceCore
                 Base.发货地址 = 预发货实体?.发货地址;
                 Base.交通工具 = 预发货实体?.交通工具;
                 Base.运输方式 = 预发货实体?.运输方式;
-                Base.收货标志 = 预发货实体==null?false: 预发货实体.收货标志;
+                Base.收货标志 = 预发货实体 == null ? false : 预发货实体.收货标志;
             }
             //生产企业
             if (Base.企业类型 == "30")
@@ -5119,7 +5138,8 @@ namespace KilyCore.Service.ServiceCore
             //流通企业
             if (Base.企业类型 == "40")
             {
-               var 进货信息 =  Kily.Set<EnterpriseBuyer>().Where(t => t.Id.ToString() == Base.进货信息).Select(t => new BaseInfo {
+                var 进货信息 = Kily.Set<EnterpriseBuyer>().Where(t => t.Id.ToString() == Base.进货信息).Select(t => new BaseInfo
+                {
                     进货批次 = t.BatchNo,
                     进货产品 = t.GoodName,
                     产品产地 = t.Address,
@@ -5216,7 +5236,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public RequestEnterpriseLogistics GetScanSendInfo(String Id)
         {
-            var data = Kily.Set<EnterpriseLogistics>().Where(t => t.GainId.ToString()==Id||t.GainUser.Equals(Id)).FirstOrDefault().MapToEntity<RequestEnterpriseLogistics>();
+            var data = Kily.Set<EnterpriseLogistics>().Where(t => t.GainId.ToString() == Id || t.GainUser.Equals(Id)).FirstOrDefault().MapToEntity<RequestEnterpriseLogistics>();
             return data;
         }
         /// <summary>
