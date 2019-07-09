@@ -4936,6 +4936,8 @@ namespace KilyCore.Service.ServiceCore
             {
                 CompanyName = t.CompanyName,
                 CompanyAddress = t.CompanyAddress,
+                CommunityCode=t.CommunityCode,
+                SafeOffer=t.SafeOffer,
                 Scope = t.Scope,
                 NetAddress = t.NetAddress,
                 OfferLv = t.OfferLv,
