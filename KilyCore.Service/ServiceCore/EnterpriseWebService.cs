@@ -3725,10 +3725,11 @@ namespace KilyCore.Service.ServiceCore
                         Nums.Add(Regex.Match(item, "(^|&)Code=([^&]*)(&|$)").Groups[2].Value);
                     }
                     Param.OutStockNum = Nums.Count;
-                    foreach (var item in Num)
+                    foreach (var item in Nums)
                     {
                         long No = Convert.ToInt64(item.Split("W")[1].Substring(0, 12));
                         var TagAttach = Kily.Set<EnterpriseTagAttach>().Where(t => t.StarSerialNo <= No && t.EndSerialNo >= No).FirstOrDefault();
+                        TagAttach.UseTag = TagAttach.UseTag ?? "";
                         if (TagAttach.UseTag.Contains(item))
                             return $"号段{item}已经出库，请勿重复使用";
                         else

@@ -4377,7 +4377,7 @@
             <param name="Param"></param>
             <returns></returns>
         </member>
-        <member name="M:KilyCore.API.Controllers.TempController.GetAllSupply(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+        <member name="M:KilyCore.API.Controllers.TempController.GetAllSupply(KilyCore.Service.QueryExtend.SimpleParam{System.Guid},KilyCore.Service.QueryExtend.SimpleParam{System.Int32})">
             <summary>
             获取所有供应商
             </summary>

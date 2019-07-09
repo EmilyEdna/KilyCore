@@ -116,7 +116,7 @@
                     success: function (result) {
                         var html = '<option>==请选择==</option>';
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '">' + obj.BatchNo + '</option>';
+                            html += '<option value="' + obj.Id + '">'+ obj.GoodName+'(' + obj.BatchNo + ')</option>';
                         });
                         $("#BuyId").html(html);
                     }
