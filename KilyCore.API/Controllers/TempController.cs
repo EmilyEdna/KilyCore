@@ -37,9 +37,9 @@ namespace KilyCore.API.Controllers
         /// <returns></returns>
         [HttpGet("GetAllSupply")]
         [AllowAnonymous]
-        public ObjectResultEx GetAllSupply(SimpleParam<Guid> Param)
+        public ObjectResultEx GetAllSupply(SimpleParam<Guid> Param, SimpleParam<int> Parameter)
         {
-            return ObjectResultEx.Instance(Temp.GetAllSupply(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(Temp.GetAllSupply(Param.Id, Parameter.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 获取商家留样
