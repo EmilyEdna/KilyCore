@@ -51,6 +51,7 @@
                 $("#save").click(function () {
                     controller.Validate("#Edit", $("#Edit").SerializeOver());
                     $("#Edit").submit();
+                    
                 });
                 $(".nav-tabs").find("li").click(function () {
                     $("#Edit")[0].reset();
@@ -127,7 +128,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input type="text" placeholder="账户名称" class="input-sm form-control" name="AuthorName">
+                                <input type="text" placeholder="角色名称" class="input-sm form-control" name="AuthorName">
                                 <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
                                     <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
@@ -140,7 +141,7 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="AuthorName" data-halign="center" data-align="center" data-valign="middle">账户名称</th>
+                                <th data-field="AuthorName" data-halign="center" data-align="center" data-valign="middle">角色名称</th>
                                 <th data-field="AuthorMenuCount" data-halign="center" data-align="center" data-valign="middle">菜单总数</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
@@ -151,13 +152,13 @@
         </div>
         <div id="tab-2" class="tab-pane">
             <div class="panel-body">
-                <form method="post" class="form-horizontal" action="EnterpriseWeb/SaveRoleAuthor" id="Edit">
+                <form method="post" class="form-horizontal" action="EnterpriseWeb/SaveRoleAuthor" id="Edit" enctype="multipart/form-data">
                     <input  type="hidden" name="Id"/>
                     <!--名称-->
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">请输入角色账户名称<span style="color:red">*</span></label>
+                        <label class="col-sm-2 control-label">请输入角色名称<span style="color:red">*</span></label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control required" name="AuthorName" data-msg-required="请输入角色账户名称">
+                            <input type="text" class="form-control required" id="AuthorName" name="AuthorName" data-msg-required="请输入角色名称">
                         </div>
                         <div class="col-sm-6"></div>
                     </div>

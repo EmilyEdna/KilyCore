@@ -4973,6 +4973,7 @@ namespace KilyCore.Service.ServiceCore
                 Honor = t.HonorCertification,
                 TypePath = t.TypePath,
                 CompanyType = t.CompanyType,
+                VideoAddress=t.VideoAddress,
                 CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
                 VideoMap = x.ToDictionary(o => o.VedioName, o => o.VedioAddr)
             }).AsNoTracking().FirstOrDefault();

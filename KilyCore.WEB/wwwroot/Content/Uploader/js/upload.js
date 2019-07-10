@@ -157,6 +157,7 @@ email:847432003@qq.com
                     }
 
                     imageSection.removeClass("image-loading");
+                    imageSection.attr("img-url", json.data);
                     imageShow.removeClass("image-opcity");
                     imageShow.attr('src', json.data);
                     imageShow.siblings('input').val(json.data);
@@ -198,10 +199,17 @@ email:847432003@qq.com
 
             // 确认删除
             $(".confirm-btn").click(function(){
-
+                //获取隐藏input
+                var imgUrl = deleteImageSection.parent().siblings("input[type=hidden]").val();
+                if (imgUrl != undefined) {
+                    var resultImg = imgUrl.replace(deleteImageSection.attr("img-url"), "").replace(",,", ",");
+                    if (resultImg.lastIndexOf(",") == resultImg.length - 1) resultImg = resultImg.substr(0, resultImg.length - 1);
+                    deleteImageSection.parent().siblings("input[type=hidden]").val(resultImg);
+                }
                 deleteImageSection.remove();
-
                 deleteModal.hide();
+
+               
 
             });
 
