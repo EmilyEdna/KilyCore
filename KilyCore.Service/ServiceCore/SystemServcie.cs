@@ -1484,7 +1484,7 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<FunctionVeinTag> queryables = Kily.Set<FunctionVeinTag>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseInfo> InfoTemp = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
             IQueryable<SystemAdmin> AdminTemp = Kily.Set<SystemAdmin>().Where(t => t.IsDelete == false);
-            var ApplyTag = queryable.Join(InfoTemp, t => t.CompanyId, x => x.Id, (t, x) => new { t, x });
+            var ApplyTag = queryable.GroupJoin(InfoTemp, t => t.CompanyId, x => x.Id, (t, x) => new { t, x });
             var ComVein = queryables.Where(t => t.AllotType == 1).Join(InfoTemp, t => t.AcceptUser, x => x.Id.ToString(), (t, x) => new { t, x });
             var AdmVein = queryables.Where(t => t.AllotType == 2).Join(AdminTemp, t => t.AcceptUser, x => x.Id.ToString(), (t, x) => new { t, x });
             IList<ResponseSystemCodeCount> CodeCountList = new List<ResponseSystemCodeCount>();
@@ -1500,7 +1500,7 @@ namespace KilyCore.Service.ServiceCore
                     .Select(t => new TmepArea() { Id = t.Id.ToString(), Name = t.Name }).ToList();
             areas.ForEach(o =>
             {
-                var Temp = ApplyTag.Where(t => t.x.TypePath.Contains(o.Id));
+                var Temp = ApplyTag.Where(t => t.x.FirstOrDefault().TypePath.Contains(o.Id));
                 var VempCom = ComVein.Where(t => t.x.TypePath.Contains(o.Id));
                 var VempAdm = AdmVein.Where(t => t.x.TypePath.Contains(o.Id));
                 //历史累计

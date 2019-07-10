@@ -307,6 +307,15 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(FunctionService.GetStatistics(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 获取生成的二维码
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetCreateTagList")]
+        public ObjectResultEx GetCreateTagList()
+        {
+            return ObjectResultEx.Instance(FunctionService.GetCreateTagList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 系统消息
         /// <summary>

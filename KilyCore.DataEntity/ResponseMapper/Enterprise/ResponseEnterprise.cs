@@ -65,7 +65,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
                 else return null;
             }
         }
-        public ResponseAudit AuditDetails { get; set; }
+        public List<ResponseAudit> AuditDetails { get; set; }
         /// <summary>
         /// 表名
         /// </summary>

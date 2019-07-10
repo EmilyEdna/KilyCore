@@ -31,7 +31,7 @@
                     success: function (result) {
                         controller.Echarts("#echarts-bar-chart", result.data);
                     }
-                }); 
+                });
                 controller.ajax({
                     url: "Function/GetStatistics",
                     data: {},
@@ -50,6 +50,23 @@
                             html += "</tr>";
                         });
                         $("tbody").html(html);
+                    }
+                });
+                controller.ajax({
+                    url: "Function/GetCreateTagList",
+                    data: {},
+                    async: false,
+                    success: function (result) {
+                        $.each(result.data, function (i, obj) {
+                            if (obj.CompanyType == 10)
+                                $("#zz").html(obj.Sum);
+                            else if (obj.CompanyType == 20)
+                                $("#yz").html(obj.Sum);
+                            else if (obj.CompanyType == 30)
+                                $("#sc").html(obj.Sum);
+                            else
+                                 $("#lt").html(obj.Sum);
+                        });
                     }
                 });
             },
@@ -79,73 +96,123 @@
         });
     </script>
 }
-    <div class="row">
-        <div class="col-sm-6">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>饼状图</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
+<div class="row">
+    <div class="col-sm-3">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>饼状图</h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="echarts" id="echarts-pie-chart"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>柱状图</h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="echarts" id="echarts-bar-chart"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <h5 class="m-b-md">生产企业追溯码生成数量统计</h5>
+                        <h2 class="text-navy">
+                            <i class="fa fa-play fa-rotate-270"></i><b id="sc"></b>
+                        </h2>
+                        <small>更新时间：今天</small>
                     </div>
                 </div>
-                <div class="ibox-content">
-                    <div class="echarts" id="echarts-pie-chart"></div>
+            </div>
+            <div class="col-sm-6">
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <h5 class="m-b-md">流通企业追溯码生成数量统计</h5>
+                        <h2 class="text-navy">
+                            <i class="fa fa-play fa-rotate-270"></i><b id="lt"></b>
+                        </h2>
+                        <small>更新时间：今天</small>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-6">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>柱状图</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <h5 class="m-b-md">种植企业追溯码生成数量统计</h5>
+                        <h2 class="text-navy">
+                            <i class="fa fa-play fa-rotate-270"></i> <b id="zz"></b>
+                        </h2>
+                        <small>更新时间：今天</small>
                     </div>
-                </div>
-                <div class="ibox-content">
-                    <div class="echarts" id="echarts-bar-chart"></div>
                 </div>
             </div>
-        </div>
-        <div class="col-sm-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>区域信息一览</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
+            <div class="col-sm-6">
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <h5 class="m-b-md">养殖企业追溯码生成数量统计</h5>
+                        <h2 class="text-navy">
+                            <i class="fa fa-play fa-rotate-270"></i><b id="yz"></b>
+                        </h2>
+                        <small>更新时间：今天</small>
                     </div>
-                </div>
-                <div class="ibox-content">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>区域名称</th>
-                                <th>种养企业</th>
-                                <th>生产企业</th>
-                                <th>流通企业</th>
-                                <th>餐饮企业</th>
-                                <th>单位食堂</th>
-                                <th>三小商家</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
                 </div>
             </div>
         </div>
     </div>
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>区域信息一览</h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>区域名称</th>
+                            <th>种养企业</th>
+                            <th>生产企业</th>
+                            <th>流通企业</th>
+                            <th>餐饮企业</th>
+                            <th>单位食堂</th>
+                            <th>三小商家</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 

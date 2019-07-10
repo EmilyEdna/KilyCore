@@ -47,9 +47,13 @@
                         controller.SetCtrlValue("#CompanyDetail", result.data);
                         options.GetTown();
                         controller.SetCtrlValue("#CompanyDetail", result.data);
-                        //绑定审核意见
-                        controller.SetCtrlValue("#CompanyDetail", result.data.AuditDetails);
-                        options.BindHonor(result.data.HonorCertification)
+                        let html = '';
+                        $.each(result.data.AuditDetails, function (i, obj) {
+                            html += '<tr><td class="text-center">' + obj.AuditName + '</td>';
+                            html += '<td class="text-center">' + obj.CreateTime + '</td>';
+                            html += '<td class="text-center">' + obj.AuditSuggestion + '</td></tr>';
+                        });
+                        $("#content").html(html);
                     }
                 });
             },
@@ -284,22 +288,15 @@
             </div>
             <div id="tab-5" class="tab-pane">
                 <table class="table table-hover table-bordered m-t-sm">
-                    <tr>
-                        <th><label class="control-label">审核人</label></th>
-                        <td class="has-warning">
-                            <input type="text" class="form-control" name="AuditName" readonly="readonly" />
-                        </td>
-                        <th><label class="control-label">审核时间</label></th>
-                        <td class="has-warning">
-                            <input type="text" class="form-control" name="CreateTime" readonly="readonly" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><label class="control-label">审核意见</label></th>
-                        <td class="has-warning" colspan="3">
-                            <textarea type="text" class="form-control" name="AuditSuggestion" readonly="readonly"></textarea>
-                        </td>
-                    </tr>
+                    <thead>
+                        <tr>
+                            <th class="text-center">审核人</th>
+                            <th class="text-center">审核时间</th>
+                            <th class="text-center">审核意见</th>
+                        </tr>
+                    </thead>
+                    <tbody id="content">
+                    </tbody>
                 </table>
             </div>
         </div>
