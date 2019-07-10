@@ -2470,20 +2470,23 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseEnterpriseTagAttach> GetTagAttachPage(PageParamList<RequestEnterpriseTagAttach> pageParam)
         {
-            var data = Kily.Set<EnterpriseTagAttach>().Where(t => t.TagId == pageParam.QueryParam.Id)
-                .OrderByDescending(t => t.CreateTime)
-                .Select(t => new ResponseEnterpriseTagAttach()
-                {
-                    Id = t.Id,
-                    StarSerialNos = t.StarSerialNos,
-                    StarSerialNo = t.StarSerialNo,
-                    EndSerialNos = t.EndSerialNos,
-                    EndSerialNo = t.EndSerialNo,
-                    StockNo = t.StockNo,
-                    UseNum = t.UseNum,
-                    StockStutas = Kily.Set<EnterpriseGoodsStock>().Where(x => x.GoodsBatchNo == t.StockNo).AsNoTracking().FirstOrDefault()
-                }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
-            return data;
+            IQueryable<EnterpriseTagAttach> data = Kily.Set<EnterpriseTagAttach>().OrderByDescending(t => t.CreateTime);
+            if (pageParam.QueryParam.Id != Guid.Empty)
+                data = data.Where(t => t.TagId == pageParam.QueryParam.Id);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.StockNo))
+                data = data.Where(t => t.StockNo == pageParam.QueryParam.StockNo);
+            var res = data.Select(t => new ResponseEnterpriseTagAttach()
+            {
+                Id = t.Id,
+                StarSerialNos = t.StarSerialNos,
+                StarSerialNo = t.StarSerialNo,
+                EndSerialNos = t.EndSerialNos,
+                EndSerialNo = t.EndSerialNo,
+                StockNo = t.StockNo,
+                UseNum = t.UseNum,
+                StockStutas = Kily.Set<EnterpriseGoodsStock>().Where(x => x.GoodsBatchNo == t.StockNo).AsNoTracking().FirstOrDefault()
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return res;
         }
         /// <summary>
         /// 箱码绑定情况
@@ -3579,9 +3582,9 @@ namespace KilyCore.Service.ServiceCore
                 }
                 return Insert(Box) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return "请填入正确的二维码格式 xxW13000...01X"+ex.Message;
+                return "请填入正确的二维码格式 xxW13000...01X" + ex.Message;
             }
         }
         /// <summary>
