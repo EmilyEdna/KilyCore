@@ -2203,6 +2203,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.GetCreateTagList">
+            <summary>
+            获取生成的二维码
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:KilyCore.API.Controllers.FunctionController.GetMsgPage(KilyCore.Service.QueryExtend.PageParamList{System.Object})">
             <summary>
             消息中心

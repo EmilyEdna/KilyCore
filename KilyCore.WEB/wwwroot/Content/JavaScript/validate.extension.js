@@ -7,10 +7,11 @@ email:847432003@qq.com
 
 //验证电话
 jQuery.validator.addMethod('IsPhone', function (value, element) {
-    var reg = /^1[3|4|5|7|8][0-9]{9}$/;
+    //var reg = /^1[3|4|5|7|8][0-9]{9}$/;
+    var reg = /(^(0[0-9]{2,3}\-)?([2-9][0-9]{6,7})+(\-[0-9]{1,4})?$)|(^((\(\d{3}\))|(\d{3}\-))?(1[3578]\d{9})$)/;
     var length = value.length;
-    return this.optional(element) || (length == 11 && reg.test(value));
-}, "请填写正确的手机号!");
+    return this.optional(element) || reg.test(value);
+}, "请填写正确的手机号或电话号码!");
 //验证邮箱
 jQuery.validator.addMethod('IsEmail', function (value, element) {
     var reg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;

@@ -2954,7 +2954,8 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.Select(t => new ResponseEnterpriseProductSeries()
             {
                 Id = t.Id,
-                SeriesName = t.SeriesName
+                SeriesName = t.SeriesName,
+                Standard=t.Standard
             }).ToList();
             return data;
         }
@@ -3217,7 +3218,7 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 CompanyId = t.CompanyId,
                 Spec = t.Spec,
-                ProductSeriesName = x.FirstOrDefault().SeriesName,
+                ProductSeriesName = x.FirstOrDefault().SeriesName+"-"+x.FirstOrDefault().Standard,
                 ExpiredDate = t.ExpiredDate,
                 ProductName = t.ProductName,
                 ProductType = t.ProductType,

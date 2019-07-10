@@ -44,7 +44,7 @@
                     success: function (result) {
                         var html = '<option>==请选择==</option>';
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '">' + obj.SeriesName + '</option>';
+                            html += '<option value="' + obj.Id + '">' + obj.SeriesName+'('+obj.Standard+')' + '</option>';
                         });
                         $("#ProductSeriesId").html(html);
                     }
@@ -110,7 +110,7 @@
                     </td>
                     <th><label class="control-label">保质期/天<span style="color:red">*</span></label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control required IsNumber" name="ExpiredDate" data-msg-required="请输入数字" />
+                        <input type="text" class="form-control required IsNumber" name="ExpiredDate" data-msg-required="请输入数字" style="width:96%;display:inline-block"/>  天
                     </td>
                 </tr>
                 <tr>
