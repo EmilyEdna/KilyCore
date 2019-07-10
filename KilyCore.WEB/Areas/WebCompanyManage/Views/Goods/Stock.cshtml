@@ -107,10 +107,11 @@
                     var action = [];
                     //入库
                     if (row.InStockNum != undefined) {
+                        action.push('<button class="btn btn-sm btn-primary watch"><i class="fa fa-eye-o"></i>追溯码绑定记录</button>');
                         if (row.CheckGoodsId === '00000000-0000-0000-0000-000000000000')
                             action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>添加产品质检</button>');
                         action.push('<button class="btn btn-sm btn-primary out"><i class="fa fa-pencil-square-o"></i>出库</button>');
-                        if ( row.ImgUrl == null) {
+                        if (row.ImgUrl == null) {
                             if (row.AuditTypeName == "等待审核" || row.ImgUrl == null)
                                 action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-pencil-square-o"></i>提交审核</button>');
                             else
@@ -128,7 +129,19 @@
                     return action.join("&nbsp;");
                 },
                 TableEvents: {
-                    "click .del": function (event, val, row, index) {
+                    "click .watch": function (e, v, r, i) {
+                        controller.OpenWindow({
+                            title: "追溯码绑定情况",
+                            type: 2,
+                            height: "90%",
+                            width: "80%",
+                            url: "WebCompanyManage/ThingCode/WatchCodeUse?StockNo=" + r.GoodsBatchNo,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        });
+                    },
+                        "click .del": function (event, val, row, index) {
                         if (row.InStockNum != null) {
                             controller.Confirm("确认删除?", function (bool) {
                                 if (bool) {

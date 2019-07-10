@@ -20,8 +20,11 @@
                     }, 200);
                     e.stopPropagation();
                 });
+                var Id = controller.GetParam("Id");
+                var StockNo = controller.GetParam("StockNo");
+                var obj = { Id: Id, StockNo: StockNo };
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetTagAttachPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { Id: controller.GetParam("Id") } });
+                this.$table = controller.Table("#tableList", { url: "EnterpriseWeb/GetTagAttachPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: obj });
             },
             //事件
             InitEvents: function () {

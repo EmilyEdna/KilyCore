@@ -58,8 +58,8 @@ namespace KilyCore.Service.ConstMessage
         /// </summary>
         public const Int64 LEVEL = 1000000;
         /// <summary>
-        /// 旗舰版5000W枚
+        /// 旗舰版100W枚
         /// </summary>
-        public const Int64 ENTERPRISE = 50000000;
+        public const Int64 ENTERPRISE = 1000000;
     }
 }

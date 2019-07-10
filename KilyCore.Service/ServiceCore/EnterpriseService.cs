@@ -388,7 +388,7 @@ namespace KilyCore.Service.ServiceCore
                          AuditSuggestion = x.AuditSuggestion,
                          AuditName = x.AuditName,
                          CreateUser = x.CreateUser
-                     }).FirstOrDefault(),
+                     }).ToList(),
                      AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType)
                  }).FirstOrDefault();
             return data;

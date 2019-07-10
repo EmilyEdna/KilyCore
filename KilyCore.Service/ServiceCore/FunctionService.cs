@@ -257,7 +257,7 @@ namespace KilyCore.Service.ServiceCore
                     EndSerialNo = t.EndSerialNo,
                     TotalNo = t.TotalNo,
                     IsAccept = t.IsAccept,
-                    SingleBatchNo=t.BatchNo,
+                    SingleBatchNo = t.BatchNo,
                     AcceptUser = t.AcceptUser,
                     AllotNum = t.AllotNum,
                 }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -272,7 +272,7 @@ namespace KilyCore.Service.ServiceCore
                     StarSerialNo = t.StarSerialNo,
                     EndSerialNo = t.EndSerialNo,
                     TotalNo = t.TotalNo,
-                    SingleBatchNo=t.SingleBatchNo,
+                    SingleBatchNo = t.SingleBatchNo,
                     IsAccept = t.IsAccept,
                     AcceptUser = t.AcceptUser,
                     AllotNum = t.AllotNum,
@@ -457,7 +457,7 @@ namespace KilyCore.Service.ServiceCore
                 {
                     BatchNo = t.BatchNo,
                 }).ToList();
-            return queryables.Where(t=>t.TotalNo>t.AllotNum).Where(t => t.AcceptUser.Contains(UserInfo().Id.ToString())).Select(t => new ResponseVeinTag()
+            return queryables.Where(t => t.TotalNo > t.AllotNum).Where(t => t.AcceptUser.Contains(UserInfo().Id.ToString())).Select(t => new ResponseVeinTag()
             {
                 SingleBatchNo = t.SingleBatchNo,
             }).ToList();
@@ -648,7 +648,7 @@ namespace KilyCore.Service.ServiceCore
                       DicName = t.x.DicName,
                       DicValue = t.x.DicValue,
                       AttachInfo = t.x.AttachInfo,
-                      DicDescript=t.x.DicDescript,
+                      DicDescript = t.x.DicDescript,
                       IsEnable = (t.IsEnable == null ? false : t.IsEnable)
                   }).ToList().Where(t => t.IsEnable == false).ToList();
             return data;
@@ -914,6 +914,25 @@ namespace KilyCore.Service.ServiceCore
             });
             Object obj = new { Temp, PlantCount, ProCount, MoveCount, FoodCount, UnitCount, SmallCount };
             return obj;
+        }
+        /// <summary>
+        /// 获取生成的二维码
+        /// </summary>
+        /// <returns></returns>
+        public Object GetCreateTagList()
+        {
+            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess);
+            if (UserInfo().AccountType == AccountEnum.Province)
+                queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().Province));
+            if (UserInfo().AccountType == AccountEnum.City)
+                queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().City));
+            IQueryable<EnterpriseTag> tags = Kily.Set<EnterpriseTag>();
+            var data = queryable.Join(tags, t => t.Id, x => x.CompanyId, (t, x) => new { t.CompanyType, x.TotalNo }).GroupBy(t => t.CompanyType).Select(t => new
+            {
+                Sum = t.Sum(x => x.TotalNo),
+                CompanyType =t.Key
+            }).ToList();
+            return data;
         }
         #endregion
         #region 系统消息
