@@ -29,6 +29,7 @@
                 $("#Standard").on('changed.bs.select', function () {
                     $('input[name="Standard"]').val($(this).val());
                 });
+                 $("#Standard").selectpicker("refresh");
                 //初始化关键点
                 controller.ajax({
                     url: "EnterpriseWeb/GetTargetList",
@@ -37,15 +38,19 @@
                     type: "post",
                     success: function (result) { 
                         var html = '';
+                        debugger;
                         $.each(result.data, function (i, obj) {
                             html += '<option value="' + obj.Id + '">' + obj.TargetName + '</option>';
                         });
-                        $("#Target").html(html);
+                        $("#Target").append(html);
+                        console.log($("#Target").html());
                     }
                 });
                 $("#Target").on('changed.bs.select', function () {
                     $('input[name="TargetId"]').val($(this).val());
                 });
+                $("#Target").selectpicker("refresh");
+                console.log($("#Target").html());
             },
             //事件
             InitEvents: function () {

@@ -33,6 +33,7 @@
                 $("#Unit").on('changed.bs.select', function () {
                     $('input[name="Unit"]').val($(this).val());
                 });
+                $("#Unit").selectpicker("refresh");
             },
             //获取产品系列
             GetSeries: function () {

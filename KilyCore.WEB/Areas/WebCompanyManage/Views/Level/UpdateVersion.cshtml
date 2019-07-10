@@ -82,6 +82,7 @@
                     url: "File/UploadImg",
                     element: ".upload-input",
                     maxNum: 2,
+                    node: '#Img',
                     success: function (result) {
                         controller.Alter(result.msg);
                         $("#PayTicket").val(result.data);
@@ -211,12 +212,13 @@
                 <tr class="Ticket" style="display:none">
                     <th><label class="control-label">缴费票据</label></th>
                     <td class="has-warning" colspan="3">
-                        <div class="image-box clear">
+                        <div class="image-box clear" id="Img">
                             <section class="upload-section">
                                 <div class="upload-btn"></div>
                                 <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
                             </section>
                         </div>
+                       
                     </td>
                 </tr>
                 <tfoot>
