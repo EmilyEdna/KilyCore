@@ -3102,7 +3102,7 @@ namespace KilyCore.Service.ServiceCore
                     TargetName = t.TargetName,
                     TargetUnit = t.TargetUnit,
                     TargetValue = t.TargetValue
-                }).ToList();
+                }).OrderBy(o=>o.ResultTime).ToList();
                 return data;
             }
             else
@@ -3116,7 +3116,7 @@ namespace KilyCore.Service.ServiceCore
                     Result = t.Result,
                     ResultTime = t.ResultTime,
                     Manager = t.Manager
-                }).ToList();
+                }).OrderBy(o=>o.ResultTime).ToList();
                 return data;
             }
         }

@@ -17,6 +17,7 @@
             InitDom: function () {
                 var Guid = controller.GetParam("Id");
                 $("#CompanyId").val(CompanyInfo.Id);
+                $("#Id").val(Guid);
                 controller.LayDate({ elem: "#SowingTime" });
                 controller.LayDate({ elem: "#ResultTime" });
                 options.BindBatch();
@@ -91,6 +92,7 @@
     <div class="ibox-content">
         <form class="form-horizontal" method="post" action="EnterpriseWeb/EditNote" id="Edit">
             <input type="hidden" name="CompanyId" id="CompanyId" />
+            <input type="hidden" name="Id" id="Id" />
             <input type="hidden" class="form-control" name="CheckReport" id="CheckReport" />
             <table class="table table-hover table-bordered">
                 <tr>

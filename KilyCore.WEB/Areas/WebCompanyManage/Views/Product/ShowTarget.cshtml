@@ -78,6 +78,14 @@
                         ResultTime: tds.find("input[name='ResultTime']").val(),
                         Manager: controller.GetParam("Manager")
                     };
+                    if (datas.ResultTime == undefined || datas.ResultTime == "") {
+                        tds.find("input[name='Result']").focus();
+                        return false;
+                    }
+                    if (datas.Result == undefined || datas.Result == "") {
+                        tds.find("input[name='ResultTime']").focus();
+                        return false;
+                    }
                     controller.ajax({
                         url: "EnterpriseWeb/EditProBatchAttach",
                         type: "post",
@@ -85,6 +93,7 @@
                         async: false,
                         success: function (result) {
                             controller.Msg(result.data);
+                            window.location.reload();
                         }
                     });
                 });
