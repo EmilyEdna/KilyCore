@@ -2955,7 +2955,8 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 SeriesName = t.SeriesName,
-                Standard=t.Standard
+                Standard=t.Standard,
+                TargetName= string.Join(",", Kily.Set<EnterpriseTarget>().Where(x => t.TargetId.Contains(x.Id.ToString())).Select(x => x.TargetName).ToArray())
             }).ToList();
             return data;
         }
@@ -4102,6 +4103,7 @@ namespace KilyCore.Service.ServiceCore
                 CustomName = t.CustomName,
                 InferName = t.InferName,
                 InferType = t.InferType,
+                InferNum=t.InferNum,
                 HandleUser = t.HandleUser,
                 HandleWays = t.HandleWays,
                 HandleTime = t.HandleTime,

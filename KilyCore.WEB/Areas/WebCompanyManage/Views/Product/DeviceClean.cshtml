@@ -44,9 +44,9 @@
                     }
                 });
                 $("#save").click(function () {
-                    controller.Validate("#Edit", $("#Edit").SerializeOver());
+                    controller.Validate("#Edit", $("#Edit").SerializeOver(), true);
                     $("#Edit").submit();
-                    $("#Edit").find("input").val("");
+                     
                 });
                 $("#cancel").click(function () {
                     $("#Edit").find("input").val("");
@@ -137,7 +137,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">请输入维护方式</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" name="Ways">
+                            <input type="text" class="form-control required" name="Ways">
                         </div>
                         <div class="col-sm-6"></div>
                     </div>
@@ -146,7 +146,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">请输入维护时间</label>
                         <div class="col-sm-4">
-                            <input type="text" class="form-control" name="CleanTime" id="CleanTime">
+                            <input type="text" class="form-control required" name="CleanTime" id="CleanTime">
                         </div>
                         <div class="col-sm-6"></div>
                     </div>
