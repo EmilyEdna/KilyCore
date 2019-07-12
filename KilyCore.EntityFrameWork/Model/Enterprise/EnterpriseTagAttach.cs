@@ -57,5 +57,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 使用过的码
         /// </summary>
         public virtual string UseTag { get; set; }
+        /// <summary>
+        /// 发货用过的码
+        /// </summary>
+        public virtual string SendTag { get; set; }
     }
 }

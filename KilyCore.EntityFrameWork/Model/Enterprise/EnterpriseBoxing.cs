@@ -61,5 +61,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 箱码短码
         /// </summary>
         public virtual Int64 BoxCodeSort { get; set; }
+        /// <summary>
+        /// 发货使用过的码
+        /// </summary>
+        public virtual string SendTag { get; set; }
     }
 }

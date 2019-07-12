@@ -260,8 +260,8 @@ email:847432003@qq.com
             zoomContent.appendTo(zoomBox);
 
             // 显示弹框
-            imageBox.delegate(".image-zoom","click",function(){
-
+            imageBox.delegate(".image-zoom", "click", function () {
+                debugger;
                 var src = $(this).siblings('img').attr('src');
                 layer.photos({
                     photos: {
@@ -277,8 +277,8 @@ email:847432003@qq.com
                 });
                 zoomBox.find('img').attr('src', src);
 
-                zoomShade.show();
-                zoomBox.show();
+                //zoomShade.show();
+               // zoomBox.show();
 
             });
 

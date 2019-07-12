@@ -2952,8 +2952,8 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 SeriesName = t.SeriesName,
-                Standard=t.Standard,
-                TargetName= string.Join(",", Kily.Set<EnterpriseTarget>().Where(x => t.TargetId.Contains(x.Id.ToString())).Select(x => x.TargetName).ToArray())
+                Standard = t.Standard,
+                TargetName = string.Join(",", Kily.Set<EnterpriseTarget>().Where(x => t.TargetId.Contains(x.Id.ToString())).Select(x => x.TargetName).ToArray())
             }).ToList();
             return data;
         }
@@ -3099,7 +3099,7 @@ namespace KilyCore.Service.ServiceCore
                     TargetName = t.TargetName,
                     TargetUnit = t.TargetUnit,
                     TargetValue = t.TargetValue
-                }).OrderBy(o=>o.ResultTime).ToList();
+                }).OrderBy(o => o.ResultTime).ToList();
                 return data;
             }
             else
@@ -3113,7 +3113,7 @@ namespace KilyCore.Service.ServiceCore
                     Result = t.Result,
                     ResultTime = t.ResultTime,
                     Manager = t.Manager
-                }).OrderBy(o=>o.ResultTime).ToList();
+                }).OrderBy(o => o.ResultTime).ToList();
                 return data;
             }
         }
@@ -3216,7 +3216,7 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 CompanyId = t.CompanyId,
                 Spec = t.Spec,
-                ProductSeriesName = x.FirstOrDefault().SeriesName+"-"+x.FirstOrDefault().Standard,
+                ProductSeriesName = x.FirstOrDefault().SeriesName + "-" + x.FirstOrDefault().Standard,
                 ExpiredDate = t.ExpiredDate,
                 ProductName = t.ProductName,
                 ProductType = t.ProductType,
@@ -4100,7 +4100,7 @@ namespace KilyCore.Service.ServiceCore
                 CustomName = t.CustomName,
                 InferName = t.InferName,
                 InferType = t.InferType,
-                InferNum=t.InferNum,
+                InferNum = t.InferNum,
                 HandleUser = t.HandleUser,
                 HandleWays = t.HandleWays,
                 HandleTime = t.HandleTime,
@@ -4247,6 +4247,17 @@ namespace KilyCore.Service.ServiceCore
                     Num.RemoveAt(Num.Count - 1);
                 Param.PackageNum = Num.Count;
                 var data = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => Param.ProductOutStockNo.Contains(t.GoodsBatchNo)).Select(t => t.BoxCodeNo).ToList();
+                IQueryable<EnterpriseGoodsPackage> Package = Kily.Set<EnterpriseGoodsPackage>();
+                if (CompanyInfo() != null)
+                    Package = Package.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
+                else
+                    Package = Package.Where(t => t.CompanyId == CompanyUser().Id);
+                var res = string.Join(",", Package.Select(t => t.BoxCode).ToList());
+                foreach (var item in Num)
+                {
+                    if (res.Contains(item))
+                        return $"当前装箱码：{item}已经被装车使用过！";
+                }
                 foreach (var item in data)
                 {
                     if (!Param.BoxCode.Contains(item.Split(",")[0]))
@@ -4257,6 +4268,7 @@ namespace KilyCore.Service.ServiceCore
                     return Insert(package) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
                 else
                     return Update(package, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+                return null;
             }
             catch
             {
@@ -4435,7 +4447,7 @@ namespace KilyCore.Service.ServiceCore
                     }
                 }
             }
-            if (Param.SendType == 2)
+            else if (Param.SendType == 2)
             {
                 Param.BoxCode = Param.BoxCode.Replace("\r\n", ",");
                 var temp = Param.BoxCode.Split(",");
@@ -4445,10 +4457,23 @@ namespace KilyCore.Service.ServiceCore
                     var box = Kily.Set<EnterpriseBoxing>().Where(t => t.IsDelete == false).Where(t => t.BoxCode.Contains(tempCode)).FirstOrDefault();
                     if (box == null)
                         return $"当前号段：{tempCode}，未绑定！";
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(box.SendTag))
+                        {
+                            if (box.SendTag.Contains(tempCode))
+                                return $"当前号段：{tempCode}，已经被发货使用过，请勿重复使用！";
+                            else
+                            {
+                                box.SendTag = tempCode + ",";
+                                UpdateField(box, "SendTag");
+                            }
+                        }
+                    }
                     Param.SendGoodsNum += box.ThingCode.Split(",").Count();
                 }
             }
-            if (Param.SendType != null)
+            else
             {
                 Param.OneCode = Param.OneCode.Replace("\r\n", ",");
                 var temp = Param.OneCode.Split(",");
@@ -4460,6 +4485,19 @@ namespace KilyCore.Service.ServiceCore
                     var attach = Kily.Set<EnterpriseTagAttach>().Where(t => t.StarSerialNo <= Codes && t.EndSerialNo >= Codes && t.StarSerialNos.Contains(Host)).FirstOrDefault();
                     if (attach == null)
                         return $"当前号段：{tempCode}，未绑定！";
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(attach.SendTag))
+                        {
+                            if (attach.SendTag.Contains(tempCode))
+                                return $"当前号段：{tempCode}，已经被发货使用过，请勿重复使用！";
+                            else
+                            {
+                                attach.SendTag = tempCode + ",";
+                                UpdateField(attach, "SendTag");
+                            }
+                        }
+                    }
                 }
                 Param.SendGoodsNum = temp.Count().ToString();
             }
@@ -4976,7 +5014,7 @@ namespace KilyCore.Service.ServiceCore
                 Honor = t.HonorCertification,
                 TypePath = t.TypePath,
                 CompanyType = t.CompanyType,
-                VideoAddress=t.VideoAddress,
+                VideoAddress = t.VideoAddress,
                 CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
                 VideoMap = x.ToDictionary(o => o.VedioName, o => o.VedioAddr)
             }).AsNoTracking().FirstOrDefault();
