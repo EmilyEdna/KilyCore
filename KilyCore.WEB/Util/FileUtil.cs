@@ -416,8 +416,10 @@ namespace KilyCore.WEB.Util
                 //删除忽略列
                 for (int i = Data.Columns.Count - 1; i >= 0; i--)
                 {
-                    if (!ColName.Contains(Data.Columns[i].ColumnName))
-                        workSheet.DeleteColumn(i + 1);
+                    if (ColName != null) {
+                        if(ColName.Contains(Data.Columns[i].ColumnName))
+                            workSheet.DeleteColumn(i + 1);
+                    }
                 }
                 Result = package.GetAsByteArray();
             }
