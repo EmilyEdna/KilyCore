@@ -968,10 +968,10 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("DeleteSeller")]
-        public ObjectResultEx DeleteSeller(SimpleParam<Guid> Param)
+        [HttpPost("RemoveSeller")]
+        public ObjectResultEx RemoveSeller(SimpleParam<Guid> Param)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.DeleteSeller(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.RemoveSeller(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 编辑厂商

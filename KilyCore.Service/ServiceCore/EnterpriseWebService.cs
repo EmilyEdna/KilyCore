@@ -667,17 +667,6 @@ namespace KilyCore.Service.ServiceCore
         }
         #endregion
 
-        #region 厂商管理
-        /// <summary>
-        /// 删除厂商
-        /// </summary>
-        /// <param name="Id"></param>
-        public string DeleteSeller(Guid Id)
-        {
-            return Delete<EnterpriseSeller>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
-        }
-        #endregion
-
         #region 设备管理
         /// <summary>
         /// 删除设备
@@ -2594,6 +2583,14 @@ namespace KilyCore.Service.ServiceCore
                 SellerType = t.SellerType
             }).FirstOrDefault();
             return data;
+        }
+        /// <summary>
+        /// 删除厂商
+        /// </summary>
+        /// <param name="Id"></param>
+        public string RemoveSeller(Guid Id)
+        {
+            return Delete<EnterpriseSeller>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         #endregion
 

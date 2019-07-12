@@ -158,7 +158,7 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 厂商管理
         PagedResult<ResponseEnterpriseSeller> GetSellerPage(PageParamList<RequestEnterpriseSeller> pageParam);
-        String DeleteSeller(Guid Id);
+        String RemoveSeller(Guid Id);
         String EditSeller(RequestEnterpriseSeller Param);
         ResponseEnterpriseSeller GetSellerDetail(Guid Id);
         #endregion

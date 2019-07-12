@@ -1122,7 +1122,7 @@
             <param name="pageParam"></param>
             <returns></returns>
         </member>
-        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.DeleteSeller(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.RemoveSeller(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
             <summary>
             删除厂商
             </summary>
