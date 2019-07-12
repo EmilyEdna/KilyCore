@@ -69,7 +69,8 @@
                             width: "80%",
                             url: "WebCompanyManage/Develop/DiaryEdit?Id=" + row.Id,
                             callBack: function (result) {
-                                result.popClose();
+                                debugger;
+                                result.$("#Edit").submit();
                             }
                         });
                     },

@@ -72,7 +72,7 @@
                     success: function (result) {
                         var html = '<option>==请选择==</option>';
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '">' + obj.SeriesName + '</option>';
+                            html += '<option value="' + obj.Id + '">' + obj.SeriesName+'-'+obj.TargetName + '</option>';
                         });
                         $("#SeriesId").html(html);
                     }

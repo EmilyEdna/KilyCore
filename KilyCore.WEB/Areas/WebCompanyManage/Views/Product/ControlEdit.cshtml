@@ -38,6 +38,8 @@
                 $("#Standard").on('changed.bs.select', function () {
                     $('input[name="Standard"]').val($(this).val());
                 });
+                $("#TargetUnit").selectpicker("refresh");
+                  $("#Standard").selectpicker("refresh");
             },
             //事件
             InitEvents: function () {

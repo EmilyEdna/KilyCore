@@ -49,7 +49,7 @@
             InitEvents: function () {
                 //提交保存
                 $("#save").click(function () {
-                    controller.Validate("#Edit", $("#Edit").SerializeOver());
+                    controller.Validate("#Edit", $("#Edit").SerializeOver(),true,true);
                     $("#Edit").submit();
                     
                 });

@@ -20,9 +20,11 @@
     <script src="~/Content/BootStrap-Select/Script/defaults-zh_CN.js"></script>
     <script src="~/Content/BootStrap-Table/Script/bootstrap-table.js"></script>
     <script src="~/Content/BootStrap-Table/Script/bootstrap-table-zh-CN.js"></script>
-    <script src="~/Content/Validate/jquery.validate.js"></script>
-    <script src="~/Content/Validate/jqury.validate_zh.js"></script>
-    <script src="~/Content/TreeView/Script/bootstrap-treeview.js"></script>
+    @*<script src="~/Content/Validate/jquery.validate.js"></script>
+        <script src="~/Content/Validate/jqury.validate_zh.js"></script>*@
+    <script src="https://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
+    <script src="https://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
+    <script src = "/Content/TreeView/Script/bootstrap-treeview.js" ></script>
     <script src="~/Content/Layer/layer.js"></script>
     <script src="~/Content/LayerDate/laydate.js"></script>
     <script src="~/Content/Uploader/js/upload.js"></script>
@@ -38,11 +40,11 @@
     <script src="~/Content/JavaScript/Controller.js"></script>
     <script src="~/Content/JavaScript/validate.extension.js"></script>
     <script>
-        var SysUserInfo = parent.UserInfo;
-        var CompanyInfo = parent.CompanyUser;
-        var RepastUser = parent.RepastInfo;
-        var CookerInfo = parent.Cooker;
-        var GovtInfo = parent.Govt
+                var SysUserInfo = parent.UserInfo;
+            var CompanyInfo = parent.CompanyUser;
+            var RepastUser = parent.RepastInfo;
+            var CookerInfo = parent.Cooker;
+            var GovtInfo = parent.Govt
     </script>
     @RenderSection("script", false)
     @RenderSection("css", false)

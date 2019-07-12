@@ -186,6 +186,9 @@ controller.SetCtrlValue = function (element, option) {
             } else if (type == "password") {
                 $(node[i]).val(value);
             }
+            else {
+                $(node[i]).html(value);
+            }
 
         }
     }
@@ -614,14 +617,16 @@ controller.RemoveDisabled = function (element) {
  * 验证表单
  * @param {any} 元素节点
  * @param {any} 表单数据
+ * @param {any} 是否刷新当前页面
  */
-controller.Validate = function (element, data) {
+controller.Validate = function (element, data, isRefrsh = false, isRole = false) {
     return $(element).validate({
         meta: 'validate',
         ignore: [],
         onkeyup: false,
         onfocusout: false,
         showErrors: function (errormap, errorlist) {
+          
             $.each(errorlist, function (index, item) {
                 controller.Msg(item.message);
                 item.element.focus();
@@ -632,7 +637,11 @@ controller.Validate = function (element, data) {
             var action = $(form).attr("action");
             var method = $(form).attr("method");
             controller.RemoveDisabled(form);
-            var datas = data != undefined ? data : $(element).SerializeJson();
+            //var datas = data != undefined ? data : $(element).SerializeJson();
+            var datas = $(form).SerializeJson();
+            if (isRole) {//角色权限
+                datas = $(form).SerializeOver();
+            }
             controller.ajax({
                 url: action,
                 type: method,
@@ -641,6 +650,10 @@ controller.Validate = function (element, data) {
                     if (result.flag == 1) {
                         $(form).find("input").val("");
                         controller.Msg(result.data);
+                        if (isRefrsh)//是否刷新
+                        {
+                            window.location.reload();
+                        }
                     }
                 }
             });
