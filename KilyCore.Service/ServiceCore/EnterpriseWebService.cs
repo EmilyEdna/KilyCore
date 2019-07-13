@@ -3679,6 +3679,7 @@ namespace KilyCore.Service.ServiceCore
                     BoxCount = o.t.BoxCount,
                     GoodsName = p.ProductName,
                     OutStockNum = o.t.OutStockNum,
+                    OutStockTime=o.t.OutStockTime,
                     StockEx = o.x.InStockNum
                 }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -4477,12 +4478,14 @@ namespace KilyCore.Service.ServiceCore
             {
                 Param.OneCode = Param.OneCode.Replace("\r\n", ",");
                 var temp = Param.OneCode.Split(",");
+                var ProductName = "";
                 for (int i = 0; i < temp.Length; i++)
                 {
                     var tempCode = Regex.Match(temp[i], "(^|&)Code=([^&]*)(&|$)").Groups[2].Value;
                     var Codes = Convert.ToInt64(tempCode.Substring(3, tempCode.Length - 4));
                     var Host = tempCode.Substring(0, 3);
-                    var attach = Kily.Set<EnterpriseTagAttach>().Where(t => t.StarSerialNo <= Codes && t.EndSerialNo >= Codes && t.StarSerialNos.Contains(Host)).FirstOrDefault();
+                    var attach = Kily.Set<EnterpriseTagAttach>().Where(t => t.StarSerialNo <= Codes && t.EndSerialNo >= Codes && t.StarSerialNos.Contains(Host)).FirstOrDefault()??new EnterpriseTagAttach();
+                    ProductName = (Kily.Set<EnterpriseGoods>().Where(o => o.Id == attach.GoodsId).FirstOrDefault()??new EnterpriseGoods()).ProductName;
                     if (attach == null)
                         return $"当前号段：{tempCode}，未绑定！";
                     else
@@ -4498,6 +4501,11 @@ namespace KilyCore.Service.ServiceCore
                             }
                         }
                     }
+                }
+                Param.GoodsName = ProductName;
+                if (Param.GainId == Guid.Empty)
+                {
+                    Param.GainUser = Kily.Set<EnterpriseSeller>().Where(o => o.Id == Param.GainId).FirstOrDefault().DutyMan;
                 }
                 Param.SendGoodsNum = temp.Count().ToString();
             }
