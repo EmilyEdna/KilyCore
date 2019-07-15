@@ -33,7 +33,6 @@
                         $.each(result.data.Certification.split(","), function (i, item) {
                             $("#Img1").append('<section class="image-section" img-url="'+item+'"><div class="image-shade"></div><div class="image-delete"></div><div class="image-zoom"></div><img class="image-show" src="'+item+'"></section>');
                         })
-                        debugger;
                         //荣誉证书
                         $.each(result.data.HonorCertification, function (i, item) {
                             $("#Img2").append('<section class="image-section" img-url="'+item+'"><div class="image-shade"></div><div class="image-delete"></div><div class="image-zoom"></div><img class="image-show" src="'+item+'"></section>');

@@ -35,15 +35,16 @@
         Init: function () {
             this.InitDom();
             this.InitEvent();
-            if (options.GetURLParam("Addr") != null)
-                options.GetAddress(options.GetURLParam("Addr"));
-
         },
         InitDom: function () {
             var Map = new BMap.Map("Map");//在百度地图容器中创建一个地图
-            var Point = new BMap.Point(116.404, 39.915);//定义一个中心点坐标
-            Map.centerAndZoom(Point, 11);//设定地图的中心点和坐标并将地图显示在地图容器中
             window.Map = Map;
+            if (options.GetURLParam("Addr") != null) {
+                options.GetAddress(options.GetURLParam("Addr"));
+            }else {
+                var Point = new BMap.Point(116.404, 39.915);//定义一个中心点坐标
+                Map.centerAndZoom(Point, 11);//设定地图的中心点和坐标并将地图显示在地图容器中
+            }
         },
         InitEvent: function () {
             Map.enableDragging();//启用地图拖拽事件，默认启用(可不写)
@@ -73,7 +74,9 @@
                 async: false,
                 dataType: "jsonp",
                 success: function (result) {
-                    options.marker = new BMap.Marker(new BMap.Point(result.result.location.lng, result.result.location.lat));
+                    var Point = new BMap.Point(result.result.location.lng, result.result.location.lat);
+                    Map.centerAndZoom(Point, 11);//设定地图的中心点和坐标并将地图显示在地图容器中
+                    options.marker = new BMap.Marker(Point);
                     Map.addOverlay(options.marker);
                     $("#lng").val(result.result.location.lng);
                     $("#lat").val(result.result.location.lat);
