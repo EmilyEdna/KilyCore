@@ -3339,6 +3339,7 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseProductionBatch> Batch = Kily.Set<EnterpriseProductionBatch>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseNote> Note = Kily.Set<EnterpriseNote>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseBuyer> Buyer = Kily.Set<EnterpriseBuyer>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseGoodsStockAttach> attaches = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false);
             IQueryable<ResponseEnterpriseMaterial> Material = Kily.Set<EnterpriseMaterialStockAttach>().Where(t => t.IsDelete == false)
                 .Join(Kily.Set<EnterpriseMaterialStock>().Where(t => t.IsDelete == false), t => t.MaterialStockId, x => x.Id, (t, x) => new { x.BatchNo })
                 .Join(Kily.Set<EnterpriseMaterial>().Where(t => t.IsDelete == false), p => p.BatchNo, y => y.BatchNo, (p, y) => new ResponseEnterpriseMaterial
@@ -3367,6 +3368,7 @@ namespace KilyCore.Service.ServiceCore
                         IsBindBoxCode = p.t.IsBindBoxCode,
                         Manager = p.t.Manager,
                         CheckGoodsId = p.t.CheckGoodsId,
+                        TotalCount=attaches.Where(t=>t.StockId==p.t.Id).Select(t=>t.OutStockNum).Sum()+ p.t.InStockNum,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
                     }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -3386,6 +3388,7 @@ namespace KilyCore.Service.ServiceCore
                         Manager = p.t.Manager,
                         CheckGoodsId = p.t.CheckGoodsId,
                         MaterialId = o.FirstOrDefault().MaterialId,
+                        TotalCount = attaches.Where(t => t.StockId == p.t.Id).Select(t => t.OutStockNum).Sum() + p.t.InStockNum,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
                     }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -3404,6 +3407,7 @@ namespace KilyCore.Service.ServiceCore
                         IsBindBoxCode = p.t.IsBindBoxCode,
                         CheckGoodsId = p.t.CheckGoodsId,
                         Manager = p.t.Manager,
+                        TotalCount = attaches.Where(t => t.StockId == p.t.Id).Select(t => t.OutStockNum).Sum() + p.t.InStockNum,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
                     }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -3427,6 +3431,7 @@ namespace KilyCore.Service.ServiceCore
                         ImgUrl = p.t.ImgUrl,
                         CheckGoodsId = p.t.CheckGoodsId,
                         Manager = p.t.Manager,
+                        TotalCount = attaches.Where(t => t.StockId == p.t.Id).Select(t => t.OutStockNum).Sum() + p.t.InStockNum,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
                     }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -3446,6 +3451,7 @@ namespace KilyCore.Service.ServiceCore
                         MaterialId = o.FirstOrDefault().MaterialId,
                         Manager = p.t.Manager,
                         CheckGoodsId = p.t.CheckGoodsId,
+                        TotalCount = attaches.Where(t => t.StockId == p.t.Id).Select(t => t.OutStockNum).Sum() + p.t.InStockNum,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
                     }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -3464,6 +3470,7 @@ namespace KilyCore.Service.ServiceCore
                         GoodsId = p.x.Id,
                         Manager = p.t.Manager,
                         CheckGoodsId = p.t.CheckGoodsId,
+                        TotalCount = attaches.Where(t => t.StockId == p.t.Id).Select(t => t.OutStockNum).Sum() + p.t.InStockNum,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
                     }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -3539,7 +3546,7 @@ namespace KilyCore.Service.ServiceCore
                                 Temp = Convert.ToInt64(item.Split("P")[1].Substring(0, 12));
                                 Host = item.Split("P")[0] + "P";
                             }
-                            var TempEntity = Tag.Where(t => t.StarSerialNo <= Temp || t.EndSerialNo >= Temp).FirstOrDefault();
+                            var TempEntity = Tag.Where(t => t.StarSerialNo <= Temp && t.EndSerialNo >= Temp).FirstOrDefault();
                             if (TempEntity == null)
                                 return $"{Host + Temp}溯源号段不在此批次中";
                         }
