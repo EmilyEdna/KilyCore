@@ -4456,6 +4456,7 @@ namespace KilyCore.Service.ServiceCore
                 {
                     var tempCode = Regex.Match(temp[i], "(^|&)Code=([^&]*)(&|$)").Groups[2].Value;
                     var box = Kily.Set<EnterpriseBoxing>().Where(t => t.IsDelete == false).Where(t => t.BoxCode.Contains(tempCode)).FirstOrDefault();
+                    
                     if (box == null)
                         return $"当前号段：{tempCode}，未绑定！";
                     else
@@ -4471,6 +4472,7 @@ namespace KilyCore.Service.ServiceCore
                             }
                         }
                     }
+                    Param.GoodsName = box.GoodName;
                     Param.SendGoodsNum += box.ThingCode.Split(",").Count();
                 }
             }
