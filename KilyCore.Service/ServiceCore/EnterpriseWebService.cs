@@ -3368,7 +3368,7 @@ namespace KilyCore.Service.ServiceCore
                         IsBindBoxCode = p.t.IsBindBoxCode,
                         Manager = p.t.Manager,
                         CheckGoodsId = p.t.CheckGoodsId,
-                        TotalCount=attaches.Where(t=>t.StockId==p.t.Id).Select(t=>t.OutStockNum).Sum()+ p.t.InStockNum,
+                        TotalCount = attaches.Where(t => t.StockId == p.t.Id).Select(t => t.OutStockNum).Sum() + p.t.InStockNum,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
                     }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -3686,7 +3686,7 @@ namespace KilyCore.Service.ServiceCore
                     BoxCount = o.t.BoxCount,
                     GoodsName = p.ProductName,
                     OutStockNum = o.t.OutStockNum,
-                    OutStockTime=o.t.OutStockTime,
+                    OutStockTime = o.t.OutStockTime,
                     StockEx = o.x.InStockNum
                 }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -3733,10 +3733,23 @@ namespace KilyCore.Service.ServiceCore
                     foreach (var item in Num)
                     {
                         Nums.Add(Regex.Match(item, "(^|&)Code=([^&]*)(&|$)").Groups[2].Value);
+                        var Box = Kily.Set<EnterpriseBoxing>().Where(t => t.ThingCode.ToUpper().Contains(item.ToUpper())).FirstOrDefault();
+                        Box.ThingCode = Box.ThingCode.Replace(item, "");
+                        var temp = Box.ThingCode.Split(",").ToList();
+                        var res = temp.Where(t => !string.IsNullOrEmpty(t)).ToList();
+                        Box.BoxCount = res.Count.ToString();
+                        Box.ThingCode = string.Join(',', res);
+                        List<string> Fields = new List<string>
+                        {
+                            "BoxCount","ThingCode"
+                        };
+                        UpdateField(Box, null,Fields);
                     }
                     Param.OutStockNum = Nums.Count;
                     foreach (var item in Nums)
                     {
+                        if (item.Contains("B"))
+                            return "请扫入溯源码";
                         long No = Convert.ToInt64(item.Split("W")[1].Substring(0, 12));
                         var TagAttach = Kily.Set<EnterpriseTagAttach>().Where(t => t.StarSerialNo <= No && t.EndSerialNo >= No).FirstOrDefault();
                         TagAttach.UseTag = TagAttach.UseTag ?? "";
@@ -4463,7 +4476,7 @@ namespace KilyCore.Service.ServiceCore
                 {
                     var tempCode = Regex.Match(temp[i], "(^|&)Code=([^&]*)(&|$)").Groups[2].Value;
                     var box = Kily.Set<EnterpriseBoxing>().Where(t => t.IsDelete == false).Where(t => t.BoxCode.Contains(tempCode)).FirstOrDefault();
-                    
+
                     if (box == null)
                         return $"当前号段：{tempCode}，未绑定！";
                     else
@@ -4493,8 +4506,8 @@ namespace KilyCore.Service.ServiceCore
                     var tempCode = Regex.Match(temp[i], "(^|&)Code=([^&]*)(&|$)").Groups[2].Value;
                     var Codes = Convert.ToInt64(tempCode.Substring(3, tempCode.Length - 4));
                     var Host = tempCode.Substring(0, 3);
-                    var attach = Kily.Set<EnterpriseTagAttach>().Where(t => t.StarSerialNo <= Codes && t.EndSerialNo >= Codes && t.StarSerialNos.Contains(Host)).FirstOrDefault()??new EnterpriseTagAttach();
-                    ProductName = (Kily.Set<EnterpriseGoods>().Where(o => o.Id == attach.GoodsId).FirstOrDefault()??new EnterpriseGoods()).ProductName;
+                    var attach = Kily.Set<EnterpriseTagAttach>().Where(t => t.StarSerialNo <= Codes && t.EndSerialNo >= Codes && t.StarSerialNos.Contains(Host)).FirstOrDefault() ?? new EnterpriseTagAttach();
+                    ProductName = (Kily.Set<EnterpriseGoods>().Where(o => o.Id == attach.GoodsId).FirstOrDefault() ?? new EnterpriseGoods()).ProductName;
                     if (attach == null)
                         return $"当前号段：{tempCode}，未绑定！";
                     else
@@ -4886,9 +4899,9 @@ namespace KilyCore.Service.ServiceCore
             int Goods = goods.GroupBy(t => t.ProductSeriesId).AsNoTracking().Count();
             int Supplier = sellers.Where(t => t.SellerType == SellerEnum.Supplier).Select(t => t.Id).Count();
             int Sale = sellers.Where(t => t.SellerType == SellerEnum.Sale).Select(t => t.Id).Count();
-            int Inferior = exprireds.Where(t => t.InferiorExprired == 1).Select(t => t.Id).Count();
-            int Exprired = exprireds.Where(t => t.InferiorExprired == 2).Select(t => t.Id).Count();
-            int Recover = recovers.Select(t => t.Id).Count();
+            int Inferior = exprireds.Where(t => t.InferiorExprired == 1).Select(t => Convert.ToInt32(t.InferNum)).Sum();
+            int Exprired = exprireds.Where(t => t.InferiorExprired == 2).Select(t => Convert.ToInt32(t.InferNum)).Sum();
+            int Recover = recovers.Select(t => Convert.ToInt32(t.RecoverNum)).Sum();
             int Msg = msg.Select(t => t.Id).Count();
             int TagClass = tagAttaches.Where(t => t.TagType == "3").Sum(t => t.UseNum);
             int TagThing = tagAttaches.Where(t => t.TagType == "2").Sum(t => t.UseNum);
