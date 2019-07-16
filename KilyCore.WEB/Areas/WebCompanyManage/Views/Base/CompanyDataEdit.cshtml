@@ -15,7 +15,7 @@
             },
             //元素
             InitDom: function () {
-                controller.LayDate({ elem: "input[name='CardExpiredDate']", max: controller.GetDate(100) });
+                controller.LayDate({ elem: "input[name='CardExpiredDate']", max: controller.GetDate(1000) });
                 options.Editor = controller.Editor(".summernote");
                 options.GetCompanyInfo();
                 options.UploadFiles();
@@ -31,20 +31,20 @@
                         controller.SetCtrlValue("#Edit", result.data);
                         //营业执照
                         $.each(result.data.Certification.split(","), function (i, item) {
-                            $("#Img1").append('<section class="image-section" img-url="'+item+'"><div class="image-shade"></div><div class="image-delete"></div><div class="image-zoom"></div><img class="image-show" src="'+item+'"></section>');
+                            $("#Img1").append('<section class="image-section" img-url="' + item + '"><div class="image-shade"></div><div class="image-delete"></div><div class="image-zoom"></div><img class="image-show" src="' + item + '"></section>');
                         })
                         //荣誉证书
                         $.each(result.data.HonorCertification, function (i, item) {
-                            $("#Img2").append('<section class="image-section" img-url="'+item+'"><div class="image-shade"></div><div class="image-delete"></div><div class="image-zoom"></div><img class="image-show" src="'+item+'"></section>');
+                            $("#Img2").append('<section class="image-section" img-url="' + item + '"><div class="image-shade"></div><div class="image-delete"></div><div class="image-zoom"></div><img class="image-show" src="' + item + '"></section>');
                         })
                         //企业形象
                         $.each(result.data.ComImage.split(","), function (i, item) {
-                            $("#Img5").append('<section class="image-section" img-url="'+item+'"><div class="image-shade"></div><div class="image-delete"></div><div class="image-zoom"></div><img class="image-show" src="'+item+'"></section>');
-                        })  
-                         //主要产品
+                            $("#Img5").append('<section class="image-section" img-url="' + item + '"><div class="image-shade"></div><div class="image-delete"></div><div class="image-zoom"></div><img class="image-show" src="' + item + '"></section>');
+                        })
+                        //主要产品
                         $.each(result.data.MainPro.split(","), function (i, item) {
-                            $("#Img4").append('<section class="image-section" img-url="'+item+'"><div class="image-shade"></div><div class="image-delete"></div><div class="image-zoom"></div><img class="image-show" src="'+item+'"></section>');
-                        }) 
+                            $("#Img4").append('<section class="image-section" img-url="' + item + '"><div class="image-shade"></div><div class="image-delete"></div><div class="image-zoom"></div><img class="image-show" src="' + item + '"></section>');
+                        })
                         options.Editor.summernote('code', result.data.Discription);
                     }
                 });
@@ -143,11 +143,17 @@
                         }
                     });
                 });
+                //选择时间
+                $("#longEx").on('click', function () {
+                    controller.LayDate({
+                        elem: "input[name='CardExpiredDate']",
+                        max: controller.GetDate(1000),
+                        value: controller.GetDate(1000)
+                    });
+                });
                 //验证
                 controller.ValidateConfirm("#Edit");
-            },
-            //行为
-            action: {}
+            }
         };
         //初始化
         $(document).ready(function () {
@@ -286,7 +292,10 @@
                     </td>
                     <th><label class="control-label">证件到期</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="CardExpiredDate">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="CardExpiredDate">
+                            <span class="input-group-addon btn btn-sm" id="longEx">长期</span>
+                        </div>
                     </td>
                 </tr>
                 <tr>
