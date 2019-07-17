@@ -3734,16 +3734,19 @@ namespace KilyCore.Service.ServiceCore
                     {
                         Nums.Add(Regex.Match(item, "(^|&)Code=([^&]*)(&|$)").Groups[2].Value);
                         var Box = Kily.Set<EnterpriseBoxing>().Where(t => t.ThingCode.ToUpper().Contains(item.ToUpper())).FirstOrDefault();
-                        Box.ThingCode = Box.ThingCode.Replace(item, "");
-                        var temp = Box.ThingCode.Split(",").ToList();
-                        var res = temp.Where(t => !string.IsNullOrEmpty(t)).ToList();
-                        Box.BoxCount = res.Count.ToString();
-                        Box.ThingCode = string.Join(',', res);
-                        List<string> Fields = new List<string>
+                        if (Box != null)
                         {
-                            "BoxCount","ThingCode"
-                        };
-                        UpdateField(Box, null,Fields);
+                            Box.ThingCode = Box.ThingCode.Replace(item, "");
+                            var temp = Box.ThingCode.Split(",").ToList();
+                            var res = temp.Where(t => !string.IsNullOrEmpty(t)).ToList();
+                            Box.BoxCount = res.Count.ToString();
+                            Box.ThingCode = string.Join(',', res);
+                            List<string> Fields = new List<string>
+                            {
+                                "BoxCount","ThingCode"
+                            };
+                            UpdateField(Box, null, Fields);
+                        }
                     }
                     Param.OutStockNum = Nums.Count;
                     foreach (var item in Nums)
