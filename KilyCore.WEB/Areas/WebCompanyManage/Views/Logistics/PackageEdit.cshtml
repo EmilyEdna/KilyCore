@@ -10,8 +10,8 @@
         //配置
         var options = {
             Init: function () {
-                this.InitDom();
                 this.InitEvents();
+                this.InitDom();
             },
             //元素
             InitDom: function () {
@@ -19,8 +19,8 @@
                 $("input[name='CompanyId']").val(CompanyInfo.Id);
                 $("input[name='PackageNo']").val("B" + controller.FormatDate("YYMMDDHHmmss"));
                 controller.LayDate({ elem: "input[name='PackageTime']" });
-                options.GetDetail(Guid);
                 options.GetStockNo();
+                options.GetDetail(Guid);
             },
             //获取出库批次编号
             GetStockNo: function () {
@@ -52,6 +52,8 @@
                         async: false,
                         success: function (result) {
                             controller.SetCtrlValue("#Edit", result.data);
+                            debugger;
+                             $("#ProductOutStockNo").selectpicker('val', result.data.ProductOutStockNo);
                         }
                     });
             },

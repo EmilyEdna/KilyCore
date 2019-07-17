@@ -40,7 +40,7 @@
                             data.value.push({
                                 Id: obj.Id,
                                 SupplierName: obj.SupplierName,
-                                Address: obj.Address + ","+obj.LinkPhone,
+                                Address: obj.Address + "," + obj.LinkPhone,
                             });
                         });
                         return data;
@@ -65,6 +65,7 @@
             <input type="hidden" name="CompanyId" />
             <input type="hidden" name="Flag" value="false" />
             <input type="hidden" name="GainId" id="GainId" />
+            <input type="hidden" name="SendType" value="1" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">发货批次</label></th>
