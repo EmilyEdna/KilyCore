@@ -3751,9 +3751,9 @@ namespace KilyCore.Service.ServiceCore
                     Param.OutStockNum = Nums.Count;
                     foreach (var item in Nums)
                     {
-                        if (item.Contains("B"))
+                        if (item.Substring(2,14).Contains("B"))
                             return "请扫入溯源码";
-                        long No = Convert.ToInt64(item.Split("W")[1].Substring(0, 12));
+                        long No = Convert.ToInt64(item.Substring(2, 14).Split("W")[1].Substring(0,12));
                         var TagAttach = Kily.Set<EnterpriseTagAttach>().Where(t => t.StarSerialNo <= No && t.EndSerialNo >= No).FirstOrDefault();
                         TagAttach.UseTag = TagAttach.UseTag ?? "";
                         if (TagAttach.UseTag.Contains(item))
