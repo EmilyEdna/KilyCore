@@ -27,9 +27,9 @@
         }
         //初始化
         $(document).ready(function () {
+            GetValidateCode();
             EnterLogin();
             UserLogin();
-            GetValidateCode();
             AutoLogin();
         });
         //键盘登录事件
@@ -49,6 +49,7 @@
                         withCredentials: true
                     },
                     crossDomain: true,
+                    async: false,
                     data: $('#Login').SerializeJson(),
                     success: function (result) {
                         if (result.flag != -1) {
@@ -97,6 +98,7 @@
                             withCredentials: true
                         },
                         crossDomain: true,
+                        async: false,
                         data: $('#Login').SerializeJson(),
                         success: function (result) {
                             if (result.flag != -1) {
