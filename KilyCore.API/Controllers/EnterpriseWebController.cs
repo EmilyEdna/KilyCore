@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.Function;
 using KilyCore.DataEntity.RequestMapper.Govt;
@@ -1544,6 +1545,8 @@ namespace KilyCore.API.Controllers
         [HttpPost("EditBoxing")]
         public ObjectResultEx EditBoxing(RequestEnterpriseBoxing Param)
         {
+            Param.BoxCode = HttpUtility.UrlDecode(Param.BoxCode);
+            Param.ThingCode = HttpUtility.UrlDecode(Param.ThingCode);
             return ObjectResultEx.Instance(EnterpriseWebService.EditBoxing(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -1578,6 +1581,8 @@ namespace KilyCore.API.Controllers
         [HttpPost("EditStockAttach")]
         public ObjectResultEx EditStockAttach(RequestEnterpriseGoodsStockAttach Param)
         {
+            Param.BoxCodeNo = HttpUtility.UrlDecode(Param.BoxCodeNo);
+            Param.SourceCodeNo = HttpUtility.UrlDecode(Param.SourceCodeNo);
             return ObjectResultEx.Instance(EnterpriseWebService.EditStockAttach(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -1864,6 +1869,7 @@ namespace KilyCore.API.Controllers
         [HttpPost("EditGoodsPackage")]
         public ObjectResultEx EditGoodsPackage(RequestEnterpriseGoodsPackage Param)
         {
+            Param.BoxCode = HttpUtility.UrlDecode(Param.BoxCode);
             return ObjectResultEx.Instance(EnterpriseWebService.EditGoodsPackage(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -1935,6 +1941,8 @@ namespace KilyCore.API.Controllers
         [HttpPost("EditLogistics")]
         public ObjectResultEx EditLogistics(RequestEnterpriseLogistics Param)
         {
+            Param.BoxCode = HttpUtility.UrlDecode(Param.BoxCode);
+            Param.OneCode = HttpUtility.UrlDecode(Param.OneCode);
             return ObjectResultEx.Instance(EnterpriseWebService.EditLogistics(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
