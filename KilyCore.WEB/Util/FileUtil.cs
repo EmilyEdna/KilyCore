@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日12点01分
@@ -249,17 +250,17 @@ namespace KilyCore.WEB.Util
                 {
                     for (long i = region; i > 0; i--)
                     {
-                        Address.Add(string.Format(Configer.WebHost, model.Id, model.CodeHost + (model.SCode + i) + GetRandom()));
+                        Address.Add(string.Format(Configer.WebHost, model.Id, HttpUtility.UrlEncode(model.CodeHost) + (model.SCode + i) + GetRandom()));
                     }
-                    Address.Add(string.Format(Configer.WebHost, model.Id, model.CodeHost + model.SCode + GetRandom()));
+                    Address.Add(string.Format(Configer.WebHost, model.Id, HttpUtility.UrlEncode(model.CodeHost) + model.SCode + GetRandom()));
                 }
                 else
                 {
                     for (long i = region; i > 0; i--)
                     {
-                        Address.Add(string.Format(Configer.WebHostClass, model.Id, model.CodeHost + (model.SCode + i) + GetRandom()));
+                        Address.Add(string.Format(Configer.WebHostClass, model.Id, HttpUtility.UrlEncode(model.CodeHost) + (model.SCode + i) + GetRandom()));
                     }
-                    Address.Add(string.Format(Configer.WebHostClass, model.Id, model.CodeHost + model.SCode + GetRandom()));
+                    Address.Add(string.Format(Configer.WebHostClass, model.Id, HttpUtility.UrlEncode(model.CodeHost) + model.SCode + GetRandom()));
                 }
                 Content = String.Join("\r\n", Address);
                 FileName = WebRootPath + @"\Template\ScanLink.txt";
@@ -268,9 +269,9 @@ namespace KilyCore.WEB.Util
             {
                 for (long i = region; i > 0; i--)
                 {
-                    Address.Add(string.Format(Configer.WebHostBox, model.Id, model.CodeHost + (model.SCode + i) + GetRandom()));
+                    Address.Add(string.Format(Configer.WebHostBox, model.Id, HttpUtility.UrlEncode(model.CodeHost) + (model.SCode + i) + GetRandom()));
                 }
-                Address.Add(string.Format(Configer.WebHostBox, model.Id, model.CodeHost + model.SCode + GetRandom()));
+                Address.Add(string.Format(Configer.WebHostBox, model.Id, HttpUtility.UrlEncode(model.CodeHost) + model.SCode + GetRandom()));
                 Content = String.Join("\r\n", Address);
                 FileName = WebRootPath + @"\Template\ScanLinkBox.txt";
             }
@@ -302,11 +303,11 @@ namespace KilyCore.WEB.Util
             for (long i = region; i > 0; i--)
             {
                 var n = GetRandom();
-                var code = string.Format(Configer.WebHost, model.Id, model.CodeHost + (model.SCode + i) + n) + "," + (model.CodeHost + (model.SCode + i) + n);
+                var code = string.Format(Configer.WebHost, model.Id, HttpUtility.UrlEncode(model.CodeHost) + (model.SCode + i) + n) + "," + (model.CodeHost + (model.SCode + i) + n);
                 Address.Add(code);
             }
             var ns = GetRandom();
-            var codes = string.Format(Configer.WebHost, model.Id, model.CodeHost + model.SCode + ns) + "," + ((model.CodeHost + model.SCode) + ns);
+            var codes = string.Format(Configer.WebHost, model.Id, HttpUtility.UrlEncode(model.CodeHost) + model.SCode + ns) + "," + ((model.CodeHost + model.SCode) + ns);
             Address.Add(codes);
             Content = String.Join("\r\n", Address);
             FileName = WebRootPath + @"\Template\ScanLink.txt";
