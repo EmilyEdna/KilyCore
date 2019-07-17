@@ -3519,7 +3519,7 @@ namespace KilyCore.Service.ServiceCore
                 if (Num.Count > 100)
                     return "装箱数量最大支持每箱100个物件";
                 Param.BoxCount = Num.Count.ToString();
-                Param.BoxCodeSort = Convert.ToInt64(Param.BoxCode.Split("B")[1].Substring(0, 12));
+                Param.BoxCodeSort = Convert.ToInt64(Param.BoxCode.Substring(2,14).Split("B")[1].Substring(0, 12));
                 EnterpriseBoxing Box = Param.MapToEntity<EnterpriseBoxing>();
                 EnterpriseGoodsStock Stock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.GoodsBatchNo == Param.StockBatchNo).AsNoTracking().FirstOrDefault();
                 EnterpriseGoodsStockAttach StockAttach = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.GoodsBatchNo == Param.StockBatchNo).AsNoTracking().FirstOrDefault();
@@ -5063,16 +5063,16 @@ namespace KilyCore.Service.ServiceCore
             String SearchCode = String.Empty;
             String PreFix = String.Empty;
             int CodeType = 0;
-            if (Code.Contains("W"))
+            if (Code.Substring(2,14).Contains("W"))
             {
-                SearchCode = Code.Split("W")[1].Substring(0, 12);
-                PreFix = Code.Split("W")[0];
+                SearchCode = Code.Substring(2, 14).Split("W")[1].Substring(0, 12);
+                PreFix = Code.Substring(2, 14);
                 CodeType = 2;
             }
             else if (Code.Contains("P"))
             {
-                SearchCode = Code.Split("P")[1].Substring(0, 12);
-                PreFix = Code.Split("P")[0];
+                SearchCode = Code.Substring(2, 14).Split("P")[1].Substring(0, 12);
+                PreFix = Code.Substring(2, 14);
                 CodeType = 3;
             }
             else

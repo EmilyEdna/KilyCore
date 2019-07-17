@@ -244,9 +244,9 @@ namespace KilyCore.WEB.Util
             String FileName = String.Empty;
             if (string.IsNullOrEmpty(model.Id))
                 model.Id = null;
-            if (!model.CodeHost.Contains("B"))
+            if (!model.CodeHost.Substring(2,1).Contains("B"))
             {
-                if (model.CodeHost.Contains("W"))
+                if (model.CodeHost.Substring(2, 1).Contains("W"))
                 {
                     for (long i = region; i > 0; i--)
                     {
