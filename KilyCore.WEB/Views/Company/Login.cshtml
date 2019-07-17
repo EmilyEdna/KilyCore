@@ -28,9 +28,9 @@
         //初始化
         $(document).ready(function () {
             GetValidateCode();
+            AutoLogin();
             EnterLogin();
             UserLogin();
-            AutoLogin();
         });
         //键盘登录事件
         function EnterLogin() {
@@ -90,6 +90,8 @@
                 $("input[name='Account']").val(u);
                 $("input[name='PassWord']").val(p);
                 $("input[name='ValidateCode']").val($('.btn-info').val());
+                var datas = $('#Login').SerializeJson();
+                datas.IsApp = true;
                 $('#loading').on('click', function () {
                     controller.ajax({
                         url: "Enterprise/EnterpriseLogin",
@@ -99,7 +101,7 @@
                         },
                         crossDomain: true,
                         async: false,
-                        data: $('#Login').SerializeJson(),
+                        data: datas,
                         success: function (result) {
                             if (result.flag != -1) {
                                 controller.SetCookie(result.data);
