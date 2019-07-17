@@ -230,7 +230,7 @@ namespace KilyCore.WEB.Util
             return null;
         }
         /// <summary>
-        /// 导出二维码地址
+        /// 导出二维码地址模式一
         /// </summary>
         /// <param name="model"></param>
         /// <param name="WebRootPath"></param>
@@ -274,6 +274,42 @@ namespace KilyCore.WEB.Util
                 Content = String.Join("\r\n", Address);
                 FileName = WebRootPath + @"\Template\ScanLinkBox.txt";
             }
+            using (StreamWriter str = File.CreateText(FileName))
+            {
+                str.WriteLine(Content);
+            }
+            using (FileStream Fs = new FileStream(FileName, FileMode.Open, FileAccess.Read))
+            {
+                byte[] bytes = new byte[Fs.Length];
+                Fs.Read(bytes, 0, (int)Fs.Length);
+                return bytes;
+            }
+        }
+        /// <summary>
+        /// 导出二维码地址模式二
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="WebRootPath"></param>
+        /// <returns></returns>
+        public static byte[] ExportTxts(ScanCodeModel model, String WebRootPath)
+        {
+            Int64 region = model.ECode - model.SCode;
+            IList<String> Address = new List<String>();
+            String Content = String.Empty;
+            String FileName = String.Empty;
+            if (string.IsNullOrEmpty(model.Id))
+                model.Id = null;
+            for (long i = region; i > 0; i--)
+            {
+                var n = GetRandom();
+                var code = string.Format(Configer.WebHost, model.Id, model.CodeHost + (model.SCode + i) + n) + "," + (model.CodeHost + (model.SCode + i) + n);
+                Address.Add(code);
+            }
+            var ns = GetRandom();
+            var codes = string.Format(Configer.WebHost, model.Id, model.CodeHost + model.SCode + ns) + "," + ((model.CodeHost + model.SCode) + ns);
+            Address.Add(codes);
+            Content = String.Join("\r\n", Address);
+            FileName = WebRootPath + @"\Template\ScanLink.txt";
             using (StreamWriter str = File.CreateText(FileName))
             {
                 str.WriteLine(Content);
@@ -416,8 +452,9 @@ namespace KilyCore.WEB.Util
                 //删除忽略列
                 for (int i = Data.Columns.Count - 1; i >= 0; i--)
                 {
-                    if (ColName != null) {
-                        if(ColName.Contains(Data.Columns[i].ColumnName))
+                    if (ColName != null)
+                    {
+                        if (ColName.Contains(Data.Columns[i].ColumnName))
                             workSheet.DeleteColumn(i + 1);
                     }
                 }

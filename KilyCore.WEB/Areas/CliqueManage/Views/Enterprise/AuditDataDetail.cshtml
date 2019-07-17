@@ -16,6 +16,7 @@
             //元素
             InitDom: function () {
                 var Guid = controller.GetParam("Id");
+                options.Editor = controller.Editor(".summernote");
                 options.GetProvince();
                 options.GetCompanyDetail(Guid);
             },
@@ -47,6 +48,8 @@
                         controller.SetCtrlValue("#CompanyDetail", result.data);
                         options.GetTown();
                         controller.SetCtrlValue("#CompanyDetail", result.data);
+                        options.BindHonor(result.data.HonorCertification)
+                        options.Editor.summernote('code', result.data.Discription);
                         let html = '';
                         $.each(result.data.AuditDetails, function (i, obj) {
                             html += '<tr><td class="text-center">' + obj.AuditName + '</td>';
@@ -272,7 +275,8 @@
                     <tr>
                         <th><label class="control-label">企业介绍</label></th>
                         <td class="has-warning" colspan="3">
-                            <textarea class="form-control" name="Discription" readonly="readonly"></textarea>
+                            <div class="summernote" name="Discription"></div>
+                            <input type="hidden" name="Discription" />
                         </td>
                     </tr>
                 </table>

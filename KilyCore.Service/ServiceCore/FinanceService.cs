@@ -44,7 +44,7 @@ namespace KilyCore.Service.ServiceCore
             var data = Admin.OrderBy(t => t.CreateTime).GroupJoin(AdminAttach, t => t.Id, x => x.AdminId, (t, x) => new ResponseAdminAttach()
             {
                 AdminId = t.Id,
-                CompanyName=t.CompanyName,
+                CompanyName = t.CompanyName,
                 TrueName = t.TrueName,
                 AccountType = t.AccountType,
                 AccountTypeName = AttrExtension.GetSingleDescription<AccountEnum, DescriptionAttribute>(t.AccountType),
@@ -273,7 +273,9 @@ namespace KilyCore.Service.ServiceCore
             {
                 EnterpriseTagApply TagApply = Kily.Set<EnterpriseTagApply>().Where(t => t.IsDelete == false).Where(t => t.Id == Param.TableId).FirstOrDefault();
                 TagApply.AuditType = Param.AuditType;
-                if (UpdateField<EnterpriseTagApply>(TagApply, "AuditType"))
+                TagApply.IsPay = true;
+                List<string> Fields = new List<string>() { "AuditType", "IsPay" };
+                if (UpdateField<EnterpriseTagApply>(TagApply, null, Fields))
                     return ServiceMessage.HANDLESUCCESS;
                 else
                     return ServiceMessage.HANDLEFAIL;

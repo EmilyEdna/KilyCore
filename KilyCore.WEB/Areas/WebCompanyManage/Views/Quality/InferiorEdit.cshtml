@@ -98,7 +98,7 @@
                     <tr>
                         <th><label class="control-label">处理名称</label></th>
                         <td class="has-warning">
-                            <input type="text" class="form-control" name="CustomName" />
+                            <input type="text" class="form-control required" name="CustomName"  data-msg-required="请输入处理名称"/>
                         </td>
                         <th><label class="control-label">产品名称</label></th>
                         <td class="has-warning">
@@ -108,17 +108,17 @@
                     <tr>
                         <th><label class="control-label">不合格数量</label></th>
                         <td class="has-warning" colspan="3">
-                            <input type="text" class="form-control" name="InferNum" />
+                            <input type="text" class="form-control required" name="InferNum"  data-msg-required="请输入不合格数量"/>
                         </td>
                     </tr>
                     <tr>
                         <th><label class="control-label">类型</label></th>
                         <td class="has-warning">
-                            <input type="text" class="form-control" name="InferType" />
+                            <input type="text" class="form-control required" name="InferType" data-msg-required="请输入类型"/>
                         </td>
                         <th><label class="control-label">处理方式</label></th>
                         <td class="has-warning">
-                            <input type="text" class="form-control" name="HandleWays" />
+                            <input type="text" class="form-control required" name="HandleWays" data-msg-required="请输入处理方式"/>
                         </td>
                     </tr>
                     <tr>
@@ -128,13 +128,13 @@
                         </td>
                         <th><label class="control-label">处理时间</label></th>
                         <td class="has-warning">
-                            <input type="text" class="form-control" name="HandleTime" id="HandleTime" />
+                            <input type="text" class="form-control required" name="HandleTime" id="HandleTime" data-msg-required="请输入处理时间"/>
                         </td>
                     </tr>
                     <tr>
                         <th><label class="control-label">处理原因</label></th>
                         <td class="has-warning" colspan="3">
-                            <textarea class="form-control" name="HandleReason" rows="5"></textarea>
+                            <textarea class="form-control required" name="HandleReason" rows="5" data-msg-required="请输入处理原因"></textarea>
                         </td>
                     </tr>
                 </table>
