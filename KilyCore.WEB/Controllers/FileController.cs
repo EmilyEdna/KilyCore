@@ -103,21 +103,34 @@ namespace KilyCore.WEB.Controllers
             return File(bytes, "text/plain", "二维码链接地址.txt");
         }
         /// <summary>
+        /// 生成二维码地址
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public FileResult ExportTxts(ScanCodeModel data)
+        {
+            byte[] bytes = FileUtil.ExportTxts(data, Environment.WebRootPath);
+            return File(bytes, "text/plain", "二维码链接地址.txt");
+        }
+        /// <summary>
         /// 导出二维码地址商家
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost]
-        public FileResult ExportMerTxt(String Id) {
+        public FileResult ExportMerTxt(String Id)
+        {
             byte[] bytes = FileUtil.ExportMerTxt(Id, Environment.WebRootPath);
-            return File(bytes, "text/plain", "二维码链接地址.txt"); 
+            return File(bytes, "text/plain", "二维码链接地址.txt");
         }
         /// <summary>
         /// 获取环境监测数据
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public String GetAmbient() {
+        public String GetAmbient()
+        {
             string url = "http://www.0531yun.cn/wsjc/Device/getDeviceData.do?userID=171125yckj&userPassword=yckj85336372";
             var data = HttpClientUtil.HttpGetAsync(url).Result;
             AmbientModel ambient = new AmbientModel
