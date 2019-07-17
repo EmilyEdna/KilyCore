@@ -38,6 +38,7 @@ namespace KilyCore.Service.ServiceCore
 {
     public class EnterpriseWebService : Repository, IEnterpriseWebService
     {
+
         #region 下拉关联列表
         /// <summary>
         /// 返回子公司Id列表
