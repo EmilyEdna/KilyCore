@@ -4528,10 +4528,6 @@ namespace KilyCore.Service.ServiceCore
                     }
                 }
                 Param.GoodsName = ProductName;
-                if (Param.GainId == Guid.Empty)
-                {
-                    Param.GainUser = Kily.Set<EnterpriseSeller>().Where(o => o.Id == Param.GainId).FirstOrDefault().DutyMan;
-                }
                 Param.SendGoodsNum = temp.Count().ToString();
             }
             EnterpriseLogistics logistics = Param.MapToEntity<EnterpriseLogistics>();

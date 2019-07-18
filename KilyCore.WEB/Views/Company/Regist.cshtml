@@ -42,7 +42,6 @@
                         },
                         crossDomain: true,
                         success: function (result) {
-                            $("input[name='PhoneCode']").val(result.data);
                             options.SetTime();
                         }
                     });
