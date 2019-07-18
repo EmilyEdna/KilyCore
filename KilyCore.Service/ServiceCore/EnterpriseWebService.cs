@@ -5276,8 +5276,12 @@ namespace KilyCore.Service.ServiceCore
                 Code.ScanNum += 1;
                 return UpdateField(Code, "ScanNum") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
             }
-            EnterpriseLogistics Log = Kily.Set<EnterpriseLogistics>().Where(t => t.PackageNo == CodeInfo.ScanPackageNo)
-                .Where(t => t.IsDelete == false).AsNoTracking().FirstOrDefault();
+            IQueryable<EnterpriseLogistics> queryable = Kily.Set<EnterpriseLogistics>().Where(t => t.IsDelete == false);
+            if (!string.IsNullOrEmpty(CodeInfo.ScanPackageNo))
+                queryable= queryable.Where(t => t.PackageNo == CodeInfo.ScanPackageNo);
+            else
+                queryable = queryable.Where(t => t.OneCode.Contains(CodeInfo.ScanCode));
+            EnterpriseLogistics Log = queryable.FirstOrDefault();
             if (CodeInfo.ScanAddress.Contains(Log.Address))
             {
                 Log.Correct += 1;

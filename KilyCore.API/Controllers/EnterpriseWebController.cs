@@ -1547,14 +1547,20 @@ namespace KilyCore.API.Controllers
         [HttpPost("EditBoxing")]
         public ObjectResultEx EditBoxing(RequestEnterpriseBoxing Param)
         {
-            if (Param.BoxCode.EndsWith("\r\n"))
-                Param.BoxCode = HttpUtility.UrlDecode(Param.BoxCode).Substring(0, HttpUtility.UrlDecode(Param.BoxCode).LastIndexOf("\r\n"));
-            else
-                Param.BoxCode = HttpUtility.UrlDecode(Param.BoxCode);
-            if (Param.ThingCode.EndsWith("\r\n"))
-                Param.ThingCode = HttpUtility.UrlDecode(Param.ThingCode).Substring(0, HttpUtility.UrlDecode(Param.ThingCode).LastIndexOf("\r\n"));
-            else
-                Param.ThingCode = HttpUtility.UrlDecode(Param.ThingCode);
+            if (!string.IsNullOrEmpty(Param.BoxCode))
+            {
+                if (Param.BoxCode.EndsWith("\r\n"))
+                    Param.BoxCode = HttpUtility.UrlDecode(Param.BoxCode).Substring(0, HttpUtility.UrlDecode(Param.BoxCode).LastIndexOf("\r\n"));
+                else
+                    Param.BoxCode = HttpUtility.UrlDecode(Param.BoxCode);
+            }
+            if (!string.IsNullOrEmpty(Param.ThingCode))
+            {
+                if (Param.ThingCode.EndsWith("\r\n"))
+                    Param.ThingCode = HttpUtility.UrlDecode(Param.ThingCode).Substring(0, HttpUtility.UrlDecode(Param.ThingCode).LastIndexOf("\r\n"));
+                else
+                    Param.ThingCode = HttpUtility.UrlDecode(Param.ThingCode);
+            }
             return ObjectResultEx.Instance(EnterpriseWebService.EditBoxing(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -1589,14 +1595,19 @@ namespace KilyCore.API.Controllers
         [HttpPost("EditStockAttach")]
         public ObjectResultEx EditStockAttach(RequestEnterpriseGoodsStockAttach Param)
         {
-            if (Param.BoxCodeNo.EndsWith("\r\n"))
-                Param.BoxCodeNo = HttpUtility.UrlDecode(Param.BoxCodeNo).Substring(0, HttpUtility.UrlDecode(Param.BoxCodeNo).LastIndexOf("\r\n"));
-            else
-                Param.BoxCodeNo = HttpUtility.UrlDecode(Param.BoxCodeNo);
+            if (!string.IsNullOrEmpty(Param.BoxCodeNo))
+            {
+                if (Param.BoxCodeNo.EndsWith("\r\n"))
+                    Param.BoxCodeNo = HttpUtility.UrlDecode(Param.BoxCodeNo).Substring(0, HttpUtility.UrlDecode(Param.BoxCodeNo).LastIndexOf("\r\n"));
+                else
+                    Param.BoxCodeNo = HttpUtility.UrlDecode(Param.BoxCodeNo);
+            }
+            if (!string.IsNullOrEmpty(Param.SourceCodeNo)) { 
             if (Param.SourceCodeNo.EndsWith("\r\n"))
                 Param.SourceCodeNo = HttpUtility.UrlDecode(Param.SourceCodeNo).Substring(0, HttpUtility.UrlDecode(Param.SourceCodeNo).LastIndexOf("\r\n"));
             else
                 Param.SourceCodeNo = HttpUtility.UrlDecode(Param.SourceCodeNo);
+            }
             return ObjectResultEx.Instance(EnterpriseWebService.EditStockAttach(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -1958,14 +1969,20 @@ namespace KilyCore.API.Controllers
         [HttpPost("EditLogistics")]
         public ObjectResultEx EditLogistics(RequestEnterpriseLogistics Param)
         {
-            if (Param.BoxCode.EndsWith("\r\n"))
-                Param.BoxCode = HttpUtility.UrlDecode(Param.BoxCode).Substring(0, HttpUtility.UrlDecode(Param.BoxCode).LastIndexOf("\r\n"));
-            else
-                Param.BoxCode = HttpUtility.UrlDecode(Param.BoxCode);
-            if (Param.OneCode.EndsWith("\r\n"))
-                Param.OneCode = HttpUtility.UrlDecode(Param.OneCode).Substring(0, HttpUtility.UrlDecode(Param.OneCode).LastIndexOf("\r\n"));
-            else
-                Param.OneCode = HttpUtility.UrlDecode(Param.OneCode);
+            if (!string.IsNullOrEmpty(Param.BoxCode))
+            {
+                if (Param.BoxCode.EndsWith("\r\n"))
+                    Param.BoxCode = HttpUtility.UrlDecode(Param.BoxCode).Substring(0, HttpUtility.UrlDecode(Param.BoxCode).LastIndexOf("\r\n"));
+                else
+                    Param.BoxCode = HttpUtility.UrlDecode(Param.BoxCode);
+            }
+            if (!string.IsNullOrEmpty(Param.OneCode))
+            {
+                if (Param.OneCode.EndsWith("\r\n"))
+                    Param.OneCode = HttpUtility.UrlDecode(Param.OneCode).Substring(0, HttpUtility.UrlDecode(Param.OneCode).LastIndexOf("\r\n"));
+                else
+                    Param.OneCode = HttpUtility.UrlDecode(Param.OneCode);
+            }
             return ObjectResultEx.Instance(EnterpriseWebService.EditLogistics(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
