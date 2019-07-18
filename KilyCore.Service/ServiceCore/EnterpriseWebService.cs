@@ -5066,13 +5066,13 @@ namespace KilyCore.Service.ServiceCore
             if (Code.Substring(2, 14).Contains("W"))
             {
                 SearchCode = Code.Substring(2, 14).Split("W")[1].Substring(0, 12);
-                PreFix = Code.Substring(2, 14);
+                PreFix = Code.Substring(0, 2);
                 CodeType = 2;
             }
             else if (Code.Contains("P"))
             {
                 SearchCode = Code.Substring(2, 14).Split("P")[1].Substring(0, 12);
-                PreFix = Code.Substring(2, 14);
+                PreFix = Code.Substring(0, 2);
                 CodeType = 3;
             }
             else

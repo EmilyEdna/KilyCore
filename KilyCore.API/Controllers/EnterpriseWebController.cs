@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using KilyCore.Cache;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.Function;
 using KilyCore.DataEntity.RequestMapper.Govt;
@@ -1834,7 +1835,7 @@ namespace KilyCore.API.Controllers
         {
             if (Param.Id == Guid.Empty)
             {
-                var SessionCode = HttpContext.Session.GetSession<String>("PhoneCode");
+                var SessionCode = CacheFactory.Cache().GetCache<string>("PhoneCode").Trim();
                 if (!string.IsNullOrEmpty(SessionCode))
                 {
                     var Result = SessionCode.Equals(Param.Code) ? EnterpriseWebService.SaveRecover(Param) : "验证码错误!";
@@ -2198,7 +2199,7 @@ namespace KilyCore.API.Controllers
         {
             if (string.IsNullOrEmpty(Param.PackageNo))
                 return ObjectResultEx.Instance(null, -1, "验证码不能为空", HttpCode.FAIL);
-            string Code = HttpContext.Session.GetSession<string>("PhoneCode").Trim();
+            string Code = CacheFactory.Cache().GetCache<string>("PhoneCode").Trim(); 
             if (!Code.Equals(Param.PackageNo))
                 return ObjectResultEx.Instance(null, -1, "请检查验证码", HttpCode.FAIL);
             return ObjectResultEx.Instance(EnterpriseWebService.CheckLogistics(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);

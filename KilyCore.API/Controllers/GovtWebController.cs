@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KilyCore.Cache;
 using KilyCore.Configure;
 using KilyCore.DataEntity.RequestMapper.Cook;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
@@ -65,7 +66,7 @@ namespace KilyCore.API.Controllers
                 string Code = string.Empty;
                 if (!Param.IsApp)
                 {
-                    Code = HttpContext.Session.GetSession<string>("ValidateCode").Trim();
+                    Code = CacheFactory.Cache().GetCache<string>("ValidateCode").Trim();
                     if (GovtAdmin != null && Code.ToUpper().Equals(Param.ValidateCode.Trim().ToUpper()))
                     {
                         CookieInfo cookie = new CookieInfo();
@@ -900,7 +901,7 @@ namespace KilyCore.API.Controllers
         {
             if (string.IsNullOrEmpty(Param.Center))
             {
-                var SessionCode = HttpContext.Session.GetSession<String>("PhoneCode");
+                var SessionCode = CacheFactory.Cache().GetCache<string>("PhoneCode").Trim();
                 if (SessionCode.Equals(Param.Code))
                     return ObjectResultEx.Instance(GovtWebService.EditComplain(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
                 else

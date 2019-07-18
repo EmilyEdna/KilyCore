@@ -52,6 +52,17 @@ namespace KilyCore.Cache.RedisCache
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
         /// <param name="CacheKey"></param>
+        /// <param name="Minutes"></param>
+        public void WriteCaches<T>(T obj, string CacheKey, int Minutes)
+        {
+            RedisCache.StringSet<T>(CacheKey, obj, (DateTime.Now.AddMinutes(Minutes) - DateTime.Now));
+        }
+        /// <summary>
+        /// 写入缓存
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <param name="CacheKey"></param>
         public void WriteCache<T>(T obj, string CacheKey)
         {
             RedisCache.StringSet<T>(CacheKey, obj);

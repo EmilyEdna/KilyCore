@@ -30,6 +30,14 @@ namespace KilyCore.Cache.RedisCache
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
         /// <param name="CacheKey"></param>
+        /// <param name="Minutes"></param>
+        void WriteCaches<T>(T obj, String CacheKey, int Minutes);
+        /// <summary>
+        /// 写入缓存
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <param name="CacheKey"></param>
         void WriteCache<T>(T obj, String CacheKey);
         /// <summary>
         /// 根据key删除指定缓存

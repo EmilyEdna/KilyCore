@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KilyCore.Cache;
 using KilyCore.Configure;
 using KilyCore.DataEntity.RequestMapper.Cook;
 using KilyCore.DataEntity.RequestMapper.System;
@@ -49,7 +50,7 @@ namespace KilyCore.API.Controllers
                 string Code = string.Empty;
                 if (!LoginValidate.IsApp)
                 {
-                    Code = HttpContext.Session.GetSession<string>("ValidateCode").Trim();
+                    Code = CacheFactory.Cache().GetCache<string>("ValidateCode").Trim();
                     if (CookAdmin != null && Code.ToUpper().Equals(LoginValidate.ValidateCode.Trim().ToUpper()))
                     {
                         CookieInfo cookie = new CookieInfo();

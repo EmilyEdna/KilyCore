@@ -1,4 +1,5 @@
 ﻿using System;
+using KilyCore.Cache;
 using KilyCore.Configure;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.System;
@@ -265,7 +266,7 @@ namespace KilyCore.API.Controllers
                 string Code = string.Empty;
                 if (!LoginValidate.IsApp)
                 {
-                    Code = HttpContext.Session.GetSession<string>("ValidateCode").Trim();
+                    Code = CacheFactory.Cache().GetCache<string>("ValidateCode").Trim();
                     if (ComAdmin != null && Code.ToUpper().Equals(LoginValidate.ValidateCode.Trim().ToUpper()))
                     {
                         CookieInfo cookie = new CookieInfo();

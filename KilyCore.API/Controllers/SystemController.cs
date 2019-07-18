@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using KilyCore.Cache;
 using KilyCore.Configure;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.System;
@@ -151,7 +152,7 @@ namespace KilyCore.API.Controllers
                 string Code = string.Empty;
                 if (!LoginValidate.IsApp)
                 {
-                    Code = HttpContext.Session.GetSession<string>("ValidateCode").Trim();
+                    Code = CacheFactory.Cache().GetCache<string>("ValidateCode").Trim();
                     if (SysAdmin != null && Code.ToUpper().Equals(LoginValidate.ValidateCode.Trim().ToUpper()))
                     {
                         CookieInfo cookie = new CookieInfo();
@@ -191,7 +192,7 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetCode()
         {
             String Code = ValidateCode.CreateValidateCode();
-            HttpContext.Session.SetSession("ValidateCode", Code);
+            CacheFactory.Cache().WriteCaches(Code, "ValidateCode", 2);
             return ObjectResultEx.Instance(Code, 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -204,7 +205,7 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetPhoneCode(SimpleParam<String> Param)
         {
             String Code = ValidateCode.CreateCode();
-            HttpContext.Session.SetSession("PhoneCode", Code);
+            CacheFactory.Cache().WriteCaches(Code, "PhoneCode", 5);
             String Contents = $"你的手机验证码是：{Code}，请在5分钟内输入，如非本人操作，请忽略此短信。";
             //return ObjectResultEx.Instance(PhoneSMS.SendPhoneMsg(Param.Parameter, Contents), 1, RetrunMessge.SUCCESS, HttpCode.Success);
             return ObjectResultEx.Instance(Code, 1, RetrunMessge.SUCCESS, HttpCode.Success);
