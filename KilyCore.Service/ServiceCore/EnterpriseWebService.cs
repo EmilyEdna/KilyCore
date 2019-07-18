@@ -345,9 +345,9 @@ namespace KilyCore.Service.ServiceCore
             Param.CompanyId = data.CompanyId;
             EnterpriseInfo Info = Param.MapToEntity<EnterpriseInfo>();
             if (Update<EnterpriseInfo, RequestEnterprise>(Info, Param))
-                return ServiceMessage.UPDATESUCCESS;
+                return $"{ServiceMessage.UPDATESUCCESS}，请重新登录系统(重要)！";
             else
-                return ServiceMessage.UPDATEFAIL;
+                return $"{ServiceMessage.UPDATEFAIL}，请重新登录系统(重要)！";
         }
         /// <summary>
         /// 修改密码
@@ -3519,7 +3519,7 @@ namespace KilyCore.Service.ServiceCore
                 if (Num.Count > 100)
                     return "装箱数量最大支持每箱100个物件";
                 Param.BoxCount = Num.Count.ToString();
-                Param.BoxCodeSort = Convert.ToInt64(Param.BoxCode.Substring(2,14).Split("B")[1].Substring(0, 12));
+                Param.BoxCodeSort = Convert.ToInt64(Param.BoxCode.Substring(2, 14).Split("B")[1].Substring(0, 12));
                 EnterpriseBoxing Box = Param.MapToEntity<EnterpriseBoxing>();
                 EnterpriseGoodsStock Stock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.GoodsBatchNo == Param.StockBatchNo).AsNoTracking().FirstOrDefault();
                 EnterpriseGoodsStockAttach StockAttach = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.GoodsBatchNo == Param.StockBatchNo).AsNoTracking().FirstOrDefault();
@@ -3751,9 +3751,9 @@ namespace KilyCore.Service.ServiceCore
                     Param.OutStockNum = Nums.Count;
                     foreach (var item in Nums)
                     {
-                        if (item.Substring(2,14).Contains("B"))
+                        if (item.Substring(2, 14).Contains("B"))
                             return "请扫入溯源码";
-                        long No = Convert.ToInt64(item.Substring(2, 14).Split("W")[1].Substring(0,12));
+                        long No = Convert.ToInt64(item.Substring(2, 14).Split("W")[1].Substring(0, 12));
                         var TagAttach = Kily.Set<EnterpriseTagAttach>().Where(t => t.StarSerialNo <= No && t.EndSerialNo >= No).FirstOrDefault();
                         TagAttach.UseTag = TagAttach.UseTag ?? "";
                         if (TagAttach.UseTag.Contains(item))
@@ -5063,7 +5063,7 @@ namespace KilyCore.Service.ServiceCore
             String SearchCode = String.Empty;
             String PreFix = String.Empty;
             int CodeType = 0;
-            if (Code.Substring(2,14).Contains("W"))
+            if (Code.Substring(2, 14).Contains("W"))
             {
                 SearchCode = Code.Substring(2, 14).Split("W")[1].Substring(0, 12);
                 PreFix = Code.Substring(2, 14);
