@@ -3493,6 +3493,14 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string EditGoodsStock(RequestEnterpriseGoodsStock Param)
         {
+            if (Param.BuyId.HasValue)
+            {
+                int buytotal = Convert.ToInt32(Kily.Set<EnterpriseBuyer>().Where(t => t.Id == Param.BuyId).Select(t => t.Num).FirstOrDefault());
+                int total = Kily.Set<EnterpriseGoodsStock>().Where(t => t.BuyId == Param.BuyId).Select(t => t.InStockNum).Sum();
+                int lost = buytotal - total;
+                if (Param.InStockNum > lost)
+                    return "入库数量超出了总进货数量";
+            }
             EnterpriseGoodsStock Stock = Param.MapToEntity<EnterpriseGoodsStock>();
             return Insert<EnterpriseGoodsStock>(Stock) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
@@ -4599,7 +4607,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public IList<ResponseEnterpriseBuyer> GetBuyerList()
         {
-            IQueryable<EnterpriseBuyer> queryable = Kily.Set<EnterpriseBuyer>().Where(t => t.IsDelete == false).OrderByDescending(t=>t.CreateTime).AsNoTracking();
+            IQueryable<EnterpriseBuyer> queryable = Kily.Set<EnterpriseBuyer>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime).AsNoTracking();
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
@@ -4608,6 +4616,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 BatchNo = t.BatchNo,
+                Num = t.Num,
                 GoodName = t.GoodName
             }).ToList();
             return data;
@@ -5218,7 +5227,7 @@ namespace KilyCore.Service.ServiceCore
                     进货产品供应商 = t.Supplier,
                     进货时间 = t.GetGoodsTime,
                     进货产品规格 = t.Spec,
-                    生产时间=t.ProTime.Value.ToString("yyyy-MM-dd HH:mm:ss"),
+                    生产时间 = t.ProTime.Value.ToString("yyyy-MM-dd HH:mm:ss"),
                     进货产品质检 = t.CheckReport
                 }).FirstOrDefault();
                 Base.进货批次 = 进货信息.进货批次;
@@ -5276,7 +5285,7 @@ namespace KilyCore.Service.ServiceCore
             }
             IQueryable<EnterpriseLogistics> queryable = Kily.Set<EnterpriseLogistics>().Where(t => t.IsDelete == false);
             if (!string.IsNullOrEmpty(CodeInfo.ScanPackageNo))
-                queryable= queryable.Where(t => t.PackageNo == CodeInfo.ScanPackageNo);
+                queryable = queryable.Where(t => t.PackageNo == CodeInfo.ScanPackageNo);
             else
                 queryable = queryable.Where(t => t.OneCode.Contains(CodeInfo.ScanCode));
             EnterpriseLogistics Log = queryable.FirstOrDefault();

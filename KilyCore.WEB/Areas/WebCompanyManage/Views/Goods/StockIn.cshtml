@@ -26,7 +26,7 @@
                 //仓库类型
                 controller.ajax({
                     url: "EnterpriseWeb/GetStockTypeList",
-                    data: {Id:"产品仓库"},
+                    data: { Id: "产品仓库" },
                     type: "post",
                     async: false,
                     success: function (result) {
@@ -116,7 +116,7 @@
                     success: function (result) {
                         var html = '<option>==请选择==</option>';
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '">'+ obj.GoodName+'(' + obj.BatchNo + ')</option>';
+                            html += '<option value="' + obj.Id + '" data-value="' + obj.Num + '">' + obj.GoodName + '(' + obj.BatchNo + ')</option>';
                         });
                         $("#BuyId").html(html);
                     }
@@ -130,8 +130,7 @@
                         controller.Msg("请先选择产品!");
                         return;
                     }
-                    else if (!controller.CheckFeild($("input[name='InStockNum']").val()))
-                    {
+                    else if (!controller.CheckFeild($("input[name='InStockNum']").val())) {
                         controller.Msg("请输入入库数量!");
                         return;
                     }
@@ -146,7 +145,7 @@
                                 var num = $("input[name='InStockNum']").val();
                                 if (num != "" && num != null) {
                                     if (result.$("#TagType").val() != 3) {
-                                        var total = (Number(result.$("#End").val()) - Number(result.$("#Star").val()))+1;
+                                        var total = (Number(result.$("#End").val()) - Number(result.$("#Star").val())) + 1;
                                         num > total ? controller.Msg("入库数量大于绑定二维码数量") : result.$("#Edit").submit();
                                     } else
                                         result.$("#Edit").submit();
@@ -157,6 +156,11 @@
             },
             //事件
             InitEvents: function () {
+                $("#BuyId").change(function () {
+                    var num = $(this).find("option:selected").data().value;
+                    $("input[name='InStockNum']").val(num);
+                    debugger;
+                });
                 //验证
                 controller.ValidateConfirm("#Edit");
             },
@@ -191,13 +195,13 @@
                     </td>
                     <th><label class="control-label">入库时间</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control required" name="ProductTime" id="ProductTime" data-msg-required="请输入库时间"/>
+                        <input type="text" class="form-control required" name="ProductTime" id="ProductTime" data-msg-required="请输入库时间" />
                     </td>
                 </tr>
                 <tr>
                     <th><label class="control-label">入库数量</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control required" name="InStockNum" data-msg-required="请输入库数量"/>
+                        <input type="text" class="form-control required" name="InStockNum" data-msg-required="请输入库数量" />
                     </td>
                     <th><label class="control-label">负责人</label></th>
                     <td class="has-warning">
