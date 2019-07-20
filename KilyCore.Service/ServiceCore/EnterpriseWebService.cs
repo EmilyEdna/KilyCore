@@ -1,4 +1,4 @@
-﻿using KilyCore.Configure;
+using KilyCore.Configure;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.Function;
 using KilyCore.DataEntity.RequestMapper.System;
@@ -3527,7 +3527,7 @@ namespace KilyCore.Service.ServiceCore
                 if (Num.Count > 100)
                     return "装箱数量最大支持每箱100个物件";
                 Param.BoxCount = Num.Count.ToString();
-                Param.BoxCodeSort = Convert.ToInt64(Param.BoxCode.Substring(2, 14).Split("B")[1].Substring(0, 12));
+                Param.BoxCodeSort = Convert.ToInt64(Param.BoxCode.Split("B")[1].Substring(0, 12));
                 EnterpriseBoxing Box = Param.MapToEntity<EnterpriseBoxing>();
                 EnterpriseGoodsStock Stock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.GoodsBatchNo == Param.StockBatchNo).AsNoTracking().FirstOrDefault();
                 EnterpriseGoodsStockAttach StockAttach = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.GoodsBatchNo == Param.StockBatchNo).AsNoTracking().FirstOrDefault();
@@ -3759,9 +3759,9 @@ namespace KilyCore.Service.ServiceCore
                     Param.OutStockNum = Nums.Count;
                     foreach (var item in Nums)
                     {
-                        if (item.Substring(2, 14).Contains("B"))
+                        if (item.Contains("B"))
                             return "请扫入溯源码";
-                        long No = Convert.ToInt64(item.Substring(2, 14).Split("W")[1].Substring(0, 12));
+                        long No = Convert.ToInt64(item.Split("W")[1].Substring(0, 12));
                         var TagAttach = Kily.Set<EnterpriseTagAttach>().Where(t => t.StarSerialNo <= No && t.EndSerialNo >= No).FirstOrDefault();
                         TagAttach.UseTag = TagAttach.UseTag ?? "";
                         if (TagAttach.UseTag.Contains(item))
@@ -3782,7 +3782,7 @@ namespace KilyCore.Service.ServiceCore
                 return "当前库存少于出库量";
             stock.InStockNum -= Param.OutStockNum;
             EnterpriseGoodsStockAttach Attach = Param.MapToEntity<EnterpriseGoodsStockAttach>();
-            UpdateField(stock, "InStockNum");
+           UpdateField(stock, "InStockNum");
             return Insert<EnterpriseGoodsStockAttach>(Attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         /// <summary>
@@ -5068,15 +5068,15 @@ namespace KilyCore.Service.ServiceCore
             String SearchCode = String.Empty;
             String PreFix = String.Empty;
             int CodeType = 0;
-            if (Code.Substring(2, 14).Contains("W"))
+            if (Code.Contains("W"))
             {
-                SearchCode = Code.Substring(2, 14).Split("W")[1].Substring(0, 12);
+                SearchCode = Code.Split("W")[1].Substring(0, 12);
                 PreFix = Code.Substring(0, 2);
                 CodeType = 2;
             }
             else if (Code.Contains("P"))
             {
-                SearchCode = Code.Substring(2, 14).Split("P")[1].Substring(0, 12);
+                SearchCode = Code.Split("P")[1].Substring(0, 12);
                 PreFix = Code.Substring(0, 2);
                 CodeType = 3;
             }

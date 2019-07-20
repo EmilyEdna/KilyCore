@@ -15,6 +15,7 @@ using KilyCore.Service.QueryExtend;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using KilyCore.Extension.UtilExtension;
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点13分
@@ -1601,13 +1602,20 @@ namespace KilyCore.API.Controllers
                 if (Param.BoxCodeNo.Contains("\r\n") && Param.BoxCodeNo.EndsWith("\r\n"))
                     Param.BoxCodeNo = HttpUtility.UrlDecode(Param.BoxCodeNo).Substring(0, HttpUtility.UrlDecode(Param.BoxCodeNo).LastIndexOf("\r\n"));
                 else
-                    Param.BoxCodeNo = string.Join("\r\n", Regex.Split(HttpUtility.UrlDecode(Param.BoxCodeNo), "(.*?)\\d+").Where(t => !string.IsNullOrEmpty(t)).ToList());
+                {
+                    var data = Regex.Matches(Param.BoxCodeNo, "(.*?)\\d{13}").ToList();
+                    Param.BoxCodeNo = HttpUtility.UrlDecode(string.Join("\r\n", data));
+                }
             }
-            if (!string.IsNullOrEmpty(Param.SourceCodeNo)) {
-                if (Param.SourceCodeNo.Contains("\r\n")&&Param.SourceCodeNo.EndsWith("\r\n"))
+            if (!string.IsNullOrEmpty(Param.SourceCodeNo))
+            {
+                if (Param.SourceCodeNo.Contains("\r\n") && Param.SourceCodeNo.EndsWith("\r\n"))
                     Param.SourceCodeNo = HttpUtility.UrlDecode(Param.SourceCodeNo).Substring(0, HttpUtility.UrlDecode(Param.SourceCodeNo).LastIndexOf("\r\n"));
                 else
-                    Param.SourceCodeNo = string.Join("\r\n", Regex.Split(HttpUtility.UrlDecode(Param.SourceCodeNo), "(.*?)\\d+").Where(t=>!string.IsNullOrEmpty(t)).ToList());
+                {
+                    var data = Regex.Matches(Param.SourceCodeNo, "(.*?)\\d{13}").ToList();
+                    Param.SourceCodeNo = HttpUtility.UrlDecode(string.Join("\r\n", data));
+                }
             }
             return ObjectResultEx.Instance(EnterpriseWebService.EditStockAttach(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1895,10 +1903,13 @@ namespace KilyCore.API.Controllers
         [HttpPost("EditGoodsPackage")]
         public ObjectResultEx EditGoodsPackage(RequestEnterpriseGoodsPackage Param)
         {
-            if (Param.BoxCode.EndsWith("\r\n")&& Param.BoxCode.Contains("\r\n"))
+            if (Param.BoxCode.EndsWith("\r\n") && Param.BoxCode.Contains("\r\n"))
                 Param.BoxCode = HttpUtility.UrlDecode(Param.BoxCode).Substring(0, HttpUtility.UrlDecode(Param.BoxCode).LastIndexOf("\r\n"));
             else
-                Param.BoxCode = string.Join("\r\n", Regex.Split(HttpUtility.UrlDecode(Param.BoxCode), "(.*?)\\d+").Where(t => !string.IsNullOrEmpty(t)).ToList());
+            {
+                var data = Regex.Matches(Param.BoxCode, "(.*?)\\d{13}").ToList();
+                Param.BoxCode = HttpUtility.UrlDecode(string.Join("\r\n", data));
+            }
             return ObjectResultEx.Instance(EnterpriseWebService.EditGoodsPackage(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -1972,17 +1983,23 @@ namespace KilyCore.API.Controllers
         {
             if (!string.IsNullOrEmpty(Param.BoxCode))
             {
-                if (Param.BoxCode.EndsWith("\r\n")&& Param.BoxCode.Contains("\r\n"))
+                if (Param.BoxCode.EndsWith("\r\n") && Param.BoxCode.Contains("\r\n"))
                     Param.BoxCode = HttpUtility.UrlDecode(Param.BoxCode).Substring(0, HttpUtility.UrlDecode(Param.BoxCode).LastIndexOf("\r\n"));
                 else
-                    Param.BoxCode = string.Join("\r\n",Regex.Split(HttpUtility.UrlDecode(Param.BoxCode), "(.*?)\\d+").Where(t => !string.IsNullOrEmpty(t)).ToList());
+                {
+                    var data = Regex.Matches(Param.BoxCode, "(.*?)\\d{13}").ToList();
+                    Param.BoxCode = HttpUtility.UrlDecode(string.Join("\r\n", data));
+                }
             }
             if (!string.IsNullOrEmpty(Param.OneCode))
             {
-                if (Param.OneCode.EndsWith("\r\n")&& Param.OneCode.Contains("\r\n"))
+                if (Param.OneCode.EndsWith("\r\n") && Param.OneCode.Contains("\r\n"))
                     Param.OneCode = HttpUtility.UrlDecode(Param.OneCode).Substring(0, HttpUtility.UrlDecode(Param.OneCode).LastIndexOf("\r\n"));
                 else
-                    Param.OneCode = string.Join("\r\n",Regex.Split(HttpUtility.UrlDecode(Param.OneCode), "(.*?)\\d+").Where(t => !string.IsNullOrEmpty(t)).ToList());
+                {
+                    var data = Regex.Matches(Param.OneCode, "(.*?)\\d{13}").ToList();
+                    Param.OneCode = HttpUtility.UrlDecode(string.Join("\r\n", data));
+                }
             }
             return ObjectResultEx.Instance(EnterpriseWebService.EditLogistics(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -2217,7 +2234,7 @@ namespace KilyCore.API.Controllers
         {
             if (string.IsNullOrEmpty(Param.PackageNo))
                 return ObjectResultEx.Instance(null, -1, "验证码不能为空", HttpCode.FAIL);
-            string Code = CacheFactory.Cache().GetCache<string>("PhoneCode").Trim(); 
+            string Code = CacheFactory.Cache().GetCache<string>("PhoneCode").Trim();
             if (!Code.Equals(Param.PackageNo))
                 return ObjectResultEx.Instance(null, -1, "请检查验证码", HttpCode.FAIL);
             return ObjectResultEx.Instance(EnterpriseWebService.CheckLogistics(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);

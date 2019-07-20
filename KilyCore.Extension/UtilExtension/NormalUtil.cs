@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点51分
@@ -41,6 +42,17 @@ namespace KilyCore.Extension.UtilExtension
                 }
             }
             return result;
+        }
+    }
+    public static class RegexExtension {
+        public static List<string> ToList(this MatchCollection collection)
+        {
+            List<string> TempList = new List<string>();
+            for (int i = 0; i < collection.Count; i++)
+            {
+                TempList.Add(collection[i].Value);
+            }
+            return TempList;
         }
     }
 }
