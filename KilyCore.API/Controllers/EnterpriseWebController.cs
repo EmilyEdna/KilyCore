@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using KilyCore.Cache;
@@ -1597,16 +1598,16 @@ namespace KilyCore.API.Controllers
         {
             if (!string.IsNullOrEmpty(Param.BoxCodeNo))
             {
-                if (Param.BoxCodeNo.EndsWith("\r\n"))
+                if (Param.BoxCodeNo.Contains("\r\n") && Param.BoxCodeNo.EndsWith("\r\n"))
                     Param.BoxCodeNo = HttpUtility.UrlDecode(Param.BoxCodeNo).Substring(0, HttpUtility.UrlDecode(Param.BoxCodeNo).LastIndexOf("\r\n"));
                 else
-                    Param.BoxCodeNo = HttpUtility.UrlDecode(Param.BoxCodeNo);
+                    Param.BoxCodeNo = string.Join("\r\n", Regex.Split(HttpUtility.UrlDecode(Param.BoxCodeNo), "(.*?)\\d+").Where(t => !string.IsNullOrEmpty(t)).ToList());
             }
-            if (!string.IsNullOrEmpty(Param.SourceCodeNo)) { 
-            if (Param.SourceCodeNo.EndsWith("\r\n"))
-                Param.SourceCodeNo = HttpUtility.UrlDecode(Param.SourceCodeNo).Substring(0, HttpUtility.UrlDecode(Param.SourceCodeNo).LastIndexOf("\r\n"));
-            else
-                Param.SourceCodeNo = HttpUtility.UrlDecode(Param.SourceCodeNo);
+            if (!string.IsNullOrEmpty(Param.SourceCodeNo)) {
+                if (Param.SourceCodeNo.Contains("\r\n")&&Param.SourceCodeNo.EndsWith("\r\n"))
+                    Param.SourceCodeNo = HttpUtility.UrlDecode(Param.SourceCodeNo).Substring(0, HttpUtility.UrlDecode(Param.SourceCodeNo).LastIndexOf("\r\n"));
+                else
+                    Param.SourceCodeNo = string.Join("\r\n", Regex.Split(HttpUtility.UrlDecode(Param.SourceCodeNo), "(.*?)\\d+").Where(t=>!string.IsNullOrEmpty(t)).ToList());
             }
             return ObjectResultEx.Instance(EnterpriseWebService.EditStockAttach(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1894,10 +1895,10 @@ namespace KilyCore.API.Controllers
         [HttpPost("EditGoodsPackage")]
         public ObjectResultEx EditGoodsPackage(RequestEnterpriseGoodsPackage Param)
         {
-            if (Param.BoxCode.EndsWith("\r\n"))
+            if (Param.BoxCode.EndsWith("\r\n")&& Param.BoxCode.Contains("\r\n"))
                 Param.BoxCode = HttpUtility.UrlDecode(Param.BoxCode).Substring(0, HttpUtility.UrlDecode(Param.BoxCode).LastIndexOf("\r\n"));
             else
-                Param.BoxCode = HttpUtility.UrlDecode(Param.BoxCode);
+                Param.BoxCode = string.Join("\r\n", Regex.Split(HttpUtility.UrlDecode(Param.BoxCode), "(.*?)\\d+").Where(t => !string.IsNullOrEmpty(t)).ToList());
             return ObjectResultEx.Instance(EnterpriseWebService.EditGoodsPackage(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -1971,17 +1972,17 @@ namespace KilyCore.API.Controllers
         {
             if (!string.IsNullOrEmpty(Param.BoxCode))
             {
-                if (Param.BoxCode.EndsWith("\r\n"))
+                if (Param.BoxCode.EndsWith("\r\n")&& Param.BoxCode.Contains("\r\n"))
                     Param.BoxCode = HttpUtility.UrlDecode(Param.BoxCode).Substring(0, HttpUtility.UrlDecode(Param.BoxCode).LastIndexOf("\r\n"));
                 else
-                    Param.BoxCode = HttpUtility.UrlDecode(Param.BoxCode);
+                    Param.BoxCode = string.Join("\r\n",Regex.Split(HttpUtility.UrlDecode(Param.BoxCode), "(.*?)\\d+").Where(t => !string.IsNullOrEmpty(t)).ToList());
             }
             if (!string.IsNullOrEmpty(Param.OneCode))
             {
-                if (Param.OneCode.EndsWith("\r\n"))
+                if (Param.OneCode.EndsWith("\r\n")&& Param.OneCode.Contains("\r\n"))
                     Param.OneCode = HttpUtility.UrlDecode(Param.OneCode).Substring(0, HttpUtility.UrlDecode(Param.OneCode).LastIndexOf("\r\n"));
                 else
-                    Param.OneCode = HttpUtility.UrlDecode(Param.OneCode);
+                    Param.OneCode = string.Join("\r\n",Regex.Split(HttpUtility.UrlDecode(Param.OneCode), "(.*?)\\d+").Where(t => !string.IsNullOrEmpty(t)).ToList());
             }
             return ObjectResultEx.Instance(EnterpriseWebService.EditLogistics(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
