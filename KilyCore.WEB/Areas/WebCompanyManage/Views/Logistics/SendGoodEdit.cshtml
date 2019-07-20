@@ -1,4 +1,4 @@
-﻿
+
 @{
     ViewData["Title"] = "编辑发货";
     Layout = "~/Views/Shared/BaseView.cshtml";
@@ -17,7 +17,7 @@
             //元素
             InitDom: function () {
                 $("input[name='CompanyId']").val(CompanyInfo.Id);
-                 $("input[name='CompanyType']").val(CompanyInfo.CompanyType);
+                $("input[name='CompanyType']").val(CompanyInfo.CompanyType);
                 $("input[name='BatchNo']").val("No." + controller.FormatDate("YYYYMMDDHHmmss"));
                 controller.LayDate({ elem: "input[name='SendTime']" });
                 controller.Select({
@@ -59,6 +59,18 @@
                         return data;
                     }
                 });
+                //获取产品列表
+                controller.ajax({
+                    url: "EnterpriseWeb/GetGoodsList",
+                    type: "post",
+                    success: function (result) {
+                        var html = '';
+                        $.each(result.data, function (index, item) {
+                            html += '<option value="' + item.ProductName + "_" + item.Id + '">' + item.ProductName + '</option>'
+                        });
+                        $("#GoodsName").val(html);
+                    }
+                });
                 //验证
                 controller.ValidateConfirm("#Edit");
             },
@@ -68,7 +80,7 @@
                         $("#car").css({ display: "table-row" });
                         $("#one").css({ display: "none" });
                         $("#box").css({ display: "none" });
-                         $("#model").css({ display: "none" });
+                        $("#model").css({ display: "none" });
                     } else if ($(this).val() == 2) {
                         $("#box").css({ display: "table-row" });
                         $("#car").css({ display: "none" });
@@ -78,7 +90,7 @@
                         $("#one").css({ display: "table-row" });
                         $("#car").css({ display: "none" });
                         $("#box").css({ display: "none" });
-                         $("#model").css({ display: "table-row" });
+                        $("#model").css({ display: "table-row" });
                     }
                 });
             }
@@ -124,7 +136,7 @@
                 <tr id="model">
                     <th><label class="control-label">产品名称</label></th>
                     <td class="has-warning" colspan="3">
-                        <input type="text" class="form-control" name="GoodsName" />
+                        <select type="select" name="GoodsName" id="GoodsName"></select>
                     </td>
                 </tr>
                 <tr>
