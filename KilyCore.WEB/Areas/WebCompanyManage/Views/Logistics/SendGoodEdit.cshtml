@@ -63,16 +63,34 @@
                 controller.ajax({
                     url: "EnterpriseWeb/GetGoodsList",
                     type: "post",
+                    data: {},
                     success: function (result) {
                         var html = '';
                         $.each(result.data, function (index, item) {
                             html += '<option value="' + item.ProductName + "_" + item.Id + '">' + item.ProductName + '</option>'
                         });
-                        $("#GoodsName").val(html);
+                        $("#GoodsName").html(html);
                     }
                 });
                 //验证
                 controller.ValidateConfirm("#Edit");
+                //计数器
+                setInterval(function () {
+                    if ($("input[name='SendType']:checked").val() == 1) { } else {
+                        var ele = null;
+                        if ($("input[name='SendType']:checked").val() == 2)
+                            ele = $("textarea[name='BoxCode']");
+                        if ($("input[name='SendType']:checked").val() == 3)
+                            ele = $("textarea[name='OneCode']");
+                        var res = ele.val();
+                        if (controller.CheckFeild(res)) {
+                            var data = decodeURI(res).split(/\d+/).filter(function (item) {
+                                return item != "";
+                            });
+                            $("#count").val(data.length);
+                        }
+                    }
+                }, 100);
             },
             InitType: function () {
                 $("input[type='radio']").click(function () {
@@ -136,7 +154,7 @@
                 <tr id="model">
                     <th><label class="control-label">产品名称</label></th>
                     <td class="has-warning" colspan="3">
-                        <select type="select" name="GoodsName" id="GoodsName"></select>
+                        <select type="select" name="GoodsName" id="GoodsName" class="form-control"></select>
                     </td>
                 </tr>
                 <tr>
@@ -153,28 +171,22 @@
                 </tr>
                 <tr>
                     <th><label class="control-label">发货地址</label></th>
-                    <td class="has-warning" colspan="3">
+                    <td class="has-warning">
                         <input type="text" class="form-control" name="SendAddress" />
                     </td>
-                </tr>
-                <tr>
                     <th><label class="control-label">发货时间</label></th>
                     <td class="has-warning">
                         <input type="text" class="form-control" name="SendTime" />
                     </td>
-                    <th><label class="control-label">收货地址</label></th>
-                    <td class="has-warning">
-                        <input type="text" name="Address" class="form-control" />
-                    </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">物流单号</label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control" name="WayBill" />
-                    </td>
                     <th><label class="control-label">联系电话</label></th>
                     <td class="has-warning">
                         <input type="text" name="LinkPhone" class="form-control" />
+                    </td>
+                    <th><label class="control-label">收货地址</label></th>
+                    <td class="has-warning">
+                        <input type="text" name="Address" class="form-control" />
                     </td>
                 </tr>
                 <tr>
@@ -185,6 +197,16 @@
                     <th><label class="control-label">交通工具</label></th>
                     <td class="has-warning">
                         <input type="text" class="form-control" name="Traffic" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">物流单号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="WayBill" />
+                    </td>
+                    <th><label class="control-label">扫码数量</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" readonly id="count" />
                     </td>
                 </tr>
                 <tr style="display:none" id="one">

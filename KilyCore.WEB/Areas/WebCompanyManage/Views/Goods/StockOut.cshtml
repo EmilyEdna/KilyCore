@@ -1,4 +1,4 @@
-﻿
+
 @{
     ViewData["Title"] = "产品出库";
     Layout = "~/Views/Shared/BaseView.cshtml";
@@ -21,8 +21,7 @@
                 var Guid = controller.GetParam("Id");
                 $("#StockId").val(Guid);
                 this.GetList(Guid);
-                $("input[type='radio'][name='CodeType']").on('click', function ()
-                {
+                $("input[type='radio'][name='CodeType']").on('click', function () {
                     if ($(this).val() == 1)
                         $("#last").find("label").text('装箱码段').parents().find("tr[id='last']").find("textarea").attr("name", "BoxCodeNo")
                     else
@@ -47,6 +46,17 @@
             },
             //事件
             InitEvents: function () {
+                //计数器
+                setInterval(function () {
+                    var ele = $("textarea");
+                    var res = ele.val();
+                    if (controller.CheckFeild(res)) {
+                        var data = decodeURI(res).split(/\d+/).filter(function (item) {
+                            return item != "";
+                        });
+                        $("#count").val(data.length);
+                    }
+                }, 100);
                 //验证
                 controller.ValidateConfirm("#Edit");
             },
@@ -94,12 +104,16 @@
                 </tr>
                 <tr>
                     <th><label class="control-label">出库类型</label></th>
-                    <td class="has-warning" colspan="3">
+                    <td class="has-warning">
                         <select class="form-control" name="OutStockType" type="select">
                             <option value="产品出库">产品出库</option>
                             <option value="抽检出库">抽检出库</option>
                             <option value="其他出库">其他出库</option>
                         </select>
+                    </td>
+                    <th><label class="control-label">扫码数量</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" readonly id="count" />
                     </td>
                 </tr>
                 <tr id="last">
