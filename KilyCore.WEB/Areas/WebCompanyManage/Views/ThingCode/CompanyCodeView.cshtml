@@ -1,4 +1,4 @@
-﻿
+
 @{
     ViewData["Title"] = "二维码";
     Layout = "~/Views/Shared/BaseView.cshtml";
@@ -13,7 +13,7 @@
             },
             //元素
             InitDom: function () {
-                var host = "phone.cfda.vip/NewPhone/CompanyCode.html?Id=" + controller.GetParam("Id");
+                var host = "http://phone.cfda.vip/NewPhone/CompanyCode.html?Id=" + controller.GetParam("Id");
                 controller.QRCode('#QRcode', { text: host });
             },
             //事件
