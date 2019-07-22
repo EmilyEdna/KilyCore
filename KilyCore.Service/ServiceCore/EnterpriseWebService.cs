@@ -5151,6 +5151,7 @@ namespace KilyCore.Service.ServiceCore
                     运单号 = t.WayBill,
                     发货时间 = t.SendTime,
                     收货人 = t.GainUser,
+                    收货人电话 =t.LinkPhone,
                     收货地址 = t.Address,
                     发货地址 = t.SendAddress,
                     交通工具 = t.Traffic,
@@ -5164,6 +5165,7 @@ namespace KilyCore.Service.ServiceCore
                 Base.运单号 = 预发货实体?.运单号;
                 Base.发货时间 = 预发货实体?.发货时间;
                 Base.收货人 = 预发货实体?.收货人;
+                Base.收货人电话 = 预发货实体?.收货人电话;
                 Base.收货地址 = 预发货实体?.收货地址;
                 Base.发货地址 = 预发货实体?.发货地址;
                 Base.交通工具 = 预发货实体?.交通工具;

@@ -59,6 +59,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Phone
         public DateTime? 发货时间 { get; set; }
         public string 收货人 { get; set; }
         public string 收货地址 { get; set; }
+        public string 收货人电话 { get; set; }
         public string 发货地址 { get; set; }
         public string 交通工具 { get; set; }
         public string 运输方式 { get; set; }

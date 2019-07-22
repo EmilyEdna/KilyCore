@@ -76,19 +76,31 @@
                 controller.ValidateConfirm("#Edit");
                 //计数器
                 setInterval(function () {
-                    if ($("input[name='SendType']:checked").val() == 1) { } else {
-                        var ele = null;
-                        if ($("input[name='SendType']:checked").val() == 2)
-                            ele = $("textarea[name='BoxCode']");
-                        if ($("input[name='SendType']:checked").val() == 3)
-                            ele = $("textarea[name='OneCode']");
-                        var res = ele.val();
-                        if (controller.CheckFeild(res)) {
-                            var data = decodeURI(res).split(/\d+/).filter(function (item) {
-                                return item != "";
-                            });
-                            $("#count").val(data.length);
+                    var ele = $("textarea");
+                    var res = ele.val();
+                    var replayArr = [];
+                    if (controller.CheckFeild(res)) {
+                        var data = decodeURI(res).match(/\d+/g).filter(function (item) {
+                            return item != "" && item != "\n";
+                        });
+                        var datas = data.join(",") + ",";
+                        for (var i = 0; i < data.length; i++) {
+                            if (datas.replace(data[i] + ",", "").indexOf(data[i] + ",") > -1) {
+                                if ($.inArray(data[i], replayArr) < 0) {
+                                    replayArr.push(data[i]);
+                                    $("#replay").val(replayArr.join(","));
+                                    $("#replaycount").val(replayArr.length);
+                                }
+                            }
+                            else {
+                                $("#replay").val("");
+                                $("#replaycount").val(0);
+                            }
                         }
+                        $("#count").val(data.length);
+                    } else {
+                        $("#count").val(0);
+                        $("#replaycount").val(0);
                     }
                 }, 100);
             },
@@ -170,9 +182,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">发货地址</label></th>
+                    <th><label class="control-label">联系电话</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="SendAddress" />
+                        <input type="text" name="LinkPhone" class="form-control" />
                     </td>
                     <th><label class="control-label">发货时间</label></th>
                     <td class="has-warning">
@@ -180,9 +192,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">联系电话</label></th>
+                    <th><label class="control-label">物流单号</label></th>
                     <td class="has-warning">
-                        <input type="text" name="LinkPhone" class="form-control" />
+                        <input type="text" class="form-control" name="WayBill" />
                     </td>
                     <th><label class="control-label">收货地址</label></th>
                     <td class="has-warning">
@@ -200,13 +212,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">物流单号</label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control" name="WayBill" />
-                    </td>
-                    <th><label class="control-label">扫码数量</label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control" readonly id="count" />
+                    <th><label class="control-label">发货地址</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" class="form-control" name="SendAddress" />
                     </td>
                 </tr>
                 <tr style="display:none" id="one">
@@ -219,6 +227,22 @@
                     <th><label class="control-label">箱码</label><span style="color:red">*</span></th>
                     <td class="has-warning" colspan="3">
                         <textarea class="form-control" name="BoxCode" rows="30" cols="30" placeholder="最大扫入100个箱码"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="has-warning" colspan="4">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="col-sm-3"><label class="control-label text-center">扫码数量<span style="color:red">*</span></label></div>
+                                <div class="col-sm-3"><input type="text" class="form-control" readonly id="count" /></div>
+                                <div class="col-sm-3"><label class="control-label text-center">重复数量<span style="color:red">*</span></label></div>
+                                <div class="col-sm-3"><input type="text" class="form-control" readonly id="replaycount" /></div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="col-sm-2"><label class="control-label">重复号段</label><span style="color:red">*</span></div>
+                                <div class="col-sm-10"><input type="text" class="form-control" readonly id="replay" /></div>
+                            </div>
+                        </div>
                     </td>
                 </tr>
             </table>
