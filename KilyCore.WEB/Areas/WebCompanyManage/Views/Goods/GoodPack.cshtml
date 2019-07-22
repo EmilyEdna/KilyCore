@@ -24,6 +24,40 @@
             },
             //事件
             InitEvents: function () {
+                //计数器
+                setInterval(function () {
+                    var ele = $("textarea");
+                    var res = ele.val();
+                    var replayArr = [];
+                    if (controller.CheckFeild(res)) {
+                        var data = decodeURI(res).match(/\d+/g).filter(function (item) {
+                            return item != "" && item != "\n";
+                        });
+                        var datas = data.join(",") + ",";
+                        for (var i = 0; i < data.length; i++) {
+                            if (datas.replace(data[i] + ",", "").indexOf(data[i] + ",") > -1) {
+                                if ($.inArray(data[i], replayArr) < 0) {
+                                    replayArr.push(data[i]);
+                                    $("#replay").val(replayArr.join(","));
+                                    $("#replaycount").val(replayArr.length);
+                                } else {
+                                    $("#replay").val(replayArr.join(","));
+                                    $("#replaycount").val(replayArr.length);
+                                }
+                            }
+                            else {
+                                $("#replay").val("");
+                                $("#replaycount").val(0);
+                            }
+                        }
+                        $("#activecount").val(data.length - replayArr.length);
+                        $("#count").val(data.length);
+                    } else {
+                        $("#count").val(0);
+                        $("#activecount").val(0);
+                        $("#replaycount").val(0);
+                    }
+                }, 100);
                 controller.ValidateConfirm("#Edit");
             },
         };
@@ -71,7 +105,25 @@
                 <tr>
                     <th><label class="control-label">追溯码</label><span style="color:red">*</span></th>
                     <td class="has-warning" colspan="3">
-                        <textarea class="form-control" name="ThingCode" rows="30" cols="30" placeholder="每箱最大扫入100个物品"></textarea>
+                        <textarea class="form-control" name="ThingCode" rows="30" cols="30" placeholder="每箱最大扫入1000个物品"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="has-warning" colspan="4">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <div class="col-sm-2"><label class="control-label">扫码数量<span style="color:red">*</span></label></div>
+                                <div class="col-sm-2"><input type="text" class="form-control" readonly id="count" style="width:40px;" /></div>
+                                <div class="col-sm-2"><label class="control-label">重复数量<span style="color:red">*</span></label></div>
+                                <div class="col-sm-2"><input type="text" class="form-control" readonly id="replaycount" style="width:40px;" /></div>
+                                <div class="col-sm-2"><label class="control-label">有效数量<span style="color:red">*</span></label></div>
+                                <div class="col-sm-2"><input type="text" class="form-control" readonly id="activecount" style="width:40px;" /></div>
+                            </div>
+                            <div class="col-sm-7">
+                                <div class="col-sm-2"><label class="control-label">重复号段</label><span style="color:red">*</span></div>
+                                <div class="col-sm-10"><input type="text" class="form-control" readonly id="replay" /></div>
+                            </div>
+                        </div>
                     </td>
                 </tr>
             </table>
