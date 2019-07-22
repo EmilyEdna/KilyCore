@@ -62,6 +62,9 @@
                                     replayArr.push(data[i]);
                                     $("#replay").val(replayArr.join(","));
                                     $("#replaycount").val(replayArr.length);
+                                } else {
+                                    $("#replay").val(replayArr.join(","));
+                                    $("#replaycount").val(replayArr.length);
                                 }
                             }
                             else {
@@ -73,7 +76,9 @@
                         $("#count").val(data.length);
                     } else {
                         $("#count").val(0);
+                        $("#activecount").val(0);
                         $("#replaycount").val(0);
+                        $("#replay").val("");
                     }
                 }, 100);
                 //验证
@@ -134,7 +139,7 @@
                 <tr id="last">
                     <th><label class="control-label">装箱码段</label></th>
                     <td class="has-warning" colspan="3">
-                        <textarea rows="22" cols="5" class="form-control" name="BoxCodeNo" placeholder="最大扫入10000个箱码"></textarea>
+                        <textarea rows="22" cols="5" class="form-control" name="BoxCodeNo" placeholder="最大扫入2000个，建议不要超过4000个"></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -142,11 +147,11 @@
                         <div class="row">
                             <div class="col-sm-5">
                                 <div class="col-sm-2"><label class="control-label">扫码数量<span style="color:red">*</span></label></div>
-                                <div class="col-sm-2"><input type="text" class="form-control" readonly id="count" style="width:40px;" /></div>
+                                <div class="col-sm-2"><input type="text" class="form-control" readonly id="count"/></div>
                                 <div class="col-sm-2"><label class="control-label">重复数量<span style="color:red">*</span></label></div>
-                                <div class="col-sm-2"><input type="text" class="form-control" readonly id="replaycount" style="width:40px;" /></div>
+                                <div class="col-sm-2"><input type="text" class="form-control" readonly id="replaycount"/></div>
                                 <div class="col-sm-2"><label class="control-label">有效数量<span style="color:red">*</span></label></div>
-                                <div class="col-sm-2"><input type="text" class="form-control" readonly id="activecount" style="width:40px;" /></div>
+                                <div class="col-sm-2"><input type="text" class="form-control" readonly id="activecount" /></div>
                             </div>
                             <div class="col-sm-7">
                                 <div class="col-sm-2"><label class="control-label">重复号段</label><span style="color:red">*</span></div>
