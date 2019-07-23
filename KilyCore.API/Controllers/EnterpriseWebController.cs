@@ -1552,17 +1552,18 @@ namespace KilyCore.API.Controllers
             Param.BoxCode = HttpUtility.UrlDecode(Param.BoxCode);
             if (!string.IsNullOrEmpty(Param.ThingCode))
             {
-                var data = Regex.Matches(Param.ThingCode, "(.*?)\\d{13}").ToList().Distinct().ToList(); ;
+                var data = Regex.Matches(Param.ThingCode, "(.*?)\\d+").ToList().Distinct().ToList(); ;
                 int Index = 0;
                 foreach (var item in data)
                 {
                     var res = Regex.Match(HttpUtility.UrlDecode(item), "http\\W{3}phone.cfda.vip/NewPhone/CodeIndex.html\\?Id=&Code=(.*?)\\d{13}", RegexOptions.IgnoreCase).Value;
-                    if (string.IsNullOrEmpty(res))
+                    var vres = Regex.Match(HttpUtility.UrlDecode(item), "http\\W{3}phone.cfda.vip/NewPhone/CodeIndex.html\\?Id=&Code=\\d{12}", RegexOptions.IgnoreCase).Value;
+                    if (string.IsNullOrEmpty(res)&&string.IsNullOrEmpty(vres))
                         Index += 1;
                 }
                 if (Index != 0)
                     return ObjectResultEx.Instance($"当前扫入追溯码中有{Index}个格式存在不正确，请检查，请勿点击确定和取消，按X关闭！正确格式为：http://phone.cfda.vip/NewPhone/CodeIndex.html?Id=&Code=追溯码", -1, RetrunMessge.FAIL, HttpCode.Success);
-                Param.ThingCode = HttpUtility.UrlDecode(string.Join("\r\n", data));
+                Param.ThingCode = HttpUtility.UrlDecode(string.Join(",", data));
             }
             return ObjectResultEx.Instance(EnterpriseWebService.EditBoxing(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1610,21 +1611,22 @@ namespace KilyCore.API.Controllers
                 }
                 if (Index != 0)
                     return ObjectResultEx.Instance($"当前扫入箱码中有{Index}个格式存在不正确，请检查，请勿点击确定和取消，按X关闭！正确格式为：http://phone.cfda.vip/NewPhone/boxing.html?Id=32位Id&Code=箱码", -1, RetrunMessge.FAIL, HttpCode.Success);
-                Param.BoxCodeNo = HttpUtility.UrlDecode(string.Join("\r\n", data));
+                Param.BoxCodeNo = HttpUtility.UrlDecode(string.Join(",", data));
             }
             if (!string.IsNullOrEmpty(Param.SourceCodeNo))
             {
-                var data = Regex.Matches(Param.SourceCodeNo, "(.*?)\\d{13}").ToList().Distinct().ToList(); ;
+                var data = Regex.Matches(Param.SourceCodeNo, "(.*?)\\d+").ToList().Distinct().ToList(); ;
                 int Index = 0;
                 foreach (var item in data)
                 {
                     var res = Regex.Match(HttpUtility.UrlDecode(item), "http\\W{3}phone.cfda.vip/NewPhone/CodeIndex.html\\?Id=&Code=(.*?)\\d{13}", RegexOptions.IgnoreCase).Value;
-                    if (string.IsNullOrEmpty(res))
+                    var vres = Regex.Match(HttpUtility.UrlDecode(item), "http\\W{3}phone.cfda.vip/NewPhone/CodeIndex.html\\?Id=&Code=\\d{12}", RegexOptions.IgnoreCase).Value;
+                    if (string.IsNullOrEmpty(res) && string.IsNullOrEmpty(vres))
                         Index += 1;
                 }
                 if (Index != 0)
                     return ObjectResultEx.Instance($"当前扫入追溯码中有{Index}个格式存在不正确，请检查，请勿点击确定和取消，按X关闭！正确格式为：http://phone.cfda.vip/NewPhone/CodeIndex.html?Id=&Code=追溯码", -1, RetrunMessge.FAIL, HttpCode.Success);
-                Param.SourceCodeNo = HttpUtility.UrlDecode(string.Join("\r\n", data));
+                Param.SourceCodeNo = HttpUtility.UrlDecode(string.Join(",", data));
             }
             return ObjectResultEx.Instance(EnterpriseWebService.EditStockAttach(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -1917,7 +1919,7 @@ namespace KilyCore.API.Controllers
             else
             {
                 var data = Regex.Matches(Param.BoxCode, "(.*?)\\d{13}").ToList();
-                Param.BoxCode = HttpUtility.UrlDecode(string.Join("\r\n", data));
+                Param.BoxCode = HttpUtility.UrlDecode(string.Join(",", data));
             }
             return ObjectResultEx.Instance(EnterpriseWebService.EditGoodsPackage(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -2006,17 +2008,18 @@ namespace KilyCore.API.Controllers
             }
             if (!string.IsNullOrEmpty(Param.OneCode))
             {
-                var data = Regex.Matches(Param.OneCode, "(.*?)\\d{13}").ToList().Distinct().ToList(); ;
+                var data = Regex.Matches(Param.OneCode, "(.*?)\\d+").ToList().Distinct().ToList(); ;
                 int Index = 0;
                 foreach (var item in data)
                 {
                     var res = Regex.Match(HttpUtility.UrlDecode(item), "http\\W{3}phone.cfda.vip/NewPhone/CodeIndex.html\\?Id=&Code=(.*?)\\d{13}", RegexOptions.IgnoreCase).Value;
-                    if (string.IsNullOrEmpty(res))
+                    var vres = Regex.Match(HttpUtility.UrlDecode(item), "http\\W{3}phone.cfda.vip/NewPhone/CodeIndex.html\\?Id=&Code=\\d{12}", RegexOptions.IgnoreCase).Value;
+                    if (string.IsNullOrEmpty(res) && string.IsNullOrEmpty(vres))
                         Index += 1;
                 }
                 if (Index != 0)
                     return ObjectResultEx.Instance($"当前扫入追溯码中有{Index}个格式存在不正确，请检查，请勿点击确定和取消，按X关闭！正确格式为：http://phone.cfda.vip/NewPhone/CodeIndex.html?Id=&Code=追溯码", -1, RetrunMessge.FAIL, HttpCode.Success);
-                Param.OneCode = HttpUtility.UrlDecode(string.Join("\r\n", data));
+                Param.OneCode = HttpUtility.UrlDecode(string.Join(",", data));
             }
             return ObjectResultEx.Instance(EnterpriseWebService.EditLogistics(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }

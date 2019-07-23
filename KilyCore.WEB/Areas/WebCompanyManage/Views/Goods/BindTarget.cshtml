@@ -23,6 +23,20 @@
             },
             //事件
             InitEvents: function () {
+                  //绑定二维码批次
+                    controller.ajax({
+                        url: "EnterpriseWeb/GetTagList",
+                        data: { Id: $("#TagType").find("option:selected").val() },
+                        async: false,
+                        type: "post",
+                        success: function (result) {
+                            var html = '<option>===请选择===</option>';
+                            $.each(result.data, function (i, obj) {
+                                html += '<option value="' + obj.Id + '">' + obj.BatchNo + '(剩余:' + obj.TotalNo + ')</option>';
+                            });
+                            $('#TagId').html(html);
+                        }
+                    });
                 $("#TagType").on('change', function () {
                     //绑定二维码批次
                     controller.ajax({
@@ -107,7 +121,7 @@
                     <th><label class="control-label">二维码类型</label></th>
                     <td class="has-warning">
                         <select type="select" id="TagType" name="TagType" class="form-control">
-                            <option value="1">纹理二维码</option>
+                            <option value="1" selected>纹理二维码</option>
                             <option value="2">一物一码</option>
                             <option value="3">一品一码</option>
                         </select>

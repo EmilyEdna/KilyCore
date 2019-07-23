@@ -3340,19 +3340,19 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseNote> Note = Kily.Set<EnterpriseNote>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseBuyer> Buyer = Kily.Set<EnterpriseBuyer>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseGoodsStockAttach> attaches = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false);
-            IQueryable<ResponseEnterpriseMaterial> Material = Kily.Set<EnterpriseMaterialStockAttach>().Where(t => t.IsDelete == false)
+            List<ResponseEnterpriseMaterial> Material = Kily.Set<EnterpriseMaterialStockAttach>().Where(t => t.IsDelete == false)
                 .Join(Kily.Set<EnterpriseMaterialStock>().Where(t => t.IsDelete == false), t => t.MaterialStockId, x => x.Id, (t, x) => new { x.BatchNo })
                 .Join(Kily.Set<EnterpriseMaterial>().Where(t => t.IsDelete == false), p => p.BatchNo, y => y.BatchNo, (p, y) => new ResponseEnterpriseMaterial
                 {
                     Id = y.Id,
                     MaterName = y.MaterName,
-                }).AsNoTracking();
+                }).ToList();
             if (!string.IsNullOrEmpty(pageParam.QueryParam.GoodsName))
                 Goods = Goods.Where(t => t.ProductName.Contains(pageParam.QueryParam.GoodsName));
             if (CompanyInfo() != null)
             {
-                Stock = Stock.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
-                var Temp = Stock.OrderByDescending(t => t.CreateTime).Join(Goods, t => t.GoodsId, x => x.Id, (t, x) => new { t, x }).AsNoTracking();
+                var  StockList = Stock.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId)).ToList();
+                var Temp = StockList.OrderByDescending(t => t.CreateTime).Join(Goods, t => t.GoodsId, x => x.Id, (t, x) => new { t, x }).ToList();
                 if (CompanyInfo().CompanyType == CompanyEnum.Plant || CompanyInfo().CompanyType == CompanyEnum.Culture)
                     return Temp.GroupJoin(Note, p => p.t.GrowNoteId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
                     {
@@ -3370,8 +3370,8 @@ namespace KilyCore.Service.ServiceCore
                         CheckGoodsId = p.t.CheckGoodsId,
                         TotalCount = attaches.Where(t => t.StockId == p.t.Id).Select(t => t.OutStockNum).Sum() + p.t.InStockNum,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
-                        MaterialList = Material.ToList()
-                    }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                        MaterialList = Material
+                    }).ToList().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
                 if (CompanyInfo().CompanyType == CompanyEnum.Production)
                     return Temp.GroupJoin(Batch, p => p.t.BatchId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
                     {
@@ -3391,7 +3391,7 @@ namespace KilyCore.Service.ServiceCore
                         TotalCount = attaches.Where(t => t.StockId == p.t.Id).Select(t => t.OutStockNum).Sum() + p.t.InStockNum,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
-                    }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                    }).ToList().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
                 if (CompanyInfo().CompanyType == CompanyEnum.Circulation)
                     return Temp.GroupJoin(Buyer, p => p.t.BuyId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
                     {
@@ -3410,12 +3410,12 @@ namespace KilyCore.Service.ServiceCore
                         TotalCount = attaches.Where(t => t.StockId == p.t.Id).Select(t => t.OutStockNum).Sum() + p.t.InStockNum,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
-                    }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                    }).ToList().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             }
             else
             {
-                Stock = Stock.Where(t => t.CompanyId == CompanyUser().Id);
-                var Temp = Stock.OrderByDescending(t => t.CreateTime).Join(Goods, t => t.GoodsId, x => x.Id, (t, x) => new { t, x }).AsNoTracking();
+                var StockList = Stock.Where(t => t.CompanyId == CompanyUser().Id).ToList();
+                var Temp = StockList.OrderByDescending(t => t.CreateTime).Join(Goods, t => t.GoodsId, x => x.Id, (t, x) => new { t, x }).ToList();
                 if (CompanyUser().CompanyType == CompanyEnum.Plant || CompanyUser().CompanyType == CompanyEnum.Culture)
                     return Temp.GroupJoin(Note, p => p.t.GrowNoteId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
                     {
@@ -3433,8 +3433,8 @@ namespace KilyCore.Service.ServiceCore
                         Manager = p.t.Manager,
                         TotalCount = attaches.Where(t => t.StockId == p.t.Id).Select(t => t.OutStockNum).Sum() + p.t.InStockNum,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
-                        MaterialList = Material.ToList()
-                    }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                        MaterialList = Material
+                    }).ToList().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
                 if (CompanyUser().CompanyType == CompanyEnum.Production)
                     return Temp.GroupJoin(Batch, p => p.t.BatchId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
                     {
@@ -3454,7 +3454,7 @@ namespace KilyCore.Service.ServiceCore
                         TotalCount = attaches.Where(t => t.StockId == p.t.Id).Select(t => t.OutStockNum).Sum() + p.t.InStockNum,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
-                    }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                    }).ToList().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
                 if (CompanyUser().CompanyType == CompanyEnum.Circulation)
                     return Temp.GroupJoin(Buyer, p => p.t.BuyId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
                     {
@@ -3473,7 +3473,7 @@ namespace KilyCore.Service.ServiceCore
                         TotalCount = attaches.Where(t => t.StockId == p.t.Id).Select(t => t.OutStockNum).Sum() + p.t.InStockNum,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
-                    }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                    }).ToList().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             }
             return null;
         }
@@ -3513,17 +3513,26 @@ namespace KilyCore.Service.ServiceCore
         {
             try
             {
-                Param.BoxCode = HttpUtility.UrlDecode(Regex.Match(Param.BoxCode, "(^|&)Code=([^&]*)(&|$)").Groups[2].Value);
-                Param.ThingCode = Param.ThingCode.Replace("\r\n", ",");
-                var Nums = Param.ThingCode.Split(",").ToList();
-                //移除空的
-                if (string.IsNullOrEmpty(Nums[Nums.Count - 1]))
-                    Nums.RemoveAt(Nums.Count - 1);
-                var HostStar = Regex.Match(Nums.FirstOrDefault(), "e=(.*)?").Groups[1].Value.Split("B")[0];
-                var Num = Regex.Matches(string.Join(",", Nums), HostStar + "B(.*?)\\d{13}").ToList();
-                if (Num.Count > 100)
-                    return "装箱数量最大支持每箱100个物件";
-                Param.BoxCount = Num.Count.ToString();
+                Param.BoxCode = Regex.Match(Param.BoxCode, "e=(.*)?").Groups[1].Value;
+                var HostStar = Param.BoxCode.Split("B")[0];
+                var OncTag = Regex.Matches(Param.ThingCode, $"{HostStar}[W|P]\\d{{13}}").ToList();
+                var VenTag = Regex.Matches(Param.ThingCode, "e=\\d{12}").Select(t => Regex.Split(t.Groups[0].Value, "=")[1]).ToList();
+                if (VenTag.Count != 0 && OncTag.Count() != 0)
+                    return "请勿混用纹理二维码和追溯码";
+                if (VenTag.Count == 0 && OncTag.Count() == 0)
+                    return "请勿扫入纹理二维码或者追溯码";
+                if (OncTag.Count() != 0)
+                {
+                    if (OncTag.Count > 1000)
+                        return "装箱数量最大支持每箱1000个物件";
+                    Param.BoxCount = OncTag.Count.ToString();
+                }
+                else
+                {
+                    if (VenTag.Count > 1000)
+                        return "装箱数量最大支持每箱1000个物件";
+                    Param.BoxCount = VenTag.Count.ToString();
+                }
                 Param.BoxCodeSort = Convert.ToInt64(Param.BoxCode.Split("B")[1].Substring(0, 12));
                 EnterpriseBoxing Box = Param.MapToEntity<EnterpriseBoxing>();
                 EnterpriseGoodsStock Stock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.GoodsBatchNo == Param.StockBatchNo).AsNoTracking().FirstOrDefault();
@@ -3536,56 +3545,87 @@ namespace KilyCore.Service.ServiceCore
                 if (Stock != null)
                 {
                     var Tag = Kily.Set<EnterpriseTagAttach>().Where(t => t.StockNo == Param.StockBatchNo).AsNoTracking().ToList();
-                    if (Num.Any(t => t.Contains("W") || t.Contains("P")))
-                        foreach (var item in Num)
+                    if (OncTag.Count != 0)
+                    {
+                        if (OncTag.Any(t => t.Contains("W") || t.Contains("P")))
+                            foreach (var item in OncTag)
+                            {
+                                long Temp = 0;
+                                string Host = string.Empty;
+                                if (item.Contains("W"))
+                                {
+                                    Temp = Convert.ToInt64(item.Split("W")[1].Substring(0, 12));
+                                    Host = HostStar + "W";
+                                }
+                                else
+                                {
+                                    Temp = Convert.ToInt64(item.Split("P")[1].Substring(0, 12));
+                                    Host = HostStar + "P";
+                                }
+                                var TempEntity = Tag.Where(t => t.StarSerialNo <= Temp && t.EndSerialNo >= Temp).FirstOrDefault();
+                                if (TempEntity == null)
+                                    return $"{Host + Temp}溯源号段不在此批次中";
+                            }
+                        if (TotalSum + OncTag.Count > Stock.InStockNum)
+                            return "超出库存!";
+                        else if (TotalSum + OncTag.Count == Stock.InStockNum)
                         {
-                            long Temp = 0;
-                            string Host = string.Empty;
-                            if (item.Contains("W"))
-                            {
-                                Temp = Convert.ToInt64(item.Split("W")[1].Substring(0, 12));
-                                Host = item.Split("W")[0] + "W";
-                            }
-                            else
-                            {
-                                Temp = Convert.ToInt64(item.Split("P")[1].Substring(0, 12));
-                                Host = item.Split("P")[0] + "P";
-                            }
+                            Stock.IsBindBoxCode = true;
+                            UpdateField(Stock, "IsBindBoxCode");
+                        }
+                    }
+                    else
+                    {
+                        foreach (var item in VenTag)
+                        {
+                            long Temp = Convert.ToInt64(item.Substring(0, 11));
                             var TempEntity = Tag.Where(t => t.StarSerialNo <= Temp && t.EndSerialNo >= Temp).FirstOrDefault();
                             if (TempEntity == null)
-                                return $"{Host + Temp}溯源号段不在此批次中";
+                                return $"{Temp}纹理码号段不在此批次中";
                         }
-                    if (TotalSum + Num.Count > Stock.InStockNum)
-                        return "超出库存!";
-                    else if (TotalSum + Num.Count == Stock.InStockNum)
-                    {
-                        Stock.IsBindBoxCode = true;
-                        UpdateField(Stock, "IsBindBoxCode");
+                        if (TotalSum + VenTag.Count > Stock.InStockNum)
+                            return "超出库存!";
+                        else if (TotalSum + VenTag.Count == Stock.InStockNum)
+                        {
+                            Stock.IsBindBoxCode = true;
+                            UpdateField(Stock, "IsBindBoxCode");
+                        }
                     }
                 }
                 else
                 {
                     var InStockNo = Kily.Set<EnterpriseGoodsStock>().Where(t => t.Id == StockAttach.StockId).Select(t => t.GoodsBatchNo).AsNoTracking().FirstOrDefault();
                     var Tag = Kily.Set<EnterpriseTagAttach>().Where(t => t.StockNo == InStockNo).AsNoTracking().ToList();
-                    if (Num.Any(t => t.Contains("W") || t.Contains("P")))
-                        foreach (var item in Num)
-                        {
-                            long Temp = 0;
-                            string Host = string.Empty;
-                            if (item.Contains("W"))
+                    if (OncTag.Count() != 0)
+                    {
+                        if (OncTag.Any(t => t.Contains("W") || t.Contains("P")))
+                            foreach (var item in OncTag)
                             {
-                                Temp = Convert.ToInt64(item.Split("W")[1].Substring(0, 12));
-                                Host = item.Split("W")[0] + "W";
+                                long Temp = 0;
+                                string Host = string.Empty;
+                                if (item.Contains("W"))
+                                {
+                                    Temp = Convert.ToInt64(item.Split("W")[1].Substring(0, 12));
+                                    Host = item.Split("W")[0] + "W";
+                                }
+                                else
+                                {
+                                    Temp = Convert.ToInt64(item.Split("P")[1].Substring(0, 12));
+                                    Host = item.Split("P")[0] + "P";
+                                }
+                                var TempEntity = Tag.Where(t => t.StarSerialNo <= Temp || t.EndSerialNo >= Temp).FirstOrDefault();
+                                if (TempEntity == null)
+                                    return $"{Host + Temp}溯源号段不在此批次中";
                             }
-                            else
-                            {
-                                Temp = Convert.ToInt64(item.Split("P")[1].Substring(0, 12));
-                                Host = item.Split("P")[0] + "P";
-                            }
-                            var TempEntity = Tag.Where(t => t.StarSerialNo <= Temp || t.EndSerialNo >= Temp).FirstOrDefault();
+                    }
+                    else {
+                        foreach (var item in VenTag) {
+                            long Temp = Convert.ToInt64(item.Substring(0, 11));
+                            var TempEntity = Tag.Where(t => t.StarSerialNo <= Temp && t.EndSerialNo >= Temp).FirstOrDefault();
                             if (TempEntity == null)
-                                return $"{Host + Temp}溯源号段不在此批次中";
+                                return $"{Temp}纹理码号段不在此批次中";
                         }
+                    }
                     StockAttach.BoxCodeNo = Param.BoxCode;
                     StockAttach.BoxCount = Param.BoxCount;
                     List<String> Field = new List<String> { "BoxCodeNo", "BoxCount" };
@@ -3595,7 +3635,7 @@ namespace KilyCore.Service.ServiceCore
             }
             catch (Exception ex)
             {
-                return "请填入正确的二维码格式 xxW13000...01X" + ex.Message;
+                return "二维码格式不正确";
             }
         }
         /// <summary>
@@ -3616,10 +3656,10 @@ namespace KilyCore.Service.ServiceCore
             {
                 EnterpriseVeinTag data = Kily.Set<EnterpriseVeinTag>().Where(t => t.IsDelete == false).Where(t => t.BatchNo == Param.TagBatchNo).FirstOrDefault();
                 int SumCount = Kily.Set<EnterpriseTagAttach>().Where(t => t.IsDelete == false).Where(t => t.TagBatchNo == Param.TagBatchNo).Select(t => t.UseNum).Sum();
-                if (data.IsAccept)
+                if (!data.IsAccept)
                     return "请先签收";
                 data.UseNum += Count;
-                if (data.UseNum - data.TotalNo < 0)
+                if (data.TotalNo - data.UseNum < 0)
                 {
                     return "纹理二维码数量不足";
                 }
@@ -3707,12 +3747,9 @@ namespace KilyCore.Service.ServiceCore
             {
                 if (!string.IsNullOrEmpty(Param.BoxCodeNo))
                 {
-                    Param.BoxCodeNo = Param.BoxCodeNo.Replace("\r\n", ",");
                     var Num = Param.BoxCodeNo.Split(",").ToList();
-                    if (string.IsNullOrEmpty(Num[Num.Count - 1]))
-                        Num.RemoveAt(Num.Count - 1);
                     var HostStar = Regex.Match(Num.FirstOrDefault(), "e=(.*)?").Groups[1].Value.Split("B")[0];
-                    var Nums = Regex.Matches(string.Join(",", Num), HostStar + "B(.*?)\\d{13}").ToList();
+                    var Nums = Regex.Matches(string.Join(",", Num), $"{HostStar}B\\d{{13}}").ToList();
                     Param.BoxCount = Nums.Count.ToString();
                     Param.OutStockNum = Kily.Set<EnterpriseBoxing>().Where(t => Nums.Contains(t.BoxCode)).Select(t => t.ThingCode).ToList().SelectMany(t => t.Split(",")).Where(t => !string.IsNullOrEmpty(t)).Count();
                     foreach (var item in Nums)
@@ -3727,17 +3764,12 @@ namespace KilyCore.Service.ServiceCore
             {
                 if (!string.IsNullOrEmpty(Param.SourceCodeNo))
                 {
-                    Param.SourceCodeNo = Param.SourceCodeNo.Replace("\r\n", ",");
-                    var Num = Param.SourceCodeNo.Split(",").ToList();
-                    if (string.IsNullOrEmpty(Num[Num.Count - 1]))
-                        Num.RemoveAt(Num.Count - 1);
                     var stockInNo = Kily.Set<EnterpriseGoodsStock>().Where(t => t.Id == Param.StockId).Select(t => t.GoodsBatchNo).FirstOrDefault();
+                    //拆箱发货
                     EnterpriseBoxing Box = Kily.Set<EnterpriseBoxing>().Where(t => t.StockBatchNo == stockInNo).FirstOrDefault();
-                    var HostStar = Regex.Match(Num.FirstOrDefault(), "e=(.*)?").Groups[1].Value.Split("W")[0];
-                    var Nums = Regex.Matches(string.Join(",", Num), HostStar + "W(.*?)\\d{13}").ToList();
                     if (Box != null)
                     {
-                        foreach (var item in Num)
+                        foreach (var item in Param.SourceCodeNo.Split(',').ToList())
                         {
                             Box.ThingCode = Box.ThingCode.Replace(item, "");
                             var temp = Box.ThingCode.Split(",").ToList();
@@ -3751,22 +3783,44 @@ namespace KilyCore.Service.ServiceCore
                             UpdateField(Box, null, Fields);
                         }
                     }
-                    //
-                    Param.OutStockNum = Nums.Count;
+                    //************************************************//
+                    var VenTag = Regex.Matches(Param.SourceCodeNo, "e=\\d{12}").Select(t => Regex.Split(t.Groups[0].Value, "=")[1]).ToList();
+                    var HostStar = Regex.Split(Regex.Match(Param.SourceCodeNo.Split(",")[0], "e=(.*)?").Groups[1].Value, "[W|P]")[0];
+                    var OneTag = Regex.Matches(Param.SourceCodeNo,  $"{HostStar}[W|P]\\d{{13}}").ToList();
+                    if (OneTag.Count()==0&& VenTag.Count() == 0)
+                        return "请扫入溯源码或者纹理码";
+                    if (OneTag.Count() != 0 && VenTag.Count() != 0)
+                        return "请勿混用纹理二维码和追溯码";
                     var TagAttachs = Kily.Set<EnterpriseTagAttach>().Where(t => t.StockNo == stockInNo).ToList();
                     EnterpriseTagAttach TagAttach = null;
                     string UseTag = string.Empty;
-                    foreach (var item in Nums)
+                    if (OneTag.Count() != 0)
                     {
-                        if (item.Contains("B"))
-                            return "请扫入溯源码";
-                        long No = Convert.ToInt64(item.Split("W")[1].Substring(0, 12));
-                        TagAttach = TagAttachs.Where(t => t.StarSerialNo <= No && t.EndSerialNo >= No).FirstOrDefault();
-                        TagAttach.UseTag = TagAttach.UseTag ?? "";
-                        if (TagAttach.UseTag.Contains(item))
-                            UseTag += item + "|";
-                        else
-                            TagAttach.UseTag += item + ",";
+                        Param.OutStockNum = OneTag.Count;
+                        foreach (var item in OneTag)
+                        {
+                            long No = Convert.ToInt64(item.Split("W")[1].Substring(0, 12));
+                            TagAttach = TagAttachs.Where(t => t.StarSerialNo <= No && t.EndSerialNo >= No).FirstOrDefault();
+                            TagAttach.UseTag = TagAttach.UseTag ?? "";
+                            if (TagAttach.UseTag.Contains(item))
+                                UseTag += item + "|";
+                            else
+                                TagAttach.UseTag += item + ",";
+                        }
+                    }
+                    else
+                    {
+                        Param.OutStockNum = VenTag.Count;
+                        foreach (var item in VenTag)
+                        {
+                            long No = Convert.ToInt64(item.Substring(0, 11));
+                            TagAttach = TagAttachs.Where(t => t.StarSerialNo <= No && t.EndSerialNo >= No).FirstOrDefault();
+                            TagAttach.UseTag = TagAttach.UseTag ?? "";
+                            if (TagAttach.UseTag.Contains(item))
+                                UseTag += item + "|";
+                            else
+                                TagAttach.UseTag += item + ",";
+                        }
                     }
                     if (!string.IsNullOrEmpty(UseTag))
                         return $"号段{UseTag}已经出库，请勿重复使用";
@@ -4272,10 +4326,7 @@ namespace KilyCore.Service.ServiceCore
         {
             try
             {
-                Param.BoxCode = Param.BoxCode.Replace("\r\n", ",");
                 var Num = Param.BoxCode.Split(",").ToList();
-                if (string.IsNullOrEmpty(Num[Num.Count - 1]))
-                    Num.RemoveAt(Num.Count - 1);
                 Param.PackageNum = Num.Count;
                 var data = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => Param.ProductOutStockNo.Contains(t.GoodsBatchNo)).Select(t => t.BoxCodeNo).ToList();
                 IQueryable<EnterpriseGoodsPackage> Package = Kily.Set<EnterpriseGoodsPackage>();
@@ -4520,12 +4571,13 @@ namespace KilyCore.Service.ServiceCore
             }
             else
             {
-                Param.OneCode = Param.OneCode.Replace("\r\n", ",");
-                var Num = Param.OneCode.Split(",").ToList();
-                if (string.IsNullOrEmpty(Num[Num.Count - 1]))
-                    Num.RemoveAt(Num.Count - 1);
-                var HostStar = Regex.Match(Num.FirstOrDefault(), "e=(.*)?").Groups[1].Value.Split("W")[0];
-                var Nums = Regex.Matches(string.Join(",", Num), HostStar + "W(.*?)\\d{13}").ToList();
+                var VenTag = Regex.Matches(Param.OneCode, "e=\\d{12}").Select(t => Regex.Split(t.Groups[0].Value, "=")[1]).ToList();
+                var HostStar = Regex.Split(Regex.Match(Param.OneCode.Split(",")[0], "e=(.*)?").Groups[1].Value, "[W|P]")[0];
+                var OneTag = Regex.Matches(Param.OneCode, $"{HostStar}[W|P]\\d{{13}}").ToList();
+                if (OneTag.Count() == 0 && VenTag.Count() == 0)
+                    return "请扫入溯源码或者纹理码";
+                if (OneTag.Count() != 0 && VenTag.Count() != 0)
+                    return "请勿混用纹理二维码和追溯码";
                 var temp = Param.GoodsName;
                 Param.GoodsName = temp.Split("_")[0];
                 var GoodId = Guid.Parse(temp.Split("_")[1]);
@@ -4533,23 +4585,50 @@ namespace KilyCore.Service.ServiceCore
                 EnterpriseTagAttach TagAttach = null;
                 string UseTag = string.Empty;
                 string NoBing = string.Empty;
-                foreach (var item in Nums)
+                //追溯码
+                if (OneTag.Count() != 0)
                 {
-                    var Codes = Convert.ToInt64(item.Substring(3, item.Length - 4));
-                    TagAttach = TagAttachs.Where(t => t.StarSerialNo <= Codes && t.EndSerialNo >= Codes).FirstOrDefault();
-                    if (TagAttach == null)
-                        NoBing += item + "|";
-                    else
+                    Param.SendGoodsNum = OneTag.Count().ToString();
+                    foreach (var item in OneTag)
                     {
-                        if (!string.IsNullOrEmpty(TagAttach.SendTag))
+                        var Codes = Convert.ToInt64(Regex.Split(item, "[W|P]")[1].Substring(0, 12));
+                        TagAttach = TagAttachs.Where(t => t.StarSerialNo <= Codes && t.EndSerialNo >= Codes).FirstOrDefault();
+                        if (TagAttach == null)
+                            NoBing += item + "|";
+                        else
                         {
-                            if (TagAttach.SendTag.Contains(item))
-                                UseTag += item + "|";
+                            if (!string.IsNullOrEmpty(TagAttach.SendTag))
+                            {
+                                if (TagAttach.SendTag.Contains(item))
+                                    UseTag += item + "|";
+                                else
+                                    TagAttach.SendTag += item + ",";
+                            }
                             else
                                 TagAttach.SendTag += item + ",";
                         }
+                    }
+                }
+                if(VenTag.Count()!=0) {
+                    Param.SendGoodsNum = VenTag.Count().ToString();
+                    foreach (var item in VenTag)
+                    {
+                        var Codes = Convert.ToInt64(item.Substring(0, 11));
+                        TagAttach = TagAttachs.Where(t => t.StarSerialNo <= Codes && t.EndSerialNo >= Codes).FirstOrDefault();
+                        if (TagAttach == null)
+                            NoBing += item + "|";
                         else
-                            TagAttach.SendTag += item + ",";
+                        {
+                            if (!string.IsNullOrEmpty(TagAttach.SendTag))
+                            {
+                                if (TagAttach.SendTag.Contains(item))
+                                    UseTag += item + "|";
+                                else
+                                    TagAttach.SendTag += item + ",";
+                            }
+                            else
+                                TagAttach.SendTag += item + ",";
+                        }
                     }
                 }
                 if(!string.IsNullOrEmpty(NoBing))
@@ -4557,7 +4636,6 @@ namespace KilyCore.Service.ServiceCore
                 if (!string.IsNullOrEmpty(UseTag))
                     return $"当前号段：{UseTag}，已经被发货使用过，请勿重复使用！";
                 UpdateField(TagAttach, "SendTag");
-                Param.SendGoodsNum = Nums.Count().ToString();
             }
             EnterpriseLogistics logistics = Param.MapToEntity<EnterpriseLogistics>();
             return Insert<EnterpriseLogistics>(logistics) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;

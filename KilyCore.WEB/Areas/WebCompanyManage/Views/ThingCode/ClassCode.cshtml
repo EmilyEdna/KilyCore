@@ -43,8 +43,8 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary watch"><i class="fa fa-eye"></i>查看绑定信息</button>');
-                    if (row.IsCreate == null)
-                        action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>生成标签</button>');
+                    //if (row.IsCreate == null)
+                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>生成标签</button>');
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
                     return action.join("&nbsp;")
                 },
