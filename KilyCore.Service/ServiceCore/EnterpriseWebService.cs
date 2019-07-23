@@ -3351,7 +3351,7 @@ namespace KilyCore.Service.ServiceCore
                 Goods = Goods.Where(t => t.ProductName.Contains(pageParam.QueryParam.GoodsName));
             if (CompanyInfo() != null)
             {
-                var  StockList = Stock.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId)).ToList();
+                var StockList = Stock.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId)).ToList();
                 var Temp = StockList.OrderByDescending(t => t.CreateTime).Join(Goods, t => t.GoodsId, x => x.Id, (t, x) => new { t, x }).ToList();
                 if (CompanyInfo().CompanyType == CompanyEnum.Plant || CompanyInfo().CompanyType == CompanyEnum.Culture)
                     return Temp.GroupJoin(Note, p => p.t.GrowNoteId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
@@ -3618,8 +3618,10 @@ namespace KilyCore.Service.ServiceCore
                                     return $"{Host + Temp}溯源号段不在此批次中";
                             }
                     }
-                    else {
-                        foreach (var item in VenTag) {
+                    else
+                    {
+                        foreach (var item in VenTag)
+                        {
                             long Temp = Convert.ToInt64(item.Substring(0, 11));
                             var TempEntity = Tag.Where(t => t.StarSerialNo <= Temp && t.EndSerialNo >= Temp).FirstOrDefault();
                             if (TempEntity == null)
@@ -3786,8 +3788,8 @@ namespace KilyCore.Service.ServiceCore
                     //************************************************//
                     var VenTag = Regex.Matches(Param.SourceCodeNo, "e=\\d{12}").Select(t => Regex.Split(t.Groups[0].Value, "=")[1]).ToList();
                     var HostStar = Regex.Split(Regex.Match(Param.SourceCodeNo.Split(",")[0], "e=(.*)?").Groups[1].Value, "[W|P]")[0];
-                    var OneTag = Regex.Matches(Param.SourceCodeNo,  $"{HostStar}[W|P]\\d{{13}}").ToList();
-                    if (OneTag.Count()==0&& VenTag.Count() == 0)
+                    var OneTag = Regex.Matches(Param.SourceCodeNo, $"{HostStar}[W|P]\\d{{13}}").ToList();
+                    if (OneTag.Count() == 0 && VenTag.Count() == 0)
                         return "请扫入溯源码或者纹理码";
                     if (OneTag.Count() != 0 && VenTag.Count() != 0)
                         return "请勿混用纹理二维码和追溯码";
@@ -4609,7 +4611,8 @@ namespace KilyCore.Service.ServiceCore
                         }
                     }
                 }
-                if(VenTag.Count()!=0) {
+                if (VenTag.Count() != 0)
+                {
                     Param.SendGoodsNum = VenTag.Count().ToString();
                     foreach (var item in VenTag)
                     {
@@ -4631,7 +4634,7 @@ namespace KilyCore.Service.ServiceCore
                         }
                     }
                 }
-                if(!string.IsNullOrEmpty(NoBing))
+                if (!string.IsNullOrEmpty(NoBing))
                     return $"当前选中的产品未绑定当前号段：{NoBing}，未绑定，请更换产品";
                 if (!string.IsNullOrEmpty(UseTag))
                     return $"当前号段：{UseTag}，已经被发货使用过，请勿重复使用！";
@@ -5164,32 +5167,40 @@ namespace KilyCore.Service.ServiceCore
         /// <param name="Code"></param>
         public BaseInfo GetScanCodeInfo(Guid? Id, String Code)
         {
+            List<SqlParameter> Param = new List<SqlParameter>();
             String SearchCode = String.Empty;
             String PreFix = String.Empty;
+            String SQL = String.Empty;
             int CodeType = 0;
             if (Code.Contains("W"))
             {
                 SearchCode = Code.Split("W")[1].Substring(0, 12);
                 PreFix = Code.Substring(0, 2);
                 CodeType = 2;
+                Param.Add(new SqlParameter("@Code", SearchCode));
+                Param.Add(new SqlParameter("@CodeType", CodeType));
+                Param.Add(new SqlParameter("@Fix", PreFix));
+                SQL = SQLHelper.SQLBase + SQLHelper.CodeStar;
             }
             else if (Code.Contains("P"))
             {
                 SearchCode = Code.Split("P")[1].Substring(0, 12);
                 PreFix = Code.Substring(0, 2);
                 CodeType = 3;
+                Param.Add(new SqlParameter("@Code", SearchCode));
+                Param.Add(new SqlParameter("@CodeType", CodeType));
+                Param.Add(new SqlParameter("@Fix", PreFix));
+                SQL = SQLHelper.SQLBase + SQLHelper.CodeStar;
             }
             else
             {
                 SearchCode = Code.Substring(0, 11);
                 CodeType = 1;
+                Param.Add(new SqlParameter("@Code", SearchCode));
+                Param.Add(new SqlParameter("@CodeType", CodeType));
+                SQL = SQLHelper.SQLBase;
             }
-            SqlParameter[] Param = {
-             new SqlParameter("@Code",SearchCode),
-             new SqlParameter("@CodeType",CodeType),
-              new SqlParameter("@Fix",PreFix),
-            };
-            BaseInfo Base = Kily.ExecuteTable(SQLHelper.SQLBase, Param).ToList<BaseInfo>().FirstOrDefault();
+            BaseInfo Base = Kily.ExecuteTable(SQL, Param.ToArray()).ToList<BaseInfo>().FirstOrDefault();
             EnterpriseGoodsPackage 装车 = Kily.Set<EnterpriseGoodsPackage>().Where(t => t.IsDelete == false).Where(t => t.ProductOutStockNo == Base.出库批次).FirstOrDefault();
             Base.装车编号 = 装车?.PackageNo;
             IQueryable<EnterpriseLogistics> 预发货 = Kily.Set<EnterpriseLogistics>().Where(t => t.IsDelete == false);
@@ -5229,7 +5240,7 @@ namespace KilyCore.Service.ServiceCore
                     运单号 = t.WayBill,
                     发货时间 = t.SendTime,
                     收货人 = t.GainUser,
-                    收货人电话 =t.LinkPhone,
+                    收货人电话 = t.LinkPhone,
                     收货地址 = t.Address,
                     发货地址 = t.SendAddress,
                     交通工具 = t.Traffic,
