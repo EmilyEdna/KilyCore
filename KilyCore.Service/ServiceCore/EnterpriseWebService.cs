@@ -5265,20 +5265,22 @@ namespace KilyCore.Service.ServiceCore
             if (Base.企业类型 == "30")
             {
                 var 生产批次 = Kily.Set<EnterpriseProductionBatch>().Where(t => t.SeriesId.ToString() == Base.产品系列).FirstOrDefault();
+                var 产品系列 = Kily.Set<EnterpriseProductSeries>().Where(t => t.Id.ToString() == Base.产品系列).FirstOrDefault();
                 var 设备 = Kily.Set<EnterpriseDevice>().Where(t => t.DeviceName.Equals(生产批次.DeviceName)).FirstOrDefault();
                 var 设施 = Kily.Set<EnterpriseFacilities>().Where(t => t.Id == 生产批次.FacId).FirstOrDefault();
-                var 关键点 = Kily.Set<EnterpriseProductionBatchAttach>().Where(t => t.ProBatchId == 生产批次.Id).Select(t => new BaseInfo
+                var 关键点 = Kily.Set<EnterpriseProductionBatchAttach>().Where(t => t.ProBatchId == 生产批次.Id).Select(t => new Target
                 {
+                    关键点名称 = t.TargetName,
                     关键点结果 = t.Result,
-                    关键点指标 = t.TargetValue
-                }).FirstOrDefault();
+                    关键点限值 = t.TargetValue
+                }).ToList();
                 Base.生产批次号 = 生产批次.BatchNo;
-                Base.关键点结果 = 关键点.关键点结果;
-                Base.关键点指标 = 关键点.关键点指标;
                 Base.设备名称 = 设备.DeviceName;
+                Base.执行标准 = 产品系列.Standard;
                 Base.设备供应商 = 设备.SupplierName;
                 Base.车间名称 = 设施.WorkShopName;
                 Base.环境信息 = 设施.Environment;
+                Base.Targets = 关键点;
                 SqlParameter[] Mater = {
                     new SqlParameter("@Ids",生产批次.MaterialId)
                 };
