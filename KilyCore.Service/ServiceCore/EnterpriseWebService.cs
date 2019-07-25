@@ -5346,6 +5346,7 @@ namespace KilyCore.Service.ServiceCore
                     进货产品质检 = t.CheckReport,
                     进货生产商=t.ProMerchant
                 }).FirstOrDefault();
+                Base.进货生产商地址 = Kily.Set<EnterpriseSeller>().Where(t => t.SellerType == SellerEnum.Production).Where(t => t.SupplierName.Equals(进货信息.进货生产商)).FirstOrDefault()?.Address;
                 Base.进货批次 = 进货信息.进货批次;
                 Base.进货产品 = 进货信息.进货产品;
                 Base.产品产地 = 进货信息.产品产地;

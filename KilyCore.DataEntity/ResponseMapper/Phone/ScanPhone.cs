@@ -96,6 +96,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Phone
         public string 进货产品规格 { get; set; }
         public string 进货产品质检 { get; set; }
         public string 进货生产商 { get; set; }
+        public string 进货生产商地址 { get; set; }
         #endregion
         #region 视频
         public List<Vedio> Vedios { get; set; }
