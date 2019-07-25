@@ -1552,7 +1552,7 @@ namespace KilyCore.API.Controllers
             Param.BoxCode = HttpUtility.UrlDecode(Param.BoxCode);
             if (!string.IsNullOrEmpty(Param.ThingCode))
             {
-                var data = Regex.Matches(Param.ThingCode, "(.*?)\\d+").ToList().Distinct().ToList(); ;
+                var data = Regex.Matches(HttpUtility.UrlDecode(Param.ThingCode), "(.*?)\\d+").ToList().Distinct().ToList(); ;
                 int Index = 0;
                 foreach (var item in data)
                 {
@@ -1601,7 +1601,7 @@ namespace KilyCore.API.Controllers
         {
             if (!string.IsNullOrEmpty(Param.BoxCodeNo))
             {
-                var data = Regex.Matches(Param.BoxCodeNo, "(.*?)\\d{13}").ToList().Distinct().ToList(); ;
+                var data = Regex.Matches(HttpUtility.UrlDecode(Param.BoxCodeNo), "(.*?)\\d{13}").ToList().Distinct().ToList(); ;
                 int Index = 0;
                 foreach (var item in data)
                 {
@@ -1615,7 +1615,7 @@ namespace KilyCore.API.Controllers
             }
             if (!string.IsNullOrEmpty(Param.SourceCodeNo))
             {
-                var data = Regex.Matches(Param.SourceCodeNo, "(.*?)\\d+").ToList().Distinct().ToList(); ;
+                var data = Regex.Matches(HttpUtility.UrlDecode(Param.SourceCodeNo), "(.*?)\\d+").ToList().Distinct().ToList(); ;
                 int Index = 0;
                 foreach (var item in data)
                 {
@@ -1994,7 +1994,7 @@ namespace KilyCore.API.Controllers
         {
             if (!string.IsNullOrEmpty(Param.BoxCode))
             {
-                var data = Regex.Matches(Param.BoxCode, "(.*?)\\d{13}").ToList().Distinct().ToList(); ;
+                var data = Regex.Matches(HttpUtility.UrlDecode(Param.BoxCode), "(.*?)\\d{13}").ToList().Distinct().ToList(); ;
                 int Index = 0;
                 foreach (var item in data)
                 {
@@ -2008,7 +2008,7 @@ namespace KilyCore.API.Controllers
             }
             if (!string.IsNullOrEmpty(Param.OneCode))
             {
-                var data = Regex.Matches(Param.OneCode, "(.*?)\\d+").ToList().Distinct().ToList(); ;
+                var data = Regex.Matches(HttpUtility.UrlDecode(Param.OneCode), "(.*?)\\d+").ToList().Distinct().ToList(); ;
                 int Index = 0;
                 foreach (var item in data)
                 {

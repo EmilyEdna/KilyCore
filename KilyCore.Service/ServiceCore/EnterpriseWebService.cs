@@ -4680,6 +4680,7 @@ namespace KilyCore.Service.ServiceCore
                 ProTime = t.ProTime,
                 Num = t.Num,
                 Spec = t.Spec,
+                ProMerchant=t.ProMerchant,
                 CheckReport = t.CheckReport
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -5342,7 +5343,8 @@ namespace KilyCore.Service.ServiceCore
                     进货时间 = t.GetGoodsTime,
                     进货产品规格 = t.Spec,
                     生产时间 = t.ProTime.Value.ToString("yyyy-MM-dd HH:mm:ss"),
-                    进货产品质检 = t.CheckReport
+                    进货产品质检 = t.CheckReport,
+                    进货生产商=t.ProMerchant
                 }).FirstOrDefault();
                 Base.进货批次 = 进货信息.进货批次;
                 Base.进货产品 = 进货信息.进货产品;
@@ -5350,6 +5352,7 @@ namespace KilyCore.Service.ServiceCore
                 Base.生产时间 = 进货信息.生产时间;
                 Base.进货产品供应商 = 进货信息.进货产品供应商;
                 Base.进货时间 = 进货信息.进货时间;
+                Base.进货生产商 = 进货信息.进货生产商;
                 Base.进货产品规格 = 进货信息.进货产品规格;
                 Base.进货产品质检 = 进货信息.进货产品质检;
             }

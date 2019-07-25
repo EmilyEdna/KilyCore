@@ -49,6 +49,10 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual DateTime? ProTime { get; set; }
         /// <summary>
+        /// 生产商
+        /// </summary>
+        public virtual string ProMerchant { get; set; }
+        /// <summary>
         /// 保质期
         /// </summary>
         public virtual string ExpiredDate { get; set; }
