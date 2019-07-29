@@ -667,6 +667,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetCodeCountCenter")]
+        [AllowAnonymous]
         public ObjectResultEx GetCodeCountCenter()
         {
             return ObjectResultEx.Instance(SystemService.GetCodeCountCenter(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
@@ -676,6 +677,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetCompanyCountCenter")]
+        [AllowAnonymous]
         public ObjectResultEx GetCompanyCountCenter()
         {
             return ObjectResultEx.Instance(SystemService.GetCompanyCountCenter(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
@@ -685,6 +687,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetProductCountCenter")]
+        [AllowAnonymous]
         public ObjectResultEx GetProductCountCenter()
         {
             return ObjectResultEx.Instance(SystemService.GetProductCountCenter(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
