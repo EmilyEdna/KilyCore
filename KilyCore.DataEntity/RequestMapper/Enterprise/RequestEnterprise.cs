@@ -75,5 +75,9 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// 投诉电话
         /// </summary>
         public string ComplainPhone { get; set; }
+        /// <summary>
+        /// 邀请码
+        /// </summary>
+        public string InviteCode { get; set; }
     }
 }
