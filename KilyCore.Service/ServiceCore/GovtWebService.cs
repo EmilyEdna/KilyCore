@@ -553,20 +553,33 @@ namespace KilyCore.Service.ServiceCore
         public string EditUser(RequestGovtInfo Param)
         {
             GovtInfo Info = Param.MapToEntity<GovtInfo>();
-            Info.TypePath = GovtInfo().TypePath;
             if (NormalUtil.CheckStringChineseUn(Info.Account))
                 return "账号不能包含中文和特殊字符";
-            if (Param.Id != Guid.Empty)
-                return Update(Info, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
-            else
+            if (GovtInfo() != null)
             {
-                var Infos = Kily.Set<GovtInfo>().Where(t => t.Account.Equals(Param.Account)).AsNoTracking().FirstOrDefault();
-                if (Infos != null) return "该账号已经存在!";
-                if (GovtInfo().AccountType == GovtAccountEnum.City)
-                    Info.AccountType = GovtAccountEnum.Area;
-                else if (GovtInfo().AccountType == GovtAccountEnum.Area)
-                    Info.AccountType = GovtAccountEnum.Town;
-                return Insert(Info) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+                Info.TypePath = GovtInfo().TypePath;
+                if (Param.Id != Guid.Empty)
+                    return Update(Info, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+                else
+                {
+                    var Infos = Kily.Set<GovtInfo>().Where(t => t.Account.Equals(Param.Account)).AsNoTracking().FirstOrDefault();
+                    if (Infos != null) return "该账号已经存在!";
+                    if (GovtInfo().AccountType == GovtAccountEnum.City)
+                        Info.AccountType = GovtAccountEnum.Area;
+                    else if (GovtInfo().AccountType == GovtAccountEnum.Area)
+                        Info.AccountType = GovtAccountEnum.Town;
+                    return Insert(Info) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+                }
+            }
+            else {
+                if (Param.Id != Guid.Empty)
+                    return Update(Info, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+                else
+                {
+                    var Infos = Kily.Set<GovtInfo>().Where(t => t.Account.Equals(Param.Account)).AsNoTracking().FirstOrDefault();
+                    if (Infos != null) return "该账号已经存在!";
+                    return Insert(Info) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+                }
             }
         }
         /// <summary>

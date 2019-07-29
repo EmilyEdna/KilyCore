@@ -344,6 +344,23 @@ namespace KilyCore.Service.ServiceCore
             Param.EnterpriseRoleId = data.EnterpriseRoleId;
             Param.CompanyId = data.CompanyId;
             EnterpriseInfo Info = Param.MapToEntity<EnterpriseInfo>();
+            //调用远程接口
+            if (!string.IsNullOrEmpty(data.InviteCode)) {
+                //验证信息是否正确
+                Info.AuditType = AuditEnum.AuditSuccess;
+                RequestStayContract contract = new RequestStayContract() {
+                    CompanyId=Info.Id,
+                    TypePath=Info.TypePath,
+                    CompanyName=Info.CompanyName,
+                    VersionType= SystemVersionEnum.Test,
+                    ContractType=2,
+                    IsFormInviteCode=true
+                };
+                SaveContract(contract);
+                var CompanyType = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(Info.CompanyType);
+                EnterpriseRoleAuthor Role = Kily.Set<EnterpriseRoleAuthor>().Where(t => t.EnterpriseRoleName.Contains(CompanyType + "体验")).FirstOrDefault();
+                Info.EnterpriseRoleId = Role.Id;
+            }
             if (Update<EnterpriseInfo, RequestEnterprise>(Info, Param))
                 return $"{ServiceMessage.UPDATESUCCESS}，请重新登录系统(重要)！";
             else
@@ -1024,11 +1041,13 @@ namespace KilyCore.Service.ServiceCore
             }
             else
             {
+                if (Param.IsFormInviteCode.Value == true)
+                    contract.AuditType = AuditEnum.AuditSuccess;
                 contract.PayType = PayEnum.AgentPay;
-                contract.IsPay = false;
-                contract.TryOut = "30";
+                contract.IsPay = true;
+                contract.TryOut = "365";
                 contract.TryStarDate = DateTime.Now;
-                contract.TryEndDate = contract.TryStarDate.Value.AddDays(30);
+                contract.TryEndDate = contract.TryStarDate.Value.AddDays(365);
                 contract.TotalPrice = (decimal)AliPayModel.Money;
                 contract.EndTime = DateTime.Now.AddYears(Convert.ToInt32(contract.ContractYear));
                 return new ResponseStayContract()
