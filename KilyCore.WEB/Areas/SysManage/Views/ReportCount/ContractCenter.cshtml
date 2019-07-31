@@ -1,0 +1,213 @@
+﻿
+@{
+    ViewData["Title"] = "ContractCenter";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script src="~/Content/ExportPlugin/Script/xlsx.core.min.js"></script>
+    <script src="~/Content/ExportPlugin/Script/tableExport.js"></script>
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.Inithom();
+                this.InitEvents();
+            },
+            //元素
+            Inithom: function () {
+                controller.LayDate({ elem: "input[name='STime']" });
+                controller.LayDate({ elem: "input[name='ETime']" });
+                this.InitTable();
+            },
+            //事件
+            InitEvents: function () {
+                //导出Excel
+                $("#export2003").on('click', function () {
+                    $("#tableList").tableExport({
+                        fileName: "合同统计",
+                        ignoreColumn: ["Handler"],
+                        type: "excel",
+                        mso: {
+                            worksheetName: "合同统计",
+                        }
+                    });
+                });
+                //导出Excel
+                $("#export2007").on('click', function () {
+                    $("#tableList").tableExport({
+                        fileName: "合同统计",
+                        ignoreColumn: ["Handler"],
+                        type: "excel",
+                        mso: {
+                            fileFormat: "xlsx",
+                            worksheetName: "合同统计"
+                        }
+                    });
+                });
+                $("#search").click(function () {
+                    var data = $("#Edit").SerializeJson();
+                    $("#Time").text(data.STime+'至'+data.ETime);
+                    options.InitTable(data);
+                });
+            },
+            InitTable: function (Param) {
+                var Json = {};
+                if (controller.CheckFeild(Param))
+                    Json = Param;
+                controller.ajax({
+                    url: "System/GetContractCountCenter",
+                    data: Json,
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        let content = '';
+                        $.each(result.data.ContractCounts, function (index, item) {
+                            content += '<tr><td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;">' + item.AreaName + '</td>';
+                            content += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;">' + item.CompanyName + '</td>';
+                            content += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (item.Plant != 0 ? 'red' : 'black') + '">' + (item.Plant != 0 ? '✔' : 'X') + '</td>';
+                            content += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (item.Feed != 0 ? 'red' : 'black') + '">' + (item.Feed != 0 ? '✔' : 'X') + '</td>';
+                            content += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (item.Production != 0 ? 'red' : 'black') + '">' + (item.Production != 0 ? '✔' : 'X') + '</td>';
+                            content += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (item.Roop != 0 ? 'red' : 'black') + '">' + (item.Roop != 0 ? '✔' : 'X') + '</td>';
+                            content += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (item.Mer != 0 ? 'red' : 'black') + '">' + (item.Mer != 0 ? '✔' : 'X') + '</td>';
+                            content += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (item.Unit != 0 ? 'red' : 'black') + '">' + (item.Unit != 0 ? '✔' : 'X') + '</td>';
+                            content += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (item.Test != 0 ? 'red' : 'black') + '">' + (item.Test != 0 ? '✔' : 'X') + '</td>';
+                            content += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (item.Base != 0 ? 'red' : 'black') + '">' + (item.Base != 0 ? '✔' : 'X') + '</td>';
+                            content += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (item.Lv != 0 ? 'red' : 'black') + '">' + (item.Lv != 0 ? '✔' : 'X') + '</td>';
+                            content += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (item.LastVer != 0 ? 'red' : 'black') + '">' + (item.LastVer != 0 ? '✔' : 'X') + '</td>';
+                            content += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (item.Alipay != 0 ? 'red' : 'black') + '">' + (item.Alipay != 0 ? '✔' : 'X') + '</td>';
+                            content += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (item.WxPay != 0 ? 'red' : 'black') + '">' + (item.WxPay != 0 ? '✔' : 'X') + '</td>';
+                            content += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (item.UnionPay != 0 ? 'red' : 'black') + '">' + (item.UnionPay != 0 ? '✔' : 'X') + '</td>';
+                            content += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:pink">' + item.ContractMoneny + '</td>';
+                            content += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:pink">' + item.WayTags + '</td>';
+                            content += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:pink">' + item.TargetMoneny + '</td>';
+                            content += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:pink">' + item.LostMoneny + '</td>';
+                            content += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:pink">' + item.CountYear + '</td></tr>';
+                        });
+                        $("tbody").html(content);
+                        let html = '<th style="text-align: center;vertical-align: central;border:1px solid black;">合计:</th>';
+                        html += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;"></td>';
+                        html += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (result.data.Psum != 0 ? 'red' : 'black') + '">' + result.data.Psum + '</td>';
+                        html += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (result.data.Fsum != 0 ? 'red' : 'black') + '">' + result.data.Fsum + '</td>';
+                        html += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (result.data.Prsum != 0 ? 'red' : 'black') + '">' + result.data.Prsum + '</td>';
+                        html += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (result.data.Rsum != 0 ? 'red' : 'black') + '">' + result.data.Rsum + '</td>';
+                        html += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (result.data.Msum != 0 ? 'red' : 'black') + '">' + result.data.Msum + '</td>';
+                        html += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (result.data.Usum != 0 ? 'red' : 'black') + '">' + result.data.Usum + '</td>';
+                        html += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (result.data.TestSum != 0 ? 'red' : 'black') + '">' + result.data.TestSum + '</td>';
+                        html += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (result.data.BaseSum != 0 ? 'red' : 'black') + '">' + result.data.BaseSum + '</td>';
+                        html += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (result.data.LvSum != 0 ? 'red' : 'black') + '">' + result.data.LvSum + '</td>';
+                        html += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (result.data.LastVerSum != 0 ? 'red' : 'black') + '">' + result.data.LastVerSum + '</td>';
+                        html += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (result.data.AlipaySum != 0 ? 'red' : 'black') + '">' + result.data.AlipaySum + '</td>';
+                        html += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (result.data.WxPaySum != 0 ? 'red' : 'black') + '">' + result.data.WxPaySum + '</td>';
+                        html += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (result.data.UnionPaySum != 0 ? 'red' : 'black') + '">' + result.data.UnionPaySum + '</td>';
+                        html += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:pink">' + result.data.ContractMonenySum + '</td>';
+                        html += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:pink">' + result.data.WayTagsSum + '</td>';
+                        html += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:pink">' + result.data.TargetMonenySum + '</td>';
+                        html += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:pink">' + result.data.LostMonenySum + '</td>';
+                        html += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:pink">' + result.data.CountYearSum + '</td>';
+                        $("#content_foot").html(html);
+                    }
+                });
+            }
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+@section css{
+}
+<div class="container-fluid">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>二维码统计</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <form id="Edit">
+                        <div class="col-sm-6 m-b-xs">
+                            <div class="input-group">
+                                <button type="button" class="btn btn-sm btn-white" id="export2003"><i class="fa fa-file-excel-o"></i>导出Excel2003</button>
+                                <button type="button" class="btn btn-sm btn-white" id="export2007"><i class="fa fa-file-excel-o"></i>导出Excel2007</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-2 m-b-xs"><input type="text" class="form-control input-sm" placeholder="请选择开始日期" name="STime" /></div>
+                        <div class="col-sm-2 m-b-xs"><input type="text" class="form-control input-sm" placeholder="请选择截至日期" name="ETime" /></div>
+                        <div class="col-sm-2 m-b-xs">
+                            <div class="input-group">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-sm btn-white" id="search"><i class="fa fa-search"></i>查询</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="table-responsive m-t-sm">
+                <table id="tableList" class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th colspan="20" style="text-align: center;vertical-align: central;border:1px solid black;">
+                                企业合同统计一览表
+                            </th>
+                        </tr>
+                        <tr>
+                            <th colspan="20" style="text-align: right;vertical-align: central;border:1px solid black;">
+                                单位：元&nbsp;&nbsp;&nbsp;
+                            </th>
+                        </tr>
+                        <tr>
+                            <th rowspan="2" style="text-align: center;vertical-align: central;border:1px solid black;">所在区域</th>
+                            <th rowspan="2" style="text-align: center;vertical-align: central;border:1px solid black;">公司名称</th>
+                            <th colspan="6" style="text-align: center;vertical-align: central;border:1px solid black;">所属行业</th>
+                            <th colspan="4" style="text-align: center;vertical-align: central;border:1px solid black;">合同版本</th>
+                            <th colspan="3" style="text-align: center;vertical-align: central;border:1px solid black;">缴费方式</th>
+                            <th rowspan="2" style="text-align: center;vertical-align: central;border:1px solid black;">合同金额</th>
+                            <th rowspan="2" style="text-align: center;vertical-align: central;border:1px solid black;">赠送追溯码/枚</th>
+                            <th rowspan="2" style="text-align: center;vertical-align: central;border:1px solid black;">实收金额</th>
+                            <th rowspan="2" style="text-align: center;vertical-align: central;border:1px solid black;">结算费用</th>
+                            <th rowspan="2" style="text-align: center;vertical-align: central;border:1px solid black;">合同年限</th>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center;vertical-align: central;border:1px solid black;"> 种植</th>
+                            <th style="text-align: center;vertical-align: central;border:1px solid black;"> 养殖</th>
+                            <th style="text-align: center;vertical-align: central;border:1px solid black;">生产</th>
+                            <th style="text-align: center;vertical-align: central;border:1px solid black;">流通</th>
+                            <th style="text-align: center;vertical-align: central;border:1px solid black;">餐饮</th>
+                            <th style="text-align: center;vertical-align: central;border:1px solid black;">单位食堂</th>
+                            <th style="text-align: center;vertical-align: central;border:1px solid black;">体验版</th>
+                            <th style="text-align: center;vertical-align: central;border:1px solid black;">基础版</th>
+                            <th style="text-align: center;vertical-align: central;border:1px solid black;">升级版</th>
+                            <th style="text-align: center;vertical-align: central;border:1px solid black;">旗舰版</th>
+                            <th style="text-align: center;vertical-align: central;border:1px solid black;">支付宝</th>
+                            <th style="text-align: center;vertical-align: central;border:1px solid black;">微信</th>
+                            <th style="text-align: center;vertical-align: central;border:1px solid black;">银行转账</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                        <tr id="content_foot"></tr>
+                        <tr>
+                            <th style="text-align: center;vertical-align: central;border:1px solid black;"> 副总经理：</th>
+                            <td colspan="15" style="text-align: center;vertical-align: central;border:1px solid black;"></td>
+                            <th style="text-align: center;vertical-align: central;border:1px solid black;">签字：</th>
+                            <td colspan="3" style="text-align: center;vertical-align: central;border:1px solid black;"></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center;vertical-align: central;border:1px solid black;">总经理：</th>
+                            <td colspan="15" style="text-align: center;vertical-align: central;border:1px solid black;"></td>
+                            <th style="text-align: center;vertical-align: central;border:1px solid black;">签字：</th>
+                            <td colspan="3" style="text-align: center;vertical-align: central;border:1px solid black;"></td>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center;vertical-align: central;border:1px solid black;">统计时间：</th>
+                            <td colspan="19" style="text-align: right;vertical-align: central;border:1px solid black;" id="Time"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

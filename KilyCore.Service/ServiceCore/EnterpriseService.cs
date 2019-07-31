@@ -335,6 +335,8 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().Area));
             if (UserInfo().AccountType == AccountEnum.Village)
                 queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().Town));
+            if (pageParam.QueryParam.AuditType.HasValue)
+                queryable = queryable.Where(t => t.AuditType == pageParam.QueryParam.AuditType.Value);
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterprise()
             {
                 Id = t.Id,

@@ -44,7 +44,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public string VideoAddress { get; set; }
         public string Certification { get; set; }
         public string HonorCertification { get; set; }
-        public AuditEnum AuditType { get; set; }
+        public AuditEnum? AuditType { get; set; }
         public Guid? EnterpriseRoleId { get; set; }
         public string IdCard { get; set; }
         public int NatureAgent { get; set; }

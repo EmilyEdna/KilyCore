@@ -346,6 +346,9 @@ namespace KilyCore.Service.ServiceCore
             EnterpriseInfo Info = Param.MapToEntity<EnterpriseInfo>();
             //调用远程接口
             if (!string.IsNullOrEmpty(data.InviteCode)) {
+               string Area =  Kily.Set<EnterpriseInviteCode>().Where(t => t.InviteCode == data.InviteCode).Select(t => t.UseTypePath).FirstOrDefault();
+                if (!data.TypePath.Contains(Area))
+                    return "请在邀请码选中区域使用!";
                 //验证信息是否正确
                 Info.AuditType = AuditEnum.AuditSuccess;
                 RequestStayContract contract = new RequestStayContract() {
@@ -5017,16 +5020,16 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public Object GetDataCount(Guid? Id)
         {
-            IQueryable<EnterpriseProductSeries> series = Kily.Set<EnterpriseProductSeries>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id);
-            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id);
-            IQueryable<EnterpriseSeller> sellers = Kily.Set<EnterpriseSeller>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id);
-            IQueryable<EnterpriseInferiorExprired> exprireds = Kily.Set<EnterpriseInferiorExprired>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id);
-            IQueryable<EnterpriseRecover> recovers = Kily.Set<EnterpriseRecover>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id);
-            IQueryable<EnterpriseTagAttach> tagAttaches = Kily.Set<EnterpriseTagAttach>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id);
-            IQueryable<EnterpriseScanCodeInfo> infos = Kily.Set<EnterpriseScanCodeInfo>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id);
-            IQueryable<SystemMessage> msg = Kily.Set<SystemMessage>().Where(t => t.IsDelete == false).Where(t => t.CompanyId == Id);
+            List<EnterpriseProductSeries> series = Kily.Set<EnterpriseProductSeries>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id).ToList();
+            List<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id).ToList();
+            List<EnterpriseSeller> sellers = Kily.Set<EnterpriseSeller>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id).ToList();
+            List<EnterpriseInferiorExprired> exprireds = Kily.Set<EnterpriseInferiorExprired>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id).ToList();
+            List<EnterpriseRecover> recovers = Kily.Set<EnterpriseRecover>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id).ToList();
+            List<EnterpriseTagAttach> tagAttaches = Kily.Set<EnterpriseTagAttach>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id).ToList();
+            List<EnterpriseScanCodeInfo> infos = Kily.Set<EnterpriseScanCodeInfo>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id).ToList();
+            List<SystemMessage> msg = Kily.Set<SystemMessage>().Where(t => t.IsDelete == false).Where(t => t.CompanyId == Id).ToList();
             int Series = series.Select(t => t.Id).Count();
-            int Goods = goods.GroupBy(t => t.ProductSeriesId).AsNoTracking().Count();
+            int Goods = goods.GroupBy(t => t.ProductSeriesId).Count();
             int Supplier = sellers.Where(t => t.SellerType == SellerEnum.Supplier).Select(t => t.Id).Count();
             int Sale = sellers.Where(t => t.SellerType == SellerEnum.Sale).Select(t => t.Id).Count();
             int Inferior = exprireds.Where(t => t.InferiorExprired == 1).Select(t => Convert.ToInt32(t.InferNum)).Sum();
@@ -5046,8 +5049,8 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public ResponseDataCount GetPieCount(Guid? Id)
         {
-            IQueryable<EnterpriseGoodsStock> queryable = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id);
-            IQueryable<EnterpriseGoodsStockAttach> queryables = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id);
+            List<EnterpriseGoodsStock> queryable = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id).ToList();
+            List<EnterpriseGoodsStockAttach> queryables = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id).ToList();
             int WeekDataCount = queryable.Where(t => t.ProductTime > DateTime.Now.AddDays(-7))
                 .Where(t => t.ProductTime < DateTime.Now)
                 .GroupJoin(queryables, t => t.Id, x => x.StockId, (t, x) => new
@@ -5089,9 +5092,9 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public ResponseDataCount GetPieCountBatch(Guid? Id)
         {
-            IQueryable<EnterpriseNote> notes = Kily.Set<EnterpriseNote>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id);
-            IQueryable<EnterpriseProductionBatch> batches = Kily.Set<EnterpriseProductionBatch>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id);
-            IQueryable<EnterpriseBuyer> buyers = Kily.Set<EnterpriseBuyer>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id);
+            List<EnterpriseNote> notes = Kily.Set<EnterpriseNote>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id).ToList();
+            List<EnterpriseProductionBatch> batches = Kily.Set<EnterpriseProductionBatch>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id).ToList();
+            List<EnterpriseBuyer> buyers = Kily.Set<EnterpriseBuyer>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id).ToList();
             int Note = notes.GroupBy(t => t.BatchNo).Select(t => t.Key).Count();
             int Batch = batches.GroupBy(t => t.BatchNo).Select(t => t.Key).Count();
             int But = buyers.GroupBy(t => t.BatchNo).Select(t => t.Key).Count();

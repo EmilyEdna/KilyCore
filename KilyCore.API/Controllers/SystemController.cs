@@ -259,7 +259,8 @@ namespace KilyCore.API.Controllers
         /// <returns></returns>
         [HttpPost("InsertAdmin")]
         [AllowAnonymous]
-        public ObjectResultEx InsertAdmin(RequestAdmin Param) {
+        public ObjectResultEx InsertAdmin(RequestAdmin Param)
+        {
             return ObjectResultEx.Instance(SystemService.InsertAdmin(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -691,6 +692,17 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetProductCountCenter()
         {
             return ObjectResultEx.Instance(SystemService.GetProductCountCenter(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取合同统计
+        /// </summary>
+        /// <param name="Range"></param>
+        /// <returns></returns>
+        [HttpPost("GetContractCountCenter")]
+        [AllowAnonymous]
+        public ObjectResultEx GetContractCountCenter(RequestRangeDate Range)
+        {
+            return ObjectResultEx.Instance(SystemService.GetContractCountCenter(Range), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

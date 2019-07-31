@@ -21,5 +21,9 @@ namespace KilyCore.WEB.Areas.SysManage.Controllers
         {
             return View();
         }
+        public IActionResult ContractCenter()
+        {
+            return View();
+        }
     }
 }

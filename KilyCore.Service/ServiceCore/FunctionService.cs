@@ -690,106 +690,106 @@ namespace KilyCore.Service.ServiceCore
             //第二步判断所在区域
             //第三步根据类型分组
             //审核通过
-            IQueryable<EnterpriseInfo> enterprises = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
-            IQueryable<RepastInfo> repasts = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false);
+            List<EnterpriseInfo> enterprises = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).ToList();
+            List<RepastInfo> repasts = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).ToList();
             //不等于审核通过
-            IQueryable<EnterpriseInfo> enterprise = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
-            IQueryable<RepastInfo> repast = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false);
+            List<EnterpriseInfo> enterprise = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).ToList();
+            List<RepastInfo> repast = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).ToList();
             IList<DataPie> InSideData = null;
             IList<DataPie> OutSideData = null;
             if (UserInfo().AccountType == AccountEnum.Province)
             {
                 //企业
                 enterprises = enterprises.Where(t => t.AuditType == AuditEnum.AuditSuccess)
-                    .Where(t => t.TypePath.Contains(UserInfo().Province));
+                    .Where(t => t.TypePath.Contains(UserInfo().Province)).ToList();
                 //商家
                 repasts = repasts.Where(t => t.AuditType == AuditEnum.AuditSuccess)
-                    .Where(t => t.TypePath.Contains(UserInfo().Province));
+                    .Where(t => t.TypePath.Contains(UserInfo().Province)).ToList();
                 //企业
                 enterprise = enterprise.Where(t => t.AuditType != AuditEnum.AuditSuccess)
-                    .Where(t => t.TypePath.Contains(UserInfo().Province));
+                    .Where(t => t.TypePath.Contains(UserInfo().Province)).ToList();
                 //商家
                 repast = repast.Where(t => t.AuditType != AuditEnum.AuditSuccess)
-                    .Where(t => t.TypePath.Contains(UserInfo().Province));
+                    .Where(t => t.TypePath.Contains(UserInfo().Province)).ToList();
             }
             else if (UserInfo().AccountType == AccountEnum.City)
             {
                 //企业
                 enterprises = enterprises.Where(t => t.AuditType == AuditEnum.AuditSuccess)
-                    .Where(t => t.TypePath.Contains(UserInfo().City));
+                    .Where(t => t.TypePath.Contains(UserInfo().City)).ToList();
                 //商家
                 repasts = repasts.Where(t => t.AuditType == AuditEnum.AuditSuccess)
-                    .Where(t => t.TypePath.Contains(UserInfo().Area));
+                    .Where(t => t.TypePath.Contains(UserInfo().Area)).ToList();
                 //企业
                 enterprise = enterprise.Where(t => t.AuditType != AuditEnum.AuditSuccess)
-                    .Where(t => t.TypePath.Contains(UserInfo().City));
+                    .Where(t => t.TypePath.Contains(UserInfo().City)).ToList();
                 //商家
                 repast = repast.Where(t => t.AuditType != AuditEnum.AuditSuccess)
-                    .Where(t => t.TypePath.Contains(UserInfo().Area));
+                    .Where(t => t.TypePath.Contains(UserInfo().Area)).ToList();
             }
             else if (UserInfo().AccountType == AccountEnum.Area)
             {
                 //企业
                 enterprises = enterprises.Where(t => t.AuditType == AuditEnum.AuditSuccess)
-                    .Where(t => t.TypePath.Contains(UserInfo().Area));
+                    .Where(t => t.TypePath.Contains(UserInfo().Area)).ToList();
                 //商家
                 repasts = repasts.Where(t => t.AuditType == AuditEnum.AuditSuccess)
-                    .Where(t => t.TypePath.Contains(UserInfo().Area));
+                    .Where(t => t.TypePath.Contains(UserInfo().Area)).ToList();
                 //企业
                 enterprise = enterprise.Where(t => t.AuditType != AuditEnum.AuditSuccess)
-                    .Where(t => t.TypePath.Contains(UserInfo().Area));
+                    .Where(t => t.TypePath.Contains(UserInfo().Area)).ToList();
                 //商家
                 repast = repast.Where(t => t.AuditType != AuditEnum.AuditSuccess)
-                    .Where(t => t.TypePath.Contains(UserInfo().Area));
+                    .Where(t => t.TypePath.Contains(UserInfo().Area)).ToList();
             }
             else if (UserInfo().AccountType == AccountEnum.Village)
             {
                 //企业
                 enterprise = enterprises.Where(t => t.AuditType != AuditEnum.AuditSuccess)
-                    .Where(t => t.TypePath.Contains(UserInfo().Town));
+                    .Where(t => t.TypePath.Contains(UserInfo().Town)).ToList();
                 //商家
                 repast = repasts.Where(t => t.AuditType != AuditEnum.AuditSuccess)
-                    .Where(t => t.TypePath.Contains(UserInfo().Town));
+                    .Where(t => t.TypePath.Contains(UserInfo().Town)).ToList();
                 //企业
                 enterprise = enterprise.Where(t => t.AuditType != AuditEnum.AuditSuccess)
-                    .Where(t => t.TypePath.Contains(UserInfo().Town));
+                    .Where(t => t.TypePath.Contains(UserInfo().Town)).ToList();
                 //商家
                 repast = repast.Where(t => t.AuditType != AuditEnum.AuditSuccess)
-                    .Where(t => t.TypePath.Contains(UserInfo().Town));
+                    .Where(t => t.TypePath.Contains(UserInfo().Town)).ToList();
             }
             else
             {
                 //企业
-                enterprises = enterprises.Where(t => t.AuditType == AuditEnum.AuditSuccess);
+                enterprises = enterprises.Where(t => t.AuditType == AuditEnum.AuditSuccess).ToList();
                 //商家
-                repasts = repasts.Where(t => t.AuditType == AuditEnum.AuditSuccess);
+                repasts = repasts.Where(t => t.AuditType == AuditEnum.AuditSuccess).ToList();
                 //企业
-                enterprise = enterprise.Where(t => t.AuditType != AuditEnum.AuditSuccess);
+                enterprise = enterprise.Where(t => t.AuditType != AuditEnum.AuditSuccess).ToList();
                 //商家
-                repast = repast.Where(t => t.AuditType != AuditEnum.AuditSuccess);
+                repast = repast.Where(t => t.AuditType != AuditEnum.AuditSuccess).ToList();
             }
             //外环
             OutSideData = enterprises.GroupBy(t => t.CompanyType).Select(t => new DataPie
             {
                 value = t.Count(),
                 name = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.Key)
-            }).AsNoTracking().ToList();
+            }).ToList();
             repasts.GroupBy(t => t.DiningType).Select(t => new DataPie
             {
                 value = t.Count(),
                 name = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.Key)
-            }).AsNoTracking().ToList().ForEach(t => { OutSideData.Add(t); });
+            }).ToList().ForEach(t => { OutSideData.Add(t); });
             //内环
             InSideData = enterprise.GroupBy(t => t.CompanyType).Select(t => new DataPie
             {
                 value = t.Count(),
                 name = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.Key)
-            }).AsNoTracking().ToList();
+            }).ToList();
             repast.GroupBy(t => t.DiningType).Select(t => new DataPie
             {
                 value = t.Count(),
                 name = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.Key)
-            }).AsNoTracking().ToList().ForEach(t => { InSideData.Add(t); });
+            }).ToList().ForEach(t => { InSideData.Add(t); });
             List<String> title = new List<String>() { "种植企业", "养殖企业", "生产企业", "流通企业", "其他企业", "餐饮企业", "单位食堂", "小经营店", "小作坊", "小摊贩" };
             ResponseDataCount dataCount = new ResponseDataCount()
             {
@@ -810,40 +810,40 @@ namespace KilyCore.Service.ServiceCore
             //第一步判断权限
             //第二步判断所在区域
             //第三步根据类型分组
-            IQueryable<SystemStayContract> contracts = Kily.Set<SystemStayContract>().Where(t => t.IsDelete == false);
+            List<SystemStayContract> contracts = Kily.Set<SystemStayContract>().Where(t => t.IsDelete == false).ToList();
             if (UserInfo().AccountType == AccountEnum.Province)
-                contracts = contracts.Where(t => t.TypePath.Contains(UserInfo().Province));
+                contracts = contracts.Where(t => t.TypePath.Contains(UserInfo().Province)).ToList();
             else if (UserInfo().AccountType == AccountEnum.City)
-                contracts = contracts.Where(t => t.TypePath.Contains(UserInfo().City));
+                contracts = contracts.Where(t => t.TypePath.Contains(UserInfo().City)).ToList();
             else if (UserInfo().AccountType == AccountEnum.Area)
-                contracts = contracts.Where(t => t.TypePath.Contains(UserInfo().Area));
+                contracts = contracts.Where(t => t.TypePath.Contains(UserInfo().Area)).ToList();
             else if (UserInfo().AccountType == AccountEnum.Village)
-                contracts = contracts.Where(t => t.TypePath.Contains(UserInfo().Town));
+                contracts = contracts.Where(t => t.TypePath.Contains(UserInfo().Town)).ToList();
             DataBar bar1 = contracts.Select(t => new DataBar()
             {
                 name = "版本类型",
                 data = contracts.GroupBy(x => x.VersionType).Select(x => x.Count()).ToList()
-            }).AsNoTracking().FirstOrDefault();
+            }).FirstOrDefault();
             DataBar bar2 = contracts.Select(t => new DataBar()
             {
                 name = "企业合同",
                 data = contracts.GroupBy(x => new { x.VersionType, x.EnterpriseOrMerchant }).Where(x => x.Key.EnterpriseOrMerchant == 1).Select(x => x.Count()).ToList()
-            }).AsNoTracking().FirstOrDefault();
+            }).FirstOrDefault();
             DataBar bar3 = contracts.Select(t => new DataBar()
             {
                 name = "商家合同",
                 data = contracts.GroupBy(x => new { x.VersionType, x.EnterpriseOrMerchant }).Where(x => x.Key.EnterpriseOrMerchant == 2).Select(x => x.Count()).ToList()
-            }).AsNoTracking().FirstOrDefault();
+            }).FirstOrDefault();
             DataBar bar4 = contracts.Select(t => new DataBar()
             {
                 name = "未审核",
                 data = contracts.GroupBy(x => new { x.AuditType, x.VersionType }).Where(x => x.Key.AuditType == AuditEnum.AduitFail).Select(x => x.Count()).ToList()
-            }).AsNoTracking().FirstOrDefault();
+            }).FirstOrDefault();
             DataBar bar5 = contracts.Select(t => new DataBar()
             {
                 name = "已审核",
                 data = contracts.GroupBy(x => new { x.AuditType, x.VersionType }).Where(x => x.Key.AuditType == AuditEnum.AuditSuccess).Select(x => x.Count()).ToList()
-            }).AsNoTracking().FirstOrDefault();
+            }).FirstOrDefault();
             List<String> title = new List<String>() { "版本类型", "企业合同", "商家合同", "未审核", "已审核" };
             ResponseDataCount dataCount = new ResponseDataCount
             {
@@ -859,8 +859,8 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public Object GetStatistics()
         {
-            IQueryable<EnterpriseInfo> enterprises = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false && t.AuditType == AuditEnum.AuditSuccess);
-            IQueryable<RepastInfo> repasts = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false && t.AuditType == AuditEnum.AuditSuccess);
+            List<EnterpriseInfo> enterprises = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false && t.AuditType == AuditEnum.AuditSuccess).ToList();
+            List<RepastInfo> repasts = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false && t.AuditType == AuditEnum.AuditSuccess).ToList();
             List<ResponseProvince> Temp = null;
             List<int> PlantCount = new List<int>();
             List<int> ProCount = new List<int>();
@@ -927,7 +927,7 @@ namespace KilyCore.Service.ServiceCore
             if (UserInfo().AccountType == AccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().City));
             IQueryable<EnterpriseTag> tags = Kily.Set<EnterpriseTag>();
-            var data = queryable.Join(tags, t => t.Id, x => x.CompanyId, (t, x) => new { t.CompanyType, x.TotalNo }).GroupBy(t => t.CompanyType).Select(t => new
+            var data = queryable.ToList().Join(tags.ToList(), t => t.Id, x => x.CompanyId, (t, x) => new { t.CompanyType, x.TotalNo }).GroupBy(t => t.CompanyType).Select(t => new
             {
                 Sum = t.Sum(x => x.TotalNo),
                 CompanyType =t.Key

@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewData["Title"] = "资料审核";
-    Layout = "~/Views/Shared/BaseAreaView.cshtml";
+    Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
     <script>
@@ -25,6 +25,12 @@
             },
             //事件
             InitEvents: function () {
+                  $("div[type='button']").on('click', function () {
+                    $(this).siblings().removeClass("active").end().addClass("active");
+                    options.$table.queryParams.CompanyType = $(this).data().value;
+                    $("#AuditType").val($(this).data().value);
+                    $("#Company").submit();
+                });
             },
             //行为
             action: {
@@ -68,12 +74,12 @@
             options.Init();
         });
         //来至父页面的树选中事件
-        function nodeSelected(event, node) {
-            options.$table.queryParams.AreaTree = node.id;
-            $("#Company").submit();
-            //清空查询参数
-            options.$table.queryParams = {};
-        }
+        //function nodeSelected(event, node) {
+        //    options.$table.queryParams.AreaTree = node.id;
+        //    $("#Company").submit();
+        //    //清空查询参数
+        //    options.$table.queryParams = {};
+        //}
     </script>
 }
 @section css{
@@ -88,14 +94,21 @@
             <div class="ibox-content">
                 <div class="row">
                     <form id="Company">
-                        <div class="col-sm-6 m-b-xs">
+                        <div class="col-sm-9 m-b-xs">
                             <div class="input-group">
-                                @*<button type="button" class="btn btn-sm btn-white" id="add"><i class="fa fa-plus"></i>新增</button>*@
+                                <div class="btn-group">
+                                    <div type="button" class="btn btn-outline btn-info" data-value="">全部</div>
+                                    <div type="button" class="btn btn-outline btn-info" data-value="10">审核不通过</div>
+                                    <div type="button" class="btn btn-outline btn-info" data-value="20">等待审核</div>
+                                    <div type="button" class="btn btn-outline btn-info" data-value="40">审核通过</div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-3">
                             <div class="input-group">
-                                <input type="text" placeholder="企业名称" class="input-sm form-control" name="CompanyName"> <span class="input-group-btn">
+                                <input type="hidden" name="AuditType" id="AuditType" />
+                                <input type="text" placeholder="企业名称" class="input-sm form-control" name="CompanyName">
+                                <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
                                     <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
                                 </span>
