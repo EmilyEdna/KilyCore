@@ -1675,8 +1675,8 @@ namespace KilyCore.Service.ServiceCore
         public ResponseSystemContractTotalCount GetContractCountCenter(RequestRangeDate Range)
         {
             IQueryable<SystemStayContract> queryable = Kily.Set<SystemStayContract>().Where(t => t.AuditType == AuditEnum.AuditSuccess);
-            if (Range.STime.HasValue&&Range.ETime.HasValue)
-                queryable = queryable.Where(t=>t.CreateTime>=Range.STime&&t.CreateTime<=Range.ETime);
+            if (Range.STime.HasValue && Range.ETime.HasValue)
+                queryable = queryable.Where(t => t.CreateTime >= Range.STime && t.CreateTime <= Range.ETime);
             List<SystemStayContract> Contracts = queryable.ToList();
             List<EnterpriseInfo> Enterprises = Kily.Set<EnterpriseInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess).Where(t => t.IsDelete == false).ToList();
             List<RepastInfo> Repasts = Kily.Set<RepastInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess).Where(t => t.IsDelete == false).ToList();
@@ -1701,7 +1701,7 @@ namespace KilyCore.Service.ServiceCore
                 {
                     CompanyName = t.CompanyName,
                     AreaName = item.Name,
-                    Plant = Enterprises.Where(x=>x.Id==t.CompanyId).Where(x=>x.CompanyType==CompanyEnum.Plant).Count(),
+                    Plant = Enterprises.Where(x => x.Id == t.CompanyId).Where(x => x.CompanyType == CompanyEnum.Plant).Count(),
                     Feed = Enterprises.Where(x => x.Id == t.CompanyId).Where(x => x.CompanyType == CompanyEnum.Culture).Count(),
                     Production = Enterprises.Where(x => x.Id == t.CompanyId).Where(x => x.CompanyType == CompanyEnum.Production).Count(),
                     Roop = Enterprises.Where(x => x.Id == t.CompanyId).Where(x => x.CompanyType == CompanyEnum.Circulation).Count(),
@@ -1722,9 +1722,11 @@ namespace KilyCore.Service.ServiceCore
                 }).ToList();
                 TotalContract.AddRange(data);
             });
+            if (!string.IsNullOrEmpty(Range.Area))
+                TotalContract = TotalContract.Where(t => t.AreaName.Equals(Range.Area)).ToList();
             ResponseSystemContractTotalCount Temp = new ResponseSystemContractTotalCount
             {
-                ContractCounts= TotalContract,
+                ContractCounts = TotalContract,
                 Psum = TotalContract.Sum(t => t.Plant),
                 Fsum = TotalContract.Sum(t => t.Feed),
                 Prsum = TotalContract.Sum(t => t.Production),
