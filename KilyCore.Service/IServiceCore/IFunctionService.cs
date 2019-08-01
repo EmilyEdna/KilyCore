@@ -60,5 +60,9 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseSystemMessage> GetMsgPage(PageParamList<Object> pageParam);
         String RemoveMsg(Guid Id);
         #endregion
+        #region 定时提醒合同
+        String NotifyContract();
+        Object NofityCompany(string Id);
+        #endregion
     }
 }

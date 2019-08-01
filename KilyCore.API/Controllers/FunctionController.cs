@@ -352,5 +352,24 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(FunctionService.RemoveMsg(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 定时提醒合同
+        /// <summary>
+        /// 合同提醒
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("NotifyContract")]
+        public ObjectResultEx NotifyContract() {
+            return ObjectResultEx.Instance(FunctionService.NotifyContract(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 合同导出
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <returns></returns>
+        [HttpGet("NofityCompany")]
+        public ObjectResultEx NofityCompany(SimpleParam<string> Key) {
+            return ObjectResultEx.Instance(FunctionService.NofityCompany(Key.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }

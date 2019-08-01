@@ -930,7 +930,7 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.ToList().Join(tags.ToList(), t => t.Id, x => x.CompanyId, (t, x) => new { t.CompanyType, x.TotalNo }).GroupBy(t => t.CompanyType).Select(t => new
             {
                 Sum = t.Sum(x => x.TotalNo),
-                CompanyType =t.Key
+                CompanyType = t.Key
             }).ToList();
             return data;
         }
@@ -966,6 +966,43 @@ namespace KilyCore.Service.ServiceCore
         public string RemoveMsg(Guid Id)
         {
             return Remove<SystemMessage>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+        #region 定时提醒合同
+        /// <summary>
+        /// 合同提醒
+        /// </summary>
+        /// <returns></returns>
+        public String NotifyContract()
+        {
+            IQueryable<SystemStayContract> queryable = Kily.Set<SystemStayContract>().Where(t => t.EnterpriseOrMerchant == 1).Where(t => t.AuditType == AuditEnum.AuditSuccess);
+            if (UserInfo().AccountType <= AccountEnum.Country)
+                queryable = queryable.Where(t => t.EndTime.Month - DateTime.Now.Month <= 1).Where(t => t.EndTime.Month - DateTime.Now.Month > 0);
+            if (UserInfo().AccountType == AccountEnum.Province)
+                queryable = queryable.Where(t => t.EndTime.Month - DateTime.Now.Month <= 1).Where(t => t.EndTime.Month - DateTime.Now.Month > 0).Where(t => t.TypePath.Contains(UserInfo().Province));
+            if (UserInfo().AccountType <= AccountEnum.City)
+                queryable = queryable.Where(t => t.EndTime.Month - DateTime.Now.Month <= 1).Where(t => t.EndTime.Month - DateTime.Now.Month > 0).Where(t => t.TypePath.Contains(UserInfo().City));
+            if (UserInfo().AccountType <= AccountEnum.Area)
+                queryable = queryable.Where(t => t.EndTime.Month - DateTime.Now.Month <= 1).Where(t => t.EndTime.Month - DateTime.Now.Month > 0).Where(t => t.TypePath.Contains(UserInfo().Area));
+            else
+                queryable = queryable.Where(t => t.EndTime.Month - DateTime.Now.Month <= 1).Where(t => t.EndTime.Month - DateTime.Now.Month > 0).Where(t => t.TypePath.Contains(UserInfo().Town));
+            return string.Join(",", queryable.Select(t => t.CompanyId).ToList());
+        }
+        /// <summary>
+        /// 合同导出
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public Object NofityCompany(string Id)
+        {
+            var data = Kily.Set<EnterpriseInfo>().Where(t => Id.Contains(t.Id.ToString())).Where(t => t.AuditType == AuditEnum.AuditSuccess)
+                .Select(t => new {
+                    t.CompanyName,
+                    t.CompanyPhone,
+                    t.SafeOffer,
+                    t.CompanyAddress
+                }).ToList();
+            return data;
         }
         #endregion
     }
