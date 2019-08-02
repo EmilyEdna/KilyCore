@@ -5451,8 +5451,6 @@ namespace KilyCore.Service.ServiceCore
         public ResponseEnterpriseBoxing GetScanBoxInfo(Guid? Id, String Code)
         {
             IQueryable<EnterpriseBoxing> queryable = Kily.Set<EnterpriseBoxing>().Where(t => t.BoxCode.Contains(Code)).Where(t => t.IsDelete == false);
-            if (Id.HasValue)
-                queryable = queryable.Where(t => t.Id == Id);
             var data = queryable.FirstOrDefault().MapToEntity<ResponseEnterpriseBoxing>();
             return data;
         }

@@ -2223,6 +2223,19 @@
             <param name="Param"></param>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.NotifyContract">
+            <summary>
+            合同提醒
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.NofityCompany(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            合同导出
+            </summary>
+            <param name="Key"></param>
+            <returns></returns>
+        </member>
         <member name="T:KilyCore.API.Controllers.GovtController">
             <summary>
             系统政府后台接口
@@ -4371,6 +4384,13 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetContractCountCenter(KilyCore.DataEntity.RequestMapper.System.RequestRangeDate)">
+            <summary>
+            获取合同统计
+            </summary>
+            <param name="Range"></param>
+            <returns></returns>
+        </member>
         <member name="T:KilyCore.API.Controllers.TempController">
             <summary>
             中继系统接口
@@ -4402,6 +4422,20 @@
             获取商家留样
             </summary>
             <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.TempController.WeChatRegist(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterprise)">
+            <summary>
+            微信活动注册接口
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.TempController.GetInviteCode(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            获取邀请码
+            </summary>
+            <param name="Key"></param>
             <returns></returns>
         </member>
         <member name="M:KilyCore.API.Startup.GetAssembly">
