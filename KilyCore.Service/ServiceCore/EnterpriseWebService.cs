@@ -3831,11 +3831,18 @@ namespace KilyCore.Service.ServiceCore
                         {
                             long No = Convert.ToInt64(item.Split("W")[1].Substring(0, 12));
                             TagAttach = TagAttachs.Where(t => t.StarSerialNo <= No && t.EndSerialNo >= No).FirstOrDefault();
-                            TagAttach.UseTag = TagAttach.UseTag ?? "";
-                            if (TagAttach.UseTag.Contains(item))
-                                UseTag += item + "|";
+                            //判断是否重复使用
+                            if (!string.IsNullOrEmpty(TagAttach.UseTag))
+                            {
+                                if (TagAttach.UseTag.Split(',').Where(t => !string.IsNullOrEmpty(t)).ToList().Contains(item))
+                                    UseTag += item + "|";
+                                else
+                                    TagAttach.UseTag += item + ",";
+                            }
                             else
+                            {
                                 TagAttach.UseTag += item + ",";
+                            }
                         }
                     }
                     else
@@ -3845,16 +3852,45 @@ namespace KilyCore.Service.ServiceCore
                         {
                             long No = Convert.ToInt64(item.Substring(0, 11));
                             TagAttach = TagAttachs.Where(t => t.StarSerialNo <= No && t.EndSerialNo >= No).FirstOrDefault();
-                            TagAttach.UseTag = TagAttach.UseTag ?? "";
-                            if (TagAttach.UseTag.Contains(item))
-                                UseTag += item + "|";
-                            else
+                            //判断是否重复使用
+                            if (!string.IsNullOrEmpty(TagAttach.UseTag))
+                            {
+                                if (TagAttach.UseTag.Split(',').Where(t => !string.IsNullOrEmpty(t)).ToList().Contains(item))
+                                    UseTag += item + "|";
+                                else
+                                    TagAttach.UseTag += item + ",";
+                            }
+                            else {
                                 TagAttach.UseTag += item + ",";
+                            }
                         }
                     }
                     if (!string.IsNullOrEmpty(UseTag))
+                    {
+                        EnterpriseTagUseRecord record = new EnterpriseTagUseRecord
+                        {
+                            CompanyId = Param.CompanyId,
+                            TagUser = CompanyInfo() == null ? CompanyUser().TrueName : CompanyInfo().CompanyName,
+                            TagCount = UseTag.Split('|').Count() - 1,
+                            Source = "重复使用出库异常",
+                            Code = UseTag
+                        };
+                        Insert<EnterpriseTagUseRecord>(record);
                         return $"号段{UseTag}已经出库，请勿重复使用";
-                    UpdateField(TagAttach, "UseTag");
+                    }
+                    else
+                    {
+                        EnterpriseTagUseRecord record = new EnterpriseTagUseRecord
+                        {
+                            CompanyId = Param.CompanyId,
+                            TagUser = CompanyInfo() == null ? CompanyUser().TrueName : CompanyInfo().CompanyName,
+                            TagCount = Param.OutStockNum,
+                            Source = "正常出库",
+                            Code = OneTag.Count() != 0 ? string.Join(",", OneTag) : string.Join(",", VenTag)
+                        };
+                        Insert<EnterpriseTagUseRecord>(record);
+                        UpdateField(TagAttach, "UseTag");
+                    }
                 }
             }
             if (Param.OutStockNum <= 0)
