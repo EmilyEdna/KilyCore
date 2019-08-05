@@ -345,19 +345,21 @@ namespace KilyCore.Service.ServiceCore
             Param.CompanyId = data.CompanyId;
             EnterpriseInfo Info = Param.MapToEntity<EnterpriseInfo>();
             //调用远程接口
-            if (!string.IsNullOrEmpty(data.InviteCode)) {
-               string Area =  Kily.Set<EnterpriseInviteCode>().Where(t => t.InviteCode == data.InviteCode).Select(t => t.UseTypePath).FirstOrDefault();
+            if (!string.IsNullOrEmpty(data.InviteCode))
+            {
+                string Area = Kily.Set<EnterpriseInviteCode>().Where(t => t.InviteCode == data.InviteCode).Select(t => t.UseTypePath).FirstOrDefault();
                 if (!data.TypePath.Contains(Area))
                     return "请在邀请码选中区域使用!";
                 //验证信息是否正确
                 Info.AuditType = AuditEnum.AuditSuccess;
-                RequestStayContract contract = new RequestStayContract() {
-                    CompanyId=Info.Id,
-                    TypePath=Info.TypePath,
-                    CompanyName=Info.CompanyName,
-                    VersionType= SystemVersionEnum.Test,
-                    ContractType=2,
-                    IsFormInviteCode=true
+                RequestStayContract contract = new RequestStayContract()
+                {
+                    CompanyId = Info.Id,
+                    TypePath = Info.TypePath,
+                    CompanyName = Info.CompanyName,
+                    VersionType = SystemVersionEnum.Test,
+                    ContractType = 2,
+                    IsFormInviteCode = true
                 };
                 SaveContract(contract);
                 var CompanyType = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(Info.CompanyType);
@@ -3383,7 +3385,7 @@ namespace KilyCore.Service.ServiceCore
                         GoodsName = p.x.ProductName,
                         GoodsBatchNo = p.t.GoodsBatchNo,
                         StockType = p.t.StockType,
-                        Spec=p.x.Spec,
+                        Spec = p.x.Spec,
                         InStockNum = p.t.InStockNum,
                         ProBatch = o.FirstOrDefault().BatchNo,
                         GoodsId = p.x.Id,
@@ -3773,6 +3775,8 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string EditStockAttach(RequestEnterpriseGoodsStockAttach Param)
         {
+            EnterpriseTagAttach TagFinal = null;
+            string UseTagFinal = string.Empty;
             if (Param.CodeType == 1)
             {
                 if (!string.IsNullOrEmpty(Param.BoxCodeNo))
@@ -3860,7 +3864,8 @@ namespace KilyCore.Service.ServiceCore
                                 else
                                     TagAttach.UseTag += item + ",";
                             }
-                            else {
+                            else
+                            {
                                 TagAttach.UseTag += item + ",";
                             }
                         }
@@ -3876,7 +3881,8 @@ namespace KilyCore.Service.ServiceCore
                             Code = UseTag
                         };
                         Insert<EnterpriseTagUseRecord>(record);
-                        return $"号段{UseTag}已经出库，请勿重复使用";
+                        TagFinal = TagAttach;
+                        UseTagFinal = UseTag;
                     }
                     else
                     {
@@ -3889,9 +3895,25 @@ namespace KilyCore.Service.ServiceCore
                             Code = OneTag.Count() != 0 ? string.Join(",", OneTag) : string.Join(",", VenTag)
                         };
                         Insert<EnterpriseTagUseRecord>(record);
+                        TagFinal = TagAttach;
                         UpdateField(TagAttach, "UseTag");
                     }
                 }
+            }
+            //自动去重计算
+            if (!string.IsNullOrEmpty(UseTagFinal))
+            {
+                var Data_Tag = TagFinal.UseTag.Split(',').Where(t => !string.IsNullOrEmpty(t)).ToList();
+                var Temp_Tag = UseTagFinal.Split('|').Where(t => !string.IsNullOrEmpty(t)).ToList();
+                Param.OutStockNum = Param.OutStockNum - Temp_Tag.Count();
+                //自动去重
+                Temp_Tag.ForEach(x =>
+                {
+                    if (Data_Tag.Contains(x))
+                        Data_Tag.Remove(x);
+                });
+                TagFinal.UseTag = string.Join(",", Data_Tag);
+                UpdateField(TagFinal, "UseTag");
             }
             if (Param.OutStockNum <= 0)
                 return "出库数量必须大于0";
@@ -3902,7 +3924,14 @@ namespace KilyCore.Service.ServiceCore
             stock.InStockNum -= Param.OutStockNum;
             EnterpriseGoodsStockAttach Attach = Param.MapToEntity<EnterpriseGoodsStockAttach>();
             UpdateField(stock, "InStockNum");
-            return Insert<EnterpriseGoodsStockAttach>(Attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            Insert<EnterpriseGoodsStockAttach>(Attach);
+            if (!string.IsNullOrEmpty(UseTagFinal))
+            {
+                return $"号段{UseTagFinal}已经出库，系统为您自动删除重复，出库成功，出库数量：{Param.OutStockNum}";
+            }
+            else {
+                return ServiceMessage.INSERTSUCCESS;
+            }
         }
         /// <summary>
         /// 删除出库
@@ -4744,7 +4773,7 @@ namespace KilyCore.Service.ServiceCore
                 ProTime = t.ProTime,
                 Num = t.Num,
                 Spec = t.Spec,
-                ProMerchant=t.ProMerchant,
+                ProMerchant = t.ProMerchant,
                 CheckReport = t.CheckReport
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -5408,7 +5437,7 @@ namespace KilyCore.Service.ServiceCore
                     进货产品规格 = t.Spec,
                     生产时间 = t.ProTime.Value.ToString("yyyy-MM-dd HH:mm:ss"),
                     进货产品质检 = t.CheckReport,
-                    进货生产商=t.ProMerchant
+                    进货生产商 = t.ProMerchant
                 }).FirstOrDefault();
                 Base.进货生产商地址 = Kily.Set<EnterpriseSeller>().Where(t => t.SellerType == SellerEnum.Production).Where(t => t.SupplierName.Equals(进货信息.进货生产商)).FirstOrDefault()?.Address;
                 Base.进货批次 = 进货信息.进货批次;
