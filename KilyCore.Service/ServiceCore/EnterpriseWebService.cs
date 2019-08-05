@@ -3823,7 +3823,7 @@ namespace KilyCore.Service.ServiceCore
                         return "请扫入溯源码或者纹理码";
                     if (OneTag.Count() != 0 && VenTag.Count() != 0)
                         return "请勿混用纹理二维码和追溯码";
-                    var TagAttachs = Kily.Set<EnterpriseTagAttach>().Where(t => t.StockNo == stockInNo).ToList();
+                    var TagAttachs = Kily.Set<EnterpriseTagAttach>().Where(t => t.StockNo == stockInNo).AsNoTracking().ToList();
                     EnterpriseTagAttach TagAttach = null;
                     string UseTag = string.Empty;
                     if (OneTag.Count() != 0)
@@ -3832,7 +3832,7 @@ namespace KilyCore.Service.ServiceCore
                         foreach (var item in OneTag)
                         {
                             long No = Convert.ToInt64(item.Split("W")[1].Substring(0, 12));
-                            TagAttach = TagAttachs.Where(t => t.StarSerialNo <= No && t.EndSerialNo >= No).FirstOrDefault();
+                            TagAttach = TagAttachs.Where(t => t.StarSerialNo <= No && t.EndSerialNo >= No).AsQueryable().AsNoTracking().FirstOrDefault();
                             //判断是否重复使用
                             if (!string.IsNullOrEmpty(TagAttach.UseTag))
                             {
@@ -3853,7 +3853,7 @@ namespace KilyCore.Service.ServiceCore
                         foreach (var item in VenTag)
                         {
                             long No = Convert.ToInt64(item.Substring(0, 11));
-                            TagAttach = TagAttachs.Where(t => t.StarSerialNo <= No && t.EndSerialNo >= No).FirstOrDefault();
+                            TagAttach = TagAttachs.Where(t => t.StarSerialNo <= No && t.EndSerialNo >= No).AsQueryable().AsNoTracking().FirstOrDefault();
                             //判断是否重复使用
                             if (!string.IsNullOrEmpty(TagAttach.UseTag))
                             {
