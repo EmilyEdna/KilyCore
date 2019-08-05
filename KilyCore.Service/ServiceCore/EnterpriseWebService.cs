@@ -5375,7 +5375,7 @@ namespace KilyCore.Service.ServiceCore
                         PlantTime = t.PlantTime,
                         Producter = t.Producter
                     }).ToList();
-                    Base.AgeUps = AgeUp.Where(t => t.BatchNo == Base.成长档案).Select(t => new AgeUp
+                    Base.AgeUps = AgeUp.Where(t => t.BatchNo == No).Select(t => new AgeUp
                     {
                         LvName = t.LvName,
                         LvImg = t.LvImg
@@ -5395,7 +5395,7 @@ namespace KilyCore.Service.ServiceCore
                         PlantTime = t.PlantTime,
                         Producter = t.Producter
                     }).ToList();
-                    Base.AgeUps = AgeUp.Where(t => t.BatchNo == Base.成长档案).Select(t => new AgeUp
+                    Base.AgeUps = AgeUp.Where(t => t.BatchNo == No).Select(t => new AgeUp
                     {
                         LvName = t.LvName,
                         LvImg = t.LvImg
