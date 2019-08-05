@@ -4537,7 +4537,7 @@ namespace KilyCore.Service.ServiceCore
         public PagedResult<ResponseEnterpriseScanCodeInfo> GetLogisticsErrorPage(PageParamList<RequestEnterpriseScanCodeInfo> pageParam)
         {
             var data = Kily.Set<EnterpriseScanCodeInfo>()
-                 .Where(t => t.TakeCarId==pageParam.QueryParam.TakeCarId)
+                 .Where(t => t.TakeCarId == pageParam.QueryParam.TakeCarId)
                  .OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseScanCodeInfo
                  {
                      ScanAddress = t.ScanAddress,
@@ -5360,6 +5360,7 @@ namespace KilyCore.Service.ServiceCore
                 var No = Kily.Set<EnterpriseNote>().Where(t => t.Id.ToString() == Base.成长档案).Select(t => t.BatchNo).FirstOrDefault();
                 var Plants = Kily.Set<EnterprisePlanting>().AsQueryable();
                 var Drugs = Kily.Set<EnterpriseDrug>().AsQueryable();
+                var AgeUp = Kily.Set<EnterpriseAgeUp>().AsQueryable();
                 if (Base.企业类型 == "10")
                 {
                     Base.Plants = Plants.Where(t => t.IsType == 1).Select(t => new Plant
@@ -5373,6 +5374,11 @@ namespace KilyCore.Service.ServiceCore
                         DrugName = t.DrugName,
                         PlantTime = t.PlantTime,
                         Producter = t.Producter
+                    }).ToList();
+                    Base.AgeUps = AgeUp.Where(t => t.BatchNo == Base.成长档案).Select(t => new AgeUp
+                    {
+                        LvName = t.LvName,
+                        LvImg = t.LvImg
                     }).ToList();
                 }
                 else
@@ -5388,6 +5394,11 @@ namespace KilyCore.Service.ServiceCore
                         DrugName = t.DrugName,
                         PlantTime = t.PlantTime,
                         Producter = t.Producter
+                    }).ToList();
+                    Base.AgeUps = AgeUp.Where(t => t.BatchNo == Base.成长档案).Select(t => new AgeUp
+                    {
+                        LvName = t.LvName,
+                        LvImg = t.LvImg
                     }).ToList();
                 }
                 Base.Environs = Kily.Set<EnterpriseEnvironment>().Where(t => t.BatchNo == No).Select(t => new Environ

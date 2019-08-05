@@ -79,6 +79,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Phone
         #region 种养企业
         public List<Plant> Plants { get; set; }
         public List<Drug> Drugs { get; set; }
+        public List<AgeUp> AgeUps { get; set; }
         public List<Environ> Environs { get; set; }
         #endregion
         #region 政府抽查
@@ -127,6 +128,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Phone
         public string DrugName { get; set; }
         public DateTime? PlantTime { get; set; }
         public string Producter { get; set; }
+    }
+    public class AgeUp {
+        public string LvName { get; set; }
+        public string LvImg { get; set; }
     }
     public class Environ
     {
