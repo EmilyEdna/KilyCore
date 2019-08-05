@@ -3879,6 +3879,7 @@ namespace KilyCore.Service.ServiceCore
                             Code = UseTag
                         };
                         Insert<EnterpriseTagUseRecord>(record);
+                        return $"号段{UseTag}已经出库，请勿重复出库!";
                     }
                     else
                     {
