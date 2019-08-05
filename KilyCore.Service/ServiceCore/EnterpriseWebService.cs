@@ -3375,8 +3375,8 @@ namespace KilyCore.Service.ServiceCore
                 Goods = Goods.Where(t => t.ProductName.Contains(pageParam.QueryParam.GoodsName));
             if (CompanyInfo() != null)
             {
-                var StockList = Stock.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId)).ToList();
-                var Temp = StockList.OrderByDescending(t => t.CreateTime).Join(Goods, t => t.GoodsId, x => x.Id, (t, x) => new { t, x }).ToList();
+                var StockList = Stock.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
+                var Temp = StockList.OrderByDescending(t => t.CreateTime).Join(Goods, t => t.GoodsId, x => x.Id, (t, x) => new { t, x });
                 if (CompanyInfo().CompanyType == CompanyEnum.Plant || CompanyInfo().CompanyType == CompanyEnum.Culture)
                     return Temp.GroupJoin(Note, p => p.t.GrowNoteId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
                     {
@@ -3396,7 +3396,7 @@ namespace KilyCore.Service.ServiceCore
                         TotalCount = attaches.Where(t => t.StockId == p.t.Id).Select(t => t.OutStockNum).Sum() + p.t.InStockNum,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material
-                    }).ToList().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                    }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
                 if (CompanyInfo().CompanyType == CompanyEnum.Production)
                     return Temp.GroupJoin(Batch, p => p.t.BatchId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
                     {
@@ -3417,7 +3417,7 @@ namespace KilyCore.Service.ServiceCore
                         TotalCount = attaches.Where(t => t.StockId == p.t.Id).Select(t => t.OutStockNum).Sum() + p.t.InStockNum,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
-                    }).ToList().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                    }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
                 if (CompanyInfo().CompanyType == CompanyEnum.Circulation)
                     return Temp.GroupJoin(Buyer, p => p.t.BuyId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
                     {
@@ -3437,7 +3437,7 @@ namespace KilyCore.Service.ServiceCore
                         TotalCount = attaches.Where(t => t.StockId == p.t.Id).Select(t => t.OutStockNum).Sum() + p.t.InStockNum,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
-                    }).ToList().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                    }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             }
             else
             {
@@ -3462,7 +3462,7 @@ namespace KilyCore.Service.ServiceCore
                         TotalCount = attaches.Where(t => t.StockId == p.t.Id).Select(t => t.OutStockNum).Sum() + p.t.InStockNum,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material
-                    }).ToList().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                    }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
                 if (CompanyUser().CompanyType == CompanyEnum.Production)
                     return Temp.GroupJoin(Batch, p => p.t.BatchId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
                     {
@@ -3483,7 +3483,7 @@ namespace KilyCore.Service.ServiceCore
                         TotalCount = attaches.Where(t => t.StockId == p.t.Id).Select(t => t.OutStockNum).Sum() + p.t.InStockNum,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
-                    }).ToList().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                    }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
                 if (CompanyUser().CompanyType == CompanyEnum.Circulation)
                     return Temp.GroupJoin(Buyer, p => p.t.BuyId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
                     {
@@ -3503,7 +3503,7 @@ namespace KilyCore.Service.ServiceCore
                         TotalCount = attaches.Where(t => t.StockId == p.t.Id).Select(t => t.OutStockNum).Sum() + p.t.InStockNum,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
-                    }).ToList().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                    }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             }
             return null;
         }
@@ -3905,7 +3905,7 @@ namespace KilyCore.Service.ServiceCore
             stock.InStockNum -= Param.OutStockNum;
             EnterpriseGoodsStockAttach Attach = Param.MapToEntity<EnterpriseGoodsStockAttach>();
             UpdateField(stock, "InStockNum");
-            return Insert<EnterpriseGoodsStockAttach>(Attach) ? ServiceMessage.INSERTFAIL : ServiceMessage.INSERTFAIL;
+            return Insert<EnterpriseGoodsStockAttach>(Attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         /// <summary>
         /// 删除出库
