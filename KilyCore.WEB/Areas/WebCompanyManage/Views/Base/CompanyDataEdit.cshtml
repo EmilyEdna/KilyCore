@@ -29,6 +29,7 @@
                     async: false,
                     success: function (result) {
                         controller.SetCtrlValue("#Edit", result.data);
+                        options.Editor.summernote('code', result.data.Discription);
                         //营业执照
                         $.each(result.data.Certification.split(","), function (i, item) {
                             $("#Img1").append('<section class="image-section" img-url="' + item + '"><div class="image-shade"></div><div class="image-delete"></div><div class="image-zoom"></div><img class="image-show" src="' + item + '"></section>');
@@ -45,7 +46,7 @@
                         $.each(result.data.MainPro.split(","), function (i, item) {
                             $("#Img4").append('<section class="image-section" img-url="' + item + '"><div class="image-shade"></div><div class="image-delete"></div><div class="image-zoom"></div><img class="image-show" src="' + item + '"></section>');
                         })
-                        options.Editor.summernote('code', result.data.Discription);
+                       
                     }
                 });
             },
