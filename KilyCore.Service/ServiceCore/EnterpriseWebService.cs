@@ -4537,7 +4537,7 @@ namespace KilyCore.Service.ServiceCore
         public PagedResult<ResponseEnterpriseScanCodeInfo> GetLogisticsErrorPage(PageParamList<RequestEnterpriseScanCodeInfo> pageParam)
         {
             var data = Kily.Set<EnterpriseScanCodeInfo>()
-                 .Where(t => t.ScanPackageNo.Contains(pageParam.QueryParam.ScanPackageNo))
+                 .Where(t => t.TakeCarId==pageParam.QueryParam.TakeCarId)
                  .OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseScanCodeInfo
                  {
                      ScanAddress = t.ScanAddress,
