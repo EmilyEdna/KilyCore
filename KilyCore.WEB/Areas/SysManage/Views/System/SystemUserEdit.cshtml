@@ -205,6 +205,7 @@
                 controller.ValidateConfirm("#Edit");
             },
             InitArea: function () {
+                debugger;
                 if (SysUserInfo.AccountType == 30) {
                     $("#province").attr("disabled", true).find("option[value='" + SysUserInfo.Province + "']").attr("selected", true);
                     options.SetCity();
@@ -295,7 +296,6 @@
                                     <select type="select" class="form-control" name="Province" id="province">
                                         <option>=请选择=</option>
                                     </select>
-                                    <input type="hidden" name="Province" />
                                 </td>
                                 <td class="has-warning" style="width:25%">
                                     <select type="select" class="form-control" name="City" id="city">

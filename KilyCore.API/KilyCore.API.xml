@@ -1,0 +1,4457 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>KilyCore.API</name>
+    </assembly>
+    <members>
+        <member name="T:KilyCore.API.Controllers.CookController">
+            <summary>
+            系统厨师后台接口
+            </summary>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookController.AddCookParentMenu">
+            <summary>
+            父级菜单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookController.GetCookMenuDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取菜单详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookController.GetCookMenuPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Cook.RequestCookMenu})">
+            <summary>
+            厨师菜单分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookController.RemoveCookMenu(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除菜单
+            </summary>
+            <param name="Param"></param>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookController.EditCookMenu(KilyCore.DataEntity.RequestMapper.Cook.RequestCookMenu)">
+            <summary>
+            新增菜单
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookController.GetCookTree">
+            <summary>
+            获取权限菜单树
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookController.GetCookAuthorPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Cook.RequestCookRole})">
+            <summary>
+            获取角色权限列表
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookController.EditRole(KilyCore.DataEntity.RequestMapper.Cook.RequestCookRole)">
+            <summary>
+            添加角色
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookController.RemoveAuthorRole(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除角色
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookController.GetCookInfoPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Cook.RequestCookInfo})">
+            <summary>
+            厨师信息
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookController.GetCookInfoDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            厨师详情
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookController.AuditCookInfo(KilyCore.DataEntity.RequestMapper.System.RequestAudit)">
+            <summary>
+            审核厨师信息
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookController.GetCookServicePage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Cook.RequestCookInfo})">
+            <summary>
+            厨师开通的服务分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookController.StartUse(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            启用账号
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookController.BlockUp(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            停用账号
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookController.CheckPayment(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            确认缴费
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="T:KilyCore.API.Controllers.CookWebController">
+            <summary>
+            厨师后台接口
+            </summary>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookWebController.RegistCookAccount(KilyCore.Service.QueryExtend.SimpleParam{KilyCore.DataEntity.RequestMapper.Cook.RequestCookInfo})">
+            <summary>
+            厨师注册
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookWebController.CookLogin(KilyCore.DataEntity.RequestMapper.System.RequestValidate)">
+            <summary>
+            厨师登录
+            </summary>
+            <param name="LoginValidate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookWebController.LoginOut">
+            <summary>
+            安全退出
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookWebController.GetCookMenu">
+            <summary>
+            获取厨师菜单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookWebController.GetCookVipPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Cook.RequestCookInfo})">
+            <summary>
+            账号分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookWebController.GetCookVipDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            账号详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookWebController.EditCookVip(KilyCore.DataEntity.RequestMapper.Cook.RequestCookInfo)">
+            <summary>
+            编辑账号
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookWebController.OpenService(KilyCore.DataEntity.RequestMapper.System.RequestStayContract)">
+            <summary>
+            开通服务
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookWebController.GetCookInfoDetail">
+            <summary>
+            厨师详情
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookWebController.EditCookInfo(KilyCore.DataEntity.RequestMapper.Cook.RequestCookInfo)">
+            <summary>
+            编辑厨师信息
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookWebController.GetBanquetPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Cook.RequestCookBanquet})">
+            <summary>
+            报备列表
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookWebController.EditBanquet(KilyCore.DataEntity.RequestMapper.Cook.RequestCookBanquet)">
+            <summary>
+            新增报备记录
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookWebController.GetBanquetDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            查看详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookWebController.RemoveBanquet(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除报备
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookWebController.GetHelperPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Cook.RequestCookHelper})">
+            <summary>
+            帮厨分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookWebController.EditHelper(KilyCore.DataEntity.RequestMapper.Cook.RequestCookHelper)">
+            <summary>
+            编辑帮厨
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookWebController.RemoveHelper(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除帮厨
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookWebController.GetHelperList">
+            <summary>
+            帮厨列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookWebController.GetFoodPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Cook.RequestCookFood})">
+            <summary>
+            食材分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookWebController.RemoveFood(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除食材
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookWebController.EditFood(KilyCore.DataEntity.RequestMapper.Cook.RequestCookFood)">
+            <summary>
+            编辑食材
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookWebController.GetFoodList(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            食材列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookWebController.GetDataCount">
+            <summary>
+            数据统计
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.CookWebController.WxQueryPay(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            查询微信支付
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="T:KilyCore.API.Controllers.EnterpriseController">
+            <summary>
+            系统企业后台接口
+            </summary>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.EditEnterpriseMenu(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseMenu)">
+            <summary>
+            修改新增菜单
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.GetEnterpriseMenuDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取菜单详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.AddEnterpriseParentMenu">
+            <summary>
+            父节菜单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.GetEnterpriseMenuPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseMenu})">
+            <summary>
+            企业菜单分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.RemoveEnterpriseMenu(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除企业菜单
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.GetEnterpriseTree(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            角色权限菜单
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.GetCompanyRoleAuthorPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseRoleAuthor})">
+            <summary>
+            集团角色分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.WatchRolePage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseRoleAuthor})">
+            <summary>
+            角色分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.EditEnterpriseRoleAuthor(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseRoleAuthor)">
+            <summary>
+            编辑集团角色菜单
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.GetRoleAuthorPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseRoleAuthor})">
+            <summary>
+            角色列表分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.RemoveEnterpriseRoleAuthor(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除角色
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.GetRoleAuthorList">
+            <summary>
+            角色列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.DistributionRole(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseRoleAuthor)">
+            <summary>
+            分配角色
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.GetEnterpriseRoleAuthorDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取角色详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.GetCompanyPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterprise})">
+            <summary>
+            企业分页列表
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.GetCompanyDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取企业详情
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.AuditCompany(KilyCore.DataEntity.RequestMapper.System.RequestAudit)">
+            <summary>
+            审核企业
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.GetCompanyIdentPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseIdent})">
+            <summary>
+            企业认证分页列表
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.GetCompanyIdentDetail(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseIdent)">
+            <summary>
+            获取认证详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.AuditIdent(KilyCore.DataEntity.RequestMapper.System.RequestAudit)">
+            <summary>
+            认证审核
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.AuditPayment(KilyCore.DataEntity.RequestMapper.System.RequestPayment)">
+            <summary>
+            认证缴费
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.RegistCompanyAccount(KilyCore.Service.QueryExtend.SimpleParam{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterprise})">
+            <summary>
+            企业注册
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.EnterpriseLogin(KilyCore.DataEntity.RequestMapper.System.RequestValidate)">
+            <summary>
+            集团登录
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.LoginOut">
+            <summary>
+            安全退出
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.GetTagAuditPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseApply})">
+            <summary>
+            二维码审核的标签分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.AuditCode(KilyCore.DataEntity.RequestMapper.System.RequestAudit)">
+            <summary>
+            审核标签
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.GetTagAuditDetail(KilyCore.DataEntity.RequestMapper.System.RequestAudit)">
+            <summary>
+            获取二维码审核记录
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.GetWaitAuditGoodPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseGoodsStock})">
+            <summary>
+            产品审核列表分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.AuditGoodSuccess(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            审核产品
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseController.GetAuditProductDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            产品详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="T:KilyCore.API.Controllers.EnterpriseWebController">
+            <summary>
+            企业后台接口
+            </summary>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetSellerList(KilyCore.Service.QueryExtend.SimpleParam{System.Int32})">
+            <summary>
+            下拉厂商
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetDictionaryList(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            下拉字典类型
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetSellerInEnterprise(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            获取入住企业的经销商
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetEnterpriseMenu">
+            <summary>
+            获取导航菜单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetEnterpriseWebTree(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            获取权限菜单树
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetEnterpriseInfo(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取公司信息
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetChildAccount(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取子公司
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetInfoPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterprise})">
+            <summary>
+            企业资料分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.SaveEnterprise(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterprise)">
+            <summary>
+            编辑企业
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.SaveCompanyAccount(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterprise)">
+            <summary>
+            修改账号
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.SaveCompanyArea(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterprise)">
+            <summary>
+            完善区域
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.SaveContract(KilyCore.DataEntity.RequestMapper.System.RequestStayContract)">
+            <summary>
+            保存合同和缴费凭证
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetUserPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseUser})">
+            <summary>
+            获取人员管理分页列表
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.SaveUser(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseUser)">
+            <summary>
+            编辑用户
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetUserDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取用户详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.DeleteUser(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除子账号
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetRoleAuthorList">
+            <summary>
+            集团账户权限列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetUserList">
+            <summary>
+            用户列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.SaveRoleAuthor(KilyCore.DataEntity.RequestMapper.Enterprise.RequestRoleAuthorWeb)">
+            <summary>
+            新增账户
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetRoleAuthorPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestRoleAuthorWeb})">
+            <summary>
+            账户分页列表
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.DeleteRole(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除账户
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetChildInfo(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterprise})">
+            <summary>
+            集团账户列表
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.SaveChildInfo(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterprise)">
+            <summary>
+            编辑子公司
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.SaveEnterpriseIdent(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseIdent)">
+            <summary>
+            企业认证
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetIndentPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseIdent})">
+            <summary>
+            认证分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetDicPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseDictionary})">
+            <summary>
+            字典分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.DeleteDic(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除字典
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetDicDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            字典详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.SaveDic(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseDictionary)">
+            <summary>
+            编辑字典
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetLvPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseLevelUp})">
+            <summary>
+            查看版本信息
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.SaveContinued(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseContinued)">
+            <summary>
+            编辑续费
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.SaveUpLevel(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseUpLevel)">
+            <summary>
+            编辑升级
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetContinuedPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseContinued})">
+            <summary>
+            续费记录
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetUpLevelPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseUpLevel})">
+            <summary>
+            升级记录
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.AuditContinuedAndLevel(KilyCore.Service.QueryExtend.SimpleParam{System.Guid},KilyCore.Service.QueryExtend.SimpleParam{System.Boolean})">
+            <summary>
+            审核审计续费
+            </summary>
+            <param name="Key"></param>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetFilePage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseInsideFile})">
+            <summary>
+            文件分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetFileDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            文件详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.DeleteFile(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除文件
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.SaveFile(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseInsideFile)">
+            <summary>
+            编辑文件
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetVedioPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseVedio})">
+            <summary>
+            视频分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditVedio(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseVedio)">
+            <summary>
+            编辑视频
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.DeleteVedio(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除视频
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.ShowVedio(KilyCore.Service.QueryExtend.SimpleParam{System.Guid},KilyCore.Service.QueryExtend.SimpleParam{System.Boolean})">
+            <summary>
+            显示视频
+            </summary>
+            <param name="Param"></param>
+            <param name="flag"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetTemplateChild(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Govt.RequestGovtTemplateChild})">
+            <summary>
+            获取企业检查分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditTemplateChild(KilyCore.DataEntity.RequestMapper.Govt.RequestGovtTemplateChild)">
+            <summary>
+            编辑企业检查
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.DeleteTemplate(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除企业自查
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetGrowInfoPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseGrowInfo})">
+            <summary>
+            育苗分页列表
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetGrowDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取育苗详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditGrow(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseGrowInfo)">
+            <summary>
+            编辑育苗信息
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.RemoveGrow(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除育苗信息
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetGrowList">
+            <summary>
+            获取批次列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetPlantingPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterprisePlanting})">
+            <summary>
+            施养管理分页列表
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditPlanting(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterprisePlanting)">
+            <summary>
+            新增施养记录
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.RemovePlanting(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除记录
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetDrugPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseDrug})">
+            <summary>
+            农药疫情分页列表
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditDrug(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseDrug)">
+            <summary>
+            新增农药疫情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.RemoveDrug(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除记录
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetEnvPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseEnvironment})">
+            <summary>
+            获取环境检测主表分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetEnvAttachPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseEnvironmentAttach})">
+            <summary>
+            获取环境检测从表分页
+            </summary>
+            <param name="pageParam"></param>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditEnv(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseEnvironment)">
+            <summary>
+            编辑主表信息
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditEnvAttach(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseEnvironmentAttach)">
+            <summary>
+            编辑从表信息
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.RemoveEnv(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除主表信息
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.RemoveEnvAttach(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除从表信息
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetNotePage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseNote})">
+            <summary>
+            成长日记分页列表
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditNote(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseNote)">
+            <summary>
+            编辑日记
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.RemoveNote(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除日记
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetNoteDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            日记详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetNoteList">
+            <summary>
+            日记列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetAgeUpPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseAgeUp})">
+            <summary>
+            成长流程分页列表
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditAgeUp(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseAgeUp)">
+            <summary>
+            编辑成长流程
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.RemoveAgeUp(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除流程
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetTagPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseTag})">
+            <summary>
+            二维码分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetTagDetailWeb(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            首页号段查询接口
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.UpdateEmptyTag(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            创建空白标签
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.CreateTag(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseTag)">
+            <summary>
+            生成二维码
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.RemoveTag(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除二维码
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetTagApplyPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseApply})">
+            <summary>
+            申请二维码分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.RemoveApplyTag(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除申请标签
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.ApplyEdit(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseApply)">
+            <summary>
+            申请标签
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetPaymentDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取缴费详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetVeinTargetPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Function.RequestVeinTag})">
+            <summary>
+            纹理二维码分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.AcceptVeinTarget(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            纹理二维码签收
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.RemoveVeinTarget(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            纹理二维码删除
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetTagList(KilyCore.Service.QueryExtend.SimpleParam{System.Int32})">
+            <summary>
+            获取标签批次
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetCodeNo(KilyCore.Service.QueryExtend.SimpleParam{System.Int32},KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            获取开始标签
+            </summary>
+            <param name="Key"></param>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetScanCodePage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseGoods})">
+            <summary>
+            扫码管理
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetTagAttachPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseTagAttach})">
+            <summary>
+            查看二维码绑定信息
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.DeleteBindTagInfo(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除绑定信息
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetBoxPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseBoxing})">
+            <summary>
+            箱码绑定情况
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetSellerPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseSeller})">
+            <summary>
+            厂商分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.RemoveSeller(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除厂商
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditSeller(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseSeller)">
+            <summary>
+            编辑厂商
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetSellerDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            厂商详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetMaterialPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseMaterial})">
+            <summary>
+            原料分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditMaterial(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseMaterial)">
+            <summary>
+            编辑原料
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.RemoveMaterial(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除原料
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetMaterialList">
+            <summary>
+            获取下拉原料
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetStockPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseMaterialStock})">
+            <summary>
+            获取入库分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.RemoveStock(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除入库
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.UpdateMaterStockCheck(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseMaterialStock)">
+            <summary>
+            原料质检
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditStock(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseMaterialStock)">
+            <summary>
+            编辑入库
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetOutStockPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseMaterialStockAttach})">
+            <summary>
+            出库分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.RemoveStockAttach(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除出库记录
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditOutStock(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseMaterialStockAttach)">
+            <summary>
+            编辑出库
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetOutStockMaterialList">
+            <summary>
+            获取出库原料列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetDevicePage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseDevice})">
+            <summary>
+            设备分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetDeviceCleanPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseDeviceClean})">
+            <summary>
+            设备清洗分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetDeviceFixPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseDeviceFix})">
+            <summary>
+            设备维护分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetDeviceList">
+            <summary>
+            获取设备列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.SaveDevice(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseDevice)">
+            <summary>
+            编辑设备
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.SaveDeviceClean(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseDeviceClean)">
+            <summary>
+            编辑设备清洗
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.SaveDeviceFix(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseDeviceFix)">
+            <summary>
+            编辑设备维护
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.DeleteDevice(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除设备
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.DeleteDeviceClean(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除清洗记录
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.DeleteDeviceFix(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除维护记录
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetTargetPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseTarget})">
+            <summary>
+            指标分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.DeleteTarget(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除指标
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetTargetList">
+            <summary>
+            获取指标列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.SaveTarget(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseTarget)">
+            <summary>
+            编辑指标
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetSeriesPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseProductSeries})">
+            <summary>
+            产品系列分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.RemoveSeries(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除系列
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetSeriesList">
+            <summary>
+            系列列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditSeries(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseProductSeries)">
+            <summary>
+            编辑系列
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetProBatchPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseProductionBatch})">
+            <summary>
+            生产批次分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetProBatchList">
+            <summary>
+            生产批次列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.RemoveProBatch(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除生产批次
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditProBatch(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseProductionBatch)">
+            <summary>
+            编辑生产批次
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetProBatchAttachList(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            对比指标值
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditProBatchAttach(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseProductionBatchAttach)">
+            <summary>
+            编辑对比指标
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetFacList">
+            <summary>
+            设施列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetFacPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseFacilities})">
+            <summary>
+            设施分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.SaveFac(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseFacilities)">
+            <summary>
+            编辑设施
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.DeleteFac(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除设施
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetFacAttachPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseFacilitiesAttach})">
+            <summary>
+            设施附加分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.SaveFacAttach(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseFacilitiesAttach)">
+            <summary>
+            编辑设施附加
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.DeleteFacAttach(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除设施附加
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetGoodsPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseGoods})">
+            <summary>
+            产品分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.RemoveGoods(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除产品
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditGoods(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseGoods)">
+            <summary>
+            编辑产品
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetGoodsDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取产品详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetGoodsList">
+            <summary>
+            获取产品下拉
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditExplanation(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseGoodsStock)">
+            <summary>
+            编辑说明书
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.AuditGoods(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseGoodsStock)">
+             <summary>
+            提交产品审核
+             </summary>
+             <param name="Param"></param>
+             <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetGoodsStockPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseGoodsStock})">
+            <summary>
+            产品入库分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.RemoveGoodsStock(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除仓库中产品
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditGoodsStock(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseGoodsStock)">
+            <summary>
+            编辑产品仓库
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditBoxing(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseBoxing)">
+            <summary>
+            装箱管理
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.BindTarget(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseTagAttach)">
+            <summary>
+            绑定二维码
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetGoodsStockAttachPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseGoodsStockAttach})">
+            <summary>
+            产品出库分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditStockAttach(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseGoodsStockAttach)">
+            <summary>
+            出库编辑
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.RemoveGoodsStockAttach(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除出库
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetStockOutNoList">
+            <summary>
+            获取出库批次编号
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.UpdateStockCheck(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseGoodsStock)">
+            <summary>
+            添加产品检测
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetStockTypePage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseStockType})">
+            <summary>
+            仓库类型分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetStockTypeList(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            仓库类型列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.RemoveStockType(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除仓库类型
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditStockType(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseStockType)">
+            <summary>
+            编辑仓库类型
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetCheckMaterialPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseCheckMaterial})">
+            <summary>
+            原料质检分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditCheckMaterial(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseCheckMaterial)">
+            <summary>
+            编辑原料质检
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.RemoveCheckMaterial(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除原料质检
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetCheckGoodsPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseCheckGoods})">
+            <summary>
+            产品质检分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditCheckGoods(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseCheckGoods)">
+            <summary>
+            编辑产品质检
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.RemoveCheckGoods(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除产品质检
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetCheckMaterial">
+            <summary>
+            原料质检列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetCheckGoodsList">
+            <summary>
+            产品质检列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetExpiredPage(KilyCore.Service.QueryExtend.PageParamList{System.Object})">
+            <summary>
+            过期数据
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetInferiorExpriredPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseInferiorExprired})">
+            <summary>
+            获取分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetInferiorExpriredDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.RemoveInferiorExprired(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除过期不合格处理
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditInferiorExprired(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseInferiorExprired)">
+            <summary>
+            编辑过期不合格处理
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetRecoverPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseRecover})">
+            <summary>
+            召回分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetRecoverDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.SaveRecover(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseRecover)">
+            <summary>
+            编辑召回
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.RemoveRecover(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除召回
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetPackagePage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseGoodsPackage})">
+            <summary>
+            装车分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditGoodsPackage(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseGoodsPackage)">
+            <summary>
+            编辑装车
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetGoodsPackageDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            装车详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.RemoveGoodsPackge(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除装车
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetPackagesList">
+            <summary>
+            装车批次号
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetLogisticsPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseLogistics})">
+            <summary>
+            发货收货分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetLogisticsErrorPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseScanCodeInfo})">
+            <summary>
+            串货分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetReceipt">
+            <summary>
+            获取收货地址
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditLogistics(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseLogistics)">
+            <summary>
+            编辑发货
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.RemoveLogistics(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除发货
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetBuyerPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseBuyer})">
+            <summary>
+            进货分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditBuyer(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseBuyer)">
+            <summary>
+            编辑进货
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.RemoveBuyer(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除进货
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetBuyerList">
+            <summary>
+            进货列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.AliPay(KilyCore.Service.QueryExtend.SimpleParam{System.Int32},KilyCore.Service.QueryExtend.SimpleParam{System.Nullable{System.Int32}})">
+            <summary>
+            版本续费和升级使用支付宝支付
+            </summary>
+            <param name="Key"></param>
+            <param name="Value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.WxPay(KilyCore.Service.QueryExtend.SimpleParam{System.Int32},KilyCore.Service.QueryExtend.SimpleParam{System.Nullable{System.Int32}})">
+            <summary>
+            版本续费和升级使用微信支付
+            </summary>
+            <param name="Key"></param>
+            <param name="Value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.WxQueryPay(KilyCore.DataEntity.RequestMapper.Function.RequestContractTemp)">
+            <summary>
+            查询微信支付
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.ExportMaterialInStockFile(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            原料入库Excel导出
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.ExportMaterialOutStockFile(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            原料出库Excel导出
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.ExportProInStockFile(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            产品入库Excel导出
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.ExportProOutStockFile(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            产品出库Excel导出
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetDataCount(KilyCore.Service.QueryExtend.SimpleParam{System.Nullable{System.Guid}})">
+            <summary>
+            数据统计
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetPieCount(KilyCore.Service.QueryExtend.SimpleParam{System.Nullable{System.Guid}})">
+            <summary>
+            产量统计
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetPieCountBatch(KilyCore.Service.QueryExtend.SimpleParam{System.Nullable{System.Guid}})">
+            <summary>
+            批次统计
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetScanCompanyFirst(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            一企一码
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetScanCodeInfo(KilyCore.Service.QueryExtend.SimpleParam{System.Nullable{System.Guid}},KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            一品一码一物一码
+            </summary>
+            <param name="Key"></param>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditScanInfo(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseScanCodeInfo)">
+            <summary>
+            新增扫码记录
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetScanBoxInfo(KilyCore.Service.QueryExtend.SimpleParam{System.Nullable{System.Guid}},KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            一箱一码
+            </summary>
+            <param name="Key"></param>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetScanSendInfo(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            发货二维码
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.CheckLogistics(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseLogistics)">
+            <summary>
+            确认收货
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetScanPackageInfo(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            装车信息
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="T:KilyCore.API.Controllers.FinanceController">
+            <summary>
+            系统财务接口
+            </summary>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FinanceController.GetJoinPayPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.System.RequestAdminAttach})">
+            <summary>
+            加盟缴费分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FinanceController.StartUse(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            启用
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FinanceController.BlockUp(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            停用
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FinanceController.Archive(KilyCore.DataEntity.RequestMapper.System.RequestAdminAttach)">
+            <summary>
+            加盟归档
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FinanceController.SendEmail(KilyCore.DataEntity.RequestMapper.System.RequestEMail)">
+            <summary>
+            发送邮件
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FinanceController.IdentEnterprisePay(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseIdent})">
+            <summary>
+            企业认证
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FinanceController.AuditIndetEnterprisePay(KilyCore.Service.QueryExtend.SimpleParam{System.Guid},KilyCore.Service.QueryExtend.SimpleParam{System.Boolean})">
+            <summary>
+            是否通过终审
+            </summary>
+            <param name="Key"></param>
+            <param name="Value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FinanceController.IdentFoodPay(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastIdent})">
+            <summary>
+            餐饮认证
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FinanceController.AuditIndetFoodPay(KilyCore.Service.QueryExtend.SimpleParam{System.Guid},KilyCore.Service.QueryExtend.SimpleParam{System.Boolean})">
+            <summary>
+            是否通过终审
+            </summary>
+            <param name="Key"></param>
+            <param name="Value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FinanceController.WatchCertificate(KilyCore.Service.QueryExtend.SimpleParam{System.Guid},KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            查看缴费凭证
+            </summary>
+            <param name="Key"></param>
+            <param name="Value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FinanceController.GetTagAuditPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseApply})">
+            <summary>
+            物码缴费分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FinanceController.AuditCode(KilyCore.DataEntity.RequestMapper.System.RequestAudit)">
+            <summary>
+            审核物码缴费
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="T:KilyCore.API.Controllers.FunctionController">
+            <summary>
+            系统功能接口
+            </summary>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.GetAreaPricePage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Function.RequestAreaPrice})">
+            <summary>
+            获取价目分页列表
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.GetAreaPriceDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取区域价目详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.EditPrice(KilyCore.DataEntity.RequestMapper.Function.RequestAreaPrice)">
+            <summary>
+            编辑区域价目
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.RemovePrice(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除价目
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.GetAddressList(KilyCore.Service.QueryExtend.SimpleParam{System.Int32})">
+            <summary>
+            获取区域列表
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.GetTagPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Function.RequestVeinTag})">
+            <summary>
+            纹理二维码分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.GetTagToCompanyPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Function.RequestVeinTag})">
+            <summary>
+            查看分配企业标签
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.GetTagToAdminPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Function.RequestVeinTag})">
+            <summary>
+            查看分配营运中心标签
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.RecordAllotTag(KilyCore.DataEntity.RequestMapper.Function.RequestVeinTag)">
+            <summary>
+            录入标签
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.AllotTag(KilyCore.DataEntity.RequestMapper.Function.RequestVeinTag)">
+            <summary>
+            分配标签
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.RemoveTag(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除二维码
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.GetAcceptUser(KilyCore.Service.QueryExtend.SimpleParam{System.Int32})">
+            <summary>
+            根据接收类型选取接受人
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.GetTagBatchList">
+            <summary>
+            纹理二维码批次号
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.AcceptTag(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            签收标签
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.IsVenTag(KilyCore.Service.QueryExtend.SimpleParam{System.Int32})">
+            <summary>
+            判断是否存在纹理标签
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.GetSysDicPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Function.RequestDictionary})">
+            <summary>
+            系统码表分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.GetDicDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            码表详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.DicEdit(KilyCore.DataEntity.RequestMapper.Function.RequestDictionary)">
+            <summary>
+            编辑码表
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.RemoveDic(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除字典
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.GetAreaDicPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Function.RequestAreaDictionary})">
+            <summary>
+            区域码表分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.RecordAreaDic(KilyCore.DataEntity.RequestMapper.Function.RequestAreaDictionary)">
+            <summary>
+            分配区域码表
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.IsEnable(KilyCore.DataEntity.RequestMapper.Function.RequestDisDictionary)">
+            <summary>
+            启用字典
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.GetAreaVersion(KilyCore.Service.QueryExtend.SimpleParam{System.String},KilyCore.Service.QueryExtend.SimpleParam{System.Int32})">
+            <summary>
+            区域版本
+            </summary>
+            <param name="Key"></param>
+            <param name="Value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.GetVersionById(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取功能描述
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.GetAreaDicDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取分配详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.GetPieData">
+            <summary>
+            饼状统计图
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.GetBarData">
+            <summary>
+            柱状统计图
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.GetStatistics">
+            <summary>
+            获取首页企业统计
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.GetCreateTagList">
+            <summary>
+            获取生成的二维码
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.GetMsgPage(KilyCore.Service.QueryExtend.PageParamList{System.Object})">
+            <summary>
+            消息中心
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.RemoveMsg(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除消息
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.NotifyContract">
+            <summary>
+            合同提醒
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.FunctionController.NofityCompany(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            合同导出
+            </summary>
+            <param name="Key"></param>
+            <returns></returns>
+        </member>
+        <member name="T:KilyCore.API.Controllers.GovtController">
+            <summary>
+            系统政府后台接口
+            </summary>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtController.AddGovtParentMenu">
+            <summary>
+            获取父级菜单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtController.GetGovtMenuPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Govt.RequestGovtMenu})">
+            <summary>
+            政府菜单分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtController.GetGovtMenuDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取政府菜单详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtController.RemoveGovtMenu(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除政府菜单
+            </summary>
+            <param name="Param"></param>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtController.EditGovtMenu(KilyCore.DataEntity.RequestMapper.Govt.RequestGovtMenu)">
+            <summary>
+            新增政府菜单
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtController.GetGovtTree">
+            <summary>
+            获取权限菜单树
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtController.GetAuthorPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Govt.RequestGovtRoleAuthor})">
+            <summary>
+            权限分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtController.RemoveAuthor(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除角色
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtController.EditAuthor(KilyCore.DataEntity.RequestMapper.Govt.RequestGovtRoleAuthor)">
+            <summary>
+            编辑权限
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtController.GetInfoPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Govt.RequestGovtInfo})">
+            <summary>
+            账号分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtController.EditInfo(KilyCore.DataEntity.RequestMapper.Govt.RequestGovtInfo)">
+            <summary>
+            编辑账号
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtController.PushInfo(KilyCore.DataEntity.RequestMapper.Govt.RequestGovtInfo)">
+            <summary>
+            推送账号
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="T:KilyCore.API.Controllers.GovtWebController">
+            <summary>
+            政府后台接口
+            </summary>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetGovtMenu">
+            <summary>
+            获取全局集团菜单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetAllMerchant(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            获取所有商家和企业
+            </summary>
+            <param name="Key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GovtLogin(KilyCore.DataEntity.RequestMapper.Govt.RequestGovtInfo)">
+            <summary>
+            监管登录
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.LoginOut">
+            <summary>
+            安全退出
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.EditPwd(KilyCore.DataEntity.RequestMapper.Govt.RequestGovtInfo)">
+            <summary>
+            第一次登录更新密码
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetCompanyPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterprise})">
+            <summary>
+            监管企业分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetMerchantPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestMerchant})">
+            <summary>
+            监管餐饮分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetCompanyDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            企业详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetRepastDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            商家详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetAllComWithKeyWord(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            查询企业
+            </summary>
+            <param name="KeyWord"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetAllMerWithKeyWord(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            查询商家
+            </summary>
+            <param name="KeyWord"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetAllCom(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterprise)">
+            <summary>
+            获取所有企业
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetAllMer(KilyCore.DataEntity.RequestMapper.Repast.RequestMerchant)">
+            <summary>
+            获取所有商家
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetAllVideo(KilyCore.Service.QueryExtend.SimpleParam{System.Guid},KilyCore.Service.QueryExtend.SimpleParam{System.Int32})">
+            <summary>
+            获取所有视频
+            </summary>
+            <param name="Param"></param>
+            <param name="Type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetAllGovt">
+            <summary>
+            获取或有企业
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetInsPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Govt.RequestGovtInstitution})">
+            <summary>
+            机构分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetInsList">
+            <summary>
+            机构列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.RemoveIns(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除机构
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetInsDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取机构详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.EditIns(KilyCore.DataEntity.RequestMapper.Govt.RequestGovtInstitution)">
+            <summary>
+            编辑机构
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetGovtInfoPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Govt.RequestGovtInfo})">
+            <summary>
+            政府用户分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.RemoveGovtInfo(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除政府用户
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetGovtInfoDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            政府用户详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.EditUser(KilyCore.DataEntity.RequestMapper.Govt.RequestGovtInfo)">
+            <summary>
+            编辑政府用户
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetCityName(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取所属区域的市名称
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetDistributArea">
+            <summary>
+            获取分配的区域
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetArea(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            当前登录账号是市级账号则查询该市下所有区县
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetTown(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            当前登录账号是区县级账号则查询该市下所有乡镇
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetWorkPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseGoods})">
+            <summary>
+            加工产品分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetWorkDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            加工产品详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetEdiblePage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseGoods})">
+            <summary>
+            食用品分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetEdibleDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            食用品详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetBanquetPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Cook.RequestCookBanquet})">
+            <summary>
+            群宴报备分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetBanquetDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            群宴报备详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.EditCookBanquet(KilyCore.Service.QueryExtend.SimpleParam{System.Guid},KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            审核群宴
+            </summary>
+            <param name="Key"></param>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetWaringRiskPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Govt.RequestGovtRisk})">
+            <summary>
+            预警信息分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.EditWaringRisk(KilyCore.DataEntity.RequestMapper.Govt.RequestGovtRisk)">
+            <summary>
+            编辑预警信息
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.ReportWaringRisk(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            发布广播
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.RemoveWaringRisk(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除信息
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetRiskCount">
+            <summary>
+            事件分布图
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetCity(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取市名称
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetCardPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Govt.RequestGovtRiskCompany})">
+            <summary>
+            企业证件到期分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.ReportCardWaring(KilyCore.Service.QueryExtend.SimpleParam{System.Guid},KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            证件提醒
+            </summary>
+            <param name="Param"></param>
+            <param name="Key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetNetPatrolPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Govt.RequestGovtNetPatrol})">
+            <summary>
+            网上执法分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.EditPatrol(KilyCore.DataEntity.RequestMapper.Govt.RequestGovtNetPatrol)">
+            <summary>
+            添加网上执法
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.RemovePatrol(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除网上执法
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.EditNetPatrol(KilyCore.DataEntity.RequestMapper.Govt.RequestGovtMsg)">
+            <summary>
+            通报批评
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetCategoryPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Govt.RequestGovtPatrolCategory})">
+            <summary>
+            执法类目分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.EditCategory(KilyCore.DataEntity.RequestMapper.Govt.RequestGovtPatrolCategory)">
+            <summary>
+            编辑类目
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetCategoryDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            类目详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.RemoveCategory(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除类目
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetCategoryAttachPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Govt.RequestGovtPatrolCategoryAttach})">
+            <summary>
+            题库分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.EditCategoryAttach(KilyCore.DataEntity.RequestMapper.Govt.RequestGovtPatrolCategoryAttach)">
+            <summary>
+            编辑题库
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetCategoryAttachDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            题库详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.RemoveCategoryAttach(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除题库
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetMovePatralPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Govt.RequestGovtMovePatrol})">
+            <summary>
+            移动执法分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.RemoveMovePatral(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除移动执法记录
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.EditMovePatrol(KilyCore.DataEntity.RequestMapper.Govt.RequestGovtMovePatrol)">
+            <summary>
+            编辑移动执法
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetGovtMovePatrolDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取移动执法表
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetTemplateChild(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Govt.RequestGovtTemplateChild})">
+            <summary>
+            获取企业检查分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetTemplateChildDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取企业检查详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetTemplateContentList(KilyCore.Service.QueryExtend.SimpleParam{System.String},KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            获取模板列表
+            </summary>
+            <param name="Key"></param>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetTemplatePage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Govt.RequestGovtTemplate})">
+            <summary>
+            自查模板分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.EditGovtTemplate(KilyCore.DataEntity.RequestMapper.Govt.RequestGovtTemplate)">
+            <summary>
+            编辑模板
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.RemoveTemplate(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除模板
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetTemplateDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetTrainNoticePage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Govt.RequestGovtTrainNotice})">
+            <summary>
+            通知分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.EditNotice(KilyCore.DataEntity.RequestMapper.Govt.RequestGovtTrainNotice)">
+            <summary>
+            编辑通知
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.RemoveNotice(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除通知
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetTrainNoticeDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            通知详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.ReportTrainNotice(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            推送通知
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetTrainReportPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Govt.RequestGovtTrainReport})">
+            <summary>
+            报道分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.EditTrainReport(KilyCore.DataEntity.RequestMapper.Govt.RequestGovtTrainReport)">
+            <summary>
+            编辑报道
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.RemoveReport(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除报道
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetTrainReportDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            报道详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.ReportTrainReport(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            推送报道
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetComplainPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Govt.RequestGovtComplain})">
+            <summary>
+            投诉信息分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.RemoveComplain(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除投诉
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.EditComplain(KilyCore.DataEntity.RequestMapper.Govt.RequestGovtComplain)">
+            <summary>
+            编辑投诉
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.ReportComplain(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            推送投诉
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.ReportComplainInfo(KilyCore.Service.QueryExtend.SimpleParam{System.Guid},KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            处理投诉
+            </summary>
+            <param name="Key"></param>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetProductRank">
+            <summary>
+            获取产品统计
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetLawRank">
+            <summary>
+            获取执行检查统计
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetCountNum">
+            <summary>
+            统计数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetAreaRank">
+            <summary>
+            区域入住分布排行
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetAllCityMerchantCount">
+            <summary>
+            获取入驻的企业地图
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetComplainLine">
+            <summary>
+            投诉折线图
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetComDataRatio">
+            <summary>
+            板块占比
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetComplainDataRatio">
+            <summary>
+            投诉占比
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetAgreePage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Govt.RequestGovtAgree})">
+            <summary>
+            协议分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.EditAgree(KilyCore.DataEntity.RequestMapper.Govt.RequestGovtAgree)">
+            <summary>
+            编辑协议
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetAgreeDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            协议详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.RemoveAgree(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除协议
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="T:KilyCore.API.Controllers.RepastController">
+            <summary>
+            系统餐饮接口
+            </summary>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastController.GetMerchantPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestMerchant})">
+            <summary>
+            商家分页列表
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastController.GetMerchantDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取商家详情
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastController.AuditMerchant(KilyCore.DataEntity.RequestMapper.System.RequestAudit)">
+            <summary>
+            审核商家
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastController.GetDiningMenuPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastMenu})">
+            <summary>
+            餐饮菜单分页列表
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastController.EditDiningMenu(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastMenu)">
+            <summary>
+            编辑菜单
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastController.RemoveMenu(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除菜单
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastController.GetDiningMenuDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            菜单详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastController.AddDiningParentMenu">
+            <summary>
+            显示父节菜单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastController.GetDiningTree(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            权限菜单树
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastController.EditRole(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastRoleAuthor)">
+            <summary>
+            添加角色
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastController.GetMerchantAuthorPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastRoleAuthor})">
+            <summary>
+            角色分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastController.WatchRolePage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastRoleAuthor})">
+            <summary>
+            权限分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastController.RemoveAuthorRole(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除角色
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastController.GetRoleAuthorPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastRoleAuthor})">
+            <summary>
+            角色分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastController.GetRoleAuthorList">
+            <summary>
+            权限下拉列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastController.DistributionRole(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastRoleAuthor)">
+            <summary>
+            分配角色
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastController.GetRepastRoleAuthorDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            权限详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastController.GetDiningIdentPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastIdent})">
+            <summary>
+            商家认证分页列表
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastController.GetDiningIdentDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取认证审核详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastController.AuditIdent(KilyCore.DataEntity.RequestMapper.System.RequestAudit)">
+            <summary>
+            认证审核
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastController.AuditPayment(KilyCore.DataEntity.RequestMapper.System.RequestPayment)">
+            <summary>
+            认证缴费
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastController.RegistRepastAccount(KilyCore.Service.QueryExtend.SimpleParam{KilyCore.DataEntity.RequestMapper.Repast.RequestMerchant})">
+            <summary>
+            餐饮企业注册
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastController.MerchantLogin(KilyCore.DataEntity.RequestMapper.System.RequestValidate)">
+            <summary>
+            餐饮企业登录
+            </summary>
+            <param name="LoginValidate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastController.LoginOut">
+            <summary>
+            安全退出
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:KilyCore.API.Controllers.RepastWebController">
+            <summary>
+            餐饮后台接口
+            </summary>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetRepastMenu">
+            <summary>
+            获取导航菜单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetDictionaryList(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            下拉字典类型
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetRepastWebTree(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            获取权限菜单树
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetMerchantInfoPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestMerchant})">
+            <summary>
+            商家资料分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetMerchantDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取详细
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetChildAccount(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取子公司
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.SaveMerchant(KilyCore.DataEntity.RequestMapper.Repast.RequestMerchant)">
+            <summary>
+            编辑商家资料
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.SaveContract(KilyCore.DataEntity.RequestMapper.System.RequestStayContract)">
+            <summary>
+            保存合同
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.SaveMerchantAccount(KilyCore.DataEntity.RequestMapper.Repast.RequestMerchant)">
+            <summary>
+            修改密码
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.SaveMerchantArea(KilyCore.DataEntity.RequestMapper.Repast.RequestMerchant)">
+            <summary>
+            修改区域
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetContractAudit(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.System.RequestStayContract})">
+            <summary>
+            获取合同审核记录
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.SaveMerchantIdent(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastIdent)">
+            <summary>
+            商家认证
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetIndentPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastIdent})">
+            <summary>
+            企业认证分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.SaveRoleAuthor(KilyCore.DataEntity.RequestMapper.Repast.RequestRoleAuthorWeb)">
+            <summary>
+            新增账户
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetRoleAuthorPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRoleAuthorWeb})">
+            <summary>
+            账户分页列表
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.DeleteRole(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除账户
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetRoleAuthorList">
+            <summary>
+            获取权限角色
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetMerchantUserPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestMerchantUser})">
+            <summary>
+            用户分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.SaveUser(KilyCore.DataEntity.RequestMapper.Repast.RequestMerchantUser)">
+            <summary>
+            编辑子账户
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetUserDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取子账户详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.DeleteUser(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除子账号
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetMerchantList">
+            <summary>
+            人员列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetChildInfoPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestMerchant})">
+            <summary>
+            集团账户列表
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.SaveChildInfo(KilyCore.DataEntity.RequestMapper.Repast.RequestMerchant)">
+            <summary>
+            编辑子账户
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetDicPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastDictionary})">
+            <summary>
+            字典分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.DeleteDic(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除码表
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetDicDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            字典详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.SaveDic(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastDictionary)">
+            <summary>
+            编辑字典
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetLvPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastLevelUp})">
+            <summary>
+            查看版本信息
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.SaveContinued(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastContinued)">
+            <summary>
+            编辑续费
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.SaveUpLevel(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastUpLevel)">
+            <summary>
+            编辑升级
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetContinuedPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastContinued})">
+            <summary>
+            续费记录
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetUpLevelPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastUpLevel})">
+            <summary>
+            升级记录
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.AuditContinuedAndLevel(KilyCore.Service.QueryExtend.SimpleParam{System.Guid},KilyCore.Service.QueryExtend.SimpleParam{System.Boolean})">
+            <summary>
+            审核审计续费
+            </summary>
+            <param name="Key"></param>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetTemplateChild(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Govt.RequestGovtTemplateChild})">
+            <summary>
+            获取企业检查分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.EditTemplateChild(KilyCore.DataEntity.RequestMapper.Govt.RequestGovtTemplateChild)">
+            <summary>
+            编辑企业检查
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.DeleteTemplate(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除企业自查
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetSupplierPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastSupplier})">
+            <summary>
+            供应商列表
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.DeleteSupplier(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除供应商
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.SaveSupplier(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastSupplier)">
+            <summary>
+            编辑供应商
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetSupplierList">
+            <summary>
+            供应商列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetBuybillPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastBuybill})">
+            <summary>
+            进货台账分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.RemoveBuybill(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除进货台账
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetBuybillDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            进货台账详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.EditBuybill(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastBuybill)">
+            <summary>
+            编辑进货台账
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetSellbillPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastSellbill})">
+            <summary>
+            销售台账分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.RemoveSellbill(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除销售台账
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetSellbillDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            销售台账详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.EditSellbill(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastSellbill)">
+            <summary>
+            编辑销售台账
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetVideoPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastVideo})">
+            <summary>
+            视频分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.SaveVideo(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastVideo)">
+            <summary>
+            编辑视频
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.DeleteVideo(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除视频
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.ShowVideo(KilyCore.Service.QueryExtend.SimpleParam{System.Guid},KilyCore.Service.QueryExtend.SimpleParam{System.Boolean})">
+            <summary>
+            首页显示视频
+            </summary>
+            <param name="Param"></param>
+            <param name="flag"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetDishPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastDish})">
+            <summary>
+            菜品分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetDishDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            菜品详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.DeleteDish(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除菜品
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.SaveDish(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastDish)">
+            <summary>
+            编辑菜品
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetStuffPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastStuff})">
+            <summary>
+            原料溯源分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.RemoveStuff(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除溯源信息
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.EditStuff(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastStuff)">
+            <summary>
+            编辑溯源信息
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetStuffDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取溯源详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetInStorageList(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            仓库原料列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetSamplePage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastSample})">
+            <summary>
+            留样分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.EditSample(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastSample)">
+            <summary>
+            编辑留样
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.RemoveSample(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除留样
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetDrawPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastDraw})">
+            <summary>
+            抽样分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.EditDraw(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastDraw)">
+            <summary>
+            编辑抽样
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.RemoveDraw(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除抽样
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetDuckPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastDuck})">
+            <summary>
+            废物分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.EditDuck(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastDuck)">
+            <summary>
+            编辑废物
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.RemoveDuck(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除废物
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetDisinfectPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastDisinfect})">
+            <summary>
+            消毒分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.EditDisinfect(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastDisinfect)">
+            <summary>
+            编辑消毒
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.RemoveDisinfect(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除消毒
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetDisinfectDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取消毒详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetAdditivePage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastAdditive})">
+            <summary>
+            添加剂分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.EditAdditive(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastAdditive)">
+            <summary>
+            编辑添加剂
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.RemoveAdditive(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除添加剂
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetAdditiveDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取添加剂详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetInStoragePage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastInStorage})">
+            <summary>
+            原料入库分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.EditInStorage(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastInStorage)">
+            <summary>
+            编辑原料入库
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.RemoveInStorage(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除原料入库
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetInStorageDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            原料入库详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetOutStoragePage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastOutStorage})">
+            <summary>
+            出库分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.EditOutStorage(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastOutStorage)">
+            <summary>
+            编辑出库
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.RemoveOutStorage(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除出库
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetInStockPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastArticleInStock})">
+            <summary>
+            物品入库分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.RemoveInStock(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除物品入库
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.EditInStock(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastArticleInStock)">
+            <summary>
+            编辑物品入库
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetInStockDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取物品入库详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetOutStockPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastArticleOutStock})">
+            <summary>
+            物品出库分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.RemoveOutStock(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除物品出库
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.EditOutStock(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastArticleOutStock)">
+            <summary>
+            编辑物品出库
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetStorageReportPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastStockReport})">
+            <summary>
+            原料报表
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetStockReportPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastStockReport})">
+            <summary>
+            物品报表
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetNamesPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastTypeName})">
+            <summary>
+            名称分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.EditNames(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastTypeName)">
+            <summary>
+            编辑名称
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.RemoveNames(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除名称
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetNamesList(KilyCore.Service.QueryExtend.SimpleParam{System.Int32})">
+            <summary>
+            名称列表
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.AliPay(KilyCore.Service.QueryExtend.SimpleParam{System.Int32},KilyCore.Service.QueryExtend.SimpleParam{System.Nullable{System.Int32}})">
+            <summary>
+            版本续费和升级使用支付宝支付
+            </summary>
+            <param name="Key"></param>
+            <param name="Value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.WxPay(KilyCore.Service.QueryExtend.SimpleParam{System.Int32},KilyCore.Service.QueryExtend.SimpleParam{System.Nullable{System.Int32}})">
+            <summary>
+            版本续费和升级使用微信支付
+            </summary>
+            <param name="Key"></param>
+            <param name="Value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.WxQueryPay(KilyCore.DataEntity.RequestMapper.Function.RequestContractTemp)">
+            <summary>
+            微信支付查询
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.ExportStuffInStockFile(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            食材入库Excel导出
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.ExportStuffOutStockFile(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            食材出库Excel导出
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.ExportGoodsInStockFile(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            物品入库Excel导出
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.ExportGoodsOutStockFile(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            物品出库Excel导出
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetDataCount(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            数据统计
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetScanInfoPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastScanInfo})">
+            <summary>
+            信息分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.EditScanInfo(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastScanInfo)">
+            <summary>
+            编辑信息
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.RemoveScan(KilyCore.Service.QueryExtend.SimpleParam{System.Guid},KilyCore.Service.QueryExtend.SimpleParam{System.Nullable{System.Boolean}})">
+            <summary>
+            删除信息
+            </summary>
+            <param name="Key"></param>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetScanInfoDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            信息详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetDishList">
+            <summary>
+            菜品列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetStuffList">
+            <summary>
+            原料列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetVideoList">
+            <summary>
+            视频列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetUserList">
+            <summary>
+            人员列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetDuckList">
+            <summary>
+            废物列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetDrawList">
+            <summary>
+            抽样列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetSampleList">
+            <summary>
+            留样列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetDisinfectList">
+            <summary>
+            消毒列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetAdditiveList">
+            <summary>
+            添加剂列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetMobileScanInfo(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            商家手机端二维码
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="T:KilyCore.API.Controllers.SystemController">
+            <summary>
+            系统接口
+            </summary>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetSystemMenu">
+            <summary>
+            获取菜单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.AddSystemParentMenu">
+            <summary>
+            获取父节菜单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetMenuPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.System.RequestMenu})">
+            <summary>
+            菜单分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.RemoveMenu(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除菜单
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.EditMenu(KilyCore.DataEntity.RequestMapper.System.RequestMenu)">
+            <summary>
+            修改新增菜单
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetMenuDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取菜单详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetRoleLv">
+            <summary>
+            权限等级
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.EditRole(KilyCore.DataEntity.RequestMapper.System.RequestAuthorRole)">
+            <summary>
+            添加角色
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetAuthorPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.System.RequestAuthorRole})">
+            <summary>
+            获取权限列表
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.RemoveAuthorRole(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            移除权限
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetAuthorRole">
+            <summary>
+            下拉权限列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.SystemLogin(KilyCore.DataEntity.RequestMapper.System.RequestValidate)">
+            <summary>
+            登录
+            </summary>
+            <param name="LoginValidate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetCode">
+            <summary>
+            获取验证码
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetPhoneCode(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            获取手机短信验证码
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.LoginOut">
+            <summary>
+            安全退出
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetSystemAreaTree">
+            <summary>
+            显示区域树
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetSystemAreaTrees">
+            <summary>
+            显示完整区域树
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetSystemAdminTree(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            权限区域树
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.InsertAdmin(KilyCore.DataEntity.RequestMapper.System.RequestAdmin)">
+            <summary>
+            中间系统调用
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.EditAdmin(KilyCore.DataEntity.RequestMapper.System.RequestAdmin)">
+            <summary>
+            编辑用户
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetAdminPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.System.RequestAdmin})">
+            <summary>
+            获取用户分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.RemoveAdmin(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除用户
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.OpenAdmin(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            启用账户
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetAdminDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取用户详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetBankInfo">
+            <summary>
+            获取银行卡信息
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.CG(KilyCore.Service.QueryExtend.SimpleParam{System.Guid},KilyCore.Service.QueryExtend.SimpleParam{System.Boolean})">
+            <summary>
+            回收或开启网签
+            </summary>
+            <param name="key"></param>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetAuthorAdmin(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            获取可以签到合同的代理商
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetProvince">
+            <summary>
+            获取省份
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetCity(KilyCore.Service.QueryExtend.SimpleParam{System.Int32})">
+            <summary>
+            获取城市
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetArea(KilyCore.Service.QueryExtend.SimpleParam{System.Int32})">
+            <summary>
+            获取区县
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetTown(KilyCore.Service.QueryExtend.SimpleParam{System.Int32})">
+            <summary>
+            获取乡镇
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.AddJob(KilyCore.DataEntity.RequestMapper.System.RequestQuartz)">
+            <summary>
+            添加任务
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetJobPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.System.RequestQuartz})">
+            <summary>
+            任务分页列表
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.ExcuteJob(KilyCore.DataEntity.RequestMapper.System.RequestQuartz)">
+            <summary>
+             执行任务
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.StopJob">
+            <summary>
+            停止所有任务
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.RecoverPauseJob(KilyCore.DataEntity.RequestMapper.System.RequestQuartz)">
+            <summary>
+            恢复暂停任务
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.PauseAppointJob(KilyCore.DataEntity.RequestMapper.System.RequestQuartz)">
+            <summary>
+            暂停指定任务
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.RemoveJob(KilyCore.DataEntity.RequestMapper.System.RequestQuartz)">
+            <summary>
+            删除任务
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetPresonPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.System.RequestPreson})">
+            <summary>
+            人员分页列表
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.PresonEdit(KilyCore.DataEntity.RequestMapper.System.RequestPreson)">
+            <summary>
+            编辑人员
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.RemovePreson(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除人员
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetPresonDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetPresonDetailWeb(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            首页人员查询
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetStayContractPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.System.RequestStayContract})">
+            <summary>
+            入住合同分页列表
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.AuditContract(KilyCore.DataEntity.RequestMapper.System.RequestAudit)">
+            <summary>
+            审核合同
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetContractRecord(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.System.RequestAudit})">
+            <summary>
+            取审核记录
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.RemoveRecord(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除记录
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.EditContract(KilyCore.Service.QueryExtend.SimpleParam{System.Guid},KilyCore.Service.QueryExtend.SimpleParam{System.Decimal})">
+            <summary>
+            确认缴费
+            </summary>
+            <param name="Key"></param>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.AliPay(KilyCore.Service.QueryExtend.SimpleParam{System.Int32})">
+            <summary>
+            支付宝支付
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.WxPay(KilyCore.Service.QueryExtend.SimpleParam{System.Int32})">
+            <summary>
+            微信支付
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.AliQueryPay(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            查询支付宝支付
+            </summary>
+            <param name="Key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.EditPay(KilyCore.DataEntity.RequestMapper.System.RequestStayContract)">
+            <summary>
+            更新支付
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetMsgPage(KilyCore.Service.QueryExtend.PageParamList{System.Object})">
+            <summary>
+            消息盒子分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetNewsPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.System.RequestSystemNews})">
+            <summary>
+            新闻分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.EditNews(KilyCore.DataEntity.RequestMapper.System.RequestSystemNews)">
+            <summary>
+            编辑新闻
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetNewsDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            新闻详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.RemoveNews(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除新闻
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetCodeCountCenter">
+            <summary>
+            二维码统计
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetCompanyCountCenter">
+            <summary>
+            入住企业统计
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetProductCountCenter">
+            <summary>
+            产品统计
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetContractCountCenter(KilyCore.DataEntity.RequestMapper.System.RequestRangeDate)">
+            <summary>
+            获取合同统计
+            </summary>
+            <param name="Range"></param>
+            <returns></returns>
+        </member>
+        <member name="T:KilyCore.API.Controllers.TempController">
+            <summary>
+            中继系统接口
+            </summary>
+        </member>
+        <member name="M:KilyCore.API.Controllers.TempController.GetAllUser(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取所有人员
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.TempController.GetAllSupply(KilyCore.Service.QueryExtend.SimpleParam{System.Guid},KilyCore.Service.QueryExtend.SimpleParam{System.Int32})">
+            <summary>
+            获取所有供应商
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.TempController.GetAllSample(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取商家留样
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.TempController.RepastDuck(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取商家留样
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.TempController.WeChatRegist(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterprise)">
+            <summary>
+            微信活动注册接口
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.TempController.GetInviteCode(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            获取邀请码
+            </summary>
+            <param name="Key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Startup.GetAssembly">
+            <summary>
+            加载所有程序集
+            </summary>
+        </member>
+        <member name="M:KilyCore.API.Startup.GetSystemConfiger">
+            <summary>
+            获取系统配置
+            </summary>
+        </member>
+        <member name="M:KilyCore.API.Startup.GetVersionPriceConfiger">
+            <summary>
+            获取版本价格
+            </summary>
+        </member>
+    </members>
+</doc>

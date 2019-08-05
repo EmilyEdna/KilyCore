@@ -61,5 +61,9 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// 检测报告
         /// </summary>
         public string CheckReport { get; set; }
+        /// <summary>
+        /// 生产商
+        /// </summary>
+        public string ProMerchant { get; set; }
     }
 }

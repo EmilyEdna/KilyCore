@@ -82,7 +82,7 @@ namespace KilyCore.API
             services.AddSwaggerGen(opt =>
             {
                 opt.SwaggerDoc("v1", new Info { Title = "Api", Version = "v1" });
-                opt.IncludeXmlComments(Path.Combine(Directory.GetCurrentDirectory(), "Kily.ApiCore.xml"));
+                opt.IncludeXmlComments(Path.Combine(Directory.GetCurrentDirectory(), "KilyCore.API.xml"));
             });
             IServiceProvider IocProviderService = Engine.ServiceProvider(services);
             //持久化任务

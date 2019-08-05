@@ -70,9 +70,11 @@ namespace KilyCore.DataEntity.ResponseMapper.Phone
         public string 设备供应商 { get; set; }
         public string 车间名称 { get; set; }
         public string 环境信息 { get; set; }
+        public string 执行标准 { get; set; }
         public DateTime? 召回开始时间 { get; set; }
         public DateTime? 召回截至时间 { get; set; }
         public List<Material> Materials { get; set; }
+        public List<Target> Targets { get; set; }
         #endregion
         #region 种养企业
         public List<Plant> Plants { get; set; }
@@ -93,13 +95,13 @@ namespace KilyCore.DataEntity.ResponseMapper.Phone
         public DateTime? 进货时间 { get; set; }
         public string 进货产品规格 { get; set; }
         public string 进货产品质检 { get; set; }
+        public string 进货生产商 { get; set; }
+        public string 进货生产商地址 { get; set; }
         #endregion
         #region 视频
         public List<Vedio> Vedios { get; set; }
         #endregion
         public int 扫码次数 { get; set; }
-        public string 关键点指标 { get; set; }
-        public string 关键点结果 { get; set; }
     }
     public class Material
     {
@@ -142,5 +144,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Phone
         public string 视频封面 { get; set; }
         public string 视频地址 { get; set; }
         public string 显示区域 { get; set; }
+    }
+    public class Target {
+        public string 关键点结果 { get; set; }
+        public string 关键点限值 { get; set; }
+        public string 关键点名称 { get; set; }
     }
 }

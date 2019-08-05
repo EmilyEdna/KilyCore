@@ -57,5 +57,6 @@ namespace KilyCore.DataEntity.RequestMapper.System
         /// </summary>
         public  SystemVersionEnum VersionType { get; set; }
         public int EnterpriseOrMerchant { get; set; }
+        public bool? IsFormInviteCode { get; set; }
     }
 }

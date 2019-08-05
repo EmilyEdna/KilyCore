@@ -64,5 +64,29 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(Temp.RepastDuck(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 微信公众号
+        /// <summary>
+        /// 微信活动注册接口
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("WeChatRegist")]
+        [AllowAnonymous]
+        public ObjectResultEx WeChatRegist(RequestEnterprise Param)
+        {
+            return ObjectResultEx.Instance(Temp.WeChatRegist(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取邀请码
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <returns></returns>
+        [HttpGet("GetInviteCode")]
+        [AllowAnonymous]
+        public ObjectResultEx GetInviteCode(SimpleParam<string> Key)
+        {
+            return ObjectResultEx.Instance(Temp.GetInviteCode(Key.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }

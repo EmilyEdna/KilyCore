@@ -11,4 +11,10 @@ namespace KilyCore.DataEntity.RequestMapper.System
         public string ValidateCode { get; set; }
         public bool IsApp { get; set; }
     }
+    public class RequestRangeDate
+    {
+        public string Area { get; set; }
+        public DateTime? STime { get; set; }
+        public DateTime? ETime { get; set; }
+    }
 }

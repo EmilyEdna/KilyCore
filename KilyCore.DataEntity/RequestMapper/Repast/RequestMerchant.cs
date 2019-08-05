@@ -25,7 +25,7 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
         public string Phone { get; set; }
         public string HonorCertification { get; set; }
         public Guid? DingRoleId { get; set; }
-        public AuditEnum AuditType { get; set; }
+        public AuditEnum? AuditType { get; set; }
         public SystemVersionEnum VersionType { get; set; }
         public string AreaTree { get; set; }
         public string Province { get; set; }

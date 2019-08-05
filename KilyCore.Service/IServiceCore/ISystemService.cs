@@ -101,6 +101,7 @@ namespace KilyCore.Service.IServiceCore
         IList<ResponseSystemCodeCount> GetCodeCountCenter();
         IList<ResponseSystemCompanyCount> GetCompanyCountCenter();
         IList<ResponseSystemProductCount> GetProductCountCenter();
+        ResponseSystemContractTotalCount GetContractCountCenter(RequestRangeDate Range);
         #endregion
     }
 }

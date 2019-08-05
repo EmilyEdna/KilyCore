@@ -79,6 +79,7 @@ namespace KilyCore.API.Controllers
         /// <param name="pageParam"></param>
         /// <returns></returns>
         [HttpPost("GetTagPage")]
+        [AllowAnonymous]
         public ObjectResultEx GetTagPage(PageParamList<RequestVeinTag> pageParam)
         {
             return ObjectResultEx.Instance(FunctionService.GetTagPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
@@ -89,6 +90,7 @@ namespace KilyCore.API.Controllers
         /// <param name="pageParam"></param>
         /// <returns></returns>
         [HttpPost("GetTagToCompanyPage")]
+        [AllowAnonymous]
         public ObjectResultEx GetTagToCompanyPage(PageParamList<RequestVeinTag> pageParam)
         {
             return ObjectResultEx.Instance(FunctionService.GetTagToCompanyPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
@@ -99,6 +101,7 @@ namespace KilyCore.API.Controllers
         /// <param name="pageParam"></param>
         /// <returns></returns>
         [HttpPost("GetTagToAdminPage")]
+        [AllowAnonymous]
         public ObjectResultEx GetTagToAdminPage(PageParamList<RequestVeinTag> pageParam)
         {
             return ObjectResultEx.Instance(FunctionService.GetTagToAdminPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
@@ -109,6 +112,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RecordTag")]
+        [AllowAnonymous]
         public ObjectResultEx RecordAllotTag(RequestVeinTag Param)
         {
             return ObjectResultEx.Instance(FunctionService.RecordTag(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
@@ -119,6 +123,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("AllotTag")]
+        [AllowAnonymous]
         public ObjectResultEx AllotTag(RequestVeinTag Param)
         {
             return ObjectResultEx.Instance(FunctionService.AllotTag(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
@@ -129,6 +134,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemoveTag")]
+        [AllowAnonymous]
         public ObjectResultEx RemoveTag(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(FunctionService.RemoveTag(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
@@ -139,6 +145,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetAcceptUser")]
+        [AllowAnonymous]
         public ObjectResultEx GetAcceptUser(SimpleParam<int> Param)
         {
             return ObjectResultEx.Instance(FunctionService.GetAcceptUser(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
@@ -148,6 +155,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetTagBatchList")]
+        [AllowAnonymous]
         public ObjectResultEx GetTagBatchList()
         {
             return ObjectResultEx.Instance(FunctionService.GetTagBatchList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
@@ -158,6 +166,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("AcceptTag")]
+        [AllowAnonymous]
         public ObjectResultEx AcceptTag(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(FunctionService.AcceptTag(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
@@ -285,6 +294,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetPieData")]
+        [AllowAnonymous]
         public ObjectResultEx GetPieData()
         {
             return ObjectResultEx.Instance(FunctionService.GetPieData(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
@@ -294,6 +304,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetBarData")]
+        [AllowAnonymous]
         public ObjectResultEx GetBarData()
         {
             return ObjectResultEx.Instance(FunctionService.GetBarData(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
@@ -303,6 +314,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetStatistics")]
+        [AllowAnonymous]
         public ObjectResultEx GetStatistics()
         {
             return ObjectResultEx.Instance(FunctionService.GetStatistics(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
@@ -312,6 +324,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetCreateTagList")]
+        [AllowAnonymous]
         public ObjectResultEx GetCreateTagList()
         {
             return ObjectResultEx.Instance(FunctionService.GetCreateTagList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
@@ -337,6 +350,25 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx RemoveMsg(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(FunctionService.RemoveMsg(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #region 定时提醒合同
+        /// <summary>
+        /// 合同提醒
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("NotifyContract")]
+        public ObjectResultEx NotifyContract() {
+            return ObjectResultEx.Instance(FunctionService.NotifyContract(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 合同导出
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <returns></returns>
+        [HttpGet("NofityCompany")]
+        public ObjectResultEx NofityCompany(SimpleParam<string> Key) {
+            return ObjectResultEx.Instance(FunctionService.NofityCompany(Key.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

@@ -1,6 +1,6 @@
 ﻿@{
     ViewData["Title"] = "商家列表";
-    Layout = "~/Views/Shared/BaseAreaView.cshtml";
+    Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
     <script>
@@ -24,6 +24,12 @@
             },
             //事件
             InitEvents: function () {
+                $("div[type='button']").on('click', function () {
+                    $(this).siblings().removeClass("active").end().addClass("active");
+                    options.$table.queryParams.CompanyType = $(this).data().value;
+                    $("#AuditType").val($(this).data().value);
+                    $("#Merchant").submit();
+                });
             },
             //行为
             action: {
@@ -46,13 +52,13 @@
                             }
                         });
                     },
-                    "click .audit": function (event, val, row, index) { 
+                    "click .audit": function (event, val, row, index) {
                         controller.OpenWindow({
                             title: "商家审核",
                             type: 2,
                             height: "90%",
                             width: "80%",
-                            url: "RepastManage/Repast/AuditMerchant?Id=" + row.Id + "&TableName="+row.TableName,
+                            url: "RepastManage/Repast/AuditMerchant?Id=" + row.Id + "&TableName=" + row.TableName,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }
@@ -65,13 +71,13 @@
         $(document).ready(function () {
             options.Init();
         });
-        //来至父页面的树选中事件
-        function nodeSelected(event, node) {
-            options.$table.queryParams.AreaTree = node.id;
-            $("#Merchant").submit();
-            //清空查询参数
-            options.$table.queryParams = {};
-        }
+            //来至父页面的树选中事件
+            //function nodeSelected(event, node) {
+            //    options.$table.queryParams.AreaTree = node.id;
+            //    $("#Merchant").submit();
+            //    //清空查询参数
+            //    options.$table.queryParams = {};
+            //}
     </script>
 }
 @section css{
@@ -86,13 +92,19 @@
             <div class="ibox-content">
                 <div class="row">
                     <form id="Merchant">
-                        <div class="col-sm-6 m-b-xs">
+                        <div class="col-sm-9 m-b-xs">
                             <div class="input-group">
-                           
+                                <div class="btn-group">
+                                    <div type="button" class="btn btn-outline btn-info" data-value="">全部</div>
+                                    <div type="button" class="btn btn-outline btn-info" data-value="10">审核不通过</div>
+                                    <div type="button" class="btn btn-outline btn-info" data-value="20">等待审核</div>
+                                    <div type="button" class="btn btn-outline btn-info" data-value="40">审核通过</div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-3">
                             <div class="input-group">
+                                <input type="hidden" name="AuditType" id="AuditType" />
                                 <input type="text" placeholder="商家名称" class="input-sm form-control" name="MerchantName"> <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
                                     <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>

@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewData["Title"] = "认证审核";
-    Layout = "~/Views/Shared/BaseAreaView.cshtml";
+    Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
     <script>
@@ -101,12 +101,12 @@
             options.Init();
         });
         //来至父页面的树选中事件
-        function nodeSelected(event, node) {
-            options.$table.queryParams.AreaTree = node.id;
-            $("#IdentDining").submit();
-            //清空查询参数
-            options.$table.queryParams = {};
-        }
+        //function nodeSelected(event, node) {
+        //    options.$table.queryParams.AreaTree = node.id;
+        //    $("#IdentDining").submit();
+        //    //清空查询参数
+        //    options.$table.queryParams = {};
+        //}
     </script>
 }
 @section css{

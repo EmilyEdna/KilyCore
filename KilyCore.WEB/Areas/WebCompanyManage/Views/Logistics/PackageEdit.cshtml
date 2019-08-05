@@ -53,7 +53,7 @@
                         success: function (result) {
                             controller.SetCtrlValue("#Edit", result.data);
                             debugger;
-                             $("#ProductOutStockNo").selectpicker('val', result.data.ProductOutStockNo);
+                            $("#ProductOutStockNo").selectpicker('val', result.data.ProductOutStockNo);
                         }
                     });
             },
@@ -68,25 +68,37 @@
                     success: function (result) {
                         var html = '<option>===请选择===</option>';
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="'+obj.TrueName+'">' + obj.TrueName + '</option>';
+                            html += '<option value="' + obj.TrueName + '">' + obj.TrueName + '</option>';
                         });
                         $("#Manager").html(html);
                     }
                 });
-                 //计数器
-               setInterval(function () {
+                //计数器
+                setInterval(function () {
                     var ele = $("textarea");
                     var res = ele.val();
                     var replayArr = [];
                     if (controller.CheckFeild(res)) {
-                        var data = decodeURI(res).match(/\d+/g).filter(function (item) {
-                            return item != "" && item != "\n";
-                        });
+                        var data = null;
+                        if (controller.CheckFeild(decodeURI(res).match(/[A-F0-9]{8}(-[A-F0-9]{4}){3}-[A-F0-9]{12}/ig))) {
+                            //匹配箱码
+                            var data = decodeURI(res).match(/Code=\W+\S\d+/g).join(",").match(/\d+/g).filter(function (item) {
+                                return item != "" && item != "\n";
+                            })
+                        } else {
+                            //匹配追溯码和纹理二维码
+                            data = decodeURI(res).match(/\d+/g).filter(function (item) {
+                                return item != "" && item != "\n";
+                            });
+                        }
                         var datas = data.join(",") + ",";
                         for (var i = 0; i < data.length; i++) {
                             if (datas.replace(data[i] + ",", "").indexOf(data[i] + ",") > -1) {
                                 if ($.inArray(data[i], replayArr) < 0) {
                                     replayArr.push(data[i]);
+                                    $("#replay").val(replayArr.join(","));
+                                    $("#replaycount").val(replayArr.length);
+                                } else {
                                     $("#replay").val(replayArr.join(","));
                                     $("#replaycount").val(replayArr.length);
                                 }
@@ -100,7 +112,9 @@
                         $("#count").val(data.length);
                     } else {
                         $("#count").val(0);
+                        $("#activecount").val(0);
                         $("#replaycount").val(0);
+                        $("#replay").val("");
                     }
                 }, 100);
                 //验证
@@ -152,7 +166,7 @@
                 <tr>
                     <th><label class="control-label">装箱码</label></th>
                     <td class="has-warning" colspan="3">
-                        <textarea cols="5" rows="15" class="form-control" name="BoxCode"></textarea>
+                        <textarea cols="5" rows="15" class="form-control" name="BoxCode" placeholder="最大扫入2000个，建议不要超过4000个"></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -160,11 +174,11 @@
                         <div class="row">
                             <div class="col-sm-5">
                                 <div class="col-sm-2"><label class="control-label">扫码数量<span style="color:red">*</span></label></div>
-                                <div class="col-sm-2"><input type="text" class="form-control" readonly id="count" style="width:40px;" /></div>
+                                <div class="col-sm-2"><input type="text" class="form-control" readonly id="count" /></div>
                                 <div class="col-sm-2"><label class="control-label">重复数量<span style="color:red">*</span></label></div>
-                                <div class="col-sm-2"><input type="text" class="form-control" readonly id="replaycount" style="width:40px;" /></div>
+                                <div class="col-sm-2"><input type="text" class="form-control" readonly id="replaycount" /></div>
                                 <div class="col-sm-2"><label class="control-label">有效数量<span style="color:red">*</span></label></div>
-                                <div class="col-sm-2"><input type="text" class="form-control" readonly id="activecount" style="width:40px;" /></div>
+                                <div class="col-sm-2"><input type="text" class="form-control" readonly id="activecount" /></div>
                             </div>
                             <div class="col-sm-7">
                                 <div class="col-sm-2"><label class="control-label">重复号段</label><span style="color:red">*</span></div>

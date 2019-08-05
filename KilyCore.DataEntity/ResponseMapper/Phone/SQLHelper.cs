@@ -81,8 +81,8 @@ FROM dbo.EnterpriseTagAttach AS 绑定记录表
 WHERE 绑定记录表.StarSerialNo <= @Code
       AND 绑定记录表.EndSerialNo >= @Code
       AND 产品表.AuditType = 40
-      AND 绑定记录表.TagType = @CodeType
-      AND 企业表.CodeStar = @Fix;";
+      AND 绑定记录表.TagType = @CodeType";
+        public static string CodeStar = @" AND 企业表.CodeStar = @Fix;";
         public static string SQLMaterial = @"SELECT a.Id AS 原料,
            a.MaterName AS 原料名称,
            a.ExpiredDay AS 原料保质期,

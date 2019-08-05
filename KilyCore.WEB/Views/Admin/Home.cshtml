@@ -17,6 +17,8 @@
     <script src="~/Content/JavaScript/jquery.cookie.js"></script>
     <script src="~/Content/JavaScript/Controller.js"></script>
     <script src="~/Content/JavaScript/jquery.extension.js"></script>
+    <script src="~/Content/ExportPlugin/Script/xlsx.core.min.js"></script>
+    <script src="~/Content/ExportPlugin/Script/tableExport.js"></script>
 
     <script>
         //配置
@@ -78,9 +80,53 @@
                 });
             },
             //事件
-            InitEvents: function () { },
-            //行为
-            action: {}
+            InitEvents: function () {
+                setInterval(function () {
+                    controller.ajax({
+                        url: "Function/NotifyContract",
+                        data: {},
+                        success: function (res) {
+                            layer.open({
+                                title: "合同提醒",
+                                type: 1,
+                                skin: 'layui-layer-molv',
+                                area: ['250px', '150px'],
+                                offset: "rb",
+                                shade: 0,
+                                content: "<span style='margin:20px 35px'>当前有：<span style='color:red'>" + res.data.split(',').length + "</span>家企业合同即将到期<span>",
+                                btn: ['导出', '关闭'],
+                                time: 10000,
+                                yes: function (index, item) {
+                                    controller.ajax({
+                                        url: "Function/NofityCompany",
+                                        data: { Id: res.data },
+                                        success: function (result) {
+                                            let html = '';
+                                            $.each(result.data, function (i, obj) {
+                                                html += '<tr><td style="text-align:center">' + obj.CompanyName + '</td>';
+                                                html += '<td style="text-align:center">' + obj.CompanyAddress + '</td>'
+                                                html += '<td style="text-align:center">' + obj.SafeOffer + '</td>'
+                                                html += '<td style="text-align:center">' + obj.CompanyPhone + '</td></tr>'
+                                            });
+                                            $("#contracthelp").html(html);
+                                            $("#fulltable").removeClass("hidden");
+                                            $("#fulltable").tableExport({
+                                                fileName: "合同即将到期统计",
+                                                ignoreColumn: ["Handler"],
+                                                type: "excel",
+                                                mso: {
+                                                    worksheetName: "合同即将到期统计",
+                                                }
+                                            });
+                                            $("#fulltable").addClass("hidden");
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }, 3600000)
+            },
         };
         //初始化
         $(document).ready(function () {
@@ -88,7 +134,8 @@
         });
     </script>
 </head>
-<body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
+<body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden;">
+
     <div id="wrapper">
         <!--左侧导航开始-->
         <nav class="navbar-default navbar-static-side" role="navigation">
@@ -188,5 +235,21 @@
     <script src="~/Content/Tabs/contabs.js"></script>
     <script src="~/Content/Pace/pace.js"></script>
     <script src="~/Content/HPlus/Script/hplus.min.js"></script>
+
+    <table class="table hidden table-bordered table-hover" id="fulltable">
+        <thead>
+            <tr>
+                <th colspan="4" style="text-align:center">合同到期详情记录表</th>
+            </tr>
+            <tr>
+                <th style="text-align:center">企业名称</th>
+                <th style="text-align:center">企业地址</th>
+                <th style="text-align:center">联系人</th>
+                <th style="text-align:center">电话</th>
+            </tr>
+        </thead>
+        <tbody id="contracthelp">
+        </tbody>
+    </table>
 </body>
 </html>
