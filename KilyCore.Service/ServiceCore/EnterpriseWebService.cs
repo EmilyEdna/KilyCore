@@ -3775,8 +3775,6 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string EditStockAttach(RequestEnterpriseGoodsStockAttach Param)
         {
-            EnterpriseTagAttach TagFinal = null;
-            string UseTagFinal = string.Empty;
             if (Param.CodeType == 1)
             {
                 if (!string.IsNullOrEmpty(Param.BoxCodeNo))
@@ -3881,8 +3879,6 @@ namespace KilyCore.Service.ServiceCore
                             Code = UseTag
                         };
                         Insert<EnterpriseTagUseRecord>(record);
-                        TagFinal = TagAttach;
-                        UseTagFinal = UseTag;
                     }
                     else
                     {
@@ -3895,25 +3891,9 @@ namespace KilyCore.Service.ServiceCore
                             Code = OneTag.Count() != 0 ? string.Join(",", OneTag) : string.Join(",", VenTag)
                         };
                         Insert<EnterpriseTagUseRecord>(record);
-                        TagFinal = TagAttach;
                         UpdateField(TagAttach, "UseTag");
                     }
                 }
-            }
-            //自动去重计算
-            if (!string.IsNullOrEmpty(UseTagFinal))
-            {
-                var Data_Tag = TagFinal.UseTag.Split(',').Where(t => !string.IsNullOrEmpty(t)).ToList();
-                var Temp_Tag = UseTagFinal.Split('|').Where(t => !string.IsNullOrEmpty(t)).ToList();
-                Param.OutStockNum = Param.OutStockNum - Temp_Tag.Count();
-                //自动去重
-                Temp_Tag.ForEach(x =>
-                {
-                    if (Data_Tag.Contains(x))
-                        Data_Tag.Remove(x);
-                });
-                TagFinal.UseTag = string.Join(",", Data_Tag);
-                UpdateField(TagFinal, "UseTag");
             }
             if (Param.OutStockNum <= 0)
                 return "出库数量必须大于0";
@@ -3924,14 +3904,7 @@ namespace KilyCore.Service.ServiceCore
             stock.InStockNum -= Param.OutStockNum;
             EnterpriseGoodsStockAttach Attach = Param.MapToEntity<EnterpriseGoodsStockAttach>();
             UpdateField(stock, "InStockNum");
-            Insert<EnterpriseGoodsStockAttach>(Attach);
-            if (!string.IsNullOrEmpty(UseTagFinal))
-            {
-                return $"号段{UseTagFinal}已经出库，系统为您自动删除重复，出库成功，出库数量：{Param.OutStockNum}";
-            }
-            else {
-                return ServiceMessage.INSERTSUCCESS;
-            }
+            return Insert<EnterpriseGoodsStockAttach>(Attach) ? ServiceMessage.INSERTFAIL : ServiceMessage.INSERTFAIL;
         }
         /// <summary>
         /// 删除出库
