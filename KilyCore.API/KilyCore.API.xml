@@ -4438,6 +4438,13 @@
             <param name="Key"></param>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.TempController.GetTempTime(KilyCore.DataEntity.ResponseMapper.Enterprise.ResponseEnterpriseEnv)">
+            <summary>
+            监测实时数据
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
         <member name="M:KilyCore.API.Startup.GetAssembly">
             <summary>
             加载所有程序集
