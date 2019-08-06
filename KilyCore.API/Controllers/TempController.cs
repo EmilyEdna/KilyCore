@@ -98,7 +98,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("GetTempTime")]
         [AllowAnonymous]
         public ObjectResultEx GetTempTime(ResponseEnterpriseEnv Param)
         {
