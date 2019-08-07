@@ -17,10 +17,10 @@
             //元素
             InitDom: function () {
                 var Guid = controller.GetParam("Id");
+                controller.LayDate({ elem: "input[name='ExpiredTime']", max: controller.GetDate(10) });
                 if (Guid != null && Guid != undefined && Guid != "")
                     options.GetUserDetail(Guid);
-                else
-                {
+                else {
                     $("#InfoId").val(RepastUser.Id);
                     $("#VersionType").val(RepastUser.VersionType);
                     $("#MerchantName").val(RepastUser.MerchantName);
@@ -35,8 +35,8 @@
                     type: "post",
                     async: false,
                     success: function (result) {
-                        controller.SetCtrlValue("#Edit",result.data)
-                     }
+                        controller.SetCtrlValue("#Edit", result.data)
+                    }
                 });
             },
             //获取集团账户
@@ -46,8 +46,7 @@
                     data: {},
                     type: "post",
                     async: false,
-                    success: function (result)
-                    {
+                    success: function (result) {
                         var html = '<option>===请选择===</option>';
                         $.each(result.data, function (i, obj) {
                             html += '<option value="' + obj.Id + '">' + obj.AuthorName + '</option>'
@@ -119,6 +118,12 @@
                         <select type="select" class="form-control" name="DingRoleId" id="DingRoleId">
                             <option>===请选择===</option>
                         </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">健康证到期时间<span style="color:red">*</span></label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" class="form-control required" name="ExpiredTime" data-msg-required="请输入到期时间" />
                     </td>
                 </tr>
                 <tr>

@@ -46,4 +46,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         /// </summary>
         public string Manager { get; set; }
     }
+    public class ResponseBillTicket
+    {
+        public Guid Id { get; set; }
+        public string Theme { get; set; }
+        public DateTime? UpTime { get; set; }
+    }
 }

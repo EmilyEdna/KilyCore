@@ -28,6 +28,7 @@ namespace KilyCore.EntityFrameWork.EntityMapping.Repast
             builder.ToTable(typeof(RepastInfoUser).Name);
             builder.HasKey(t => t.Id);
             builder.Property(t => t.Account).IsRequired();
+            builder.Property(t => t.ExpiredTime).HasColumnType(typeof(DateTime).Name);
             builder.Property(t => t.PassWord).IsRequired();
         }
     }

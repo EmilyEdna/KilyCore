@@ -59,4 +59,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         /// </summary>
         public string Remark { get; set; }
     }
+    public class ResponseFoodMenu
+    {
+        public Guid Id { get; set; }
+        public string FoodMenuName { get; set; }
+        public DateTime? UpTime { get; set; }
+    }
 }

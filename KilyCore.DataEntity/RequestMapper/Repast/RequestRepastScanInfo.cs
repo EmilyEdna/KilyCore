@@ -64,6 +64,14 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
         /// </summary>
         public string AdditiveIds { get; set; }
         /// <summary>
+        /// 台账Ids
+        /// </summary>
+        public string Tickets { get; set; }
+        /// <summary>
+        /// 周菜谱Ids
+        /// </summary>
+        public string WeekMenus { get; set; }
+        /// <summary>
         /// 上架时间
         /// </summary>
         public DateTime? ShowTime { get; set; }

@@ -3450,6 +3450,20 @@
             <param name="Param"></param>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetMerchantTicketPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestBillTicket})">
+            <summary>
+            凭证分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.EditTheme(KilyCore.DataEntity.RequestMapper.Repast.RequestBillTicket)">
+            <summary>
+            添加凭证
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
         <member name="M:KilyCore.API.Controllers.RepastWebController.GetSellbillPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastSellbill})">
             <summary>
             销售台账分页
@@ -3531,6 +3545,20 @@
         <member name="M:KilyCore.API.Controllers.RepastWebController.SaveDish(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastDish)">
             <summary>
             编辑菜品
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetMerchantWeekPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestFoodMenu})">
+            <summary>
+            周菜谱列表
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.EditFoodMenu(KilyCore.DataEntity.RequestMapper.Repast.RequestFoodMenu)">
+            <summary>
+            编辑周菜谱
             </summary>
             <param name="Param"></param>
             <returns></returns>
@@ -3965,6 +3993,18 @@
         <member name="M:KilyCore.API.Controllers.RepastWebController.GetAdditiveList">
             <summary>
             添加剂列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetTicketList">
+            <summary>
+            台账列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetWeekMenuList">
+            <summary>
+            周菜谱列表
             </summary>
             <returns></returns>
         </member>

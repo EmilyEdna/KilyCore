@@ -102,6 +102,10 @@ namespace KilyCore.Service.IServiceCore
         ResponseRepastBuybill GetBuybillDetail(Guid Id);
         String EditBuybill(RequestRepastBuybill Param);
         #endregion
+        #region 台账凭证
+        PagedResult<ResponseBillTicket> GetMerchantTicketPage(PageParamList<RequestBillTicket> pageParam);
+        String EditTheme(RequestBillTicket Param);
+        #endregion
         #region 销售台账
         PagedResult<ResponseRepastSellbill> GetSellbillPage(PageParamList<RequestRepastSellbill> pageParam);
         String RemoveSellbill(Guid Id);
@@ -112,7 +116,7 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseRepastVideo> GetVideoPage(PageParamList<RequestRepastVideo> pageParam);
         String SaveVideo(RequestRepastVideo Param);
         String DeleteVideo(Guid Id);
-        String ShowVideo(Guid Id,bool flag);
+        String ShowVideo(Guid Id, bool flag);
         #endregion
         #endregion
         #region 菜品管理
@@ -120,6 +124,8 @@ namespace KilyCore.Service.IServiceCore
         ResponseRepastDish GetDishDetail(Guid Id);
         String DeleteDish(Guid Id);
         String SaveDish(RequestRepastDish Param);
+        PagedResult<ResponseFoodMenu> GetMerchantWeekPage(PageParamList<RequestFoodMenu> pageParam);
+        String EditFoodMenu(RequestFoodMenu Param);
         #endregion
         #region 溯源追踪
         #region 原料溯源
@@ -198,9 +204,9 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 导出Excel
         IList<Object> ExportStuffInStockFile(String Param);
-         IList<Object> ExportStuffOutStockFile(String Param);
-         IList<Object> ExportGoodsInStockFile(String Param);
-         IList<Object> ExportGoodsOutStockFile(String Param);
+        IList<Object> ExportStuffOutStockFile(String Param);
+        IList<Object> ExportGoodsInStockFile(String Param);
+        IList<Object> ExportGoodsOutStockFile(String Param);
         #endregion
         #region 数据统计
         Object GetDataCount(Guid? Id);
@@ -215,12 +221,14 @@ namespace KilyCore.Service.IServiceCore
         Object GetDishList();
         Object GetStuffList();
         Object GetVideoList();
-         Object GetUserList();
-         Object GetDuckList();
-         Object GetDrawList();
-         Object GetSampleList();
-         Object GetDisinfectList();
-         Object GetAdditiveList();
+        Object GetUserList();
+        Object GetDuckList();
+        Object GetDrawList();
+        Object GetSampleList();
+        Object GetDisinfectList();
+        Object GetAdditiveList();
+        Object GetTicketList();
+        Object GetWeekMenuList();
         #endregion
         #region 手机端信息
         ResponseRepastScanInfos GetMobileScanInfo(Guid Id);

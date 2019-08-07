@@ -10,6 +10,10 @@ namespace KilyCore.WEB.Areas.WebMerchantManage.Controllers
     public class RepastVarietyController : Controller
     {
         #region 菜品管理
+        public IActionResult MerchantWeek()
+        {
+            return View();
+        }
         public IActionResult MerchantDish()
         {
             return View();
