@@ -2593,18 +2593,12 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public Object GetDataCount(Guid? Id)
         {
-            int Supplier = 0;
-            int Video = 0;
-            int Dish = 0;
-            int User = 0;
-            int Stuff = 0;
-            int Info = 0;
-            IQueryable<RepastSupplier> S1 = Kily.Set<RepastSupplier>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id);
-            IQueryable<RepastVideo> S2 = Kily.Set<RepastVideo>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id);
-            IQueryable<RepastDish> S3 = Kily.Set<RepastDish>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id);
-            IQueryable<RepastInfoUser> S4 = Kily.Set<RepastInfoUser>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id);
-            IQueryable<RepastStuff> S5 = Kily.Set<RepastStuff>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id);
-            IQueryable<RepastInfo> S6 = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id);
+            var Supplier = Kily.Set<RepastSupplier>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id).Count();
+            var Video = Kily.Set<RepastVideo>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id).Count();
+            var Dish = Kily.Set<RepastDish>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id).Count();
+            var User = Kily.Set<RepastInfoUser>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id).Count();
+            var Stuff = Kily.Set<RepastStuff>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id).Count();
+            var Info = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id).Count();
             Object data = new { Supplier, Video, Dish, User, Stuff, Info };
             return data;
         }
@@ -2767,7 +2761,7 @@ namespace KilyCore.Service.ServiceCore
             return queryable.Select(t => new
             {
                 t.Id,
-                Name = t.HandleWays
+                Name = t.HandleWays + "-" + t.HandleTime.Value.ToString("yyyy-MM-dd")
             }).ToList();
         }
         /// <summary>
@@ -2784,7 +2778,7 @@ namespace KilyCore.Service.ServiceCore
             return queryable.Select(t => new
             {
                 t.Id,
-                Name = t.DrawUnit
+                Name = t.DrawUnit + "-" + t.DrawTime.Value.ToString("yyyy-MM-dd")
             }).ToList();
         }
         /// <summary>
@@ -2801,7 +2795,7 @@ namespace KilyCore.Service.ServiceCore
             return queryable.Select(t => new
             {
                 t.Id,
-                Name = t.DishName
+                Name = t.DishName + "-" + t.SampleTime.Value.ToString("yyyy-MM-dd")
             }).ToList();
         }
         /// <summary>
@@ -2818,7 +2812,7 @@ namespace KilyCore.Service.ServiceCore
             return queryable.Select(t => new
             {
                 t.Id,
-                Name = t.DisinfectName
+                Name = t.DisinfectName + "-" + t.DisinfectTime.Value.ToString("yyyy-MM-dd")
             }).ToList();
         }
         /// <summary>
@@ -2835,7 +2829,7 @@ namespace KilyCore.Service.ServiceCore
             return queryable.Select(t => new
             {
                 t.Id,
-                Name = t.AdditiveName
+                Name = t.AdditiveName + "-" + t.UseTime.Value.ToString("yyyy-MM-dd")
             }).ToList();
         }
         /// <summary>
@@ -2852,7 +2846,7 @@ namespace KilyCore.Service.ServiceCore
             return queryable.Select(t => new
             {
                 t.Id,
-                Name = t.Theme
+                Name = t.Theme + "-" + t.UpTime.Value.ToString("yyyy-MM-dd")
             }).ToList();
         }
         /// <summary>
@@ -2869,7 +2863,7 @@ namespace KilyCore.Service.ServiceCore
             return queryable.Select(t => new
             {
                 t.Id,
-                Name = t.FoodMenuName
+                Name = t.FoodMenuName + "-" + t.UpTime.Value.ToString("yyyy-MM-dd")
             }).ToList();
         }
         #endregion

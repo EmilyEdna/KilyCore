@@ -85,6 +85,7 @@
                         success: function (result) {
                             controller.SetCtrlValue("#Edit", result.data);
                             Editor.summernote('code', result.data.Remark);
+                             $("#t1").text("库存数量");
                         }
                     });
             },
@@ -161,7 +162,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">入库数量</label></th>
+                    <th><label class="control-label" id="t1">入库数量</label></th>
                     <td class="has-warning">
                         <input type="text" class="form-control" name="InStorageNum" />
                     </td>
