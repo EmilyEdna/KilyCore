@@ -493,6 +493,28 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(RepastWebService.EditBuybill(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 台账凭证
+        /// <summary>
+        /// 凭证分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetMerchantTicketPage")]
+        public ObjectResultEx GetMerchantTicketPage(PageParamList<RequestBillTicket> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetMerchantTicketPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 添加凭证
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditTheme")]
+        public ObjectResultEx EditTheme(RequestBillTicket Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.EditTheme(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
         #region 销售台账
         /// <summary>
         /// 销售台账分页
@@ -620,6 +642,26 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx SaveDish(RequestRepastDish Param)
         {
             return ObjectResultEx.Instance(RepastWebService.SaveDish(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 周菜谱列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetMerchantWeekPage")]
+        public ObjectResultEx GetMerchantWeekPage(PageParamList<RequestFoodMenu> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetMerchantWeekPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑周菜谱
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("SaveDish")]
+        public ObjectResultEx EditFoodMenu(RequestFoodMenu Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.EditFoodMenu(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
 
@@ -1302,6 +1344,24 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetAdditiveList()
         {
             return ObjectResultEx.Instance(RepastWebService.GetAdditiveList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 台账列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetTicketList")]
+        public ObjectResultEx GetTicketList()
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetTicketList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 周菜谱列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetWeekMenuList")]
+        public ObjectResultEx GetWeekMenuList()
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetWeekMenuList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
 

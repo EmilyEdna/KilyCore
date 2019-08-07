@@ -626,7 +626,6 @@ controller.Validate = function (element, data, isRefrsh = false, isRole = false)
         onkeyup: false,
         onfocusout: false,
         showErrors: function (errormap, errorlist) {
-          
             $.each(errorlist, function (index, item) {
                 controller.Msg(item.message);
                 item.element.focus();
@@ -637,11 +636,7 @@ controller.Validate = function (element, data, isRefrsh = false, isRole = false)
             var action = $(form).attr("action");
             var method = $(form).attr("method");
             controller.RemoveDisabled(form);
-            //var datas = data != undefined ? data : $(element).SerializeJson();
-            var datas = $(form).SerializeJson();
-            if (isRole) {//角色权限
-                datas = $(form).SerializeOver();
-            }
+            var datas = data != undefined ? data : $(form).SerializeJson();
             controller.ajax({
                 url: action,
                 type: method,

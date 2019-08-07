@@ -345,19 +345,21 @@ namespace KilyCore.Service.ServiceCore
             Param.CompanyId = data.CompanyId;
             EnterpriseInfo Info = Param.MapToEntity<EnterpriseInfo>();
             //调用远程接口
-            if (!string.IsNullOrEmpty(data.InviteCode)) {
-               string Area =  Kily.Set<EnterpriseInviteCode>().Where(t => t.InviteCode == data.InviteCode).Select(t => t.UseTypePath).FirstOrDefault();
+            if (!string.IsNullOrEmpty(data.InviteCode))
+            {
+                string Area = Kily.Set<EnterpriseInviteCode>().Where(t => t.InviteCode == data.InviteCode).Select(t => t.UseTypePath).FirstOrDefault();
                 if (!data.TypePath.Contains(Area))
                     return "请在邀请码选中区域使用!";
                 //验证信息是否正确
                 Info.AuditType = AuditEnum.AuditSuccess;
-                RequestStayContract contract = new RequestStayContract() {
-                    CompanyId=Info.Id,
-                    TypePath=Info.TypePath,
-                    CompanyName=Info.CompanyName,
-                    VersionType= SystemVersionEnum.Test,
-                    ContractType=2,
-                    IsFormInviteCode=true
+                RequestStayContract contract = new RequestStayContract()
+                {
+                    CompanyId = Info.Id,
+                    TypePath = Info.TypePath,
+                    CompanyName = Info.CompanyName,
+                    VersionType = SystemVersionEnum.Test,
+                    ContractType = 2,
+                    IsFormInviteCode = true
                 };
                 SaveContract(contract);
                 var CompanyType = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(Info.CompanyType);
@@ -3373,8 +3375,8 @@ namespace KilyCore.Service.ServiceCore
                 Goods = Goods.Where(t => t.ProductName.Contains(pageParam.QueryParam.GoodsName));
             if (CompanyInfo() != null)
             {
-                var StockList = Stock.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId)).ToList();
-                var Temp = StockList.OrderByDescending(t => t.CreateTime).Join(Goods, t => t.GoodsId, x => x.Id, (t, x) => new { t, x }).ToList();
+                var StockList = Stock.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
+                var Temp = StockList.OrderByDescending(t => t.CreateTime).Join(Goods, t => t.GoodsId, x => x.Id, (t, x) => new { t, x });
                 if (CompanyInfo().CompanyType == CompanyEnum.Plant || CompanyInfo().CompanyType == CompanyEnum.Culture)
                     return Temp.GroupJoin(Note, p => p.t.GrowNoteId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
                     {
@@ -3383,7 +3385,7 @@ namespace KilyCore.Service.ServiceCore
                         GoodsName = p.x.ProductName,
                         GoodsBatchNo = p.t.GoodsBatchNo,
                         StockType = p.t.StockType,
-                        Spec=p.x.Spec,
+                        Spec = p.x.Spec,
                         InStockNum = p.t.InStockNum,
                         ProBatch = o.FirstOrDefault().BatchNo,
                         GoodsId = p.x.Id,
@@ -3394,7 +3396,7 @@ namespace KilyCore.Service.ServiceCore
                         TotalCount = attaches.Where(t => t.StockId == p.t.Id).Select(t => t.OutStockNum).Sum() + p.t.InStockNum,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material
-                    }).ToList().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                    }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
                 if (CompanyInfo().CompanyType == CompanyEnum.Production)
                     return Temp.GroupJoin(Batch, p => p.t.BatchId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
                     {
@@ -3415,7 +3417,7 @@ namespace KilyCore.Service.ServiceCore
                         TotalCount = attaches.Where(t => t.StockId == p.t.Id).Select(t => t.OutStockNum).Sum() + p.t.InStockNum,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
-                    }).ToList().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                    }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
                 if (CompanyInfo().CompanyType == CompanyEnum.Circulation)
                     return Temp.GroupJoin(Buyer, p => p.t.BuyId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
                     {
@@ -3435,7 +3437,7 @@ namespace KilyCore.Service.ServiceCore
                         TotalCount = attaches.Where(t => t.StockId == p.t.Id).Select(t => t.OutStockNum).Sum() + p.t.InStockNum,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
-                    }).ToList().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                    }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             }
             else
             {
@@ -3460,7 +3462,7 @@ namespace KilyCore.Service.ServiceCore
                         TotalCount = attaches.Where(t => t.StockId == p.t.Id).Select(t => t.OutStockNum).Sum() + p.t.InStockNum,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material
-                    }).ToList().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                    }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
                 if (CompanyUser().CompanyType == CompanyEnum.Production)
                     return Temp.GroupJoin(Batch, p => p.t.BatchId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
                     {
@@ -3481,7 +3483,7 @@ namespace KilyCore.Service.ServiceCore
                         TotalCount = attaches.Where(t => t.StockId == p.t.Id).Select(t => t.OutStockNum).Sum() + p.t.InStockNum,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
-                    }).ToList().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                    }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
                 if (CompanyUser().CompanyType == CompanyEnum.Circulation)
                     return Temp.GroupJoin(Buyer, p => p.t.BuyId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
                     {
@@ -3501,7 +3503,7 @@ namespace KilyCore.Service.ServiceCore
                         TotalCount = attaches.Where(t => t.StockId == p.t.Id).Select(t => t.OutStockNum).Sum() + p.t.InStockNum,
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
-                    }).ToList().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                    }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             }
             return null;
         }
@@ -3821,7 +3823,7 @@ namespace KilyCore.Service.ServiceCore
                         return "请扫入溯源码或者纹理码";
                     if (OneTag.Count() != 0 && VenTag.Count() != 0)
                         return "请勿混用纹理二维码和追溯码";
-                    var TagAttachs = Kily.Set<EnterpriseTagAttach>().Where(t => t.StockNo == stockInNo).ToList();
+                    var TagAttachs = Kily.Set<EnterpriseTagAttach>().Where(t => t.StockNo == stockInNo).AsNoTracking().ToList();
                     EnterpriseTagAttach TagAttach = null;
                     string UseTag = string.Empty;
                     if (OneTag.Count() != 0)
@@ -3830,12 +3832,19 @@ namespace KilyCore.Service.ServiceCore
                         foreach (var item in OneTag)
                         {
                             long No = Convert.ToInt64(item.Split("W")[1].Substring(0, 12));
-                            TagAttach = TagAttachs.Where(t => t.StarSerialNo <= No && t.EndSerialNo >= No).FirstOrDefault();
-                            TagAttach.UseTag = TagAttach.UseTag ?? "";
-                            if (TagAttach.UseTag.Contains(item))
-                                UseTag += item + "|";
+                            TagAttach = TagAttachs.Where(t => t.StarSerialNo <= No && t.EndSerialNo >= No).AsQueryable().AsNoTracking().FirstOrDefault();
+                            //判断是否重复使用
+                            if (!string.IsNullOrEmpty(TagAttach.UseTag))
+                            {
+                                if (TagAttach.UseTag.Split(',').Where(t => !string.IsNullOrEmpty(t)).ToList().Contains(item))
+                                    UseTag += item + "|";
+                                else
+                                    TagAttach.UseTag += item + ",";
+                            }
                             else
+                            {
                                 TagAttach.UseTag += item + ",";
+                            }
                         }
                     }
                     else
@@ -3844,17 +3853,47 @@ namespace KilyCore.Service.ServiceCore
                         foreach (var item in VenTag)
                         {
                             long No = Convert.ToInt64(item.Substring(0, 11));
-                            TagAttach = TagAttachs.Where(t => t.StarSerialNo <= No && t.EndSerialNo >= No).FirstOrDefault();
-                            TagAttach.UseTag = TagAttach.UseTag ?? "";
-                            if (TagAttach.UseTag.Contains(item))
-                                UseTag += item + "|";
+                            TagAttach = TagAttachs.Where(t => t.StarSerialNo <= No && t.EndSerialNo >= No).AsQueryable().AsNoTracking().FirstOrDefault();
+                            //判断是否重复使用
+                            if (!string.IsNullOrEmpty(TagAttach.UseTag))
+                            {
+                                if (TagAttach.UseTag.Split(',').Where(t => !string.IsNullOrEmpty(t)).ToList().Contains(item))
+                                    UseTag += item + "|";
+                                else
+                                    TagAttach.UseTag += item + ",";
+                            }
                             else
+                            {
                                 TagAttach.UseTag += item + ",";
+                            }
                         }
                     }
                     if (!string.IsNullOrEmpty(UseTag))
-                        return $"号段{UseTag}已经出库，请勿重复使用";
-                    UpdateField(TagAttach, "UseTag");
+                    {
+                        EnterpriseTagUseRecord record = new EnterpriseTagUseRecord
+                        {
+                            CompanyId = Param.CompanyId,
+                            TagUser = CompanyInfo() == null ? CompanyUser().TrueName : CompanyInfo().CompanyName,
+                            TagCount = UseTag.Split('|').Count() - 1,
+                            Source = "重复使用出库异常",
+                            Code = UseTag
+                        };
+                        Insert<EnterpriseTagUseRecord>(record);
+                        return $"号段{UseTag}已经出库，请勿重复出库!";
+                    }
+                    else
+                    {
+                        EnterpriseTagUseRecord record = new EnterpriseTagUseRecord
+                        {
+                            CompanyId = Param.CompanyId,
+                            TagUser = CompanyInfo() == null ? CompanyUser().TrueName : CompanyInfo().CompanyName,
+                            TagCount = Param.OutStockNum,
+                            Source = "正常出库",
+                            Code = OneTag.Count() != 0 ? string.Join(",", OneTag) : string.Join(",", VenTag)
+                        };
+                        Insert<EnterpriseTagUseRecord>(record);
+                        UpdateField(TagAttach, "UseTag");
+                    }
                 }
             }
             if (Param.OutStockNum <= 0)
@@ -4498,7 +4537,7 @@ namespace KilyCore.Service.ServiceCore
         public PagedResult<ResponseEnterpriseScanCodeInfo> GetLogisticsErrorPage(PageParamList<RequestEnterpriseScanCodeInfo> pageParam)
         {
             var data = Kily.Set<EnterpriseScanCodeInfo>()
-                 .Where(t => t.ScanPackageNo.Contains(pageParam.QueryParam.ScanPackageNo))
+                 .Where(t => t.TakeCarId == pageParam.QueryParam.TakeCarId)
                  .OrderByDescending(t => t.CreateTime).Select(t => new ResponseEnterpriseScanCodeInfo
                  {
                      ScanAddress = t.ScanAddress,
@@ -4708,7 +4747,7 @@ namespace KilyCore.Service.ServiceCore
                 ProTime = t.ProTime,
                 Num = t.Num,
                 Spec = t.Spec,
-                ProMerchant=t.ProMerchant,
+                ProMerchant = t.ProMerchant,
                 CheckReport = t.CheckReport
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -5321,6 +5360,7 @@ namespace KilyCore.Service.ServiceCore
                 var No = Kily.Set<EnterpriseNote>().Where(t => t.Id.ToString() == Base.成长档案).Select(t => t.BatchNo).FirstOrDefault();
                 var Plants = Kily.Set<EnterprisePlanting>().AsQueryable();
                 var Drugs = Kily.Set<EnterpriseDrug>().AsQueryable();
+                var AgeUp = Kily.Set<EnterpriseAgeUp>().AsQueryable();
                 if (Base.企业类型 == "10")
                 {
                     Base.Plants = Plants.Where(t => t.IsType == 1).Select(t => new Plant
@@ -5334,6 +5374,11 @@ namespace KilyCore.Service.ServiceCore
                         DrugName = t.DrugName,
                         PlantTime = t.PlantTime,
                         Producter = t.Producter
+                    }).ToList();
+                    Base.AgeUps = AgeUp.Where(t => t.BatchNo == No).Select(t => new AgeUp
+                    {
+                        LvName = t.LvName,
+                        LvImg = t.LvImg
                     }).ToList();
                 }
                 else
@@ -5349,6 +5394,11 @@ namespace KilyCore.Service.ServiceCore
                         DrugName = t.DrugName,
                         PlantTime = t.PlantTime,
                         Producter = t.Producter
+                    }).ToList();
+                    Base.AgeUps = AgeUp.Where(t => t.BatchNo == No).Select(t => new AgeUp
+                    {
+                        LvName = t.LvName,
+                        LvImg = t.LvImg
                     }).ToList();
                 }
                 Base.Environs = Kily.Set<EnterpriseEnvironment>().Where(t => t.BatchNo == No).Select(t => new Environ
@@ -5372,7 +5422,7 @@ namespace KilyCore.Service.ServiceCore
                     进货产品规格 = t.Spec,
                     生产时间 = t.ProTime.Value.ToString("yyyy-MM-dd HH:mm:ss"),
                     进货产品质检 = t.CheckReport,
-                    进货生产商=t.ProMerchant
+                    进货生产商 = t.ProMerchant
                 }).FirstOrDefault();
                 Base.进货生产商地址 = Kily.Set<EnterpriseSeller>().Where(t => t.SellerType == SellerEnum.Production).Where(t => t.SupplierName.Equals(进货信息.进货生产商)).FirstOrDefault()?.Address;
                 Base.进货批次 = 进货信息.进货批次;

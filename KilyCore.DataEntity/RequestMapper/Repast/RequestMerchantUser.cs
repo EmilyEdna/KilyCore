@@ -63,5 +63,9 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
         /// 商家名称
         /// </summary>
         public string MerchantName { get; set; }
+        /// <summary>
+        /// 健康证到期时间
+        /// </summary>
+        public DateTime? ExpiredTime { get; set; }
     }
 }

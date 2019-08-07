@@ -49,7 +49,6 @@
             },
             //倒计时
             SetTime: function () {
-                var html = '';
                 if (Timer > 0) {
                     html = Timer + "秒";
                     Account = setTimeout("options.SetTime()", 1000);
@@ -61,7 +60,6 @@
                     html = '获取验证码';
                     $(".code").removeAttr("disabled");
                 }
-                $(".code").text(html);
             },
             InitEvents: function () {
                 //注册事件

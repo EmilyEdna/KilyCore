@@ -1,0 +1,129 @@
+﻿
+@{
+    ViewData["Title"] = "MerchantTicket";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                controller.Editor(".summernote", { width: 1000 });
+                controller.LayDate({ elem: "input[name='UpTime']" });
+                //恢复高度
+                $(window).resize(function (e) {
+                    window.setTimeout(function () {
+                        options.$table.bootstrapTable("resetView", { height: $(window).height() - 150 });
+                    }, 200);
+                    e.stopPropagation();
+                });
+                //设置表单
+                this.$table = controller.Table("#tableList", { url: "RepastWeb/GetMerchantTicketPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#PEdit" });
+            },
+            //事件
+            InitEvents: function () {
+                $("#save").click(function () {
+                    controller.Validate("#Edit");
+                    $("#Edit").submit();
+                })
+            },
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<!--导航-->
+<div class="tabs-container" style="margin-top:10px;">
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a data-toggle="tab" href="#tab-1" aria-expanded="true">凭证台账列表</a>
+        </li>
+        <li>
+            <a data-toggle="tab" href="#tab-2" aria-expanded="false">新增凭证台账</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div id="tab-1" class="tab-pane active">
+            <div class="ibox-content">
+                <div class="row">
+                    <form id="PEdit">
+                        <div class="col-sm-8 m-b-xs">
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" placeholder="上报主题" class="input-sm form-control" name="Theme">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
+                                    <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive m-t-sm">
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="Theme" data-halign="center" data-align="center" data-valign="middle">上报主题</th>
+                                <th data-field="UpTime" data-halign="center" data-align="center" data-valign="middle">上报时间</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="tab-2" class="tab-pane">
+            <div class="panel-body">
+                <form method="post" class="form-horizontal" action="RepastWeb/EditTheme" id="Edit">
+                    <input type="hidden" name="Id" />
+                    <!--名称-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">请输入主题名称<span style="color:red">*</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control required" name="Theme" data-msg-required="请输入主题名称">
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--时间-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">请输入上报日期<span style="color:red">*</span></label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control required" name="UpTime" data-msg-required="请输入上报日期">
+                        </div>
+                        <div class="col-sm-6"></div>
+                    </div>
+                    <div class="hr-line-dashed"></div>
+                    <!--内容-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">请输入内容<span style="color:red">*</span></label>
+                        <div class="col-sm-4">
+                            <div class="summernote" name="Content"></div>
+                        </div>
+                        <div class="col-sm-6">
+                            <input class="hidden" name="Content" />
+                        </div>
+                    </div>
+                    <!--结束-->
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-2">
+                            <button class="btn btn-primary" type="button" id="save">保存内容</button>
+                            <button class="btn btn-white" type="button">取消</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

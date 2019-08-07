@@ -58,6 +58,24 @@ namespace KilyCore.Service.QueryExtend
         /// <param name="query"></param>
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
+        /// <returns></returns>
+        public static PagedResult<T> ToPagedResult<T>(this IEnumerable<T> query, int pageIndex, int pageSize)
+        {
+            PagedResult<T> pagedResult = new PagedResult<T>();
+            pagedResult.Index = pageIndex;
+            pagedResult.PageSize = pageSize;
+            pagedResult.Total = query.Count();
+            if (pagedResult.Total != 0)
+                pagedResult.List.AddRange(query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList());
+            return pagedResult;
+        }
+        /// <summary>
+        /// 分页
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="query"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
         /// <param name="sortName"></param>
         /// <param name="sortDirection"></param>
         /// <returns></returns>

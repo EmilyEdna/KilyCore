@@ -47,4 +47,9 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
         /// </summary>
         public string Manager { get; set; }
     }
+    public class RequestBillTicket {
+        public string Theme { get; set; }
+        public DateTime? UpTime { get; set; }
+        public string Content { get; set; }
+    }
 }

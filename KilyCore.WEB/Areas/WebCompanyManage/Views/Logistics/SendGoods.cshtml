@@ -66,8 +66,8 @@
                     "click .watch": function (event, val, row, index) {
                           controller.OpenWindow({
                             title: "串货详情",
-                            type: 2,
-                            url: "WebCompanyManage/Logistics/SendError?No=" + row.PackageNo,
+                              type: 2,
+                              url: "WebCompanyManage/Logistics/SendError?No=" + row.Id,
                             height: "90%",
                             width: "80%",
                             callBack: function (result) {

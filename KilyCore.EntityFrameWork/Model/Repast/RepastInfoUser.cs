@@ -50,6 +50,10 @@ namespace KilyCore.EntityFrameWork.Model.Repast
         /// </summary>
         public virtual string TypePath { get; set; }
         /// <summary>
+        /// 健康证到期时间
+        /// </summary>
+        public virtual DateTime? ExpiredTime { get; set; }
+        /// <summary>
         /// 系统版本
         /// </summary>
         public virtual SystemVersionEnum VersionType { get; set; }

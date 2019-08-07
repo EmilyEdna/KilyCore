@@ -59,6 +59,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         /// 区域
         /// </summary>
         public string TypePath { get; set; }
+        /// <summary>
+        /// 健康证到期时间
+        /// </summary>
+        public DateTime? ExpiredTime { get; set; }
         public string Province
         {
             get

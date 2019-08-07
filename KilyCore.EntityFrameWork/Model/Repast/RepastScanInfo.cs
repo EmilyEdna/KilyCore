@@ -65,6 +65,14 @@ namespace KilyCore.EntityFrameWork.Model.Repast
         /// </summary>
         public virtual string AdditiveIds { get; set; }
         /// <summary>
+        /// 台账Ids
+        /// </summary>
+        public virtual string Tickets { get; set; }
+        /// <summary>
+        /// 周菜谱Ids
+        /// </summary>
+        public virtual string WeekMenus { get; set; }
+        /// <summary>
         /// 上架时间
         /// </summary>
         public virtual DateTime? ShowTime { get; set; }

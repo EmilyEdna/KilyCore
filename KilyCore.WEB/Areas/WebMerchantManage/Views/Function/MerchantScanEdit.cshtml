@@ -14,11 +14,22 @@
             //元素
             InitDom: function () {
                 $("#InfoId").val(RepastUser.Id);
-                options.Urls = ["GetDishList","GetStuffList","GetVideoList","GetUserList","GetDuckList","GetDrawList","GetSampleList","GetDisinfectList","GetAdditiveList"];
-                options.node = ["DishIds", "StuffIds", "VideoIds", "UserIds", "DuckIds", "DrawIds", "SampleIds", "DisinfectIds", "AdditiveIds"];
+                options.Hash = {
+                    "GetDishList": "DishIds",
+                    "GetStuffList": "StuffIds",
+                    "GetVideoList": "VideoIds",
+                    "GetUserList": "UserIds",
+                    "GetDuckList": "DuckIds",
+                    "GetDrawList": "DrawIds",
+                    "GetSampleList": "SampleIds",
+                    "GetDisinfectList": "DisinfectIds",
+                    "GetAdditiveList": "AdditiveIds",
+                    "GetTicketList": "Tickets",
+                    "GetWeekMenuList":"WeekMenus"
+                }
                 controller.LayDate({ elem: "input[name='ShowTime']" });
-                $.each(options.Urls, function (i, obj) {
-                    options.InitDropDwon("#" + options.node[i], "RepastWeb/"+obj);
+                $.each(options.Hash, function (key, value) {
+                    options.InitDropDwon("#" + value, "RepastWeb/"+key);
                 });
                 var Id = controller.GetParam("Id");
                 if (Id != null) {
@@ -110,7 +121,7 @@
                     <td class="has-warning">
                         <select type="select" class="selectpicker form-control" id="VideoIds" multiple data-max-options="2" data-live-search="true" data-live-search-placeholder="搜索"></select>
                     </td>
-                    <th><label class="control-label">添加剂</label></th>
+                    <th><label class="control-label">添&nbsp;&nbsp;加&nbsp;&nbsp;剂</label></th>
                     <td class="has-warning">
                         <select type="select" class="selectpicker form-control" id="AdditiveIds" multiple data-max-options="3" data-live-search="true" data-live-search-placeholder="搜索"></select>
                     </td>
@@ -133,6 +144,16 @@
                     <th><label class="control-label">消毒信息</label></th>
                     <td class="has-warning">
                         <select type="select" class="selectpicker form-control" id="DisinfectIds" multiple data-max-options="3" data-live-search="true" data-live-search-placeholder="搜索"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">台账凭证</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="selectpicker form-control" id="Tickets" multiple data-max-options="3" data-live-search="true" data-live-search-placeholder="搜索"></select>
+                    </td>
+                    <th><label class="control-label">周&nbsp;&nbsp;菜&nbsp;&nbsp;谱</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="selectpicker form-control" id="WeekMenus" multiple data-max-options="3" data-live-search="true" data-live-search-placeholder="搜索"></select>
                     </td>
                 </tr>
                 <tr>
