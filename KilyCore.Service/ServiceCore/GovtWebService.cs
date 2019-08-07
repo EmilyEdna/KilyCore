@@ -316,11 +316,13 @@ namespace KilyCore.Service.ServiceCore
             }).AsNoTracking().FirstOrDefault();
             return data;
         }
+        #region 过时的接口
         /// <summary>
         /// 查询企业
         /// </summary>
         /// <param name="KeyWord"></param>
         /// <returns></returns>
+        [Obsolete]
         public object GetAllComWithKeyWord(string KeyWord)
         {
             IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>()
@@ -335,6 +337,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="KeyWord"></param>
         /// <returns></returns>
+        [Obsolete]
         public object GetAllMerWithKeyWord(string KeyWord)
         {
             IQueryable<RepastInfo> queryable = Kily.Set<RepastInfo>()
@@ -350,6 +353,7 @@ namespace KilyCore.Service.ServiceCore
         /// <param name="Area"></param>
         /// <param name="ComType"></param>
         /// <returns></returns>
+        [Obsolete]
         public object GetAllCom(string Area, int ComType)
         {
             IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>()
@@ -367,6 +371,7 @@ namespace KilyCore.Service.ServiceCore
         /// <param name="Area"></param>
         /// <param name="ComType"></param>
         /// <returns></returns>
+        [Obsolete]
         public object GetAllMer(string Area, int ComType)
         {
             IQueryable<RepastInfo> queryable = Kily.Set<RepastInfo>()
@@ -388,6 +393,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
+        [Obsolete]
         public object GetAllVideo(Guid Id,int Type)
         {
             if(Type==10)
@@ -398,6 +404,7 @@ namespace KilyCore.Service.ServiceCore
                      .OrderByDescending(x => x.CreateTime).Take(4).ToList();
             return null;
         }
+        #endregion
         #endregion
 
         #region 部门信息

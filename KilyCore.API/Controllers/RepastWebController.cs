@@ -514,6 +514,15 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastWebService.EditTheme(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 删除凭证
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("DeleteTicket")]
+        public ObjectResultEx DeleteTicket(SimpleParam<Guid> Param) {
+            return ObjectResultEx.Instance(RepastWebService.DeleteTicket(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 销售台账
         /// <summary>
@@ -662,6 +671,16 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx EditFoodMenu(RequestFoodMenu Param)
         {
             return ObjectResultEx.Instance(RepastWebService.EditFoodMenu(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除周菜谱
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("DeleteWeekMenu")]
+        public ObjectResultEx DeleteWeekMenu(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.DeleteWeekMenu(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
 

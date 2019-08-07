@@ -554,6 +554,28 @@ namespace KilyCore.Service.ServiceCore
             return Delete(ExpressionExtension.GetExpression<RepastSupplier>("Id", Id, ExpressionEnum.Equals)) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         #endregion
+        #region 台账凭证
+        /// <summary>
+        /// 删除台账凭证
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string DeleteTicket(Guid Id)
+        {
+            return Delete<RepastBillTicket>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+        #region 周菜谱
+        /// <summary>
+        /// 删除周菜谱
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string DeleteWeekMenu(Guid Id)
+        {
+            return Delete<RepastFoodMenu>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
         #region 实时监控
         /// <summary>
         /// 删除视频
@@ -1178,7 +1200,7 @@ namespace KilyCore.Service.ServiceCore
         public PagedResult<ResponseGovtTemplateChild> GetTemplateChild(PageParamList<RequestGovtTemplateChild> pageParam)
         {
             IQueryable<GovtTemplateChild> queryable = Kily.Set<GovtTemplateChild>().OrderByDescending(t => t.CreateTime).AsNoTracking();
-            if (CompanyInfo() != null)
+            if (MerchantInfo() != null)
                 queryable = queryable.Where(t => t.TypePath.Contains(MerchantInfo().TypePath));
             else
                 queryable = queryable.Where(t => t.TypePath.Contains(MerchantUser().TypePath));
@@ -1362,7 +1384,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 Theme = t.Theme,
-               UpTime=t.UpTime
+                UpTime = t.UpTime
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -1371,7 +1393,8 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public string EditTheme(RequestBillTicket Param) {
+        public string EditTheme(RequestBillTicket Param)
+        {
             RepastBillTicket ticket = Param.MapToEntity<RepastBillTicket>();
             return Insert(ticket) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
@@ -2605,6 +2628,7 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.Select(t => new ResponseRepastScanInfo()
             {
                 Id = t.Id,
+                InfoId = t.InfoId,
                 RecordName = t.RecordName,
                 ShowTime = t.ShowTime,
                 IsDelete = t.IsDelete
@@ -2818,7 +2842,8 @@ namespace KilyCore.Service.ServiceCore
         /// 台账列表
         /// </summary>
         /// <returns></returns>
-        public Object GetTicketList() {
+        public Object GetTicketList()
+        {
             IQueryable<RepastBillTicket> queryable = Kily.Set<RepastBillTicket>().Where(t => t.IsDelete == false).AsNoTracking();
             if (MerchantInfo() != null)
                 queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
@@ -2834,7 +2859,8 @@ namespace KilyCore.Service.ServiceCore
         /// 周菜谱列表
         /// </summary>
         /// <returns></returns>
-        public Object GetWeekMenuList() {
+        public Object GetWeekMenuList()
+        {
             IQueryable<RepastFoodMenu> queryable = Kily.Set<RepastFoodMenu>().Where(t => t.IsDelete == false).AsNoTracking();
             if (MerchantInfo() != null)
                 queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));

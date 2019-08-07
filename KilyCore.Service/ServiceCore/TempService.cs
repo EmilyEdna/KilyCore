@@ -15,11 +15,13 @@ namespace KilyCore.Service.ServiceCore
 {
     public class TempService : Repository, ITempService
     {
+        #region 弃用-中间系统
         /// <summary>
         /// 查询所有人员
         /// </summary>
         /// <param name="CompanyId"></param>
         /// <returns></returns>
+        [Obsolete]
         public object GetAllUser(Guid CompanyId)
         {
             var Euser = Kily.Set<EnterpriseUser>().Where(t => t.CompanyId == CompanyId).Select(t => new
@@ -44,6 +46,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="CompanyId"></param>
         /// <returns></returns>
+        [Obsolete]
         public object GetAllSupply(Guid CompanyId, int type)
         {
             var Types = (SellerEnum)type;
@@ -75,6 +78,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="CompanyId"></param>
         /// <returns></returns>
+        [Obsolete]
         public object GetAllSample(Guid CompanyId)
         {
             return Kily.Set<RepastSample>().Where(t => t.InfoId == CompanyId).Select(t => new
@@ -91,6 +95,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="CompanyId"></param>
         /// <returns></returns>
+        [Obsolete]
         public object RepastDuck(Guid CompanyId)
         {
             return Kily.Set<RepastDuck>().Where(t => t.InfoId == CompanyId).Select(t => new
@@ -103,6 +108,9 @@ namespace KilyCore.Service.ServiceCore
                 BadPerson = t.HandleUser
             }).ToList();
         }
+        #endregion
+
+        #region 推广活动
         /// <summary>
         /// 微信推广注册
         /// </summary>
@@ -137,5 +145,6 @@ namespace KilyCore.Service.ServiceCore
             UpdateField<EnterpriseInviteCode>(InviteCode, "IsDelete");
             return Convert.ToBase64String(Encoding.Default.GetBytes(InviteCode.InviteCode));
         }
+        #endregion
     }
 }
