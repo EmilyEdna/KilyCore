@@ -68,6 +68,7 @@ namespace KilyCore.Service.IServiceCore
         #region 集团账户
         PagedResult<ResponseMerchant> GetChildInfoPage(PageParamList<RequestMerchant> pageParam);
         String SaveChildInfo(RequestMerchant Param);
+        ResponseMerchant GetChildInfo(Guid Id);
         #endregion
         #region 餐饮字典
         PagedResult<ResponseRepastDictionary> GetDicPage(PageParamList<RequestRepastDictionary> pageParam);

@@ -33,6 +33,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 下拉字典类型
         /// </summary>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetDictionaryList")]
         public ObjectResultEx GetDictionaryList(SimpleParam<String> Param)
@@ -42,6 +43,7 @@ namespace KilyCore.API.Controllers
         /// <summary>
         /// 获取权限菜单树
         /// </summary>
+        /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetRepastWebTree")]
         public ObjectResultEx GetRepastWebTree(SimpleParam<String> Param)
@@ -268,6 +270,16 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx SaveChildInfo(RequestMerchant Param)
         {
             return ObjectResultEx.Instance(RepastWebService.SaveChildInfo(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取集团账户信息
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetChildInfo")]
+        public ObjectResultEx GetChildInfo(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetChildInfo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #region 餐饮字典
@@ -520,7 +532,8 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("DeleteTicket")]
-        public ObjectResultEx DeleteTicket(SimpleParam<Guid> Param) {
+        public ObjectResultEx DeleteTicket(SimpleParam<Guid> Param)
+        {
             return ObjectResultEx.Instance(RepastWebService.DeleteTicket(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
@@ -667,7 +680,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("SaveDish")]
+        [HttpPost("EditFoodMenu")]
         public ObjectResultEx EditFoodMenu(RequestFoodMenu Param)
         {
             return ObjectResultEx.Instance(RepastWebService.EditFoodMenu(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);

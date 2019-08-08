@@ -26,6 +26,7 @@
                     data: { Id: "计量单位" },
                     url: 'RepastWeb/GetDictionaryList',
                 });
+                $("#Unit").selectpicker("refresh");
                 $("#Unit").on('changed.bs.select', function () {
                     $('input[name="Unit"]').val($(this).val());
                 });
@@ -85,7 +86,13 @@
                         success: function (result) {
                             controller.SetCtrlValue("#Edit", result.data);
                             Editor.summernote('code', result.data.Remark);
-                             $("#t1").text("库存数量");
+                            $("#t1").text("库存数量");
+                            if (controller.CheckFeild(result.data.QualityReport)) {
+                                //质检
+                                $.each(result.data.QualityReport.split(","), function (i, item) {
+                                    $(".image-box").append('<section class="image-section" img-url="' + item + '"><div class="image-shade"></div><div class="image-delete"></div><div class="image-zoom"></div><img class="image-show" src="' + item + '"></section>');
+                                })
+                            }
                         }
                     });
             },
@@ -127,9 +134,9 @@
 <div class="ibox float-e-margins">
     <div class="ibox-content">
         <form class="form-horizontal" method="post" action="RepastWeb/EditInStorage" id="Edit">
-            <input  type="hidden" id="Id" name="Id"/>
+            <input type="hidden" id="Id" name="Id" />
             <input type="hidden" class="form-control" name="InfoId" id="InfoId" />
-            <input  name="Remark" type="hidden"/>
+            <input name="Remark" type="hidden" />
             <table class="table table-hover table-bordered">
                 <colgroup>
                     <col width="10%" />
@@ -164,7 +171,7 @@
                 <tr>
                     <th><label class="control-label" id="t1">入库数量</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="InStorageNum" />
+                        <input type="text" class="form-control" name="InStorageNum" placeholder="请输入数字" />
                     </td>
                     <th><label class="control-label">计量单位</label></th>
                     <td class="has-warning">
@@ -174,7 +181,7 @@
                 <tr>
                     <th><label class="control-label">单价</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="PrePrice" />
+                        <input type="text" class="form-control" name="PrePrice" placeholder="请输入数字" />
                     </td>
                     <th><label class="control-label">总价</label></th>
                     <td class="has-warning">

@@ -3150,12 +3150,14 @@
             <summary>
             下拉字典类型
             </summary>
+            <param name="Param"></param>
             <returns></returns>
         </member>
         <member name="M:KilyCore.API.Controllers.RepastWebController.GetRepastWebTree(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
             <summary>
             获取权限菜单树
             </summary>
+            <param name="Param"></param>
             <returns></returns>
         </member>
         <member name="M:KilyCore.API.Controllers.RepastWebController.GetMerchantInfoPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestMerchant})">
@@ -3299,6 +3301,13 @@
         <member name="M:KilyCore.API.Controllers.RepastWebController.SaveChildInfo(KilyCore.DataEntity.RequestMapper.Repast.RequestMerchant)">
             <summary>
             编辑子账户
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetChildInfo(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取集团账户信息
             </summary>
             <param name="Param"></param>
             <returns></returns>

@@ -35,7 +35,8 @@
                     type: "post",
                     async: false,
                     success: function (result) {
-                        controller.SetCtrlValue("#Edit", result.data)
+                        debugger;
+                        controller.SetCtrlValue("#Edit", result.data);
                          if (controller.CheckFeild(result.data.HealthCard)) {
                             //营业执照
                             $.each(result.data.HealthCard.split(","), function (i, item) {
@@ -66,7 +67,7 @@
                 controller.Upload({
                     url: "File/UploadImg",
                     element: ".upload-input",
-                    maxNum: 2,
+                    maxNum: 1,
                     node: '.image-box',
                     success: function (result) {
                         controller.Alter(result.msg);

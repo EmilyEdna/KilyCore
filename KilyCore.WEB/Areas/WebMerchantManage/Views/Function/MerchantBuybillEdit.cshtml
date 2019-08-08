@@ -65,15 +65,17 @@
                         $("select[name='Supplier']").html(html);
                     }
                 });
+                //初始化下拉
                 controller.Select({
                     document: '#Unit',
                     arrelemnt: ['#Unit'],
-                    data: { Id: "计量单位" },
                     url: 'RepastWeb/GetDictionaryList',
+                    data: { Id:"计量单位"}
                 });
                 $("#Unit").on('changed.bs.select', function () {
                     $('input[name="Unit"]').val($(this).val());
                 });
+                $("#Unit").selectpicker("refresh");
             },
             //事件
             InitEvents: function () {
