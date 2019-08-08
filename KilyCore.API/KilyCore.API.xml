@@ -3464,6 +3464,13 @@
             <param name="Param"></param>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.DeleteTicket(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除凭证
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
         <member name="M:KilyCore.API.Controllers.RepastWebController.GetSellbillPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastSellbill})">
             <summary>
             销售台账分页
@@ -3559,6 +3566,13 @@
         <member name="M:KilyCore.API.Controllers.RepastWebController.EditFoodMenu(KilyCore.DataEntity.RequestMapper.Repast.RequestFoodMenu)">
             <summary>
             编辑周菜谱
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.DeleteWeekMenu(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除周菜谱
             </summary>
             <param name="Param"></param>
             <returns></returns>

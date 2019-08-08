@@ -105,6 +105,7 @@ namespace KilyCore.Service.IServiceCore
         #region 台账凭证
         PagedResult<ResponseBillTicket> GetMerchantTicketPage(PageParamList<RequestBillTicket> pageParam);
         String EditTheme(RequestBillTicket Param);
+        String DeleteTicket(Guid Id);
         #endregion
         #region 销售台账
         PagedResult<ResponseRepastSellbill> GetSellbillPage(PageParamList<RequestRepastSellbill> pageParam);
@@ -126,6 +127,7 @@ namespace KilyCore.Service.IServiceCore
         String SaveDish(RequestRepastDish Param);
         PagedResult<ResponseFoodMenu> GetMerchantWeekPage(PageParamList<RequestFoodMenu> pageParam);
         String EditFoodMenu(RequestFoodMenu Param);
+        String DeleteWeekMenu(Guid Id);
         #endregion
         #region 溯源追踪
         #region 原料溯源

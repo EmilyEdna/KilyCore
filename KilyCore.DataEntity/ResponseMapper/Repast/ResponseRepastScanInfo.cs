@@ -91,6 +91,8 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         public List<ResponseRepastSampleScan> SampleScan { get; set; }
         public List<ResponseRepastDisinfectScan> DisinfectScan { get; set; }
         public List<ResponseRepastAdditiveScan> AdditiveScan { get; set; }
+        public List<ResponseRepastTicketScan> TicketScan { get; set; }
+        public List<ResponseRepastWeekMenuScan> WeekMenuScan { get; set; }
     }
     public class ResponseRepastInfoScan
     {
@@ -130,6 +132,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
     {
         public string 人员姓名 { get; set; }
         public string 人员电话 { get; set; }
+        public DateTime? 健康证到期时间 { get; set; }
         public string 健康证 { get; set; }
     }
     public class ResponseRepastDuckScan
@@ -169,5 +172,17 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         public string 使用人 { get; set; }
         public string 使用计量 { get; set; }
         public string 生产商 { get; set; }
+    }
+    public class ResponseRepastTicketScan
+    {
+        public string 台账主题 { get; set; }
+        public DateTime? 上报时间 { get; set; }
+        public string 台账内容 { get; set; }
+    }
+    public class ResponseRepastWeekMenuScan
+    {
+        public string 周菜谱名称 { get; set; }
+        public DateTime? 上报时间 { get; set; }
+        public string 周菜谱内容 { get; set; }
     }
 }

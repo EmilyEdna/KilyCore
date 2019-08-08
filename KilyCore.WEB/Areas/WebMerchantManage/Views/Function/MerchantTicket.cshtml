@@ -35,6 +35,29 @@
                     $("#Edit").submit();
                 })
             },
+            action: {
+                TableFormatter: function (val, row, index) {
+                    var action = [];
+                    action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
+                    return action.join("&nbsp;")
+                },
+                TableEvents: {
+                    "click .del": function (event, val, row, index) {
+                        controller.Confirm("确认删除？", function (bool) {
+                            if (bool) {
+                                controller.ajax({
+                                    url: "RepastWeb/DeleteTicket",
+                                    data: { Id: row.Id },
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }
+            }
         };
         //初始化
         $(document).ready(function () {
@@ -76,6 +99,7 @@
                             <tr>
                                 <th data-field="Theme" data-halign="center" data-align="center" data-valign="middle">上报主题</th>
                                 <th data-field="UpTime" data-halign="center" data-align="center" data-valign="middle">上报时间</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>
                     </table>

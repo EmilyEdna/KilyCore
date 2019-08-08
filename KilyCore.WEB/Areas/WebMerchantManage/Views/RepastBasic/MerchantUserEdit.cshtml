@@ -36,6 +36,12 @@
                     async: false,
                     success: function (result) {
                         controller.SetCtrlValue("#Edit", result.data)
+                         if (controller.CheckFeild(result.data.HealthCard)) {
+                            //营业执照
+                            $.each(result.data.HealthCard.split(","), function (i, item) {
+                                $(".image-box").append('<section class="image-section" img-url="' + item + '"><div class="image-shade"></div><div class="image-delete"></div><div class="image-zoom"></div><img class="image-show" src="' + item + '"></section>');
+                            })
+                        }
                     }
                 });
             },
