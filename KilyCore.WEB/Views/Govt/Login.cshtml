@@ -10,12 +10,11 @@
     <meta name="viewport" content="width=device-width" />
     <title>政府监管-中食药追溯管理平台</title>
     <link rel="icon" type="image/x-icon" href="~/StaticHtml/StaticImg/logo.ico" />
-    <link href="~/Content/BootStrap/Css/bootstrap.css" rel="stylesheet" />
-    <link href="~/Content/FontAwesome/Css/font-awesome.css" rel="stylesheet" />
-    <link href="~/Content/Animate/Css/animate.css" rel="stylesheet" />
-    <link href="~/Content/HPlus/Css/Hplus.css" rel="stylesheet" />
-    <link href="~/Content/HPlus/Css/login.css" rel="stylesheet" />
-
+    @*<link href="~/Content/BootStrap/Css/bootstrap.css" rel="stylesheet" />
+        <link href="~/Content/FontAwesome/Css/font-awesome.css" rel="stylesheet" />
+        <link href="~/Content/Animate/Css/animate.css" rel="stylesheet" />*@
+    @*<link href="~/Content/HPlus/Css/Hplus.css" rel="stylesheet" />*@
+    <link href="~/Login/css/login.css" rel="stylesheet" />
     <script src="~/Content/JavaScript/jquery.min.js"></script>
     <script src="~/Content/JavaScript/jquery.cookie.js"></script>
     <script src="~/Content/Layer/layer.js"></script>
@@ -76,7 +75,7 @@
                         }
                         else {
                             controller.Msg(result.msg + ":请检查账户信息是否正确!");
-                            $('.btn-info').click();
+                            $('#CodeImg').click();
                         }
                     }
                 });
@@ -84,7 +83,7 @@
         }
         //获取验证码
         function GetValidateCode() {
-            $('.btn-info').on('click', function () {
+            $('#CodeImg').on('click', function () {
                 controller.ajax({
                     url: "System/GetCode",
                     type: 'get',
@@ -94,53 +93,46 @@
                     },
                     crossDomain: true,
                     success: function (result) {
-                        $('.btn-info').val(result.data);
+                        $('#CodeImg').val(result.data);
                     }
                 });
             }).click();
         }
     </script>
 </head>
-<body class="signin">
-    <div class="signinpanel">
-        <div class="row">
-            <div class="col-sm-7">
-                <div class="signin-info" style="display:none;">
-                    <div class="logopanel m-b">
-                        <h1>~</h1>
-                    </div>
-                    <div class="m-b"></div>
-                    <h4>欢迎使用 <strong>中食药追溯管理平台企业管理系统</strong></h4>
-                    <ul class="m-b">
-                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 优势一</li>
-                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 优势二</li>
-                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 优势三</li>
-                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 优势四</li>
-                        <li><i class="fa fa-arrow-circle-o-right m-r-xs"></i> 优势五</li>
-                    </ul>
-                    <strong>还没有账号？ <a href="/Company/Regist">立即注册&raquo;</a></strong>
-                </div>
-            </div>
-            <div class="col-sm-5">
-                <form id="Login">
-                    <h4 class="no-margins">登录政府监管</h4>
-                    <p class="m-t-md"></p>
-                    <input type="text" class="form-control uname" name="Account" placeholder="账号或手机号" />
-                    <input type="password" class="form-control pword" placeholder="密码" name="PassWord" />
-                    <div class="input-group m-b" style="overflow:hidden">
-                        <input type="text" class="form-control" placeholder="验证码" style="float:left;width:75%;color:black" name="ValidateCode" />
-                        <input style="float:right;width:25%;font-size:12px;height:34px" value="" type="button" class="btn btn-info" />
-                    </div>
-                    <a href="#">忘记密码了？</a>
-                    <input class="btn btn-success btn-block" id="loading" type="button" value="登录" />
-                </form>
-            </div>
-        </div>
-        <div class="signup-footer">
-            <div class="pull-left">
-                &copy; 2015 All Rights Reserved. H
-            </div>
+<body>
+    <!-- banner模块 -->
+    <div class="login_banner" style="background: url('/Login/images/government.jpg') center no-repeat;">
+        <div class="content">
+            <h1>中食药追溯管理平台</h1>
+            <img src="/Login/images/character_b.png">
         </div>
     </div>
+    <!-- 登陆模块 -->
+    <div class="fixed">
+        <h2>中食药追溯管理平台政府登录</h2>
+        <form action="" method="post" id="Login">
+            <div class="row">
+                <label>用户名</label>
+                <input type="text" name="Account" placeholder="账号或手机号">
+            </div>
+            <div class="row">
+                <label>密&emsp;码</label>
+                <input type="password" placeholder="密码" name="PassWord">
+            </div>
+            <div class="row">
+                <label>验证码</label>
+                <input type="text" placeholder="验证码" name="ValidateCode">
+                <div class="right" style="margin-top:0px;background-color:transparent;">
+                    <input value="" type="button" style="background-color:#0da2cb;height:32px;width:72px;line-height:32px;color:#fff;text-align:center;text-indent:0px;border-radius:2px 2px;" id="CodeImg" />
+                </div>
+            </div>
+            <div class="button">
+                <input type="button" class="submit" id="loading" value="登录" style="width:100%;">
+            </div>
+        </form>
+    </div>
+    <!-- 尾部版权模块 -->
+    <div class="bottom">Copyright © 2019 成都溯本源科技有限公司 版权所有 蜀ICP备19021929号</div>
 </body>
 </html>
