@@ -979,7 +979,8 @@ namespace KilyCore.Service.ServiceCore
                 Phone = t.Phone,
                 DingRoleId = t.DingRoleId,
                 IdCard = t.IdCard,
-                PassWord = t.PassWord
+                PassWord = t.PassWord,
+                HealthCard=t.HealthCard
             }).AsNoTracking().FirstOrDefault();
             return data;
         }

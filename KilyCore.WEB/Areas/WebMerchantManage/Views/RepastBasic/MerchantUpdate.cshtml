@@ -28,11 +28,11 @@
                         let lihtml = '';
                         $.each(result.data, function (i, obj) {
                             if (Number(obj.DicValue) > RepastUser.Version) {
-                                 html += '<option value="' + obj.DicValue + '" data-attach="' + obj.AttachInfo + '">' + obj.DicName + '</option>';
-                                 lihtml += '<li id="' + obj.AttachInfo + '">' + obj.DicDescript + '</li>';
+                                html += '<option value="' + obj.DicValue + '" data-attach="' + obj.AttachInfo + '">' + obj.DicName + '</option>';
+                                lihtml += '<li id="' + obj.AttachInfo + '">' + obj.DicDescript + '</li>';
                             }
                         });
-                         $("#hidden").html(lihtml);
+                        $("#hidden").html(lihtml);
                         $("#VersionType").html(html);
                     }
                 });
@@ -74,7 +74,7 @@
                 $("#VersionType").on("change", function () {
                     var selector = $(this).find("option:selected");
                     var html = "版本费用：" + selector.data().attach + "/年。";
-                    var func = html +"<br/>当前版本功能为：" + $("#" + selector.data().attach).text();
+                    var func = html + "<br/>当前版本功能为：" + $("#" + selector.data().attach).text();
                     controller.Alter(func);
                 });
                 //文件上传-票据
@@ -82,6 +82,7 @@
                     url: "File/UploadImg",
                     element: ".upload-input",
                     maxNum: 2,
+                    node: '.image-box',
                     success: function (result) {
                         controller.Alter(result.msg);
                         $("#PayTicket").val(result.data);
