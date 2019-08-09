@@ -2655,7 +2655,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public string EditScanInfo(RequestRepastScanInfo Param)
+        public string SaveScanInfo(RequestRepastScanInfo Param)
         {
             RepastScanInfo Scan = Param.MapToEntity<RepastScanInfo>();
             if (Param.Id == Guid.Empty)

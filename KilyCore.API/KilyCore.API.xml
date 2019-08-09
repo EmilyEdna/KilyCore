@@ -3943,7 +3943,7 @@
             <param name="pageParam"></param>
             <returns></returns>
         </member>
-        <member name="M:KilyCore.API.Controllers.RepastWebController.EditScanInfo(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastScanInfo)">
+        <member name="M:KilyCore.API.Controllers.RepastWebController.SaveScanInfo(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastScanInfo)">
             <summary>
             编辑信息
             </summary>

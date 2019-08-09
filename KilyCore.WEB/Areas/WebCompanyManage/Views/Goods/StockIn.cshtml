@@ -159,7 +159,6 @@
                 $("#BuyId").change(function () {
                     var num = $(this).find("option:selected").data().value;
                     $("input[name='InStockNum']").val(num);
-                    debugger;
                 });
                 //验证
                 controller.ValidateConfirm("#Edit");

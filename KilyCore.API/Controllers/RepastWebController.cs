@@ -1267,10 +1267,10 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditScanInfo")]
-        public ObjectResultEx EditScanInfo(RequestRepastScanInfo Param)
+        [HttpPost("SaveScanInfo")]
+        public ObjectResultEx SaveScanInfo(RequestRepastScanInfo Param)
         {
-            return ObjectResultEx.Instance(RepastWebService.EditScanInfo(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.SaveScanInfo(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 删除信息

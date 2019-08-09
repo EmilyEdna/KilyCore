@@ -216,7 +216,7 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 扫码信息
         PagedResult<ResponseRepastScanInfo> GetScanInfoPage(PageParamList<RequestRepastScanInfo> pageParam);
-        String EditScanInfo(RequestRepastScanInfo Param);
+        String SaveScanInfo(RequestRepastScanInfo Param);
         String RemoveScan(Guid Id, bool? Param);
         ResponseRepastScanInfo GetScanInfoDetail(Guid Id);
         #endregion
