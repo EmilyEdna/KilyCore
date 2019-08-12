@@ -40,5 +40,6 @@ namespace KilyCore.EntityFrameWork.Model.Repast
         /// 是否首页显示
         /// </summary>
         public virtual bool IsIndex { get; set; }
+        public virtual string TypePath { get; set; }
     }
 }

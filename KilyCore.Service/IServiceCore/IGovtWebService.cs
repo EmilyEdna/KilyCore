@@ -164,14 +164,27 @@ namespace KilyCore.Service.IServiceCore
         #endregion
 
         #region 数据统计
+        #region 新旧大屏
         IList<DataPie> GetProductRank();
+        ResponseGovtMap GetAllCityMerchantCount();
+        #endregion
+        #region 新大屏
+        Object GetNewStayInTodayCount();
+        IList<DataPie> GetNewStayInAllCompanyCount();
+        IList<DataBar> GetNewWeekRiskAndComplainCount();
+        IList<DataLine> GetNewNetCheckCount();
+        Object GetNewVedioToday();
+        #endregion
+        #region 旧大屏
+        Object GetLawRank();
         Object GetCountNum();
         IList<ResponseGovtRanking> GetAreaRank();
-        ResponseGovtMap GetAllCityMerchantCount();
-        Object GetComplainLine();
-        Object GetComDataRatio();
+        #endregion
+        #region 首页数据
         Object GetComplainDataRatio();
-        Object GetLawRank();
+        Object GetComDataRatio();
+        Object GetComplainLine();
+        #endregion
         #endregion
 
         #region 责任协议

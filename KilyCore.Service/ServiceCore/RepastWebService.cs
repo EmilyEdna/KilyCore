@@ -483,6 +483,10 @@ namespace KilyCore.Service.ServiceCore
         public string SaveVideo(RequestRepastVideo Param)
         {
             RepastVideo video = Param.MapToEntity<RepastVideo>();
+            if (MerchantInfo() != null)
+                video.TypePath = MerchantInfo().TypePath;
+            else
+                video.TypePath = MerchantUser().TypePath;
             return Insert(video) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         #endregion

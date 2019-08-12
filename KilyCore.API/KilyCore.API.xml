@@ -2892,6 +2892,36 @@
             <param name="Param"></param>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetNewStayInTodayCount">
+            <summary>
+            今日数据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetNewStayInAllCompanyCount">
+            <summary>
+            历史所有企业数据统计
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetNewWeekRiskAndComplainCount">
+            <summary>
+            投诉和风险
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetNewNetCheckCount">
+            <summary>
+            网上巡查统计
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetNewVedioToday">
+            <summary>
+            获取最新视频
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:KilyCore.API.Controllers.GovtWebController.GetProductRank">
             <summary>
             获取产品统计
