@@ -31,7 +31,7 @@ namespace KilyCore.Configure
         /// 乡村厨师
         /// </summary>
         public static int Cook { get; set; }
-        #region 体验版
+        #region 体验版/通用版/采购版
         public static int PlantAndCultureTest { get; set; }
         public static int ProductionTest { get; set; }
         public static int CirculationTest { get; set; }

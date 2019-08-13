@@ -19,9 +19,9 @@ namespace KilyCore.EntityFrameWork.ModelEnum
         [Description("无版本")]
         Normal=0,
         /// <summary>
-        /// 体验版
+        /// 体验版/政府采购版
         /// </summary>
-        [Description("体验版")]
+        [Description("采购版")]
         Test =10,
         /// <summary>
         /// 基础版
@@ -44,9 +44,9 @@ namespace KilyCore.EntityFrameWork.ModelEnum
         [Description("定制版")]
         DIY=50,
         /// <summary>
-        /// 公用版
+        /// 通用版/公用版
         /// </summary>
-        [Description("公用版")]
+        [Description("通用版")]
         Common =60,
     }
 }
