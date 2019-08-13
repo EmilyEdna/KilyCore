@@ -936,6 +936,53 @@ namespace KilyCore.API.Controllers
         #endregion
 
         #region 数据统计
+        #region 新大屏
+        /// <summary>
+        /// 今日数据
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetNewStayInTodayCount")]
+        ObjectResultEx GetNewStayInTodayCount()
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetNewStayInTodayCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 历史所有企业数据统计
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetNewStayInAllCompanyCount")]
+        ObjectResultEx GetNewStayInAllCompanyCount()
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetNewStayInAllCompanyCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 投诉和风险
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetNewWeekRiskAndComplainCount")]
+        ObjectResultEx GetNewWeekRiskAndComplainCount()
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetNewWeekRiskAndComplainCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 网上巡查统计
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetNewNetCheckCount")]
+        ObjectResultEx GetNewNetCheckCount()
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetNewNetCheckCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取最新视频
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetNewVedioToday")]
+        ObjectResultEx GetNewVedioToday()
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetNewVedioToday(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
         /// <summary>
         /// 获取产品统计
         /// </summary>

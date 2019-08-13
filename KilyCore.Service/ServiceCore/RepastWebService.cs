@@ -483,6 +483,10 @@ namespace KilyCore.Service.ServiceCore
         public string SaveVideo(RequestRepastVideo Param)
         {
             RepastVideo video = Param.MapToEntity<RepastVideo>();
+            if (MerchantInfo() != null)
+                video.TypePath = MerchantInfo().TypePath;
+            else
+                video.TypePath = MerchantUser().TypePath;
             return Insert(video) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         #endregion
@@ -941,7 +945,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseMerchantUser> GetMerchantUserPage(PageParamList<RequestMerchantUser> pageParam)
         {
-            IQueryable<RepastInfoUser> queryable = Kily.Set<RepastInfoUser>().Where(t => t.IsDelete == false);
+            IQueryable<RepastInfoUser> queryable = Kily.Set<RepastInfoUser>().Where(t => t.IsDelete == false).OrderByDescending(t=>t.CreateTime);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.TrueName))
                 queryable = queryable.Where(t => t.TrueName.Contains(pageParam.QueryParam.TrueName));
             if (MerchantInfo() != null)
@@ -956,7 +960,7 @@ namespace KilyCore.Service.ServiceCore
                 Phone = t.Phone,
                 Account = t.Account,
                 IdCard = t.IdCard
-            }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
         /// <summary>
@@ -979,8 +983,9 @@ namespace KilyCore.Service.ServiceCore
                 Phone = t.Phone,
                 DingRoleId = t.DingRoleId,
                 IdCard = t.IdCard,
+                ExpiredTime=t.ExpiredTime,
                 PassWord = t.PassWord,
-                HealthCard=t.HealthCard
+                HealthCard = t.HealthCard
             }).AsNoTracking().FirstOrDefault();
             return data;
         }
@@ -1022,6 +1027,25 @@ namespace KilyCore.Service.ServiceCore
                    Certification = t.Certification
                }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
+        }
+        /// <summary>
+        /// 集团账号详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseMerchant GetChildInfo(Guid Id)
+        {
+            return Kily.Set<RepastInfo>().Where(t => t.Id == Id).Select(t => new ResponseMerchant()
+            {
+                Id = t.Id,
+                InfoId = t.InfoId,
+                MerchantName = t.MerchantName,
+                Account = t.Account,
+                Address = t.Address,
+                Phone = t.Phone,
+                PassWord = t.PassWord,
+                DingRoleId = t.DingRoleId
+            }).FirstOrDefault();
         }
         #endregion
         #region 餐饮字典
@@ -2349,7 +2373,7 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
             return queryable.Select(t => new ResponseRepastTypeName()
             {
-                TypeNames = $"{t.TypeNames}+{t.Spec}"
+                TypeNames = $"{t.TypeNames}({t.Spec})"
             }).ToList();
         }
         #endregion
@@ -2635,7 +2659,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public string EditScanInfo(RequestRepastScanInfo Param)
+        public string SaveScanInfo(RequestRepastScanInfo Param)
         {
             RepastScanInfo Scan = Param.MapToEntity<RepastScanInfo>();
             if (Param.Id == Guid.Empty)

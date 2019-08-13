@@ -1533,6 +1533,10 @@ namespace KilyCore.Service.ServiceCore
         public string EditVedio(RequestEnterpriseVedio Param)
         {
             EnterpriseVedio vedio = Param.MapToEntity<EnterpriseVedio>();
+            if (CompanyInfo() != null)
+                vedio.TypePath = CompanyInfo().TypePath;
+            else
+                vedio.TypePath = CompanyUser().TypePath;
             return Insert(vedio) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         /// <summary>

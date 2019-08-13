@@ -68,6 +68,7 @@ namespace KilyCore.Service.IServiceCore
         #region 集团账户
         PagedResult<ResponseMerchant> GetChildInfoPage(PageParamList<RequestMerchant> pageParam);
         String SaveChildInfo(RequestMerchant Param);
+        ResponseMerchant GetChildInfo(Guid Id);
         #endregion
         #region 餐饮字典
         PagedResult<ResponseRepastDictionary> GetDicPage(PageParamList<RequestRepastDictionary> pageParam);
@@ -215,7 +216,7 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 扫码信息
         PagedResult<ResponseRepastScanInfo> GetScanInfoPage(PageParamList<RequestRepastScanInfo> pageParam);
-        String EditScanInfo(RequestRepastScanInfo Param);
+        String SaveScanInfo(RequestRepastScanInfo Param);
         String RemoveScan(Guid Id, bool? Param);
         ResponseRepastScanInfo GetScanInfoDetail(Guid Id);
         #endregion

@@ -329,7 +329,7 @@ namespace KilyCore.Service.ServiceCore
               .Where(t => t.AuditType == AuditEnum.AuditSuccess)
               .OrderByDescending(t => t.CreateTime);
             if (!string.IsNullOrEmpty(KeyWord))
-               queryable = queryable.Where(t => t.CompanyName.Contains(KeyWord));
+                queryable = queryable.Where(t => t.CompanyName.Contains(KeyWord));
             return queryable.ToList();
         }
         /// <summary>
@@ -381,7 +381,7 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.TypePath.Contains(Area));
             if (ComType != 0)
             {
-                if(ComType<=20)
+                if (ComType <= 20)
                     queryable = queryable.Where(t => t.DiningType == (MerchantEnum)ComType);
                 else
                     queryable = queryable.Where(t => t.DiningType >= (MerchantEnum)ComType);
@@ -394,12 +394,12 @@ namespace KilyCore.Service.ServiceCore
         /// <param name="Id"></param>
         /// <returns></returns>
         [Obsolete]
-        public object GetAllVideo(Guid Id,int Type)
+        public object GetAllVideo(Guid Id, int Type)
         {
-            if(Type==10)
-            return Kily.Set<EnterpriseVedio>().Where(x => x.CompanyId == Id && x.IsIndex == true)
-                 .OrderByDescending(x => x.CreateTime).Take(4).ToList();
-            if(Type!=10)
+            if (Type == 10)
+                return Kily.Set<EnterpriseVedio>().Where(x => x.CompanyId == Id && x.IsIndex == true)
+                     .OrderByDescending(x => x.CreateTime).Take(4).ToList();
+            if (Type != 10)
                 return Kily.Set<RepastVideo>().Where(x => x.InfoId == Id && x.IsIndex == true)
                      .OrderByDescending(x => x.CreateTime).Take(4).ToList();
             return null;
@@ -578,7 +578,8 @@ namespace KilyCore.Service.ServiceCore
                     return Insert(Info) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
                 }
             }
-            else {
+            else
+            {
                 if (Param.Id != Guid.Empty)
                     return Update(Info, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
                 else
@@ -724,8 +725,8 @@ namespace KilyCore.Service.ServiceCore
         public PagedResult<ResponseEnterpriseGoods> GetWorkPage(PageParamList<RequestEnterpriseGoods> pageParam)
         {
             IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
-            if(!string.IsNullOrEmpty(pageParam.QueryParam.ProductType))
-                goods= goods.Where(t => pageParam.QueryParam.ProductType.Contains(t.ProductType));
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.ProductType))
+                goods = goods.Where(t => pageParam.QueryParam.ProductType.Contains(t.ProductType));
             IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess);
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
@@ -1058,8 +1059,8 @@ namespace KilyCore.Service.ServiceCore
                 WaringLv = t.WaringLv,
                 ReleaseTime = t.ReleaseTime,
                 ReportPlay = t.ReportPlay,
-                Remark=t.Remark,
-                TypePath=t.TypePath
+                Remark = t.Remark,
+                TypePath = t.TypePath
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -1147,15 +1148,18 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
             IQueryable<RepastInfo> queryables = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<RepastInfoUser> users = Kily.Set<RepastInfoUser>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.CompanyName))
             {
                 queryable = queryable.Where(t => t.CompanyName.Contains(pageParam.QueryParam.CompanyName));
                 queryables = queryables.Where(t => t.MerchantName.Contains(pageParam.QueryParam.CompanyName));
+                users = users.Where(t => t.MerchantName.Contains(pageParam.QueryParam.CompanyName));
             }
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
             {
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
                 queryables = queryables.Where(t => t.TypePath.Contains(GovtInfo().City));
+                users = users.Where(t => t.TypePath.Contains(GovtInfo().City));
             }
             IList<string> Areas = GetDepartArea();
             if (Areas != null)
@@ -1165,32 +1169,44 @@ namespace KilyCore.Service.ServiceCore
                     {
                         queryable = queryable.Where(t => t.TypePath.Contains(item));
                         queryables = queryables.Where(t => t.TypePath.Contains(item));
+                        users = users.Where(t => t.TypePath.Contains(item));
                     }
                 else
                 {
                     queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                     queryables = queryables.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    users = users.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                 }
             }
             else
             {
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
                 queryables = queryables.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                users = users.Where(t => t.TypePath.Contains(GovtInfo().Area));
             }
             var Enterprise = queryable.Select(t => new
             {
                 t.Id,
                 Name = t.CompanyName,
+                CardType="营业执照",
                 CompanyType = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
                 t.CardExpiredDate
-            }).AsNoTracking().ToList();
+            }).ToList();
             var Repast = queryables.Select(t => new
             {
                 t.Id,
                 Name = t.MerchantName,
+                CardType = "营业执照",
                 CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
                 t.CardExpiredDate
-            }).AsNoTracking().ToList();
+            }).ToList();
+            users.Select(t => new {
+                t.Id,
+                Name = t.MerchantName,
+                CardType = "健康证",
+                CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
+                CardExpiredDate= t.ExpiredTime
+            }).ToList();
             Enterprise.AddRange(Repast);
             return Enterprise.ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
         }
@@ -1666,7 +1682,7 @@ namespace KilyCore.Service.ServiceCore
                 TrainPlace = t.TrainPlace,
                 TrainTime = t.TrainTime,
                 CompanyType = t.CompanyType,
-                Remark=t.Remark
+                Remark = t.Remark
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -1922,6 +1938,7 @@ namespace KilyCore.Service.ServiceCore
         #endregion
 
         #region 数据统计
+        #region 新旧大屏
         /// <summary>
         /// 获取产品统计
         /// </summary>
@@ -1951,6 +1968,314 @@ namespace KilyCore.Service.ServiceCore
                 name = t.Key
             }).ToList();
         }
+        /// <summary>
+        /// 获取入驻的企业地图
+        /// </summary>
+        /// <returns></returns>
+        public ResponseGovtMap GetAllCityMerchantCount()
+        {
+            ResponseCity City = Kily.Set<SystemCity>().Where(t => t.Id.ToString() == GovtInfo().City).Select(t => new ResponseCity
+            {
+                CityId = t.Code,
+                CityName = t.Name
+            }).FirstOrDefault();
+            List<ResponseArea> Area = Kily.Set<SystemArea>().Where(t => t.CityCode == City.CityId).AsNoTracking().Select(t => new ResponseArea
+            {
+                Id = t.Id,
+                AreaName = t.Name
+            }).ToList();
+            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
+            IQueryable<RepastInfo> queryables = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false);
+            List<ResponseGovtRanking> data = new List<ResponseGovtRanking>();
+            Area.ForEach(t =>
+            {
+                int TotalCompany = queryable.Where(x => x.TypePath.Contains(t.Id.ToString())).Select(x => x.Id).Count();
+                int TotalMerchant = queryables.Where(x => x.TypePath.Contains(t.Id.ToString())).Select(x => x.Id).Count();
+                data.Add(new ResponseGovtRanking { AreaName = t.AreaName, TotalCount = TotalCompany + TotalMerchant });
+            });
+            data = data.OrderByDescending(t => t.TotalCount).ToList();
+            return new ResponseGovtMap { CityName = City.CityName, City = City.CityId, DataList = data };
+        }
+        #endregion
+        #region 新大屏
+        /// <summary>
+        /// 今日数据
+        /// </summary>
+        /// <returns></returns>
+        public Object GetNewStayInTodayCount()
+        {
+            var today = DateTime.Parse(DateTime.Now.ToShortDateString());
+            var tomorrow = today.AddDays(1);
+            IQueryable<EnterpriseInfo> coms = Kily.Set<EnterpriseInfo>().Where(t => t.CreateTime >= today && t.CreateTime < tomorrow);
+            IQueryable<RepastInfo> mers = Kily.Set<RepastInfo>().Where(t => t.CreateTime >= today && t.CreateTime < tomorrow);
+            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.CreateTime <= today && t.CreateTime <= tomorrow).Where(t => t.AuditType == AuditEnum.AuditSuccess);
+            IQueryable<EnterpriseScanCodeInfo> infos = Kily.Set<EnterpriseScanCodeInfo>().Where(t => t.CreateTime >= today && t.CreateTime < tomorrow);
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+            {
+                coms = coms.Where(t => t.TypePath.Contains(GovtInfo().City));
+                mers = mers.Where(t => t.TypePath.Contains(GovtInfo().City));
+            }
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
+            {
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        coms = coms.Where(t => t.TypePath.Contains(item));
+                        mers = mers.Where(t => t.TypePath.Contains(item));
+                    }
+                else
+                {
+                    coms = coms.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    mers = mers.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                }
+            }
+            else
+            {
+                coms = coms.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                mers = mers.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            }
+            int ProductSum_Today = coms.Join(goods, t => t.Id, x => x.CompanyId, (t, x) => new { x.Id }).Count();
+            int ScanCodeSum_Today = coms.Join(infos, t => t.Id, x => x.CompanyId, (t, x) => new { x.ScanNum }).Sum(t => t.ScanNum);
+            int Company = coms.Count() + mers.Count();
+            return new { Company, ProductSum_Today, ScanCodeSum_Today };
+        }
+        /// <summary>
+        /// 历史所有企业数据统计
+        /// </summary>
+        /// <returns></returns>
+        public IList<DataPie> GetNewStayInAllCompanyCount()
+        {
+            IQueryable<EnterpriseInfo> coms = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
+            IQueryable<RepastInfo> mers = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false);
+            IQueryable<CookInfo> cooks = Kily.Set<CookInfo>().Where(t => t.IsDelete == false);
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+            {
+                coms = coms.Where(t => t.TypePath.Contains(GovtInfo().City));
+                mers = mers.Where(t => t.TypePath.Contains(GovtInfo().City));
+                cooks = cooks.Where(t => t.TypePath.Contains(GovtInfo().City));
+            }
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
+            {
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        coms = coms.Where(t => t.TypePath.Contains(item));
+                        mers = mers.Where(t => t.TypePath.Contains(item));
+                        cooks = cooks.Where(t => t.TypePath.Contains(GovtInfo().City));
+                    }
+                else
+                {
+                    coms = coms.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    mers = mers.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    cooks = cooks.Where(t => t.TypePath.Contains(GovtInfo().City));
+                }
+            }
+            else
+            {
+                coms = coms.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                mers = mers.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                cooks = cooks.Where(t => t.TypePath.Contains(GovtInfo().City));
+            }
+            List<DataPie> Pie = coms.GroupBy(t => t.CompanyType).Select(t => new DataPie { name = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.Key), value = t.Count() }).ToList();
+            Pie.AddRange(mers.GroupBy(t => t.DiningType).Select(t => new DataPie { name = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.Key), value = t.Count() }).ToList());
+            Pie.Add(new DataPie { name = "乡村厨师", value = cooks.Count() });
+            return Pie;
+        }
+        /// <summary>
+        /// 投诉和风险
+        /// </summary>
+        /// <returns></returns>
+        public IList<DataBar> GetNewWeekRiskAndComplainCount()
+        {
+            IQueryable<GovtRisk> risks = Kily.Set<GovtRisk>().Where(t => t.IsDelete == false);
+            IQueryable<GovtComplain> complains = Kily.Set<GovtComplain>().Where(t => t.IsDelete == false);
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+            {
+                risks = risks.Where(t => t.TypePath.Contains(GovtInfo().City));
+                complains = complains.Where(t => t.TypePath.Contains(GovtInfo().City));
+            }
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
+            {
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        risks = risks.Where(t => t.TypePath.Contains(item));
+                        complains = complains.Where(t => t.TypePath.Contains(item));
+                    }
+                else
+                {
+                    risks = risks.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    complains = complains.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                }
+            }
+            else
+            {
+                risks = risks.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                complains = complains.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            }
+            List<DataBar> bars = new List<DataBar>();
+            //风险
+            bars.Add(new DataBar
+            {
+                name = "风险",
+                data = new List<int> {
+                    risks.Where(t => t.ReleaseTime.Value.DayOfWeek == DayOfWeek.Monday).Count(),
+                    risks.Where(t => t.ReleaseTime.Value.DayOfWeek == DayOfWeek.Tuesday).Count(),
+                    risks.Where(t => t.ReleaseTime.Value.DayOfWeek == DayOfWeek.Wednesday).Count(),
+                    risks.Where(t => t.ReleaseTime.Value.DayOfWeek == DayOfWeek.Thursday).Count(),
+                    risks.Where(t => t.ReleaseTime.Value.DayOfWeek == DayOfWeek.Friday).Count(),
+                    risks.Where(t => t.ReleaseTime.Value.DayOfWeek == DayOfWeek.Saturday).Count(),
+                    risks.Where(t => t.ReleaseTime.Value.DayOfWeek == DayOfWeek.Sunday).Count(),
+                }
+            });
+            //投诉
+            bars.Add(new DataBar
+            {
+                name = "投诉",
+                data = new List<int> {
+                    complains.Where(t => t.ComplainTime.Value.DayOfWeek == DayOfWeek.Monday).Count(),
+                    complains.Where(t => t.ComplainTime.Value.DayOfWeek == DayOfWeek.Tuesday).Count(),
+                    complains.Where(t => t.ComplainTime.Value.DayOfWeek == DayOfWeek.Wednesday).Count(),
+                    complains.Where(t => t.ComplainTime.Value.DayOfWeek == DayOfWeek.Thursday).Count(),
+                    complains.Where(t => t.ComplainTime.Value.DayOfWeek == DayOfWeek.Friday).Count(),
+                    complains.Where(t => t.ComplainTime.Value.DayOfWeek == DayOfWeek.Saturday).Count(),
+                    complains.Where(t => t.ComplainTime.Value.DayOfWeek == DayOfWeek.Sunday).Count(),
+                }
+            });
+            return bars;
+        }
+        /// <summary>
+        /// 网上巡查统计
+        /// </summary>
+        /// <returns></returns>
+        public IList<DataLine> GetNewNetCheckCount()
+        {
+            IQueryable<GovtTemplateChild> children = Kily.Set<GovtTemplateChild>().Where(t => t.IsDelete == false);
+            IQueryable<GovtNetPatrol> patrols = Kily.Set<GovtNetPatrol>().Where(t => t.IsDelete == false);
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+            {
+                children = children.Where(t => t.TypePath.Contains(GovtInfo().City));
+                patrols = patrols.Where(t => t.TypePath.Contains(GovtInfo().City));
+            }
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
+            {
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        children = children.Where(t => t.TypePath.Contains(item));
+                        patrols = patrols.Where(t => t.TypePath.Contains(GovtInfo().City));
+                    }
+                else
+                {
+                    children = children.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    patrols = patrols.Where(t => t.TypePath.Contains(GovtInfo().City));
+                }
+            }
+            else
+            {
+                children = children.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                patrols = patrols.Where(t => t.TypePath.Contains(GovtInfo().City));
+            }
+            List<DataLine> lines = new List<DataLine>();
+            //自查
+            lines.Add(new DataLine
+            {
+                name = "自查",
+                data = new List<int> {
+                    children.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Monday).Count(),
+                    children.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Tuesday).Count(),
+                    children.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Wednesday).Count(),
+                    children.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Thursday).Count(),
+                    children.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Friday).Count(),
+                    children.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Saturday).Count(),
+                    children.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Sunday).Count()
+                }
+            });
+            //抽查
+            lines.Add(new DataLine
+            {
+                name = "抽查",
+                data = new List<int> {
+                    patrols.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Monday).Sum(t=>t.PotrolNum),
+                    patrols.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Tuesday).Sum(t=>t.PotrolNum),
+                    patrols.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Wednesday).Sum(t=>t.PotrolNum),
+                    patrols.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Thursday).Sum(t=>t.PotrolNum),
+                    patrols.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Friday).Sum(t=>t.PotrolNum),
+                    patrols.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Saturday).Sum(t=>t.PotrolNum),
+                    patrols.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Sunday).Sum(t=>t.PotrolNum)
+                }
+            });
+            //通报
+            lines.Add(new DataLine
+            {
+                name = "通报",
+                data = new List<int> {
+                    patrols.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Monday).Sum(t=>t.BulletinNum),
+                    patrols.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Tuesday).Sum(t=>t.BulletinNum),
+                    patrols.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Wednesday).Sum(t=>t.BulletinNum),
+                    patrols.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Thursday).Sum(t=>t.BulletinNum),
+                    patrols.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Friday).Sum(t=>t.BulletinNum),
+                    patrols.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Saturday).Sum(t=>t.BulletinNum),
+                    patrols.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Sunday).Sum(t=>t.BulletinNum)
+                }
+            });
+            return lines;
+        }
+        /// <summary>
+        /// 获取最新视频
+        /// </summary>
+        /// <returns></returns>
+        public Object GetNewVedioToday()
+        {
+            IQueryable<EnterpriseVedio> vedios = Kily.Set<EnterpriseVedio>().Where(t => t.IsIndex).OrderByDescending(t => t.CreateTime);
+            IQueryable<RepastVideo> videos = Kily.Set<RepastVideo>().Where(t => t.IsIndex).OrderByDescending(t => t.CreateTime);
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+            {
+                vedios = vedios.Where(t => t.TypePath.Contains(GovtInfo().City));
+                videos = videos.Where(t => t.TypePath.Contains(GovtInfo().City));
+            }
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
+            {
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        vedios = vedios.Where(t => t.TypePath.Contains(item));
+                        videos = videos.Where(t => t.TypePath.Contains(GovtInfo().City));
+                    }
+                else
+                {
+                    vedios = vedios.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    videos = videos.Where(t => t.TypePath.Contains(GovtInfo().City));
+                }
+            }
+            else
+            {
+                vedios = vedios.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                videos = videos.Where(t => t.TypePath.Contains(GovtInfo().City));
+            }
+            int CompanyVedio = vedios.Where(t => t.CreateTime.Value >= DateTime.Parse(DateTime.Now.ToShortDateString()) && t.CreateTime.Value <= DateTime.Parse(DateTime.Now.ToShortDateString())).Count();
+            int MerchantVedio = videos.Where(t => t.CreateTime.Value >= DateTime.Parse(DateTime.Now.ToShortDateString()) && t.CreateTime.Value <= DateTime.Parse(DateTime.Now.ToShortDateString())).Count();
+            var data = vedios.Select(t => new
+            {
+                t.VedioAddr,
+                t.VedioName,
+                t.VedioCover
+            }).Take(2).ToList();
+            data.AddRange(videos.Select(t => new
+            {
+                VedioAddr = t.VideoAddress,
+                VedioName = t.MonitorAddress,
+                VedioCover = t.CoverPhoto
+            }).Take(2).ToList());
+            return new { Vedio = data, CompanyVedio, MerchantVedio };
+        }
+        #endregion
+        #region 旧大屏
         /// <summary>
         /// 获取执行检查统计
         /// </summary>
@@ -2062,33 +2387,104 @@ namespace KilyCore.Service.ServiceCore
             });
             return data.OrderByDescending(t => t.TotalCount).Take(10).ToList();
         }
+        #endregion
+        #region 首页统计
         /// <summary>
-        /// 获取入驻的企业地图
+        /// 投诉占比
         /// </summary>
         /// <returns></returns>
-        public ResponseGovtMap GetAllCityMerchantCount()
+        public Object GetComplainDataRatio()
         {
-            ResponseCity City = Kily.Set<SystemCity>().Where(t => t.Id.ToString() == GovtInfo().City).Select(t => new ResponseCity
+            IQueryable<GovtComplain> queryable = Kily.Set<GovtComplain>().AsNoTracking();
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
             {
-                CityId = t.Code,
-                CityName = t.Name
-            }).FirstOrDefault();
-            List<ResponseArea> Area = Kily.Set<SystemArea>().Where(t => t.CityCode == City.CityId).AsNoTracking().Select(t => new ResponseArea
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        queryable = queryable.Where(t => t.TypePath.Contains(item));
+                    }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+            }
+            else
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            //计算周投诉
+            int WG = queryable.Where(t => t.CreateTime >= DateTime.Now.AddDays(-7)).Count();
+            decimal WGSum = Math.Round((WG / queryable.Count()) * 100M, 2);
+            //计算月投诉
+            int MG = queryable.Where(t => t.CreateTime >= DateTime.Now.AddMonths(-1)).Count();
+            decimal MGSum = Math.Round((MG / queryable.Count()) * 100M, 2);
+            //计算总数
+            int Total = WG + MG;
+            decimal Sum = WGSum + MGSum;
+            return new { WG, WGSum, MG, MGSum, Total, Sum };
+        }
+        /// <summary>
+        /// 板块占比
+        /// </summary>
+        /// <returns></returns>
+        public Object GetComDataRatio()
+        {
+            IQueryable<EnterpriseInfo> Enterprise = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess);
+            IQueryable<RepastInfo> Merchant = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess);
+            IQueryable<CookBanquet> Banquet = Kily.Set<CookBanquet>();
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
             {
-                Id = t.Id,
-                AreaName = t.Name
-            }).ToList();
-            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
-            IQueryable<RepastInfo> queryables = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false);
-            List<ResponseGovtRanking> data = new List<ResponseGovtRanking>();
-            Area.ForEach(t =>
+                //外环
+                Merchant = Merchant.Where(t => t.TypePath.Contains(GovtInfo().City));
+                //内环
+                Enterprise = Enterprise.Where(t => t.TypePath.Contains(GovtInfo().City));
+                Banquet = Banquet.Where(t => t.TypePath.Contains(GovtInfo().City));
+            }
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
             {
-                int TotalCompany = queryable.Where(x => x.TypePath.Contains(t.Id.ToString())).Select(x => x.Id).Count();
-                int TotalMerchant = queryables.Where(x => x.TypePath.Contains(t.Id.ToString())).Select(x => x.Id).Count();
-                data.Add(new ResponseGovtRanking { AreaName = t.AreaName, TotalCount = TotalCompany + TotalMerchant });
-            });
-            data = data.OrderByDescending(t => t.TotalCount).ToList();
-            return new ResponseGovtMap { CityName = City.CityName, City = City.CityId, DataList = data };
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        //外环
+                        Merchant = Merchant.Where(t => t.TypePath.Contains(item));
+                        //内环
+                        Enterprise = Enterprise.Where(t => t.TypePath.Contains(item));
+                        Banquet = Banquet.Where(t => t.TypePath.Contains(item));
+                    }
+                else
+                {
+                    //外环
+                    Merchant = Merchant.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    //内环
+                    Enterprise = Enterprise.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    Banquet = Banquet.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                }
+            }
+            else
+            {
+                //外环
+                Merchant = Merchant.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                //内环
+                Enterprise = Enterprise.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                Banquet = Banquet.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            }
+            //月入住
+            var CompanyTotal = (Enterprise.Count() + Merchant.Count()) == 0 ? 1 : (Enterprise.Count() + Merchant.Count());
+            int CMSum = Enterprise.Where(t => t.CreateTime >= DateTime.Now.AddMonths(-1)).Count() + Merchant.Where(t => t.CreateTime >= DateTime.Now.AddMonths(-1)).Count();
+            decimal CMTotal = Math.Round((CMSum / CompanyTotal) * 100M, 2);
+            //月产品总数
+            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
+            int CGSum = goods.Join(Enterprise, t => t.CompanyId, x => x.Id, (t, x) => new { t.CreateTime }).Where(t => t.CreateTime >= DateTime.Now.AddMonths(-1)).Count();
+            var TotalPro = goods.Join(Enterprise, t => t.CompanyId, x => x.Id, (t, x) => new { t.CreateTime }).Count();
+            decimal CGTotal = Math.Round((CGSum / (TotalPro == 0 ? 1 : TotalPro)) * 100M, 2);
+            //月移动执法总数
+            IQueryable<GovtMovePatrol> MovePatrol = Kily.Set<GovtMovePatrol>().Where(t => t.GovtId == GovtInfo().Id);
+            int CPSum = MovePatrol.Where(t => t.CreateTime >= DateTime.Now.AddMonths(-1)).Count();
+            decimal CPTotal = Math.Round((CPSum / (MovePatrol.Count() == 0 ? 1 : MovePatrol.Count())) * 100M, 2);
+            //月群宴数
+            int CBSum = Banquet.Where(t => t.CreateTime >= DateTime.Now.AddMonths(-1)).Count();
+            decimal CBTotal = Math.Round((CPSum / (Banquet.Count() == 0 ? 1 : Banquet.Count())) * 100M, 2);
+            return new { CMSum, CMTotal, CGSum, CGTotal, CPSum, CPTotal, CBSum, CBTotal };
         }
         /// <summary>
         /// 投诉折线图
@@ -2204,103 +2600,7 @@ namespace KilyCore.Service.ServiceCore
             List<int> LCom = new List<int> { L3, L7, L15, L30, L180, L365 };
             return new { ZCom, YCom, SCom, LCom };
         }
-        /// <summary>
-        /// 板块占比
-        /// </summary>
-        /// <returns></returns>
-        public Object GetComDataRatio()
-        {
-            IQueryable<EnterpriseInfo> Enterprise = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess);
-            IQueryable<RepastInfo> Merchant = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess);
-            IQueryable<CookBanquet> Banquet = Kily.Set<CookBanquet>();
-            if (GovtInfo().AccountType <= GovtAccountEnum.City)
-            {
-                //外环
-                Merchant = Merchant.Where(t => t.TypePath.Contains(GovtInfo().City));
-                //内环
-                Enterprise = Enterprise.Where(t => t.TypePath.Contains(GovtInfo().City));
-                Banquet = Banquet.Where(t => t.TypePath.Contains(GovtInfo().City));
-            }
-            IList<string> Areas = GetDepartArea();
-            if (Areas != null)
-            {
-                if (Areas.Count > 1)
-                    foreach (var item in Areas)
-                    {
-                        //外环
-                        Merchant = Merchant.Where(t => t.TypePath.Contains(item));
-                        //内环
-                        Enterprise = Enterprise.Where(t => t.TypePath.Contains(item));
-                        Banquet = Banquet.Where(t => t.TypePath.Contains(item));
-                    }
-                else
-                {
-                    //外环
-                    Merchant = Merchant.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-                    //内环
-                    Enterprise = Enterprise.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-                    Banquet = Banquet.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-                }
-            }
-            else
-            {
-                //外环
-                Merchant = Merchant.Where(t => t.TypePath.Contains(GovtInfo().Area));
-                //内环
-                Enterprise = Enterprise.Where(t => t.TypePath.Contains(GovtInfo().Area));
-                Banquet = Banquet.Where(t => t.TypePath.Contains(GovtInfo().Area));
-            }
-            //月入住
-            var CompanyTotal = (Enterprise.Count() + Merchant.Count()) == 0 ? 1 : (Enterprise.Count() + Merchant.Count());
-            int CMSum = Enterprise.Where(t => t.CreateTime >= DateTime.Now.AddMonths(-1)).Count() + Merchant.Where(t => t.CreateTime >= DateTime.Now.AddMonths(-1)).Count();
-            decimal CMTotal = Math.Round((CMSum / CompanyTotal) * 100M, 2);
-            //月产品总数
-            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
-            int CGSum = goods.Join(Enterprise, t => t.CompanyId, x => x.Id, (t, x) => new { t.CreateTime }).Where(t => t.CreateTime >= DateTime.Now.AddMonths(-1)).Count();
-            var TotalPro = goods.Join(Enterprise, t => t.CompanyId, x => x.Id, (t, x) => new { t.CreateTime }).Count();
-            decimal CGTotal = Math.Round((CGSum / (TotalPro==0?1: TotalPro)) * 100M, 2);
-            //月移动执法总数
-            IQueryable<GovtMovePatrol> MovePatrol = Kily.Set<GovtMovePatrol>().Where(t => t.GovtId == GovtInfo().Id);
-            int CPSum = MovePatrol.Where(t => t.CreateTime >= DateTime.Now.AddMonths(-1)).Count();
-            decimal CPTotal = Math.Round((CPSum / (MovePatrol.Count() == 0 ? 1 : MovePatrol.Count())) * 100M, 2);
-            //月群宴数
-            int CBSum = Banquet.Where(t => t.CreateTime >= DateTime.Now.AddMonths(-1)).Count();
-            decimal CBTotal = Math.Round((CPSum / (Banquet.Count() == 0 ? 1 : Banquet.Count())) * 100M, 2);
-            return new { CMSum, CMTotal, CGSum, CGTotal, CPSum, CPTotal, CBSum, CBTotal };
-        }
-        /// <summary>
-        /// 投诉占比
-        /// </summary>
-        /// <returns></returns>
-        public Object GetComplainDataRatio()
-        {
-            IQueryable<GovtComplain> queryable = Kily.Set<GovtComplain>().AsNoTracking();
-            if (GovtInfo().AccountType <= GovtAccountEnum.City)
-                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
-            IList<string> Areas = GetDepartArea();
-            if (Areas != null)
-            {
-                if (Areas.Count > 1)
-                    foreach (var item in Areas)
-                    {
-                        queryable = queryable.Where(t => t.TypePath.Contains(item));
-                    }
-                else
-                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-            }
-            else
-                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
-            //计算周投诉
-            int WG = queryable.Where(t => t.CreateTime >= DateTime.Now.AddDays(-7)).Count();
-            decimal WGSum = Math.Round((WG / queryable.Count()) * 100M, 2);
-            //计算月投诉
-            int MG = queryable.Where(t => t.CreateTime >= DateTime.Now.AddMonths(-1)).Count();
-            decimal MGSum = Math.Round((MG / queryable.Count()) * 100M, 2);
-            //计算总数
-            int Total = WG + MG;
-            decimal Sum = WGSum + MGSum;
-            return new { WG, WGSum, MG, MGSum, Total, Sum };
-        }
+        #endregion
         #endregion
 
         #region 责任协议

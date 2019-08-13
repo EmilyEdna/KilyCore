@@ -38,5 +38,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 是否首页显示
         /// </summary>
         public virtual bool IsIndex { get; set; }
+        /// <summary>
+        /// 所在区域
+        /// </summary>
+        public virtual string TypePath { get; set; }
     }
 }

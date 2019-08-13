@@ -16,8 +16,19 @@
             },
             //元素
             InitDom: function () {
+                let Id = controller.GetParam("Id")
                 $("input[name='InfoId']").val(RepastUser.Id);
                 $("input[name='VersionType']").val(RepastUser.VersionType);
+                if (controller.CheckFeild(Id))
+                    controller.ajax({
+                        url: "RepastWeb/GetChildInfo",
+                        data: { Id: Id },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                        }
+                    });
             },
             //获取集团账户
             InitEnterpriseRole: function () {

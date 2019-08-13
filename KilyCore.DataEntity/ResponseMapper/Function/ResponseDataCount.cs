@@ -46,6 +46,14 @@ namespace KilyCore.DataEntity.ResponseMapper.Function
         public string name { get; set; }
         public string type { get => "bar"; }
         public IList<int> data { get; set; }
-
+    }
+    /// <summary>
+    /// 折线图
+    /// </summary>
+    public class DataLine
+    {
+        public string name { get; set; }
+        public string line { get => "line"; }
+        public IList<int> data { get; set; }
     }
 }
