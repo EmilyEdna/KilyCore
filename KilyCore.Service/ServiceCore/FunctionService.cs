@@ -632,7 +632,7 @@ namespace KilyCore.Service.ServiceCore
                 if ((MerchantEnum)Param == MerchantEnum.UnitCanteen)
                     queryable = queryable.Where(t => t.DicName.Contains("单位"));
                 //if ((MerchantEnum)Param != MerchantEnum.Normal && (MerchantEnum)Param == MerchantEnum.UnitCanteen)
-                if ((MerchantEnum)Param != MerchantEnum.Normal && Param > MerchantEnum.UnitCanteen.GetHashCode())
+                if (Param > MerchantEnum.UnitCanteen.GetHashCode())
                     queryable = queryable.Where(t => t.DicName.Contains("三小"));
                 queryable = queryable.Where(t => !t.DicName.Contains("生产")
                   && !t.DicName.Contains("种植")
