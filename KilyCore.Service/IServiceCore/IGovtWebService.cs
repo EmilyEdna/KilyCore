@@ -171,6 +171,7 @@ namespace KilyCore.Service.IServiceCore
         #region 新大屏
         Object GetNewStayInTodayCount();
         IList<DataPie> GetNewStayInAllCompanyCount();
+        String GetTodayNow();
         IList<DataBar> GetNewWeekRiskAndComplainCount();
         IList<DataLine> GetNewNetCheckCount();
         Object GetNewVedioToday();

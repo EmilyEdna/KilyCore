@@ -2904,6 +2904,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetTodayNow">
+            <summary>
+            今日入住
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:KilyCore.API.Controllers.GovtWebController.GetNewWeekRiskAndComplainCount">
             <summary>
             投诉和风险

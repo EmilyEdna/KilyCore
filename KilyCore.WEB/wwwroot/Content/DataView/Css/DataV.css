@@ -1,0 +1,305 @@
+﻿/*  共有样式设置 */
+* {
+    margin: 0; /*清除全局外边距*/
+    padding: 0; /*清除全局内边距*/
+    color: #fff; /*设置全局字体颜色*/
+    letter-spacing: 2px; /*设置全局字间距*/
+}
+
+button, input{
+    outline:none!important;
+}
+
+p {
+    margin: 0; /* 清除bootstrap对段落设置的外边距*/
+}
+
+html, body { /* 设置页面铺满全屏 超出隐藏 */
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.fl { /*盒子左浮动*/
+    float: left;
+}
+
+.fr { /*盒子右浮动*/
+    float: right;
+}
+
+ul, li { /* 清除列表样式 */
+    list-style: none;
+}
+
+a { /*设置a标签无下划线 设置a标签颜色*/
+    color: #264379;
+    text-decoration: none;
+}
+
+.cleirfix { /* 清除浮动 */
+    display: block;
+    width: 0;
+    height: 0;
+    content: '';
+    clear: both;
+}
+
+.wrap { /*外层包裹盒子铺满全屏 添加背景图片铺满全屏*/
+    width: 100%;
+    height: 100%;
+    background-image: url("../images/bg_ksh.jpg");
+    background-size: 100% 100%;
+}
+
+.leftwrap { /*左侧大盒子样式*/
+    width: 24%;
+    height: 100%;
+    margin-left: 1.5%;
+}
+
+.centerwrap { /*中间大盒子样式*/
+    width: 46%;
+    height: 100%;
+    margin-left: 1.5%;
+}
+
+.rightwrap { /*右边大盒子样式*/
+    width: 24%;
+    height: 100%;
+    margin-right: 1.5%;
+}
+
+.tittle { /*小标题样式*/
+    width: 100%;
+    height: 4%;
+    color: #4FD9FC;
+    background: url(../images/small_bg_ksh.png) center center no-repeat;
+    text-align: center;
+}
+
+#tittle { /*系统标题样式*/
+    width: 100%;
+    height: 9.63%;
+    background: url(../images/tittle_ksh.png) center center no-repeat;
+}
+
+.leftnotice, .righttime { /*左边顶部和右边顶部小盒子的共有样式*/
+    width: 100%;
+    height: 3%;
+}
+
+.leftnotice { /*左边顶部notice小盒子的样式*/
+    border: 1px solid transparent;
+    box-shadow: 0 0 10px #fff;
+    border-radius: 2px;
+    background: url(../images/laba_.png) left center no-repeat;
+    background-size: 8%;
+    padding-left: 9%;
+}
+
+    .leftnotice .tt {
+        width: 30%;
+    }
+
+    .leftnotice #Firm {
+        overflow: hidden;
+        width: 65%;
+    }
+
+        .leftnotice #Firm a {
+            margin: 0 1em;
+            width: auto;
+            float: left;
+            color: #fff;
+        }
+
+        .leftnotice #Firm #Firm1 {
+            width: 9999px;
+            float: left;
+            position: relative;
+        }
+
+.todaydata { /*今日数据大盒子样式*/
+    width: 100%;
+    height: 13.14%;
+    border-radius: 2px;
+    border: 1px solid transparent;
+    box-shadow: 0 0 10px #87eaf6;
+}
+
+.dataitem { /* 今日数据 子项样式 */
+    text-align: center;
+    width: 33.33%;
+}
+
+    .dataitem p:nth-child(1) { /*今日数据 子项第一个段落样式*/
+        margin-top: 18%;
+    }
+
+    .dataitem p img { /*今日数据 子项第一个段落 图片样式*/
+        vertical-align: top;
+    }
+
+    .dataitem p:nth-child(2) { /*今日数据 子项第二个段落样式*/
+        margin-bottom: 18%;
+        margin-top: 8%;
+    }
+
+
+.productstatistics, .firmstatistics { /*产品统计和企业统计大盒子共有样式*/
+    width: 100%;
+    height: 21%;
+    border-radius: 2px;
+    border: 1px solid transparent;
+    box-shadow: 0 0 10px #87eaf6;
+}
+
+.earlywarning { /*预警周比 大盒子样式*/
+    width: 100%;
+    height: 19.3%;
+    border-radius: 2px;
+    border: 1px solid transparent;
+    box-shadow: 0 0 10px #87eaf6;
+}
+
+.firmsettled { /*入驻企业 大盒子样式*/
+    width: 100%;
+    height: 62.5%;
+}
+
+    .firmsettled .num {
+        text-align: center;
+        letter-spacing: 2px;
+        margin: 2% 0;
+        height: 16%;
+        background: url(../images/bg_num_ksh.png) center center no-repeat;
+        background-size: 100% 100%;
+    }
+
+        .firmsettled .num span {
+            letter-spacing: 10px;
+            display: inline-block;
+            padding: 0 0.5em;
+            color: #EE4B4A;
+        }
+
+    .firmsettled .map {
+        height: 81%;
+    }
+
+.cardexpire { /*证件到期 大盒子样式*/
+    text-align: center;
+    width: 100%;
+    height: 21%;
+    border-radius: 2px;
+    border: 1px solid transparent;
+    box-shadow: 0 0 10px #87eaf6;
+}
+
+    .cardexpire .hd {
+        width: 100%;
+        background: rgba(3,57,139,.9);
+    }
+
+        .cardexpire .hd div {
+            float: left;
+            width: 25%;
+        }
+
+    .cardexpire .bd .ulwrap {
+        overflow: hidden;
+        position: relative;
+    }
+
+    .cardexpire .bd ul {
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+        .cardexpire .bd ul li {
+            width: 100%;
+            cursor: pointer;
+            border-bottom: 1px solid #ccc;
+        }
+
+            .cardexpire .bd ul li div {
+                float: left;
+                width: 25%;
+            }
+
+.righttime { /* 右侧时间样式*/
+    text-align: right;
+    padding-right: 2em;
+}
+
+.onlineinspection { /*网上巡查 大盒子样式*/
+    width: 100%;
+    height: 30.5%;
+    border-radius: 2px;
+    border: 1px solid transparent;
+    box-shadow: 0 0 10px #87eaf6;
+}
+
+    .onlineinspection canvas {
+        width: 90% !important;
+        height: 90% !important;
+        margin-top: 3% !important;
+        margin-left: 5% !important;
+    }
+
+.supervisoryvideo { /*监管视频 大盒子样式*/
+    width: 100%;
+    height: 33.5%;
+    border-radius: 2px;
+    border: 1px solid transparent;
+    box-shadow: 0 0 10px #87eaf6;
+}
+
+    .supervisoryvideo .videoitem {
+        width: 47%;
+        height: 45.5%;
+        margin-top: 2%;
+        margin-right: 2%;
+    }
+
+        .supervisoryvideo .videoitem:nth-child(2n-1) {
+            margin-left: 2%;
+        }
+
+        .supervisoryvideo .videoitem p {
+            white-space: nowrap; /*溢出显示...*/
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .supervisoryvideo .videoitem video {
+            width: 100%;
+            height: 95% !important;
+        }
+        .supervisoryvideo .videoitem .video_name {
+           font-size:12px;
+        }
+        .supervisoryvideo .videoitem .video_name span{
+            font-size: 12px;
+        }
+
+.todayvideo { /*今日视频 大盒子样式*/
+    width: 100%;
+    height: 14.7%;
+    border-radius: 2px;
+    border: 1px solid transparent;
+    box-shadow: 0 0 10px #87eaf6;
+}
+
+    .todayvideo .videoNum {
+        text-align: center;
+        margin-top: 10%;
+        margin-left: 7%;
+        width: 40%;
+        height: 56%;
+        background: url(../images/videonum_ksh.png) center center no-repeat;
+        background-size: 100% 100%;
+    }

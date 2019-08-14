@@ -53,7 +53,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Function
     public class DataLine
     {
         public string name { get; set; }
-        public string line { get => "line"; }
+        public string type { get => "line"; }
         public IList<int> data { get; set; }
     }
 }

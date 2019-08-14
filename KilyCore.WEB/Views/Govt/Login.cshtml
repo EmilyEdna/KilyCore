@@ -10,10 +10,6 @@
     <meta name="viewport" content="width=device-width" />
     <title>政府监管-中食药追溯管理平台</title>
     <link rel="icon" type="image/x-icon" href="~/StaticHtml/StaticImg/logo.ico" />
-    @*<link href="~/Content/BootStrap/Css/bootstrap.css" rel="stylesheet" />
-        <link href="~/Content/FontAwesome/Css/font-awesome.css" rel="stylesheet" />
-        <link href="~/Content/Animate/Css/animate.css" rel="stylesheet" />*@
-    @*<link href="~/Content/HPlus/Css/Hplus.css" rel="stylesheet" />*@
     <link href="~/Login/css/login.css" rel="stylesheet" />
     <script src="~/Content/JavaScript/jquery.min.js"></script>
     <script src="~/Content/JavaScript/jquery.cookie.js"></script>
@@ -52,7 +48,7 @@
                         if (result.flag != -1) {
                             controller.SetCookie(result.data);
                             if (result.data.GovtAdmin.Flag != null)
-                                controller.SetHref("DataV");
+                                controller.SetHref("DataV2");
                             else
                                 controller.OpenWindow({
                                     title: "更新密码",
