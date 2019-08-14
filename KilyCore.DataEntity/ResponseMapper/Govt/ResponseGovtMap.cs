@@ -22,6 +22,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Govt
         public String CityName { get; set; }
         public int City { get; set; }
         public IList<ResponseGovtRanking> DataList { get; set; }
+        public int All { get; set; }
     }
     public class ResponseGovtRanking
     {

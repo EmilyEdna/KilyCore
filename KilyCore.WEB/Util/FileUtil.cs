@@ -143,8 +143,8 @@ namespace KilyCore.WEB.Util
                 PayModel = "微信";
             else if (help.PayModel == 30)
                 PayModel = "银行转账";
-            else
-                PayModel = "营运中心试用";
+            else if (help.PayModel == 40)
+                PayModel = "自定义支付-标签购买";
             HTMLContent = HTMLContent.Replace("{CompanyCategory}", help.CompanyName)
                 .Replace("{PathNo}", help.PathNo)
                 .Replace("{CompanyName}", help.CompanyName)

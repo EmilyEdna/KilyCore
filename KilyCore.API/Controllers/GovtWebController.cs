@@ -166,7 +166,8 @@ namespace KilyCore.API.Controllers
         /// <returns></returns>
         [HttpGet("GetAllComWithKeyWord")]
         [AllowAnonymous]
-        public ObjectResultEx GetAllComWithKeyWord(SimpleParam<string> KeyWord) {
+        public ObjectResultEx GetAllComWithKeyWord(SimpleParam<string> KeyWord)
+        {
             return ObjectResultEx.Instance(GovtWebService.GetAllComWithKeyWord(KeyWord.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -176,7 +177,8 @@ namespace KilyCore.API.Controllers
         /// <returns></returns>
         [HttpGet("GetAllMerWithKeyWord")]
         [AllowAnonymous]
-        public ObjectResultEx GetAllMerWithKeyWord(SimpleParam<string> KeyWord) {
+        public ObjectResultEx GetAllMerWithKeyWord(SimpleParam<string> KeyWord)
+        {
             return ObjectResultEx.Instance(GovtWebService.GetAllMerWithKeyWord(KeyWord.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -209,7 +211,7 @@ namespace KilyCore.API.Controllers
         [AllowAnonymous]
         public ObjectResultEx GetAllVideo(SimpleParam<Guid> Param, SimpleParam<int> Type)
         {
-            return ObjectResultEx.Instance(GovtWebService.GetAllVideo(Param.Id,Type.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(GovtWebService.GetAllVideo(Param.Id, Type.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
 
@@ -907,7 +909,8 @@ namespace KilyCore.API.Controllers
                 else
                     return ObjectResultEx.Instance("验证码不正确!", 1, RetrunMessge.SUCCESS, HttpCode.Success);
             }
-            else {
+            else
+            {
                 return ObjectResultEx.Instance(GovtWebService.EditComplain(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
             }
         }
@@ -942,7 +945,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetNewStayInTodayCount")]
-        ObjectResultEx GetNewStayInTodayCount()
+        public ObjectResultEx GetNewStayInTodayCount()
         {
             return ObjectResultEx.Instance(GovtWebService.GetNewStayInTodayCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -951,16 +954,25 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetNewStayInAllCompanyCount")]
-        ObjectResultEx GetNewStayInAllCompanyCount()
+        public ObjectResultEx GetNewStayInAllCompanyCount()
         {
             return ObjectResultEx.Instance(GovtWebService.GetNewStayInAllCompanyCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 今日入住
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetTodayNow")]
+        public ObjectResultEx GetTodayNow()
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetTodayNow(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 投诉和风险
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetNewWeekRiskAndComplainCount")]
-        ObjectResultEx GetNewWeekRiskAndComplainCount()
+        public ObjectResultEx GetNewWeekRiskAndComplainCount()
         {
             return ObjectResultEx.Instance(GovtWebService.GetNewWeekRiskAndComplainCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -969,7 +981,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetNewNetCheckCount")]
-        ObjectResultEx GetNewNetCheckCount()
+        public ObjectResultEx GetNewNetCheckCount()
         {
             return ObjectResultEx.Instance(GovtWebService.GetNewNetCheckCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
@@ -978,7 +990,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetNewVedioToday")]
-        ObjectResultEx GetNewVedioToday()
+        public ObjectResultEx GetNewVedioToday()
         {
             return ObjectResultEx.Instance(GovtWebService.GetNewVedioToday(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }

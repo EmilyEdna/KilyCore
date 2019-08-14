@@ -1188,7 +1188,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 t.Id,
                 Name = t.CompanyName,
-                CardType="营业执照",
+                CardType = "营业执照",
                 CompanyType = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
                 t.CardExpiredDate
             }).ToList();
@@ -1200,12 +1200,13 @@ namespace KilyCore.Service.ServiceCore
                 CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
                 t.CardExpiredDate
             }).ToList();
-            users.Select(t => new {
+            users.Select(t => new
+            {
                 t.Id,
                 Name = t.MerchantName,
                 CardType = "健康证",
                 CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
-                CardExpiredDate= t.ExpiredTime
+                CardExpiredDate = t.ExpiredTime
             }).ToList();
             Enterprise.AddRange(Repast);
             return Enterprise.ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -1994,7 +1995,8 @@ namespace KilyCore.Service.ServiceCore
                 data.Add(new ResponseGovtRanking { AreaName = t.AreaName, TotalCount = TotalCompany + TotalMerchant });
             });
             data = data.OrderByDescending(t => t.TotalCount).ToList();
-            return new ResponseGovtMap { CityName = City.CityName, City = City.CityId, DataList = data };
+            int Total = data.Sum(t => t.TotalCount);
+            return new ResponseGovtMap { CityName = City.CityName, City = City.CityId, DataList = data, All = Total };
         }
         #endregion
         #region 新大屏
@@ -2063,25 +2065,62 @@ namespace KilyCore.Service.ServiceCore
                     {
                         coms = coms.Where(t => t.TypePath.Contains(item));
                         mers = mers.Where(t => t.TypePath.Contains(item));
-                        cooks = cooks.Where(t => t.TypePath.Contains(GovtInfo().City));
+                        cooks = cooks.Where(t => t.TypePath.Contains(item));
                     }
                 else
                 {
                     coms = coms.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                     mers = mers.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-                    cooks = cooks.Where(t => t.TypePath.Contains(GovtInfo().City));
+                    cooks = cooks.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                 }
             }
             else
             {
                 coms = coms.Where(t => t.TypePath.Contains(GovtInfo().Area));
                 mers = mers.Where(t => t.TypePath.Contains(GovtInfo().Area));
-                cooks = cooks.Where(t => t.TypePath.Contains(GovtInfo().City));
+                cooks = cooks.Where(t => t.TypePath.Contains(GovtInfo().Area));
             }
             List<DataPie> Pie = coms.GroupBy(t => t.CompanyType).Select(t => new DataPie { name = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.Key), value = t.Count() }).ToList();
             Pie.AddRange(mers.GroupBy(t => t.DiningType).Select(t => new DataPie { name = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.Key), value = t.Count() }).ToList());
             Pie.Add(new DataPie { name = "乡村厨师", value = cooks.Count() });
             return Pie;
+        }
+        /// <summary>
+        /// 今日入住
+        /// </summary>
+        /// <returns></returns>
+        public String GetTodayNow()
+        {
+            IQueryable<EnterpriseInfo> coms = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime).Where(t => t.CreateTime.Value.ToShortDateString() == DateTime.Now.ToShortDateString());
+            IQueryable<RepastInfo> mers = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime).Where(t => t.CreateTime.Value.ToShortDateString() == DateTime.Now.ToShortDateString());
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+            {
+                coms = coms.Where(t => t.TypePath.Contains(GovtInfo().City));
+                mers = mers.Where(t => t.TypePath.Contains(GovtInfo().City));
+            }
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
+            {
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        coms = coms.Where(t => t.TypePath.Contains(item));
+                        mers = mers.Where(t => t.TypePath.Contains(item));
+                    }
+                else
+                {
+                    coms = coms.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    mers = mers.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                }
+            }
+            else
+            {
+                coms = coms.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                mers = mers.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            }
+            var data = coms.Select(t => t.CompanyName).ToList();
+            data.AddRange(mers.Select(t => t.MerchantName).ToList());
+            return string.Join(",", data);
         }
         /// <summary>
         /// 投诉和风险
@@ -2245,18 +2284,18 @@ namespace KilyCore.Service.ServiceCore
                     foreach (var item in Areas)
                     {
                         vedios = vedios.Where(t => t.TypePath.Contains(item));
-                        videos = videos.Where(t => t.TypePath.Contains(GovtInfo().City));
+                        videos = videos.Where(t => t.TypePath.Contains(item));
                     }
                 else
                 {
                     vedios = vedios.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-                    videos = videos.Where(t => t.TypePath.Contains(GovtInfo().City));
+                    videos = videos.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                 }
             }
             else
             {
                 vedios = vedios.Where(t => t.TypePath.Contains(GovtInfo().Area));
-                videos = videos.Where(t => t.TypePath.Contains(GovtInfo().City));
+                videos = videos.Where(t => t.TypePath.Contains(GovtInfo().Area));
             }
             int CompanyVedio = vedios.Where(t => t.CreateTime.Value >= DateTime.Parse(DateTime.Now.ToShortDateString()) && t.CreateTime.Value <= DateTime.Parse(DateTime.Now.ToShortDateString())).Count();
             int MerchantVedio = videos.Where(t => t.CreateTime.Value >= DateTime.Parse(DateTime.Now.ToShortDateString()) && t.CreateTime.Value <= DateTime.Parse(DateTime.Now.ToShortDateString())).Count();
@@ -2266,12 +2305,13 @@ namespace KilyCore.Service.ServiceCore
                 t.VedioName,
                 t.VedioCover
             }).Take(2).ToList();
-            data.AddRange(videos.Select(t => new
+            var datas = videos.Select(t => new
             {
                 VedioAddr = t.VideoAddress,
                 VedioName = t.MonitorAddress,
                 VedioCover = t.CoverPhoto
-            }).Take(2).ToList());
+            }).Take(2).ToList();
+            data.AddRange(datas);
             return new { Vedio = data, CompanyVedio, MerchantVedio };
         }
         #endregion
@@ -2413,10 +2453,10 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
             //计算周投诉
             int WG = queryable.Where(t => t.CreateTime >= DateTime.Now.AddDays(-7)).Count();
-            decimal WGSum = Math.Round((WG / queryable.Count()) * 100M, 2);
+            decimal WGSum = Math.Round((WG / (queryable.Count() == 0 ? 1 : queryable.Count())) * 100M, 2);
             //计算月投诉
             int MG = queryable.Where(t => t.CreateTime >= DateTime.Now.AddMonths(-1)).Count();
-            decimal MGSum = Math.Round((MG / queryable.Count()) * 100M, 2);
+            decimal MGSum = Math.Round((MG / (queryable.Count() == 0 ? 1 : queryable.Count())) * 100M, 2);
             //计算总数
             int Total = WG + MG;
             decimal Sum = WGSum + MGSum;
@@ -2654,5 +2694,6 @@ namespace KilyCore.Service.ServiceCore
             return Remove<GovtAgree>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         #endregion
+
     }
 }
