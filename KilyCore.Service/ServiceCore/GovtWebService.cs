@@ -1986,8 +1986,8 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 AreaName = t.Name
             }).ToList();
-            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
-            IQueryable<RepastInfo> queryables = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false);
+            List<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).ToList();
+            List<RepastInfo> queryables = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).ToList();
             List<ResponseGovtRanking> data = new List<ResponseGovtRanking>();
             Area.ForEach(t =>
             {
@@ -2049,14 +2049,15 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public IList<DataPie> GetNewStayInAllCompanyCount()
         {
+            var Temp = GovtInfo();
             IQueryable<EnterpriseInfo> coms = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
             IQueryable<RepastInfo> mers = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false);
             IQueryable<CookInfo> cooks = Kily.Set<CookInfo>().Where(t => t.IsDelete == false);
-            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+            if (Temp.AccountType <= GovtAccountEnum.City)
             {
-                coms = coms.Where(t => t.TypePath.Contains(GovtInfo().City));
-                mers = mers.Where(t => t.TypePath.Contains(GovtInfo().City));
-                cooks = cooks.Where(t => t.TypePath.Contains(GovtInfo().City));
+                coms = coms.Where(t => t.TypePath.Contains(Temp.City));
+                mers = mers.Where(t => t.TypePath.Contains(Temp.City));
+                cooks = cooks.Where(t => t.TypePath.Contains(Temp.City));
             }
             IList<string> Areas = GetDepartArea();
             if (Areas != null)
@@ -2077,9 +2078,9 @@ namespace KilyCore.Service.ServiceCore
             }
             else
             {
-                coms = coms.Where(t => t.TypePath.Contains(GovtInfo().Area));
-                mers = mers.Where(t => t.TypePath.Contains(GovtInfo().Area));
-                cooks = cooks.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                coms = coms.Where(t => t.TypePath.Contains(Temp.Area));
+                mers = mers.Where(t => t.TypePath.Contains(Temp.Area));
+                cooks = cooks.Where(t => t.TypePath.Contains(Temp.Area));
             }
             List<DataPie> Pie = coms.GroupBy(t => t.CompanyType).Select(t => new DataPie { name = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.Key), value = t.Count() }).ToList();
             Pie.AddRange(mers.GroupBy(t => t.DiningType).Select(t => new DataPie { name = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.Key), value = t.Count() }).ToList());
