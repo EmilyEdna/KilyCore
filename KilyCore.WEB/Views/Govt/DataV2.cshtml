@@ -8,12 +8,18 @@
     <link href="~/Content/DataView/Css/video-js.min.css.css" rel="stylesheet" />
 }
 @section script{
+    <script src="~/Content/JavaScript/Controller.js"></script>
+    <script src="~/Content/JavaScript/jquery.cookie.js"></script>
+    <script src="~/Content/JavaScript/jquery.extension.js"></script>
     <script src="~/Content/DataView/JS/shine.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.6.0/video.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.15.0/videojs-contrib-hls.js"></script>
     <script>
         var options = {
             Init: function () {
+                $("body").GetGovtInfo();
+                $("#DepartName").html(Govt.DepartName);
+               
                 this.InitEchart();
                 this.InitMap();
                 this.InitDom();
@@ -297,11 +303,11 @@
                         let listStr = '';
                         for (index in result.data.rows) {
                             listStr += `<li class="clearfix">
-                            <div class="hidden">${result.data.rows[index].Id}</div>
-                            <div>${result.data.rows[index].Name}</div>
-                            <div>${result.data.rows[index].CompanyType}</div>
-                            <div>${result.data.rows[index].CardType}</div>
-                            <div>${result.data.rows[index].CardExpiredDate}</div></li>`;
+                                <div class="hidden">${result.data.rows[index].Id}</div>
+                                <div>${result.data.rows[index].Name}</div>
+                                <div>${result.data.rows[index].CompanyType}</div>
+                                <div>${result.data.rows[index].CardType}</div>
+                                <div>${result.data.rows[index].CardExpiredDate}</div></li>`;
                         }
                         $(".cardexpire .bd ul").html(listStr);
                     }
@@ -414,7 +420,7 @@
                         Firm.scrollLeft++;
                 }, 50);
                 $(".cardexpire .bd ul li").click(function () {
-                   // let Id = $(this).find("div").eq(0).text();
+                    // let Id = $(this).find("div").eq(0).text();
                     window.open("/WebGovtManage/Risk/CertificateRisk", "_black");
                 });
             },
@@ -499,7 +505,7 @@
         <div class="centerwrap fl">
             <!-- 系统名称 -->
             <div id="tittle">
-                <div></div>
+                <div id="DepartName" style="padding-top:52px;font-size:20px;width:100%;text-align:center;"></div>
             </div>
             <!-- 入驻企业 -->
             <div class="firmsettled">
