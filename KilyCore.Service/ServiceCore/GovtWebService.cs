@@ -500,14 +500,15 @@ namespace KilyCore.Service.ServiceCore
         public PagedResult<ResponseGovtInfo> GetGovtInfoPage(PageParamList<RequestGovtInfo> pageParam)
         {
             IQueryable<GovtInfo> queryable = Kily.Set<GovtInfo>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            var LoginInfo = GovtInfo();
             if (!string.IsNullOrEmpty(pageParam.QueryParam.DepartName))
                 queryable = queryable.Where(t => t.DepartName.Contains(pageParam.QueryParam.DepartName));
-            if (GovtInfo().AccountType == GovtAccountEnum.City)
-                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
-            if (GovtInfo().AccountType == GovtAccountEnum.Area)
-                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
-            if (GovtInfo().AccountType == GovtAccountEnum.Town)
-                queryable = queryable.Where(t => t.Id == GovtInfo().Id);
+            if (LoginInfo.AccountType == GovtAccountEnum.City)
+                queryable = queryable.Where(t => t.TypePath.Contains(LoginInfo.City));
+            if (LoginInfo.AccountType == GovtAccountEnum.Area)
+                queryable = queryable.Where(t => t.TypePath.Contains(LoginInfo.Area));
+            if (LoginInfo.AccountType == GovtAccountEnum.Town)
+                queryable = queryable.Where(t => t.Id == LoginInfo.Id);
             var data = queryable.Select(t => new ResponseGovtInfo()
             {
                 Id = t.Id,

@@ -35,7 +35,7 @@
                     //获取树
                     options.GetMenu();
                 //显示登录
-                $(".text-muted").prepend(Govt.TrueName);
+                $(".text-muted").prepend(Govt.DepartName);
                 $(".font-bold").prepend(Govt.Account);
                 if (Govt.TypePath == null || Govt.TypePath == "")
                     controller.Alter("请前往部门信息用户管理完善账户信息！", "系统提示");
@@ -111,7 +111,7 @@
                             </ul>
                         </div>
                         <div class="logo-element">
-                            H+
+                            溯本源
                         </div>
                     </li>
                 </ul>
@@ -175,7 +175,7 @@
             </div>
             <div class="footer">
                 <div class="pull-right">
-                    &copy; 2017 <a href="#" target="_blank">KilyCore</a>
+                    &copy; @DateTime.Now.Year <a href="#" target="_blank">KilyCore</a>
                 </div>
             </div>
         </div>
