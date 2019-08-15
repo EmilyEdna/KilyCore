@@ -4490,6 +4490,34 @@
             <param name="Range"></param>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetOrderPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.System.RequestSystemOrder})">
+            <summary>
+            订单分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.AcceptOrder(KilyCore.DataEntity.RequestMapper.System.RequestSystemOrder)">
+            <summary>
+            接单
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetOrderDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            订单详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.OrderCheck(KilyCore.DataEntity.RequestMapper.System.RequestSystemOrder)">
+            <summary>
+            订单状态
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
         <member name="T:KilyCore.API.Controllers.TempController">
             <summary>
             中继系统接口

@@ -103,5 +103,18 @@ namespace KilyCore.Service.IServiceCore
         IList<ResponseSystemProductCount> GetProductCountCenter();
         ResponseSystemContractTotalCount GetContractCountCenter(RequestRangeDate Range);
         #endregion
+        #region 订单管理
+        #region 订单中心
+        PagedResult<ResponseSystemOrder> GetOrderPage(PageParamList<RequestSystemOrder> pageParam);
+        String AcceptOrder(RequestSystemOrder Param);
+        ResponseSystemOrder GetOrderDetail(Guid Id);
+        String OrderCheck(RequestSystemOrder Param);
+        #endregion
+        #region 订单日志
+        PagedResult<ResponseSystemOrderLog> GetOrderLogPage(PageParamList<RequestSystemOrderLog> pageParam);
+        String EditOrderLog(RequestSystemOrderLog Param);
+        String RemoveLog(Guid Id);
+        #endregion
+        #endregion
     }
 }

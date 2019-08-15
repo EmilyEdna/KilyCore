@@ -2,6 +2,7 @@
 <html lang="zh-hans">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="renderer" content="webkit">
     <meta charset="UTF-8">
     <title>@ViewBag.Title</title>
     <link href="~/Content/BootStrap/Css/bootstrap.css" rel="stylesheet" />
@@ -24,7 +25,7 @@
         <script src="~/Content/Validate/jqury.validate_zh.js"></script>*@
     <script src="https://static.runoob.com/assets/jquery-validation-1.14.0/dist/jquery.validate.min.js"></script>
     <script src="https://static.runoob.com/assets/jquery-validation-1.14.0/dist/localization/messages_zh.js"></script>
-    <script src = "/Content/TreeView/Script/bootstrap-treeview.js" ></script>
+    <script src="/Content/TreeView/Script/bootstrap-treeview.js"></script>
     <script src="~/Content/Layer/layer.js"></script>
     <script src="~/Content/LayerDate/laydate.js"></script>
     <script src="~/Content/Uploader/js/upload.js"></script>
@@ -40,11 +41,11 @@
     <script src="~/Content/JavaScript/Controller.js"></script>
     <script src="~/Content/JavaScript/validate.extension.js"></script>
     <script>
-             var SysUserInfo = parent.UserInfo;
-            var CompanyInfo = parent.CompanyUser;
-            var RepastUser = parent.RepastInfo;
-            var CookerInfo = parent.Cooker;
-            var GovtInfo = parent.Govt
+        var SysUserInfo = parent.UserInfo;
+        var CompanyInfo = parent.CompanyUser;
+        var RepastUser = parent.RepastInfo;
+        var CookerInfo = parent.Cooker;
+        var GovtInfo = parent.Govt
     </script>
     @RenderSection("script", false)
     @RenderSection("css", false)
