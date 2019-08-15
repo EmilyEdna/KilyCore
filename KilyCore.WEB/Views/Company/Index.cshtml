@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
-    <script src="http://api.map.baidu.com/api?v=2.0&ak=rEU7BdGnB0kKyIjUiONnUHlw"></script>
+    <script src="http://api.map.baidu.com/api?v=2.0&ak=3ce7ddfda60046708248ea55e10b1435"></script>
     <script>
         var option = {
             Init: function () {
@@ -138,7 +138,7 @@
                     success: function (result) {
                         $.each(result.data, function (i, obj) {
                             $.ajax({
-                                url: "http://api.map.baidu.com/geocoder/v2/?address=" + obj.Address + "&output=json&ak=rEU7BdGnB0kKyIjUiONnUHlw",
+                                url: "http://api.map.baidu.com/geocoder/v2/?address=" + obj.Address + "&output=json&ak=3ce7ddfda60046708248ea55e10b1435",
                                 type: "get",
                                 async: false,
                                 dataType: "jsonp",
