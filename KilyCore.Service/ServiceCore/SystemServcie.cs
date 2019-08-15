@@ -1749,5 +1749,155 @@ namespace KilyCore.Service.ServiceCore
             return Temp;
         }
         #endregion
+
+        #region 订单管理
+        #region 订单中心
+        /// <summary>
+        /// 订单分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseSystemOrder> GetOrderPage(PageParamList<RequestSystemOrder> pageParam)
+        {
+            IQueryable<SystemOrder> queryable = Kily.Set<SystemOrder>().OrderByDescending(t => t.SubmitTime);
+            if (pageParam.QueryParam.OrderStatus.HasValue)
+                queryable = queryable.Where(t => t.OrderStatus == pageParam.QueryParam.OrderStatus);
+            if (pageParam.QueryParam.IsExpire.HasValue)
+                queryable = queryable.Where(t => t.IsExpire == pageParam.QueryParam.IsExpire);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.OrderNo))
+                queryable = queryable.Where(t => t.OrderNo == pageParam.QueryParam.OrderNo);
+            if (pageParam.QueryParam.IsApp)
+                queryable = queryable.Where(t => t.OrderStatus == OrderEnum.Dispatch && !t.IsExpire.Value);
+            var data = queryable.Select(t => new ResponseSystemOrder
+            {
+                Id = t.Id,
+                CompanyName = t.CompanyName,
+                OrderType = t.OrderType,
+                GovtName = t.GovtName,
+                IsExpire = t.IsExpire,
+                SubmitTime = t.SubmitTime,
+                OrderStatusTxt = AttrExtension.GetSingleDescription<OrderEnum, DescriptionAttribute>(t.OrderStatus),
+                OrderAccepter = t.OrderAccepter,
+                OrderNo = t.OrderNo,
+                OrderAccepterTime = t.OrderAccepterTime,
+                OrderStatus = t.OrderStatus,
+                ServicePrice = t.ServicePrice,
+                ServiceVersion = t.ServiceVersion
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 接单
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string AcceptOrder(RequestSystemOrder Param)
+        {
+            SystemOrder Order = Param.MapToEntity<SystemOrder>();
+            RequestSystemOrderLog Log = new RequestSystemOrderLog
+            {
+                OrderId = Param.Id,
+                HandlerTime = DateTime.Now,
+                HandlerUser = Param.OrderAccepter,
+                OrderStatus = OrderEnum.AcceptOrder,
+                LogType = "接单",
+                OrderRemark = Param.Remark
+            };
+            EditOrderLog(Log);
+            return Update(Order, Param) ? "接单成功" : "接单失败";
+        }
+        /// <summary>
+        /// 订单详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseSystemOrder GetOrderDetail(Guid Id)
+        {
+            return Kily.Set<SystemOrder>().Where(t => t.Id == Id).FirstOrDefault().MapToEntity<ResponseSystemOrder>();
+        }
+        /// <summary>
+        /// 订单状态
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="Status"></param>
+        /// <returns></returns>
+        public string OrderCheck(RequestSystemOrder Param)
+        {
+            SystemOrder Order = Kily.Set<SystemOrder>().Where(t => t.Id == Param.Id).FirstOrDefault();
+            RequestSystemOrderLog Log = new RequestSystemOrderLog
+            {
+                OrderId = Param.Id,
+                HandlerTime = DateTime.Now,
+                HandlerUser = UserInfo().TrueName,
+                OrderStatus = Param.OrderStatus,
+            };
+            switch (Param.OrderStatus)
+            {
+                case OrderEnum.NoAudit:
+                    Order.OrderStatus = OrderEnum.NoAudit;
+                    Log.OrderStatus = OrderEnum.NoAudit;
+                    break;
+                case OrderEnum.AuditSuccess:
+                    Order.OrderStatus = OrderEnum.AuditSuccess;
+                    Log.OrderStatus = OrderEnum.AuditSuccess;
+                    break;
+                case OrderEnum.Dispatch:
+                    Order.OrderStatus = OrderEnum.Dispatch;
+                    Log.OrderStatus = OrderEnum.Dispatch;
+                    break;
+                default:
+                    Order.OrderStatus = Order.OrderStatus;
+                    break;
+            }
+            EditOrderLog(Log);
+            return UpdateField(Order, "OrderStatus") ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
+        }
+        #endregion
+        #region 订单日志
+        /// <summary>
+        /// 日志分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseSystemOrderLog> GetOrderLogPage(PageParamList<RequestSystemOrderLog> pageParam)
+        {
+            IQueryable<SystemOrderLog> queryable = Kily.Set<SystemOrderLog>().OrderByDescending(t => t.HandlerTime).Where(t=>t.IsDelete==false);
+            if (pageParam.QueryParam.HandlerTime.HasValue)
+                queryable = queryable.Where(t => t.HandlerTime <= pageParam.QueryParam.HandlerTime);
+            if (pageParam.QueryParam.OrderStatus.HasValue)
+                queryable = queryable.Where(t => t.OrderStatus == pageParam.QueryParam.OrderStatus);
+            var data = queryable.Select(t => new ResponseSystemOrderLog
+            {
+                HandlerUser = t.HandlerUser,
+                HandlerTime = t.HandlerTime,
+                LogType = t.LogType,
+                Id = t.Id,
+                OrderId = t.OrderId,
+                OrderStatus = t.OrderStatus,
+                OrderStatusTxt = AttrExtension.GetSingleDescription<OrderEnum, DescriptionAttribute>(t.OrderStatus)
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 添加日志
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditOrderLog(RequestSystemOrderLog Param)
+        {
+            SystemOrderLog Log = Param.MapToEntity<SystemOrderLog>();
+            return Insert(Log) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 删除日志
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveLog(Guid Id)
+        {
+            return Delete<SystemOrderLog>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+        #endregion
     }
 }

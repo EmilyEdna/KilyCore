@@ -24,6 +24,10 @@ namespace KilyCore.EntityFrameWork.Model.System
         /// </summary>
         public virtual SystemVersionEnum? ServiceVersion { get; set; }
         /// <summary>
+        /// 订单类型 -工单 -订单
+        /// </summary>
+        public virtual string OrderType { get; set; }
+        /// <summary>
         /// 悬赏金额
         /// </summary>
         public virtual decimal? ServicePrice { get; set; }

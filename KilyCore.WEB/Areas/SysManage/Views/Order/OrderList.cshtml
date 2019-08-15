@@ -1,0 +1,189 @@
+﻿
+@{
+    ViewData["Title"] = "订单中心";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                //恢复高度
+                $(window).resize(function (e) {
+                    window.setTimeout(function () {
+                        options.$table.bootstrapTable("resetView", { height: $(window).height() - 150 });
+                    }, 200);
+                    e.stopPropagation();
+                });
+                //设置表单
+                this.$table = controller.Table("#tableList", { url: "System/GetOrderPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
+            },
+            //事件
+            InitEvents: function () {
+                $("#t1").click(function () {
+                    if ($(".dropdown-menu").eq(0).hasClass("hidden"))
+                        $(".dropdown-menu").eq(0).removeClass("hidden");
+                    $(".dropdown-menu").eq(0).css("right", "125px");
+                    $(".dropdown-menu").eq(1).addClass("hidden");
+                });
+                $("#t2").click(function () {
+                    if ($(".dropdown-menu").eq(1).hasClass("hidden"))
+                        $(".dropdown-menu").eq(1).removeClass("hidden");
+                    $(".dropdown-menu").eq(0).addClass("hidden");
+                    $(".dropdown-menu").eq(1).css("right", "125px");
+                });
+                $("a[data-field='OrderStatus']").on('click', function () {
+                    $("input[name='OrderStatus']").val($(this).data().value);
+                    $("#OrderStatus").text($(this).text());
+                });
+                $("a[data-field='IsExpire']").on('click', function () {
+                    $("input[name='IsExpire']").val($(this).data().value);
+                    $("#IsExpire").text($(this).text());
+                });
+            },
+            //行为
+            action: {
+                TableFormatter: function (val, row, index) {
+                    var action = [];
+                    action.push('<button class="btn btn-sm btn-primary detail"><i class="fa fa-eye"></i>详情</button>');
+                    if (row.OrderStatus == 30)
+                        action.push('<button class="btn btn-sm btn-primary accept"><i class="fa fa-pencil-square-o"></i>派单</button>');
+                    return action.join("&nbsp;")
+                },
+                TableEvents: {
+                    'click .detail': function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "查看并审核",
+                            type: 2,
+                            height: "90%",
+                            width: "80%",
+                            url: "SysManage/Order/OrderListDetail?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        });
+                    },
+                    'click .accept': function (event, val, row, index) {
+                        controller.Confirm("确认派单？", function (bool) {
+                            if (bool) {
+                                controller.ajax({
+                                    url: "System/OrderCheck",
+                                    data: { Id: row.Id, OrderStatus: 40 },
+                                    type: 'post',
+                                    success: function (result) {
+                                        options.$table.refresh();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }//表单事件结束
+            }//行为结束
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+@section css{
+}
+<div class="container-fluid">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>订单中心</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <form id="Edit">
+                        <div class="col-sm-7 m-b-xs">
+                            <div class="input-group">
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="input-group">
+                                <input type="text" placeholder="订单编号" class="input-sm form-control" name="OrderNo">
+                                <input type="hidden" name="OrderStatus" />
+                                <input type="hidden" name="IsExpire" />
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" id="t1">
+                                        <small id="OrderStatus">订单状态</small>
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="javascript:void(0);" data-field="OrderStatus" data-value="">全部</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0);" data-field="OrderStatus" data-value="10">审核不通过</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0);" data-field="OrderStatus" data-value="20">等待审核</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0);" data-field="OrderStatus" data-value="30">派单中</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0);" data-field="OrderStatus" data-value="40">已接单</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0);" data-field="OrderStatus" data-value="50">已完成</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0);" data-field="OrderStatus" data-value="60">已评价</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0);" data-field="OrderStatus" data-value="70">已归档</a>
+                                        </li>
+                                    </ul>
+                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" id="t2">
+                                        <small id="IsExpire">是否过期</small>
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="javascript:void(0);" data-field="IsExpire" data-value="">全部</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0);" data-field="IsExpire" data-value="true">是</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0);" data-field="IsExpire" data-value="false">否</a>
+                                        </li>
+                                    </ul>
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
+                                    <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive m-t-sm">
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="OrderNo" data-halign="center" data-align="center" data-valign="middle">订单编号</th>
+                                <th data-field="OrderType" data-halign="center" data-align="center" data-valign="middle">订单类型</th>
+                                <th data-field="CompanyName" data-halign="center" data-align="center" data-valign="middle">企业名称</th>
+                                <th data-field="GovtName" data-halign="center" data-align="center" data-valign="middle">政府名称</th>
+                                <th data-field="ServicePrice" data-halign="center" data-align="center" data-valign="middle">服务金额/元</th>
+                                <th data-field="SubmitTime" data-halign="center" data-align="center" data-valign="middle">提交时间</th>
+                                <th data-field="IsExpireTxt" data-halign="center" data-align="center" data-valign="middle">是否过期</th>
+                                <th data-field="OrderStatusTxt" data-halign="center" data-align="center" data-valign="middle">订单状态</th>
+                                <th data-field="OrderAccepter" data-halign="center" data-align="center" data-valign="middle">接单人</th>
+                                <th data-field="OrderAccepterTime" data-halign="center" data-align="center" data-valign="middle">接单时间</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

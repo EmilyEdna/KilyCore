@@ -21,6 +21,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Data.Common;
 using System.Collections;
+using KilyCore.EntityFrameWork.Attributes;
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日12点01分
@@ -154,8 +155,11 @@ namespace KilyCore.Repositories.BaseRepository
                     {
                         //判断实体中是否存在DTO中的字段
                         if (EntityProps.Select(t => t.Name.ToUpper()).Contains(Prop.Name.ToUpper()))
-                            //需要更新的字段
-                            Kily.Entry<TEntity>(Entity).Property(Prop.Name).IsModified = true;
+                        {
+                            if (Prop.CustomAttributes.Any(t=>t.AttributeType!=typeof(NoneUpdateAttribute)))
+                                //需要更新的字段
+                                Kily.Entry<TEntity>(Entity).Property(Prop.Name).IsModified = true;
+                        }
                     }
                 }
                 this.SaveChages();
@@ -163,7 +167,6 @@ namespace KilyCore.Repositories.BaseRepository
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
         }
