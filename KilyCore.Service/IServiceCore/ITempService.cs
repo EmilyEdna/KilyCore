@@ -14,5 +14,8 @@ namespace KilyCore.Service.IServiceCore
         object RepastDuck(Guid CompanyId);
         object WeChatRegist(RequestEnterprise Param);
         object GetInviteCode(string Area);
+        object RepastThing(Guid id);
+        object RepastWeek(Guid id);
+        object RepastCheck(Guid id);
     }
 }
