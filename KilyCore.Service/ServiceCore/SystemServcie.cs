@@ -1787,24 +1787,17 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         /// <summary>
-        /// 接单
+        /// 下单
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public string AcceptOrder(RequestSystemOrder Param)
+        public string OrderEdit(RequestSystemOrder Param)
         {
             SystemOrder Order = Param.MapToEntity<SystemOrder>();
-            RequestSystemOrderLog Log = new RequestSystemOrderLog
-            {
-                OrderId = Param.Id,
-                HandlerTime = DateTime.Now,
-                HandlerUser = Param.OrderAccepter,
-                OrderStatus = OrderEnum.AcceptOrder,
-                LogType = "接单",
-                OrderRemark = Param.Remark
-            };
-            EditOrderLog(Log);
-            return Update(Order, Param) ? "接单成功" : "接单失败";
+            if (Order.Id == Guid.Empty)
+                return Insert(Order) ? "下单成功" : "下单失败";
+            else
+                return Update(Order, Param, false) ? "改单成功" : "改单失败";
         }
         /// <summary>
         /// 订单详情
@@ -1830,20 +1823,39 @@ namespace KilyCore.Service.ServiceCore
                 HandlerTime = DateTime.Now,
                 HandlerUser = UserInfo().TrueName,
                 OrderStatus = Param.OrderStatus,
+                OrderRemark = Param.Remark
             };
+            //接单
+            if (!string.IsNullOrEmpty(Param.OrderAccepter))
+            {
+                Log.HandlerUser = Param.OrderAccepter;
+                Update(Order, Param);
+            }
             switch (Param.OrderStatus)
             {
                 case OrderEnum.NoAudit:
                     Order.OrderStatus = OrderEnum.NoAudit;
-                    Log.OrderStatus = OrderEnum.NoAudit;
+                    Log.LogType = "审核";
                     break;
                 case OrderEnum.AuditSuccess:
                     Order.OrderStatus = OrderEnum.AuditSuccess;
-                    Log.OrderStatus = OrderEnum.AuditSuccess;
+                    Log.LogType = "审核";
                     break;
                 case OrderEnum.Dispatch:
                     Order.OrderStatus = OrderEnum.Dispatch;
-                    Log.OrderStatus = OrderEnum.Dispatch;
+                    Log.LogType = "派单";
+                    break;
+                case OrderEnum.AcceptOrder:
+                    Order.OrderStatus = OrderEnum.AcceptOrder;
+                    Log.LogType = "接单";
+                    break;
+                case OrderEnum.Complete:
+                    Order.OrderStatus = OrderEnum.Complete;
+                    Log.LogType = "完成";
+                    break;
+                case OrderEnum.End:
+                    Order.OrderStatus = OrderEnum.End;
+                    Log.LogType = "归档";
                     break;
                 default:
                     Order.OrderStatus = Order.OrderStatus;
@@ -1861,7 +1873,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseSystemOrderLog> GetOrderLogPage(PageParamList<RequestSystemOrderLog> pageParam)
         {
-            IQueryable<SystemOrderLog> queryable = Kily.Set<SystemOrderLog>().OrderByDescending(t => t.HandlerTime).Where(t=>t.IsDelete==false);
+            IQueryable<SystemOrderLog> queryable = Kily.Set<SystemOrderLog>().OrderByDescending(t => t.HandlerTime).Where(t => t.IsDelete == false);
             if (pageParam.QueryParam.HandlerTime.HasValue)
                 queryable = queryable.Where(t => t.HandlerTime <= pageParam.QueryParam.HandlerTime);
             if (pageParam.QueryParam.OrderStatus.HasValue)
@@ -1874,6 +1886,7 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 OrderId = t.OrderId,
                 OrderStatus = t.OrderStatus,
+                OrderRemark = t.OrderRemark,
                 OrderStatusTxt = AttrExtension.GetSingleDescription<OrderEnum, DescriptionAttribute>(t.OrderStatus)
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -1895,7 +1908,105 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string RemoveLog(Guid Id)
         {
-            return Delete<SystemOrderLog>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+            return Remove<SystemOrderLog>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 日志详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseSystemOrderLog GetOrderLogDetail(Guid Id)
+        {
+            return Kily.Set<SystemOrderLog>().Where(t => t.Id == Id).FirstOrDefault().MapToEntity<ResponseSystemOrderLog>();
+        }
+        #endregion
+        #region 评分记录
+        /// <summary>
+        /// 评分列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseSystemOrderScore> GetOrderScorePage(PageParamList<RequestSystemOrderScore> pageParam)
+        {
+            IQueryable<SystemOrderScore> queryable = Kily.Set<SystemOrderScore>().OrderByDescending(t => t.ScoreTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.ScoreCompany))
+                queryable = queryable.Where(t => t.ScoreCompany.Contains(pageParam.QueryParam.ScoreCompany));
+            if (pageParam.QueryParam.ScoreTime.HasValue)
+                queryable = queryable.Where(t => t.ScoreTime <= pageParam.QueryParam.ScoreTime);
+            var data = queryable.Join(Kily.Set<SystemOrder>(), t => t.OrderNo, x => x.OrderNo, (t, x) => new { t, x.Id }).Select(t => new ResponseSystemOrderScore
+            {
+                Id = t.t.Id,
+                OrderId = t.Id,
+                OrderNo = t.t.OrderNo,
+                Score = t.t.Score,
+                ScoreTime = t.t.ScoreTime,
+                ScoreCompany = t.t.ScoreCompany,
+                OrderAccepter = t.t.OrderAccepter
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 新增评分记录
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditOrderScore(RequestSystemOrderScore Param)
+        {
+            SystemOrderScore Score = Param.MapToEntity<SystemOrderScore>();
+            SystemOrder Order = Kily.Set<SystemOrder>().Where(t => t.OrderNo == Score.OrderNo).FirstOrDefault();
+            Order.OrderStatus = OrderEnum.Evaluative;
+            EditOrderLog(new RequestSystemOrderLog
+            {
+                OrderId = Order.Id,
+                HandlerTime = DateTime.Now,
+                HandlerUser = Param.ScoreCompany,
+                OrderStatus = OrderEnum.Evaluative,
+                OrderRemark = Param.Remark,
+                LogType = "评分"
+            });
+            UpdateField(Order, "OrderStatus");
+            return Insert(Score) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 评分详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseSystemOrderScore GetOrderScoreDetail(Guid Id) {
+            return Kily.Set<SystemOrderScore>().Where(t => t.Id == Id).FirstOrDefault().MapToEntity<ResponseSystemOrderScore>();
+        }
+        #endregion
+        #region 线下人员
+        /// <summary>
+        /// 线下人员分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseSystemPersonOff> GetPersonOffPage(PageParamList<RequestSystemPersonOff> pageParam)
+        {
+            IQueryable<SystemPersonOff> queryable = Kily.Set<SystemPersonOff>().OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.UserNo))
+                queryable = queryable.Where(t => t.UserNo == pageParam.QueryParam.UserNo);
+            var data = queryable.Select(t => new ResponseSystemPersonOff
+            {
+                Id = t.Id,
+                TrueName = t.TrueName,
+                UserNo = t.UserNo,
+                Gender = t.Gender,
+                Phone = t.Phone,
+                Status = t.Status,
+                PayInfo = t.PayInfo
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 人员详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseSystemPersonOff GetOffDetail(Guid Id)
+        {
+            return Kily.Set<SystemPersonOff>().Where(t => t.Id == Id).FirstOrDefault().MapToEntity<ResponseSystemPersonOff>();
         }
         #endregion
         #endregion

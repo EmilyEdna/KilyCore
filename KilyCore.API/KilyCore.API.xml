@@ -4497,9 +4497,9 @@
             <param name="pageParam"></param>
             <returns></returns>
         </member>
-        <member name="M:KilyCore.API.Controllers.SystemController.AcceptOrder(KilyCore.DataEntity.RequestMapper.System.RequestSystemOrder)">
+        <member name="M:KilyCore.API.Controllers.SystemController.OrderEdit(KilyCore.DataEntity.RequestMapper.System.RequestSystemOrder)">
             <summary>
-            接单
+            下单
             </summary>
             <param name="Param"></param>
             <returns></returns>
@@ -4516,6 +4516,69 @@
             订单状态
             </summary>
             <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetOrderLogPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.System.RequestSystemOrderLog})">
+            <summary>
+            日志分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.EditOrderLog(KilyCore.DataEntity.RequestMapper.System.RequestSystemOrderLog)">
+            <summary>
+            添加日志
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.RemoveLog(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除日志
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetOrderLogDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            日志详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetOrderScorePage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.System.RequestSystemOrderScore})">
+            <summary>
+            评分记录
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.EditOrderScore(KilyCore.DataEntity.RequestMapper.System.RequestSystemOrderScore)">
+            <summary>
+            添加评分
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetOrderScoreDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            评分详情
+            </summary>
+            <param name="Key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetPersonOffPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.System.RequestSystemPersonOff})">
+            <summary>
+            线下人员分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetOffDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取人员详情
+            </summary>
+            <param name="Key"></param>
             <returns></returns>
         </member>
         <member name="T:KilyCore.API.Controllers.TempController">

@@ -1,0 +1,91 @@
+﻿
+@{
+    ViewData["Title"] = "日志详情";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var Editor = controller.Editor(".summernote", { width: $(window).width });
+                var Id = controller.GetParam("Id");
+                if (controller.CheckFeild(Id)) {
+                    controller.ajax({
+                        url: "System/GetOrderLogDetail",
+                        type: "post",
+                        async: false,
+                        data: { Id: Id },
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                            Editor.summernote('code', result.data.OrderRemark);
+                        }
+                    });
+                }
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="" id="Edit">
+            <input type="hidden" name="Id" />
+            <input type="hidden" name="OrderRemark" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">日志类型</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="LogType" readonly />
+                    </td>
+                    <th><label class="control-label">订单状态</label></th>
+                    <td class="has-warning">
+                        <select type="select" name="OrderStatus" class="form-control">
+                            <option value="10">审核不通过</option>
+                            <option value="20">等待审核</option>
+                            <option value="30">审核通过</option>
+                            <option value="40">派单中</option>
+                            <option value="50">已接单</option>
+                            <option value="60">已完成</option>
+                            <option value="70">已评价</option>
+                            <option value="80">已归档</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">操作人</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="HandlerUser" readonly />
+                    </td>
+                    <th><label class="control-label">操作时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="HandlerTime" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">日志备注</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="summernote" name="OrderRemark"></div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

@@ -106,7 +106,7 @@ namespace KilyCore.Service.IServiceCore
         #region 订单管理
         #region 订单中心
         PagedResult<ResponseSystemOrder> GetOrderPage(PageParamList<RequestSystemOrder> pageParam);
-        String AcceptOrder(RequestSystemOrder Param);
+        String OrderEdit(RequestSystemOrder Param);
         ResponseSystemOrder GetOrderDetail(Guid Id);
         String OrderCheck(RequestSystemOrder Param);
         #endregion
@@ -114,6 +114,16 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseSystemOrderLog> GetOrderLogPage(PageParamList<RequestSystemOrderLog> pageParam);
         String EditOrderLog(RequestSystemOrderLog Param);
         String RemoveLog(Guid Id);
+        ResponseSystemOrderLog GetOrderLogDetail(Guid Id);
+        #endregion
+        #region 评分记录
+        PagedResult<ResponseSystemOrderScore> GetOrderScorePage(PageParamList<RequestSystemOrderScore> pageParam);
+        String EditOrderScore(RequestSystemOrderScore Param);
+        ResponseSystemOrderScore GetOrderScoreDetail(Guid Id);
+        #endregion
+        #region 线下人员
+        PagedResult<ResponseSystemPersonOff> GetPersonOffPage(PageParamList<RequestSystemPersonOff> pageParam);
+         ResponseSystemPersonOff GetOffDetail(Guid Id);
         #endregion
         #endregion
     }

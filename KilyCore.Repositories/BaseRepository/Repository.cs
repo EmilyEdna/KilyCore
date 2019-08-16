@@ -118,10 +118,11 @@ namespace KilyCore.Repositories.BaseRepository
         /// </summary>
         /// <typeparam name="TEntity">实体</typeparam>
         /// <typeparam name="DEntity">数据传输对象</typeparam>
-        /// <param name="entity"></param>
+        /// <param name="Entity"></param>
         /// <param name="dto"></param>
+        /// <param name="UseUpdate">是否使用忽略更新特性</param>
         /// <returns></returns>
-        public virtual bool Update<TEntity, DEntity>(TEntity Entity, DEntity dto) where TEntity : class, new() where DEntity : class, new()
+        public virtual bool Update<TEntity, DEntity>(TEntity Entity, DEntity dto,bool UseUpdate=true) where TEntity : class, new() where DEntity : class, new()
         {
             try
             {
@@ -156,9 +157,15 @@ namespace KilyCore.Repositories.BaseRepository
                         //判断实体中是否存在DTO中的字段
                         if (EntityProps.Select(t => t.Name.ToUpper()).Contains(Prop.Name.ToUpper()))
                         {
-                            if (Prop.CustomAttributes.Any(t=>t.AttributeType!=typeof(NoneUpdateAttribute)))
-                                //需要更新的字段
+                            if (UseUpdate)
+                            {
+                                if (Prop.CustomAttributes.Any(t => t.AttributeType != typeof(NoneUpdateAttribute)))
+                                    //需要更新的字段
+                                    Kily.Entry<TEntity>(Entity).Property(Prop.Name).IsModified = true;
+                            }
+                            else {
                                 Kily.Entry<TEntity>(Entity).Property(Prop.Name).IsModified = true;
+                            }
                         }
                     }
                 }

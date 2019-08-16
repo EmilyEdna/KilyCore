@@ -18,7 +18,6 @@
                 var Editor = controller.Editor(".summernote", { width: $(window).width });
                 var Id = controller.GetParam("Id");
                 if (controller.CheckFeild(Id)) {
-                    debugger;
                     controller.ajax({
                         url: "System/GetOrderDetail",
                         type: "post",

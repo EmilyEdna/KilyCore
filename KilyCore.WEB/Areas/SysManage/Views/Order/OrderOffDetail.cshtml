@@ -1,0 +1,133 @@
+﻿
+@{
+    ViewData["Title"] = "人员详情";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var Id = controller.GetParam("Id");
+                if (controller.CheckFeild(Id)) {
+                    controller.ajax({
+                        url: "System/GetOffDetail",
+                        type: "post",
+                        async: false,
+                        data: { Id: Id },
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                            if (controller.CheckFeild(result.data.IdCardImg)) {
+                                var arr = result.data.IdCardImg.split(",");
+                                let html = '';
+                                for (var item in arr) {
+                                    html += `<div class="col-sm-3"><img scr="${item}" width="300" height="200"></div>`;
+                                }
+                                $("#IdCardImg").html(html);
+                            }
+                            for (var item in $("img")) {
+                                let src = $(item).attr("src");
+                                var temp = '图片服务器地址'
+                                $(item).attr("src", temp + src);
+                            }
+                        }
+                    });
+                }
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="" id="Edit">
+            <input type="hidden" name="Id" />
+            <input type="hidden" name="Remark" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <td colspan="2" rowspan="2" width="10%"><img src="" height="120" width="120" name="UserImg" type="image" /></td>
+                    <th><label class="control-label">人员编号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="UserNo" readonly />
+                    </td>
+                    <th><label class="control-label">登录账户</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="UserName" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">真实姓名</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="TrueName" readonly />
+                    </td>
+                    <th><label class="control-label">身份证号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="IdCard" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="3"><label class="control-label">所在地址</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Address" readonly />
+                    </td>
+                    <th><label class="control-label">所在区域</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="TypePath" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="3"><label class="control-label">打款账户</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="PayInfo" readonly />
+                    </td>
+                    <th><label class="control-label">账户类型</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="PayType" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="3"><label class="control-label">人员手机</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Phone" readonly />
+                    </td>
+                    <th><label class="control-label">人员邮箱</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Email" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="3"><label class="control-label">性别</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Gender" readonly />
+                    </td>
+                    <th><label class="control-label">状态</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Status" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="3"><label class="control-label">身份证</label></th>
+                    <td class="has-warning" colspan="3" id="IdCardImg">
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
