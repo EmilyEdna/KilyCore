@@ -1,0 +1,82 @@
+﻿
+@{
+    ViewData["Title"] = "评分详情";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var Editor = controller.Editor(".summernote", { width: $(window).width });
+                var Id = controller.GetParam("Id");
+                if (controller.CheckFeild(Id)) {
+                    controller.ajax({
+                        url: "System/GetOrderLogDetail",
+                        type: "post",
+                        async: false,
+                        data: { Id: Id },
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                            Editor.summernote('code', result.data.Remark);
+                        }
+                    });
+                }
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="" id="Edit">
+            <input type="hidden" name="Id" />
+            <input type="hidden" name="Remark" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">订单编号</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="OrderNo" readonly />
+                    </td>
+                    <th><label class="control-label">分数</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Score" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">评分时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ScoreTime" readonly />
+                    </td>
+                    <th><label class="control-label">评分企业</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ScoreCompany" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">备注</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="summernote" name="Remark"></div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

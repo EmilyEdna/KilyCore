@@ -718,14 +718,14 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(SystemService.GetOrderPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
-        /// 接单
+        /// 下单
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("AcceptOrder")]
-        public ObjectResultEx AcceptOrder(RequestSystemOrder Param)
+        [HttpPost("OrderEdit")]
+        public ObjectResultEx OrderEdit(RequestSystemOrder Param)
         {
-            return ObjectResultEx.Instance(SystemService.AcceptOrder(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(SystemService.OrderEdit(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 订单详情
@@ -755,7 +755,8 @@ namespace KilyCore.API.Controllers
         /// <param name="pageParam"></param>
         /// <returns></returns>
         [HttpPost("GetOrderLogPage")]
-        public ObjectResultEx GetOrderLogPage(PageParamList<RequestSystemOrderLog> pageParam) {
+        public ObjectResultEx GetOrderLogPage(PageParamList<RequestSystemOrderLog> pageParam)
+        {
             return ObjectResultEx.Instance(SystemService.GetOrderLogPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -764,7 +765,8 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("EditOrderLog")]
-        public ObjectResultEx EditOrderLog(RequestSystemOrderLog Param) {
+        public ObjectResultEx EditOrderLog(RequestSystemOrderLog Param)
+        {
             return ObjectResultEx.Instance(SystemService.EditOrderLog(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
@@ -772,9 +774,74 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("Remove")]
-        public ObjectResultEx RemoveLog(SimpleParam<Guid> Param) {
+        [HttpPost("RemoveLog")]
+        public ObjectResultEx RemoveLog(SimpleParam<Guid> Param)
+        {
             return ObjectResultEx.Instance(SystemService.RemoveLog(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 日志详情
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetOrderLogDetail")]
+        public ObjectResultEx GetOrderLogDetail(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(SystemService.GetOrderLogDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #region 评分记录
+        /// <summary>
+        /// 评分记录
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetOrderScorePage")]
+        public ObjectResultEx GetOrderScorePage(PageParamList<RequestSystemOrderScore> pageParam)
+        {
+            return ObjectResultEx.Instance(SystemService.GetOrderScorePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 添加评分
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditOrderScore")]
+        public ObjectResultEx EditOrderScore(RequestSystemOrderScore Param)
+        {
+            return ObjectResultEx.Instance(SystemService.EditOrderScore(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 评分详情
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <returns></returns>
+        [HttpPost("GetOrderScoreDetail")]
+        public ObjectResultEx GetOrderScoreDetail(SimpleParam<Guid> Key)
+        {
+            return ObjectResultEx.Instance(SystemService.GetOrderScoreDetail(Key.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #region 线下人员
+        /// <summary>
+        /// 线下人员分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetPersonOffPage")]
+        public ObjectResultEx GetPersonOffPage(PageParamList<RequestSystemPersonOff> pageParam)
+        {
+            return ObjectResultEx.Instance(SystemService.GetPersonOffPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取人员详情
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <returns></returns>
+        [HttpPost("GetOffDetail")]
+        public ObjectResultEx GetOffDetail(SimpleParam<Guid> Key)
+        {
+            return ObjectResultEx.Instance(SystemService.GetOffDetail(Key.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #endregion

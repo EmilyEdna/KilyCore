@@ -17,5 +17,29 @@ namespace KilyCore.WEB.Areas.SysManage.Controllers
         {
             return View();
         }
+        public IActionResult OrderLog()
+        {
+            return View();
+        }
+        public IActionResult OrderLogDetail()
+        {
+            return View();
+        }
+        public IActionResult OrderScore()
+        {
+            return View();
+        }
+        public IActionResult OrderScoreDetail()
+        {
+            return View();
+        }
+        public IActionResult OrderOff()
+        {
+            return View();
+        }
+        public IActionResult OrderOffDetail()
+        {
+            return View();
+        }
     }
 }

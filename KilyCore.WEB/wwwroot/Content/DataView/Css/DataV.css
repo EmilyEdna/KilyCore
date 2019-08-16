@@ -4,17 +4,14 @@
     padding: 0; /*清除全局内边距*/
     color: #fff; /*设置全局字体颜色*/
     letter-spacing: 2px; /*设置全局字间距*/
-}
-
-button, input{
-    outline:none!important;
+    outline: none !important; /*设置全局不要外边框*/
 }
 
 p {
-    margin: 0; /* 清除bootstrap对段落设置的外边距*/
+    margin: 0; /*清除bootstrap对段落设置的外边距*/
 }
 
-html, body { /* 设置页面铺满全屏 超出隐藏 */
+html, body { /*设置页面铺满全屏 超出隐藏*/
     height: 100%;
     width: 100%;
     overflow: hidden;
@@ -37,7 +34,7 @@ a { /*设置a标签无下划线 设置a标签颜色*/
     text-decoration: none;
 }
 
-.cleirfix { /* 清除浮动 */
+.cleirfix { /*清除浮动*/
     display: block;
     width: 0;
     height: 0;
@@ -155,13 +152,19 @@ a { /*设置a标签无下划线 设置a标签颜色*/
     box-shadow: 0 0 10px #87eaf6;
 }
 
-.earlywarning { /*预警周比 大盒子样式*/
+.earlywarning { /*预警统计 大盒子样式*/
     width: 100%;
     height: 19.3%;
     border-radius: 2px;
     border: 1px solid transparent;
     box-shadow: 0 0 10px #87eaf6;
 }
+
+    .earlywarning canvas {
+        padding-left: 2% !important;
+        height: 96% !important;
+        margin-top: 1% !important;
+    }
 
 .firmsettled { /*入驻企业 大盒子样式*/
     width: 100%;
@@ -191,32 +194,28 @@ a { /*设置a标签无下划线 设置a标签颜色*/
 .cardexpire { /*证件到期 大盒子样式*/
     text-align: center;
     width: 100%;
-    height: 21%;
+    height: 20.5%;
     border-radius: 2px;
     border: 1px solid transparent;
     box-shadow: 0 0 10px #87eaf6;
 }
 
-    .cardexpire .hd {
+    .cardexpire .head {
         width: 100%;
         background: rgba(3,57,139,.9);
     }
 
-        .cardexpire .hd div {
+        .cardexpire .head div {
             float: left;
             width: 25%;
         }
 
     .cardexpire .bd .ulwrap {
         overflow: hidden;
-        position: relative;
     }
 
     .cardexpire .bd ul {
         width: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
     }
 
         .cardexpire .bd ul li {
@@ -235,6 +234,15 @@ a { /*设置a标签无下划线 设置a标签颜色*/
     padding-right: 2em;
 }
 
+    .righttime a {
+        display: inline-block;
+        width: 20%;
+        background-color: #1A5DD2;
+        color: #fff;
+        text-align: center;
+        border-radius: 3px;
+    }
+
 .onlineinspection { /*网上巡查 大盒子样式*/
     width: 100%;
     height: 30.5%;
@@ -244,10 +252,9 @@ a { /*设置a标签无下划线 设置a标签颜色*/
 }
 
     .onlineinspection canvas {
-        width: 90% !important;
-        height: 90% !important;
+        padding-left: 2% !important;
+        height: 94% !important;
         margin-top: 3% !important;
-        margin-left: 5% !important;
     }
 
 .supervisoryvideo { /*监管视频 大盒子样式*/
@@ -260,8 +267,8 @@ a { /*设置a标签无下划线 设置a标签颜色*/
 
     .supervisoryvideo .videoitem {
         width: 47%;
-        height: 45.5%;
-        margin-top: 2%;
+        height: 47%;
+        margin-top: 1.5%;
         margin-right: 2%;
     }
 
@@ -270,6 +277,7 @@ a { /*设置a标签无下划线 设置a标签颜色*/
         }
 
         .supervisoryvideo .videoitem p {
+            margin-top: 2%;
             white-space: nowrap; /*溢出显示...*/
             overflow: hidden;
             text-overflow: ellipsis;
@@ -279,12 +287,17 @@ a { /*设置a标签无下划线 设置a标签颜色*/
             width: 100%;
             height: 95% !important;
         }
-        .supervisoryvideo .videoitem .video_name {
-           font-size:12px;
+
+        .supervisoryvideo .videoitem .video-js {
+            width: 100% !important;
+            height: 88% !important;
+            border: 1px solid transparent;
+            box-shadow: 0 0 3px #87eaf6;
         }
-        .supervisoryvideo .videoitem .video_name span{
-            font-size: 12px;
-        }
+
+            .supervisoryvideo .videoitem .video-js .vjs-big-play-button {
+                font-size: 1em;
+            }
 
 .todayvideo { /*今日视频 大盒子样式*/
     width: 100%;
