@@ -122,7 +122,7 @@ namespace KilyCore.Repositories.BaseRepository
         /// <param name="dto"></param>
         /// <param name="UseUpdate">是否使用忽略更新特性</param>
         /// <returns></returns>
-        public virtual bool Update<TEntity, DEntity>(TEntity Entity, DEntity dto,bool UseUpdate=true) where TEntity : class, new() where DEntity : class, new()
+        public virtual bool Update<TEntity, DEntity>(TEntity Entity, DEntity dto,bool UseUpdate=false) where TEntity : class, new() where DEntity : class, new()
         {
             try
             {

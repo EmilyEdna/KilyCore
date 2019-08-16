@@ -28,6 +28,9 @@ namespace KilyCore.Quartz.Job
                 case "账户":
                     await CheckAccount();
                     break;
+                case "订单":
+                    await CheckOrderExpire();
+                    break;
                 default:
                     await Task.CompletedTask;
                     break;
@@ -53,6 +56,19 @@ namespace KilyCore.Quartz.Job
             {
                 Delete<RepastInfo>(x => x.Id == t);
                 Delete<RepastInfoUser>(x => x.InfoId == t);
+            });
+            await Task.CompletedTask;
+        }
+        /// <summary>
+        /// 检测订单是否过期
+        /// </summary>
+        /// <returns></returns>
+        public async Task CheckOrderExpire()
+        {
+            Kily.Set<SystemOrder>().Where(t => t.ExpireTime > DateTime.Now).ToList().ForEach(t =>
+            {
+                t.IsExpire = true;
+                UpdateField(t, "IsExpire");
             });
             await Task.CompletedTask;
         }

@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "订单详情";
+    ViewData["Title"] = "编辑订单";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section css{
@@ -16,6 +16,12 @@
             //元素
             InitDom: function () {
                 var Editor = controller.Editor(".summernote", { width: $(window).width });
+                $("input[name='OrderNo']").val("No." + controller.FormatDate("YYYYMMDDHHmmssSSS"));
+                controller.LayDate({ elem: "input[name='SubmitTime']" });
+                controller.LayDate({ elem: "input[name='ExpireTime']", max: controller.GetDate(1) });
+                $("input[name='CompanyName']").val(CompanyInfo.CompanyName)
+                $("input[name='CompanyId']").val(CompanyInfo.Id)
+                $("input[name='ServiceVersion']").val(CompanyInfo.Version)
                 var Id = controller.GetParam("Id");
                 if (controller.CheckFeild(Id)) {
                     controller.ajax({
@@ -46,77 +52,46 @@
 }
 <div class="ibox float-e-margins">
     <div class="ibox-content">
-        <form class="form-horizontal" method="post" action="System/OrderCheck" id="Edit">
+        <form class="form-horizontal" method="post" action="System/OrderEdit" id="Edit">
             <input type="hidden" name="Id" />
+            <input type="hidden" name="CompanyId" />
             <input type="hidden" name="ServiceContent" />
+            <input type="hidden" name="ServiceVersion" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">订单编号</label></th>
-                    <td class="has-warning">
+                    <td class="has-warning" colspan="3">
                         <input type="text" class="form-control" name="OrderNo" readonly />
-                    </td>
-                    <th><label class="control-label">订单类型</label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control" name="OrderType" readonly />
                     </td>
                 </tr>
                 <tr>
+                    <th><label class="control-label">订单类型</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="OrderType" value="订单" readonly />
+                    </td>
                     <th><label class="control-label">下单企业</label></th>
                     <td class="has-warning">
                         <input type="text" class="form-control" name="CompanyName" readonly />
-                    </td>
-                    <th><label class="control-label">下单政府</label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control" name="GovtName" readonly />
                     </td>
                 </tr>
                 <tr>
                     <th><label class="control-label">服务费用/元</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="ServicePrice" readonly />
+                        <input type="text" class="form-control" name="ServicePrice" />
                     </td>
                     <th><label class="control-label">过期时间</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="ExpireTime" readonly />
+                        <input type="text" name="ExpireTime" class="form-control" />
                     </td>
                 </tr>
                 <tr>
                     <th><label class="control-label">发布者</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="SubmitUser" readonly />
+                        <input type="text" class="form-control" name="SubmitUser" />
                     </td>
                     <th><label class="control-label">发布时间</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="SubmitTime" readonly />
-                    </td>
-                </tr>
-                <tr>
-                    <th><label class="control-label">接单人</label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control" name="OrderAccepter" readonly />
-                    </td>
-                    <th><label class="control-label">接单时间</label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control" name="OrderAccepterTime" readonly />
-                    </td>
-                </tr>
-                <tr>
-                    <th><label class="control-label">是否过期</label></th>
-                    <td class="has-warning">
-                        <input type="text" class="form-control" name="IsExpireTxt" readonly />
-                    </td>
-                    <th><label class="control-label">订单状态</label></th>
-                    <td class="has-warning">
-                        <select type="select" name="OrderStatus" class="form-control">
-                            <option value="10">审核不通过</option>
-                            <option value="20">等待审核</option>
-                            <option value="30">审核通过</option>
-                            <option value="40">派单中</option>
-                            <option value="50">已接单</option>
-                            <option value="60">已完成</option>
-                            <option value="70">已评价</option>
-                            <option value="80">已归档</option>
-                        </select>
+                        <input type="text" class="form-control" name="SubmitTime" />
                     </td>
                 </tr>
                 <tr>

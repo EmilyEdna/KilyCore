@@ -16,7 +16,7 @@
             //元素
             InitDom: function () {
                 var Guid = controller.GetParam("Id");
-                if (Guid != null || Guid == "") {
+                if (controller.CheckFeild(Guid)) {
                     //获取详情
                     controller.ajax({
                         url: "Enterprise/GetEnterpriseMenuDetail",

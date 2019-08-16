@@ -15,20 +15,12 @@
             },
             //元素
             InitDom: function () {
-                var Editor = controller.Editor(".summernote", { width: $(window).width });
-                var Id = controller.GetParam("Id");
-                if (controller.CheckFeild(Id)) {
-                    controller.ajax({
-                        url: "System/GetOrderScoreDetail",
-                        type: "post",
-                        async: false,
-                        data: { Id: Id },
-                        success: function (result) {
-                            controller.SetCtrlValue("#Edit", result.data);
-                            Editor.summernote('code', result.data.Remark);
-                        }
-                    });
-                }
+                controller.Editor(".summernote", { width: $(window).width });
+                var No = controller.GetParam("OrderNo");
+                $("input[name='OrderNo']").val(No);
+                $("input[name='ScoreCompany']").val(RepastUser.MerchantName);
+                controller.LayDate({ elem: "input[name='ScoreTime']" });
+                $("input[name='OrderAccepter']").val(controller.GetParam("Accept"));
             },
             //事件
             InitEvents: function () {
@@ -46,9 +38,10 @@
 }
 <div class="ibox float-e-margins">
     <div class="ibox-content">
-        <form class="form-horizontal" method="post" action="" id="Edit">
+        <form class="form-horizontal" method="post" action="System/EditOrderScore" id="Edit">
             <input type="hidden" name="Id" />
             <input type="hidden" name="Remark" />
+            <input  type="hidden" name="ScoreCompany"/>
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">订单编号</label></th>
@@ -57,17 +50,17 @@
                     </td>
                     <th><label class="control-label">分数</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="Score" readonly />
+                        <input type="text" class="form-control" name="Score" />
                     </td>
                 </tr>
                 <tr>
                     <th><label class="control-label">评分时间</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="ScoreTime" readonly />
+                        <input type="text" class="form-control" name="ScoreTime" />
                     </td>
-                    <th><label class="control-label">评分企业</label></th>
+                    <th><label class="control-label">接单人</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="ScoreCompany" readonly />
+                        <input type="text" class="form-control" name="OrderAccepter"/>
                     </td>
                 </tr>
                 <tr>

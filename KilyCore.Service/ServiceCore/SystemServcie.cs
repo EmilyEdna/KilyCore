@@ -1768,6 +1768,8 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.OrderNo == pageParam.QueryParam.OrderNo);
             if (pageParam.QueryParam.IsApp)
                 queryable = queryable.Where(t => t.OrderStatus == OrderEnum.Dispatch && !t.IsExpire.Value);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.CompanyName))
+                queryable = queryable.Where(t => t.CompanyName.Equals(pageParam.QueryParam.CompanyName));
             var data = queryable.Select(t => new ResponseSystemOrder
             {
                 Id = t.Id,
@@ -1794,10 +1796,11 @@ namespace KilyCore.Service.ServiceCore
         public string OrderEdit(RequestSystemOrder Param)
         {
             SystemOrder Order = Param.MapToEntity<SystemOrder>();
+            Order.OrderStatus = OrderEnum.WaitAudit;
             if (Order.Id == Guid.Empty)
                 return Insert(Order) ? "下单成功" : "下单失败";
             else
-                return Update(Order, Param, false) ? "改单成功" : "改单失败";
+                return Update(Order, Param, true) ? "改单成功" : "改单失败";
         }
         /// <summary>
         /// 订单详情
@@ -1933,6 +1936,8 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.ScoreCompany.Contains(pageParam.QueryParam.ScoreCompany));
             if (pageParam.QueryParam.ScoreTime.HasValue)
                 queryable = queryable.Where(t => t.ScoreTime <= pageParam.QueryParam.ScoreTime);
+            if(!string.IsNullOrEmpty(pageParam.QueryParam.ScoreCompany))
+                queryable = queryable.Where(t => t.ScoreCompany.Equals(pageParam.QueryParam.ScoreCompany));
             var data = queryable.Join(Kily.Set<SystemOrder>(), t => t.OrderNo, x => x.OrderNo, (t, x) => new { t, x.Id }).Select(t => new ResponseSystemOrderScore
             {
                 Id = t.t.Id,

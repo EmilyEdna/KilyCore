@@ -42,6 +42,11 @@ a { /*设置a标签无下划线 设置a标签颜色*/
     clear: both;
 }
 
+.boxs { /*边框外发光*/
+    border: 1px solid transparent;
+    box-shadow: 0 0 20px rgba(135, 234, 246,.5);
+}
+
 .wrap { /*外层包裹盒子铺满全屏 添加背景图片铺满全屏*/
     width: 100%;
     height: 100%;
@@ -83,16 +88,16 @@ a { /*设置a标签无下划线 设置a标签颜色*/
 
 .leftnotice, .righttime { /*左边顶部和右边顶部小盒子的共有样式*/
     width: 100%;
-    height: 3%;
+    height: 2.6%;
 }
 
 .leftnotice { /*左边顶部notice小盒子的样式*/
-    border: 1px solid transparent;
-    box-shadow: 0 0 10px #fff;
     border-radius: 2px;
     background: url(../images/laba_.png) left center no-repeat;
     background-size: 8%;
     padding-left: 9%;
+    border: 1px solid transparent;
+    box-shadow: 0 0 20px rgba(255, 255, 255, .5);
 }
 
     .leftnotice .tt {
@@ -121,8 +126,6 @@ a { /*设置a标签无下划线 设置a标签颜色*/
     width: 100%;
     height: 13.14%;
     border-radius: 2px;
-    border: 1px solid transparent;
-    box-shadow: 0 0 10px #87eaf6;
 }
 
 .dataitem { /* 今日数据 子项样式 */
@@ -148,16 +151,12 @@ a { /*设置a标签无下划线 设置a标签颜色*/
     width: 100%;
     height: 21%;
     border-radius: 2px;
-    border: 1px solid transparent;
-    box-shadow: 0 0 10px #87eaf6;
 }
 
 .earlywarning { /*预警统计 大盒子样式*/
     width: 100%;
     height: 19.3%;
     border-radius: 2px;
-    border: 1px solid transparent;
-    box-shadow: 0 0 10px #87eaf6;
 }
 
     .earlywarning canvas {
@@ -196,8 +195,6 @@ a { /*设置a标签无下划线 设置a标签颜色*/
     width: 100%;
     height: 20.5%;
     border-radius: 2px;
-    border: 1px solid transparent;
-    box-shadow: 0 0 10px #87eaf6;
 }
 
     .cardexpire .head {
@@ -221,9 +218,14 @@ a { /*设置a标签无下划线 设置a标签颜色*/
         .cardexpire .bd ul li {
             width: 100%;
             cursor: pointer;
-            border-bottom: 1px solid #ccc;
         }
 
+            .cardexpire .bd ul li:nth-child(2n+1) {
+                background: rgba(60,138,182,.2);
+            }
+            .cardexpire .bd ul li:last-child {
+                border-bottom: 1px solid rgba(60,138,182,.5);
+            }
             .cardexpire .bd ul li div {
                 float: left;
                 width: 25%;
@@ -231,7 +233,6 @@ a { /*设置a标签无下划线 设置a标签颜色*/
 
 .righttime { /* 右侧时间样式*/
     text-align: right;
-    padding-right: 2em;
 }
 
     .righttime a {
@@ -247,8 +248,6 @@ a { /*设置a标签无下划线 设置a标签颜色*/
     width: 100%;
     height: 30.5%;
     border-radius: 2px;
-    border: 1px solid transparent;
-    box-shadow: 0 0 10px #87eaf6;
 }
 
     .onlineinspection canvas {
@@ -261,8 +260,6 @@ a { /*设置a标签无下划线 设置a标签颜色*/
     width: 100%;
     height: 33.5%;
     border-radius: 2px;
-    border: 1px solid transparent;
-    box-shadow: 0 0 10px #87eaf6;
 }
 
     .supervisoryvideo .videoitem {
@@ -283,16 +280,11 @@ a { /*设置a标签无下划线 设置a标签颜色*/
             text-overflow: ellipsis;
         }
 
-        .supervisoryvideo .videoitem video {
-            width: 100%;
-            height: 95% !important;
-        }
-
         .supervisoryvideo .videoitem .video-js {
             width: 100% !important;
             height: 88% !important;
             border: 1px solid transparent;
-            box-shadow: 0 0 3px #87eaf6;
+            box-shadow: 0 0 3px rgba(135, 234, 246,.5);
         }
 
             .supervisoryvideo .videoitem .video-js .vjs-big-play-button {
@@ -303,16 +295,17 @@ a { /*设置a标签无下划线 设置a标签颜色*/
     width: 100%;
     height: 14.7%;
     border-radius: 2px;
-    border: 1px solid transparent;
-    box-shadow: 0 0 10px #87eaf6;
 }
 
     .todayvideo .videoNum {
         text-align: center;
-        margin-top: 10%;
+        margin-top: 9%;
         margin-left: 7%;
         width: 40%;
         height: 56%;
         background: url(../images/videonum_ksh.png) center center no-repeat;
         background-size: 100% 100%;
+    }
+    .todayvideo .videoNum p{
+        margin-top: 1%;
     }
