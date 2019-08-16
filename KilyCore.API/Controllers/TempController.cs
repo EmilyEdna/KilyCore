@@ -67,6 +67,39 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(Temp.RepastDuck(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 获取食材供应
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpGet("RepastThing")]
+        [AllowAnonymous]
+        public ObjectResultEx RepastThing(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(Temp.RepastThing(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取周菜谱
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpGet("RepastWeek")]
+        [AllowAnonymous]
+        public ObjectResultEx RepastWeek(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(Temp.RepastWeek(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取抽检
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpGet("RepastCheck")]
+        [AllowAnonymous]
+        public ObjectResultEx RepastCheck(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(Temp.RepastCheck(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 微信公众号
         /// <summary>

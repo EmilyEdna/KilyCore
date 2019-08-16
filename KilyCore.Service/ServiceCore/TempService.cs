@@ -35,7 +35,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 PersonName = t.TrueName,
                 JobStatus = "在职",
-                TimeLength = "",
+                TimeLength = t.ExpiredTime.Value.ToString("yyyy年MM月dd日"),
                 HealthImg = t.HealthCard
             }).ToList();
             Euser.AddRange(Ruser);
@@ -65,7 +65,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 CompanyName = t.SupplierName,
                 CompanyCode = "",
-                CompanyUser = "",
+                CompanyUser = t.SupplierUser,
                 CompanyTel = t.LinkPhone,
                 CompanyAddress = t.Address,
                 CompanyFace = t.RunCard
@@ -88,7 +88,7 @@ namespace KilyCore.Service.ServiceCore
                 SaveTime = t.SampleTime.Value.ToString("yyyy年MM月dd日"),
                 ReportImg = t.SampleImg,
                 t.Remark
-            }).ToList();
+            }).Take(12).OrderByDescending(o=>o.SaveTime).ToList();
         }
         /// <summary>
         /// 废物处理
@@ -106,7 +106,53 @@ namespace KilyCore.Service.ServiceCore
                 ReportImg = t.HandleImg,
                 BadRemark = t.Remark,
                 BadPerson = t.HandleUser
-            }).ToList();
+            }).Take(12).OrderByDescending(o=>o.BadTime).ToList();
+        }
+        /// <summary>
+        /// 食材供应
+        /// </summary>
+        /// <param name="CompanyId"></param>
+        /// <returns></returns>
+        [Obsolete]
+        public object RepastThing(Guid CompanyId)
+        {
+            return Kily.Set<RepastBillTicket>().Where(t => t.InfoId == CompanyId).Select(t => new
+            {
+                ThingName = t.Theme,
+                Remark = t.Content.Replace("/upload/", "http://system.cfda.vip/upload/"),
+                BuyTime = t.UpTime.Value    
+            }).Take(9).OrderByDescending(o=>o.BuyTime).ToList();
+        }
+        /// <summary>
+        /// 周菜谱
+        /// </summary>
+        /// <param name="CompanyId"></param>
+        /// <returns></returns>
+        [Obsolete]
+        public object RepastWeek(Guid CompanyId)
+        {
+            return Kily.Set<RepastFoodMenu>().Where(t => t.InfoId == CompanyId).Select(t => new
+            {
+                Title = t.FoodMenuName,
+                Content = t.Content.Replace("/upload/", "http://system.cfda.vip/upload/"),
+                DateTime = t.UpTime.Value
+            }).Take(9).OrderByDescending(o => o.DateTime).ToList();
+        }
+        /// <summary>
+        /// 抽检信息
+        /// </summary>
+        /// <param name="CompanyId"></param>
+        /// <returns></returns>
+        [Obsolete]
+        public object RepastCheck(Guid CompanyId)
+        {
+            return Kily.Set<RepastDraw>().Where(t => t.InfoId == CompanyId).Select(t => new
+            {
+                Title = t.DrawUnit,
+                Person=t.DrawUser,
+                Remark = t.Remark.Replace("/upload/","http://system.cfda.vip/upload/").Replace("/editor/", "http://system.cfda.vip/editor/"),
+                DateTime = t.DrawTime.Value
+            }).Take(9).ToList();
         }
         #endregion
 
