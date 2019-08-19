@@ -21,8 +21,10 @@
                     async: false,
                     type: "post",
                     success: function (result) {
-                        controller.SetCtrlValue("#Edit", result.data);
+                        //controller.SetCtrlValue("#Edit", result.data);
+                        controller.SetLableValue("#Edit", result.data);
                         options.BindHonor(result.data.HonorCertification);
+                        //加载视频
                         $.each(result.data.Video, function (i, obj) {
                             var url = "../../StaticHtml/PlayVedio.html?addr="+obj;
                             $($(".ibox-content").find("iframe")[i]).attr("src", url);
@@ -43,6 +45,7 @@
             },
             //绑定荣誉证书
             BindHonor: function (data) {
+                debugger;
                 if (data != null) {
                     var html = '';
                     $.each(data, function (i, obj) {
@@ -86,81 +89,92 @@
             <li>
                 <a data-toggle="tab" href="#tab-4" aria-expanded="false" id="four">视频监控</a>
             </li>
+            <li>
+                <a data-toggle="tab" href="#tab-5" aria-expanded="false" id="five">人员管理</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-6" aria-expanded="false" id="six">主要产品</a>
+            </li>
         </ul>
         <div class="tab-content">
             <div id="tab-1" class="tab-pane active">
                 <table class="table table-hover table-bordered m-t-sm">
+                    <colgroup>
+                        <col width="120" align="center" />
+                        <col width="40%" />
+                        <col width="120" />
+                    </colgroup>
                     <tr>
-                        <th><label class="control-label">企业名称</label></th>
+                        <th style="text-align:center"><label class="control-label">企业名称</label></th>
                         <td class="has-warning">
-                            <input type="text" class="form-control" name="CompanyName" readonly="readonly" />
+                            <label type="txt" name="CompanyName"></label>
                         </td>
-                        <th><label class="control-label">所属行业</label></th>
+                        <th style="text-align:center"><label class="control-label">所属行业</label></th>
                         <td class="has-warning">
-                            <input type="text" class="form-control" name="CompanyTypeName" readonly="readonly" />
+                            <label type="txt" name="CompanyTypeName"></label>
                         </td>
                     </tr>
                     <tr>
-                        <th><label class="control-label">企业性质</label></th>
+                        <th style="text-align:center"><label class="control-label">企业性质</label></th>
                         <td class="has-warning">
-                            <input type="text" class="form-control" name="NatureName" readonly="readonly" />
+                            <label type="txt" name="NatureName"></label>
                         </td>
-                        <th><label class="control-label">信用代码</label></th>
+                        <th style="text-align:center"><label class="control-label">信用代码</label></th>
                         <td class="has-warning">
-                            <input type="text" class="form-control" name="CommunityCode" readonly="readonly" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><label class="control-label">企业电话</label></th>
-                        <td class="has-warning">
-                            <input type="text" class="form-control" name="CompanyPhone" readonly="readonly" />
-                        </td>
-                        <th><label class="control-label">企业地址</label></th>
-                        <td class="has-warning">
-                            <input type="text" class="form-control" name="CompanyAddress" readonly="readonly" />
+                            <label type="txt" name="CommunityCode"></label>
                         </td>
                     </tr>
                     <tr>
-                        <th><label class="control-label">工商地址</label></th>
+                        <th style="text-align:center"><label class="control-label">企业电话</label></th>
                         <td class="has-warning">
-                            <input type="text" class="form-control" name="SellerAddress" readonly="readonly" />
+                            <label type="txt" name="CompanyPhone"></label>
                         </td>
-                        <th><label class="control-label">生产地址</label></th>
+                        <th style="text-align:center"><label class="control-label">企业地址</label></th>
                         <td class="has-warning">
-                            <input type="text" class="form-control" name="ProductionAddress" readonly="readonly" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><label class="control-label">视频地址</label></th>
-                        <td class="has-warning">
-                            <input type="text" class="form-control" name="VideoAddress" readonly="readonly" />
-                        </td>
-                        <th><label class="control-label">网站地址</label></th>
-                        <td class="has-warning">
-                            <input type="text" class="form-control" name="NetAddress" readonly="readonly" />
+                            <label type="txt" name="CompanyAddress"></label>
                         </td>
                     </tr>
                     <tr>
-                        <th><label class="control-label">经营范围</label></th>
+                        <th style="text-align:center"><label class="control-label">工商地址</label></th>
+                        <td class="has-warning">
+                            <label type="txt" name="SellerAddress"></label>
+                        </td>
+                        <th style="text-align:center"><label class="control-label">生产地址</label></th>
+                        <td class="has-warning">
+                            <label type="txt" name="ProductionAddress"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="text-align:center"><label class="control-label">视频地址</label></th>
+                        <td class="has-warning">
+                            <label type="txt" name="VideoAddress"></label>
+                        </td>
+                        <th style="text-align:center"><label class="control-label">网站地址</label></th>
+                        <td class="has-warning">
+                            <label type="txt" name="NetAddress"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="text-align:center"><label class="control-label">经营范围</label></th>
                         <td class="has-warning" colspan="3">
-                            <input type="text" class="form-control" name="Scope" readonly="readonly" />
+                            <label type="txt" name="Scope"></label>
                         </td>
                     </tr>
                     <tr>
-                        <th><label class="control-label">企业介绍</label></th>
+                        <th style="text-align:center"><label class="control-label">企业介绍</label></th>
                         <td class="has-warning" colspan="3">
-                            <textarea class="form-control" name="Discription" readonly="readonly"></textarea>
+                            <label type="txt" name="Discription"></label>
                         </td>
                     </tr>
                 </table>
             </div>
             <div id="tab-2" class="tab-pane">
                 <div class="ibox-content">
-                    <img class="img-preview" src="" type="image" name="Certification" style="display:block;margin:auto" title="点击放大" />
+                    <label type="img" name="Certification"></label>
                 </div>
             </div>
             <div id="tab-3" class="tab-pane">
-                <div class="ibox-content">
+                <div class="ibox-content article">
                 </div>
             </div>
             <div id="tab-4" class="tab-pane">
@@ -169,6 +183,14 @@
                     <iframe class="J_iframe" src="" name="iframe" style="width:472px;height:400px" frameborder="0" seamless scrolling="no" align="middle"></iframe>
                     <iframe class="J_iframe" src="" name="iframe" style="width:472px;height:400px" frameborder="0" seamless scrolling="no" align="middle"></iframe>
                     <iframe class="J_iframe" src="" name="iframe" style="width:472px;height:400px" frameborder="0" seamless scrolling="no" align="middle"></iframe>
+                </div>
+            </div>
+            <div id="tab-5" class="tab-pane">
+                <div class="ibox-content">
+                </div>
+            </div>
+            <div id="tab-6" class="tab-pane">
+                <div class="ibox-content">
                 </div>
             </div>
         </div>

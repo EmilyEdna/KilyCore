@@ -194,6 +194,32 @@ controller.SetCtrlValue = function (element, option) {
     }
 }
 /**
+ * 设置详情页值
+ * @param {any} 节点
+ * @param {any} 配置
+ */
+controller.SetLableValue = function (element, option) {
+    for (var key in option) {
+        var node = $("[name='" + key + "']", $(element));
+        for (var i = 0; i < node.length; i++) {
+            var type = $(node[i]).attr("type");
+            var value = option[key];
+            if (type == "img") {
+                if (value != null) {
+                    if (value.indexOf(",") >= 0)
+                        $(node[i]).html("<img src='" + value.split(",")[0] +"' class='img-preview'/>");
+                    else
+                        $(node[i]).html("<img src='" + value + "' class='img-preview'/>");
+                }
+            }
+            else {
+                $(node[i]).html(value);
+            }
+
+        }
+    }
+}
+/**
  * 判断是否Json对象
  * @param {json} 对象
  */

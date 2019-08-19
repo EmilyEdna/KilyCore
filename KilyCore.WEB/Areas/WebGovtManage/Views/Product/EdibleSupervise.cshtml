@@ -38,7 +38,7 @@
                 TableEvents: {
                     "click .detail": function (event, val, row, index) {
                         controller.OpenWindow({
-                            title: "产品详情",
+                            title: row.ProductName,
                             type: 2,
                             height: "90%",
                             width: "80%",  
@@ -88,10 +88,11 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="ProductName" data-halign="center" data-align="center" data-valign="middle">产品名称</th>
+                                <th data-field="ProductName" data-halign="center" data-align="left" data-valign="middle">产品名称</th>
                                 <th data-field="ProductType" data-halign="center" data-align="center" data-valign="middle">产品类型</th>
                                 <th data-field="ExpiredDate" data-halign="center" data-align="center" data-valign="middle">保质期</th>
                                 <th data-field="Spec" data-halign="center" data-align="center" data-valign="middle">规格</th>
+                                <th data-field="CompanyName" data-halign="center" data-align="center" data-valign="middle">生产商/供应商</th>
                                 <th data-field="Unit" data-halign="center" data-align="center" data-valign="middle">生产地址</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>

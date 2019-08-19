@@ -17,10 +17,10 @@
             z-index: 100;
             background: #ffffff;
             position: absolute;
-            top: 1%;
+            top: 0;
             border-radius: 5px;
             -webkit-border-radius: 5px;
-            left: 2%;
+            left:0;
             width: 10%;
             border: 1px solid #dddddd;
         }
@@ -67,7 +67,8 @@
                     type: "post",
                     success: function (result) {
                         $.each(result.data, function (i, obj) {
-                            options.marker = new BMap.Marker(new BMap.Point(obj.Lng, obj.Lat));
+                            var myIcon = new BMap.Icon("http://www.cfdacx.com/jianguan/images/keysor.png", new BMap.Size(26, 33));
+                            options.marker = new BMap.Marker(new BMap.Point(obj.Lng, obj.Lat),{ icon: myIcon });
                             options.marker.setTitle(obj.CompanyType);
                             options.Map.addOverlay(options.marker);               // 将标注添加到地图中
                             options.AddClickHandler(obj.Name, obj.Address, obj.CompanyCode, obj.CompanyType);

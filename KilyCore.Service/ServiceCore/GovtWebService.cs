@@ -889,6 +889,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 ProductName = t.ProductName,
+                CompanyName=x.CompanyName,
                 ProductType = t.ProductType,
                 ExpiredDate = t.ExpiredDate,
                 Spec = t.Spec,
@@ -920,6 +921,8 @@ namespace KilyCore.Service.ServiceCore
                 t.h.FirstOrDefault().CheckUser,
                 t.h.FirstOrDefault().CheckResult,
                 t.h.FirstOrDefault().CheckReport,
+                t.g.e.c.b.Explanation,
+                t.g.e.c.b.Remark,
                 t.g.f.StockName,
                 t.g.f.SaveType,
                 t.g.f.SaveH2,
@@ -1162,6 +1165,7 @@ namespace KilyCore.Service.ServiceCore
                 queryables = queryables.Where(t => t.TypePath.Contains(GovtInfo().City));
                 users = users.Where(t => t.TypePath.Contains(GovtInfo().City));
             }
+           
             IList<string> Areas = GetDepartArea();
             if (Areas != null)
             {
@@ -1185,7 +1189,7 @@ namespace KilyCore.Service.ServiceCore
                 queryables = queryables.Where(t => t.TypePath.Contains(GovtInfo().Area));
                 users = users.Where(t => t.TypePath.Contains(GovtInfo().Area));
             }
-            var Enterprise = queryable.Select(t => new
+            var Enterprise = queryable.Where(o => o.CardExpiredDate.Value >= DateTime.Parse(DateTime.Now.AddDays(1).ToShortDateString())).Select(t => new
             {
                 t.Id,
                 Name = t.CompanyName,
@@ -1193,7 +1197,7 @@ namespace KilyCore.Service.ServiceCore
                 CompanyType = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
                 t.CardExpiredDate
             }).ToList();
-            var Repast = queryables.Select(t => new
+            var Repast = queryables.Where(o => o.CardExpiredDate.Value < DateTime.Parse(DateTime.Now.AddDays(1).ToShortDateString())).Select(t => new
             {
                 t.Id,
                 Name = t.MerchantName,
@@ -1201,15 +1205,16 @@ namespace KilyCore.Service.ServiceCore
                 CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
                 t.CardExpiredDate
             }).ToList();
-            users.Select(t => new
+            var User=users.Where(o =>o.ExpiredTime.Value < DateTime.Parse(DateTime.Now.AddDays(1).ToShortDateString())).Select(t => new
             {
                 t.Id,
                 Name = t.MerchantName,
                 CardType = "健康证",
-                CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
+                CompanyType = AttrExtension.GetSingleDescription < MerchantEnum, DescriptionAttribute>(t.DiningType),
                 CardExpiredDate = t.ExpiredTime
             }).ToList();
             Enterprise.AddRange(Repast);
+            Enterprise.AddRange(User);
             return Enterprise.ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
         }
         /// <summary>

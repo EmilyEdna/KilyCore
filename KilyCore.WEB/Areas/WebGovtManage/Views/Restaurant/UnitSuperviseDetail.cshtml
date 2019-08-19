@@ -3,7 +3,11 @@
     ViewData["Title"] = "单位食堂详情";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
-@section css{ }
+@section css{ 
+   <style>
+      label{font-weight:normal;}
+   </style>
+}
 @section script{
     <script>
         //配置
@@ -21,7 +25,8 @@
                     async: false,
                     type: "post",
                     success: function (result) {
-                        controller.SetCtrlValue("#Edit", result.data);
+                        //controller.SetCtrlValue("#Edit", result.data);
+                        controller.SetLableValue("#Edit", result.data);
                         var url = "StaticHtml/PlayVedio.html?addr=" + result.data.Account;
                         $("#play").attr("src", url);
                         options.BindHonor(result.data.HonorCertification);
@@ -82,50 +87,74 @@
             <li>
                 <a data-toggle="tab" href="#tab-4" aria-expanded="false" id="four">视频监控</a>
             </li>
+            <li>
+                <a data-toggle="tab" href="#tab-4" aria-expanded="false">人员管理</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-5" aria-expanded="false">食材供应</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-6" aria-expanded="false">周菜谱</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-7" aria-expanded="false">废物处理</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-8" aria-expanded="false">留样管理</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-9" aria-expanded="false">抽检信息</a>
+            </li>
         </ul>
         <div class="tab-content">
             <div id="tab-1" class="tab-pane active">
                 <table class="table table-hover table-bordered m-t-sm">
+                    <colgroup>
+                        <col width="120" />
+                        <col width="40%" />
+                        <col width="120" />
+                        <col />
+                    </colgroup>
                     <tr>
-                        <th><label class="control-label">单位名称</label></th>
+                        <th style="text-align:center"><label class="control-label">单位名称</label></th>
                         <td class="has-warning">
-                            <input type="text" class="form-control" name="MerchantName" readonly="readonly" />
+                            <label type="txt" name="MerchantName"></label>
                         </td>
-                        <th><label class="control-label">所属行业</label></th>
+                        <th style="text-align:center"><label class="control-label">所属行业</label></th>
                         <td class="has-warning">
-                            <input type="text" class="form-control" name="DiningTypeName" readonly="readonly" />
+                            <label type="txt" name="DiningTypeName"></label>
                         </td>
                     </tr>
                     <tr>
-                        <th><label class="control-label">单位邮箱</label></th>
+                        <th style="text-align:center"><label class="control-label">单位邮箱</label></th>
                         <td class="has-warning">
-                            <input type="text" class="form-control" name="Email" readonly="readonly" />
+                            <label type="txt" name="Email"></label>
                         </td>
-                        <th><label class="control-label">信用代码</label></th>
+                        <th style="text-align:center"><label class="control-label">信用代码</label></th>
                         <td class="has-warning">
-                            <input type="text" class="form-control" name="CommunityCode" readonly="readonly" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><label class="control-label">单位电话</label></th>
-                        <td class="has-warning">
-                            <input type="text" class="form-control" name="Phone" readonly="readonly" />
-                        </td>
-                        <th><label class="control-label">所属单位</label></th>
-                        <td class="has-warning">
-                            <input type="text" class="form-control" name="AllowUnit" readonly="readonly" />
+                            <label type="txt" name="CommunityCode"></label>
                         </td>
                     </tr>
                     <tr>
-                        <th><label class="control-label">单位地址</label></th>
+                        <th style="text-align:center"><label class="control-label">单位电话</label></th>
+                        <td class="has-warning">
+                            <label type="txt" name="Phone"></label>
+                        </td>
+                        <th style="text-align:center"><label class="control-label">所属单位</label></th>
+                        <td class="has-warning">
+                            <label type="txt" name="AllowUnit"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="text-align:center"><label class="control-label">单位地址</label></th>
                         <td class="has-warning" colspan="3">
-                            <input type="text" class="form-control" name="Address" readonly="readonly" />
+                            <label type="txt" name="Address"></label>
                         </td>
                     </tr>
                     <tr>
-                        <th><label class="control-label">单位介绍</label></th>
+                        <th style="text-align:center"><label class="control-label">单位介绍</label></th>
                         <td class="has-warning" colspan="3">
-                            <textarea class="form-control" name="Remark" readonly="readonly"></textarea>
+                            <label type="txt" name="Remark"></label>
                         </td>
                     </tr>
                 </table>
@@ -142,6 +171,26 @@
             <div id="tab-4" class="tab-pane">
                 <div class="ibox-content">
                     <iframe id="play" class="J_iframe" src="" name="iframe" style="width:750px;height:400px" frameborder="0" seamless scrolling="no" align="middle"></iframe>
+                </div>
+            </div>
+            <div id="tab-5" class="tab-pane">
+                <div class="ibox-content">
+                </div>
+            </div>
+            <div id="tab-6" class="tab-pane">
+                <div class="ibox-content">
+                </div>
+            </div>
+            <div id="tab-7" class="tab-pane">
+                <div class="ibox-content">
+                </div>
+            </div>
+            <div id="tab-8" class="tab-pane">
+                <div class="ibox-content">
+                </div>
+            </div>
+            <div id="tab-9" class="tab-pane">
+                <div class="ibox-content">
                 </div>
             </div>
         </div>

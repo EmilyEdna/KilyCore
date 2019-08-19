@@ -19,11 +19,12 @@
         var options = {
             //挂载需要初始化的方法
             Init: function () {
-                $("body").GetGovtInfo();
                 this.InitEcharts();
                 this.InitMap();
                 this.InitDom();
                 this.InitEvent();
+                $("body").GetGovtInfo();
+                $("#DepartName").html(Govt.DepartName);
             },
             //页面dom操作
             InitDom: function () {
@@ -94,10 +95,10 @@
                                 bottom: 20,
                                 textStyle: { color: "#ffffff" },
                                 splitList: [
-                                    { start: 100 },
-                                    { start: 50, end: 100 },
-                                    { start: 10, end: 50 },
-                                    { start: 0, end: 10 },
+                                    { start: 1000 },
+                                    { start: 500, end: 1000 },
+                                    { start: 100, end: 500 },
+                                    { start: 0, end: 100 },
                                 ],
                             },
                             series: [
@@ -119,7 +120,7 @@
                         }
                         $.getJSON("/CityMap/" + result.data.City + "00.json", function (res) {
                             echarts.registerMap(result.data.CityName, res);
-                            options.Map = echarts.init($("#mapChart")[0], "shine");
+                            options.Map = echarts.init($("#mapChart")[0],"shine");
                             options.Map.setOption(OptionMap);
                         });
                         // 渲染当前城市入驻企业数量
@@ -533,7 +534,9 @@
         <!-- 页面中间 -->
         <div class="centerwrap fl">
             <!-- 系统名称 -->
-            <div id="tittle"></div>
+            <div id="tittle">
+                <div id="DepartName" style="width:100%;text-align:center;padding-top:54px;font-size:24px;"></div>
+            </div>
             <!-- 入驻企业 -->
             <div class="firmsettled">
                 <div class="num">累计入驻企业<span id="Sum"></span>家</div>

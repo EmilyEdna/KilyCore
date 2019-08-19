@@ -33,5 +33,9 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// 规格
         /// </summary>
         public string Specs { get; set; }
+        /// <summary>
+        /// 企业名称
+        /// </summary>
+        public string CompanyName { set; get; }
     }
 }

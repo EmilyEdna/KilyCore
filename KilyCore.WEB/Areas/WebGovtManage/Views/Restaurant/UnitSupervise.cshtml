@@ -50,7 +50,7 @@
                 TableEvents: {
                     "click .detail": function (event, val, row, index) {
                         controller.OpenWindow({
-                            title: "单位食堂详情",
+                            title: row.MerchantName,
                             type: 2,
                             height: "90%",
                             width: "80%",  
@@ -101,7 +101,7 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="MerchantName" data-halign="center" data-align="center" data-valign="middle">食堂名称</th>
+                                <th data-field="MerchantName" data-halign="center" data-align="left" data-valign="middle">食堂名称</th>
                                 <th data-field="DiningTypeName" data-halign="center" data-align="center" data-valign="middle">商家类型</th>
                                 <th data-field="CommunityCode" data-halign="center" data-align="center" data-valign="middle">信用代码</th>
                                 <th data-field="Phone" data-halign="center" data-align="center" data-valign="middle">食堂电话</th>
