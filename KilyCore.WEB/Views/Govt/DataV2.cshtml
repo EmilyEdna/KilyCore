@@ -19,11 +19,13 @@
         var options = {
             //挂载需要初始化的方法
             Init: function () {
-                $("body").GetGovtInfo();
+                $("body").GetGovtInfo(); 
+                this.InitTodayData();
                 this.InitEcharts();
                 this.InitMap();
                 this.InitDom();
                 this.InitEvent();
+
             },
             //页面dom操作
             InitDom: function () {
@@ -149,16 +151,8 @@
             InitEcharts: function () {
                 //今日入驻
                 setInterval(function () {
-                    controller.ajax({
-                        url: "GovtWeb/GetTodayNow",
-                        data: {},
-                        type: "post",
-                        async: false,
-                        success: function (result) {
-                            $("#Firm1").html(result.data);
-                        }
-                    });
-                }, 3600000)
+                    options.InitTodayData()
+                }, 180000);
                 //今日数据
                 controller.ajax({
                     url: "GovtWeb/GetNewStayInTodayCount",
@@ -310,11 +304,11 @@
                         let listStr = '';
                         for (index in result.data.rows) {
                             listStr += `<li class="clearfix">
-                                        <div class="hidden">${result.data.rows[index].Id}</div>
-                                        <div>${result.data.rows[index].Name}</div>
-                                        <div>${result.data.rows[index].CompanyType}</div>
-                                        <div>${result.data.rows[index].CardType}</div>
-                                        <div>${result.data.rows[index].CardExpiredDate}</div></li>`;
+                                            <div class="hidden">${result.data.rows[index].Id}</div>
+                                            <div>${result.data.rows[index].Name}</div>
+                                            <div>${result.data.rows[index].CompanyType}</div>
+                                            <div>${result.data.rows[index].CardType}</div>
+                                            <div>${result.data.rows[index].CardExpiredDate}</div></li>`;
                         }
                         $(".cardexpire .bd ul").html(listStr);
                     }
@@ -454,6 +448,18 @@
                             });
                         }
                         rollTop();
+                    }
+                });
+            },
+            InitTodayData: function () {
+                controller.ajax({
+                    url: "GovtWeb/GetTodayNow",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        debugger;
+                        $("#Firm1").html(result.data);
                     }
                 });
             },
