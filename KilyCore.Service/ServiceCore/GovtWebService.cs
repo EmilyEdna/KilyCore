@@ -188,19 +188,22 @@ namespace KilyCore.Service.ServiceCore
                  .OrderByDescending(t => t.CreateTime);
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
-            IList<string> Areas = GetDepartArea();
-            if (Areas != null)
-            {
-                if (Areas.Count > 1)
-                    foreach (var item in Areas)
-                    {
-                        queryable = queryable.Where(t => t.TypePath.Contains(item));
-                    }
-                else
-                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-            }
             else
-                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            {
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                        foreach (var item in Areas)
+                        {
+                            queryable = queryable.Where(t => t.TypePath.Contains(item));
+                        }
+                    else
+                        queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            }
             if (!string.IsNullOrEmpty(pageParam.QueryParam.CompanyName))
                 queryable = queryable.Where(t => t.CompanyName.Contains(pageParam.QueryParam.CompanyName));
             var data = queryable.Select(t => new ResponseEnterprise()
@@ -231,19 +234,22 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.DiningType > MerchantEnum.UnitCanteen);
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
-            IList<string> Areas = GetDepartArea();
-            if (Areas != null)
-            {
-                if (Areas.Count > 1)
-                    foreach (var item in Areas)
-                    {
-                        queryable = queryable.Where(t => t.TypePath.Contains(item));
-                    }
-                else
-                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-            }
             else
-                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            {
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                        foreach (var item in Areas)
+                        {
+                            queryable = queryable.Where(t => t.TypePath.Contains(item));
+                        }
+                    else
+                        queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            }
             if (!string.IsNullOrEmpty(pageParam.QueryParam.MerchantName))
                 queryable = queryable.Where(t => t.MerchantName.Contains(pageParam.QueryParam.MerchantName));
             var data = queryable.Select(t => new ResponseMerchant()
@@ -595,6 +601,7 @@ namespace KilyCore.Service.ServiceCore
         /// 获取所有政府用户
         /// </summary>
         /// <returns></returns>
+        [Obsolete]
         public List<ResponseGovtInfo> GetAllGovt()
         {
             return Kily.Set<GovtInfo>().Where(t => t.IsDelete == false).ToList().MapToList<GovtInfo, ResponseGovtInfo>();
@@ -731,19 +738,22 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess);
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
-            IList<string> Areas = GetDepartArea();
-            if (Areas != null)
-            {
-                if (Areas.Count > 1)
-                    foreach (var item in Areas)
-                    {
-                        queryable = queryable.Where(t => t.TypePath.Contains(item));
-                    }
-                else
-                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-            }
             else
-                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            {
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                        foreach (var item in Areas)
+                        {
+                            queryable = queryable.Where(t => t.TypePath.Contains(item));
+                        }
+                    else
+                        queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            }
             if (!string.IsNullOrEmpty(pageParam.QueryParam.ProductName))
                 goods = goods.Where(t => t.ProductName.Contains(pageParam.QueryParam.ProductName));
             var data = goods.Join(queryable, t => t.CompanyId, x => x.Id, (t, x) => new ResponseEnterpriseGoods()
@@ -870,19 +880,22 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess);
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
-            IList<string> Areas = GetDepartArea();
-            if (Areas != null)
-            {
-                if (Areas.Count > 1)
-                    foreach (var item in Areas)
-                    {
-                        queryable = queryable.Where(t => t.TypePath.Contains(item));
-                    }
-                else
-                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-            }
             else
-                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            {
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                        foreach (var item in Areas)
+                        {
+                            queryable = queryable.Where(t => t.TypePath.Contains(item));
+                        }
+                    else
+                        queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            }
             if (!string.IsNullOrEmpty(pageParam.QueryParam.ProductName))
                 goods = goods.Where(t => t.ProductName.Contains(pageParam.QueryParam.ProductName));
             var data = goods.Join(queryable, t => t.CompanyId, x => x.Id, (t, x) => new ResponseEnterpriseGoods()
@@ -947,19 +960,22 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<CookBanquet> queryable = Kily.Set<CookBanquet>().OrderByDescending(t => t.CreateTime);
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
-            IList<string> Areas = GetDepartArea();
-            if (Areas != null)
-            {
-                if (Areas.Count > 1)
-                    foreach (var item in Areas)
-                    {
-                        queryable = queryable.Where(t => t.TypePath.Contains(item));
-                    }
-                else
-                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-            }
             else
-                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            {
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                        foreach (var item in Areas)
+                        {
+                            queryable = queryable.Where(t => t.TypePath.Contains(item));
+                        }
+                    else
+                        queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            }
             if (!string.IsNullOrEmpty(pageParam.QueryParam.HoldType))
                 queryable = queryable.Where(t => t.HoldType.Contains(pageParam.QueryParam.HoldType));
             var data = queryable.Select(t => new ResponseCookBanquet()
@@ -1037,19 +1053,22 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<GovtRisk> queryable = Kily.Set<GovtRisk>().OrderByDescending(t => t.CreateTime);
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
-            IList<string> Areas = GetDepartArea();
-            if (Areas != null)
-            {
-                if (Areas.Count > 1)
-                    foreach (var item in Areas)
-                    {
-                        queryable = queryable.Where(t => t.TypePath.Contains(item));
-                    }
-                else
-                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-            }
             else
-                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            {
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                        foreach (var item in Areas)
+                        {
+                            queryable = queryable.Where(t => t.TypePath.Contains(item));
+                        }
+                    else
+                        queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            }
             if (!string.IsNullOrEmpty(pageParam.QueryParam.EventName))
                 queryable = queryable.Where(t => t.EventName.Contains(pageParam.QueryParam.EventName));
             var data = queryable.Select(t => new ResponseGovtRisk()
@@ -1161,29 +1180,35 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
                 queryables = queryables.Where(t => t.TypePath.Contains(GovtInfo().City));
                 users = users.Where(t => t.TypePath.Contains(GovtInfo().City));
-            }
-            IList<string> Areas = GetDepartArea();
-            if (Areas != null)
-            {
-                if (Areas.Count > 1)
-                    foreach (var item in Areas)
-                    {
-                        queryable = queryable.Where(t => t.TypePath.Contains(item));
-                        queryables = queryables.Where(t => t.TypePath.Contains(item));
-                        users = users.Where(t => t.TypePath.Contains(item));
-                    }
-                else
-                {
-                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-                    queryables = queryables.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-                    users = users.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-                }
+                var s = queryable.ToList();
+                var s2 = queryables.ToList();
+                var s3 = users.ToList();
             }
             else
             {
-                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
-                queryables = queryables.Where(t => t.TypePath.Contains(GovtInfo().Area));
-                users = users.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                        foreach (var item in Areas)
+                        {
+                            queryable = queryable.Where(t => t.TypePath.Contains(item));
+                            queryables = queryables.Where(t => t.TypePath.Contains(item));
+                            users = users.Where(t => t.TypePath.Contains(item));
+                        }
+                    else
+                    {
+                        queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                        queryables = queryables.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                        users = users.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    }
+                }
+                else
+                {
+                    queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                    queryables = queryables.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                    users = users.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                }
             }
             var Enterprise = queryable.Select(t => new
             {
@@ -1246,19 +1271,22 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.CompanyName.Contains(pageParam.QueryParam.CompanyName));
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
-            IList<string> Areas = GetDepartArea();
-            if (Areas != null)
-            {
-                if (Areas.Count > 1)
-                    foreach (var item in Areas)
-                    {
-                        queryable = queryable.Where(t => t.TypePath.Contains(item));
-                    }
-                else
-                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-            }
             else
-                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            {
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                        foreach (var item in Areas)
+                        {
+                            queryable = queryable.Where(t => t.TypePath.Contains(item));
+                        }
+                    else
+                        queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            }
             var data = queryable.Select(t => new ResponseGovtNetPatrol()
             {
                 Id = t.Id,
@@ -1850,19 +1878,22 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<GovtComplain> queryable = Kily.Set<GovtComplain>().OrderByDescending(t => t.CreateTime);
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
-            IList<string> Areas = GetDepartArea();
-            if (Areas != null)
-            {
-                if (Areas.Count > 1)
-                    foreach (var item in Areas)
-                    {
-                        queryable = queryable.Where(t => t.TypePath.Contains(item));
-                    }
-                else
-                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-            }
             else
-                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            {
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                        foreach (var item in Areas)
+                        {
+                            queryable = queryable.Where(t => t.TypePath.Contains(item));
+                        }
+                    else
+                        queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            }
             if (!string.IsNullOrEmpty(pageParam.QueryParam.ComplainContent))
                 queryable = queryable.Where(t => t.ComplainContent.Contains(pageParam.QueryParam.ComplainContent));
             var data = queryable.Select(t => new ResponseGovtComplain
@@ -2018,25 +2049,28 @@ namespace KilyCore.Service.ServiceCore
                 coms = coms.Where(t => t.TypePath.Contains(GovtInfo().City));
                 mers = mers.Where(t => t.TypePath.Contains(GovtInfo().City));
             }
-            IList<string> Areas = GetDepartArea();
-            if (Areas != null)
-            {
-                if (Areas.Count > 1)
-                    foreach (var item in Areas)
-                    {
-                        coms = coms.Where(t => t.TypePath.Contains(item));
-                        mers = mers.Where(t => t.TypePath.Contains(item));
-                    }
-                else
-                {
-                    coms = coms.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-                    mers = mers.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-                }
-            }
             else
             {
-                coms = coms.Where(t => t.TypePath.Contains(GovtInfo().Area));
-                mers = mers.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                        foreach (var item in Areas)
+                        {
+                            coms = coms.Where(t => t.TypePath.Contains(item));
+                            mers = mers.Where(t => t.TypePath.Contains(item));
+                        }
+                    else
+                    {
+                        coms = coms.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                        mers = mers.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    }
+                }
+                else
+                {
+                    coms = coms.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                    mers = mers.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                }
             }
             int ProductSum_Today = coms.Join(goods, t => t.Id, x => x.CompanyId, (t, x) => new { x.Id }).Count();
             int ScanCodeSum_Today = coms.Join(infos, t => t.Id, x => x.CompanyId, (t, x) => new { x.ScanNum }).Sum(t => t.ScanNum);
@@ -2059,28 +2093,31 @@ namespace KilyCore.Service.ServiceCore
                 mers = mers.Where(t => t.TypePath.Contains(Temp.City));
                 cooks = cooks.Where(t => t.TypePath.Contains(Temp.City));
             }
-            IList<string> Areas = GetDepartArea();
-            if (Areas != null)
-            {
-                if (Areas.Count > 1)
-                    foreach (var item in Areas)
-                    {
-                        coms = coms.Where(t => t.TypePath.Contains(item));
-                        mers = mers.Where(t => t.TypePath.Contains(item));
-                        cooks = cooks.Where(t => t.TypePath.Contains(item));
-                    }
-                else
-                {
-                    coms = coms.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-                    mers = mers.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-                    cooks = cooks.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-                }
-            }
             else
             {
-                coms = coms.Where(t => t.TypePath.Contains(Temp.Area));
-                mers = mers.Where(t => t.TypePath.Contains(Temp.Area));
-                cooks = cooks.Where(t => t.TypePath.Contains(Temp.Area));
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                        foreach (var item in Areas)
+                        {
+                            coms = coms.Where(t => t.TypePath.Contains(item));
+                            mers = mers.Where(t => t.TypePath.Contains(item));
+                            cooks = cooks.Where(t => t.TypePath.Contains(item));
+                        }
+                    else
+                    {
+                        coms = coms.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                        mers = mers.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                        cooks = cooks.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    }
+                }
+                else
+                {
+                    coms = coms.Where(t => t.TypePath.Contains(Temp.Area));
+                    mers = mers.Where(t => t.TypePath.Contains(Temp.Area));
+                    cooks = cooks.Where(t => t.TypePath.Contains(Temp.Area));
+                }
             }
             List<DataPie> Pie = coms.GroupBy(t => t.CompanyType).Select(t => new DataPie { name = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.Key), value = t.Count() }).ToList();
             Pie.AddRange(mers.GroupBy(t => t.DiningType).Select(t => new DataPie { name = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.Key), value = t.Count() }).ToList());
@@ -2100,25 +2137,28 @@ namespace KilyCore.Service.ServiceCore
                 coms = coms.Where(t => t.TypePath.Contains(GovtInfo().City));
                 mers = mers.Where(t => t.TypePath.Contains(GovtInfo().City));
             }
-            IList<string> Areas = GetDepartArea();
-            if (Areas != null)
-            {
-                if (Areas.Count > 1)
-                    foreach (var item in Areas)
-                    {
-                        coms = coms.Where(t => t.TypePath.Contains(item));
-                        mers = mers.Where(t => t.TypePath.Contains(item));
-                    }
-                else
-                {
-                    coms = coms.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-                    mers = mers.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-                }
-            }
             else
             {
-                coms = coms.Where(t => t.TypePath.Contains(GovtInfo().Area));
-                mers = mers.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                        foreach (var item in Areas)
+                        {
+                            coms = coms.Where(t => t.TypePath.Contains(item));
+                            mers = mers.Where(t => t.TypePath.Contains(item));
+                        }
+                    else
+                    {
+                        coms = coms.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                        mers = mers.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    }
+                }
+                else
+                {
+                    coms = coms.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                    mers = mers.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                }
             }
             var data = coms.Select(t => t.CompanyName).ToList();
             data.AddRange(mers.Select(t => t.MerchantName).ToList());
@@ -2137,25 +2177,28 @@ namespace KilyCore.Service.ServiceCore
                 risks = risks.Where(t => t.TypePath.Contains(GovtInfo().City));
                 complains = complains.Where(t => t.TypePath.Contains(GovtInfo().City));
             }
-            IList<string> Areas = GetDepartArea();
-            if (Areas != null)
-            {
-                if (Areas.Count > 1)
-                    foreach (var item in Areas)
-                    {
-                        risks = risks.Where(t => t.TypePath.Contains(item));
-                        complains = complains.Where(t => t.TypePath.Contains(item));
-                    }
-                else
-                {
-                    risks = risks.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-                    complains = complains.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-                }
-            }
             else
             {
-                risks = risks.Where(t => t.TypePath.Contains(GovtInfo().Area));
-                complains = complains.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                        foreach (var item in Areas)
+                        {
+                            risks = risks.Where(t => t.TypePath.Contains(item));
+                            complains = complains.Where(t => t.TypePath.Contains(item));
+                        }
+                    else
+                    {
+                        risks = risks.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                        complains = complains.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    }
+                }
+                else
+                {
+                    risks = risks.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                    complains = complains.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                }
             }
             List<DataBar> bars = new List<DataBar>();
             //风险
@@ -2201,25 +2244,28 @@ namespace KilyCore.Service.ServiceCore
                 children = children.Where(t => t.TypePath.Contains(GovtInfo().City));
                 patrols = patrols.Where(t => t.TypePath.Contains(GovtInfo().City));
             }
-            IList<string> Areas = GetDepartArea();
-            if (Areas != null)
-            {
-                if (Areas.Count > 1)
-                    foreach (var item in Areas)
-                    {
-                        children = children.Where(t => t.TypePath.Contains(item));
-                        patrols = patrols.Where(t => t.TypePath.Contains(GovtInfo().City));
-                    }
-                else
-                {
-                    children = children.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-                    patrols = patrols.Where(t => t.TypePath.Contains(GovtInfo().City));
-                }
-            }
             else
             {
-                children = children.Where(t => t.TypePath.Contains(GovtInfo().Area));
-                patrols = patrols.Where(t => t.TypePath.Contains(GovtInfo().City));
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                        foreach (var item in Areas)
+                        {
+                            children = children.Where(t => t.TypePath.Contains(item));
+                            patrols = patrols.Where(t => t.TypePath.Contains(GovtInfo().City));
+                        }
+                    else
+                    {
+                        children = children.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                        patrols = patrols.Where(t => t.TypePath.Contains(GovtInfo().City));
+                    }
+                }
+                else
+                {
+                    children = children.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                    patrols = patrols.Where(t => t.TypePath.Contains(GovtInfo().City));
+                }
             }
             List<DataLine> lines = new List<DataLine>();
             //自查
@@ -2279,25 +2325,28 @@ namespace KilyCore.Service.ServiceCore
                 vedios = vedios.Where(t => t.TypePath.Contains(GovtInfo().City));
                 videos = videos.Where(t => t.TypePath.Contains(GovtInfo().City));
             }
-            IList<string> Areas = GetDepartArea();
-            if (Areas != null)
-            {
-                if (Areas.Count > 1)
-                    foreach (var item in Areas)
-                    {
-                        vedios = vedios.Where(t => t.TypePath.Contains(item));
-                        videos = videos.Where(t => t.TypePath.Contains(item));
-                    }
-                else
-                {
-                    vedios = vedios.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-                    videos = videos.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-                }
-            }
             else
             {
-                vedios = vedios.Where(t => t.TypePath.Contains(GovtInfo().Area));
-                videos = videos.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                        foreach (var item in Areas)
+                        {
+                            vedios = vedios.Where(t => t.TypePath.Contains(item));
+                            videos = videos.Where(t => t.TypePath.Contains(item));
+                        }
+                    else
+                    {
+                        vedios = vedios.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                        videos = videos.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    }
+                }
+                else
+                {
+                    vedios = vedios.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                    videos = videos.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                }
             }
             int CompanyVedio = vedios.Where(t => t.CreateTime.Value >= DateTime.Parse(DateTime.Now.ToShortDateString()) && t.CreateTime.Value <= DateTime.Parse(DateTime.Now.ToShortDateString())).Count();
             int MerchantVedio = videos.Where(t => t.CreateTime.Value >= DateTime.Parse(DateTime.Now.ToShortDateString()) && t.CreateTime.Value <= DateTime.Parse(DateTime.Now.ToShortDateString())).Count();
@@ -2328,20 +2377,23 @@ namespace KilyCore.Service.ServiceCore
                 .Where(t => t.CreateTime.Value.Year == DateTime.Now.Year);
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 Patrol = Patrol.Where(t => t.TypePath.Contains(GovtInfo().City));
-            IList<string> Areas = GetDepartArea();
-            if (Areas != null)
-            {
-                if (Areas.Count > 1)
-                    foreach (var item in Areas)
-                    {
-                        //外环
-                        Patrol = Patrol.Where(t => t.TypePath.Contains(item));
-                    }
-                else
-                    Patrol = Patrol.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-            }
             else
-                Patrol = Patrol.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            {
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                        foreach (var item in Areas)
+                        {
+                            //外环
+                            Patrol = Patrol.Where(t => t.TypePath.Contains(item));
+                        }
+                    else
+                        Patrol = Patrol.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                }
+                else
+                    Patrol = Patrol.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            }
             return Patrol.GroupBy(t => t.CreateTime.Value.Month).Select(t => new
             {
                 Month = t.Key,
@@ -2369,31 +2421,34 @@ namespace KilyCore.Service.ServiceCore
                 risk = risk.Where(t => t.TypePath.Contains(GovtInfo().City));
                 plain = plain.Where(t => t.TypePath.Contains(GovtInfo().City));
             }
-            IList<string> Areas = GetDepartArea();
-            if (Areas != null)
-            {
-                if (Areas.Count > 1)
-                    foreach (var item in Areas)
-                    {
-                        com = com.Where(t => t.TypePath.Contains(item));
-                        mer = mer.Where(t => t.TypePath.Contains(item));
-                        risk = risk.Where(t => t.TypePath.Contains(item));
-                        plain = plain.Where(t => t.TypePath.Contains(item));
-                    }
-                else
-                {
-                    com = com.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-                    mer = mer.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-                    risk = risk.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-                    plain = plain.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-                }
-            }
             else
             {
-                com = com.Where(t => t.TypePath.Contains(GovtInfo().Area));
-                mer = mer.Where(t => t.TypePath.Contains(GovtInfo().Area));
-                risk = risk.Where(t => t.TypePath.Contains(GovtInfo().Area));
-                plain = plain.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                        foreach (var item in Areas)
+                        {
+                            com = com.Where(t => t.TypePath.Contains(item));
+                            mer = mer.Where(t => t.TypePath.Contains(item));
+                            risk = risk.Where(t => t.TypePath.Contains(item));
+                            plain = plain.Where(t => t.TypePath.Contains(item));
+                        }
+                    else
+                    {
+                        com = com.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                        mer = mer.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                        risk = risk.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                        plain = plain.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    }
+                }
+                else
+                {
+                    com = com.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                    mer = mer.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                    risk = risk.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                    plain = plain.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                }
             }
             var week_risk = Kily.Set<GovtRisk>().Where(t => t.ReleaseTime >= today.AddDays(-7));
             var week_plain = Kily.Set<GovtComplain>().Where(t => t.ComplainTime >= today.AddDays(-7));
@@ -2440,19 +2495,22 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<GovtComplain> queryable = Kily.Set<GovtComplain>().AsNoTracking();
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
-            IList<string> Areas = GetDepartArea();
-            if (Areas != null)
-            {
-                if (Areas.Count > 1)
-                    foreach (var item in Areas)
-                    {
-                        queryable = queryable.Where(t => t.TypePath.Contains(item));
-                    }
-                else
-                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-            }
             else
-                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            {
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                        foreach (var item in Areas)
+                        {
+                            queryable = queryable.Where(t => t.TypePath.Contains(item));
+                        }
+                    else
+                        queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            }
             //计算周投诉
             int WG = queryable.Where(t => t.CreateTime >= DateTime.Now.AddDays(-7)).Count();
             decimal WGSum = Math.Round((WG / (queryable.Count() == 0 ? 1 : queryable.Count())) * 100M, 2);
@@ -2481,34 +2539,37 @@ namespace KilyCore.Service.ServiceCore
                 Enterprise = Enterprise.Where(t => t.TypePath.Contains(GovtInfo().City));
                 Banquet = Banquet.Where(t => t.TypePath.Contains(GovtInfo().City));
             }
-            IList<string> Areas = GetDepartArea();
-            if (Areas != null)
+            else
             {
-                if (Areas.Count > 1)
-                    foreach (var item in Areas)
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                        foreach (var item in Areas)
+                        {
+                            //外环
+                            Merchant = Merchant.Where(t => t.TypePath.Contains(item));
+                            //内环
+                            Enterprise = Enterprise.Where(t => t.TypePath.Contains(item));
+                            Banquet = Banquet.Where(t => t.TypePath.Contains(item));
+                        }
+                    else
                     {
                         //外环
-                        Merchant = Merchant.Where(t => t.TypePath.Contains(item));
+                        Merchant = Merchant.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                         //内环
-                        Enterprise = Enterprise.Where(t => t.TypePath.Contains(item));
-                        Banquet = Banquet.Where(t => t.TypePath.Contains(item));
+                        Enterprise = Enterprise.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                        Banquet = Banquet.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                     }
+                }
                 else
                 {
                     //外环
-                    Merchant = Merchant.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    Merchant = Merchant.Where(t => t.TypePath.Contains(GovtInfo().Area));
                     //内环
-                    Enterprise = Enterprise.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-                    Banquet = Banquet.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    Enterprise = Enterprise.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                    Banquet = Banquet.Where(t => t.TypePath.Contains(GovtInfo().Area));
                 }
-            }
-            else
-            {
-                //外环
-                Merchant = Merchant.Where(t => t.TypePath.Contains(GovtInfo().Area));
-                //内环
-                Enterprise = Enterprise.Where(t => t.TypePath.Contains(GovtInfo().Area));
-                Banquet = Banquet.Where(t => t.TypePath.Contains(GovtInfo().Area));
             }
             //月入住
             var CompanyTotal = (Enterprise.Count() + Merchant.Count()) == 0 ? 1 : (Enterprise.Count() + Merchant.Count());
@@ -2537,19 +2598,22 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<GovtComplain> queryable = Kily.Set<GovtComplain>().AsNoTracking();
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
-            IList<string> Areas = GetDepartArea();
-            if (Areas != null)
-            {
-                if (Areas.Count > 1)
-                    foreach (var item in Areas)
-                    {
-                        queryable = queryable.Where(t => t.TypePath.Contains(item));
-                    }
-                else
-                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-            }
             else
-                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            {
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                        foreach (var item in Areas)
+                        {
+                            queryable = queryable.Where(t => t.TypePath.Contains(item));
+                        }
+                    else
+                        queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            }
             //分组
             var ZZ_Com = queryable.Where(t => t.CompanyType.Equals("种植企业")).OrderByDescending(t => t.CreateTime).ToList();
             var YZ_Com = queryable.Where(t => t.CompanyType.Equals("养殖企业")).OrderByDescending(t => t.CreateTime).ToList();
