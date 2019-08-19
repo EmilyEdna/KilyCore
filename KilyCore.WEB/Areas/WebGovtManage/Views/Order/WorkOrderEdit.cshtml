@@ -1,0 +1,95 @@
+﻿
+@{
+    ViewData["Title"] = "编辑工单";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var Editor = controller.Editor(".summernote", { width: $(window).width });
+                $("input[name='OrderNo']").val("No." + controller.FormatDate("YYYYMMDDHHmmssSSS"));
+                controller.LayDate({ elem: "input[name='SubmitTime']" });
+                controller.LayDate({ elem: "input[name='ExpireTime']", max: controller.GetDate(1) });
+                $("input[name='GovtName']").val(GovtInfo.DepartName)
+                $("input[name='GovtId']").val(GovtInfo.Id)
+                var Id = controller.GetParam("Id");
+                if (controller.CheckFeild(Id)) {
+                    controller.ajax({
+                        url: "System/GetOrderDetail",
+                        type: "post",
+                        async: false,
+                        data: { Id: Id },
+                        success: function (result) {
+                            controller.SetCtrlValue("#Edit", result.data);
+                            Editor.summernote('code', result.data.ServiceContent);
+                        }
+                    });
+                }
+            },
+            //事件
+            InitEvents: function () {
+                //验证
+                controller.ValidateConfirm("#Edit");
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="System/OrderEdit" id="Edit">
+            <input type="hidden" name="Id" />
+            <input type="hidden" name="GovtId" />
+            <input type="hidden" name="ServiceContent" />
+            <input type="hidden" name="OrderType" value="工单" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">工单编号</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" class="form-control" name="OrderNo" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">派单机构</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="GovtName" readonly />
+                    </td>
+                    <th><label class="control-label">过期时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" name="ExpireTime" class="form-control" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">发布者</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SubmitUser" />
+                    </td>
+                    <th><label class="control-label">发布时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SubmitTime" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">服务内容</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="summernote" name="ServiceContent"></div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

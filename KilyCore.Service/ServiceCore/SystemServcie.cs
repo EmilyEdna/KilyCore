@@ -1768,8 +1768,10 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.OrderNo == pageParam.QueryParam.OrderNo);
             if (pageParam.QueryParam.IsApp)
                 queryable = queryable.Where(t => t.OrderStatus == OrderEnum.Dispatch && !t.IsExpire.Value);
-            if (!string.IsNullOrEmpty(pageParam.QueryParam.CompanyName))
-                queryable = queryable.Where(t => t.CompanyName.Equals(pageParam.QueryParam.CompanyName));
+            if (pageParam.QueryParam.CompanyId.HasValue)
+                queryable = queryable.Where(t => t.CompanyId == pageParam.QueryParam.CompanyId);
+            if (pageParam.QueryParam.GovtId.HasValue)
+                queryable = queryable.Where(t => t.GovtId == pageParam.QueryParam.GovtId);
             var data = queryable.Select(t => new ResponseSystemOrder
             {
                 Id = t.Id,
@@ -1778,7 +1780,7 @@ namespace KilyCore.Service.ServiceCore
                 GovtName = t.GovtName,
                 IsExpire = t.IsExpire,
                 SubmitTime = t.SubmitTime,
-                OrderStatusTxt = AttrExtension.GetSingleDescription<OrderEnum, DescriptionAttribute>(t.OrderStatus),
+                OrderStatusTxt = (t.GovtId.HasValue && t.OrderStatus == OrderEnum.WaitAudit) ? "等待处理" : AttrExtension.GetSingleDescription<OrderEnum, DescriptionAttribute>(t.OrderStatus),
                 OrderAccepter = t.OrderAccepter,
                 OrderNo = t.OrderNo,
                 OrderAccepterTime = t.OrderAccepterTime,
@@ -1936,7 +1938,7 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.ScoreCompany.Contains(pageParam.QueryParam.ScoreCompany));
             if (pageParam.QueryParam.ScoreTime.HasValue)
                 queryable = queryable.Where(t => t.ScoreTime <= pageParam.QueryParam.ScoreTime);
-            if(!string.IsNullOrEmpty(pageParam.QueryParam.ScoreCompany))
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.ScoreCompany))
                 queryable = queryable.Where(t => t.ScoreCompany.Equals(pageParam.QueryParam.ScoreCompany));
             var data = queryable.Join(Kily.Set<SystemOrder>(), t => t.OrderNo, x => x.OrderNo, (t, x) => new { t, x.Id }).Select(t => new ResponseSystemOrderScore
             {
@@ -1977,7 +1979,8 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public ResponseSystemOrderScore GetOrderScoreDetail(Guid Id) {
+        public ResponseSystemOrderScore GetOrderScoreDetail(Guid Id)
+        {
             return Kily.Set<SystemOrderScore>().Where(t => t.Id == Id).FirstOrDefault().MapToEntity<ResponseSystemOrderScore>();
         }
         #endregion

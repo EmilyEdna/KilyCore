@@ -4614,6 +4614,27 @@
             <param name="Param"></param>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.TempController.RepastThing(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取食材供应
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.TempController.RepastWeek(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取周菜谱
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.TempController.RepastCheck(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取抽检
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
         <member name="M:KilyCore.API.Controllers.TempController.WeChatRegist(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterprise)">
             <summary>
             微信活动注册接口
