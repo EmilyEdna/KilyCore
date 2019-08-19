@@ -1226,7 +1226,7 @@ namespace KilyCore.Service.ServiceCore
                 CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
                 t.CardExpiredDate
             }).ToList();
-            users.Select(t => new
+            var MerUser = users.Select(t => new
             {
                 t.Id,
                 Name = t.MerchantName,
@@ -1235,7 +1235,9 @@ namespace KilyCore.Service.ServiceCore
                 CardExpiredDate = t.ExpiredTime
             }).ToList();
             Enterprise.AddRange(Repast);
-            return Enterprise.ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            Enterprise.AddRange(MerUser);
+            Enterprise.RemoveAll(t => !t.CardExpiredDate.HasValue);
+            return Enterprise.Where(t=>t.CardExpiredDate.Value<=DateTime.Now.AddDays(20)).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
         }
         /// <summary>
         /// 证件到期提醒
