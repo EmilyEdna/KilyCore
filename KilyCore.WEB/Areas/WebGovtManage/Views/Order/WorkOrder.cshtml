@@ -21,7 +21,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "System/GetOrderPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit",param: { CompnayId: RepastUser.Id}  });
+                this.$table = controller.Table("#tableList", { url: "System/GetOrderPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { GovtId: GovtInfo.Id } });
             },
             //事件
             InitEvents: function () {
@@ -47,11 +47,11 @@
                 });
                 $("#add").on('click', function () {
                     controller.OpenWindow({
-                        title: "新增服务",
+                        title: "新增工单",
                         type: 2,
                         height: "90%",
                         width: "80%",
-                        url: "WebCompanyManage/Order/OrderPushEidt",
+                        url: "WebGovtManage/Order/WorkOrderEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
                         }
@@ -63,30 +63,16 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
-                    if (row.OrderStatus == 60)
-                        action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-pencil-square-o"></i>打分</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
                     'click .edit': function (event, val, row, index) {
                         controller.OpenWindow({
-                            title: "编辑服务",
+                            title: "编辑工单",
                             type: 2,
                             height: "90%",
                             width: "80%",
-                            url: "WebCompanyManage/Order/OrderPushEidt?Id=" + row.Id,
-                            callBack: function (result) {
-                                result.$("#Edit").submit();
-                            }
-                        });
-                    },
-                    'click .del': function (event, val, row, index) {
-                        controller.OpenWindow({
-                            title: "编辑打分",
-                            type: 2,
-                            height: "90%",
-                            width: "80%",
-                            url: "WebCompanyManage/Order/OrderServiceEidt?OrderNo=" + row.OrderNo+"&Accept="+row.OrderAccepter,
+                            url: "WebGovtManage/Order/WorkOrderEdit?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }
@@ -107,7 +93,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>服务下单</h5>
+                <h5>工单列表</h5>
             </div>
             <div class="ibox-content">
                 <div class="row">
@@ -119,12 +105,12 @@
                         </div>
                         <div class="col-sm-5">
                             <div class="input-group">
-                                <input type="text" placeholder="订单编号" class="input-sm form-control" name="OrderNo">
+                                <input type="text" placeholder="工单编号" class="input-sm form-control" name="OrderNo">
                                 <input type="hidden" name="OrderStatus" />
                                 <input type="hidden" name="IsExpire" />
                                 <div class="input-group-btn">
                                     <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" id="t1">
-                                        <small id="OrderStatus">订单状态</small>
+                                        <small id="OrderStatus">工单状态</small>
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu">
@@ -132,25 +118,10 @@
                                             <a href="javascript:void(0);" data-field="OrderStatus" data-value="">全部</a>
                                         </li>
                                         <li>
-                                            <a href="javascript:void(0);" data-field="OrderStatus" data-value="10">审核不通过</a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0);" data-field="OrderStatus" data-value="20">等待审核</a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0);" data-field="OrderStatus" data-value="30">审核通过</a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0);" data-field="OrderStatus" data-value="40">派单中</a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0);" data-field="OrderStatus" data-value="50">已接单</a>
+                                            <a href="javascript:void(0);" data-field="OrderStatus" data-value="20">等待处理</a>
                                         </li>
                                         <li>
                                             <a href="javascript:void(0);" data-field="OrderStatus" data-value="60">已完成</a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0);" data-field="OrderStatus" data-value="70">已评价</a>
                                         </li>
                                         <li>
                                             <a href="javascript:void(0);" data-field="OrderStatus" data-value="80">已归档</a>
@@ -182,15 +153,12 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="OrderNo" data-halign="center" data-align="center" data-valign="middle">订单编号</th>
-                                <th data-field="OrderType" data-halign="center" data-align="center" data-valign="middle">订单类型</th>
-                                <th data-field="CompanyName" data-halign="center" data-align="center" data-valign="middle">企业名称</th>
-                                <th data-field="ServicePrice" data-halign="center" data-align="center" data-valign="middle">服务金额/元</th>
+                                <th data-field="OrderNo" data-halign="center" data-align="center" data-valign="middle">工单编号</th>
+                                <th data-field="OrderType" data-halign="center" data-align="center" data-valign="middle">工单类型</th>
+                                <th data-field="GovtName" data-halign="center" data-align="center" data-valign="middle">机构名称</th>
                                 <th data-field="SubmitTime" data-halign="center" data-align="center" data-valign="middle">提交时间</th>
                                 <th data-field="IsExpireTxt" data-halign="center" data-align="center" data-valign="middle">是否过期</th>
-                                <th data-field="OrderStatusTxt" data-halign="center" data-align="center" data-valign="middle">订单状态</th>
-                                <th data-field="OrderAccepter" data-halign="center" data-align="center" data-valign="middle">接单人</th>
-                                <th data-field="OrderAccepterTime" data-halign="center" data-align="center" data-valign="middle">接单时间</th>
+                                <th data-field="OrderStatusTxt" data-halign="center" data-align="center" data-valign="middle">工单状态</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>

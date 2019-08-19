@@ -1986,8 +1986,8 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 AreaName = t.Name
             }).ToList();
-            List<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).ToList();
-            List<RepastInfo> queryables = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).ToList();
+            List<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).Where(t => !string.IsNullOrEmpty(t.TypePath)).ToList();
+            List<RepastInfo> queryables = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).Where(t => !string.IsNullOrEmpty(t.TypePath)).ToList();
             List<ResponseGovtRanking> data = new List<ResponseGovtRanking>();
             Area.ForEach(t =>
             {

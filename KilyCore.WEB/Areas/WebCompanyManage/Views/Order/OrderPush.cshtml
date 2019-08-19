@@ -21,7 +21,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "System/GetOrderPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit",param: { CompanyName: CompanyInfo.CompanyName} });
+                this.$table = controller.Table("#tableList", { url: "System/GetOrderPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit",param: { CompnayId: CompanyInfo.Id} });
             },
             //事件
             InitEvents: function () {
@@ -138,19 +138,22 @@
                                             <a href="javascript:void(0);" data-field="OrderStatus" data-value="20">等待审核</a>
                                         </li>
                                         <li>
-                                            <a href="javascript:void(0);" data-field="OrderStatus" data-value="30">派单中</a>
+                                            <a href="javascript:void(0);" data-field="OrderStatus" data-value="30">审核通过</a>
                                         </li>
                                         <li>
-                                            <a href="javascript:void(0);" data-field="OrderStatus" data-value="40">已接单</a>
+                                            <a href="javascript:void(0);" data-field="OrderStatus" data-value="40">派单中</a>
                                         </li>
                                         <li>
-                                            <a href="javascript:void(0);" data-field="OrderStatus" data-value="50">已完成</a>
+                                            <a href="javascript:void(0);" data-field="OrderStatus" data-value="50">已接单</a>
                                         </li>
                                         <li>
-                                            <a href="javascript:void(0);" data-field="OrderStatus" data-value="60">已评价</a>
+                                            <a href="javascript:void(0);" data-field="OrderStatus" data-value="60">已完成</a>
                                         </li>
                                         <li>
-                                            <a href="javascript:void(0);" data-field="OrderStatus" data-value="70">已归档</a>
+                                            <a href="javascript:void(0);" data-field="OrderStatus" data-value="70">已评价</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0);" data-field="OrderStatus" data-value="80">已归档</a>
                                         </li>
                                     </ul>
                                     <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" id="t2">
