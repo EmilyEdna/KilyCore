@@ -318,7 +318,7 @@ namespace KilyCore.Service.ServiceCore
                 Honor = t.HonorCertification,
                 Remark = t.Remark,
                 Video = Kily.Set<RepastVideo>().Where(x => x.InfoId == Id && x.IsIndex == true)
-                .OrderByDescending(x => x.CreateTime).Select(x => x.MonitorAddress).Take(4).ToList()
+                .OrderByDescending(x => x.CreateTime).Select(x =>x.VideoAddress).Take(4).ToList()
             }).AsNoTracking().FirstOrDefault();
             return data;
         }
@@ -1221,7 +1221,7 @@ namespace KilyCore.Service.ServiceCore
                 CompanyType = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
                 t.CardExpiredDate
             }).ToList();
-            var Repast = queryables.Where(o => o.CardExpiredDate.Value < DateTime.Parse(DateTime.Now.AddDays(1).ToShortDateString())).Select(t => new
+            var Repast = queryables.Where(o => o.CardExpiredDate.Value < DateTime.Parse(DateTime.Now.AddDays(-1).ToShortDateString())).Select(t => new
             {
                 t.Id,
                 Name = t.MerchantName,
@@ -1240,7 +1240,7 @@ namespace KilyCore.Service.ServiceCore
             Enterprise.AddRange(Repast);
             Enterprise.AddRange(MerUser);
             Enterprise.RemoveAll(t => !t.CardExpiredDate.HasValue);
-            return Enterprise.Where(t=>t.CardExpiredDate.Value<=DateTime.Now.AddDays(20)).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return Enterprise.Where(t=>t.CardExpiredDate.Value<=DateTime.Now.AddDays(-20)).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
         }
         /// <summary>
         /// 证件到期提醒

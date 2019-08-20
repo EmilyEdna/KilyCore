@@ -27,8 +27,11 @@
                     success: function (result) {
                         //controller.SetCtrlValue("#Edit", result.data);
                         controller.SetLableValue("#Edit", result.data);
-                        var url = "StaticHtml/PlayVedio.html?addr=" + result.data.Account;
-                        $("#play").attr("src", url);
+                        $.each(result.data.Video, function (i,obj) {
+                             var url = "/StaticHtml/PlayVedio.html?addr=" + obj;
+                           $(".J_iframe").eq(i).attr("src", url);
+
+                        })                       
                         options.BindHonor(result.data.HonorCertification);
                     }
                 });
@@ -74,7 +77,7 @@
 }
 <form class="form-horizontal" method="post" id="Edit">
     <div class="tabs-container">
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs" style="margin-top:12px;">
             <li class="active">
                 <a data-toggle="tab" href="#tab-1" aria-expanded="true"> 基本信息</a>
             </li>
@@ -170,7 +173,16 @@
             </div>
             <div id="tab-4" class="tab-pane">
                 <div class="ibox-content">
-                    <iframe id="play" class="J_iframe" src="" name="iframe" style="width:750px;height:400px" frameborder="0" seamless scrolling="no" align="middle"></iframe>
+                    <table style="width:1060px">
+                        <tr>
+                            <td style="text-align:center;"><iframe id="play" class="J_iframe" src="" name="iframe" style="width:100%;height:400px;margin:auto auto;" frameborder="0" seamless scrolling="no" align="middle"></iframe></td>
+                            <td style="text-align:center;"><iframe id="play" class="J_iframe" src="" name="iframe" style="width:100%;height:400px;margin:auto auto;" frameborder="0" seamless scrolling="no" align="middle"></iframe></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;"><iframe id="play" class="J_iframe" src="" name="iframe" style="width:100%;height:400px;margin:auto auto;" frameborder="0" seamless scrolling="no" align="middle"></iframe></td>
+                            <td style="text-align:center;"><iframe id="play" class="J_iframe" src="" name="iframe" style="width:100%;height:400px;margin:auto auto;" frameborder="0" seamless scrolling="no" align="middle"></iframe></td>
+                        </tr>
+                    </table>
                 </div>
             </div>
             <div id="tab-5" class="tab-pane">
