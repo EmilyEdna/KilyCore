@@ -2218,13 +2218,13 @@ namespace KilyCore.Service.ServiceCore
             {
                 name = "风险",
                 data = new List<int> {
-                    risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==0).Count(),
-                    risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-1).Count(),
-                    risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-2).Count(),
-                    risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-3).Count(),
-                    risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-4).Count(),
-                    risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-5).Count(),
                     risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-6).Count(),
+                    risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-5).Count(),
+                    risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-4).Count(),
+                    risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-3).Count(),
+                    risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-1).Count(),
+                    risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-1).Count(),
+                    risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==0).Count(),
                 }
             });
             //投诉
@@ -2232,13 +2232,13 @@ namespace KilyCore.Service.ServiceCore
             {
                 name = "投诉",
                 data = new List<int> {
-                    complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==0).Count(),
-                    complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==-1).Count(),
-                    complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==-2).Count(),
-                    complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==-3).Count(),
-                    complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==-4).Count(),
-                    complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==-5).Count(),
                     complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==-6).Count(),
+                    complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==-5).Count(),
+                    complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==-4).Count(),
+                    complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==-3).Count(),
+                    complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==-1).Count(),
+                    complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==-1).Count(),
+                    complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==0).Count(),
                 }
             });
             return bars;
