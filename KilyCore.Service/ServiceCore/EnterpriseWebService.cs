@@ -30,6 +30,7 @@ using System.Text.RegularExpressions;
 using System.Text;
 using System.Data.SqlClient;
 using KilyCore.Extension.UtilExtension;
+using KilyCore.Extension.OutSideService;
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日12点01分
@@ -339,7 +340,6 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string SaveEnterprise(RequestEnterprise Param)
         {
-            Param.AuditType = AuditEnum.WaitAduit;
             EnterpriseInfo data = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
             Param.EnterpriseRoleId = data.EnterpriseRoleId;
             Param.CompanyId = data.CompanyId;
@@ -347,24 +347,30 @@ namespace KilyCore.Service.ServiceCore
             //调用远程接口
             if (!string.IsNullOrEmpty(data.InviteCode))
             {
-                string Area = Kily.Set<EnterpriseInviteCode>().Where(t => t.InviteCode == data.InviteCode).Select(t => t.UseTypePath).FirstOrDefault();
-                if (!data.TypePath.Contains(Area))
-                    return "请在邀请码选中区域使用!";
-                //验证信息是否正确
-                Info.AuditType = AuditEnum.AuditSuccess;
-                RequestStayContract contract = new RequestStayContract()
+                if (data.AuditType != AuditEnum.AuditSuccess)
                 {
-                    CompanyId = Info.Id,
-                    TypePath = Info.TypePath,
-                    CompanyName = Info.CompanyName,
-                    VersionType = SystemVersionEnum.Test,
-                    ContractType = 2,
-                    IsFormInviteCode = true
-                };
-                SaveContract(contract);
-                var CompanyType = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(Info.CompanyType);
-                EnterpriseRoleAuthor Role = Kily.Set<EnterpriseRoleAuthor>().Where(t => t.EnterpriseRoleName.Contains(CompanyType + "体验")).FirstOrDefault();
-                Info.EnterpriseRoleId = Role.Id;
+                    string Area = Kily.Set<EnterpriseInviteCode>().Where(t => t.InviteCode == data.InviteCode).Select(t => t.UseTypePath).FirstOrDefault();
+                    if (!data.TypePath.Contains(Area))
+                        return "请在邀请码选中区域使用!";
+                    //验证信息是否正确
+                    if (!CompanySearchApi.GetOutSideApiSearchApi.CheckCompany(Param.CompanyName, Param.CommunityCode))
+                        return "你输入的信息和你在网上预留信息不一致";
+                    //正确才审核和提交合同
+                    Info.AuditType = AuditEnum.AuditSuccess;
+                    RequestStayContract contract = new RequestStayContract()
+                    {
+                        CompanyId = Info.Id,
+                        TypePath = Info.TypePath,
+                        CompanyName = Info.CompanyName,
+                        VersionType = SystemVersionEnum.Base,
+                        ContractType = 2,
+                        IsFormInviteCode = true
+                    };
+                    SaveContract(contract);
+                    var CompanyType = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(Info.CompanyType);
+                    EnterpriseRoleAuthor Role = Kily.Set<EnterpriseRoleAuthor>().Where(t => t.EnterpriseRoleName.Contains(CompanyType + "基础")).FirstOrDefault();
+                    Info.EnterpriseRoleId = Role.Id;
+                }
             }
             if (Update<EnterpriseInfo, RequestEnterprise>(Info, Param))
                 return $"{ServiceMessage.UPDATESUCCESS}，请重新登录系统(重要)！";
