@@ -1349,7 +1349,7 @@ namespace KilyCore.Service.ServiceCore
         {
             GovtNetPatrol govtNet = Kily.Set<GovtNetPatrol>().Where(t => t.Id == Param.Id).AsNoTracking().FirstOrDefault();
             govtNet.BulletinNum += 1;
-            govtNet.QualifiedNum = ((govtNet.PotrolNum * 1.0) / govtNet.BulletinNum).ToString();
+            govtNet.QualifiedNum = (((govtNet.PotrolNum-govtNet.BulletinNum) * 100) / govtNet.PotrolNum).ToString()+"%";
             List<String> Fields = new List<String> { "BulletinNum", "QualifiedNum" };
             UpdateField(govtNet, null, Fields);
             SystemMessage message = new SystemMessage
