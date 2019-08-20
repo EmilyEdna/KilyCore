@@ -1392,13 +1392,13 @@ namespace KilyCore.Service.ServiceCore
             else if (MerchantUser() != null)
                 queryable = queryable.Where(t => t.CompanyId == MerchantUser().Id || t.TypePath.Contains(MerchantUser().Area))
                      .Where(t => t.TrageType.Equals(MerchantUser().DiningTypeName));
-            var data = queryable.Join(queryables, t => t.ComplainId, x => x.Id, (t, x) => new ResponseSystemMessage()
+            var data = queryable.GroupJoin(queryables, t => t.ComplainId, x => x.Id, (t, x) => new ResponseSystemMessage()
             {
                 MsgName = t.MsgName,
                 MsgContent = t.MsgContent,
                 ReleaseTime = t.ReleaseTime,
                 ComplainId = t.ComplainId,
-                Status = x.Status
+                Status = x.FirstOrDefault().Status
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
