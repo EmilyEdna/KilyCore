@@ -36,16 +36,20 @@
         <form class="form-horizontal" method="post" action="GovtWeb/EditNetPatrol" id="Edit">
             <input type="hidden" name="Id" id="Id" />
             <table class="table table-hover table-bordered">
+                <colgroup>
+                    <col width="120" />
+                    <col />
+                </colgroup>
                 <tr>
-                    <th><label class="control-label">标题</label></th>
+                    <th style="text-align:center;"><label class="control-label">通报原因</label></th>
                     <td class="has-warning" colspan="3">
                         <input  type="text" class="form-control" name="Title"/>
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">内容</label></th>
+                    <th style="text-align:center;"><label class="control-label">整改意见</label></th>
                     <td class="has-warning" colspan="3">
-                        <textarea class="form-control" name="Content" rows="4" maxlength="300"></textarea>
+                        <textarea class="form-control" name="Content" rows="8" maxlength="300"></textarea>
                     </td>
                 </tr>
             </table>

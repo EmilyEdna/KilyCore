@@ -39,10 +39,10 @@
                 TableEvents: {
                     "click .eye": function (event, val, row, index) {
                         controller.OpenWindow({
-                            title: "查看处理信息",
+                            title: row.CompanyName+"-"+row.ComplainContent,
                             type: 1,
-                            height: "90%",
-                            width: "80%",  
+                            height: "456px",
+                            width: "800px",  
                             resize: false,
                             maxmin: false,
                             content: '<article class="lead m-t" style="text-indent:35px;">' + row.HandlerContent+'</article>',

@@ -242,6 +242,7 @@
                         })
                     }
                 });
+                var DateArr = [getDay(-6),getDay(-5),getDay(-4),getDay(-3),getDay(-2),getDay(-1),getDay(0)]
                 //预警统计
                 controller.ajax({
                     url: "GovtWeb/GetNewWeekRiskAndComplainCount",
@@ -269,7 +270,7 @@
                             xAxis: [
                                 {
                                     type: 'category',
-                                    data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
+                                    data: DateArr
                                 }
                             ],
                             yAxis: [
@@ -484,6 +485,25 @@
         $(document).ready(function () {
             options.Init();
         });
+        function getDay(day){
+  
+ 　　        var today = new Date();
+ 　　        var targetday_milliseconds=today.getTime() + 1000*60*60*24*day;
+ 　　        today.setTime(targetday_milliseconds); //注意，这行是关键代码
+ 　　        var tYear = today.getFullYear();
+ 　　        var tMonth = today.getMonth();
+ 　　        var tDate = today.getDate();
+ 　　        tMonth = doHandleMonth(tMonth + 1);
+ 　　        tDate = doHandleMonth(tDate);
+ 　　        return tMonth+"-"+tDate;   
+        }
+        function doHandleMonth(month){
+　　        var m = month;
+　　        if(month.toString().length == 1){
+　　　　        m = "0" + month;
+　　        }
+　　        return m;
+        }
     </script>
 }
 <body>
