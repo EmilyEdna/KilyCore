@@ -945,7 +945,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseMerchantUser> GetMerchantUserPage(PageParamList<RequestMerchantUser> pageParam)
         {
-            IQueryable<RepastInfoUser> queryable = Kily.Set<RepastInfoUser>().Where(t => t.IsDelete == false).OrderByDescending(t=>t.CreateTime);
+            IQueryable<RepastInfoUser> queryable = Kily.Set<RepastInfoUser>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.TrueName))
                 queryable = queryable.Where(t => t.TrueName.Contains(pageParam.QueryParam.TrueName));
             if (MerchantInfo() != null)
@@ -983,7 +983,7 @@ namespace KilyCore.Service.ServiceCore
                 Phone = t.Phone,
                 DingRoleId = t.DingRoleId,
                 IdCard = t.IdCard,
-                ExpiredTime=t.ExpiredTime,
+                ExpiredTime = t.ExpiredTime,
                 PassWord = t.PassWord,
                 HealthCard = t.HealthCard
             }).AsNoTracking().FirstOrDefault();
@@ -2698,7 +2698,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public ResponseRepastScanInfo GetScanInfoDetail(Guid Id)
         {
-            var data = Kily.Set<RepastScanInfo>().Where(t => t.Id == Id).FirstOrDefault().MapToEntity<ResponseRepastScanInfo>();
+            var data = Kily.Set<RepastScanInfo>().Where(t => t.Id == Id).AsNoTracking().FirstOrDefault().MapToEntity<ResponseRepastScanInfo>();
             return data;
         }
         #endregion
@@ -2715,11 +2715,12 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
             else
                 queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
-            return queryable.Select(t => new
+            var data = queryable.Select(t => new
             {
                 t.Id,
                 Name = t.DishName
             }).ToList();
+            return data;
         }
         /// <summary>
         /// 原料列表
@@ -2732,11 +2733,12 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
             else
                 queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
-            return queryable.Select(t => new
+            var data = queryable.Select(t => new
             {
                 t.Id,
                 Name = t.MaterialName
             }).ToList();
+            return data;
         }
         /// <summary>
         /// 视频列表
@@ -2749,11 +2751,12 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
             else
                 queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
-            return queryable.Select(t => new
+            var data = queryable.Select(t => new
             {
                 t.Id,
                 Name = t.MonitorAddress
             }).ToList();
+            return data;
         }
         /// <summary>
         /// 人员列表
@@ -2766,11 +2769,12 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
             else
                 queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
-            return queryable.Select(t => new
+            var data = queryable.Select(t => new
             {
                 t.Id,
                 Name = t.TrueName
             }).ToList();
+            return data;
         }
         /// <summary>
         /// 废物列表
@@ -2783,11 +2787,12 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
             else
                 queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
-            return queryable.Select(t => new
+            var data = queryable.Select(t => new
             {
                 t.Id,
                 Name = t.HandleWays + "-" + t.HandleTime.Value.ToString("yyyy-MM-dd")
             }).ToList();
+            return data;
         }
         /// <summary>
         /// 抽样列表
@@ -2800,11 +2805,12 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
             else
                 queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
-            return queryable.Select(t => new
+            var data = queryable.Select(t => new
             {
                 t.Id,
                 Name = t.DrawUnit + "-" + t.DrawTime.Value.ToString("yyyy-MM-dd")
             }).ToList();
+            return data;
         }
         /// <summary>
         /// 留样列表
@@ -2817,11 +2823,12 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
             else
                 queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
-            return queryable.Select(t => new
+            var data = queryable.Select(t => new
             {
                 t.Id,
                 Name = t.DishName + "-" + t.SampleTime.Value.ToString("yyyy-MM-dd")
             }).ToList();
+            return data;
         }
         /// <summary>
         /// 消毒列表
@@ -2834,11 +2841,12 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
             else
                 queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
-            return queryable.Select(t => new
+            var data = queryable.Select(t => new
             {
                 t.Id,
                 Name = t.DisinfectName + "-" + t.DisinfectTime.Value.ToString("yyyy-MM-dd")
             }).ToList();
+            return data;
         }
         /// <summary>
         /// 添加剂列表
@@ -2851,11 +2859,12 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
             else
                 queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
-            return queryable.Select(t => new
+            var data = queryable.Select(t => new
             {
                 t.Id,
                 Name = t.AdditiveName + "-" + t.UseTime.Value.ToString("yyyy-MM-dd")
             }).ToList();
+            return data;
         }
         /// <summary>
         /// 台账列表
@@ -2868,11 +2877,12 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
             else
                 queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
-            return queryable.Select(t => new
+            var data = queryable.Select(t => new
             {
                 t.Id,
                 Name = t.Theme + "-" + t.UpTime.Value.ToString("yyyy-MM-dd")
             }).ToList();
+            return data;
         }
         /// <summary>
         /// 周菜谱列表
@@ -2885,11 +2895,12 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
             else
                 queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
-            return queryable.Select(t => new
+            var data = queryable.Select(t => new
             {
                 t.Id,
                 Name = t.FoodMenuName + "-" + t.UpTime.Value.ToString("yyyy-MM-dd")
             }).ToList();
+            return data;
         }
         #endregion
 
