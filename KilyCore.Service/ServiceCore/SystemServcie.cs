@@ -840,6 +840,25 @@ namespace KilyCore.Service.ServiceCore
               }).OrderBy(t => t.TownId).ToList();
             return data;
         }
+        /// <summary>
+        /// 获取中文区域
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string GetAreaWithChinese(string Param)
+        {
+            var Path = Param.Split(',').ToList();
+            Path.RemoveAll(t => string.IsNullOrEmpty(t));
+            var ProvinceName = Kily.Set<SystemProvince>().Where(t => t.Id.ToString() == Path.FirstOrDefault()).FirstOrDefault().Name;
+            var CityName = Kily.Set<SystemCity>().Where(t => t.Id.ToString() == Path[1]).FirstOrDefault().Name;
+            var AreaName = Kily.Set<SystemArea>().Where(t => t.Id.ToString() == Path[2]).FirstOrDefault().Name;
+            string TownName = string.Empty;
+            if (Path.Count() > 3)
+            {
+                TownName= Kily.Set<SystemTown>().Where(t => t.Id.ToString() == Path[3]).FirstOrDefault().Name;
+            }
+            return $"{ProvinceName},{CityName},{AreaName},{TownName}";
+        }
         #endregion
 
         #region 任务调度
