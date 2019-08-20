@@ -47,6 +47,7 @@ namespace KilyCore.Service.IServiceCore
         IList<ResponseCity> GetCity(int Pid);
         IList<ResponseArea> GetArea(int Cid);
         IList<ResponseTown> GetTown(int Aid);
+        String GetAreaWithChinese(string Param);
         #endregion
         #region 用户管理
         String InsertAdmin(RequestAdmin Param);

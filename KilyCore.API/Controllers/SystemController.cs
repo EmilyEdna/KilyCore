@@ -386,6 +386,17 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetTown(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 获取中文区域
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetAreaWithChinese")]
+        [AllowAnonymous]
+        public Object GetAreaWithChinese(SimpleParam<String> Param)
+        {
+            return ObjectResultEx.Instance(SystemService.GetAreaWithChinese(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 任务调度
         /// <summary>
