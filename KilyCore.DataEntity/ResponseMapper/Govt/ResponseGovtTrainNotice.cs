@@ -26,6 +26,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Govt
         public string TrainPlace { get; set; }
         public DateTime? TrainTime { get; set; }
         public string Remark { get; set; }
+        /// <summary>
+        /// 概要
+        /// </summary>
+        public string Desc { set; get; }
         public string CompanyType { get; set; }
     }
     public class ResponseGovtTrainReport
