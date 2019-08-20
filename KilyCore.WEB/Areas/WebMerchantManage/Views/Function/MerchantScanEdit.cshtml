@@ -77,13 +77,25 @@
             InitSelectEvent: function (node) {
                 $("#" + node).on('changed.bs.select', function () {
                     var $Id = $('input[name="' + node + '"]');
-                    if ($Id.val() != "") {
-                        var arr = ($Id.val() + "," + $(this).val()).split(",");
-                        $.unique(arr);
-                        $Id.val(arr);
+                    let selector = $(this).val();
+                    if (selector.length == 0) {
+                        $Id.val('');
+                    } else {
+                        if (controller.CheckFeild($Id.val())) {
+                            let arr = $Id.val().split(',');
+                            let index = $.inArray(selector[selector.length-1], arr);
+                            //存在
+                            if (index > -1) {
+                                arr.splice(index, 1);
+                                $Id.val(arr.join(','));
+                            } else {
+                                arr.push(selector[selector.length-1]);
+                                $Id.val(arr.join(','));
+                            }
+                        } else {
+                            $Id.val(selector[selector.length-1]);
+                        }
                     }
-                    else
-                        $Id.val($(this).val());
                 });
             }
         };
