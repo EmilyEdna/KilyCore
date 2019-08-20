@@ -1183,9 +1183,6 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
                 queryables = queryables.Where(t => t.TypePath.Contains(GovtInfo().City));
                 users = users.Where(t => t.TypePath.Contains(GovtInfo().City));
-                var s = queryable.ToList();
-                var s2 = queryables.ToList();
-                var s3 = users.ToList();
             }
             else
             {
@@ -1221,7 +1218,7 @@ namespace KilyCore.Service.ServiceCore
                 CompanyType = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
                 t.CardExpiredDate
             }).ToList();
-            var Repast = queryables.Where(o => o.CardExpiredDate.Value < DateTime.Parse(DateTime.Now.AddDays(-1).ToShortDateString())).Select(t => new
+            var Repast = queryables.Select(t => new
             {
                 t.Id,
                 Name = t.MerchantName,
