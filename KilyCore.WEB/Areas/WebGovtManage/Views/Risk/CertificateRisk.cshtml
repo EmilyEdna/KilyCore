@@ -28,6 +28,27 @@
             },
             //行为
             action: {
+                 ImgFormatter: function (val, row, index) {
+                    var action = [];
+                    if (row.CardImg != null) {
+                        for (var i = 0; i < row.CardImg.split(',').length; i++) {
+                            action.push('<img class="photo" src="' + row.CardImg.split(',')[i] + '" style="width:48px;height:32px;"">')
+                        }
+                    }
+                    return action.join("&nbsp;");
+                },
+                ImgEvents: {
+                    "click .photo": function (event, val, row, index) {
+                        var option = {
+                            title: "证件图片",
+                            data: [{
+                                alt: "证件图片",
+                                src: $(this).attr("src")
+                            }]
+                        };
+                        controller.Photos(option);
+                    }
+                },
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>提醒</button>');
@@ -75,7 +96,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input type="text" placeholder="企业名称" class="input-sm form-control" name="CompanyName">
+                                <input type="text" placeholder="企业名称/姓名" class="input-sm form-control" name="CompanyName">
                                 <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
                                     <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
@@ -88,9 +109,10 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="Name" data-halign="center" data-align="center" data-valign="middle">企业名称</th>
+                                <th data-field="Name" data-halign="center" data-align="center" data-valign="middle">企业名称/姓名</th>
                                 <th data-field="CompanyType" data-halign="center" data-align="center" data-valign="middle">所属行业</th>
                                 <th data-field="CardType" data-halign="center" data-align="center" data-valign="middle">证件类型</th>
+                                <th data-formatter="options.action.ImgFormatter" data-events="options.action.ImgEvents" data-halign="center" data-align="center" data-valign="middle">证件图片</th>
                                 <th data-field="CardExpiredDate" data-halign="center" data-align="center" data-valign="middle">到期日期</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>

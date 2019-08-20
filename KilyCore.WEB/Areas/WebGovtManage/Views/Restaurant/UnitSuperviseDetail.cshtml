@@ -28,7 +28,7 @@
                         //controller.SetCtrlValue("#Edit", result.data);
                         controller.SetLableValue("#Edit", result.data);
                         $.each(result.data.Video, function (i,obj) {
-                             var url = "/StaticHtml/PlayVedio.html?addr=" + obj;
+                             var url = "/StaticHtml/PlayVedio.html?addr=" + obj.VideoAddress+"&cover="+obj.CoverPhoto;
                            $(".J_iframe").eq(i).attr("src", url);
 
                         })                       
@@ -91,22 +91,22 @@
                 <a data-toggle="tab" href="#tab-4" aria-expanded="false" id="four">视频监控</a>
             </li>
             <li>
-                <a data-toggle="tab" href="#tab-4" aria-expanded="false">人员管理</a>
+                <a data-toggle="tab" href="#tab-5" aria-expanded="false">人员管理</a>
             </li>
             <li>
-                <a data-toggle="tab" href="#tab-5" aria-expanded="false">食材供应</a>
+                <a data-toggle="tab" href="#tab-6" aria-expanded="false">食材供应</a>
             </li>
             <li>
-                <a data-toggle="tab" href="#tab-6" aria-expanded="false">周菜谱</a>
+                <a data-toggle="tab" href="#tab-7" aria-expanded="false">周菜谱</a>
             </li>
             <li>
-                <a data-toggle="tab" href="#tab-7" aria-expanded="false">废物处理</a>
+                <a data-toggle="tab" href="#tab-8" aria-expanded="false">废物处理</a>
             </li>
             <li>
-                <a data-toggle="tab" href="#tab-8" aria-expanded="false">留样管理</a>
+                <a data-toggle="tab" href="#tab-9" aria-expanded="false">留样管理</a>
             </li>
             <li>
-                <a data-toggle="tab" href="#tab-9" aria-expanded="false">抽检信息</a>
+                <a data-toggle="tab" href="#tab-10" aria-expanded="false">抽检信息</a>
             </li>
         </ul>
         <div class="tab-content">
@@ -202,6 +202,10 @@
                 </div>
             </div>
             <div id="tab-9" class="tab-pane">
+                <div class="ibox-content">
+                </div>
+            </div>
+            <div id="tab-10" class="tab-pane">
                 <div class="ibox-content">
                 </div>
             </div>

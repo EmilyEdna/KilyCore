@@ -12,7 +12,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
 {
     public class ResponseMerchant
     {
-        public IList<String> Video { get; set; }
+        public IList<ResponseRepastVideo> Video { get; set; }
         public Guid Id { get; set; }
         public Guid? InfoId { get; set; }
         public string Account { get; set; }
