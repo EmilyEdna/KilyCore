@@ -18,6 +18,7 @@
             InitDom: function () {
                 controller.Editor(".summernote", { width: 1000 });
                 controller.LayDate({ elem: "input[name='UpTime']" });
+                $("input[name='InfoId']").val(RepastUser.Id);
                    //恢复高度
                 $(window).resize(function (e) {
                     window.setTimeout(function () {
@@ -109,7 +110,7 @@
         <div id="tab-2" class="tab-pane">
             <div class="panel-body">
                 <form method="post" class="form-horizontal" action="RepastWeb/EditFoodMenu" id="Edit">
-                    <input type="hidden" name="Id" />
+                    <input type="hidden" name="InfoId" />
                     <!--名称-->
                     <div class="form-group">
                         <label class="col-sm-2 control-label">请输入菜谱名称<span style="color:red">*</span></label>
@@ -135,7 +136,7 @@
                             <div class="summernote" name="Content"></div>
                         </div>
                         <div class="col-sm-6">
-                            <input  class="hidden" name="Content"/>
+                            <input class="hidden" name="Content" />
                         </div>
                     </div>
                     <!--结束-->
