@@ -318,10 +318,11 @@ namespace KilyCore.Service.ServiceCore
                 Honor = t.HonorCertification,
                 Remark = t.Remark,
                 Video = Kily.Set<RepastVideo>().Where(x => x.InfoId == Id && x.IsIndex == true)
-                .OrderByDescending(x => x.CreateTime).Select(m=> new ResponseRepastVideo {
-                   MonitorAddress=m.MonitorAddress,
-                   VideoAddress=m.VideoAddress,
-                   CoverPhoto=m.CoverPhoto
+                .OrderByDescending(x => x.CreateTime).Select(m => new ResponseRepastVideo
+                {
+                    MonitorAddress = m.MonitorAddress,
+                    VideoAddress = m.VideoAddress,
+                    CoverPhoto = m.CoverPhoto
                 }).Take(4).ToList()
             }).AsNoTracking().FirstOrDefault();
             return data;
@@ -906,7 +907,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 ProductName = t.ProductName,
-                CompanyName=x.CompanyName,
+                CompanyName = x.CompanyName,
                 ProductType = t.ProductType,
                 ExpiredDate = t.ExpiredDate,
                 Spec = t.Spec,
@@ -1221,7 +1222,7 @@ namespace KilyCore.Service.ServiceCore
                 Name = t.CompanyName,
                 CardType = "营业执照",
                 CompanyType = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
-                CardImg=t.Certification,
+                CardImg = t.Certification,
                 t.CardExpiredDate
             }).ToList();
             var Repast = queryables.Select(t => new
@@ -1230,7 +1231,7 @@ namespace KilyCore.Service.ServiceCore
                 Name = t.MerchantName,
                 CardType = "营业执照",
                 CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
-                CardImg=t.Certification,
+                CardImg = t.Certification,
                 t.CardExpiredDate
             }).ToList();
             var MerUser = users.Select(t => new
@@ -1238,14 +1239,14 @@ namespace KilyCore.Service.ServiceCore
                 t.Id,
                 Name = t.TrueName,
                 CardType = "健康证",
-                CompanyType = AttrExtension.GetSingleDescription < MerchantEnum, DescriptionAttribute>(t.DiningType),
+                CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
                 CardImg = t.HealthCard,
-                CardExpiredDate = t.ExpiredTime                
+                CardExpiredDate = t.ExpiredTime
             }).ToList();
             Enterprise.AddRange(Repast);
             Enterprise.AddRange(MerUser);
             Enterprise.RemoveAll(t => !t.CardExpiredDate.HasValue);
-            return Enterprise.Where(t=>t.CardExpiredDate.Value<=DateTime.Now.AddDays(20)).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return Enterprise.Where(t => t.CardExpiredDate.Value <= DateTime.Now.AddDays(20)).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
         }
         /// <summary>
         /// 证件到期提醒
@@ -1350,7 +1351,7 @@ namespace KilyCore.Service.ServiceCore
         {
             GovtNetPatrol govtNet = Kily.Set<GovtNetPatrol>().Where(t => t.Id == Param.Id).AsNoTracking().FirstOrDefault();
             govtNet.BulletinNum += 1;
-            govtNet.QualifiedNum = (((govtNet.PotrolNum-govtNet.BulletinNum) * 100) / govtNet.PotrolNum).ToString()+"%";
+            govtNet.QualifiedNum = (((govtNet.PotrolNum - govtNet.BulletinNum) * 100) / govtNet.PotrolNum).ToString() + "%";
             List<String> Fields = new List<String> { "BulletinNum", "QualifiedNum" };
             UpdateField(govtNet, null, Fields);
             SystemMessage message = new SystemMessage
@@ -1723,7 +1724,7 @@ namespace KilyCore.Service.ServiceCore
                 TrainTime = t.TrainTime,
                 CompanyType = t.CompanyType,
                 Remark = t.Remark,
-                Desc= t.Remark.NoHtml()
+                Desc = t.Remark.NoHtml()
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -2217,13 +2218,13 @@ namespace KilyCore.Service.ServiceCore
             {
                 name = "风险",
                 data = new List<int> {
-                    risks.Where(t => t.ReleaseTime.Value.DayOfWeek == DayOfWeek.Monday).Count(),
-                    risks.Where(t => t.ReleaseTime.Value.DayOfWeek == DayOfWeek.Tuesday).Count(),
-                    risks.Where(t => t.ReleaseTime.Value.DayOfWeek == DayOfWeek.Wednesday).Count(),
-                    risks.Where(t => t.ReleaseTime.Value.DayOfWeek == DayOfWeek.Thursday).Count(),
-                    risks.Where(t => t.ReleaseTime.Value.DayOfWeek == DayOfWeek.Friday).Count(),
-                    risks.Where(t => t.ReleaseTime.Value.DayOfWeek == DayOfWeek.Saturday).Count(),
-                    risks.Where(t => t.ReleaseTime.Value.DayOfWeek == DayOfWeek.Sunday).Count(),
+                    risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==0).Count(),
+                    risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-1).Count(),
+                    risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-2).Count(),
+                    risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-3).Count(),
+                    risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-4).Count(),
+                    risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-5).Count(),
+                    risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-6).Count(),
                 }
             });
             //投诉
@@ -2231,13 +2232,13 @@ namespace KilyCore.Service.ServiceCore
             {
                 name = "投诉",
                 data = new List<int> {
-                    complains.Where(t => t.ComplainTime.Value.DayOfWeek == DayOfWeek.Monday).Count(),
-                    complains.Where(t => t.ComplainTime.Value.DayOfWeek == DayOfWeek.Tuesday).Count(),
-                    complains.Where(t => t.ComplainTime.Value.DayOfWeek == DayOfWeek.Wednesday).Count(),
-                    complains.Where(t => t.ComplainTime.Value.DayOfWeek == DayOfWeek.Thursday).Count(),
-                    complains.Where(t => t.ComplainTime.Value.DayOfWeek == DayOfWeek.Friday).Count(),
-                    complains.Where(t => t.ComplainTime.Value.DayOfWeek == DayOfWeek.Saturday).Count(),
-                    complains.Where(t => t.ComplainTime.Value.DayOfWeek == DayOfWeek.Sunday).Count(),
+                    complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==0).Count(),
+                    complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==-1).Count(),
+                    complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==-2).Count(),
+                    complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==-3).Count(),
+                    complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==-4).Count(),
+                    complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==-5).Count(),
+                    complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==-6).Count(),
                 }
             });
             return bars;
@@ -2284,13 +2285,13 @@ namespace KilyCore.Service.ServiceCore
             {
                 name = "自查",
                 data = new List<int> {
-                    children.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Monday).Count(),
-                    children.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Tuesday).Count(),
-                    children.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Wednesday).Count(),
-                    children.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Thursday).Count(),
-                    children.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Friday).Count(),
-                    children.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Saturday).Count(),
-                    children.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Sunday).Count()
+                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==0).Count(),
+                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-1).Count(),
+                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-2).Count(),
+                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-3).Count(),
+                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-4).Count(),
+                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-5).Count(),
+                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-6).Count()
                 }
             });
             //抽查
@@ -2298,13 +2299,13 @@ namespace KilyCore.Service.ServiceCore
             {
                 name = "抽查",
                 data = new List<int> {
-                    patrols.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Monday).Sum(t=>t.PotrolNum),
-                    patrols.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Tuesday).Sum(t=>t.PotrolNum),
-                    patrols.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Wednesday).Sum(t=>t.PotrolNum),
-                    patrols.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Thursday).Sum(t=>t.PotrolNum),
-                    patrols.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Friday).Sum(t=>t.PotrolNum),
-                    patrols.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Saturday).Sum(t=>t.PotrolNum),
-                    patrols.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Sunday).Sum(t=>t.PotrolNum)
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==0).Sum(t=>t.PotrolNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-1).Sum(t=>t.PotrolNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-2).Sum(t=>t.PotrolNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-3).Sum(t=>t.PotrolNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-4).Sum(t=>t.PotrolNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-5).Sum(t=>t.PotrolNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-6).Sum(t=>t.PotrolNum)
                 }
             });
             //通报
@@ -2312,13 +2313,13 @@ namespace KilyCore.Service.ServiceCore
             {
                 name = "通报",
                 data = new List<int> {
-                    patrols.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Monday).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Tuesday).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Wednesday).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Thursday).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Friday).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Saturday).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.DayOfWeek == DayOfWeek.Sunday).Sum(t=>t.BulletinNum)
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==0).Sum(t=>t.BulletinNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-1).Sum(t=>t.BulletinNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-2).Sum(t=>t.BulletinNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-3).Sum(t=>t.BulletinNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-4).Sum(t=>t.BulletinNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-5).Sum(t=>t.BulletinNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-6).Sum(t=>t.BulletinNum)
                 }
             });
             return lines;
