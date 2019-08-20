@@ -2182,7 +2182,7 @@ namespace KilyCore.Service.ServiceCore
         public IList<DataBar> GetNewWeekRiskAndComplainCount()
         {
             IQueryable<GovtRisk> risks = Kily.Set<GovtRisk>().Where(t => t.IsDelete == false);
-            IQueryable<GovtComplain> complains = Kily.Set<GovtComplain>().Where(t => t.IsDelete == false);
+            IQueryable<GovtComplain> complains = Kily.Set<GovtComplain>();
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
             {
                 risks = risks.Where(t => t.TypePath.Contains(GovtInfo().City));

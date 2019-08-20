@@ -4283,6 +4283,13 @@
             <param name="Param"></param>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetAreaWithChinese(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            获取中文区域
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
         <member name="M:KilyCore.API.Controllers.SystemController.AddJob(KilyCore.DataEntity.RequestMapper.System.RequestQuartz)">
             <summary>
             添加任务
