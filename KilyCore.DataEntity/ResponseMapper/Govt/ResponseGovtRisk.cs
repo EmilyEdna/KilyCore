@@ -75,6 +75,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Govt
         /// </summary>
         public string Remark { get; set; }
         /// <summary>
+        /// 摘要
+        /// </summary>
+        public string Desc { set; get; }
+        /// <summary>
         /// 是否广播
         /// </summary>
         public bool ReportPlay { get; set; }

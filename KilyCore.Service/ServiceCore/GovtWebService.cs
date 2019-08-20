@@ -1087,6 +1087,7 @@ namespace KilyCore.Service.ServiceCore
                 ReleaseTime = t.ReleaseTime,
                 ReportPlay = t.ReportPlay,
                 Remark = t.Remark,
+                Desc = t.Remark.NoHtml(),
                 TypePath = t.TypePath
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -1721,7 +1722,8 @@ namespace KilyCore.Service.ServiceCore
                 TrainPlace = t.TrainPlace,
                 TrainTime = t.TrainTime,
                 CompanyType = t.CompanyType,
-                Remark = t.Remark
+                Remark = t.Remark,
+                Desc= t.Remark.NoHtml()
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
