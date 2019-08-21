@@ -93,9 +93,19 @@
                     success: function (result) {
                         var html = "";
                         $.each(result.data.rows, function (i, obj) {
+                            var Area = "";
+                            controller.ajax({
+                                url: "system/GetAreaWithChinese",
+                                data: { Id: obj.TypePath },
+                                async: false,
+                                type: "post",
+                                success: function (res) {
+                                    Area = res.data;
+                                }
+                            });
                              html += '<div class="col-sm-12 search-result"><a href="/WebGovtManage/Train/NoticeTrain">'
                                 + '<h3><strong>'+obj.EventName+'</strong><span style="color:red;">('+obj.WaringLv+')</span></h3>'
-                                + '<p><i class="fa fa-map-marker"></i> '+obj.Province+obj.City+'</p>'
+                                + '<p><i class="fa fa-map-marker"></i> '+Area+'</p>'
                                 + '</a><address>'
                                 + obj.ReleaseTime 
                                 +'<p>'+obj.Desc.substr(0,92) +'...</p>'
