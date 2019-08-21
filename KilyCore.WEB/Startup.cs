@@ -15,7 +15,7 @@ namespace KilyCore.WEB
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            Configuration = configuration; 
             GetSystemConfiger();
         }
 
