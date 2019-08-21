@@ -52,5 +52,9 @@ namespace KilyCore.EntityFrameWork.Model.System
         /// 行业类型
         /// </summary>
         public virtual string TrageType { get; set; }
+        /// <summary>
+        /// 状态
+        /// </summary>
+        public virtual string Status { get; set; }
     }
 }
