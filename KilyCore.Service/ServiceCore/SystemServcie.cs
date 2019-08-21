@@ -855,7 +855,7 @@ namespace KilyCore.Service.ServiceCore
             string TownName = string.Empty;
             if (Path.Count() > 3)
             {
-                TownName= Kily.Set<SystemTown>().Where(t => t.Id.ToString() == Path[3]).FirstOrDefault().Name;
+                TownName = Kily.Set<SystemTown>().Where(t => t.Id.ToString() == Path[3]).FirstOrDefault().Name;
             }
             return $"{ProvinceName},{CityName},{AreaName},{TownName}";
         }
@@ -1397,8 +1397,8 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseSystemMessage> GetMsgPage(PageParamList<Object> pageParam)
         {
-            IQueryable<SystemMessage> queryable = Kily.Set<SystemMessage>().OrderByDescending(t => t.CreateTime);
-            IQueryable<GovtComplain> queryables = Kily.Set<GovtComplain>().OrderByDescending(t => t.CreateTime);
+            IQueryable<SystemMessage> queryable = Kily.Set<SystemMessage>().Where(t=>!t.Status.Equals("已处理")).OrderByDescending(t => t.CreateTime);
+            IQueryable<GovtComplain> queryables = Kily.Set<GovtComplain>().Where(t => !t.Status.Equals("已处理")).OrderByDescending(t => t.CreateTime);
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || t.TypePath.Contains(CompanyInfo().Area))
                     .Where(t => t.TrageType.Equals(CompanyInfo().CompanyTypeName));
@@ -1416,8 +1416,8 @@ namespace KilyCore.Service.ServiceCore
                 MsgName = t.MsgName,
                 MsgContent = t.MsgContent,
                 ReleaseTime = t.ReleaseTime,
-                ComplainId = t.ComplainId,
-                Status = x.FirstOrDefault().Status
+                ComplainId = (t.ComplainId == Guid.Empty ? t.CompanyId.Value : t.ComplainId),
+                Status = string.IsNullOrEmpty(x.FirstOrDefault().Status) ? t.Status : x.FirstOrDefault().Status
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }

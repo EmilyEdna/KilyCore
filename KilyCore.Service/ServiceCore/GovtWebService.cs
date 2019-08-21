@@ -1974,11 +1974,20 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string ReportComplainInfo(Guid Id, string Param)
         {
-            GovtComplain complain = Kily.Set<GovtComplain>().Where(t => t.Id == Id).FirstOrDefault();
-            complain.HandlerContent = Param;
-            complain.Status = "已处理";
-            List<String> Fields = new List<String> { "HandlerContent", "Status" };
-            return UpdateField(complain, null, Fields) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            GovtComplain complain = Kily.Set<GovtComplain>().Where(t => t.Id == Id).AsNoTracking().FirstOrDefault();
+            SystemMessage message = Kily.Set<SystemMessage>().Where(t => t.CompanyId == Id).AsNoTracking().FirstOrDefault();
+            if (complain != null)
+            {
+                complain.HandlerContent = Param;
+                complain.Status = "已处理";
+                List<String> Fields = new List<String> { "HandlerContent", "Status" };
+                return UpdateField(complain, null, Fields) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            }
+            else
+            {
+                message.Status = "已处理";
+                return UpdateField(message, "Status") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            }
         }
         #endregion
 
