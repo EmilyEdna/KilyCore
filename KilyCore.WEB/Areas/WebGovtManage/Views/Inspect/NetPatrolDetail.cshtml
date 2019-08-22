@@ -14,6 +14,7 @@
             },
             //元素
             InitDom: function () {
+                options.CompanyUrl = "GovtWeb/GetCompanyDetail";
                 //获取巡检信息
                  controller.ajax({
                     url: "GovtWeb/GetNetPatrolDetail",
@@ -22,12 +23,16 @@
                     type: "post",
                     success: function (result) {
                         controller.SetLableValue("#Edit", result.data);
+                        options.CompanyID = result.data.CompanyId;
+                        if (result.data.TradeType == "餐饮企业" || result.data.TradeType == "单位食堂") {
+                             options.CompanyUrl = "GovtWeb/GetRepastDetail";
+                        }
                     }
                 });
                 //取详情
                 controller.ajax({
-                    url: "GovtWeb/GetCompanyDetail",
-                    data: { Id: controller.GetParam("Id") },
+                    url: options.CompanyUrl,
+                    data: { Id: options.CompanyID},
                     async: false,
                     type: "post",
                     success: function (result) {
@@ -112,7 +117,7 @@
                     <tr>
                         <th style="text-align:center"><label class="control-label">抽查次数</label></th>
                         <td class="has-warning">
-                            <label type="txt" name="CheckNum"></label>
+                            <label type="txt" name="PotrolNum"></label>
                         </td>
                         <th style="text-align:center"><label class="control-label">最近抽查日期</label></th>
                         <td class="has-warning">
