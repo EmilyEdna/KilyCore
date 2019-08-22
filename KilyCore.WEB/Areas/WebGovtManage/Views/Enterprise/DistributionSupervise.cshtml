@@ -245,7 +245,9 @@
                             options.marker.setTitle(obj.CompanyType);
                             options.Map.addOverlay(options.marker);               // 将标注添加到地图中
                             options.AddClickHandler(obj.Name, obj.Address, obj.CompanyCode, obj.CompanyType, obj.CompanyImg);
-
+                            if (obj.CompanyUser == null) {
+                                obj.CompanyUser = "-";
+                            }
                             var CompanyHtml = '<li>'
                                 + '<img src="' + obj.CompanyImg + '">'
                                 + '<div>'

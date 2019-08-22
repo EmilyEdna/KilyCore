@@ -46,5 +46,9 @@ namespace KilyCore.DataEntity.ResponseMapper.Govt
         /// 合格率
         /// </summary>
         public string QualifiedNum { get; set; }
+        /// <summary>
+        /// 最后一次抽查时间
+        /// </summary>
+        public string CheckTime { set; get; }
     }
 }

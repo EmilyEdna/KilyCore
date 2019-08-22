@@ -1358,7 +1358,8 @@ namespace KilyCore.Service.ServiceCore
                 BulletinNum=t.BulletinNum,
                 PotrolNum=t.PotrolNum,
                 QualifiedNum=t.QualifiedNum,
-                TradeType=t.TradeType
+                TradeType=t.TradeType,
+                CheckTime=t.UpdateTime.Value.ToString("yyyy年MM月dd日 HH:mm")
             }).FirstOrDefault();
             return data;
         }
