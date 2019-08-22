@@ -24,6 +24,9 @@
                         //controller.SetCtrlValue("#Edit", result.data);
                         controller.SetLableValue("#Edit", result.data);
                         options.BindHonor(result.data.HonorCertification);
+                        options.BindProduct(result.data.MainPro);
+                        options.BindCompanyApply(result.data.Id);
+                        options.BindCompanySell(result.data.Id);
                         //加载视频
                         $.each(result.data.Video, function (i, obj) {
                             var url = "../../StaticHtml/PlayVedio.html?addr="+obj;
@@ -43,9 +46,19 @@
                     controller.Photos(option);
                 });
             },
+            //主要产品
+            BindProduct: function (data) {
+                if (data == undefined || data == null) return;
+                //主要产品
+                if (data.indexOf("/") > -1) {
+                    $.each(data.split(","), function (i, item) {
+                       
+                            $("#CompanyProduct").append('<a class="fancybox" src="http://system.cfda.vip'+item+'" title="图片1"><img alt="image" src="http://system.cfda.vip'+item+'"></a>');
+                    });
+                }
+            },
             //绑定荣誉证书
-            BindHonor: function (data) {
-                debugger;
+            BindHonor: function (data) {                
                 if (data != null) {
                     var html = '';
                     $.each(data, function (i, obj) {
@@ -57,6 +70,46 @@
                     else
                         $("#tab-3").find(".ibox-content").find("img").css({ width: "186px", padding: "1px" });
                 }
+            },
+            //绑定供应商
+            BindCompanyApply: function (data) {
+                 //取详情
+                controller.ajax({
+                    url: "Temp/GetAllSupply",
+                    data: { Id: data,Parameter:10 },
+                    async: false,
+                    type: "get",
+                    success: function (res) {
+                         $.each(res.data, function (i, item) {
+                            if (item.CompanyCode == null) item.CompanyCode = "-";
+                            if (item.CompanyName == null) item.CompanyName = "-";
+                            if (item.CompanyTel == null) item.CompanyTel = "-";
+                            if (item.CompanyFace == null) item.CompanyFace = "-";
+                            else item.CompanyFace = "<img src='http://system.cfda.vip" + item.CompanyFace + "'style='max-width:100%;height:56px;'/>";
+                            $("#CompanyApply").append("<tr><td>" + item.CompanyName + "</td><td>" + "-" + "</td><td>" + item.CompanyUser + "</td><td>" + item.CompanyTel + "</td><td>" + item.CompanyFace + "</td></tr>")
+                        });
+                    }
+                });
+            },
+            //绑定分销商
+            BindCompanySell: function (data) {
+                 //取详情
+                controller.ajax({
+                    url: "Temp/GetAllSupply",
+                    data: { Id: data,Parameter:20 },
+                    async: false,
+                    type: "get",
+                    success: function (res) {
+                        $.each(res.data, function (i, item) {
+                            if (item.CompanyCode == null) item.CompanyCode = "-";
+                            if (item.CompanyName == null) item.CompanyName = "-";
+                            if (item.CompanyTel == null) item.CompanyTel = "-";
+                            if (item.CompanyFace == null) item.CompanyFace = "-";
+                            else item.CompanyFace = "<img src='http://system.cfda.vip" + item.CompanyFace + "'style='max-width:100%;height:56px;'/>";
+                            $("#CompanySell").append("<tr><td>" + item.CompanyName + "</td><td>" + "-" + "</td><td>" + item.CompanyUser + "</td><td>" + item.CompanyTel + "</td><td>" + item.CompanyFace + "</td></tr>")
+                        });
+                    }
+                });
             },
             //事件
             InitEvents: function () {
@@ -90,10 +143,16 @@
                 <a data-toggle="tab" href="#tab-4" aria-expanded="false" id="four">视频监控</a>
             </li>
             <li>
-                <a data-toggle="tab" href="#tab-5" aria-expanded="false" id="five">人员管理</a>
+                <a data-toggle="tab" href="#tab-5" aria-expanded="false" id="five">供应商</a>
             </li>
             <li>
-                <a data-toggle="tab" href="#tab-6" aria-expanded="false" id="six">主要产品</a>
+                <a data-toggle="tab" href="#tab-6" aria-expanded="false" id="six">分销商</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-7" aria-expanded="false" id="senven">主要产品</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-8" aria-expanded="false" id="eight">进销台账</a>
             </li>
         </ul>
         <div class="tab-content">
@@ -163,7 +222,7 @@
                     <tr>
                         <th style="text-align:center"><label class="control-label">企业介绍</label></th>
                         <td class="has-warning" colspan="3">
-                            <label type="txt" name="Discription"></label>
+                            <label type="txt" name="Discription" style="font-weight:normal;font-size:15px;"></label>
                         </td>
                     </tr>
                 </table>
@@ -186,11 +245,41 @@
                 </div>
             </div>
             <div id="tab-5" class="tab-pane">
-                <div class="ibox-content">
+                <div class="ibox-content table-responsive">
+                    <table class="table">
+                        <tr>
+                            <th>供应商名称</th>
+                            <th>社会信用代码</th>
+                            <th>负责人</th>
+                            <th>联系方式</th>
+                            <th>营业资质</th>
+                        </tr>
+                        <tbody id="CompanyApply">
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <div id="tab-6" class="tab-pane">
                 <div class="ibox-content">
+                    <table class="table">
+                        <tr>
+                            <th>分销商名称</th>
+                            <th>社会信用代码</th>
+                            <th>负责人</th>
+                            <th>联系方式</th>
+                            <th>营业资质</th>
+                        </tr>
+                        <tbody id="CompanySell">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="tab-7" class="tab-pane">
+                <div class="ibox-content" id="CompanyProduct">
+                </div>
+            </div>
+            <div id="tab-8" class="tab-pane">
+                <div class="ibox-content" id="CompanyBook">
                 </div>
             </div>
         </div>

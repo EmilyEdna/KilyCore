@@ -6,6 +6,41 @@
 @section css{ 
    <style>
       label{font-weight:normal;}
+      ul,li{margin:0px 0px;padding:0px 0px;}
+      .imgbox img{max-width:100%}
+    .cx_health{width:100%;margin:0 auto;overflow:hidden;margin-top:30px}
+    .cx_health>div{float:left;width:25%;margin-bottom:30px;border:1px solid #eaeff5;margin-right:14px;height:313px;box-shadow:3px 2px 8px #f1f2f4}
+    .cx_health>div:nth-child(2n){margin-right:20px}
+    .cx_health>div ul:nth-child(1){height:238px;overflow:hidden}
+    .cx_health>div ul:nth-child(1) li{height:238px;display:flex;justify-content:center;align-items:center}
+    .cx_health>div ul:nth-child(1) li img{max-width:100%;max-height:100%}
+    .cx_health>div ul:nth-child(2){width:376px;margin:0 auto;overflow:hidden;border-bottom:1px solid #eaeff5;text-align:center;padding-bottom:10px}
+    .cx_health>div ul:nth-child(2) span{display:inline-block;width:47px;height:20px;background:#21bead;color:#fff;font-size:14px;border-radius:3px;margin-left:20px}
+    .cx_health>div ul:nth-child(3){overflow:hidden;line-height:43px;width:303px;margin:0 auto;overflow:hidden}
+    .cx_health>div ul:nth-child(3) span{display:block;float:right;font-size:14px;color:#000}
+    .cx_ingredients{width:100%;margin:0 auto;overflow:hidden}
+.cx_ingredients1{overflow:hidden;position:relative;height:56px;margin-top:13px;border-bottom:1px solid #eaeff5}
+.cx_ingredients1 ul:nth-child(1){position:absolute;left:0;top:0}
+.cx_ingredients1 ul:nth-child(2){text-align:center;line-height:56px;margin-right:40px}
+.cx_ingredients1 ul:nth-child(2) a{display:inline-block;height:55px;text-align:center;padding-right:0;width:54px}
+.cx_ingredients1 ul:nth-child(2) a.on{border-bottom:2px solid #1fb7c4;text-align:center}
+.cx_ingredients1 ul:nth-child(3){position:absolute;top:0;right:0;cursor:pointer}
+.cx_ingredients1 ul:nth-child(1) li:nth-child(1){height:56px;display:flex;justify-content:center;align-items:center;float:left}
+.cx_ingredients1 ul:nth-child(1) li:nth-child(2){line-height:56px;float:left;margin-left:10px;font-size:20px;color:#000}
+.cx_ingredients1 ul:nth-child(3) li{float:left;height:56px;display:flex;justify-content:center;align-items:center;font-size:14px;color:#858585}
+.cx_ingredients2{overflow:hidden;margin-bottom:60px}
+.cx_ingredients2>div{overflow:hidden;margin-top:10px}
+.cx_ingredients2>div>div:nth-child(1){overflow:hidden;height:64px;overflow:hidden}
+.cx_ingredients2>div>div:nth-child(1) ul li{float:left;margin-right:10px}
+.cx_ingredients2>div>div:nth-child(1) ul li:nth-child(1){height:64px;display:flex;justify-content:center;align-items:center}
+.cx_ingredients2>div>div:nth-child(1) ul li:nth-child(2){line-height:64px;font-size:16px;color:#000}
+.cx_ingredients2>div>div:nth-child(2){overflow:hidden}
+.cx_ingredients2>div>div:nth-child(2)>div{float:left;width:397px;margin-bottom:6px;overflow:hidden;transition:all .5s ease 0s;-moz-transition:all .5s ease 0s;-ms-transition:all .5s ease 0s;-o-transition:all .5s ease 0s;-webkit-transition:all .5s ease 0s}
+.cx_ingredients2>div>div:nth-child(2)>div:nth-child(2n){float:right;margin-right:3px}
+.cx_ingredients2>div>div:nth-child(2)>div:hover{box-shadow:3px 3px 3px #eaeff3}
+pre{font-family:'微软雅黑'}
+.box{width:800px;background-color:#fff;position:relative;margin-left:0px;}
+.box a{padding-right:20px}
    </style>
 }
 @section script{
@@ -27,12 +62,15 @@
                     success: function (result) {
                         //controller.SetCtrlValue("#Edit", result.data);
                         controller.SetLableValue("#Edit", result.data);
+                        
                         $.each(result.data.Video, function (i,obj) {
                              var url = "/StaticHtml/PlayVedio.html?addr=" + obj.VideoAddress+"&cover="+obj.CoverPhoto;
                            $(".J_iframe").eq(i).attr("src", url);
 
                         })                       
                         options.BindHonor(result.data.HonorCertification);
+                        options.BindHealth(result.data.Id);
+                        options.BindThing(result.data.Id);
                     }
                 });
                 //查看大图
@@ -60,6 +98,69 @@
                     else
                         $("#tab-3").find(".ibox-content").find("img").css({ width: "186px", padding: "1px" });
                 }
+            },
+            //健康证
+            BindHealth: function (data) {
+                controller.ajax({
+                    url: "Temp/GetAllUser",
+                    data: { Id: data},
+                    async: false,
+                    success: function (res) {
+                        var HealthHTML = "";
+                        $.each(res.data, function (i, item) {
+                            HealthHTML += '<div class="imgbox">'
+                                + '<ul>'
+                                + '<li><img src="http://system.cfda.vip'+ item.HealthImg + '" class="smallimgo" alt=""></li>'
+                                + ' </ul>'
+                                + '<ul>'
+                                + ' <li style="margin-top:6px;">'
+                                + '<lable>' + item.PersonName + '</lable>'
+                                + ' <span>' + item.JobStatus + '</span>'
+                                + ' </li>'
+                                + '</ul>'
+                                + '<ul>'
+                                + ' <li>'
+                                + '<span>有效期: ' + item.TimeLength + '</span>'
+                                + '</li>'
+                                + '</ul>'
+                                + '</div>';
+
+                        });
+                        $("#CompanyHealth").append(HealthHTML);
+                    }
+                });
+            },
+            //食材供应
+            BindThing: function (data) {
+                controller.ajax({
+                    url: "Temp/RepastThing",
+                    data: { Id: data},
+                    async: false,
+                    success: function (res) {
+                       var ThingHTML = "";
+                        $.each(res.data, function (i, item) {
+                            ThingHTML += '<div class="cx_ingredients2">'
+                                + '<div>'
+                                + ' <div>'
+                                + ' <ul>'
+                                + ' <li><img src="http://www.cfda.vip/web/images/fgsag12f.png" alt="" /></li>'
+                                + ' <li>' + item.ThingName + '</li>'
+                                + '</ul>'
+                                + ' </div>'
+                                + '<div>'
+                                + ' <div class="imgbox" style="width:100%;float:none;">'
+                                + ' <ul>'
+                                + '<li>' + item.Remark.replace("<img", "<img class='smallimg'") + '</li>'
+                                + '</ul>'
+                                + '</div>'
+                                + '</div>'
+                                + '</div>'
+                                + '</div>';
+
+                        });
+                        $("#CompanyThing").append(ThingHTML);
+                    }
+                });
             },
             //事件
             InitEvents: function () {
@@ -185,12 +286,17 @@
                     </table>
                 </div>
             </div>
+            <!--人员管理-->
             <div id="tab-5" class="tab-pane">
                 <div class="ibox-content">
+                    <div id="CompanyHealth" class="cx_health">
+                    </div>
                 </div>
             </div>
+            <!--食材供应-->
             <div id="tab-6" class="tab-pane">
                 <div class="ibox-content">
+                    <div id="CompanyThing" class="cx_ingredients box"></div>
                 </div>
             </div>
             <div id="tab-7" class="tab-pane">

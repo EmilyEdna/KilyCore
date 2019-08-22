@@ -5,25 +5,31 @@
 }
 @section css{
     <style>
-        .ibox {
-            width: 100%;
-            height: 100%;
-            border: #ccc solid 1px;
-            margin: auto auto;
-        }
-
-        .search_com {
-            line-height: 35px;
-            z-index: 100;
-            background: #ffffff;
-            position: absolute;
-            top: 0;
-            border-radius: 5px;
-            -webkit-border-radius: 5px;
-            left:0;
-            width: 10%;
-            border: 1px solid #dddddd;
-        }
+       .ibox{width:100%;height:100%;border:#ccc solid 1px;margin:auto auto}
+        .search_com{line-height:35px;z-index:100;background:#fff;position:absolute;top:0;border-radius:5px;-webkit-border-radius:5px;left:0;width:10%;border:1px solid #ddd}
+        *{margin:0;padding:0;outline:0}
+        li,ul{list-style:none}
+        .right-tab{width:410px;height:inherit;position:fixed;top:0;background-color:#fff;right:0;box-shadow:0 0 2px 2px rgba(0,0,0,.3);box-sizing:border-box;padding:15px}
+        .left-btn{position:absolute;background-color:#fff;left:-17px;top:50%;width:16px;height:56px;text-align:center;line-height:56px;margin-top:-28px;font-size:16px;cursor:pointer;border-radius:3px 0 0 3px;font-family:'黑体';box-shadow:#999 -2px -2px 4px;border:1px solid #dbdbdb;border-right:none;color:#999}
+        form{width:380px;display:flex;justify-content:flex-start}
+        form input[type=text]{width:290px;border:1px solid #2ca8d1;border-radius:4px 0 0 4px;line-height:32px;text-indent:.5em}
+        form input[type=button]{width:90px;border:none;background-color:#2ca8d1;border-radius:0 4px 4px 0;line-height:32px;font-size:16px;color:#fff}
+        .list{position:relative;width:380px;height:92%;padding:10px;border:1px solid #dbdbdb;box-sizing:border-box;margin-top:15px;border-radius:4px}
+        .list .msg{background-color:#ececec;padding:6px;margin-bottom:10px;height:42px;width:100%;display:flex;justify-content:space-between}
+        .list .msg img{width:30px;height:30px}
+        .list .msg #Area{width:100%;font-size:18px;line-height:30px;text-align:left}
+        .list .msg #Area~div{width:280px;text-align:right;font-size:14px;color:#666}
+        .list .msg #Area~div span{color:#f20;font-size:18px}
+        .list ul{height:92%;overflow-y:scroll}
+        .list ul li{width:96%;padding:15px 0;border-bottom:1px solid #dbdbdb;display:flex;justify-content:space-between}
+        .list ul li img{width:120px;height:90px}
+        .list ul li div{width:210px}
+        .list ul li div h4{font-size:18px;line-height:20px;margin-bottom:10px;font-weight:400;margin-top:0;color:#333;width:100%;text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;}
+        .list ul li div p{font-size:14px;line-height:20px;color:#666;margin:auto auto}
+        .bottom-btn{position:absolute;left:50%;margin-left:-28px;bottom:-21px;width:56px;height:20px;cursor:pointer;background:url(/content/Hplus/img/up_d.png) center center no-repeat;border:1px solid #dbdbdb;border-top:none;border-radius:0 0 3px 3px;box-shadow:#999 2px 2px 4px}
     </style>
 }
 @section script{
@@ -43,6 +49,7 @@
                     type: "post",
                     success: function (result) {
                         options.CityName = result.data;
+                        $("#Area").html(options.CityName);
                     }
                 });
                 $.ajax({
@@ -68,18 +75,32 @@
                     success: function (result) {
                         $.each(result.data, function (i, obj) {
                             var myIcon = new BMap.Icon("http://www.cfdacx.com/jianguan/images/keysor.png", new BMap.Size(26, 33));
-                            options.marker = new BMap.Marker(new BMap.Point(obj.Lng, obj.Lat),{ icon: myIcon });
+                            options.marker = new BMap.Marker(new BMap.Point(obj.Lng, obj.Lat), { icon: myIcon });
                             options.marker.setTitle(obj.CompanyType);
                             options.Map.addOverlay(options.marker);               // 将标注添加到地图中
-                            options.AddClickHandler(obj.Name, obj.Address, obj.CompanyCode, obj.CompanyType);
+                            options.AddClickHandler(obj.Name, obj.Address, obj.CompanyCode, obj.CompanyType,obj.CompanyImg);
+
+                            var CompanyHtml='<li>'
+                                   + '<img src="'+obj.CompanyImg+'">'
+                                + '<div>'
+                                + '<h4>' + obj.Name + '</h4>'
+                                         + '<p>负责人：<span id="chargeman">'+obj.CompanyUser+'</span></p>'
+                                         + '<p>社会统一代码：<span id="phone">'+obj.CompanyCode+'</span></p>'
+                                         + '<p>联系地址：<span id="address">'+obj.Address+'</span></p>'
+                                     + '</div>'
+                                 + '</li>';
+                            //加载列表
+                             $("#CompanyList").append(CompanyHtml);
                         });
+                        $("#Num").html(result.data.length);
+                        
                     }
                 });
             },
-            AddClickHandler: function (name, path, code, type) {
+            AddClickHandler: function (name, path, code, type,img) {
                 options.marker.addEventListener("click", function (e) {
                     var InfoWin = '<table class="table table-bordered">' +
-                        '<tr><th>商家名称</th> <td>' + name + '</td></tr>' +
+                        '<tr><th>商家名称</th> <td>' + name + '</td><td rowspan="4"><img src="'+img+'" style="height:100%;min-width:96px;"/></td></tr>' +
                         '<tr><th>商家类型</th><td>' + type + '</td></tr>' +
                         '<tr><th>工商代码</th><td>' + code + '</td></tr>' +
                         '<tr><th>商家地址</th><td>' + path + '</td></tr></table>'
@@ -128,3 +149,73 @@
 </div>
 
 <div class="ibox" id="Map"></div>
+
+
+<!-- 右侧停靠栏 -->
+<div class="right-tab">
+    <div class="left-btn">></div>
+    <form action="" method="post">
+        <input type="text" name="" placeholder="请输入关键词（查询区域）">
+        <input type="button" id="search" value="查找">
+    </form>
+    <div class="list">
+        <div class="msg">
+            <img src="/content/Hplus/img/map.png">
+            <div id="Area"></div>
+            <div>该地区共有&nbsp;<span id="Num">0</span>&nbsp;家企业</div>
+        </div>
+        <ul id="CompanyList">
+            
+        </ul>
+        <div class="bottom-btn"></div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $(".list").attr("style", "height:" + ($(doucument).height() - 60) + "px");
+    })
+    // 给左侧按钮注册点击事件，点击时隐藏或显示右侧停靠栏盒子
+    let flag = true;
+    $(".left-btn").on('click', function () {
+        if (flag == true) {
+            flag = false;
+            $('.right-tab').css({
+                right: -410 + 'px',
+                transition: 'right 1s'
+            });
+            $(this).text("<");
+        } else {
+            flag = true;
+            $('.right-tab').css({
+                right: 0,
+                transition: 'right 1s'
+            });
+            $(this).text(">");
+        }
+    });
+    // 给下侧按钮注册点击事件，点击时收缩dic.list盒子高度并隐藏列表
+    let flag1 = true;
+    $(".bottom-btn").on('click', function () {
+        if (flag1 == true) {
+            flag1 = false;
+            $(".list").css({
+                height: 64 + 'px'
+            }).find("ul").css({
+                display: 'none'
+            })
+            $(this).css({
+                backgroundImage: 'url("/content/Hplus/img/down_d.png")'
+            });
+        } else {
+            flag1 = true;
+            $(".list").css({
+                height: "92%"
+            }).find("ul").css({
+                display: 'block'
+            })
+            $(this).css({
+                backgroundImage: 'url("/content/Hplus/img/up_d.png")'
+            });
+        }
+    });
+</script>

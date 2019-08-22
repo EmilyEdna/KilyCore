@@ -5,88 +5,91 @@
 
 @section css{
     @* 当前页面样式表 *@
-    <link href="~/Content/DataView/Css/DAtaV.css" rel="stylesheet" />
+<link href="~/Content/DataView/Css/DAtaV.css" rel="stylesheet" />
     @* 视频美化插件css *@
-    <link href="~/Content/DataView/Css/video-js.min.css.css" rel="stylesheet" />
+<link href="~/Content/DataView/Css/video-js.min.css.css" rel="stylesheet" />
 }
 @section script{
     @* echarts主题样式 *@
-    <script src="~/Content/DataView/JS/shine.js"></script>
+<script src="~/Content/DataView/JS/shine.js"></script>
     @* 视频美化插件js *@
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.6.0/video.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.15.0/videojs-contrib-hls.js"></script>
-    <script>
-        var options = {
-            //挂载需要初始化的方法
-            Init: function () {
-                this.InitEcharts();
-                this.InitMap();
-                this.InitDom();
-                this.InitEvent();
-                $("body").GetGovtInfo();
-                $("#DepartName").html(Govt.DepartName);
-            },
-            //页面dom操作
-            InitDom: function () {
-                let HC = window.screen.height;  //获取显示屏高度
-                $(".leftnotice, .righttime").css({ //设置左边顶部和右边顶部小盒子的共有样式
-                    marginTop: HC * 0.03,
-                    marginBottom: HC * 0.0125,
-                    lineHeight: HC * 0.026 + 'px',
-                    fontSize: HC * 0.012
-                });
-                $(".tittle").css({ //设置所有小标题的行高、字体大小
-                    lineHeight: HC * 0.034 + 'px',
-                    fontSize: HC * 0.016
-                });
-                $(".mt").css({ //设置公有margin-top的值
-                    marginTop: HC * 0.0025 + 'px'
-                });
-                $(".dataitem p img").css({ //设置今日数据图片高度
-                    height: HC * 0.03
-                });
-                $(".dataitem p span").css({ //设置今日数据span字体大小
-                    fontSize: HC * 0.026
-                });
-                $(".dataitem p:nth-child(2)").css({ //设置今日数据第二个段落字体大小
-                    fontSize: HC * 0.014
-                });
-                $(".firmsettled .num").css({ //设置累计入驻企业数量字体大小
-                    fontSize: HC * 0.027,
-                    lineHeight: HC * 0.09 + 'px'
-                });
-                $(".firmsettled .num span").css({//设置累计入驻企业数量中数字字体大小
-                    fontSize: HC * 0.04
-                });
-                $(".cardexpire .head").css({ //设置证件到期列表头部的高度、行高
-                    height: HC * 0.03,
-                    lineHeight: HC * 0.03 + 'px'
-                });
-                $(".cardexpire .bd ul li").css({  //设置证件到期列表每一行的高度、行高、自已大小
-                    height: HC * 0.04,
-                    lineHeight: HC * 0.04 + 'px',
-                    fontSize: HC * 0.014
-                });
-                $(".cardexpire .bd .ulwrap").css({ //设置证件到期列表的高度
-                    height: HC * 0.16,
-                });
-                $(".videoitem p").css({ //设置监管视频子项段落字体大小
-                    fontSize: HC * 0.012
-                });
-                $(".todayvideo .videoNum p").css({ //设置今日视频段落行高、字体大小
-                    lineHeight: HC * 0.036 + 'px',
-                    fontSize: HC * 0.014
-                });
-            },
-            //地图渲染
-            InitMap: function () {
-                controller.ajax({
-                    url: "GovtWeb/GetAllCityMerchantCount",
-                    data: {},
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        OptionMap = {
+<script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.6.0/video.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.15.0/videojs-contrib-hls.js"></script>
+<script>
+    var options = {
+        //挂载需要初始化的方法
+        Init: function () {
+            this.InitEcharts();
+            this.InitMap();
+            this.InitDom();
+            this.InitEvent();
+            $("body").GetGovtInfo();
+            $("#DepartName").html(Govt.DepartName);
+        },
+        //页面dom操作
+        InitDom: function () {
+            let HC = window.screen.height;  //获取显示屏高度
+            $(".leftnotice, .righttime").css({ //设置左边顶部和右边顶部小盒子的共有样式
+                marginTop: HC * 0.03,
+                marginBottom: HC * 0.0125,
+                lineHeight: HC * 0.026 + 'px',
+                fontSize: HC * 0.012
+            });
+            $(".tittle").css({ //设置所有小标题的行高、字体大小
+                lineHeight: HC * 0.034 + 'px',
+                fontSize: HC * 0.016
+            });
+            $(".mt").css({ //设置公有margin-top的值
+                marginTop: HC * 0.0025 + 'px'
+            });
+            $(".dataitem p img").css({ //设置今日数据图片高度
+                height: HC * 0.03
+            });
+            $(".dataitem p span").css({ //设置今日数据span字体大小
+                fontSize: HC * 0.026
+            });
+            $(".dataitem p:nth-child(2)").css({ //设置今日数据第二个段落字体大小
+                fontSize: HC * 0.014
+            });
+            $(".firmsettled .num").css({ //设置累计入驻企业字体大小及行高
+                fontSize: HC * 0.035,
+                lineHeight: HC * 0.09 + 'px'
+            });
+            $(".firmsettled .num span").css({ //设置累计入驻企业数量字体大小
+                fontSize: HC * 0.055
+            });
+            $(".cardexpire .head").css({ //设置证件到期列表头部的高度、行高
+                height: HC * 0.03,
+                lineHeight: HC * 0.03 + 'px'
+            });
+            $(".cardexpire .bd ul li").css({  //设置证件到期列表每一行的高度、行高、字体大小
+                height: HC * 0.04,
+                lineHeight: HC * 0.04 + 'px',
+                fontSize: HC * 0.014
+            });
+            $(".cardexpire .bd .ulwrap").css({ //设置证件到期列表的高度
+                height: HC * 0.16,
+            });
+            $(".videoitem p").css({ //设置监管视频子项段落字体大小
+                fontSize: HC * 0.012
+            });
+            $(".todayvideo .videoNum p").css({ //设置今日视频段落行高、字体大小
+                lineHeight: HC * 0.036 + 'px',
+                fontSize: HC * 0.014
+            });
+        },
+        //地图渲染及入驻企业总数渲染
+        InitMap: function () {
+            controller.ajax({
+                url: "GovtWeb/GetAllCityMerchantCount",
+                data: {},
+                type: "post",
+                async: false,
+                success: function (result) {
+                    $.getJSON("/CityMap/" + result.data.City + "00.json", function (res) {
+                        echarts.registerMap(result.data.CityName, res);
+                        options.Map = echarts.init($("#mapChart")[0], "shine");
+                        options.Map.setOption({
                             tooltip: {
                                 trigger: 'item',
                                 formatter: '{b}<br/>{c} (家企业)'
@@ -117,227 +120,180 @@
                                     data: result.data.DataList,
                                 }
                             ]
-                        }
-                        $.getJSON("/CityMap/" + result.data.City + "00.json", function (res) {
-                            echarts.registerMap(result.data.CityName, res);
-                            options.Map = echarts.init($("#mapChart")[0],"shine");
-                            options.Map.setOption(OptionMap);
                         });
-                        // 渲染当前城市入驻企业数量
-                        let All = result.data.All;
-                        if (All >= 0 && All < 10) {//补零
-                            All = '0000000' + All;
-                        } else if (All >= 10 && All < 100) {
-                            All = '000000' + All;
-                        } else if (All >= 100 && All < 1000) {
-                            All = '00000' + All;
-                        } else if (All >= 1000 && All < 10000) {
-                            All = '0000' + All;
-                        } else if (All >= 10000 && All < 100000) {
-                            All = '000' + All;
-                        } else if (All >= 100000 && All < 1000000) {
-                            All = '00' + All;
-                        } else if (All >= 1000000 && All < 10000000) {
-                            All = '0' + All;
-                        } else {
-                            All = All;
+                    });
+                    //渲染当前城市入驻企业数量
+                    let All = result.data.All;
+                    if (All >= 0 && All < 10) {//补零
+                        All = '0000000' + All;
+                    } else if (All >= 10 && All < 100) {
+                        All = '000000' + All;
+                    } else if (All >= 100 && All < 1000) {
+                        All = '00000' + All;
+                    } else if (All >= 1000 && All < 10000) {
+                        All = '0000' + All;
+                    } else if (All >= 10000 && All < 100000) {
+                        All = '000' + All;
+                    } else if (All >= 100000 && All < 1000000) {
+                        All = '00' + All;
+                    } else if (All >= 1000000 && All < 10000000) {
+                        All = '0' + All;
+                    } else {
+                        All = All;
+                    }
+                    //每隔三个数字加“ , ”，并渲染
+                    function formattedNumber(key) {
+                        let all = (key || 0).toString();
+                        let newAll = '';
+                        while (all.length > 3) {
+                            newAll = ',' + all.slice(-3) + newAll;
+                            all = all.slice(0, all.length - 3);
                         }
-                        $("#Sum").text(All);
+                        if (all) { newAll = all + newAll; }
+                        $("#Sum").text(newAll);
                     }
-                });
-            },
-            //echarts数据及其他数据渲染
-            InitEcharts: function () {
-                //今日入驻
-                setInterval(function () {
-                    options.InitTodayData()
-                }, 180000);
-                //今日数据
+                    formattedNumber(All);
+                   
+                }
+            });
+        },
+        //echarts数据及其他数据渲染
+        InitEcharts: function () {
+            //今日入驻
+            setInterval(function () {
                 controller.ajax({
-                    url: "GovtWeb/GetNewStayInTodayCount",
+                    url: "GovtWeb/GetTodayNow",
                     data: {},
                     type: "post",
                     async: false,
                     success: function (result) {
-                        $("#FirmNum").text(result.data.Company);
-                        $("#ProductNum").text(result.data.ProductSum_Today);
-                        $("#CodeNum").text(result.data.ScanCodeSum_Today);
+                        $("#Firm1").html(result.data);
                     }
-                });
-                //产品统计
-                controller.ajax({
-                    url: "GovtWeb/GetProductRank",
-                    data: {},
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        options.Pro = echarts.init($("#Product")[0], "shine");
-                        options.Pro.setOption({
-                            tooltip: {
-                                trigger: "item",
-                                formatter: "{b0}<br />产品数：{c0}<br />占比：{d0}%"
-                            },
-                            legend: {
-                                type: "scroll",
-                                orient: "vertical",
-                                padding: 0,
-                                top: 15,
-                                right: 0,
-                                itemGap: 5,
-                                itemWidth: 10,
-                                itemHeight: 10,
-                                textStyle: {
-                                    fontSize: 10,
-                                    color: "#b0c2f9"
-                                }
-                            },
-                            series: [{
-                                name: "产品统计",
-                                type: "pie",
-                                center: ["47%", "55%"],
-                                radius: ["45%", "70%"],
-                                data: result.data
-                            }]
-                        });
-                    }
-                });
-                //企业统计
-                controller.ajax({
-                    url: "GovtWeb/GetNewStayInAllCompanyCount",
-                    data: {},
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        options.Com = echarts.init($("#Company_Firm")[0], "shine");
-                        options.Com.setOption({
-                            tooltip: {
-                                trigger: 'item',
-                                formatter: "{a} <br/>{b} : {c} ({d}%)"
-                            },
-                            legend: {
-                                orient: 'vertical',
-                                left: 'right',
+                })
+            }, 1000);
+            //今日数据
+            controller.ajax({
+                url: "GovtWeb/GetNewStayInTodayCount",
+                data: {},
+                type: "post",
+                async: false,
+                success: function (result) {
+                    $("#FirmNum").text(result.data.Company);
+                    $("#ProductNum").text(result.data.ProductSum_Today);
+                    $("#CodeNum").text(result.data.ScanCodeSum_Today);
+                }
+            });
+            //产品统计
+            controller.ajax({
+                url: "GovtWeb/GetProductRank",
+                data: {},
+                type: "post",
+                async: false,
+                success: function (result) {
+                    options.Pro = echarts.init($("#Product")[0], "shine");
+                    options.Pro.setOption({
+                        tooltip: {
+                            trigger: "item",
+                            formatter: "{b0}<br />产品数：{c0}<br />占比：{d0}%"
+                        },
+                        legend: {
+                            type: "scroll",
+                            orient: "vertical",
+                            padding: 0,
+                            top: 15,
+                            right: 0,
+                            itemGap: 5,
+                            itemWidth: 10,
+                            itemHeight: 10,
+                            textStyle: {
+                                fontSize: 10,
+                                color: "#b0c2f9"
+                            }
+                        },
+                        series: [{
+                            name: "产品统计",
+                            type: "pie",
+                            center: ["47%", "55%"],
+                            radius: ["45%", "70%"],
+                            data: result.data
+                        }]
+                    });
+                }
+            });
+            //企业统计
+            controller.ajax({
+                url: "GovtWeb/GetNewStayInAllCompanyCount",
+                data: {},
+                type: "post",
+                async: false,
+                success: function (result) {
+                    options.Com = echarts.init($("#Company_Firm")[0], "shine");
+                    options.Com.setOption({
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: "{a} <br/>{b} : {c} ({d}%)"
+                        },
+                        legend: {
+                            orient: 'vertical',
+                            left: 'right',
+                            data: result.data,
+                            textStyle: {
+                                fontSize: 10,
+                                color: "#b0c2f9"
+                            }
+                        },
+                        series: [
+                            {
+                                name: '企业统计',
+                                type: 'pie',
+                                radius: '55%',
+                                center: ['50%', '60%'],
                                 data: result.data,
-                                textStyle: {
-                                    fontSize: 10,
-                                    color: "#b0c2f9"
-                                }
-                            },
-                            series: [
-                                {
-                                    name: '企业统计',
-                                    type: 'pie',
-                                    radius: '55%',
-                                    center: ['50%', '60%'],
-                                    data: result.data,
-                                    itemStyle: {
-                                        emphasis: {
-                                            shadowBlur: 10,
-                                            shadowOffsetX: 0,
-                                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                        }
+                                itemStyle: {
+                                    emphasis: {
+                                        shadowBlur: 10,
+                                        shadowOffsetX: 0,
+                                        shadowColor: 'rgba(0, 0, 0, 0.5)'
                                     }
                                 }
-                            ]
-                        })
-                    }
-                });
-                var DateArr = [getDay(-6),getDay(-5),getDay(-4),getDay(-3),getDay(-2),getDay(-1),getDay(0)]
-                //预警统计
-                controller.ajax({
-                    url: "GovtWeb/GetNewWeekRiskAndComplainCount",
-                    data: {},
-                    async: false,
-                    type: "Post",
-                    success: function (result) {
-                        options.Risk = echarts.init($("#Warning")[0], "shine");
-                        options.Risk.setOption({
-                            tooltip: {
-                                trigger: 'axis',
-                                axisPointer: {
-                                    type: 'shadow'
-                                }
-                            },
-                            legend: {
-                                data: ['风险', '投诉']
-                            },
-                            grid: {
-                                left: '3%',
-                                right: '4%',
-                                bottom: '3%',
-                                containLabel: true
-                            },
-                            xAxis: [
-                                {
-                                    type: 'category',
-                                    data: DateArr
-                                }
-                            ],
-                            yAxis: [
-                                {
-                                    type: 'value',
-                                    axisLabel: {
-                                        formatter: '{value} 次'
-                                    },
-                                    minInterval: 1,
-                                    splitLine: {
-                                        lineStyle: {
-                                            type: 'dashed',
-                                        }
-                                    }
-                                }
-                            ],
-                            series: result.data
-                        });
-                    }
-                });
-                //证件到期
-                controller.ajax({
-                    url: "GovtWeb/GetCardPage",
-                    data: {
-                        pageSize: 20,
-                        pageNumber: 1
-                    },
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        let listStr = '';
-                        for (index in result.data.rows) {
-                            listStr += `<li class="clearfix">
-                                            <div class="hidden">${result.data.rows[index].Id}</div>
-                                            <div>${result.data.rows[index].Name}</div>
-                                            <div>${result.data.rows[index].CompanyType}</div>
-                                            <div>${result.data.rows[index].CardType}</div>
-                                            <div>${result.data.rows[index].CardExpiredDate}</div></li>`;
-                        }
-                        $(".cardexpire .bd ul").html(listStr);
-                    }
-                });
-                //网上巡查
-                controller.ajax({
-                    url: "GovtWeb/GetNewNetCheckCount",
-                    data: {},
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        options.Net = echarts.init($(".onlineinspection")[0], 'shine');
-                        options.Net.setOption({
-                            tooltip: {
-                                trigger: 'axis',
-                                textStyle: {
-                                    color: '#fff',
-                                    fontSize: '1.6rem'
-                                }
-                            },
-                            legend: {
-                                data: result.data
-                            },
-                            xAxis: {
+                            }
+                        ]
+                    })
+                }
+            });
+            //预警统计
+            var DateArr = [getDay(-6), getDay(-5), getDay(-4), getDay(-3), getDay(-2), getDay(-1), getDay(0)]
+            controller.ajax({
+                url: "GovtWeb/GetNewWeekRiskAndComplainCount",
+                data: {},
+                async: false,
+                type: "Post",
+                success: function (result) {
+                    options.Risk = echarts.init($("#Warning")[0], "shine");
+                    options.Risk.setOption({
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {
+                                type: 'shadow'
+                            }
+                        },
+                        legend: {
+                            data: ['风险', '投诉']
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                        xAxis: [
+                            {
                                 type: 'category',
-                                boundaryGap: false,
-                                data:DateArr
-                            },
-                            yAxis: {
+                                data: DateArr
+                            }
+                        ],
+                        yAxis: [
+                            {
                                 type: 'value',
                                 axisLabel: {
                                     formatter: '{value} 次'
@@ -345,166 +301,218 @@
                                 minInterval: 1,
                                 splitLine: {
                                     lineStyle: {
-                                        type: 'dashed'
+                                        type: 'dashed',
                                     }
                                 }
+                            }
+                        ],
+                        series: result.data
+                    });
+                }
+            });
+            //证件到期
+            controller.ajax({
+                url: "GovtWeb/GetCardPage",
+                data: {
+                    pageSize: 20,
+                    pageNumber: 1
+                },
+                type: "post",
+                async: false,
+                success: function (result) {
+                    let listStr = '';
+                    for (index in result.data.rows) {
+                        listStr += `<li class="clearfix">
+                                                        <div class="hidden">${result.data.rows[index].Id}</div>
+                                                        <div>${result.data.rows[index].Name}</div>
+                                                        <div>${result.data.rows[index].CompanyType}</div>
+                                                        <div>${result.data.rows[index].CardType}</div>
+                                                        <div>${result.data.rows[index].CardExpiredDate}</div></li>`;
+                    }
+                    $(".cardexpire .bd ul").html(listStr);
+                }
+            });
+            //网上巡查
+            controller.ajax({
+                url: "GovtWeb/GetNewNetCheckCount",
+                data: {},
+                type: "post",
+                async: false,
+                success: function (result) {
+                    options.Net = echarts.init($(".onlineinspection")[0], 'shine');
+                    options.Net.setOption({
+                        tooltip: {
+                            trigger: 'axis',
+                            textStyle: {
+                                color: '#fff',
+                                fontSize: '1.6rem'
+                            }
+                        },
+                        legend: {
+                            data: result.data
+                        },
+                        xAxis: {
+                            type: 'category',
+                            boundaryGap: false,
+                            data: DateArr
+                        },
+                        yAxis: {
+                            type: 'value',
+                            axisLabel: {
+                                formatter: '{value} 次'
                             },
-                            series: result.data
-                        })
-                    }
-                });
-                //监管视频
-                controller.ajax({
-                    url: "GovtWeb/GetNewVedioToday",
-                    data: {},
-                    async: false,
-                    type: "Post",
-                    success: function (result) {
-                        $.each(result.data.Vedio, function (index, item) {
-                            if (index == 0) {
-                                let type = ((item.VedioAddr.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
-                                $($(".videoitem").find("p")[0]).before(`<video id="vedio_${index}" poster="${item.VedioCover}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.VedioAddr}" type="${type}"></video > `);
-                                $($(".videoitem").find("p")[0]).find("span").text(item.VedioName);
+                            minInterval: 1,
+                            splitLine: {
+                                lineStyle: {
+                                    type: 'dashed'
+                                }
                             }
-                            if (index == 1) {
-                                let type = ((item.VedioAddr.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
-                                $($(".videoitem").find("p")[1]).before(`<video id="vedio_${index}" poster="${item.VedioCover}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.VedioAddr}" type="${type}"></video > `);
-                                $($(".videoitem").find("p")[1]).find("span").text(item.VedioName);
-                            }
-                            if (index == 2) {
-                                let type = ((item.VedioAddr.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
-                                $($(".videoitem").find("p")[2]).before(`<video id="vedio_${index}" poster="${item.VedioCover}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.VedioAddr}" type="${type}"></video > `);
-                                $($(".videoitem").find("p")[2]).find("span").text(item.VedioName);
-                            }
-                            if (index == 3) {
-                                let type = ((item.VedioAddr.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
-                                $($(".videoitem").find("p")[3]).before(`<video id="vedio_${index}" poster="${item.VedioCover}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.VedioAddr}" type="${type}"></video >`);
-                                $($(".videoitem").find("p")[3]).find("span").text(item.VedioName);
-                            }
-                        });
-                        videojs('vedio_0', {
-                            autoplay: false,
-                            controls: true,
-                            width: 216,
-                            height: 120
-                        });
-                        videojs('vedio_1', {
-                            autoplay: false,
-                            controls: true,
-                            width: 216,
-                            height: 100
-                        });
-                        videojs('vedio_2', {
-                            autoplay: false,
-                            controls: true,
-                            width: 216,
-                            height: 100
-                        });
-                        videojs('vedio_3', {
-                            autoplay: false,
-                            controls: true,
-                            width: 216,
-                            height: 100
-                        });
-                        $("#firmNo").text(result.data.CompanyVedio); // 今日企业视频条数
-                        $("#MerchantNo").text(result.data.MerchantVedio); //今日餐饮视频条数
-                    }
-                });
-            },
-            //其他事件注册
-            InitEvent: function () {
-                //浏览器窗口大小变化时，重置报表大小
-                $(window).resize(function () {
-                    options.Pro.resize();
-                    options.Map.resize();
-                    options.Com.resize();
-                    options.Risk.resize();
-                    options.Net.resize();
-                });
-                //今日入驻横向滚动
-                setInterval(function () {
-                    if (Firm.scrollLeft - Firm2.offsetWidth >= 0)
-                        Firm.scrollLeft -= Firm2.offsetWidth;
-                    else
-                        Firm.scrollLeft++;
-                }, 50);
-                //证件到期提醒 详情页跳转
-                $(".cardexpire .bd ul li").click(function () {
-                    window.open("/WebGovtManage/Risk/CertificateRisk", "_black");
-                });
-                //定时器，每一秒调用一次时间函数
-                setInterval(this.GetNowDate, 1000);
-                //证件到期向上滚动
-                $(function () {
-                    let HC = window.screen.height;  //获取显示屏高度
-                    let topDistance = 0; //向上滚动值
-                    if ($('.cardexpire ul li').length > 4) {
-                        var rollTop = function () {
-                            $('.cardexpire ul').animate({
-                                'top': (topDistance - HC * 0.16) + 'px'
-                            }, 3000, 'linear', function () {
-                                $('.cardexpire ul').css({ 'top': '0px' }).find("li:first").appendTo($('.cardexpire ul'));
-                                rollTop();
-                            });
+                        },
+                        series: result.data
+                    })
+                }
+            });
+            //监管视频
+            controller.ajax({
+                url: "GovtWeb/GetNewVedioToday",
+                data: {},
+                async: false,
+                type: "Post",
+                success: function (result) {
+                    $.each(result.data.Vedio, function (index, item) {
+                        if (index == 0) {
+                            let type = ((item.VedioAddr.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
+                            $($(".videoitem").find("p")[0]).before(`<video id="vedio_${index}" poster="${item.VedioCover}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.VedioAddr}" type="${type}"></video > `);
+                            $($(".videoitem").find("p")[0]).find("span").text(item.VedioName);
                         }
-                        rollTop();
+                        if (index == 1) {
+                            let type = ((item.VedioAddr.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
+                            $($(".videoitem").find("p")[1]).before(`<video id="vedio_${index}" poster="${item.VedioCover}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.VedioAddr}" type="${type}"></video > `);
+                            $($(".videoitem").find("p")[1]).find("span").text(item.VedioName);
+                        }
+                        if (index == 2) {
+                            let type = ((item.VedioAddr.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
+                            $($(".videoitem").find("p")[2]).before(`<video id="vedio_${index}" poster="${item.VedioCover}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.VedioAddr}" type="${type}"></video > `);
+                            $($(".videoitem").find("p")[2]).find("span").text(item.VedioName);
+                        }
+                        if (index == 3) {
+                            let type = ((item.VedioAddr.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
+                            $($(".videoitem").find("p")[3]).before(`<video id="vedio_${index}" poster="${item.VedioCover}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.VedioAddr}" type="${type}"></video >`);
+                            $($(".videoitem").find("p")[3]).find("span").text(item.VedioName);
+                        }
+                    });
+                    videojs('vedio_0', {
+                        autoplay: false,
+                        controls: true,
+                        width: 216,
+                        height: 120
+                    });
+                    videojs('vedio_1', {
+                        autoplay: false,
+                        controls: true,
+                        width: 216,
+                        height: 100
+                    });
+                    videojs('vedio_2', {
+                        autoplay: false,
+                        controls: true,
+                        width: 216,
+                        height: 100
+                    });
+                    videojs('vedio_3', {
+                        autoplay: false,
+                        controls: true,
+                        width: 216,
+                        height: 100
+                    });
+                    $("#firmNo").text(result.data.CompanyVedio); // 今日企业视频条数
+                    $("#MerchantNo").text(result.data.MerchantVedio); //今日餐饮视频条数
+                }
+            });
+        },
+        //其他事件注册
+        InitEvent: function () {
+            //浏览器窗口大小变化时，重置报表大小
+            $(window).resize(function () {
+                options.Pro.resize();
+                options.Map.resize();
+                options.Com.resize();
+                options.Risk.resize();
+                options.Net.resize();
+            });
+            //今日入驻横向滚动
+            setInterval(function () {
+                if (Firm.scrollLeft - Firm2.offsetWidth >= 0)
+                    Firm.scrollLeft -= Firm2.offsetWidth;
+                else
+                    Firm.scrollLeft++;
+            }, 50);
+            //证件到期提醒 详情页跳转
+            $(".cardexpire .bd ul li").click(function () {
+                window.open("/WebGovtManage/Risk/CertificateRisk", "_black");
+            });
+            //定时器，每一秒调用一次时间函数
+            setInterval(this.GetNowDate, 1000);
+            //证件到期向上滚动
+            $(function () {
+                let HC = window.screen.height;  //获取显示屏高度
+                let topDistance = 0; //向上滚动值
+                if ($('.cardexpire ul li').length > 4) {
+                    var rollTop = function () {
+                        $('.cardexpire ul').animate({
+                            'top': (topDistance - HC * 0.16) + 'px'
+                        }, 3000, 'linear', function () {
+                            $('.cardexpire ul').css({ 'top': '0px' }).find("li:first").appendTo($('.cardexpire ul'));
+                            rollTop();
+                        });
                     }
-                });
-            },
-            InitTodayData: function () {
-                controller.ajax({
-                    url: "GovtWeb/GetTodayNow",
-                    data: {},
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        debugger;
-                        $("#Firm1").html(result.data);
-                    }
-                });
-            },
-            // 获取当前时间
-            GetNowDate: function () {
-                let now = new Date();
-                let year = now.getFullYear();
-                let month = now.getMonth() + 1;
-                let day = now.getDate();
-                let hours = now.getHours() + 1;
-                let minutes = now.getMinutes();
-                let seconds = now.getSeconds();
-                //不足10补0
-                if (month < 10) { month = "0" + month }
-                if (day < 10) { day = "0" + day }
-                if (hours < 10) { hours = "0" + hours }
-                if (minutes < 10) { minutes = "0" + minutes }
-                if (seconds < 10) { seconds = "0" + seconds }
-                $("#CurrentTime").html(year + " 年 " + month + " 月 " + day + " 日 " + hours + ":" + minutes + ":" + seconds);
-            },
-        };
-        //页面初始化
-        $(document).ready(function () {
-            options.Init();
-        });
-        function getDay(day){
-  
- 　　        var today = new Date();
- 　　        var targetday_milliseconds=today.getTime() + 1000*60*60*24*day;
- 　　        today.setTime(targetday_milliseconds); //注意，这行是关键代码
- 　　        var tYear = today.getFullYear();
- 　　        var tMonth = today.getMonth();
- 　　        var tDate = today.getDate();
- 　　        tMonth = doHandleMonth(tMonth + 1);
- 　　        tDate = doHandleMonth(tDate);
- 　　        return tMonth+"-"+tDate;   
+                    rollTop();
+                }
+            });
+        },
+        //获取当前时间
+        GetNowDate: function () {
+            let now = new Date();
+            let year = now.getFullYear();
+            let month = now.getMonth() + 1;
+            let day = now.getDate();
+            let hours = now.getHours() + 1;
+            let minutes = now.getMinutes();
+            let seconds = now.getSeconds();
+            //不足10补0
+            if (month < 10) { month = "0" + month }
+            if (day < 10) { day = "0" + day }
+            if (hours < 10) { hours = "0" + hours }
+            if (minutes < 10) { minutes = "0" + minutes }
+            if (seconds < 10) { seconds = "0" + seconds }
+            $("#CurrentTime").html(year + " 年 " + month + " 月 " + day + " 日 " + hours + ":" + minutes + ":" + seconds);
+        },
+    };
+    //页面初始化
+    $(document).ready(function () {
+        options.Init();
+    });
+    //获取当前日期
+    function getDay(day) {
+        var today = new Date();
+        var targetday_milliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day;
+        today.setTime(targetday_milliseconds);
+        var tYear = today.getFullYear();
+        var tMonth = today.getMonth();
+        var tDate = today.getDate();
+        tMonth = doHandleMonth(tMonth + 1);
+        tDate = doHandleMonth(tDate);
+        return tMonth + "-" + tDate;
+    }
+    //月份不足10，补零
+    function doHandleMonth(month) {
+        var m = month;
+        if (month.toString().length == 1) {
+            m = "0" + month;
         }
-        function doHandleMonth(month){
-　　        var m = month;
-　　        if(month.toString().length == 1){
-　　　　        m = "0" + month;
-　　        }
-　　        return m;
-        }
-    </script>
+        return m;
+    }
+</script>
 }
 <body>
     <div class="wrap cleirfix">
@@ -512,7 +520,7 @@
         <div class="leftwrap fl">
             <!-- 提示信息 -->
             <div class="leftnotice clearfix">
-                <div class="fl tt">今日入驻：— —</div>
+                <div class="fl tt">今日入驻：</div>
                 <div class="fl" id="Firm">
                     <div id="Firm1">
                     </div>

@@ -39,6 +39,8 @@ namespace KilyCore.DataEntity.ResponseMapper.Govt
         public string LngAndLat { get; set; }
         public string Address { get; set; }
         public string CompanyType { get; set; }
+        public string CompanyImg { set; get; }
+        public string CompanyUser { set; get; }
         public string CompanyCode { get; set; }
         public string Lng => !string.IsNullOrEmpty(LngAndLat) ? LngAndLat.Split(",")[0] : null;
         public string Lat => !string.IsNullOrEmpty(LngAndLat) ? LngAndLat.Split(",")[1] : null;

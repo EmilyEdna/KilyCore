@@ -49,8 +49,8 @@ namespace KilyCore.Service.ServiceCore
         [Obsolete]
         public object GetAllSupply(Guid CompanyId, int type)
         {
-            var Types = (SellerEnum)type;
-            var Esupper = Kily.Set<EnterpriseSeller>().Where(t => t.SellerType == Types)
+            //var Types = (SellerEnum)type;
+            var Esupper = Kily.Set<EnterpriseSeller>().Where(t => t.SellerType.GetHashCode() == type)
                  .Where(t => t.CompanyId == CompanyId)
                  .Select(t => new
                  {

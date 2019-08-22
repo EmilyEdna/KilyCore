@@ -21,7 +21,8 @@
                     async: false,
                     type: "post",
                     success: function (result) {
-                        controller.SetCtrlValue("#Edit", result.data);
+                        //controller.SetCtrlValue("#Edit", result.data);
+                        controller.SetLableValue("#Edit", result.data);
                         options.BindHonor(result.data.HonorCertification);
                     }
                 });
@@ -78,46 +79,52 @@
         <div class="tab-content">
             <div id="tab-1" class="tab-pane active">
                 <table class="table table-hover table-bordered m-t-sm">
+                    <colgroup>
+                        <col width="120" />
+                        <col width="40%" />
+                        <col width="120" />
+                        <col />
+                    </colgroup>
                     <tr>
                         <th><label class="control-label">企业名称</label></th>
                         <td class="has-warning">
-                            <input type="text" class="form-control" name="MerchantName" readonly="readonly" />
+                            <label type="txt" name="MerchantName"></label>
                         </td>
                         <th><label class="control-label">所属行业</label></th>
                         <td class="has-warning">
-                            <input type="text" class="form-control" name="DiningTypeName" readonly="readonly" />
+                            <label type="txt" name="DiningTypeName"></label>
                         </td>
                     </tr>
                     <tr>
                         <th><label class="control-label">企业邮箱</label></th>
                         <td class="has-warning">
-                            <input type="text" class="form-control" name="Email" readonly="readonly" />
+                            <label type="txt" name="Email"></label>
                         </td>
                         <th><label class="control-label">信用代码</label></th>
                         <td class="has-warning">
-                            <input type="text" class="form-control" name="CommunityCode" readonly="readonly" />
+                            <label type="txt" name="CommunityCode"></label>
                         </td>
                     </tr>
                     <tr>
                         <th><label class="control-label">企业电话</label></th>
                         <td class="has-warning">
-                            <input type="text" class="form-control" name="Phone" readonly="readonly" />
+                            <label type="txt" name="Phone"></label>
                         </td>
                         <th><label class="control-label">法人代表</label></th>
                         <td class="has-warning">
-                            <input type="text" class="form-control" name="ImplUser" readonly="readonly" />
+                            <label type="txt" name="ImplUser"></label>
                         </td>
                     </tr>
                     <tr>
                         <th><label class="control-label">企业地址</label></th>
                         <td class="has-warning" colspan="3">
-                            <input type="text" class="form-control" name="Address" readonly="readonly" />
+                            <label type="txt" name="Address"></label>
                         </td>
                     </tr>
                     <tr>
                         <th><label class="control-label">企业介绍</label></th>
                         <td class="has-warning" colspan="3">
-                            <textarea class="form-control" name="Remark" readonly="readonly"></textarea>
+                            <label type="txt" name="Remark"></label>
                         </td>
                     </tr>
                 </table>

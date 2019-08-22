@@ -21,12 +21,14 @@
                     async: false,
                     type: "post",
                     success: function (result) {
-                        controller.SetCtrlValue("#Edit", result.data);
+                        //controller.SetCtrlValue("#Edit", result.data);
+                        controller.SetLableValue("#Edit", result.data);
                         options.BindHonor(result.data.HonorCertification);
-                        $.each(result.data.Video, function (i, obj) {
-                            var url = "../../StaticHtml/PlayVedio.html?addr=" + obj;
-                            $($(".ibox-content").find("iframe")[i]).attr("src", url);
-                        });
+                       $.each(result.data.Video, function (i,obj) {
+                             var url = "/StaticHtml/PlayVedio.html?addr=" + obj.VideoAddress+"&cover="+obj.CoverPhoto;
+                           $(".J_iframe").eq(i).attr("src", url);
+
+                        })         
                     }
                 });
                 //查看大图
@@ -86,50 +88,74 @@
             <li>
                 <a data-toggle="tab" href="#tab-4" aria-expanded="false" id="four">视频监控</a>
             </li>
+            <li>
+                <a data-toggle="tab" href="#tab-5" aria-expanded="false">人员管理</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-6" aria-expanded="false">食材供应</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-7" aria-expanded="false">主营菜品</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-8" aria-expanded="false">废物处理</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-9" aria-expanded="false">留样管理</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-10" aria-expanded="false">抽检信息</a>
+            </li>
         </ul>
         <div class="tab-content">
             <div id="tab-1" class="tab-pane active">
                 <table class="table table-hover table-bordered m-t-sm">
+                    <colgroup>
+                        <col width="120" />
+                        <col width="40%" />
+                        <col width="120" />
+                        <col />
+                    </colgroup>
                     <tr>
                         <th><label class="control-label">企业名称</label></th>
                         <td class="has-warning">
-                            <input type="text" class="form-control" name="MerchantName" readonly="readonly" />
+                            <label type="txt" name="MerchantName"></label>
                         </td>
                         <th><label class="control-label">所属行业</label></th>
                         <td class="has-warning">
-                            <input type="text" class="form-control" name="DiningTypeName" readonly="readonly" />
+                            <label type="txt" name="DiningTypeName"></label>
                         </td>
                     </tr>
                     <tr>
                         <th><label class="control-label">企业邮箱</label></th>
                         <td class="has-warning">
-                            <input type="text" class="form-control" name="Email" readonly="readonly" />
+                            <label type="txt" name="Email"></label>
                         </td>
                         <th><label class="control-label">信用代码</label></th>
                         <td class="has-warning">
-                            <input type="text" class="form-control" name="CommunityCode" readonly="readonly" />
+                            <label type="txt" name="CommunityCode"></label>
                         </td>
                     </tr>
                     <tr>
                         <th><label class="control-label">企业电话</label></th>
                         <td class="has-warning">
-                            <input type="text" class="form-control" name="Phone" readonly="readonly" />
+                            <label type="txt" name="Phone"></label>
                         </td>
                         <th><label class="control-label">法人代表</label></th>
                         <td class="has-warning">
-                            <input type="text" class="form-control" name="ImplUser" readonly="readonly" />
+                            <label type="txt" name="ImplUser"></label>
                         </td>
                     </tr>
                     <tr>
                         <th><label class="control-label">企业地址</label></th>
                         <td class="has-warning" colspan="3">
-                            <input type="text" class="form-control" name="Address" readonly="readonly" />
+                            <label type="txt" name="Address"></label>
                         </td>
                     </tr>
                     <tr>
                         <th><label class="control-label">企业介绍</label></th>
                         <td class="has-warning" colspan="3">
-                            <textarea class="form-control" name="Remark" readonly="readonly"></textarea>
+                            <label type="txt" name="Remark"></label>
                         </td>
                     </tr>
                 </table>
@@ -145,10 +171,40 @@
             </div>
             <div id="tab-4" class="tab-pane">
                 <div class="ibox-content">
-                    <iframe class="J_iframe" src="" name="iframe" style="width:472px;height:400px" frameborder="0" seamless scrolling="no" align="middle"></iframe>
-                    <iframe class="J_iframe" src="" name="iframe" style="width:472px;height:400px" frameborder="0" seamless scrolling="no" align="middle"></iframe>
-                    <iframe class="J_iframe" src="" name="iframe" style="width:472px;height:400px" frameborder="0" seamless scrolling="no" align="middle"></iframe>
-                    <iframe class="J_iframe" src="" name="iframe" style="width:472px;height:400px" frameborder="0" seamless scrolling="no" align="middle"></iframe>
+                    <table style="width:1060px">
+                        <tr>
+                            <td style="text-align:center;"><iframe id="play" class="J_iframe" src="" name="iframe" style="width:87%;height:400px;margin:auto auto;" frameborder="0" seamless scrolling="no" align="middle"></iframe></td>
+                            <td style="text-align:center;"><iframe id="play" class="J_iframe" src="" name="iframe" style="width:87%;height:400px;margin:auto auto;" frameborder="0" seamless scrolling="no" align="middle"></iframe></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center;"><iframe id="play" class="J_iframe" src="" name="iframe" style="width:87%;height:400px;margin:auto auto;" frameborder="0" seamless scrolling="no" align="middle"></iframe></td>
+                            <td style="text-align:center;"><iframe id="play" class="J_iframe" src="" name="iframe" style="width:87%;height:400px;margin:auto auto;" frameborder="0" seamless scrolling="no" align="middle"></iframe></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div id="tab-5" class="tab-pane">
+                <div class="ibox-content">
+                </div>
+            </div>
+            <div id="tab-6" class="tab-pane">
+                <div class="ibox-content">
+                </div>
+            </div>
+            <div id="tab-7" class="tab-pane">
+                <div class="ibox-content">
+                </div>
+            </div>
+            <div id="tab-8" class="tab-pane">
+                <div class="ibox-content">
+                </div>
+            </div>
+            <div id="tab-9" class="tab-pane">
+                <div class="ibox-content">
+                </div>
+            </div>
+            <div id="tab-10" class="tab-pane">
+                <div class="ibox-content">
                 </div>
             </div>
         </div>

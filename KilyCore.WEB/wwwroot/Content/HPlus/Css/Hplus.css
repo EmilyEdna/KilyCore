@@ -1449,7 +1449,7 @@ table.dataTable thead .sorting:after {
 	border-bottom-color:transparent
 }
 .tabs-container .nav-tabs {
-	border-bottom:1px solid #e7eaec
+	border-bottom:1px solid #e7eaec;margin-top:12px;
 }
 .tabs-container .tab-pane .panel-body {
 	border-top:none

@@ -101,12 +101,12 @@ a { /*设置a标签无下划线 设置a标签颜色*/
 }
 
     .leftnotice .tt {
-        width: 30%;
+        width: 20%;
     }
 
     .leftnotice #Firm {
         overflow: hidden;
-        width: 65%;
+        width: 77%;
     }
 
         .leftnotice #Firm a {
@@ -180,15 +180,28 @@ a { /*设置a标签无下划线 设置a标签颜色*/
     }
 
         .firmsettled .num span {
+            color: #EE4B4A;
             letter-spacing: 10px;
             display: inline-block;
             padding: 0 0.5em;
-            color: #EE4B4A;
+            font-weight: bold;
+            font-family: 'ds-digitalbold_italic';
         }
 
     .firmsettled .map {
         height: 81%;
     }
+
+@font-face { /*液晶字体*/
+    font-family: 'ds-digitalbold_italic';
+    src: url('bnkgothm-webfont.eot');
+    src: url('/Content/DataView/Fonts/ds-digit.woff2') format('woff2'),
+         url('/Content/DataView/Fonts/ds-digit.ttf') format('truetype'), 
+         url('/Content/DataView/Fonts/ds-digit.woff') format('woff'),
+         url('/Content/DataView/Fonts/bnkgothm-webfont.svg#bankgothic_md_btmedium') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
 
 .cardexpire { /*证件到期 大盒子样式*/
     text-align: center;
@@ -223,9 +236,11 @@ a { /*设置a标签无下划线 设置a标签颜色*/
             .cardexpire .bd ul li:nth-child(2n+1) {
                 background: rgba(60,138,182,.2);
             }
+
             .cardexpire .bd ul li:last-child {
                 border-bottom: 1px solid rgba(60,138,182,.5);
             }
+
             .cardexpire .bd ul li div {
                 float: left;
                 width: 25%;
@@ -306,6 +321,7 @@ a { /*设置a标签无下划线 设置a标签颜色*/
         background: url(../images/videonum_ksh.png) center center no-repeat;
         background-size: 100% 100%;
     }
-    .todayvideo .videoNum p{
-        margin-top: 1%;
-    }
+
+        .todayvideo .videoNum p {
+            margin-top: 1%;
+        }
