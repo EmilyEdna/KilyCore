@@ -22,6 +22,8 @@
         }
         //初始化
         $(document).ready(function () {
+            controller.ClearLocal();
+            controller.DeleteCookie();
             GetValidateCode();
             AutoLogin();
             EnterLogin();

@@ -41,7 +41,6 @@ controller.ajax = function (option) {
             options.success(result);
         },
         beforeSend: function (xhr) {
-            xhr.setRequestHeader("PC", "PC");
             xhr.setRequestHeader("Token", controller.GetCookie().Token == undefined ? "" : controller.GetCookie().Token);
             xhr.setRequestHeader("ApiKey", controller.GetCookie().ApiKey == undefined ? "" : controller.GetCookie().ApiKey);
             xhr.setRequestHeader("SysKey", controller.GetCookie().SysKey == undefined ? "" : controller.GetCookie().SysKey);
@@ -207,7 +206,7 @@ controller.SetLableValue = function (element, option) {
             if (type == "img") {
                 if (value != null) {
                     if (value.indexOf(",") >= 0)
-                        $(node[i]).html("<img src='" + value.split(",")[0] +"' class='img-preview'/>");
+                        $(node[i]).html("<img src='" + value.split(",")[0] + "' class='img-preview'/>");
                     else
                         $(node[i]).html("<img src='" + value + "' class='img-preview'/>");
                 }
