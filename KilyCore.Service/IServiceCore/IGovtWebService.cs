@@ -109,6 +109,7 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseGovtNetPatrol> GetNetPatrolPage(PageParamList<RequestGovtNetPatrol> pageParam);
         String EditPatrol(RequestGovtNetPatrol Param);
         String RemovePatrol(Guid Id);
+        ResponseGovtNetPatrol GetNetPatrolDetail(Guid Id);
         String EditNetPatrol(RequestGovtMsg Param);
         #endregion
         #region 执法类目

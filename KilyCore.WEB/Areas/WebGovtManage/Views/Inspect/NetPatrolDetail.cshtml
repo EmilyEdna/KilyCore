@@ -1,0 +1,133 @@
+﻿
+@{
+    ViewData["Title"] = "通报处理详情";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{ }
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                //获取巡检信息
+                 controller.ajax({
+                    url: "GovtWeb/GetNetPatrolDetail",
+                    data: { Id: controller.GetParam("Id") },
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        controller.SetLableValue("#Edit", result.data);
+                    }
+                });
+                //取详情
+                controller.ajax({
+                    url: "GovtWeb/GetCompanyDetail",
+                    data: { Id: controller.GetParam("Id") },
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        controller.SetLableValue("#Edit", result.data);
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                $("#four").click(function () {
+                    $("#tab-4").find("iframe").contents().find(".vcp-player").each(function () {
+                        $(this).attr("style", "width:456px;");
+                    });
+                });
+            },
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+
+    </script>
+}
+<form class="form-horizontal" method="post" id="Edit">
+    <div class="tabs-container">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a data-toggle="tab" href="#tab-1" aria-expanded="true"> 巡查记录</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-2" aria-expanded="false">通报处理</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="tab-1" class="tab-pane active">
+                <table class="table table-hover table-bordered m-t-sm">
+                    <colgroup>
+                        <col width="120" align="center" />
+                        <col width="40%" />
+                        <col width="120" />
+                    </colgroup>
+                    <tr>
+                        <th style="text-align:center"><label class="control-label">企业名称</label></th>
+                        <td class="has-warning">
+                            <label type="txt" name="CompanyName"></label>
+                        </td>
+                        <th style="text-align:center"><label class="control-label">所属行业</label></th>
+                        <td class="has-warning">
+                            <label type="txt" name="CompanyTypeName"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="text-align:center"><label class="control-label">企业性质</label></th>
+                        <td class="has-warning">
+                            <label type="txt" name="NatureName"></label>
+                        </td>
+                        <th style="text-align:center"><label class="control-label">信用代码</label></th>
+                        <td class="has-warning">
+                            <label type="txt" name="CommunityCode"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="text-align:center"><label class="control-label">企业电话</label></th>
+                        <td class="has-warning">
+                            <label type="txt" name="CompanyPhone"></label>
+                        </td>
+                        <th style="text-align:center"><label class="control-label">企业地址</label></th>
+                        <td class="has-warning">
+                            <label type="txt" name="CompanyAddress"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="text-align:center"><label class="control-label">工商地址</label></th>
+                        <td class="has-warning">
+                            <label type="txt" name="SellerAddress"></label>
+                        </td>
+                        <th style="text-align:center"><label class="control-label">生产地址</label></th>
+                        <td class="has-warning">
+                            <label type="txt" name="ProductionAddress"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th style="text-align:center"><label class="control-label">抽查次数</label></th>
+                        <td class="has-warning">
+                            <label type="txt" name="CheckNum"></label>
+                        </td>
+                        <th style="text-align:center"><label class="control-label">最近抽查日期</label></th>
+                        <td class="has-warning">
+                            <label type="txt" name="CheckTime"></label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div id="tab-2" class="tab-pane">
+                <div class="ibox-content">
+                   
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</form>
+

@@ -1343,6 +1343,26 @@ namespace KilyCore.Service.ServiceCore
             return Remove<GovtNetPatrol>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         /// <summary>
+        /// 获取网上巡查 2019-08-22
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseGovtNetPatrol GetNetPatrolDetail(Guid Id)
+        {
+            var data = Kily.Set<GovtNetPatrol>().Where(t => t.Id == Id).Select(t => new ResponseGovtNetPatrol()
+            {
+                Id = t.Id,
+                GovtId = t.GovtId,
+                CompanyId=t.CompanyId,
+                CompanyName=t.CompanyName,
+                BulletinNum=t.BulletinNum,
+                PotrolNum=t.PotrolNum,
+                QualifiedNum=t.QualifiedNum,
+                TradeType=t.TradeType
+            }).FirstOrDefault();
+            return data;
+        }
+        /// <summary>
         /// 通报批评
         /// </summary>
         /// <param name="Param"></param>

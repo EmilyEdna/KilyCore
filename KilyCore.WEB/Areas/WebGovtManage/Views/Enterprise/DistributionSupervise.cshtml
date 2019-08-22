@@ -5,35 +5,199 @@
 }
 @section css{
     <style>
-       .ibox{width:100%;height:100%;border:#ccc solid 1px;margin:auto auto}
-        .search_com{line-height:35px;z-index:100;background:#fff;position:absolute;top:0;border-radius:5px;-webkit-border-radius:5px;left:0;width:10%;border:1px solid #ddd}
-        *{margin:0;padding:0;outline:0}
-        li,ul{list-style:none}
-        .right-tab{width:410px;height:inherit;position:fixed;top:0;background-color:#fff;right:0;box-shadow:0 0 2px 2px rgba(0,0,0,.3);box-sizing:border-box;padding:15px}
-        .left-btn{position:absolute;background-color:#fff;left:-17px;top:50%;width:16px;height:56px;text-align:center;line-height:56px;margin-top:-28px;font-size:16px;cursor:pointer;border-radius:3px 0 0 3px;font-family:'黑体';box-shadow:#999 -2px -2px 4px;border:1px solid #dbdbdb;border-right:none;color:#999}
-        form{width:380px;display:flex;justify-content:flex-start}
-        form input[type=text]{width:290px;border:1px solid #2ca8d1;border-radius:4px 0 0 4px;line-height:32px;text-indent:.5em}
-        form input[type=button]{width:90px;border:none;background-color:#2ca8d1;border-radius:0 4px 4px 0;line-height:32px;font-size:16px;color:#fff}
-        .list{position:relative;width:380px;height:92%;padding:10px;border:1px solid #dbdbdb;box-sizing:border-box;margin-top:15px;border-radius:4px}
-        .list .msg{background-color:#ececec;padding:6px;margin-bottom:10px;height:42px;width:100%;display:flex;justify-content:space-between}
-        .list .msg img{width:30px;height:30px}
-        .list .msg #Area{width:100%;font-size:18px;line-height:30px;text-align:left}
-        .list .msg #Area~div{width:280px;text-align:right;font-size:14px;color:#666}
-        .list .msg #Area~div span{color:#f20;font-size:18px}
-        .list ul{height:92%;overflow-y:scroll}
-        .list ul li{width:96%;padding:15px 0;border-bottom:1px solid #dbdbdb;display:flex;justify-content:space-between}
-        .list ul li img{width:120px;height:90px}
-        .list ul li div{width:210px}
-        .list ul li div h4{font-size:18px;line-height:20px;margin-bottom:10px;font-weight:400;margin-top:0;color:#333;width:100%;text-overflow: ellipsis;
-    -o-text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;}
-        .list ul li div p{font-size:14px;line-height:20px;color:#666;margin:auto auto}
-        .bottom-btn{position:absolute;left:50%;margin-left:-28px;bottom:-21px;width:56px;height:20px;cursor:pointer;background:url(/content/Hplus/img/up_d.png) center center no-repeat;border:1px solid #dbdbdb;border-top:none;border-radius:0 0 3px 3px;box-shadow:#999 2px 2px 4px}
+        .ibox {
+            width: 100%;
+            height: 100%;
+            border: #ccc solid 1px;
+            margin: auto auto
+        }
+
+        .search_com {
+            line-height: 35px;
+            z-index: 100;
+            background: #fff;
+            position: absolute;
+            top: 0;
+            border-radius: 5px;
+            -webkit-border-radius: 5px;
+            left: 0;
+            width: 10%;
+            border: 1px solid #ddd
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            outline: 0
+        }
+
+        li, ul {
+            list-style: none
+        }
+
+        .right-tab {
+            width: 410px;
+            height: inherit;
+            position: fixed;
+            top: 0;
+            background-color: #fff;
+            right: 0;
+            box-shadow: 0 0 2px 2px rgba(0,0,0,.3);
+            box-sizing: border-box;
+            padding: 15px
+        }
+
+        .left-btn {
+            position: absolute;
+            background-color: #fff;
+            left: -17px;
+            top: 50%;
+            width: 16px;
+            height: 56px;
+            text-align: center;
+            line-height: 56px;
+            margin-top: -28px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 3px 0 0 3px;
+            font-family: '黑体';
+            box-shadow: #999 -2px -2px 4px;
+            border: 1px solid #dbdbdb;
+            border-right: none;
+            color: #999
+        }
+
+        form {
+            width: 380px;
+            display: flex;
+            justify-content: flex-start
+        }
+
+            form input[type=text] {
+                width: 290px;
+                border: 1px solid #2ca8d1;
+                border-radius: 4px 0 0 4px;
+                line-height: 32px;
+                text-indent: .5em
+            }
+
+            form input[type=button] {
+                width: 90px;
+                border: none;
+                background-color: #2ca8d1;
+                border-radius: 0 4px 4px 0;
+                line-height: 32px;
+                font-size: 16px;
+                color: #fff
+            }
+
+        .list {
+            position: relative;
+            width: 380px;
+            height: 92%;
+            padding: 10px;
+            border: 1px solid #dbdbdb;
+            box-sizing: border-box;
+            margin-top: 15px;
+            border-radius: 4px
+        }
+
+            .list .msg {
+                background-color: #ececec;
+                padding: 6px;
+                margin-bottom: 10px;
+                height: 42px;
+                width: 100%;
+                display: flex;
+                justify-content: space-between
+            }
+
+                .list .msg img {
+                    width: 30px;
+                    height: 30px
+                }
+
+                .list .msg #Area {
+                    width: 100%;
+                    font-size: 18px;
+                    line-height: 30px;
+                    text-align: left
+                }
+
+                    .list .msg #Area ~ div {
+                        width: 280px;
+                        text-align: right;
+                        font-size: 14px;
+                        color: #666
+                    }
+
+                        .list .msg #Area ~ div span {
+                            color: #f20;
+                            font-size: 18px
+                        }
+
+            .list ul {
+                height: 92%;
+                overflow-y: scroll
+            }
+
+                .list ul li {
+                    width: 96%;
+                    padding: 15px 0;
+                    border-bottom: 1px solid #dbdbdb;
+                    display: flex;
+                    justify-content: space-between
+                }
+
+                    .list ul li img {
+                        width: 120px;
+                        height: 90px
+                    }
+
+                    .list ul li div {
+                        width: 210px
+                    }
+
+                        .list ul li div h4 {
+                            font-size: 18px;
+                            line-height: 20px;
+                            margin-bottom: 10px;
+                            font-weight: 400;
+                            margin-top: 0;
+                            color: #333;
+                            width: 100%;
+                            text-overflow: ellipsis;
+                            -o-text-overflow: ellipsis;
+                            white-space: nowrap;
+                            overflow: hidden;
+                        }
+
+                        .list ul li div p {
+                            font-size: 14px;
+                            line-height: 20px;
+                            color: #666;
+                            margin: auto auto
+                        }
+
+        .bottom-btn {
+            position: absolute;
+            left: 50%;
+            margin-left: -28px;
+            bottom: -21px;
+            width: 56px;
+            height: 20px;
+            cursor: pointer;
+            background: url(/content/Hplus/img/up_d.png) center center no-repeat;
+            border: 1px solid #dbdbdb;
+            border-top: none;
+            border-radius: 0 0 3px 3px;
+            box-shadow: #999 2px 2px 4px
+        }
     </style>
 }
 @section script{
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=3ce7ddfda60046708248ea55e10b1435"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/AreaRestriction/1.2/src/AreaRestriction_min.js"></script>
     <script>
         //配置
         var options = {
@@ -50,6 +214,7 @@
                     success: function (result) {
                         options.CityName = result.data;
                         $("#Area").html(options.CityName);
+                        
                     }
                 });
                 $.ajax({
@@ -67,6 +232,7 @@
                 options.Map = new BMap.Map("Map");//在百度地图容器中创建一个地图
                 options.Map.centerAndZoom(new BMap.Point(Lng, Lat), 11);//设定地图的中心点和坐标并将地图显示在地图容器中
                 options.Map.enableScrollWheelZoom();//启用地图滚轮放大缩小
+                addDistrict(options.CityName, options.Map )//添加行政区域
                 controller.ajax({
                     url: "GovtWeb/GetDistributArea",
                     data: {},
@@ -78,29 +244,29 @@
                             options.marker = new BMap.Marker(new BMap.Point(obj.Lng, obj.Lat), { icon: myIcon });
                             options.marker.setTitle(obj.CompanyType);
                             options.Map.addOverlay(options.marker);               // 将标注添加到地图中
-                            options.AddClickHandler(obj.Name, obj.Address, obj.CompanyCode, obj.CompanyType,obj.CompanyImg);
+                            options.AddClickHandler(obj.Name, obj.Address, obj.CompanyCode, obj.CompanyType, obj.CompanyImg);
 
-                            var CompanyHtml='<li>'
-                                   + '<img src="'+obj.CompanyImg+'">'
+                            var CompanyHtml = '<li>'
+                                + '<img src="' + obj.CompanyImg + '">'
                                 + '<div>'
                                 + '<h4>' + obj.Name + '</h4>'
-                                         + '<p>负责人：<span id="chargeman">'+obj.CompanyUser+'</span></p>'
-                                         + '<p>社会统一代码：<span id="phone">'+obj.CompanyCode+'</span></p>'
-                                         + '<p>联系地址：<span id="address">'+obj.Address+'</span></p>'
-                                     + '</div>'
-                                 + '</li>';
+                                + '<p>负责人：<span id="chargeman">' + obj.CompanyUser + '</span></p>'
+                                + '<p>社会统一代码：<span id="phone">' + obj.CompanyCode + '</span></p>'
+                                + '<p>联系地址：<span id="address">' + obj.Address + '</span></p>'
+                                + '</div>'
+                                + '</li>';
                             //加载列表
-                             $("#CompanyList").append(CompanyHtml);
+                            $("#CompanyList").append(CompanyHtml);
                         });
                         $("#Num").html(result.data.length);
-                        
+
                     }
                 });
             },
-            AddClickHandler: function (name, path, code, type,img) {
+            AddClickHandler: function (name, path, code, type, img) {
                 options.marker.addEventListener("click", function (e) {
                     var InfoWin = '<table class="table table-bordered">' +
-                        '<tr><th>商家名称</th> <td>' + name + '</td><td rowspan="4"><img src="'+img+'" style="height:100%;min-width:96px;"/></td></tr>' +
+                        '<tr><th>商家名称</th> <td>' + name + '</td><td rowspan="4"><img src="' + img + '" style="height:100%;min-width:96px;"/></td></tr>' +
                         '<tr><th>商家类型</th><td>' + type + '</td></tr>' +
                         '<tr><th>工商代码</th><td>' + code + '</td></tr>' +
                         '<tr><th>商家地址</th><td>' + path + '</td></tr></table>'
@@ -130,6 +296,122 @@
         $(document).ready(function () {
             options.Init();
         });
+        //提示：下面的代码用jquery，所以如果有不能运行的情况请引用后尝试
+        //百度地图api container对应前端div名称 前端要引用2.0版本的百度地图api
+        //需引用api.map.baidu.com/library/AreaRestriction/1.2/src/AreaRestriction_min.js
+
+        var blist = [];
+        var districtLoading = 0;
+
+
+
+        /**
+         * 添加行政区划
+         *  districtName 行政区划名
+         * returns  无返回值
+         */
+        function addDistrict(districtName, map) {
+            //使用计数器来控制加载过程
+            districtLoading++;
+            var bdary = new BMap.Boundary();
+            bdary.get(districtName, function (rs) {       //获取行政区域
+                var count = rs.boundaries.length; //行政区域的点有多少个
+                if (count === 0) {
+                    alert('未能获取当前输入行政区域');
+                    return;
+                }
+                for (var i = 0; i < count; i++) {
+                    blist.push({ points: rs.boundaries[i], name: districtName });
+                };
+                //加载完成区域点后计数器-1
+                districtLoading--;
+                if (districtLoading == 0) {
+                    //全加载完成后画端点
+                    drawBoundary(map);
+                }
+            });
+        }
+
+
+        /**
+         * 各种鼠标事件绑定
+         */
+        function click(evt) {
+            alert(evt.target.name);
+        }
+
+        function mouseover(evt) {
+            evt.target.label.setZIndex(99);
+            evt.target.label.setPosition(evt.point);
+            evt.target.label.show();
+        }
+
+        function mousemove(evt) {
+            evt.target.label.setPosition(evt.point);
+        }
+
+        function mouseout(evt) {
+            evt.target.label.hide();
+        }
+
+        function drawBoundary(map) {
+            //包含所有区域的点数组
+            var pointArray = [];
+
+            /*画遮蔽层的相关方法
+            *思路: 首先在中国地图最外画一圈，圈住理论上所有的中国领土，然后再将每个闭合区域合并进来，并全部连到西北角。
+            *      这样就做出了一个经过多次西北角的闭合多边形*/
+            //定义中国东南西北端点，作为第一层
+            var pNW = { lat: 59.0, lng: 73.0 }
+            var pNE = { lat: 59.0, lng: 136.0 }
+            var pSE = { lat: 3.0, lng: 136.0 }
+            var pSW = { lat: 3.0, lng: 73.0 }
+            //向数组中添加一次闭合多边形，并将西北角再加一次作为之后画闭合区域的起点
+            var pArray = [];
+            pArray.push(pNW);
+            pArray.push(pSW);
+            pArray.push(pSE);
+            pArray.push(pNE);
+            pArray.push(pNW);
+            //循环添加各闭合区域
+            for (var i = 0; i < blist.length; i++) {
+                //添加显示用标签层
+                var label = new BMap.Label(blist[i].name, { offset: new BMap.Size(20, -10) });
+                label.hide();
+                map.addOverlay(label);
+
+                //添加多边形层并显示
+                var ply = new BMap.Polygon(blist[i].points, { strokeWeight:2, strokeColor: "#FF0000", fillOpacity: 0.01, fillColor: " #FFFFFF" }); //建立多边形覆盖物
+                ply.name = blist[i].name;
+                ply.label = label;
+                ply.addEventListener("click", click);
+                ply.addEventListener("mouseover", mouseover);
+                ply.addEventListener("mouseout", mouseout);
+                ply.addEventListener("mousemove", mousemove);
+                map.addOverlay(ply);
+
+                //添加名称标签层
+                //var centerlabel = new BMap.Label(blist[i].name, { offset: new BMap.Size(0, 0) });
+                //centerlabel.setPosition(ply.getBounds().getCenter());
+                //map.addOverlay(centerlabel);
+
+                //将点增加到视野范围内
+                var path = ply.getPath();
+                pointArray = pointArray.concat(path);
+                //将闭合区域加到遮蔽层上，每次添加完后要再加一次西北角作为下次添加的起点和最后一次的终点
+                pArray = pArray.concat(path);
+                pArray.push(pArray[0]);
+            }
+
+            //限定显示区域，需要引用api库
+            var boundply = new BMap.Polygon(pointArray);
+            BMapLib.AreaRestriction.setBounds(map, boundply.getBounds());
+            map.setViewport(pointArray);    //调整视野
+
+            //添加遮蔽层
+            var plyall = new BMap.Polygon(pArray, { strokeOpacity: 0.0000001, strokeColor: "#000000", strokeWeight: 0.00001, fillColor: "#000000", fillOpacity: 0.4 }); //建立多边形覆盖物
+            map.addOverlay(plyall);
+        }
     </script>
 }
 <div class="search_com">
@@ -165,7 +447,6 @@
             <div>该地区共有&nbsp;<span id="Num">0</span>&nbsp;家企业</div>
         </div>
         <ul id="CompanyList">
-            
         </ul>
         <div class="bottom-btn"></div>
     </div>

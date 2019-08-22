@@ -553,6 +553,16 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(GovtWebService.RemovePatrol(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
+        /// 获取网上巡检详情
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetNetPatrolDetail")]
+        public ObjectResultEx GetNetPatrolDetail(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetNetPatrolDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 通报批评
         /// </summary>
         /// <param name="Param"></param>
