@@ -30,7 +30,7 @@
                     type: "post",
                     async: false,
                     success: function (result) {
-                        var html = '<option value="0">===请选择===</option>';
+                        var html = '<option value="">===请选择===</option>';
                         $.each(result.data, function (i, obj) {
                             html += '<option value="' + obj.Id + '">' + obj.StockName + '</option>';
                         });
@@ -44,7 +44,7 @@
                     type: "post",
                     async: false,
                     success: function (result) {
-                        var html = '<option value="0">===请选择===</option>';
+                        var html = '<option value="">===请选择===</option>';
                         $.each(result.data, function (i, obj) {
                             html += '<option value="' + obj.Id + '">' + obj.ProductName + '(' + obj.Specs + ')</option>';
                         });
@@ -58,7 +58,7 @@
                     type: "post",
                     async: false,
                     success: function (result) {
-                        var html = '<option value="0">===请选择===</option>';
+                        var html = '<option value="">===请选择===</option>';
                         $.each(result.data, function (i, obj) {
                             html += '<option value="' + obj.Id + '">' + obj.SeriesName + '(' + obj.BatchNo + ')</option>';
                         });
@@ -234,7 +234,7 @@
                 <tr>
                     <th><label class="control-label">仓库类型</label></th>
                     <td class="has-warning">
-                        <select type="select" class="form-control" name="StockTypeId" id="StockTypeId"></select>
+                        <select type="select" class="form-control required" name="StockTypeId" id="StockTypeId" data-msg-required="仓库类型为必选项"></select>
                     </td>
                     <th><label class="control-label">绑定二维码</label></th>
                     <td class="has-warning">

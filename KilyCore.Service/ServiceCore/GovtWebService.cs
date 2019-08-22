@@ -930,7 +930,7 @@ namespace KilyCore.Service.ServiceCore
             //产品的查询
             var GoodsData = GoodsStockAttach.Join(GoodStock, a => a.StockId, b => b.Id, (a, b) => new { a, b })
                 .Join(Goods, c => c.b.GoodsId, d => d.Id, (c, d) => new { c, d })
-                .GroupJoin(StockType, e => e.c.b.StockTypeId, f => f.Id, (e, f) => new { e, f })
+                .Join(StockType, e => e.c.b.StockTypeId, f => f.Id, (e, f) => new { e, f })
                 .GroupJoin(CheckGoods, g => g.e.c.b.CheckGoodsId, h => h.Id, (g, h) => new { g, h })
                 .Where(t => t.g.e.d.Id == Id).AsNoTracking();
             return GoodsData.Select(t => new
@@ -941,10 +941,10 @@ namespace KilyCore.Service.ServiceCore
                 t.h.FirstOrDefault().CheckReport,
                 t.g.e.c.b.Explanation,
                 t.g.e.c.b.Remark,
-                StockName = t.g.f.FirstOrDefault() == null ? "-" : t.g.f.FirstOrDefault().StockName,
-                SaveType = t.g.f.FirstOrDefault() == null ? "-" : t.g.f.FirstOrDefault().SaveType,
-                SaveH2 = t.g.f.FirstOrDefault() == null ? "-" : t.g.f.FirstOrDefault().SaveH2,
-                SaveTemp = t.g.f.FirstOrDefault() == null ? "-" : t.g.f.FirstOrDefault().SaveTemp,
+                t.g.f.StockName,
+                t.g.f.SaveType,
+                t.g.f.SaveH2,
+                t.g.f.SaveTemp,
                 t.g.e.d.ExpiredDate,
                 t.g.e.d.ProductName,
                 t.g.e.d.ProductType,
