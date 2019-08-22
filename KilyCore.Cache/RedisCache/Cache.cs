@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点13分
@@ -34,6 +35,13 @@ namespace KilyCore.Cache.RedisCache
         public void RemoveCache()
         {
             RedisCache.DeleteRedisDataBase();
+        }
+        /// <summary>
+        /// 删除所有数据
+        /// </summary>
+        public async Task RemoveCacheAsync()
+        {
+            await RedisCache.DeleteRedisDataBaseAsync();
         }
         /// <summary>
         /// 写入缓存

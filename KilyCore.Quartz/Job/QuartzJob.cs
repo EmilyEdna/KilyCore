@@ -1,4 +1,5 @@
-﻿using KilyCore.EntityFrameWork.Model.Enterprise;
+﻿using KilyCore.Cache;
+using KilyCore.EntityFrameWork.Model.Enterprise;
 using KilyCore.EntityFrameWork.Model.Repast;
 using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.Repositories.BaseRepository;
@@ -30,6 +31,9 @@ namespace KilyCore.Quartz.Job
                     break;
                 case "订单":
                     await CheckOrderExpire();
+                    break;
+                case "Redis":
+                    await ClearRedis();
                     break;
                 default:
                     await Task.CompletedTask;
@@ -71,6 +75,14 @@ namespace KilyCore.Quartz.Job
                 UpdateField(t, "IsExpire");
             });
             await Task.CompletedTask;
+        }
+        /// <summary>
+        /// 每天晚上清除Redis数据
+        /// </summary>
+        /// <returns></returns>
+        public async Task ClearRedis()
+        {
+            await CacheFactory.Cache().RemoveCacheAsync();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点13分
@@ -48,5 +49,8 @@ namespace KilyCore.Cache.RedisCache
         /// 删除所有缓存
         /// </summary>
         void RemoveCache();
+        /// 删除所有缓存
+        /// </summary>
+        Task RemoveCacheAsync();
     }
 }

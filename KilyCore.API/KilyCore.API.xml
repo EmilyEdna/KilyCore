@@ -2645,6 +2645,13 @@
             <param name="Param"></param>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetNetPatrolDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取网上巡检详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
         <member name="M:KilyCore.API.Controllers.GovtWebController.EditNetPatrol(KilyCore.DataEntity.RequestMapper.Govt.RequestGovtMsg)">
             <summary>
             通报批评

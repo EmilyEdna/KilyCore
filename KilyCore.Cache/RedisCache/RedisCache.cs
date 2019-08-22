@@ -60,6 +60,14 @@ namespace KilyCore.Cache.RedisCache
         {
             Instance.GetServer(Configer.RedisConnectionString).FlushAllDatabases();
         }
+        /// <summary>
+        /// 删除所有redis库
+        /// </summary>
+        /// <returns></returns>
+        public static async Task DeleteRedisDataBaseAsync()
+        {
+            await instance.GetServer(Configer.RedisConnectionString).FlushAllDatabasesAsync();
+        }
         #endregion
 
         #region Redis事件
