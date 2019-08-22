@@ -930,7 +930,7 @@ namespace KilyCore.Service.ServiceCore
             //产品的查询
             var GoodsData = GoodsStockAttach.Join(GoodStock, a => a.StockId, b => b.Id, (a, b) => new { a, b })
                 .Join(Goods, c => c.b.GoodsId, d => d.Id, (c, d) => new { c, d })
-                .GroupJoin(StockType, e => e.c.b.StockTypeId, f => f.Id, (e, f) => new { e, f })
+                .Join(StockType, e => e.c.b.StockTypeId, f => f.Id, (e, f) => new { e, f })
                 .GroupJoin(CheckGoods, g => g.e.c.b.CheckGoodsId, h => h.Id, (g, h) => new { g, h })
                 .Where(t => t.g.e.d.Id == Id).AsNoTracking();
             return GoodsData.Select(t => new
@@ -941,10 +941,10 @@ namespace KilyCore.Service.ServiceCore
                 t.h.FirstOrDefault().CheckReport,
                 t.g.e.c.b.Explanation,
                 t.g.e.c.b.Remark,
-                StockName = t.g.f.FirstOrDefault() == null ? "-" : t.g.f.FirstOrDefault().StockName,
-                SaveType = t.g.f.FirstOrDefault() == null ? "-" : t.g.f.FirstOrDefault().SaveType,
-                SaveH2 = t.g.f.FirstOrDefault() == null ? "-" : t.g.f.FirstOrDefault().SaveH2,
-                SaveTemp = t.g.f.FirstOrDefault() == null ? "-" : t.g.f.FirstOrDefault().SaveTemp,
+                t.g.f.StockName,
+                t.g.f.SaveType,
+                t.g.f.SaveH2,
+                t.g.f.SaveTemp,
                 t.g.e.d.ExpiredDate,
                 t.g.e.d.ProductName,
                 t.g.e.d.ProductType,
@@ -2163,6 +2163,9 @@ namespace KilyCore.Service.ServiceCore
             List<DataPie> Pie = coms.GroupBy(t => t.CompanyType).Select(t => new DataPie { name = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.Key), value = t.Count() }).ToList();
             Pie.AddRange(mers.GroupBy(t => t.DiningType).Select(t => new DataPie { name = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.Key), value = t.Count() }).ToList());
             Pie.Add(new DataPie { name = "乡村厨师", value = cooks.Count() });
+            var total = Pie.Where(t => t.name == "小经营店" || t.name == "小作坊" || t.name == "小摊贩").Sum(t => t.value);
+            Pie.RemoveAll(t => t.name == "小经营店" || t.name == "小作坊" || t.name == "小摊贩");
+            Pie.Add(new DataPie { name = "三小企业", value = total });
             return Pie;
         }
         /// <summary>

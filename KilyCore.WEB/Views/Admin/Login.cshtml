@@ -23,6 +23,8 @@
         }
         //初始化
         $(document).ready(function () {
+            controller.ClearLocal();
+            controller.DeleteCookie();
             EnterLogin();
             UserLogin();
             GetValidateCode();
