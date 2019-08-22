@@ -281,8 +281,6 @@ namespace KilyCore.Service.ServiceCore
                 CompanyPhone = t.CompanyPhone,
                 Certification = t.Certification,
                 CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
-                MainPro=t.MainPro,
-                CompanyType=t.CompanyType,
                 Scope = t.Scope,
                 VideoAddress = t.VideoAddress,
                 ProductionAddress = t.ProductionAddress,
@@ -659,8 +657,6 @@ namespace KilyCore.Service.ServiceCore
                 LngAndLat = t.LngAndLat,
                 Address = t.CompanyAddress,
                 CompanyCode = t.CommunityCode,
-                CompanyImg=t.ComImage,
-                CompanyUser=t.SafeOffer,
                 CompanyType = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType)
             }).ToList();
             var temp = queryables.Select(t => new ResponseGovtDistribut()
@@ -668,8 +664,6 @@ namespace KilyCore.Service.ServiceCore
                 Name = t.MerchantName,
                 LngAndLat = t.LngAndLat,
                 Address = t.Address,
-                CompanyImg = t.MerchantImage,
-                CompanyUser = t.ImplUser,
                 CompanyCode = t.CommunityCode,
                 CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType)
             }).ToList();
@@ -743,7 +737,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseEnterpriseGoods> GetWorkPage(PageParamList<RequestEnterpriseGoods> pageParam)
         {
-            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.ProductType))
                 goods = goods.Where(t => pageParam.QueryParam.ProductType.Contains(t.ProductType));
             IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess);
@@ -822,7 +816,7 @@ namespace KilyCore.Service.ServiceCore
                 t.k.i.g.e.c.b.Manager,
                 t.k.i.g.e.c.b.ProductTime,
                 InNo = t.k.i.g.e.c.b.GoodsBatchNo,
-                MaterialId=t.k.i.g.e.d.MaterialId??"",
+                t.k.i.g.e.d.MaterialId,
                 t.k.i.h.FirstOrDefault().CheckUint,
                 t.k.i.h.FirstOrDefault().CheckUser,
                 t.k.i.h.FirstOrDefault().CheckResult,
@@ -832,7 +826,7 @@ namespace KilyCore.Service.ServiceCore
                 t.l.SaveH2,
                 t.l.SaveTemp
             }).FirstOrDefault();
-            var MaterialData =  MaterialsData.Where(t => GoodData.MaterialId.Contains(t.e.d.Id.ToString())).Select(t => new
+            var MaterialData = MaterialsData.Where(t => GoodData.MaterialId.Contains(t.e.d.Id.ToString())).Select(t => new
             {
                 t.f.FirstOrDefault().CheckUint,
                 t.f.FirstOrDefault().CheckUser,
@@ -886,7 +880,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseEnterpriseGoods> GetEdiblePage(PageParamList<RequestEnterpriseGoods> pageParam)
         {
-            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false)
+            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess)
                 .Where(t => pageParam.QueryParam.ProductType.Contains(t.ProductType));
             IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess);
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
@@ -936,7 +930,7 @@ namespace KilyCore.Service.ServiceCore
             //产品的查询
             var GoodsData = GoodsStockAttach.Join(GoodStock, a => a.StockId, b => b.Id, (a, b) => new { a, b })
                 .Join(Goods, c => c.b.GoodsId, d => d.Id, (c, d) => new { c, d })
-                .Join(StockType, e => e.c.b.StockTypeId, f => f.Id, (e, f) => new { e, f })
+                .GroupJoin(StockType, e => e.c.b.StockTypeId, f => f.Id, (e, f) => new { e, f })
                 .GroupJoin(CheckGoods, g => g.e.c.b.CheckGoodsId, h => h.Id, (g, h) => new { g, h })
                 .Where(t => t.g.e.d.Id == Id).AsNoTracking();
             return GoodsData.Select(t => new
@@ -947,15 +941,14 @@ namespace KilyCore.Service.ServiceCore
                 t.h.FirstOrDefault().CheckReport,
                 t.g.e.c.b.Explanation,
                 t.g.e.c.b.Remark,
-                t.g.f.StockName,
-                t.g.f.SaveType,
-                t.g.f.SaveH2,
-                t.g.f.SaveTemp,
+                StockName = t.g.f.FirstOrDefault() == null ? "-" : t.g.f.FirstOrDefault().StockName,
+                SaveType = t.g.f.FirstOrDefault() == null ? "-" : t.g.f.FirstOrDefault().SaveType,
+                SaveH2 = t.g.f.FirstOrDefault() == null ? "-" : t.g.f.FirstOrDefault().SaveH2,
+                SaveTemp = t.g.f.FirstOrDefault() == null ? "-" : t.g.f.FirstOrDefault().SaveTemp,
                 t.g.e.d.ExpiredDate,
                 t.g.e.d.ProductName,
                 t.g.e.d.ProductType,
                 t.g.e.d.Spec,
-                t.g.e.c.b.ImgUrl,
                 t.g.e.c.b.ProductTime,
                 t.g.e.c.b.Manager,
                 t.g.e.c.a.OutStockTime,
@@ -2150,9 +2143,6 @@ namespace KilyCore.Service.ServiceCore
             List<DataPie> Pie = coms.GroupBy(t => t.CompanyType).Select(t => new DataPie { name = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.Key), value = t.Count() }).ToList();
             Pie.AddRange(mers.GroupBy(t => t.DiningType).Select(t => new DataPie { name = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.Key), value = t.Count() }).ToList());
             Pie.Add(new DataPie { name = "乡村厨师", value = cooks.Count() });
-            var total = Pie.Where(t => t.name == "小经营店" || t.name == "小作坊" || t.name == "小摊贩").Sum(t => t.value);
-            Pie.RemoveAll(t => t.name == "小经营店" || t.name == "小作坊" || t.name == "小摊贩");
-            Pie.Add(new DataPie { name = "三小企业", value = total });
             return Pie;
         }
         /// <summary>
@@ -2241,7 +2231,7 @@ namespace KilyCore.Service.ServiceCore
                     risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-5).Count(),
                     risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-4).Count(),
                     risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-3).Count(),
-                    risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-2).Count(),
+                    risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-1).Count(),
                     risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-1).Count(),
                     risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==0).Count(),
                 }
@@ -2255,7 +2245,7 @@ namespace KilyCore.Service.ServiceCore
                     complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==-5).Count(),
                     complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==-4).Count(),
                     complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==-3).Count(),
-                    complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==-2).Count(),
+                    complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==-1).Count(),
                     complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==-1).Count(),
                     complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==0).Count(),
                 }
@@ -2304,13 +2294,13 @@ namespace KilyCore.Service.ServiceCore
             {
                 name = "自查",
                 data = new List<int> {
-                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-6).Count(),
-                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-5).Count(),
-                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-4).Count(),
-                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-3).Count(),
-                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-2).Count(),
+                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==0).Count(),
                     children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-1).Count(),
-                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==0).Count()
+                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-2).Count(),
+                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-3).Count(),
+                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-4).Count(),
+                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-5).Count(),
+                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-6).Count()
                 }
             });
             //抽查
@@ -2318,13 +2308,13 @@ namespace KilyCore.Service.ServiceCore
             {
                 name = "抽查",
                 data = new List<int> {
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-6).Sum(t=>t.PotrolNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-5).Sum(t=>t.PotrolNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-4).Sum(t=>t.PotrolNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-3).Sum(t=>t.PotrolNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-2).Sum(t=>t.PotrolNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==0).Sum(t=>t.PotrolNum),
                     patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-1).Sum(t=>t.PotrolNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==0).Sum(t=>t.PotrolNum)
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-2).Sum(t=>t.PotrolNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-3).Sum(t=>t.PotrolNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-4).Sum(t=>t.PotrolNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-5).Sum(t=>t.PotrolNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-6).Sum(t=>t.PotrolNum)
                 }
             });
             //通报
@@ -2332,13 +2322,13 @@ namespace KilyCore.Service.ServiceCore
             {
                 name = "通报",
                 data = new List<int> {
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-6).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-5).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-4).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-3).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-2).Sum(t=>t.BulletinNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==0).Sum(t=>t.BulletinNum),
                     patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-1).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==0).Sum(t=>t.BulletinNum)
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-2).Sum(t=>t.BulletinNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-3).Sum(t=>t.BulletinNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-4).Sum(t=>t.BulletinNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-5).Sum(t=>t.BulletinNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-6).Sum(t=>t.BulletinNum)
                 }
             });
             return lines;

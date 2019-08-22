@@ -4605,6 +4605,7 @@
             获取所有供应商
             </summary>
             <param name="Param"></param>
+            <param name="Key"></param>
             <returns></returns>
         </member>
         <member name="M:KilyCore.API.Controllers.TempController.GetAllSample(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
