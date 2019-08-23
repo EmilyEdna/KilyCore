@@ -349,7 +349,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 if (data.AuditType != AuditEnum.AuditSuccess)
                 {
-                    string Area = Kily.Set<EnterpriseInviteCode>().Where(t => t.InviteCode == data.InviteCode).Select(t => t.UseTypePath).FirstOrDefault();
+                    string Area = Kily.Set<EnterpriseInviteCode>().Where(t => t.InviteCode == Convert.ToString(Encoding.Default.GetBytes(data.InviteCode))).Select(t => t.UseTypePath).FirstOrDefault()??"|";
                     if (!data.TypePath.Contains(Area))
                         return "请在邀请码选中区域使用!";
                     //验证信息是否正确
