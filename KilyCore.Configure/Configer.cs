@@ -30,6 +30,10 @@ namespace KilyCore.Configure
         /// </summary>
         public static HttpContext HttpContext { get; set; }
         /// <summary>
+        /// RabbitMQ链接字符串
+        /// </summary>
+        public static string RabbitMQConnectionString { get; set; }
+        /// <summary>
         /// Redis缓存链接字符串
         /// </summary>
         public static string RedisConnectionString { get; set; }

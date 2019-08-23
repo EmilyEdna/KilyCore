@@ -2236,6 +2236,31 @@
             <param name="Key"></param>
             <returns></returns>
         </member>
+        <member name="T:KilyCore.API.Controllers.GovtAppController">
+            <summary>
+            政府APP接口
+            </summary>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtAppController.Login(KilyCore.DataEntity.RequestMapper.Govt.RequestGovtInfo)">
+            <summary>
+            监管登录
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtAppController.LoginOut">
+            <summary>
+            安全退出
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtAppController.GetProductPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseGoods})">
+            <summary>
+            产品分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
         <member name="T:KilyCore.API.Controllers.GovtController">
             <summary>
             系统政府后台接口

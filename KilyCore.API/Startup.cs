@@ -142,6 +142,7 @@ namespace KilyCore.API
             Configer.RedisConnectionString = Configuration["RedisConnectionString:ConnectionString"];
             Configer.MongoDBConnectionString = Configuration["MongoDBConnectionString:ConnectionString"];
             Configer.MongoDBName = Configuration["MongoDBConnectionString:MongoDBName"];
+            Configer.RabbitMQConnectionString = Configuration["RabbitMQConnectionString:ConnectionString"];
             Configer.ApiKey = Configuration["Key:ApiKey"];
             Configer.RemovePathHost = Configuration["RemovePathHost"];
         }

@@ -347,7 +347,6 @@ namespace KilyCore.Service.ServiceCore
             //调用远程接口
             if (!string.IsNullOrEmpty(data.InviteCode))
             {
-
                 if (data.AuditType != AuditEnum.AuditSuccess)
                 {
                     var InviteCode = System.Text.Encoding.Default.GetString(Convert.FromBase64String(data.InviteCode));
