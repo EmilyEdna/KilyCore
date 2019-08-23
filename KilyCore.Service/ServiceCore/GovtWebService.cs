@@ -910,6 +910,7 @@ namespace KilyCore.Service.ServiceCore
                 CompanyName = x.CompanyName,
                 ProductType = t.ProductType,
                 ExpiredDate = t.ExpiredDate,
+                ProductImg="",
                 Spec = t.Spec,
                 Unit = x.ProductionAddress,
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);

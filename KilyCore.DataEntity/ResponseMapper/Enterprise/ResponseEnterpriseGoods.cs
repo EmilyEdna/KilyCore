@@ -25,6 +25,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public Guid? ProductSeriesId { get; set; }
         public string ProductType { get; set; }
         public string ProductName { get; set; }
+        /// <summary>
+        /// 产品图片
+        /// </summary>
+        public string ProductImg { set; get; }
         public string  ProductSeriesName { get; set; }
         public string ExpiredDate { get; set; }
         public string Spec { get; set; }
