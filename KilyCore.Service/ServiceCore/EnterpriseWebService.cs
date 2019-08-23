@@ -349,7 +349,8 @@ namespace KilyCore.Service.ServiceCore
             {
                 if (data.AuditType != AuditEnum.AuditSuccess)
                 {
-                    string Area = Kily.Set<EnterpriseInviteCode>().Where(t => t.InviteCode == Convert.ToString(Encoding.Default.GetBytes(data.InviteCode))).Select(t => t.UseTypePath).FirstOrDefault()??"|";
+                    var InviteCode = System.Text.Encoding.Default.GetString(Convert.FromBase64String(data.InviteCode));
+                    string Area = Kily.Set<EnterpriseInviteCode>().Where(t => t.InviteCode == InviteCode).Select(t => t.UseTypePath).FirstOrDefault()??"|";
                     if (!data.TypePath.Contains(Area))
                         return "请在邀请码选中区域使用!";
                     //验证信息是否正确
@@ -363,6 +364,7 @@ namespace KilyCore.Service.ServiceCore
                         TypePath = Info.TypePath,
                         CompanyName = Info.CompanyName,
                         VersionType = SystemVersionEnum.Base,
+                        ContractYear="1",
                         ContractType = 2,
                         IsFormInviteCode = true
                     };
