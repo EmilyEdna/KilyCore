@@ -1238,7 +1238,7 @@ namespace KilyCore.Service.ServiceCore
             var MerUser = users.Select(t => new
             {
                 t.Id,
-                Name = t.TrueName,
+                Name = t.TrueName+"("+t.MerchantName+")",
                 CardType = "健康证",
                 CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
                 CardImg = t.HealthCard,
