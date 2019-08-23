@@ -20,10 +20,10 @@ namespace KilyCore.Extension.PayCore.WxPay
 {
     public static class WxPayModel
     {
-        public const string AppId = @"wxbd2dadd9e0775bcd";
-        public const string AppSecret = @"c071fa71707e8afa6f078b1762d674b5";
-        public const string MerchantAccount = @"1451396702";
-        public const string MerchantPayKey = @"chengduyanchengkejigs02885336372";
+        public const string AppId = @"wx0f1f6a2c8c4eb784";
+        public const string AppSecret = @"c13856ce7b8bcfc683509547e7431d91";
+        public const string MerchantAccount = @"1552401181";
+        public const string MerchantPayKey = @"cdsbykjyxgs028ZSYzsglipt12345678";
         public static string OutTradeNo = DateTime.Now.ToString("yyyyMMddhhmmss");
         public const string NotifyUrl = @"http://main.cfdacx.com/StaticHtml/WxNotify.html";
         public const string GateWayUrl = @"https://api.mch.weixin.qq.com";
