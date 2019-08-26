@@ -38,7 +38,7 @@
                     type: "post",
                     success: function (result) {
                         var html = '<option>===请选择===</option>';
-                         let lihtml = '';
+                        let lihtml = '';
                         $.each(result.data, function (i, obj) {
                             html += '<option value="' + obj.DicValue + '" data-value="' + obj.Id + '" data-attach="' + obj.AttachInfo + '">' + obj.DicName + '</option>';
                             lihtml += '<li id="' + obj.AttachInfo + '">' + obj.DicDescript + '</li>';
@@ -68,7 +68,7 @@
                 $("#VersionType").on("change", function () {
                     var selector = $(this).find("option:selected");
                     var html = "版本费用：" + selector.data().attach + "/年。";
-                    var func = html +"<br/>当前版本功能为：" + $("#" + selector.data().attach).text();
+                    var func = html + "<br/>当前版本功能为：" + $("#" + selector.data().attach).text();
                     controller.ajax({
                         url: "Function/GetVersionById",
                         data: { Id: selector.data().value },
@@ -79,7 +79,7 @@
                             options.Editor.summernote('code', result.data);
                         }
                     });
-                     controller.Alter(func);
+                    controller.Alter(func);
                 });
                 //合同模式
                 $("input:radio[name='ContractType']").on('click', function () {
@@ -221,9 +221,9 @@
                             <text title="线上合同">线上合同</text>
                         </label>
                         @*<label class="radio-inline">
-                            <input type="radio" name="ContractType" value="2" style="margin-top:3px" />
-                            <text title="线下合同">线下合同</text>
-                        </label>*@
+                                <input type="radio" name="ContractType" value="2" style="margin-top:3px" />
+                                <text title="线下合同">线下合同</text>
+                            </label>*@
                     </td>
                     <th><label class="control-label">版本选择</label></th>
                     <td class="has-warning">
@@ -259,13 +259,13 @@
                     <th><label class="control-label">缴费方式</label></th>
                     <td class="has-warning" colspan="3">
                         @*<label class="radio-inline">
-            <input type="radio" name="PayType" value="10" style="margin-top:3px" checked />
-            <text title="支付宝">支付宝</text>
-        </label>
-        <label class="radio-inline">
-            <input type="radio" name="PayType" value="20" style="margin-top:3px" />
-            <text title="微信">微信</text>
-        </label>*@
+                            <input type="radio" name="PayType" value="10" style="margin-top:3px" checked />
+                            <text title="支付宝">支付宝</text>
+                        </label>*@
+                        <label class="radio-inline">
+                            <input type="radio" name="PayType" value="20" style="margin-top:3px" />
+                            <text title="微信">微信</text>
+                        </label>
                         <label class="radio-inline">
                             <input type="radio" name="PayType" value="30" style="margin-top:3px" />
                             <text title="银行转账">银行转账</text>

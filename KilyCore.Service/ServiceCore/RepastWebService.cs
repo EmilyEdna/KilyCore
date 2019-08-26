@@ -2493,7 +2493,7 @@ namespace KilyCore.Service.ServiceCore
                         UpdateField(PayInfo, "PayDes");
                         UpdateField(Info, "VersionType");
                     }
-                    return "http://main.cfdacx.com/StaticHtml/WxNotify.html";
+                    return "http://system.cfda.vip/StaticHtml/WxNotify.html";
                 }
                 else
                     return null;
