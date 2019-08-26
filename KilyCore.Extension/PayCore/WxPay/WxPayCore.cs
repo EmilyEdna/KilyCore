@@ -34,11 +34,11 @@ namespace KilyCore.Extension.PayCore.WxPay
         {
             return new Merchant
             {
-                AppId = null, //WxPayModel.AppId,
-                AppSecret = null, //WxPayModel.AppSecret,
-                Key = null, //WxPayModel.MerchantPayKey,
-                MchId = null, //WxPayModel.MerchantAccount,
-                NotifyUrl = null, //WxPayModel.NotifyUrl
+                AppId = WxPayModel.AppId,
+                AppSecret = WxPayModel.AppSecret,
+                Key = WxPayModel.MerchantPayKey,
+                MchId = WxPayModel.MerchantAccount,
+                NotifyUrl = WxPayModel.NotifyUrl
             };
         }
         /// <summary>

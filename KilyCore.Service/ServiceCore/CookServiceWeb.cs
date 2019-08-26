@@ -516,7 +516,7 @@ namespace KilyCore.Service.ServiceCore
                         UpdateField(PayInfo, "PayDes");
                         UpdateField(Info, null, Fields);
                     }
-                    return "http://main.cfdacx.com/StaticHtml/WxNotify.html";
+                    return "http://system.cfda.vip/StaticHtml/WxNotify.html";
                 }
                 else
                     return null;
