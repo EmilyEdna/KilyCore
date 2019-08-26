@@ -355,7 +355,7 @@ namespace KilyCore.Service.ServiceCore
                         return "请在邀请码选中区域使用!";
                     //验证信息是否正确
                     if (!CompanySearchApi.GetOutSideApiSearchApi.CheckCompany(Param.CompanyName, Param.CommunityCode))
-                        return "你输入的信息和你在网上预留信息不一致";
+                        return "对不起，您录入的企业名称和社会统一代码不一致！";
                     //正确才审核和提交合同
                     Info.AuditType = AuditEnum.AuditSuccess;
                     RequestStayContract contract = new RequestStayContract()

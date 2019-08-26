@@ -1467,6 +1467,8 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 QuestionTitle = t.QuestionTitle,
                 SelectTypeName = AttrExtension.GetSingleDescription<ElementEnum, DescriptionAttribute>(t.SelectType),
+                Answer=t.Answer,
+                AnswerScore=t.AnswerScore,
                 Score = t.Score,
                 Type = t.Type
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
