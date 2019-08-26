@@ -10,6 +10,7 @@ namespace KilyCore.RabbitMQ.ExtenMQ
         public void AcceptMQ<T>(string msg)
         {
             JsonConvert.DeserializeObject<T>(msg);
+            //do somethings
         }
     }
 }
