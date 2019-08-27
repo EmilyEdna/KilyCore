@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>二维码打印</title>
+    <script src="../Content/JavaScript/jquery.min.js"></script>
+    <script src="../Content/QRCode/Script/Jquery.QRCode.js"></script>
+    <script src="../Content/QRCode/Script/QRCode.js"></script>
+    <script src="../Content/JavaScript/Controller.js"></script>
+    <script>
+        //$(function () {
+
+        //});
+        var option = {
+            Init: function () {
+                option.s = Number(controller.GetParam("S"));
+                option.c = controller.GetParam("H");
+                option.n = controller.GetParam("N");
+                option.k = controller.GetParam("K");
+                option.t = 3 //Number(controller.GetParam("T"));
+                option.InitDom();
+            },
+            InitDom: function () {
+                for (var i = 1; i <= option.t; i++) {
+                    var rand = (Math.floor(Math.random() * 9)) + 1;
+                    let FullCode = option.c + "W" + (option.s + i) + rand;
+                    var html = `<div class="wrap">
+                <div class="left">
+                    <p>产品名称：<span>农家土鸡蛋</span></p>
+                    <p>入库批次：<span>${option.n}</span></p>
+                    <p>等&emsp;&emsp;级：<span>一级</span></p>
+                    <p>保&nbsp;质&nbsp;期 ：<span>60天</span></p>
+                    <p>储藏条件：<span>常温</span></p>
+                    <p>执行标准：<span></span></p>
+                    <p>产&emsp;&emsp;地：<span>${$.parseJSON(localStorage.CompanyUser).CompanyAddress}</span></p>
+                </div>
+                <div class="right">
+                    <div id="code_${i}" width="160" height="160"></div>
+                    <img src="StaticImg/TagFlag.png" width="156" height="146" style="margin-top: 16px">
+                    <p>溯源编码：<span>${FullCode}</span></p>
+                </div>
+            </div>`
+                    $("body").append(html);
+                    controller.QRCode("#code_"+i, {
+                        text: "http://phone.cfda.vip/newphone/codeindex.html?id=&Code=" + FullCode,
+                        height: 160,
+                        width: 160
+                    });
+                }
+            },
+        };
+        $(document).ready(function () {
+            option.Init();
+        });
+    </script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .wrap {
+            width: 709px;
+            height: 472px;
+            margin: 100px auto;
+            box-sizing: border-box;
+            padding: 25px;
+            overflow: hidden;
+            border: 1px solid #f1f1f1;
+            position: relative;
+        }
+
+        .left p {
+            font-size: 20px;
+            line-height: 20px;
+        }
+
+            .left p:not(:first-child) {
+                margin-top: 36px;
+            }
+
+        .right {
+            width: 270px;
+            position: absolute;
+            right: 25px;
+            top: 50px;
+            text-align: right;
+        }
+
+            .right p {
+                font-size: 15px;
+                line-height: 20px;
+                margin-top: 46px;
+            }
+    </style>
+</head>
+
+<body>
+
+</body>
+
+</html>
