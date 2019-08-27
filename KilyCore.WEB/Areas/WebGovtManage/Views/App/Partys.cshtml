@@ -1,0 +1,141 @@
+﻿@{
+    ViewData["Title"] = "群宴报备";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+<link href="http://old.cfda.vip/Cashier/MUI/mui.min.css" rel="stylesheet" />
+<script type="text/javascript">
+    var options = {
+        Init: function () {
+             this.InitDom();
+        },
+        InitDom: function () {
+
+        }
+    };
+     //页面初始化
+    $(document).ready(function () {
+        options.Init();
+    });
+</script>
+<div class="mui-collapse-content">
+    <ul class="mui-table-view">
+        <li class="mui-table-view-cell">
+            <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">处理机构：</h5>
+            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"><%=model.ActionName %></h5>
+        </li>
+        <li class="mui-table-view-cell">
+            <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">群宴主题：</h5>
+            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
+        </li>
+        <li class="mui-table-view-cell">
+            <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">帮工人数：</h5>
+            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"><span></span>人</h5>
+        </li>
+        <li class="mui-table-view-cell">
+            <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">宴请桌数：</h5>
+            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;">桌</h5>
+        </li>
+        <li class="mui-table-view-cell">
+            <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">宴请时间：</h5>
+            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
+        </li>
+        <li class="mui-table-view-cell">
+            <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">宴请地址：</h5>
+            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
+        </li>
+      
+            <li class="mui-table-view-cell">
+                <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">厨师：</h5>
+                <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
+            </li>
+            <li class="mui-table-view-cell">
+                <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">举办人：</h5>
+                <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
+            </li>
+            <li class="mui-table-view-cell">
+                <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">联系电话：</h5>
+                <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
+            </li>
+           
+            @*<li class="mui-table-view-cell">
+                <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">操作人：</h5>
+                <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"><%=model.ActionName %></h5>
+            </li>
+            <li class="mui-table-view-cell">
+                <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">退回原因：</h5>
+                <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
+            </li>
+            <li class="mui-table-view-cell mui-media">
+                <div>
+                    <div class="mui-media-body">
+                        <p class='mui-ellipsis' style="white-space: normal;"><%=model.ActionRemark %></p>
+                    </div>
+                </div>
+            </li>
+           
+            <li class="mui-table-view-cell">
+                <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">操作人：</h5>
+                <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"><%=model.ActionName %></h5>
+            </li>
+            <li class="mui-table-view-cell">
+                <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">批复结果：</h5>
+                <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
+            </li>
+
+            <li class="mui-table-view-cell mui-media">
+                <div>
+                    <div class="mui-media-body">
+                        <p class='mui-ellipsis' style="white-space: normal;"><%=model.ActionRemark %></p>
+                    </div>
+                </div>
+            </li>
+            <li class="mui-table-view-cell" style="background-color: #999; text-align: center; color: #fff; margin: 6px 0px;">检查信息</li>
+           
+                <li class="mui-table-view-cell">
+                    <h5 class="mui-ellipsis mui-pull-left" style="color: #333;"><%=txtArr[0] %>：</h5>
+                    <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"><%=txtArr[1] %></h5>
+                </li>
+               
+                <li class="mui-table-view-cell">
+                    <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">现场图片：</h5>
+                    <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
+                </li>
+                <li class="mui-table-view-cell mui-media">
+                    <div>
+                        <div class="mui-media-body">
+                            <p class='mui-ellipsis' style="white-space: normal;">
+                                
+                                <a href="<%=imagesArr[i].Replace("//", "/") %>" target="_blank">
+                                <img src="<%=imagesArr[i].Replace("//", "/") %>" style="width: 100%" /></a>
+                                
+                            </p>
+                        </div>
+                    </div>
+                </li>*@
+                <li class="mui-table-view-cell">
+                    <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">备注信息：</h5>
+                    <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
+                </li>
+
+                <li class="mui-table-view-cell mui-media">
+                    <div>
+                        <div class="mui-media-body">
+                            <p class='mui-ellipsis' style="white-space: normal;"></p>
+                        </div>
+                    </div>
+                </li>
+              
+                <!--检查报告-->
+                <li class="mui-table-view-cell mui-media" style="display:none;">
+                    <div>
+                        <div class="mui-media-body">
+                            <p class='mui-ellipsis' style="white-space: normal;"><img src="检查报告" style="width:100%;" /></p>
+                        </div>
+                    </div>
+                </li>
+
+    </ul>
+</div>
+
+
+

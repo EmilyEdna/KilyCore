@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewData["Title"] = "关于我们";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+<link href="http://old.cfda.vip/Cashier/MUI/mui.min.css" rel="stylesheet" />
+<script type="text/javascript">
+    var options = {
+        Init: function () {
+             this.InitDom();
+        },
+        InitDom: function () {
+
+        }
+    };
+     //页面初始化
+    $(document).ready(function () {
+        options.Init();
+    });
+</script>
+<div class="mui-collapse-content">
+    <ul class="mui-table-view">
+        <li class="mui-table-view-cell mui-media">
+            <span href="javascript:;">
+                <div class="mui-media-body">
+                    <p class='mui-ellipsis'>
+                       <p style="text-indent:2em;"> 成都溯本源科技有限公司位于中国(四川)自由贸易试验区成都高新区，注册资本金2000万元人民币。是一家基于区块链、云计算、人工智能及大数据分析等技术的新一代“互联网+食药安全”硬、软件提供商、系统集成服务商和平台运营商。
+
+                       <p style="text-indent:2em;">
+                           公司技术及管理团队深耕智慧食药监管领域多年，为市场监管部门、食药生产及流通企业（含农产品）、餐饮企业（含单位食堂）专业搭建食药追溯管理一站式服务基础平台，并面向食药行业提供市场监管、企业和产品追溯管理综合解决方案、技术支持、系统集成及数据分析业务，服务于政府、企业和公众，专注食药追溯管理，共创食药安全生态。
+                       </p>
+                    </p>
+                </div>
+            </span>
+        </li>
+    </ul>
+</div>

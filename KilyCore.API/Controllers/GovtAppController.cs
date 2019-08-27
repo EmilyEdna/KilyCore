@@ -79,6 +79,13 @@ namespace KilyCore.API.Controllers
                 return ObjectResultEx.Instance(GovtWebService.GetWorkPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 获取今日统计
+        [HttpPost("GetAppTodayCount")]
+        public ObjectResultEx GetAppTodayCount()
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetAppTodayCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
 
     }
 }

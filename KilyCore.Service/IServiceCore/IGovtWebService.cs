@@ -102,6 +102,8 @@ namespace KilyCore.Service.IServiceCore
         String GetCity(Guid Id);
         Object GetCardPage(PageParamList<RequestGovtRiskCompany> pageParam);
         String ReportCardWaring(Guid Id, String Key);
+
+        ResponseGovtRisk GetWaringDetail(Guid Id);
         #endregion
 
         #region 执法检查
@@ -194,6 +196,10 @@ namespace KilyCore.Service.IServiceCore
         String EditAgree(RequestGovtAgree Param);
         ResponseGovtAgree GetAgreeDetail(Guid Id);
         String RemoveAgree(Guid Id);
+        #endregion
+
+        #region 手机APP
+        Object GetAppTodayCount();
         #endregion
     }
 }
