@@ -419,13 +419,18 @@ namespace KilyCore.Repositories.BaseRepository
             {
                 IList<String> PhotoPath = new List<String>();
                 String Url = $"{ Configer.RemovePathHost}/File/RemovePath";
-                Entity.GetType().GetProperties().ToList().ForEach(t =>
+                if (Entity != null)
                 {
-                    if (t.PropertyType == typeof(String))
-                        if ((t.GetValue(Entity) == null ? "" : t.GetValue(Entity)).ToString().Contains(@"/Upload/Images/"))
-                            PhotoPath.Add(t.GetValue(Entity).ToString());
-                });
-                return HttpClientExtension.HttpPostAsync(Url, null, HttpClientExtension.KeyValuePairs<Object>(new { Path = String.Join(",", PhotoPath) })).Result;
+                    Entity.GetType().GetProperties().ToList().ForEach(t =>
+                    {
+                        if (t.PropertyType == typeof(String))
+                            if ((t.GetValue(Entity) == null ? "" : t.GetValue(Entity)).ToString().Contains(@"/Upload/Images/"))
+                                PhotoPath.Add(t.GetValue(Entity).ToString());
+                    });
+                    return HttpClientExtension.HttpPostAsync(Url, null, HttpClientExtension.KeyValuePairs<Object>(new { Path = String.Join(",", PhotoPath) })).Result;
+                }
+                else
+                    return null;
             }
             catch (Exception ex)
             {
