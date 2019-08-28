@@ -1134,6 +1134,26 @@ namespace KilyCore.Service.ServiceCore
             return Remove<GovtRisk>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         /// <summary>
+        /// 预警详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseGovtRisk GetWaringDetail(Guid Id)
+        {
+            var data = Kily.Set<GovtRisk>().Where(t => t.Id == Id).Select(t => new ResponseGovtRisk()
+            {
+                Id = t.Id,
+                GovtId = t.GovtId,
+                WaringLv = t.WaringLv,
+                TypePath=t.TypePath,
+                EventName = t.EventName,
+                TradeType = t.TradeType,
+                Remark = t.Remark,
+                ReleaseTime = t.ReleaseTime
+            }).FirstOrDefault();
+            return data;
+        }
+        /// <summary>
         /// 获取事件数
         /// </summary>
         /// <returns></returns>
@@ -2807,6 +2827,109 @@ namespace KilyCore.Service.ServiceCore
         {
             return Remove<GovtAgree>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
+        #endregion
+
+        #region App统计
+        public Object GetAppTodayCount()
+        {
+            IQueryable<GovtRisk> risks = Kily.Set<GovtRisk>().Where(t => t.IsDelete == false);
+            IQueryable<GovtComplain> complains = Kily.Set<GovtComplain>();
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+            {
+                risks = risks.Where(t => t.TypePath.Contains(GovtInfo().City));
+                complains = complains.Where(t => t.TypePath.Contains(GovtInfo().City));
+            }
+            else
+            {
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                        foreach (var item in Areas)
+                        {
+                            risks = risks.Where(t => t.TypePath.Contains(item));
+                            complains = complains.Where(t => t.TypePath.Contains(item));
+                        }
+                    else
+                    {
+                        risks = risks.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                        complains = complains.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    }
+                }
+                else
+                {
+                    risks = risks.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                    complains = complains.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                }
+            }
+            List<DataBar> bars = new List<DataBar>();
+            //风险
+            var RiskCount = risks.Where(t => t.ReleaseTime.Value.Day - DateTime.Now.Day == 0).Count();
+            //投诉
+            var ComplainCount=complains.Where(t => t.ComplainTime.Value.Day - DateTime.Now.Day == 0).Count();
+            IQueryable<GovtTemplateChild> children = Kily.Set<GovtTemplateChild>().Where(t => t.IsDelete == false);
+            IQueryable<GovtNetPatrol> patrols = Kily.Set<GovtNetPatrol>().Where(t => t.IsDelete == false);
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+            {
+                children = children.Where(t => t.TypePath.Contains(GovtInfo().City));
+                patrols = patrols.Where(t => t.TypePath.Contains(GovtInfo().City));
+            }
+            else
+            {
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                        foreach (var item in Areas)
+                        {
+                            children = children.Where(t => t.TypePath.Contains(item));
+                            patrols = patrols.Where(t => t.TypePath.Contains(GovtInfo().City));
+                        }
+                    else
+                    {
+                        children = children.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                        patrols = patrols.Where(t => t.TypePath.Contains(GovtInfo().City));
+                    }
+                }
+                else
+                {
+                    children = children.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                    patrols = patrols.Where(t => t.TypePath.Contains(GovtInfo().City));
+                }
+            }
+            List<DataLine> lines = new List<DataLine>();
+            //自查
+            var SelfCount = children.Where(t => t.CreateTime.Value.Day - DateTime.Now.Day == 0).Count();
+            //抽查
+            var PatrolsCount = patrols.Where(t => t.CreateTime.Value.Day - DateTime.Now.Day == 0).Sum(t => t.PotrolNum);
+            //通报
+            var BadCount = patrols.Where(t => t.CreateTime.Value.Day - DateTime.Now.Day == 0).Sum(t => t.BulletinNum);
+           
+            IQueryable<CookBanquet> queryable = Kily.Set<CookBanquet>().OrderByDescending(t => t.CreateTime);
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
+            else
+            {
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                        foreach (var item in Areas)
+                        {
+                            queryable = queryable.Where(t => t.TypePath.Contains(item));
+                        }
+                    else
+                        queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            }
+            //群宴
+            var PartyCounts = queryable.Where(t => t.CreateTime.Value.Day - DateTime.Now.Day == 0).Count();
+            return new { RiskCount=RiskCount, ComplainCount= ComplainCount, SelfCount= SelfCount, PatrolsCount = PatrolsCount , BadCount = BadCount , PartyCounts = PartyCounts,Percents= (BadCount*100/ (PatrolsCount==0?1: PatrolsCount))+"%" };
+        }
+
+        
         #endregion
 
     }

@@ -38,6 +38,8 @@
                             controller.SetCtrlValue("#Edit", result.data);
                             $("#Helper").selectpicker('val', result.data.Helper);
                             $("#Ingredients").selectpicker('val', result.data.Ingredients);
+                            
+                           
                         }
                     });
             },
@@ -54,6 +56,7 @@
                             html += '<option>' + obj.HelperName + '</option>';
                         });
                         $("#Helper").html(html);
+                         $("#Helper").selectpicker("refresh");
                     }
                 });
                 $("#Helper").on('changed.bs.select', function () {
@@ -71,6 +74,7 @@
                             html += '<option>' + obj.Ingredients + '</option>';
                         });
                         $("#Ingredients").html(html);
+                        $("#Ingredients").selectpicker("refresh");
                     }
                 });
                 $("#Ingredients").on('changed.bs.select', function () {

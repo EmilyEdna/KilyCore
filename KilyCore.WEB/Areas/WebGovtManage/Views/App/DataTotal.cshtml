@@ -1,0 +1,269 @@
+﻿@{
+    ViewData["Title"] = "数据统计";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+
+<link href="http://old.cfda.vip/Cashier/MUI/mui.min.css" rel="stylesheet" />
+<script>
+    var options = {
+        //挂载需要初始化的方法
+        Init: function () {
+            this.InitEcharts();
+            this.InitDom();
+            this.InitEvent();
+            $("body").GetGovtInfo();
+            //$("#DepartName").html(Govt.DepartName);
+        },
+        //页面dom操作
+        InitDom: function () {
+
+        },
+        //echarts数据及其他数据渲染
+        InitEcharts: function () {
+            //今日数据
+            controller.ajax({
+                url: "GovtApp/GetAppTodayCount",
+                data: {},
+                type: "post",
+                async: false,
+                success: function (result) {
+                    $("#RiskCount").text(result.data.RiskCount);
+                    $("#ComplainCount").text(result.data.ComplainCount);
+                    $("#PatrolsCount").text(result.data.PatrolsCount);
+                    $("#BadCount").text(result.data.BadCount);
+                    $("#PartyCounts").text(result.data.PartyCounts);
+                    $("#Percents").text(result.data.Percents);
+                }
+            });
+            //产品统计
+            controller.ajax({
+                url: "GovtWeb/GetProductRank",
+                data: {},
+                type: "post",
+                async: false,
+                success: function (result) {
+                    var Charts = document.getElementById("productCharts");
+                    options.Pro = echarts.init(Charts, "light");
+                    options.Pro.setOption({
+                        title: {
+                            text: '产品统计',
+                            x: 'left'
+                        },
+                        tooltip: {
+                            trigger: "item",
+                            formatter: "{b0}<br />产品数：{c0}<br />占比：{d0}%"
+                        },
+                        legend: {
+                            type: "scroll",
+                            orient: "vertical",
+                            padding: 0,
+                            top: 15,
+                            right: 0,
+                            itemGap: 5,
+                            itemWidth: 10,
+                            itemHeight: 10,
+                            textStyle: {
+                                fontSize: 10,
+                                color: "#b0c2f9"
+                            }
+                        },
+                        series: [{
+                            name: "产品统计",
+                            type: "pie",
+                            center: ["47%", "55%"],
+                            radius: ["45%", "70%"],
+                            data: result.data
+                        }]
+                    });
+                }
+            });
+            //企业统计
+            controller.ajax({
+                url: "GovtWeb/GetNewStayInAllCompanyCount",
+                data: {},
+                type: "post",
+                async: false,
+                success: function (result) {
+                    var Charts = document.getElementById("companyCharts");
+                    options.Com = echarts.init(Charts, "light");
+                    options.Com.setOption({
+                        title: {
+                            text: '企业统计',
+                            x: 'left'
+                        },
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: "{a} <br/>{b} : {c} ({d}%)"
+                        },
+                        legend: {
+                            orient: 'vertical',
+                            left: 'right',
+                            data: result.data,
+                            textStyle: {
+                                fontSize: 10,
+                                color: "#b0c2f9"
+                            }
+                        },
+                        series: [
+                            {
+                                name: '企业统计',
+                                label: {
+                                    normal: {
+                                        // formatter: '{b|{b}：}{c}  {per|{d}%}  ',
+                                        formatter: '{b|{b}:}{c}家 ',
+                                        backgroundColor: '#fff',
+                                        borderColor: '#aaa',
+                                        borderWidth: 1,
+                                        borderRadius: 2,
+                                        rich: {
+                                            a: {
+                                                color: '#999',
+                                                lineHeight: 12,
+                                                align: 'center'
+                                            },
+                                            // abg: {
+                                            //     backgroundColor: '#333',
+                                            //     width: '100%',
+                                            //     align: 'right',
+                                            //     height: 22,
+                                            //     borderRadius: [4, 4, 0, 0]
+                                            // },
+                                            hr: {
+                                                borderColor: '#aaa',
+                                                width: '100%',
+                                                borderWidth: 0.5,
+                                                height: 0
+                                            },
+                                            b: {
+                                                fontSize: 10,
+                                                lineHeight: 16
+                                            },
+                                            per: {
+                                                color: '#eee',
+                                                backgroundColor: '#334455',
+                                                padding: [2, 2],
+                                                borderRadius: 2
+                                            }
+                                        }
+                                    },
+                                    emphasis: {
+                                        show: true,
+                                        textStyle: {
+                                            fontSize: '15',
+                                            fontWeight: 'bold'
+                                        }
+                                    }
+                                },
+                                type: 'pie',
+                                radius: '55%',
+                                center: ['50%', '60%'],
+                                data: result.data,
+                                itemStyle: {
+                                    emphasis: {
+                                        shadowBlur: 10,
+                                        shadowOffsetX: 0,
+                                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                    }
+                                }
+                            }
+                        ]
+                    })
+                }
+            });
+
+
+        },
+        //其他事件注册
+        InitEvent: function () {
+
+        },
+        //获取当前时间
+        GetNowDate: function () {
+            let now = new Date();
+            let year = now.getFullYear();
+            let month = now.getMonth() + 1;
+            let day = now.getDate();
+            let hours = now.getHours() + 1;
+            let minutes = now.getMinutes();
+            let seconds = now.getSeconds();
+            //不足10补0
+            if (month < 10) { month = "0" + month }
+            if (day < 10) { day = "0" + day }
+            if (hours < 10) { hours = "0" + hours }
+            if (minutes < 10) { minutes = "0" + minutes }
+            if (seconds < 10) { seconds = "0" + seconds }
+            $("#CurrentTime").html(year + " 年 " + month + " 月 " + day + " 日 " + hours + ":" + minutes + ":" + seconds);
+        },
+    };
+    //页面初始化
+    $(document).ready(function () {
+        options.Init();
+    });
+    //获取当前日期
+    function getDay(day) {
+        var today = new Date();
+        var targetday_milliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day;
+        today.setTime(targetday_milliseconds);
+        var tYear = today.getFullYear();
+        var tMonth = today.getMonth();
+        var tDate = today.getDate();
+        tMonth = doHandleMonth(tMonth + 1);
+        tDate = doHandleMonth(tDate);
+        return tMonth + "-" + tDate;
+    }
+    //月份不足10，补零
+    function doHandleMonth(month) {
+        var m = month;
+        if (month.toString().length == 1) {
+            m = "0" + month;
+        }
+        return m;
+    }
+</script>
+<div style="padding:4px 0px;background-color:#fff;margin-bottom:6px;">
+    <div id="companyCharts" style="height: 300px;width:98%;"></div>
+</div>
+<div style="padding:4px 0px;background-color:#fff;margin-top:12px;">
+    <div id="productCharts" style="height: 360px;width:98%;"></div>
+</div>
+<div class="mui-content">
+    <ul class="mui-table-view mui-grid-view mui-grid-9">
+        <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
+            <a href="#">
+                <span>抽查次数</span>
+                <div class="mui-media-body" id="PatrolsCount">0</div>
+            </a>
+        </li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
+            <a href="#">
+                <span>处罚次数</span>
+                <div class="mui-media-body" id="BadCount">0</div>
+            </a>
+        </li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
+            <a href="#">
+                <span>合格率</span>
+                <div class="mui-media-body" id="Percents">0</div>
+            </a>
+        </li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
+            <a href="#">
+                <span>群宴报备</span>
+                <div class="mui-media-body" id="PartyCounts">0</div>
+            </a>
+        </li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
+            <a href="#">
+                <span>风险预警</span>
+                <div class="mui-media-body" id="RiskCount">0</div>
+            </a>
+        </li>
+        <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
+            <a href="#">
+                <span>投诉信息</span>
+                <div class="mui-media-body" id="ComplainCount">0</div>
+            </a>
+        </li>
+    </ul>
+</div>
+

@@ -33,7 +33,8 @@
                     async: false,
                     type: "post",
                     success: function (result) {
-                        controller.SetCtrlValue("#Edit", result.data);
+                        //controller.SetCtrlValue("#Edit", result.data);
+                        controller.SetLableValue("#Edit", result.data);
                         $("input[name='Ingredients']").val(result.data.Ingredients.split("_")[0]);
                         options.BindHelper(result.data.Helpers);
                         options.BindFood(result.data.Foods);
@@ -106,38 +107,38 @@
                 <table class="table table-hover table-bordered m-t-sm">
                     <tr>
                         <th><label class="control-label">举办者</label></th>
-                        <td class="has-warning">
-                            <input type="text" class="form-control" name="HoldName" readonly="readonly" />
+                        <td class="has-warning" style="text-align:left;">
+                            <label type="txt" name="HoldName"></label>
                         </td>
                         <th><label class="control-label">联系电话</label></th>
-                        <td class="has-warning">
-                            <input type="text" class="form-control" name="Phone" readonly="readonly" />
+                        <td class="has-warning" style="text-align:left;">
+                            <label type="txt" name="Phone"></label>
                         </td>
                     </tr>
                     <tr>
                         <th><label class="control-label">举办地址</label></th>
-                        <td class="has-warning">
-                            <input type="text" class="form-control" name="Address" readonly="readonly" />
+                        <td class="has-warning" style="text-align:left;">
+                            <label type="txt" name="Address"></label>
                         </td>
                         <th><label class="control-label">食材</label></th>
-                        <td class="has-warning">
-                            <input type="text" class="form-control" name="Ingredients" readonly="readonly" />
+                        <td class="has-warning" style="text-align:left;">
+                            <label type="txt" name="Ingredients"></label>
                         </td>
                     </tr>
                     <tr>
                         <th><label class="control-label">卫生设施</label></th>
-                        <td class="has-warning">
-                            <input type="text" class="form-control" name="Processing" readonly="readonly" />
+                        <td class="has-warning" style="text-align:left;">
+                            <label type="txt" name="Processing"></label>
                         </td>
                         <th><label class="control-label">有毒害品</label></th>
-                        <td class="has-warning">
-                            <input type="text" class="form-control" name="Poisonous" readonly="readonly" />
+                        <td class="has-warning" style="text-align:left;">
+                            <label type="txt" name="Poisonous"></label>
                         </td>
                     </tr>
                     <tr>
                         <th><label class="control-label">质检结果</label></th>
-                        <td class="has-warning" colspan="3">
-                            <img class="img-preview" src="" type="image" name="ResultImg" style="display:block;margin:auto" title="点击放大" />
+                        <td class="has-warning" colspan="3" style="text-align:left;">
+                            <label type="img" name="ResultImg"></label>
                         </td>
                     </tr>
                 </table>

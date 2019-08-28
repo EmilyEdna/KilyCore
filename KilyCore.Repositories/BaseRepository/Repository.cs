@@ -71,7 +71,8 @@ namespace KilyCore.Repositories.BaseRepository
             }
             catch (Exception ex)
             {
-                throw ex;
+                return false;
+                //throw ex;
             }
         }
         /// <summary>

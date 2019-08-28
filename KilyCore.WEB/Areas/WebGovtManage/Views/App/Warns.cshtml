@@ -1,0 +1,67 @@
+﻿
+
+@{
+    ViewData["Title"] = "预警信息";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+<link href="http://old.cfda.vip/Cashier/MUI/mui.min.css" rel="stylesheet" />
+<script type="text/javascript">
+    var options = {
+        Init: function () {
+             this.InitDom();
+        },
+        InitDom: function () {
+             var Id = controller.GetParam("Id");
+            controller.ajax({
+                url: "GovtWeb/GetWaringDetail",
+                data: {Id:Id},
+                type: "post",
+                async: false,
+                success: function (result) {
+                    controller.SetLableValue("#Detail", result.data);
+                }
+            });
+        }
+    };
+     //页面初始化
+    $(document).ready(function () {
+        options.Init();
+    });
+</script>
+<div class="mui-collapse-content" id="Detail">
+    <ul class="mui-table-view">
+        <li class="mui-table-view-cell">
+            <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">事件名称：</h5>
+            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;" name="EventName" type="txt"></h5>
+        </li>
+        <li class="mui-table-view-cell">
+            <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">区域：</h5>
+            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"  name="Area" type="txt"></h5>
+        </li>
+        <li class="mui-table-view-cell">
+            <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">发现时间：</h5>
+            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"  name="ReleaseTime" type="txt"></h5>
+        </li>
+        <li class="mui-table-view-cell">
+            <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">所属行业：</h5>
+            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"  name="TradeType" type="txt"></h5>
+        </li>
+        <li class="mui-table-view-cell">
+            <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">风险级别：</h5>
+            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"  name="WaringLv" type="txt"></h5>
+        </li>
+        <li class="mui-table-view-cell">
+            <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">事件内容：</h5>
+            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
+        </li>
+        <li class="mui-table-view-cell mui-media">
+            <span href="javascript:;">
+                <div class="mui-media-body">
+                    <p style="white-space:normal;"  name="Remark" type="txt"></p>
+                </div>
+            </span>
+        </li>
+    </ul>
+</div>
+
+
