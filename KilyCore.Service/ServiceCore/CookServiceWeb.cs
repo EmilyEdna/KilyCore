@@ -335,7 +335,11 @@ namespace KilyCore.Service.ServiceCore
                 Ingredients = t.Ingredients,
                 CookBook = t.CookBook,
                 Stauts = t.Stauts,
-                ResultImg = t.ResultImg
+                ResultImg = t.ResultImg,
+                HoldTheme=t.HoldTheme,
+                HoldFoo=t.HoldFoo,
+                HoldTotal=t.HoldTotal,
+                DeskNum=t.DeskNum
             }).AsNoTracking().FirstOrDefault();
             return data;
         }

@@ -910,7 +910,7 @@ namespace KilyCore.Service.ServiceCore
                 CompanyName = x.CompanyName,
                 ProductType = t.ProductType,
                 ExpiredDate = t.ExpiredDate,
-                ProductImg="",
+                ProductImg = "",
                 Spec = t.Spec,
                 Unit = x.ProductionAddress,
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -1002,6 +1002,18 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         /// <summary>
+        /// 现场检测
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SiteImg(Guid Id, string Param)
+        {
+            CookBanquet cook = Kily.Set<CookBanquet>().Where(t => t.Id == Id).FirstOrDefault();
+            cook.ResultImg = Param;
+            return UpdateField(cook, "ResultImg") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        /// <summary>
         /// 群宴报备详情
         /// </summary>
         /// <param name="Id"></param>
@@ -1019,6 +1031,10 @@ namespace KilyCore.Service.ServiceCore
                 Processing = t.Processing,
                 Ingredients = t.Ingredients,
                 ResultImg = t.ResultImg,
+                HoldFoo = t.HoldFoo,
+                HoldTheme = t.HoldTheme,
+                HoldTotal = t.HoldTotal,
+                DeskNum = t.DeskNum,
                 Helpers = Kily.Set<CookHelper>().Where(x => x.CookId == t.CookId && t.Helper.Contains(x.HelperName))
                  .Select(x => new ResponseCookHelper()
                  {
@@ -1145,7 +1161,7 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 GovtId = t.GovtId,
                 WaringLv = t.WaringLv,
-                TypePath=t.TypePath,
+                TypePath = t.TypePath,
                 EventName = t.EventName,
                 TradeType = t.TradeType,
                 Remark = t.Remark,
@@ -1258,7 +1274,7 @@ namespace KilyCore.Service.ServiceCore
             var MerUser = users.Select(t => new
             {
                 t.Id,
-                Name = t.TrueName+"("+t.MerchantName+")",
+                Name = t.TrueName + "(" + t.MerchantName + ")",
                 CardType = "健康证",
                 CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
                 CardImg = t.HealthCard,
@@ -1374,13 +1390,13 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 GovtId = t.GovtId,
-                CompanyId=t.CompanyId,
-                CompanyName=t.CompanyName,
-                BulletinNum=t.BulletinNum,
-                PotrolNum=t.PotrolNum,
-                QualifiedNum=t.QualifiedNum,
-                TradeType=t.TradeType,
-                CheckTime=t.UpdateTime.Value.ToString("yyyy年MM月dd日 HH:mm")
+                CompanyId = t.CompanyId,
+                CompanyName = t.CompanyName,
+                BulletinNum = t.BulletinNum,
+                PotrolNum = t.PotrolNum,
+                QualifiedNum = t.QualifiedNum,
+                TradeType = t.TradeType,
+                CheckTime = t.UpdateTime.Value.ToString("yyyy年MM月dd日 HH:mm")
             }).FirstOrDefault();
             return data;
         }
@@ -1487,8 +1503,8 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 QuestionTitle = t.QuestionTitle,
                 SelectTypeName = AttrExtension.GetSingleDescription<ElementEnum, DescriptionAttribute>(t.SelectType),
-                Answer=t.Answer,
-                AnswerScore=t.AnswerScore,
+                Answer = t.Answer,
+                AnswerScore = t.AnswerScore,
                 Score = t.Score,
                 Type = t.Type
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -2866,7 +2882,7 @@ namespace KilyCore.Service.ServiceCore
             //风险
             var RiskCount = risks.Where(t => t.ReleaseTime.Value.Day - DateTime.Now.Day == 0).Count();
             //投诉
-            var ComplainCount=complains.Where(t => t.ComplainTime.Value.Day - DateTime.Now.Day == 0).Count();
+            var ComplainCount = complains.Where(t => t.ComplainTime.Value.Day - DateTime.Now.Day == 0).Count();
             IQueryable<GovtTemplateChild> children = Kily.Set<GovtTemplateChild>().Where(t => t.IsDelete == false);
             IQueryable<GovtNetPatrol> patrols = Kily.Set<GovtNetPatrol>().Where(t => t.IsDelete == false);
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
@@ -2904,7 +2920,7 @@ namespace KilyCore.Service.ServiceCore
             var PatrolsCount = patrols.Where(t => t.CreateTime.Value.Day - DateTime.Now.Day == 0).Sum(t => t.PotrolNum);
             //通报
             var BadCount = patrols.Where(t => t.CreateTime.Value.Day - DateTime.Now.Day == 0).Sum(t => t.BulletinNum);
-           
+
             IQueryable<CookBanquet> queryable = Kily.Set<CookBanquet>().OrderByDescending(t => t.CreateTime);
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
@@ -2926,10 +2942,10 @@ namespace KilyCore.Service.ServiceCore
             }
             //群宴
             var PartyCounts = queryable.Where(t => t.CreateTime.Value.Day - DateTime.Now.Day == 0).Count();
-            return new { RiskCount=RiskCount, ComplainCount= ComplainCount, SelfCount= SelfCount, PatrolsCount = PatrolsCount , BadCount = BadCount , PartyCounts = PartyCounts,Percents= (BadCount*100/ (PatrolsCount==0?1: PatrolsCount))+"%" };
+            return new { RiskCount = RiskCount, ComplainCount = ComplainCount, SelfCount = SelfCount, PatrolsCount = PatrolsCount, BadCount = BadCount, PartyCounts = PartyCounts, Percents = (BadCount * 100 / (PatrolsCount == 0 ? 1 : PatrolsCount)) + "%" };
         }
 
-        
+
         #endregion
 
     }

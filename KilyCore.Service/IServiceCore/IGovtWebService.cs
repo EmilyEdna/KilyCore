@@ -90,6 +90,7 @@ namespace KilyCore.Service.IServiceCore
         #region 餐饮监管
         PagedResult<ResponseCookBanquet> GetBanquetPage(PageParamList<RequestCookBanquet> pageParam);
         ResponseCookBanquet GetBanquetDetail(Guid Id);
+        String SiteImg(Guid Id, String Param);
         String EditCookBanquet(Guid Id, String Param);
         #endregion
 

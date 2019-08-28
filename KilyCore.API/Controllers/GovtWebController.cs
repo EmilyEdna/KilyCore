@@ -425,6 +425,17 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(GovtWebService.GetBanquetDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
+        /// 现在检测-APP
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("SiteImg")]
+        public ObjectResultEx SiteImg(SimpleParam<Guid> Key, SimpleParam<String> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.SiteImg(Key.Id, Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 审核群宴
         /// </summary>
         /// <param name="Key"></param>

@@ -34,12 +34,24 @@
                         url: "WebCookManage/Report/CookFeastEdit",
                         callBack: function (result) {
                             var checkboxs = result.$("#Edit").find("input[type='checkbox']:checked");
+                            var radios = result.$("#Edit").find("input[type='radio']:checked");
                             var html = '';
+                            var htmls = '';
                             for (var i = 0; i < checkboxs.length; i++) {
                                 var num = $(checkboxs[i]).parents(".col-sm-6").find("+div div input").val();
-                                html += (checkboxs[i].value + "-" + num + ",");
+                                if (i != checkboxs.length - 1)
+                                    html += (checkboxs[i].value + "-" + num + ",");
+                                else
+                                    html += checkboxs[i].value + "-" + num;
+                            }
+                            for (var i = 0; i < radios.length; i++) {
+                                if (i != radios.length - 1)
+                                    htmls += $(radios[i]).val() + ",";
+                                else
+                                    htmls += $(radios[i]).val();
                             }
                             result.$("#Edit").find("input[type='hidden'][name='Processing']").val(html);
+                            result.$("#Edit").find("input[type='hidden'][name='HoldFoo']").val(htmls);
                             result.$("#Edit").submit();
                         }
                     })
