@@ -92,5 +92,21 @@ namespace KilyCore.EntityFrameWork.Model.Cook
         /// 检查结果-图片
         /// </summary>
         public virtual string ResultImg { get; set; }
+        /// <summary>
+        /// 宴会主题
+        /// </summary>
+        public virtual string HoldTheme { get; set; }
+        /// <summary>
+        /// 宴会桌数
+        /// </summary>
+        public virtual string DeskNum { get; set; }
+        /// <summary>
+        /// 宴会人数
+        /// </summary>
+        public virtual string HoldTotal { get; set; }
+        /// <summary>
+        /// 主要食品原料及来源
+        /// </summary>
+        public virtual string HoldFoo { get; set; }
     }
 }

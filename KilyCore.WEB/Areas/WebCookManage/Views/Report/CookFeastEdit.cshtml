@@ -10,6 +10,7 @@
             Init: function () {
                 this.InitDom();
                 this.InitEvents();
+                this.InitFoo();
             },
             //元素
             InitDom: function () {
@@ -38,8 +39,18 @@
                             controller.SetCtrlValue("#Edit", result.data);
                             $("#Helper").selectpicker('val', result.data.Helper);
                             $("#Ingredients").selectpicker('val', result.data.Ingredients);
-                            
-                           
+                            let radio = $("input[type=radio]");
+                            var arr = result.data.HoldFood.split(',');
+                            $.each(radio, function (index, item) {
+                                if ($(item).is(":checked")) {
+                                    $(item).prop("checked", "false");
+                                }
+                            });
+                            $.each(radio, function (index, item) {
+                                if ($(item).val() == arr[index]) {
+                                    $(item).prop("checked", "true");
+                                }
+                            });
                         }
                     });
             },
@@ -56,7 +67,7 @@
                             html += '<option>' + obj.HelperName + '</option>';
                         });
                         $("#Helper").html(html);
-                         $("#Helper").selectpicker("refresh");
+                        $("#Helper").selectpicker("refresh");
                     }
                 });
                 $("#Helper").on('changed.bs.select', function () {
@@ -67,7 +78,7 @@
                     arrelemnt: ['#Ingredients'],
                     url: 'CookWeb/GetFoodList',
                     flag: false,
-                    data: {Id:Id},
+                    data: { Id: Id },
                     callBack: function (data) {
                         var html = '';
                         $.each(data, function (i, obj) {
@@ -234,8 +245,10 @@
                 //验证
                 controller.ValidateConfirm("#Edit");
             },
-            //行为
-            action: {}
+            //初始化主要食品和原料
+            InitFoo: function () {
+
+            },
         };
         //初始化
         $(document).ready(function () {
@@ -256,22 +269,43 @@
             <input type="hidden" name="Id" />
             <input type="hidden" name="CookId" />
             <input type="hidden" name="Processing" />
-            <input  type="hidden" name="Stauts" value="待批复"/>
+            <input type="hidden" name="HoldFoo" />
+            <input type="hidden" name="Stauts" value="待批复" />
             <table class="table table-hover table-bordered">
                 <tr>
-                    <th><label class="control-label">举办者</label></th>
+                    <th><label class="control-label">宴会主题</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="HoldName">
+                        <input type="text" class="form-control" name="HoldTheme">
                     </td>
-                    <th><label class="control-label">电话</label></th>
+                    <th><label class="control-label">举办者<span style="color:red">*</span></label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="Phone">
+                        <input type="text" class="form-control required" name="HoldName">
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">办宴时间</label></th>
+                    <th><label class="control-label">电话<span style="color:red">*</span></label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="HoldTime">
+                        <input type="text" class="form-control required" name="Phone">
+                    </td>
+                    <th><label class="control-label">宴会桌数<span style="color:red">*</span></label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="DeskNum">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">宴会人数<span style="color:red">*</span></label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="HoldTotal">
+                    </td>
+                    <th><label class="control-label">详细地址<span style="color:red">*</span></label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="Address">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">办宴时间 <span style="color:red">*</span></label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="HoldTime">
                     </td>
                     <th><label class="control-label">办宴天数<span style="color:red">*</span></label></th>
                     <td class="has-warning">
@@ -327,6 +361,123 @@
                     <th><label class="control-label">帮厨信息</label></th>
                     <td class="has-warning">
                         <select type="select" class="selectpicker form-control" id="Helper" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">主要食品原料及来源</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="checkbox">
+                            <div class="row">
+                                <div class="col-sm-6" style="height:34px;">
+                                    <label class="control-label" style="margin-top:7px;"> 家禽：</label>
+                                    <div style="display:inline-block;position:relative;width:13%">
+                                        <input type="radio" value="家禽(市场购买)" name="a_1" checked /><small style="position:absolute;top:3px;left:15px">市场购买</small>
+                                    </div>
+                                    <div style="display:inline-block;position:relative;width:13%">
+                                        <input type="radio" value="家禽(自家喂养)" name="a_1" /><small style="position:absolute;top:3px;left:15px">自家喂养</small>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" style="height:34px;">
+                                    <label class="control-label" style="margin-top:7px;"> 病/毒死畜禽肉：</label>
+                                    <div style="display:inline-block;position:relative;width:10%">
+                                        <input type="radio" value="病/毒死畜禽肉(有)" name="a_2" /><small style="position:absolute;top:3px;left:15px">有</small>
+                                    </div>
+                                    <div style="display:inline-block;position:relative;width:10%">
+                                        <input type="radio" value="病/毒死畜禽肉(无)" name="a_2" checked /><small style="position:absolute;top:3px;left:15px">无</small>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" style="height:34px;">
+                                    <label class="control-label" style="margin-top:7px;"> 蔬菜：</label>
+                                    <div style="display:inline-block;position:relative;width:13%">
+                                        <input type="radio" value="蔬菜(市场购买)" name="a_3" checked /><small style="position:absolute;top:3px;left:15px">市场购买</small>
+                                    </div>
+                                    <div style="display:inline-block;position:relative;width:13%">
+                                        <input type="radio" value="蔬菜(自家种植)" name="a_3" /><small style="position:absolute;top:3px;left:15px">自家种植</small>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" style="height:34px;">
+                                    <label class="control-label" style="margin-top:7px;"> 白酒：</label>
+                                    <div style="display:inline-block;position:relative;width:10%">
+                                        <input type="radio" value="白酒(散装)" name="a_4" /><small style="position:absolute;top:3px;left:15px">散装</small>
+                                    </div>
+                                    <div style="display:inline-block;position:relative;width:10%">
+                                        <input type="radio" value="白酒(套装)" name="a_4" checked /><small style="position:absolute;top:3px;left:15px">套装</small>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" style="height:34px;">
+                                    <label class="control-label" style="margin-top:7px;"> 检验合格证：</label>
+                                    <div style="display:inline-block;position:relative;width:10%">
+                                        <input type="radio" value="检验合格证(有)" name="a_5" checked /><small style="position:absolute;top:3px;left:15px">有</small>
+                                    </div>
+                                    <div style="display:inline-block;position:relative;width:10%">
+                                        <input type="radio" value="检验合格证(无)" name="a_5" /><small style="position:absolute;top:3px;left:15px">无</small>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" style="height:34px;">
+                                    <label class="control-label" style="margin-top:7px;"> 食用油：</label>
+                                    <div style="display:inline-block;position:relative;width:10%">
+                                        <input type="radio" value="食用油(散装)" name="a_6" checked /><small style="position:absolute;top:3px;left:15px">散装</small>
+                                    </div>
+                                    <div style="display:inline-block;position:relative;width:10%">
+                                        <input type="radio" value="食用油(套装)" name="a_6" /><small style="position:absolute;top:3px;left:15px">套装</small>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" style="height:34px;">
+                                    <label class="control-label" style="margin-top:7px;"> 饮品：</label>
+                                    <div style="display:inline-block;position:relative;width:10%">
+                                        <input type="radio" value="饮品(外购)" name="a_7" checked /><small style="position:absolute;top:3px;left:15px">外购</small>
+                                    </div>
+                                    <div style="display:inline-block;position:relative;width:10%">
+                                        <input type="radio" value="饮品(自制)" name="a_7" /><small style="position:absolute;top:3px;left:15px">自制</small>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" style="height:34px;">
+                                    <label class="control-label" style="margin-top:7px;"> 海产品：</label>
+                                    <div style="display:inline-block;position:relative;width:10%">
+                                        <input type="radio" value="海产品(有)" name="a_8" checked /><small style="position:absolute;top:3px;left:15px">有</small>
+                                    </div>
+                                    <div style="display:inline-block;position:relative;width:10%">
+                                        <input type="radio" value="海产品(无)" name="a_8" /><small style="position:absolute;top:3px;left:15px">无</small>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" style="height:34px;">
+                                    <label class="control-label" style="margin-top:7px;"> 凉菜：</label>
+                                    <div style="display:inline-block;position:relative;width:10%">
+                                        <input type="radio" value="凉菜(有)" name="a_9" checked /><small style="position:absolute;top:3px;left:15px">有</small>
+                                    </div>
+                                    <div style="display:inline-block;position:relative;width:10%">
+                                        <input type="radio" value="凉菜(无)" name="a_9" /><small style="position:absolute;top:3px;left:15px">无</small>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" style="height:34px;">
+                                    <label class="control-label" style="margin-top:7px;"> 发芽土豆：</label>
+                                    <div style="display:inline-block;position:relative;width:10%">
+                                        <input type="radio" value="发芽土豆(有)" name="a_10" /><small style="position:absolute;top:3px;left:15px">有</small>
+                                    </div>
+                                    <div style="display:inline-block;position:relative;width:10%">
+                                        <input type="radio" value="发芽土豆(无)" name="a_10" checked /><small style="position:absolute;top:3px;left:15px">无</small>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" style="height:34px;">
+                                    <label class="control-label" style="margin-top:7px;"> 野生菌：</label>
+                                    <div style="display:inline-block;position:relative;width:10%">
+                                        <input type="radio" value="野生菌(有)" name="a_11" /><small style="position:absolute;top:3px;left:15px">有</small>
+                                    </div>
+                                    <div style="display:inline-block;position:relative;width:10%">
+                                        <input type="radio" value="野生菌(无)" name="a_11" checked /><small style="position:absolute;top:3px;left:15px">无</small>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6" style="height:34px;">
+                                    <label class="control-label" style="margin-top:7px;"> 近期自种蔬菜是否施药：</label>
+                                    <div style="display:inline-block;position:relative;width:10%">
+                                        <input type="radio" value="近期自种蔬菜是否施药(有)" name="a_12" /><small style="position:absolute;top:3px;left:15px">有</small>
+                                    </div>
+                                    <div style="display:inline-block;position:relative;width:10%">
+                                        <input type="radio" value="近期自种蔬菜是否施药(无)" name="a_12" checked /><small style="position:absolute;top:3px;left:15px">无</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -400,7 +551,7 @@
                             <div class="row">
                                 <div class="col-sm-6" style="height:34px;">
                                     <label class="control-label" style="margin-top:7px;">
-                                        <input type="checkbox" value="垃圾桶\防鼠\防蝇\防尘设施" />垃圾桶\防鼠\防蝇\防尘设施
+                                        <input type="checkbox" value="垃圾桶/防鼠/防蝇/防尘设施" />垃圾桶/防鼠/防蝇/防尘设施
                                     </label>
                                 </div>
                                 <div class="col-sm-6">
@@ -416,7 +567,7 @@
                             <div class="row">
                                 <div class="col-sm-6" style="height:34px;">
                                     <label class="control-label" style="margin-top:7px;">
-                                        <input type="checkbox" value="洗菜\洗肉\洗鱼池" />洗菜\洗肉\洗鱼池
+                                        <input type="checkbox" value="洗菜/洗肉/洗鱼池" />洗菜/洗肉/洗鱼池
                                     </label>
                                 </div>
                                 <div class="col-sm-6">
@@ -463,12 +614,6 @@
                                 </td>
                             </tr>
                         </table>
-                    </td>
-                </tr>
-                <tr>
-                    <th><label class="control-label">详细地址</label></th>
-                    <td class="has-warning" colspan="3">
-                        <input type="text" class="form-control" name="Address">
                     </td>
                 </tr>
                 <tr>

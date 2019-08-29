@@ -2585,6 +2585,14 @@
             <param name="Param"></param>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.SiteImg(KilyCore.Service.QueryExtend.SimpleParam{System.Guid},KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            现在检测-APP
+            </summary>
+            <param name="Key"></param>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
         <member name="M:KilyCore.API.Controllers.GovtWebController.EditCookBanquet(KilyCore.Service.QueryExtend.SimpleParam{System.Guid},KilyCore.Service.QueryExtend.SimpleParam{System.String})">
             <summary>
             审核群宴
@@ -2603,6 +2611,13 @@
         <member name="M:KilyCore.API.Controllers.GovtWebController.EditWaringRisk(KilyCore.DataEntity.RequestMapper.Govt.RequestGovtRisk)">
             <summary>
             编辑预警信息
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetWaringDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            预警详情
             </summary>
             <param name="Param"></param>
             <returns></returns>
