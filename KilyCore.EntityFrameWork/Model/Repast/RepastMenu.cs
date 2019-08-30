@@ -1,4 +1,5 @@
-﻿using KilyCore.EntityFrameWork.Model.Base;
+﻿using KilyCore.EntityFrameWork.Attributes;
+using KilyCore.EntityFrameWork.Model.Base;
 using KilyCore.EntityFrameWork.ModelEnum;
 using System;
 using System.Collections.Generic;
@@ -42,5 +43,10 @@ namespace KilyCore.EntityFrameWork.Model.Repast
         /// 菜单图标
         /// </summary>
         public virtual string MenuIcon { get; set; }
+        /// <summary>
+        /// 序号
+        /// </summary>
+        [NoneUpdate]
+        public virtual int? MenuNo { get; set; }
     }
 }
