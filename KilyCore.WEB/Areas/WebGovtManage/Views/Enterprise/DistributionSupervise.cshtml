@@ -240,15 +240,31 @@
                     type: "post",
                     success: function (result) {
                         $.each(result.data, function (i, obj) {
-                            var myIcon = new BMap.Icon("http://www.cfdacx.com/jianguan/images/keysor.png", new BMap.Size(26, 33));
+                            var imgLoction = "http://system.cfda.vip/content/HPlus/img/keysor.png";
+                            if (obj.CompanyType == "种植企业"||obj.CompanyType == "养殖企业") {
+                                 imgLoction = "http://system.cfda.vip/content/HPlus/img/blue.png";
+                            }
+                            if (obj.CompanyType == "生产企业") {
+                                 imgLoction = "http://system.cfda.vip/content/HPlus/img/green.png";
+                            }
+                             if (obj.CompanyType == "流通企业") {
+                                 imgLoction = "http://system.cfda.vip/content/HPlus/img/lightblue.png";
+                            }
+                             if (obj.CompanyType == "餐饮企业") {
+                                 imgLoction = "http://system.cfda.vip/content/HPlus/img/red.png";
+                            }
+                             if (obj.CompanyType == "单位食堂") {
+                                 imgLoction = "http://system.cfda.vip/content/HPlus/img/yellow.png";
+                            }
+                            var myIcon = new BMap.Icon(imgLoction, new BMap.Size(26, 33));
                             options.marker = new BMap.Marker(new BMap.Point(obj.Lng, obj.Lat), { icon: myIcon });
                             options.marker.setTitle(obj.CompanyType);
                             options.Map.addOverlay(options.marker);               // 将标注添加到地图中
+                             if (obj.CompanyImg == null) obj.CompanyImg = "http://system.cfda.vip/content/HPlus/img/Nopic.jpg";
                             options.AddClickHandler(obj.Name, obj.Address, obj.CompanyCode, obj.CompanyType, obj.CompanyImg);
                             if (obj.CompanyUser == null) {
                                 obj.CompanyUser = "-";
-                            }
-                            if (obj.CompanyImg == null) obj.CompanyImg = "http://system.cfda.vip/content/HPlus/img/Nopic.jpg";
+                            }                           
                             var CompanyHtml = '<li>'
                                 + '<img src="' + obj.CompanyImg + '">'
                                 + '<div>'
@@ -387,10 +403,10 @@
                 var ply = new BMap.Polygon(blist[i].points, { strokeWeight:2, strokeColor: "#FF0000", fillOpacity: 0.01, fillColor: " #FFFFFF" }); //建立多边形覆盖物
                 ply.name = blist[i].name;
                 ply.label = label;
-                ply.addEventListener("click", click);
-                ply.addEventListener("mouseover", mouseover);
-                ply.addEventListener("mouseout", mouseout);
-                ply.addEventListener("mousemove", mousemove);
+                //ply.addEventListener("click", click);
+                //ply.addEventListener("mouseover", mouseover);
+                //ply.addEventListener("mouseout", mouseout);
+                //ply.addEventListener("mousemove", mousemove);
                 map.addOverlay(ply);
 
                 //添加名称标签层

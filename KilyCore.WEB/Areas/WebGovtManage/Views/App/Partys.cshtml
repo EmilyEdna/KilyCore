@@ -9,7 +9,16 @@
              this.InitDom();
         },
         InitDom: function () {
-
+            var Id = controller.GetParam("Id");
+             controller.ajax({
+                url: "GovtWeb/GetBanquetDetail",
+                data: {Id:Id},
+                type: "post",
+                async: false,
+                success: function (result) {
+                    controller.SetLableValue("#Detail", result.data);
+                }
+            });
         }
     };
      //页面初始化
@@ -17,44 +26,44 @@
         options.Init();
     });
 </script>
-<div class="mui-collapse-content">
+<div class="mui-collapse-content" id="Detail">
     <ul class="mui-table-view">
-        <li class="mui-table-view-cell">
+        @*<li class="mui-table-view-cell">
             <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">处理机构：</h5>
-            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"><%=model.ActionName %></h5>
-        </li>
+            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
+        </li>*@
         <li class="mui-table-view-cell">
             <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">群宴主题：</h5>
-            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
+            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;" name="HoldTheme"></h5>
         </li>
-        <li class="mui-table-view-cell">
+        @*<li class="mui-table-view-cell">
             <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">帮工人数：</h5>
-            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"><span></span>人</h5>
-        </li>
+            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"><span></span></h5>人
+        </li>*@
         <li class="mui-table-view-cell">
             <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">宴请桌数：</h5>
-            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;">桌</h5>
+            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;" name="DeskNum"></h5>
         </li>
         <li class="mui-table-view-cell">
             <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">宴请时间：</h5>
-            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
+            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;" name="HoldTime"></h5>
         </li>
         <li class="mui-table-view-cell">
             <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">宴请地址：</h5>
-            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
+            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;" name="Address"></h5>
         </li>
       
             <li class="mui-table-view-cell">
                 <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">厨师：</h5>
-                <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
+                <h5 class="mui-ellipsis mui-pull-right" style="color: #999;" name="HoldName"></h5>
             </li>
             <li class="mui-table-view-cell">
                 <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">举办人：</h5>
-                <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
+                <h5 class="mui-ellipsis mui-pull-right" style="color: #999;" name="HoldName"></h5>
             </li>
             <li class="mui-table-view-cell">
                 <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">联系电话：</h5>
-                <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
+                <h5 class="mui-ellipsis mui-pull-right" style="color: #999;" name="Phone"></h5>
             </li>
            
             @*<li class="mui-table-view-cell">
@@ -113,26 +122,26 @@
                     </div>
                 </li>*@
                 <li class="mui-table-view-cell">
-                    <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">备注信息：</h5>
+                    <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">主要食材及原料：</h5>
                     <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
                 </li>
 
                 <li class="mui-table-view-cell mui-media">
                     <div>
                         <div class="mui-media-body">
-                            <p class='mui-ellipsis' style="white-space: normal;"></p>
+                            <p  name="HoldFoo"></p>
                         </div>
                     </div>
                 </li>
               
                 <!--检查报告-->
-                <li class="mui-table-view-cell mui-media" style="display:none;">
+                @*<li class="mui-table-view-cell mui-media" style="display:none;">
                     <div>
                         <div class="mui-media-body">
                             <p class='mui-ellipsis' style="white-space: normal;"><img src="检查报告" style="width:100%;" /></p>
                         </div>
                     </div>
-                </li>
+                </li>*@
 
     </ul>
 </div>

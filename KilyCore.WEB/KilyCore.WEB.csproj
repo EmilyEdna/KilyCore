@@ -42,7 +42,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\WebMerchantManage\Views\Order\" />
-    <Folder Include="Views\Repast\" />
   </ItemGroup>
 
   <ItemGroup>

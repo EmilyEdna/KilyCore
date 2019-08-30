@@ -11,7 +11,12 @@
              this.InitDom();
         },
         InitDom: function () {
-             var Id = controller.GetParam("Id");
+            var Id = controller.GetParam("Id");
+            var ApiKey = controller.GetParam("ApiKey");
+            var Syskey = controller.GetParam("Syskey");
+            var Token = controller.GetParam("Token");
+            var obj = {"RSAToKen":Token,"RSAApiKey":ApiKey,"RSASysKey":Syskey};
+            controller.SetCookie(obj);
             controller.ajax({
                 url: "GovtWeb/GetWaringDetail",
                 data: {Id:Id},
