@@ -248,6 +248,7 @@
                             if (obj.CompanyUser == null) {
                                 obj.CompanyUser = "-";
                             }
+                            if (obj.CompanyImg == null) obj.CompanyImg = "http://system.cfda.vip/content/HPlus/img/Nopic.jpg";
                             var CompanyHtml = '<li>'
                                 + '<img src="' + obj.CompanyImg + '">'
                                 + '<div>'
@@ -455,7 +456,7 @@
 </div>
 <script>
     $(function () {
-        $(".list").attr("style", "height:" + ($(doucument).height() - 60) + "px");
+        $(".list").attr("style", "height:" + ($(document).height() - 60) + "px");
     })
     // 给左侧按钮注册点击事件，点击时隐藏或显示右侧停靠栏盒子
     let flag = true;
