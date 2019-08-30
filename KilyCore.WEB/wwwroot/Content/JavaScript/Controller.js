@@ -896,6 +896,7 @@ controller.Select = function (option) {
             html += '</optgroup>';
         });
         $(options.document).html(html);
+        $(options.document).selectpicker("refresh");
     }
     function InitHidden() {
         $.each(options.arrelemnt, function (i, element) {

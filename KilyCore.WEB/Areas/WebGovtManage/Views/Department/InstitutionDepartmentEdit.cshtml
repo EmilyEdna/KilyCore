@@ -43,6 +43,7 @@
                                 html += '<option value="' + obj.Id + '">' + obj.AreaName + '</option>';
                             });
                             $("#ManageArea").html(html);
+                            $("#ManageArea").selectpicker("refresh");
                         }
                     });
                 //当登录的用户账号角色为区县级账号时默认查询改账号下所有的乡镇
@@ -58,6 +59,7 @@
                                 html += '<option value="' + obj.Id + '">' + obj.TownName + '</option>';
                             });
                             $("#ManageArea").html(html);
+                            $("#ManageArea").selectpicker("refresh");
                         }
                     });
                 $("#ManageArea").on('changed.bs.select', function () {

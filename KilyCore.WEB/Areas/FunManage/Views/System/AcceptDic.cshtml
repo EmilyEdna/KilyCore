@@ -44,6 +44,7 @@
                             html += '<option value="' + obj.Id + '">' + obj.ProvinceName + '</option>';
                         });
                         $("#ProvinceId").html(html);
+                        $("#ProvinceId").selectpicker("refresh");
                     }
                 });
                 $("#ProvinceId").on('changed.bs.select', function () {

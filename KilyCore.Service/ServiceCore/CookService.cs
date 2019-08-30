@@ -231,11 +231,18 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseCookInfo> GetCookInfoPage(PageParamList<RequestCookInfo> pageParam)
         {
-            if (UserInfo().AccountType > AccountEnum.Country)
-                return null;
+         
             IQueryable<CookInfo> queryable = Kily.Set<CookInfo>().OrderByDescending(t => t.CreateTime);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.AreaTree))
                 queryable = queryable.Where(t => t.TypePath.Contains(pageParam.QueryParam.AreaTree));
+            if (UserInfo().AccountType == AccountEnum.Province)
+                queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().Province));
+            if (UserInfo().AccountType == AccountEnum.City)
+                queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().City));
+            if (UserInfo().AccountType == AccountEnum.Area)
+                queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().Area));
+            if(UserInfo().AccountType==AccountEnum.Village)
+                queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().Town));
             var data = queryable.Select(t => new ResponseCookInfo()
             {
                 Id = t.Id,
@@ -295,12 +302,18 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseCookInfo> GetCookServicePage(PageParamList<RequestCookInfo> pageParam)
         {
-            if (UserInfo().AccountType > AccountEnum.Country)
-                return null;
             IQueryable<CookInfo> queryable = Kily.Set<CookInfo>().OrderByDescending(t => t.CreateTime);
             IQueryable<CookVip> queryables = Kily.Set<CookVip>().OrderByDescending(t => t.CreateTime);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.AreaTree))
                 queryable = queryable.Where(t => t.TypePath.Contains(pageParam.QueryParam.AreaTree));
+            if (UserInfo().AccountType == AccountEnum.Province)
+                queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().Province));
+            if (UserInfo().AccountType == AccountEnum.City)
+                queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().City));
+            if (UserInfo().AccountType == AccountEnum.Area)
+                queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().Area));
+            if (UserInfo().AccountType == AccountEnum.Village)
+                queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().Town));
             var data = queryable.Join(queryables, t => t.CookId, x => x.Id, (t, x) => new ResponseCookInfo()
             {
                 Id = x.Id,

@@ -38,12 +38,10 @@
                     type: "post",
                     success: function (result) { 
                         var html = '';
-                        debugger;
                         $.each(result.data, function (i, obj) {
                             html += '<option value="' + obj.Id + '">' + obj.TargetName + '</option>';
                         });
                         $("#Target").append(html);
-                        console.log($("#Target").html());
                     }
                 });
                 $("#Target").on('changed.bs.select', function () {
