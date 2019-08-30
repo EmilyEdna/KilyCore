@@ -859,8 +859,8 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public Object GetStatistics()
         {
-            List<EnterpriseInfo> enterprises = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false && t.AuditType == AuditEnum.AuditSuccess).ToList();
-            List<RepastInfo> repasts = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false && t.AuditType == AuditEnum.AuditSuccess).ToList();
+            List<EnterpriseInfo> enterprises = Kily.Set<EnterpriseInfo>().Where(t=>!string.IsNullOrEmpty(t.TypePath)).Where(t => t.IsDelete == false && t.AuditType == AuditEnum.AuditSuccess).ToList();
+            List<RepastInfo> repasts = Kily.Set<RepastInfo>().Where(t => !string.IsNullOrEmpty(t.TypePath)).Where(t => t.IsDelete == false && t.AuditType == AuditEnum.AuditSuccess).ToList();
             List<ResponseProvince> Temp = null;
             List<int> PlantCount = new List<int>();
             List<int> ProCount = new List<int>();
@@ -921,7 +921,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public Object GetCreateTagList()
         {
-            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess);
+            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => !string.IsNullOrEmpty(t.TypePath)).Where(t => t.AuditType == AuditEnum.AuditSuccess);
             if (UserInfo().AccountType == AccountEnum.Province)
                 queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().Province));
             if (UserInfo().AccountType == AccountEnum.City)
