@@ -259,6 +259,9 @@ namespace KilyCore.Service.ServiceCore
                 DiningTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
                 CommunityCode = t.CommunityCode,
                 Phone = t.Phone,
+                CardExpiredDate=t.CardExpiredDate,
+                MerchantSafeLv=t.MerchantSafeLv,
+                Certification=t.Certification,
                 AllowUnit = t.AllowUnit,
                 Address = t.Address,
                 ImplUser = t.ImplUser
