@@ -350,7 +350,7 @@ namespace KilyCore.Service.ServiceCore
                 if (data.AuditType != AuditEnum.AuditSuccess)
                 {
                     var InviteCode = System.Text.Encoding.Default.GetString(Convert.FromBase64String(data.InviteCode));
-                    string Area = Kily.Set<EnterpriseInviteCode>().Where(t => t.InviteCode == InviteCode).Select(t => t.UseTypePath).FirstOrDefault()??"|";
+                    string Area = Kily.Set<EnterpriseInviteCode>().Where(t => t.InviteCode == InviteCode).Select(t => t.UseTypePath).FirstOrDefault() ?? "|";
                     if (!data.TypePath.Contains(Area))
                         return "请在邀请码选中区域使用!";
                     //验证信息是否正确
@@ -364,7 +364,7 @@ namespace KilyCore.Service.ServiceCore
                         TypePath = Info.TypePath,
                         CompanyName = Info.CompanyName,
                         VersionType = SystemVersionEnum.Base,
-                        ContractYear="1",
+                        ContractYear = "1",
                         ContractType = 2,
                         IsFormInviteCode = true
                     };
@@ -373,6 +373,10 @@ namespace KilyCore.Service.ServiceCore
                     EnterpriseRoleAuthor Role = Kily.Set<EnterpriseRoleAuthor>().Where(t => t.EnterpriseRoleName.Contains(CompanyType + "基础")).FirstOrDefault();
                     Info.EnterpriseRoleId = Role.Id;
                 }
+            }
+            else
+            {
+                Info.AuditType = AuditEnum.WaitAduit;
             }
             if (Update<EnterpriseInfo, RequestEnterprise>(Info, Param))
                 return $"{ServiceMessage.UPDATESUCCESS}，请重新登录系统(重要)！";
