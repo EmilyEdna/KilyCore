@@ -88,6 +88,7 @@
                             html += '<option value="' + obj.Id + '">' + obj.MaterName + '(' + obj.BatchNo + ')</option>';
                         });
                         $("#MaterialName").html(html);
+                        $("#MaterialName").selectpicker("refresh");
                     }
                 });
                 $("#MaterialName").on('changed.bs.select', function () {

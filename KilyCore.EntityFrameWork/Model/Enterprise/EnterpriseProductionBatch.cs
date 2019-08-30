@@ -72,7 +72,7 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual string TargetValue { get; set; }
         /// <summary>
-        /// 指标单位
+        /// 关键点单位
         /// </summary>
         public virtual string TargetUnit { get; set; }
         /// <summary>

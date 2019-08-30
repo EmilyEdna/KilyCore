@@ -31,6 +31,7 @@
                             html += '<option>' + obj.PackageNo + '_' + obj.ProductName + '</option>';
                         });
                         $("#PackageNo").html(html);
+                        $("#PackageNo").selectpicker("refresh");
                     }
                 });
                 $("#PackageNo").on('changed.bs.select', function () {

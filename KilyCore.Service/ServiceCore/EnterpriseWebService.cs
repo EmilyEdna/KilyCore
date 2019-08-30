@@ -3581,7 +3581,7 @@ namespace KilyCore.Service.ServiceCore
                 EnterpriseGoodsStockAttach StockAttach = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.GoodsBatchNo == Param.StockBatchNo).AsNoTracking().FirstOrDefault();
                 var TotalSum = Kily.Set<EnterpriseBoxing>().Where(t => t.StockBatchNo == Param.StockBatchNo).Sum(t => Convert.ToInt32(t.BoxCount));
                 //判断是否使用了箱码
-                var TempBox = Kily.Set<EnterpriseBoxing>().Where(t => t.BoxCode.Contains(Box.BoxCodeSort.ToString())).FirstOrDefault();
+                var TempBox = Kily.Set<EnterpriseBoxing>().Where(t => t.BoxCode.Contains(Param.BoxCode)).FirstOrDefault();
                 if (TempBox != null)
                     return "该箱码已经使用!";
                 if (Stock != null)

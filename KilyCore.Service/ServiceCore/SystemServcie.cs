@@ -1501,7 +1501,7 @@ namespace KilyCore.Service.ServiceCore
         {
             List<EnterpriseTagApply> queryable = Kily.Set<EnterpriseTagApply>().Where(t => t.IsDelete == false).Where(t => t.IsPay != null && t.IsPay == true).ToList();
             List<FunctionVeinTag> queryables = Kily.Set<FunctionVeinTag>().Where(t => t.IsDelete == false).ToList();
-            List<EnterpriseInfo> InfoTemp = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).ToList();
+            List<EnterpriseInfo> InfoTemp = Kily.Set<EnterpriseInfo>().Where(t => !string.IsNullOrEmpty(t.TypePath)).Where(t => t.IsDelete == false).ToList();
             List<SystemAdmin> AdminTemp = Kily.Set<SystemAdmin>().Where(t => t.IsDelete == false).ToList();
             var ApplyTag = queryable.GroupJoin(InfoTemp, t => t.CompanyId, x => x.Id, (t, x) => new { t, x });
             var ComVein = queryables.Where(t => t.AllotType == 1).Join(InfoTemp, t => t.AcceptUser, x => x.Id.ToString(), (t, x) => new { t, x });
@@ -1519,6 +1519,11 @@ namespace KilyCore.Service.ServiceCore
             {
                 var code = Kily.Set<SystemCity>().Where(t => t.Id.ToString() == UserInfo().City).Select(t => t.Code).FirstOrDefault();
                 areas = Kily.Set<SystemArea>().Where(t => t.CityCode == code).Select(t => new TmepArea() { Id = t.Id.ToString(), Name = t.Name }).ToList();
+            }
+            else if (UserInfo().AccountType == AccountEnum.Area)
+            {
+                var code = Kily.Set<SystemArea>().Where(t => t.Id.ToString() == UserInfo().Area).Select(t => t.Code).FirstOrDefault();
+                areas = Kily.Set<SystemTown>().Where(t => t.AreaCode == code).Select(t => new TmepArea() { Id = t.Id.ToString(), Name = t.Name }).ToList();
             }
             areas.ForEach(o =>
             {
@@ -1557,9 +1562,9 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public IList<ResponseSystemCompanyCount> GetCompanyCountCenter()
         {
-            List<EnterpriseInfo> Enterprise = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).ToList();
-            List<RepastInfo> Merchant = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).ToList();
-            List<CookInfo> Cook = Kily.Set<CookInfo>().Where(t => t.IsDelete == false).ToList();
+            List<EnterpriseInfo> Enterprise = Kily.Set<EnterpriseInfo>().Where(t => !string.IsNullOrEmpty(t.TypePath)).Where(t => t.IsDelete == false).ToList();
+            List<RepastInfo> Merchant = Kily.Set<RepastInfo>().Where(t => !string.IsNullOrEmpty(t.TypePath)).Where(t => t.IsDelete == false).ToList();
+            List<CookInfo> Cook = Kily.Set<CookInfo>().Where(t => !string.IsNullOrEmpty(t.TypePath)).Where(t => t.IsDelete == false).ToList();
             IList<ResponseSystemCompanyCount> CompanyCountList = new List<ResponseSystemCompanyCount>();
             List<TmepArea> areas = null;
             if (UserInfo().AccountType <= AccountEnum.Country)
@@ -1574,6 +1579,11 @@ namespace KilyCore.Service.ServiceCore
             {
                 var code = Kily.Set<SystemCity>().Where(t => t.Id.ToString() == UserInfo().City).Select(t => t.Code).FirstOrDefault();
                 areas = Kily.Set<SystemArea>().Where(t => t.CityCode == code).Select(t => new TmepArea() { Id = t.Id.ToString(), Name = t.Name }).ToList();
+            }
+            else if (UserInfo().AccountType == AccountEnum.Area)
+            {
+                var code = Kily.Set<SystemArea>().Where(t => t.Id.ToString() == UserInfo().Area).Select(t => t.Code).FirstOrDefault();
+                areas = Kily.Set<SystemTown>().Where(t => t.AreaCode == code).Select(t => new TmepArea() { Id = t.Id.ToString(), Name = t.Name }).ToList();
             }
             areas.ForEach(o =>
             {
@@ -1633,7 +1643,7 @@ namespace KilyCore.Service.ServiceCore
         public IList<ResponseSystemProductCount> GetProductCountCenter()
         {
             List<EnterpriseGoods> queryable = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess).ToList();
-            List<EnterpriseInfo> Enterprise = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).ToList();
+            List<EnterpriseInfo> Enterprise = Kily.Set<EnterpriseInfo>().Where(t => !string.IsNullOrEmpty(t.TypePath)).Where(t => t.IsDelete == false).ToList();
             IList<ResponseSystemProductCount> ProductCountList = new List<ResponseSystemProductCount>();
             List<TmepArea> areas = null;
             if (UserInfo().AccountType <= AccountEnum.Country)
@@ -1648,6 +1658,11 @@ namespace KilyCore.Service.ServiceCore
             {
                 var code = Kily.Set<SystemCity>().Where(t => t.Id.ToString() == UserInfo().City).Select(t => t.Code).FirstOrDefault();
                 areas = Kily.Set<SystemArea>().Where(t => t.CityCode == code).Select(t => new TmepArea() { Id = t.Id.ToString(), Name = t.Name }).ToList();
+            }
+            else if (UserInfo().AccountType == AccountEnum.Area)
+            {
+                var code = Kily.Set<SystemArea>().Where(t => t.Id.ToString() == UserInfo().Area).Select(t => t.Code).FirstOrDefault();
+                areas = Kily.Set<SystemTown>().Where(t => t.AreaCode == code).Select(t => new TmepArea() { Id = t.Id.ToString(), Name = t.Name }).ToList();
             }
             areas.ForEach(o =>
             {
@@ -1697,8 +1712,8 @@ namespace KilyCore.Service.ServiceCore
             if (Range.STime.HasValue && Range.ETime.HasValue)
                 queryable = queryable.Where(t => t.CreateTime >= Range.STime && t.CreateTime <= Range.ETime);
             List<SystemStayContract> Contracts = queryable.ToList();
-            List<EnterpriseInfo> Enterprises = Kily.Set<EnterpriseInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess).Where(t => t.IsDelete == false).ToList();
-            List<RepastInfo> Repasts = Kily.Set<RepastInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess).Where(t => t.IsDelete == false).ToList();
+            List<EnterpriseInfo> Enterprises = Kily.Set<EnterpriseInfo>().Where(t => !string.IsNullOrEmpty(t.TypePath)).Where(t => t.AuditType == AuditEnum.AuditSuccess).Where(t => t.IsDelete == false).ToList();
+            List<RepastInfo> Repasts = Kily.Set<RepastInfo>().Where(t => !string.IsNullOrEmpty(t.TypePath)).Where(t => t.AuditType == AuditEnum.AuditSuccess).Where(t => t.IsDelete == false).ToList();
             List<TmepArea> areas = null;
             if (UserInfo().AccountType <= AccountEnum.Country)
                 areas = Kily.Set<SystemProvince>().Where(t => t.IsDelete == false).AsNoTracking()
@@ -1712,6 +1727,11 @@ namespace KilyCore.Service.ServiceCore
             {
                 var code = Kily.Set<SystemCity>().Where(t => t.Id.ToString() == UserInfo().City).Select(t => t.Code).FirstOrDefault();
                 areas = Kily.Set<SystemArea>().Where(t => t.CityCode == code).Select(t => new TmepArea() { Id = t.Id.ToString(), Name = t.Name }).ToList();
+            }
+            else if (UserInfo().AccountType == AccountEnum.Area)
+            {
+                var code = Kily.Set<SystemArea>().Where(t => t.Id.ToString() == UserInfo().Area).Select(t => t.Code).FirstOrDefault();
+                areas = Kily.Set<SystemTown>().Where(t => t.AreaCode == code).Select(t => new TmepArea() { Id = t.Id.ToString(), Name = t.Name }).ToList();
             }
             List<ResponseSystemContractCount> TotalContract = new List<ResponseSystemContractCount>();
             areas.ForEach(item =>

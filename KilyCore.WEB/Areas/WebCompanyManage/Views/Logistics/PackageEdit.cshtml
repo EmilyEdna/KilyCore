@@ -35,6 +35,7 @@
                             html += '<option value="' + obj.GoodsBatchNo + '">' + obj.GoodsBatchNo + '(' + obj.GoodsName + ')</option>';
                         });
                         $("#ProductOutStockNo").html(html);
+                        $("#ProductOutStockNo").selectpicker("refresh");
                     }
                 });
                 $("#ProductOutStockNo").on('changed.bs.select', function () {

@@ -690,11 +690,11 @@ namespace KilyCore.Service.ServiceCore
             //第二步判断所在区域
             //第三步根据类型分组
             //审核通过
-            List<EnterpriseInfo> enterprises = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).ToList();
-            List<RepastInfo> repasts = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).ToList();
+            List<EnterpriseInfo> enterprises = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).Where(t=>!string.IsNullOrEmpty(t.TypePath)).ToList();
+            List<RepastInfo> repasts = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).Where(t => !string.IsNullOrEmpty(t.TypePath)).ToList();
             //不等于审核通过
-            List<EnterpriseInfo> enterprise = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).ToList();
-            List<RepastInfo> repast = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).ToList();
+            List<EnterpriseInfo> enterprise = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).Where(t => !string.IsNullOrEmpty(t.TypePath)).ToList();
+            List<RepastInfo> repast = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).Where(t => !string.IsNullOrEmpty(t.TypePath)).ToList();
             IList<DataPie> InSideData = null;
             IList<DataPie> OutSideData = null;
             if (UserInfo().AccountType == AccountEnum.Province)
