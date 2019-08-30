@@ -31,6 +31,19 @@ namespace KilyCore.WEB.Controllers
         {
             var WebRootPath = Environment.WebRootPath;
             Object data = FileUtil.UploadFile(Files, FolderName, WebRootPath);
+            return new JsonResult(data); 
+        }
+        /// <summary>
+        /// 上传音频
+        /// </summary>
+        /// <param name="Files"></param>
+        /// <param name="FolderName"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult UploadOtherFile(IFormFile Files, string FolderName)
+        {
+            var WebRootPath = Environment.WebRootPath;
+            Object data = FileUtil.UploadOther(Files, FolderName, WebRootPath);
             return new JsonResult(data);
         }
         /// <summary>

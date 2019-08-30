@@ -10,7 +10,7 @@
              this.InitDom();
         },
         InitDom: function () {
-             var Id = controller.GetParam("Id");
+            var Id = controller.GetParam("Id");
             controller.ajax({
                 url: "GovtWeb/GetTrainNoticeDetail",
                 data: {Id:Id},
@@ -18,7 +18,7 @@
                 async: false,
                 success: function (result) {
                     controller.SetLableValue("#Detail", result.data);
-                }
+                },
             });
         }
     };

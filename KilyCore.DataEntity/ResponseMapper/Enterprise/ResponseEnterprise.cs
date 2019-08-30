@@ -127,7 +127,16 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
                         var ProL = MainProRemark.Split(",").Length;
                         for (int i = 0; i < ProL; i++)
                         {
-                            Map.Add(Remark[i], Pro[i] ?? "");
+                            try
+                            {
+                                if(!Map.ContainsKey(Remark[i]))
+                                    Map.Add(Remark[i], Pro[i] ?? "");
+                            }
+                            catch (Exception)
+                            {
+                                if (!Map.ContainsKey(Remark[i]))
+                                    Map.Add(Remark[i], "");
+                            }
                         }
                     }
                     return Map;

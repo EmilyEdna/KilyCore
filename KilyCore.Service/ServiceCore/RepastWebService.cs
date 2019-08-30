@@ -2380,6 +2380,118 @@ namespace KilyCore.Service.ServiceCore
 
         #endregion
 
+        #region 配餐管理
+        /// <summary>
+        /// 配餐列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ReponseRepastUnitIns> GetUnitInsPage(PageParamList<RequestRepastUnitIns> pageParam)
+        {
+            IQueryable<RepastUnitIns> queryable = Kily.Set<RepastUnitIns>().Where(t => t.IsDelete == false);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.InsName))
+                queryable = queryable.Where(t => t.InsName == pageParam.QueryParam.InsName);
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data = queryable.Select(t => new ReponseRepastUnitIns()
+            {
+                Id = t.Id,
+                InfoId = t.InfoId,
+                InsName = t.InsName,
+                InsTime = t.InsTime
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 删除配餐
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string DeleteUnitIns(Guid Id)
+        {
+            return Remove<RepastUnitIns>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 编辑配餐
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveUnitIns(RequestRepastUnitIns Param)
+        {
+            RepastUnitIns Ins = Param.MapToEntity<RepastUnitIns>();
+            if (Ins.Id == Guid.Empty)
+                return Insert(Ins) ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
+            else
+                return Update(Param, Ins) ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
+        }
+        /// <summary>
+        /// 配餐详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ReponseRepastUnitIns GetUnitInsDetail(Guid Id)
+        {
+            return Kily.Set<RepastUnitIns>().Where(t => t.Id == Id).FirstOrDefault().MapToEntity<ReponseRepastUnitIns>();
+        }
+        /// <summary>
+        /// 配餐记录
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ReponseRepastUnitInsRecord> GetUnitInsRecordPage(PageParamList<RequestRepastUnitInsRecord> pageParam)
+        {
+            IQueryable<RepastUnitInsRecord> queryable = Kily.Set<RepastUnitInsRecord>().Where(t => t.IsDelete == false);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.InsTheme))
+                queryable = queryable.Where(t => t.InsTheme == pageParam.QueryParam.InsTheme);
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data = queryable.Select(t => new ReponseRepastUnitInsRecord()
+            {
+                Id = t.Id,
+                InfoId = t.InfoId,
+                InsTheme = t.InsTheme,
+                InsUser = t.InsUser,
+                InsTime = t.InsTime
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 删除配餐记录
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string DeleteUnitInsRecord(Guid Id)
+        {
+            return Remove<RepastUnitInsRecord>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 编辑配餐记录
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string SaveUnitInsRecord(RequestRepastUnitInsRecord Param)
+        {
+            RepastUnitInsRecord Ins = Param.MapToEntity<RepastUnitInsRecord>();
+            if (Ins.Id == Guid.Empty)
+                return Insert(Ins) ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
+            else
+                return Update(Param, Ins) ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
+        }
+        /// <summary>
+        /// 配餐记录详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ReponseRepastUnitInsRecord GetUnitInsRecordDetail(Guid Id)
+        {
+            return Kily.Set<RepastUnitInsRecord>().Where(t => t.Id == Id).FirstOrDefault().MapToEntity<ReponseRepastUnitInsRecord>();
+        }
+        #endregion
+
         #region 微信和支付宝调用
         /// <summary>
         /// 版本续费和升级使用支付宝支付

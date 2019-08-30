@@ -1442,6 +1442,8 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<GovtPatrolCategory> queryable = Kily.Set<GovtPatrolCategory>().OrderByDescending(t => t.CreateTime).Where(t => t.TypePath.Contains(GovtInfo().City));
             if (!string.IsNullOrEmpty(pageParam.QueryParam.CategoryName))
                 queryable = queryable.Where(t => t.CategoryName.Contains(pageParam.QueryParam.CategoryName));
+            if(!string.IsNullOrEmpty(pageParam.QueryParam.CategoryType))
+                queryable = queryable.Where(t => t.CategoryType.Contains(pageParam.QueryParam.CategoryType));
             var data = queryable.Select(t => new ResponseGovtPatrolCategory()
             {
                 Id = t.Id,
@@ -1629,7 +1631,7 @@ namespace KilyCore.Service.ServiceCore
                 Sb.Append(@"<tr><td colspan='4' style='font-size:13px;'><center>现场照片</center>");
                 Param.ImgList.Split(",").ToList().ForEach(t =>
                 {
-                    Sb.Append($@"<center><img src='http://www.cfdacx.com{t}' style='width:100%;max-width:456px;'></center>");
+                    Sb.Append($@"<center><img src='http://system.cfda.vip{t}' style='width:100%;max-width:456px;'></center>");
                 });
                 if (!string.IsNullOrEmpty(Param.Sound))
                 {

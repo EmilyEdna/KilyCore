@@ -57,6 +57,27 @@ namespace KilyCore.WEB.Util
             return new { data = RootPath + FullFileName, flag = 1, msg = "上传成功！", HttpCode = 10 };
         }
         /// <summary>
+        /// 上传音频
+        /// </summary>
+        /// <param name="Files"></param>
+        /// <param name="FolderName"></param>
+        /// <param name="WebRootPath"></param>
+        /// <returns></returns>
+        public static Object UploadOther(IFormFile Files, String FolderName, String WebRootPath)
+        {
+            long bytes = Files.Length;
+            String RootPath = $"/Upload/Others/{FolderName}/{DateTime.Now.ToString("yyyyMMdd")}/";
+            String SavePath = WebRootPath + RootPath;
+            if (!Directory.Exists(SavePath))
+                Directory.CreateDirectory(SavePath);
+            using (FileStream fs = File.Create(SavePath + Files.FileName))
+            {
+                Files.CopyTo(fs);
+                fs.Flush();
+            }
+            return new { data = RootPath + Files.FileName, flag = 1, msg = "上传成功！", HttpCode = 10 };
+        }
+        /// <summary>
         /// 创建PDF文件流
         /// </summary>
         /// <param name="CompanyName"></param>
@@ -244,7 +265,7 @@ namespace KilyCore.WEB.Util
             String FileName = String.Empty;
             if (string.IsNullOrEmpty(model.Id))
                 model.Id = null;
-            if (!model.CodeHost.Substring(2,1).Contains("B"))
+            if (!model.CodeHost.Substring(2, 1).Contains("B"))
             {
                 if (model.CodeHost.Substring(2, 1).Contains("W"))
                 {
