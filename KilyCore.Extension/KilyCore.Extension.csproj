@@ -15,6 +15,7 @@
     <PackageReference Include="PaySharp.Alipay" Version="1.0.3" />
     <PackageReference Include="PaySharp.Core" Version="1.0.6" />
     <PackageReference Include="PaySharp.Wechatpay" Version="1.0.3" />
+    <PackageReference Include="PuppeteerSharp" Version="1.19.0" />
   </ItemGroup>
 
   <ItemGroup>

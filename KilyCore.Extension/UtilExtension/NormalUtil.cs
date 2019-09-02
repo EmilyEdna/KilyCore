@@ -1,7 +1,10 @@
+using Microsoft.AspNetCore.Mvc;
+using PuppeteerSharp;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点51分
@@ -318,6 +321,36 @@ namespace KilyCore.Extension.UtilExtension
             return sb.ToString();
         }
         #endregion
+        #region 网页存图片
+
+        public static async Task<string> PageToImage(string url, int? width, int? height)
+        {
+            await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultRevision);
+            var browser = await Puppeteer.LaunchAsync(new LaunchOptions
+            {
+                Headless = true,
+                //ExecutablePath="",
+                Args = new string[] { "--no-sandbox" }
+            });
+            var page = await browser.NewPageAsync();
+            bool fullPage = true;
+            if (width.HasValue && height.HasValue)
+            {
+                await page.SetViewportAsync(new ViewPortOptions
+                {
+                    Width = width.Value,
+                    Height = height.Value
+                });
+                fullPage = false;
+            }
+            await page.GoToAsync(System.Web.HttpUtility.UrlDecode(url));
+            string fileName = $"/Files/{Guid.NewGuid().ToString()}.png";
+            await page.ScreenshotAsync($"{Environment.CurrentDirectory}{fileName}", new ScreenshotOptions { FullPage = fullPage, Type = ScreenshotType.Png });
+            return $"{fileName}";
+        }
+        #endregion
     }
     #endregion
+
+
 }
