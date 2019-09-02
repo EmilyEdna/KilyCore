@@ -259,9 +259,9 @@ namespace KilyCore.Service.ServiceCore
                 DiningTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
                 CommunityCode = t.CommunityCode,
                 Phone = t.Phone,
-                CardExpiredDate=t.CardExpiredDate,
-                MerchantSafeLv=t.MerchantSafeLv,
-                Certification=t.Certification,
+                CardExpiredDate = t.CardExpiredDate,
+                MerchantSafeLv = t.MerchantSafeLv,
+                Certification = t.Certification,
                 AllowUnit = t.AllowUnit,
                 Address = t.Address,
                 ImplUser = t.ImplUser
@@ -290,7 +290,7 @@ namespace KilyCore.Service.ServiceCore
                 SellerAddress = t.SellerAddress,
                 NatureAgent = t.NatureAgent,
                 NetAddress = t.NetAddress,
-                MainPro=t.MainPro,
+                MainPro = t.MainPro,
                 IdCard = t.IdCard,
                 Honor = t.HonorCertification,
                 Discription = t.Discription,
@@ -796,7 +796,7 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseCheckGoods> CheckGoods = Kily.Set<EnterpriseCheckGoods>().Where(t => t.IsDelete == false);
             //产品的查询
             var GoodsData = GoodsStockAttach.Join(GoodStock, a => a.StockId, b => b.Id, (a, b) => new { a, b })
-                 .Join(ProductionBatch, c => c.b.BatchId, d => d.Id, (c, d) => new { c, d })
+                 .GroupJoin(ProductionBatch, c => c.b.BatchId, d => d.Id, (c, d) => new { c, d })
                  .Join(Goods, e => e.c.b.GoodsId, f => f.Id, (e, f) => new { e, f })
                  .GroupJoin(CheckGoods, g => g.e.c.b.CheckGoodsId, h => h.Id, (g, h) => new { g, h })
                  .Join(ProductSeries, i => i.g.f.ProductSeriesId, j => j.Id, (i, j) => new { i, j })
@@ -813,14 +813,14 @@ namespace KilyCore.Service.ServiceCore
                 t.k.i.g.f.Spec,
                 t.k.i.g.f.ProductType,
                 t.k.j.Standard,
-                t.k.i.g.e.d.DeviceName,
+                DeviceName = t.k.i.g.e.d.FirstOrDefault() == null ? "" : t.k.i.g.e.d.FirstOrDefault().DeviceName,
                 OutNo = t.k.i.g.e.c.a.GoodsBatchNo,
                 t.k.i.g.e.c.a.OutStockTime,
                 t.k.i.g.e.c.a.OutStockUser,
                 t.k.i.g.e.c.b.Manager,
                 t.k.i.g.e.c.b.ProductTime,
                 InNo = t.k.i.g.e.c.b.GoodsBatchNo,
-                t.k.i.g.e.d.MaterialId,
+                MaterialId = t.k.i.g.e.d.FirstOrDefault() == null ? "" : t.k.i.g.e.d.FirstOrDefault().MaterialId,
                 t.k.i.h.FirstOrDefault().CheckUint,
                 t.k.i.h.FirstOrDefault().CheckUser,
                 t.k.i.h.FirstOrDefault().CheckResult,
@@ -865,16 +865,16 @@ namespace KilyCore.Service.ServiceCore
                 GoodCheckUser = GoodData.CheckUser,
                 GoodCheckResult = GoodData.CheckResult,
                 GoodCheckReport = GoodData.CheckReport,
-                MaterialCheckUint = MaterialData.CheckUint,
-                MaterialCheckUser = MaterialData.CheckUser,
-                MaterialCheckResult = MaterialData.CheckResult,
-                MaterialCheckReport = MaterialData.CheckReport,
-                MaterialAddress = MaterialData.Address,
-                MaterialExpiredDay = MaterialData.ExpiredDay,
-                MaterialData.MaterName,
-                MaterialData.MaterType,
-                MaterialData.Supplier,
-                MaterialProductTime = MaterialData.ProductTime
+                MaterialCheckUint = MaterialData?.CheckUint,
+                MaterialCheckUser = MaterialData?.CheckUser,
+                MaterialCheckResult = MaterialData?.CheckResult,
+                MaterialCheckReport = MaterialData?.CheckReport,
+                MaterialAddress = MaterialData?.Address,
+                MaterialExpiredDay = MaterialData?.ExpiredDay,
+                MaterName = MaterialData?.MaterName,
+                MaterType = MaterialData?.MaterType,
+                Supplier = MaterialData?.Supplier,
+                MaterialProductTime = MaterialData?.ProductTime
             };
         }
         /// <summary>
@@ -936,7 +936,7 @@ namespace KilyCore.Service.ServiceCore
             //产品的查询
             var GoodsData = GoodsStockAttach.Join(GoodStock, a => a.StockId, b => b.Id, (a, b) => new { a, b })
                 .Join(Goods, c => c.b.GoodsId, d => d.Id, (c, d) => new { c, d })
-                .Join(StockType, e => e.c.b.StockTypeId, f => f.Id, (e, f) => new { e, f })               
+                .Join(StockType, e => e.c.b.StockTypeId, f => f.Id, (e, f) => new { e, f })
                 .GroupJoin(CheckGoods, g => g.e.c.b.CheckGoodsId, h => h.Id, (g, h) => new { g, h })
                 .Where(t => t.g.e.d.Id == Id).AsNoTracking();
             return GoodsData.Select(t => new
@@ -998,7 +998,7 @@ namespace KilyCore.Service.ServiceCore
                 CookId = t.CookId,
                 HoldName = t.HoldName,
                 Phone = t.Phone,
-                HoldTheme=t.HoldTheme,
+                HoldTheme = t.HoldTheme,
                 HoldFoo = t.HoldFoo,
                 HoldTotal = t.HoldTotal,
                 DeskNum = t.DeskNum,
@@ -1044,7 +1044,7 @@ namespace KilyCore.Service.ServiceCore
                 HoldTheme = t.HoldTheme,
                 HoldTotal = t.HoldTotal,
                 DeskNum = t.DeskNum,
-                HoldTime=t.HoldTime,
+                HoldTime = t.HoldTime,
                 Helpers = Kily.Set<CookHelper>().Where(x => x.CookId == t.CookId && t.Helper.Contains(x.HelperName))
                  .Select(x => new ResponseCookHelper()
                  {
@@ -1445,7 +1445,7 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<GovtPatrolCategory> queryable = Kily.Set<GovtPatrolCategory>().OrderByDescending(t => t.CreateTime).Where(t => t.TypePath.Contains(GovtInfo().City));
             if (!string.IsNullOrEmpty(pageParam.QueryParam.CategoryName))
                 queryable = queryable.Where(t => t.CategoryName.Contains(pageParam.QueryParam.CategoryName));
-            if(!string.IsNullOrEmpty(pageParam.QueryParam.CategoryType))
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.CategoryType))
                 queryable = queryable.Where(t => t.CategoryType.Contains(pageParam.QueryParam.CategoryType));
             var data = queryable.Select(t => new ResponseGovtPatrolCategory()
             {
@@ -1626,9 +1626,10 @@ namespace KilyCore.Service.ServiceCore
                         AnswerScore = x.AnswerScore
                     }).FirstOrDefault();
                     int index = CategoryAttach.Answer.Split("|").ToList().FindIndex(p => p.Equals(AnswerList[1]));
-                    string Score = CategoryAttach.AnswerScore.Split("|").ToList().ElementAtOrDefault(index);
+                    string Score = CategoryAttach.AnswerScore != "" ? CategoryAttach.AnswerScore.Split("|").ToList().ElementAtOrDefault(index) : "";
                     Sb.Append($@"<tr style='font-size:13px;'><td align='center'>{++EleIndex}</td><td>{CategoryAttach.QuestionTitle}</td><td align='center'>{AnswerList[1]}</td><td align='center'>{Score}</td></tr>");
-                    TotalScore += Convert.ToDouble(Score);
+                    if (!string.IsNullOrEmpty(Score))
+                        TotalScore += Convert.ToDouble(Score);
                 });
                 Sb.Append($@"<tr><td align='center' style='font-size:13px;'>得分总和</td><td colspan='3' style='font-size:13px;'>{TotalScore}分</td></tr>");
                 Sb.Append(@"<tr><td colspan='4' style='font-size:13px;'><center>现场照片</center>");
@@ -1647,8 +1648,8 @@ namespace KilyCore.Service.ServiceCore
                     .Replace("{companyAddress}", Param.CompanyAddress)
                     .Replace("{personName}", Param.PersonName)
                     .Replace("{companyPhone}", Param.CompanyPhone)
-                    .Replace("{companyCode}", Param.CompanyPhone)
-                    .Replace("{companySign}", Param.CompanySign)
+                    .Replace("{companyCode}", Param.CompanyCode)
+                    .Replace("{companySign}", $"http://system.cfda.vip{ Param.CompanySign}")
                     .Replace("{CheckTime}", Param.PatrolTime.ToString())
                     .Replace("{CheckPerson}", Param.PatrolUser)
                     .Replace("{CheckItemList}", Sb.ToString());
