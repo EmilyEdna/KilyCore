@@ -1,383 +1,221 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "首页";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
-    <script>
-        var option = {
-            Init: function () {
-                this.InitDrop();
-                this.InitDom();
-                this.InitEvent();
-                this.InitDataCount(RepastUser.Id)
-            },
-            InitDrop: function () {
-                $(".dropdown-toggle").html(RepastUser.MerchantName + '<b class="caret"></b>');
-                if (RepastUser.InfoId!=40)
-                    $(".nav-pills").addClass("hidden");
-                else {
-                    $(".nav-pills").removeClass("hidden");
-                    //获取子账户
-                    controller.ajax({
-                        url: "RepastWeb/GetChildAccount",
-                        data: { Id: RepastUser.Id },
-                        type: "post",
-                        async: false,
-                        success: function (result) {
-                            var html = '';
-                            $.each(result.data, function (key, val) {
-                                html += '<li><a href="javascript:void(0);" data-Id="' + key + '">' + val + '</a></li>';
-                            });
-                            $(".dropdown-menu").html(html);
-                        }
-                    });
-                }
-                $(".dropdown-menu").find("a").on('click', function () {
-                    $(".dropdown-toggle").html($(this).text() + '<b class="caret"></b>');
-                    option.InitDataCount($(this).data().id);
-                });
-            },
-            InitDom: function () {
-                $("body").addClass("gray-bg");
-                $("input").addClass("noborder");
-                $("img[name='Certification']").addClass("imgheight");
-                //获取详细
+<script>
+    var option = {
+        Init: function () {
+            this.InitDrop();
+            this.InitDom();
+            this.InitEvent();
+            this.InitDataCount(RepastUser.Id)
+        },
+        InitDrop: function () {
+            $(".dropdown-toggle").html(RepastUser.MerchantName + '<b class="caret"></b>');
+            if (RepastUser.InfoId != 40)
+                $(".nav-pills").addClass("hidden");
+            else {
+                $(".nav-pills").removeClass("hidden");
+                //获取子账户
                 controller.ajax({
-                    url: "RepastWeb/GetMerchantDetail",
+                    url: "RepastWeb/GetChildAccount",
                     data: { Id: RepastUser.Id },
                     type: "post",
                     async: false,
                     success: function (result) {
-                        controller.SetCtrlValue("#Edit", result.data);
-                        if (result.data.IdCard != null) {
-                            $("img[name='IdCard_1']").attr("src", result.data.IdCard.split(',')[0]);
-                            $("img[name='IdCard_2']").attr("src", result.data.IdCard.split(',')[1]);
-                        }
-                    }
-                });
-                //获取视频
-                controller.ajax({
-                    url: "RepastWeb/GetVideoPage",
-                    data: { pageSize: 4, pageNumber: 1, QueryParam: { IsIndex: true } },
-                    async: false,
-                    type: "post",
-                    success: function (result) {
-                        $(".img-thumbnail").each(function (i, obj) {
-                            if (result.data.rows[i] != undefined)
-                                $(this).attr("title", result.data.rows[i].MonitorAddress).attr("vedio", result.data.rows[i].VideoAddress).attr("src", result.data.rows[i].CoverPhoto);
+                        var html = '';
+                        $.each(result.data, function (key, val) {
+                            html += '<li><a href="javascript:void(0);" data-Id="' + key + '">' + val + '</a></li>';
                         });
-                    }
-                });
-            },
-            InitEvent: function () {
-                $(".img-thumbnail").on('click', function () {
-                    controller.OpenWindow({
-                        title: "视频播放",
-                        type: 2,
-                        btn: [],
-                        maxmin: false,
-                        height: "480px",
-                        width: "520px",
-                        url: "StaticHtml/PlayVedio.html?addr=" + $(this).attr("vedio") + "&cover=" + $(this).attr("src"),
-                        callBack: function (result) {
-                            result.popClose();
-                        }
-                    });
-                });
-                //查看图片
-                $("img").on('click', function () {
-                    var option = {
-                        title: "商家资料",
-                        data: [{
-                            alt: "商家资料",
-                            src: $(this).attr("src")
-                        }]
-                    };
-                    controller.Photos(option);
-                });
-                //显示或隐藏
-                $(".collapse-link").on('click', function () {
-                    var ibox = $(this.closest('div.ibox'));
-                    var i = $(this).find("i");
-                    var content = ibox.find("div.ibox-content");
-                    content.slideToggle(200);
-                    i.toggleClass("fa-chevron-up").toggleClass("fa-chevron-down");
-                    ibox.toggleClass("").toggleClass("border-bottom");
-                    setTimeout(function () {
-                        ibox.resize();
-                        ibox.find("[id^=map-]").resize();
-                    }, 50);
-                });
-                //关闭
-                $(".close-link").click(function () {
-                    var ibox = $(this).closest("div.ibox");
-                    ibox.hide()
-                });
-            },
-            InitDataCount: function (Param) {
-                //数据统计
-                controller.ajax({
-                    url: "RepastWeb/GetDataCount",
-                    data: {Id:Param},
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        $.each(result.data, function (obj, i) {
-                            $("[name='" + obj + "']", $("tbody")).text(i);
-                        })
+                        $(".dropdown-menu").html(html);
                     }
                 });
             }
-        };
-        $(document).ready(function () {
-            option.Init();
-        });
-    </script>
+            $(".dropdown-menu").find("a").on('click', function () {
+                $(".dropdown-toggle").html($(this).text() + '<b class="caret"></b>');
+                option.InitDataCount($(this).data().id);
+            });
+        },
+        InitDom: function () {
+            $("body").addClass("gray-bg");
+            $("input").addClass("noborder");
+            $("img[name='Certification']").addClass("imgheight");
+            //获取详细
+            controller.ajax({
+                url: "RepastWeb/GetMerchantDetail",
+                data: { Id: RepastUser.Id },
+                type: "post",
+                async: false,
+                success: function (result) {
+                    controller.SetCtrlValue("#Edit", result.data);
+                    if (result.data.IdCard != null) {
+                        $("img[name='IdCard_1']").attr("src", result.data.IdCard.split(',')[0]);
+                        $("img[name='IdCard_2']").attr("src", result.data.IdCard.split(',')[1]);
+                    }
+                }
+            });
+            //获取视频
+            controller.ajax({
+                url: "RepastWeb/GetVideoPage",
+                data: { pageSize: 4, pageNumber: 1, QueryParam: { IsIndex: true } },
+                async: false,
+                type: "post",
+                success: function (result) {
+                    $(".img-thumbnail").each(function (i, obj) {
+                        if (result.data.rows[i] != undefined)
+                            $(this).attr("title", result.data.rows[i].MonitorAddress).attr("vedio", result.data.rows[i].VideoAddress).attr("src", result.data.rows[i].CoverPhoto);
+                    });
+                }
+            });
+        },
+        InitEvent: function () {
+            $(".img-thumbnail").on('click', function () {
+                controller.OpenWindow({
+                    title: "视频播放",
+                    type: 2,
+                    btn: [],
+                    maxmin: false,
+                    height: "480px",
+                    width: "520px",
+                    url: "StaticHtml/PlayVedio.html?addr=" + $(this).attr("vedio") + "&cover=" + $(this).attr("src"),
+                    callBack: function (result) {
+                        result.popClose();
+                    }
+                });
+            });
+            //查看图片
+            $("img").on('click', function () {
+                var option = {
+                    title: "商家资料",
+                    data: [{
+                        alt: "商家资料",
+                        src: $(this).attr("src")
+                    }]
+                };
+                controller.Photos(option);
+            });
+            //显示或隐藏
+            $(".collapse-link").on('click', function () {
+                var ibox = $(this.closest('div.ibox'));
+                var i = $(this).find("i");
+                var content = ibox.find("div.ibox-content");
+                content.slideToggle(200);
+                i.toggleClass("fa-chevron-up").toggleClass("fa-chevron-down");
+                ibox.toggleClass("").toggleClass("border-bottom");
+                setTimeout(function () {
+                    ibox.resize();
+                    ibox.find("[id^=map-]").resize();
+                }, 50);
+            });
+            //关闭
+            $(".close-link").click(function () {
+                var ibox = $(this).closest("div.ibox");
+                ibox.hide()
+            });
+        },
+        InitDataCount: function (Param) {
+            //数据统计
+            controller.ajax({
+                url: "RepastWeb/GetDataCount",
+                data: { Id: Param },
+                type: "post",
+                async: false,
+                success: function (result) {
+                    $.each(result.data, function (obj, i) {
+                        $("[name='" + obj + "']", $("tbody")).text(i);
+                    })
+                }
+            });
+        }
+    };
+    $(document).ready(function () {
+        option.Init();
+    });
+</script>
 }
 @section css{
-    <style>
-        .noborder {
-            border: none;
+<style>
+    p, h3 {
+        margin: 0;
+        padding: 0;
+    }
+
+    .noborder {
+        border: none;
+    }
+
+    .imgheight {
+        height: 337px;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        padding: 20px;
+        box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.24);
+    }
+
+        .header .left {
+            display: flex;
+            margin-top: 10px;
         }
 
-        .imgheight {
-            height: 337px;
+            .header .left img {
+                max-width: 160px;
+                height: 120px;
+                border: 1px solid #ccc;
+                margin-right: 10px;
+            }
+
+            .header .left div h3 {
+                font-size: 24px;
+                color: #414242;
+            }
+
+            .header .left div p {
+                color: #808080;
+                font-size: 16px;
+                margin-top: 27px;
+            }
+
+        .header .right {
+            font-size: 12px;
+            text-align: center;
         }
-    </style>
+
+            .header .right #qrcode {
+                margin: 0 auto;
+                width: 120px;
+                height: 120px;
+                border: 1px solid red;
+            }
+            .header .right .RepastName{
+                margin-top: 5px;
+            }
+
+</style>
 }
 <form id="Edit">
     <div class="wrapper wrapper-content">
-        <ul class="nav nav-pills">
-            <li class="dropdown all-camera-dropdown">
-                <a class="dropdown-toggle text-danger" data-toggle="dropdown" href="#">
-                </a>
-                <ul class="dropdown-menu"></ul>
-            </li>
-        </ul>
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>数据统计</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content" style="background-color:#f8f8f8;">
-                        <table class="table table-hover no-margins">
-                            <thead>
-                                <tr>
-                                    <th>供应商数</th>
-                                    <th>监控数</th>
-                                    <th>菜品数</th>
-                                    <th>人员数</th>
-                                    <th>原料溯源数</th>
-                                    <th>集团客户数</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td name="Supplier"></td>
-                                    <td name="Video"></td>
-                                    <td name="Dish"></td>
-                                    <td name="User"></td>
-                                    <td name="Stuff"></td>
-                                    <td name="Info"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+        <!--首页头部-->
+        <div class="header">
+            <div class="left">
+                <img id="RepastImg" src="http://system.cfda.vip/Upload/Images/眉山市东坡区苏祠初级中学/20190813/20190813101820373.png" />
+                <div>
+                    <h3 class="RepastName">眉山市东坡区苏祠初级中学</h3>
+                    <p>法人代表：<span id="Manager">岳家军</span></p>
+                    <p>社会信用代码：<span id="CreditCode">JY35114020034834</span></p>
                 </div>
             </div>
-            <div class="col-sm-6">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>商家资料</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content" style="background-color:#f8f8f8;;">
-                        <table class="table table-hover no-margins">
-                            <tr>
-                                <th><label class="control-label">商家账号</label></th>
-                                <td>
-                                    <input type="text" class="form-control" name="Account" readonly>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th><label class="control-label">商家名称</label></th>
-                                <td>
-                                    <input type="text" class="form-control" name="MerchantName" readonly>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th><label class="control-label">商家类型</label></th>
-                                <td>
-                                    <input type="text" class="form-control" name="DiningTypeName" readonly>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th><label class="control-label">系统版本</label></th>
-                                <td>
-                                    <input type="text" class="form-control" name="VersionTypeName" readonly>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th><label class="control-label">工商代码</label></th>
-                                <td>
-                                    <input type="text" class="form-control" name="CommunityCode" readonly>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th><label class="control-label">商家地址</label></th>
-                                <td>
-                                    <input type="text" class="form-control" name="Address" readonly>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th><label class="control-label">商家电话</label></th>
-                                <td>
-                                    <input type="text" class="form-control" name="Phone" readonly>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th><label class="control-label">审核状态</label></th>
-                                <td>
-                                    <input type="text" class="form-control" name="AuditTypeName" readonly>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th><label class="control-label">法人代表</label></th>
-                                <td>
-                                    <input type="text" class="form-control" name="ImplUser" readonly>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th><label class="control-label">商家邮箱</label></th>
-                                <td>
-                                    <input type="text" class="form-control" name="Email" readonly>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
+            <div class="right">
+                <div id="qrcode">
+                    <!--此处生成二维码-->
                 </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>企业图片</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content" style="background-color:#f8f8f8;">
-                        <ul class="todo-list m-t small-list ui-sortable">
-                            <li>
-                                <img class="img-preview" src="" type="image" name="Certification" style="display:block;margin:auto" title="点击放大企业证书" />
-                            </li>
-                            <li>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <img class="img-preview-sm" src="" type="image" name="IdCard_1" style="display:block;margin:auto" title="点击放大身份证" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <img class="img-preview-sm" src="" type="image" name="IdCard_2" style="display:block;margin:auto" title="点击放大身份证" />
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>视频一</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content">
-                        <img class="img-thumbnail" title="" src="" vedio="" />
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>视频二</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content">
-                        <img class="img-thumbnail" title="" src="" vedio="" />
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>视频三</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content">
-                        <img class="img-thumbnail" title="" src="" vedio="" />
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>视频四</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content">
-                        <img class="img-thumbnail" title="" src="" vedio="" />
-                    </div>
-                </div>
+                <div class="RepastName">眉山市东坡区苏祠初级中学</div>
             </div>
         </div>
+
     </div>
 </form>
