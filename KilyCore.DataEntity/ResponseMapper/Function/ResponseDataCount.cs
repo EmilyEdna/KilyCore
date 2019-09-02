@@ -37,6 +37,8 @@ namespace KilyCore.DataEntity.ResponseMapper.Function
     {
         public int value { get; set; }
         public string name { get; set; }
+
+        public string url { set; get; }
     }
     /// <summary>
     /// 柱状数据

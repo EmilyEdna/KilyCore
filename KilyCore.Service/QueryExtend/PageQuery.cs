@@ -25,6 +25,7 @@ namespace KilyCore.Service.QueryExtend
         /// <returns></returns>
         public static PagedResult<T> ToPagedResult<T>(this IQueryable<T> query, int pageIndex, int pageSize)
         {
+
             PagedResult<T> pagedResult = new PagedResult<T>();
             pagedResult.Index = pageIndex;
             pagedResult.PageSize = pageSize;
