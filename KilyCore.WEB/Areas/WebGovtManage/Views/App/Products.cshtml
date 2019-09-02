@@ -10,7 +10,16 @@
              this.InitDom();
         },
         InitDom: function () {
-
+             var Id = controller.GetParam("Id");
+             controller.ajax({
+                url: "GovtWeb/GetEdibleDetail",
+                data: {Id:Id},
+                type: "post",
+                async: false,
+                success: function (result) {
+                    controller.SetLableValue("#Detail", result.data);
+                }
+            });
         }
     };
      //页面初始化
@@ -18,41 +27,41 @@
         options.Init();
     });
 </script>
-<div class="mui-collapse-content">
+<div class="mui-collapse-content" id="Detail">
     <ul class="mui-table-view">
-        <li class="mui-table-view-cell">
+        @*<li class="mui-table-view-cell">
             <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">商品编号：</h5>
             <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
-        </li>
+        </li>*@
         <li class="mui-table-view-cell">
             <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">商品名称：</h5>
-            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
+            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;" name="ProductName"></h5>
         </li>
         <li class="mui-table-view-cell">
             <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">商品规格：</h5>
-            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
+            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;" name="Spec"></h5>
         </li>
         <li class="mui-table-view-cell">
             <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">保质期：</h5>
-            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
+            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;" name="ExpiredDate"></h5>
         </li>
         <li class="mui-table-view-cell">
             <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">生产厂商：</h5>
-            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
+            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;" name=""></h5>
         </li>
         <li class="mui-table-view-cell">
             <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">厂家热线：</h5>
-            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
+            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;" name=""></h5>
         </li>
         <li class="mui-table-view-cell">
             <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">厂家地址：</h5>
-            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
+            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;" name=""></h5>
         </li>
         <li class="mui-table-view-cell" style="background-color:#999;text-align:center;color:#fff;margin:6px 0px;">产品介绍</li>
         <li class="mui-table-view-cell mui-media">
             <span href="javascript:;">
                 <div class="mui-media-body">
-                    <p class='mui-ellipsis'><%=entity.content %></p>
+                    <p name="Remark"></p>
                 </div>
             </span>
         </li>

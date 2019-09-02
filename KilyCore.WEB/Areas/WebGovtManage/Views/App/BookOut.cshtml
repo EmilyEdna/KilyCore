@@ -10,6 +10,16 @@
              this.InitDom();
         },
         InitDom: function () {
+            var CompanyName = controller.GetParam("CompanyName");
+            var BookType = controller.GetParam("BookType");
+            var ExpireTime = controller.GetParam("ExpireTime");
+            var Img = controller.GetParam("Img");
+            var Desc = BookType + "将于" + ExpireTime + "到期";
+            $("#CompanyName").html(CompanyName);
+            $("#BookType").html(BookType);
+            $("#ExpireTime").html(ExpireTime);
+            $("#Desc").html(Desc);
+            $("#Img").html("<img src='" + img + "' style='max-width:100%;'>");
 
         }
     };
@@ -22,24 +32,24 @@
     <ul class="mui-table-view">
         <li class="mui-table-view-cell">
             <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">企业名称：</h5>
-            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
+            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;" id="CompanyName"></h5>
         </li>
         <li class="mui-table-view-cell">
             <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">到期类型：</h5>
-            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
+            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;" id="BookType"></h5>
         </li>
         <li class="mui-table-view-cell">
             <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">到期时间：</h5>
-            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
+            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;" id="ExpireTime"></h5>
         </li>
         <li class="mui-table-view-cell">
             <h5 class="mui-ellipsis mui-pull-left" style="color: #333;">描述信息：</h5>
-            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;"></h5>
+            <h5 class="mui-ellipsis mui-pull-right" style="color: #999;" id="Desc"></h5>
         </li>
         <li class="mui-table-view-cell mui-media">
             <span href="javascript:;">
                 <div class="mui-media-body">
-                    <p class='mui-ellipsis' style="white-space:normal;"></p>
+                    <p id="Img"></p>
                 </div>
             </span>
         </li>

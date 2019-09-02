@@ -290,6 +290,7 @@ namespace KilyCore.Service.ServiceCore
                 SellerAddress = t.SellerAddress,
                 NatureAgent = t.NatureAgent,
                 NetAddress = t.NetAddress,
+                MainPro=t.MainPro,
                 IdCard = t.IdCard,
                 Honor = t.HonorCertification,
                 Discription = t.Discription,
@@ -929,12 +930,13 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseGoodsStockAttach> GoodsStockAttach = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
             IQueryable<EnterpriseGoodsStock> GoodStock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
             IQueryable<EnterpriseGoods> Goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<EnterpriseInfo> Companys = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
             IQueryable<EnterpriseStockType> StockType = Kily.Set<EnterpriseStockType>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseCheckGoods> CheckGoods = Kily.Set<EnterpriseCheckGoods>().Where(t => t.IsDelete == false);
             //产品的查询
             var GoodsData = GoodsStockAttach.Join(GoodStock, a => a.StockId, b => b.Id, (a, b) => new { a, b })
                 .Join(Goods, c => c.b.GoodsId, d => d.Id, (c, d) => new { c, d })
-                .Join(StockType, e => e.c.b.StockTypeId, f => f.Id, (e, f) => new { e, f })
+                .Join(StockType, e => e.c.b.StockTypeId, f => f.Id, (e, f) => new { e, f })               
                 .GroupJoin(CheckGoods, g => g.e.c.b.CheckGoodsId, h => h.Id, (g, h) => new { g, h })
                 .Where(t => t.g.e.d.Id == Id).AsNoTracking();
             return GoodsData.Select(t => new
@@ -1042,6 +1044,7 @@ namespace KilyCore.Service.ServiceCore
                 HoldTheme = t.HoldTheme,
                 HoldTotal = t.HoldTotal,
                 DeskNum = t.DeskNum,
+                HoldTime=t.HoldTime,
                 Helpers = Kily.Set<CookHelper>().Where(x => x.CookId == t.CookId && t.Helper.Contains(x.HelperName))
                  .Select(x => new ResponseCookHelper()
                  {

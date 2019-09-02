@@ -46,7 +46,7 @@
                                 html += '<td class="text-warning"><input type="text" class="form-control" name="Result"/></td>';
                                 html += '<td class="text-warning"><input type="text" class="form-control" name="ResultTime"/></td>';
                                 html += '<td class="text-warning">' + controller.GetParam("Manager") + '</td>';
-                                html += '<td><button class="btn btn-sm btn-primary" type="button"><i class="fa fa-pencil-square-o"></i>保存</button></td>'
+                                html += '<td><button class="btn btn-sm btn-primary" type="button" id="save"><i class="fa fa-pencil-square-o"></i>保存</button>&emsp;<button id="upload" class="btn btn-sm btn-primary" type="button"><i class="fa fa-pencil-square-o"></i>上传图片</button></td>'
                             } else {
                                 html += '<td class="text-warning">' + obj.Result + '</td>';
                                 html += '<td class="text-warning">' + obj.ResultTime + '</td>';
@@ -66,7 +66,7 @@
             },
             //事件
             InitEvents: function () {
-                $("button").on('click', function () {
+                $("button#save").on('click', function () {
                     var tds = $(this).parent().parent().find('td');
                     var datas = {
                         CompanyId: CompanyInfo.Id,
@@ -97,7 +97,18 @@
                         }
                     });
                 });
-              
+                $("button#upload").on("click", function () {
+                     controller.OpenWindow({
+                        title: "上传图片",
+                        type: 2,
+                        height: "480px",
+                        width: "520px",
+                        url: "StaticHtml/PictureUpload.html",
+                        callBack: function (result) {
+                            result.popClose();
+                        }
+                    });
+                })
             },
         };
         //初始化
