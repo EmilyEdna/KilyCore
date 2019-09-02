@@ -902,13 +902,15 @@ namespace KilyCore.Service.ServiceCore
             EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == contract.CompanyId).FirstOrDefault();
             var Demo = Kily.Set<SystemStayContract>().Where(t => t.CompanyId == info.Id).Where(t => t.EnterpriseOrMerchant == 1).FirstOrDefault();
             if (Demo != null)
+            {
                 return new ResponseStayContract()
                 {
                     Id = contract.Id,
                     VersionType = Param.VersionType,
                     TagNum = info.TagCodeNum,
-                    PayInfoMsg = "请勿重复提交合同"
+                    PayInfoMsg = Update(Demo, Param) ? "提交成功" : "提交失败"
                 };
+            }
             if (Param.VersionType == SystemVersionEnum.Test)
             {
                 info.TagCodeNum = ServiceMessage.TEST;

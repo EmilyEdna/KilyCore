@@ -14,7 +14,6 @@
             //元素
             InitDom: function () {
                 var host = decodeURI("http://phone.cfda.vip/NewPhone/logistics.html?Id=" + controller.GetParam("Id"));
-                debugger;
                 controller.QRCode('#QRcode', { text: host });
             },
             //事件

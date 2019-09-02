@@ -16,7 +16,7 @@
             //元素
             InitDom: function () {
                 $("#CompanyId").val(CompanyInfo.Id);
-                $("#States").val("待处理");
+                $("#States").val("已处理");
                 controller.LayDate({ elem: "#HandleTime" });
                 controller.LayDate({ elem: "#RecoverStarTime" });
                 controller.LayDate({ elem: "#RecoverEndTime",max: controller.GetDate(10) });

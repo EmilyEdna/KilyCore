@@ -1870,7 +1870,7 @@ namespace KilyCore.API.Controllers
                 if (!string.IsNullOrEmpty(SessionCode))
                 {
                     var Result = SessionCode.Equals(Param.Code) ? EnterpriseWebService.SaveRecover(Param) : "验证码错误!";
-                    return ObjectResultEx.Instance(Result, 1, RetrunMessge.SUCCESS, HttpCode.Success);
+                return ObjectResultEx.Instance(Result, 1, RetrunMessge.SUCCESS, HttpCode.Success);
                 }
                 else
                 {

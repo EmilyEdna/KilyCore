@@ -692,12 +692,14 @@ namespace KilyCore.Service.ServiceCore
             RepastInfo info = Kily.Set<RepastInfo>().Where(t => t.Id == contract.CompanyId).FirstOrDefault();
             var Demo = Kily.Set<SystemStayContract>().Where(t => t.CompanyId == info.Id).Where(t => t.EnterpriseOrMerchant == 2).FirstOrDefault();
             if (Demo != null)
+            {
                 return new ResponseStayContract()
                 {
                     Id = contract.Id,
                     VersionType = Param.VersionType,
-                    PayInfoMsg = "请勿重复提交合同"
+                    PayInfoMsg = Update(Demo, Param) ? "提交成功" : "提交失败"
                 };
+            }
             info.IsPayContract = true;
             if (Param.VersionType == SystemVersionEnum.Test)
             {

@@ -57,7 +57,9 @@
                 },
                 TableFormatter: function (val, row, index) {
                     var action = [];
-                    if (SysUserInfo.AccountType <= 20)
+                    if (SysUserInfo.AccountType == 10)
+                        action.push('<button class="btn btn-sm btn-primary ok"><i class="fa fa-pencil-square-o"></i>确认缴费</button>');
+                    if (SysUserInfo.AccountType == 20 && SysUserInfo.RoleAuthorType=="7a3f44f7-784c-493f-907d-0bc7305f53a1")
                         if (row.IsPay == false)
                             action.push('<button class="btn btn-sm btn-primary ok"><i class="fa fa-pencil-square-o"></i>确认缴费</button>');
                     if (SysUserInfo.AccountType == 30 && row.PayType==40)
