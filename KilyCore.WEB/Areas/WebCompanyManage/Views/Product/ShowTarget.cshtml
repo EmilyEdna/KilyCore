@@ -36,6 +36,7 @@
                     type: "post",
                     async: false,
                     success: function (result) {
+                        debugger;
                         var html = '';
                         $.each(result.data, function (i, obj) {
                             html += '<tr>';
@@ -46,14 +47,16 @@
                                 html += '<td class="text-warning"><input type="text" class="form-control" name="Result"/></td>';
                                 html += '<td class="text-warning"><input type="text" class="form-control" name="ResultTime"/></td>';
                                 html += '<td class="text-warning">' + controller.GetParam("Manager") + '</td>';
-                                html += '<td><button class="btn btn-sm btn-primary" type="button" id="save"><i class="fa fa-pencil-square-o"></i>保存</button>&emsp;<button id="upload" class="btn btn-sm btn-primary" type="button"><i class="fa fa-pencil-square-o"></i>上传图片</button></td>'
+                                html += '<td class="text-warning"><img class="photo" src="' + obj.Img + '" style="width:48px;height:32px;""></td>';
+                                html += '<td><button class="btn btn-sm btn-primary" type="button" id="save"><i class="fa fa-pencil-square-o"></i>保存</button></td>'
                             } else {
                                 html += '<td class="text-warning">' + obj.Result + '</td>';
                                 html += '<td class="text-warning">' + obj.ResultTime + '</td>';
                                 html += '<td class="text-warning">' + controller.GetParam("Manager") + '</td>';
-                                html += '<td></td>'
+                                html += '<td class="text-warning"><img class="photo" src="' + obj.Img + '" style="width:48px;height:32px;""></td>';
+                                html += '<td><button id="upload" class="btn btn-sm btn-primary" type="button" data-value="' + obj.Id + '"><i class="fa fa-pencil-square-o"></i>上传图片</button></td>'
                             }
-                          
+
                             html += '</tr>';
                         });
                         $("#content").html(html);
@@ -97,18 +100,36 @@
                         }
                     });
                 });
-                $("button#upload").on("click", function () {
-                     controller.OpenWindow({
+                $("#upload").on("click", function () {
+                    Id = $(this).data().value;
+                    controller.OpenWindow({
                         title: "上传图片",
                         type: 2,
                         height: "480px",
                         width: "520px",
-                        url: "StaticHtml/PictureUpload.html",
+                        url: "StaticHtml/PictureUpload.html?Id=" + Id,
                         callBack: function (result) {
-                            result.popClose();
+                            controller.ajax({
+                                url: "EnterpriseWeb/EditProBatchAttach",
+                                data: { Img: result.$("#Edit").find("input[name='Img']").val(), Id: result.$("#Edit").find("input[name='Id']").val() },
+                                type: "post",
+                                success: function (res) {
+                                    result.popClose();
+                                }
+                            });
                         }
                     });
-                })
+                });
+                $("img").click(function () {
+                    var option = {
+                        title: "关键点指标图片",
+                        data: [{
+                            alt: "关键点指标图片",
+                            src: $(this).attr("src")
+                        }]
+                    };
+                    controller.Photos(option);
+                });
             },
         };
         //初始化
@@ -142,6 +163,9 @@
                             <span class="text-navy">负责人</span>
                         </th>
                         <th>
+                            <span class="text-navy">图片</span>
+                        </th>
+                        <th>
                             <span class="text-navy">操作</span>
                         </th>
                     </tr>
@@ -149,7 +173,7 @@
                 <tbody id="content"></tbody>
                 <tfoot>
                     <tr>
-                        <th colspan="7" class="text-danger">
+                        <th colspan="8" class="text-danger">
                             没有更多记录...
                         </th>
                     </tr>

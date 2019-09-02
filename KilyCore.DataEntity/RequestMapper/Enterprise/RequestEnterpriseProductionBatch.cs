@@ -33,6 +33,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
     }
     public class RequestEnterpriseProductionBatchAttach
     {
+        public string Img { get; set; }
         public Guid Id { get; set; }
         public Guid CompanyId { get; set; }
         public Guid ProBatchId { get; set; }

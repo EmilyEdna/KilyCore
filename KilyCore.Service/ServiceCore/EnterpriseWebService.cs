@@ -3153,6 +3153,7 @@ namespace KilyCore.Service.ServiceCore
                     TargetValue = t.TargetValue,
                     Id = t.Id,
                     Result = t.Result,
+                    Img=t.Img,
                     ResultTime = t.ResultTime,
                     Manager = t.Manager
                 }).OrderBy(o => o.ResultTime).ToList();
@@ -3167,7 +3168,14 @@ namespace KilyCore.Service.ServiceCore
         public string EditProBatchAttach(RequestEnterpriseProductionBatchAttach Param)
         {
             EnterpriseProductionBatchAttach Attach = Param.MapToEntity<EnterpriseProductionBatchAttach>();
-            return Insert(Attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            if (Param.Id == Guid.Empty)
+                return Insert(Attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+            {
+                var data = Kily.Set<EnterpriseProductionBatchAttach>().Where(t => t.Id == Param.Id).AsNoTracking().FirstOrDefault();
+                data.Img = Attach.Img;
+                return UpdateField(data,"Img")? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            }
         }
         #endregion
         #region 设施管理
