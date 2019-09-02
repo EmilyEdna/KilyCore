@@ -58,7 +58,10 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
     /// </summary>
     public class EnterpriseProductionBatchAttach : EnterpriseBase
     {
-        
+        /// <summary>
+        /// 图片
+        /// </summary>
+        public virtual string Img { get; set; }
         /// <summary>
         /// 生产批次表Id
         /// </summary>

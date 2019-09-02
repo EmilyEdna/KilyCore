@@ -1074,7 +1074,8 @@ namespace KilyCore.Service.ServiceCore
         public string PresonEdit(RequestPreson Param)
         {
             SystemPreson Preson = Param.MapToEntity<SystemPreson>();
-            SystemCity City = Kily.Set<SystemCity>().Where(t => t.Id.ToString() == UserInfo().City).AsNoTracking().FirstOrDefault();
+            var User = UserInfo();
+            SystemCity City = Kily.Set<SystemCity>().Where(t => t.Id.ToString() == User.City).AsNoTracking().FirstOrDefault();
             SystemAreaCar AreaCar = Kily.Set<SystemAreaCar>().Where(t => t.CityCode == City.Code.ToString()).AsNoTracking().FirstOrDefault();
             if (Preson.Id != Guid.Empty)
             {
@@ -1397,7 +1398,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseSystemMessage> GetMsgPage(PageParamList<Object> pageParam)
         {
-            IQueryable<SystemMessage> queryable = Kily.Set<SystemMessage>().Where(t=>!t.Status.Equals("已处理")).OrderByDescending(t => t.CreateTime);
+            IQueryable<SystemMessage> queryable = Kily.Set<SystemMessage>().Where(t => !t.Status.Equals("已处理")).OrderByDescending(t => t.CreateTime);
             IQueryable<GovtComplain> queryables = Kily.Set<GovtComplain>().Where(t => !t.Status.Equals("已处理")).OrderByDescending(t => t.CreateTime);
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || t.TypePath.Contains(CompanyInfo().Area))

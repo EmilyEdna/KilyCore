@@ -902,13 +902,15 @@ namespace KilyCore.Service.ServiceCore
             EnterpriseInfo info = Kily.Set<EnterpriseInfo>().Where(t => t.Id == contract.CompanyId).FirstOrDefault();
             var Demo = Kily.Set<SystemStayContract>().Where(t => t.CompanyId == info.Id).Where(t => t.EnterpriseOrMerchant == 1).FirstOrDefault();
             if (Demo != null)
+            {
                 return new ResponseStayContract()
                 {
                     Id = contract.Id,
                     VersionType = Param.VersionType,
                     TagNum = info.TagCodeNum,
-                    PayInfoMsg = "请勿重复提交合同"
+                    PayInfoMsg = Update(Demo, Param) ? "提交成功" : "提交失败"
                 };
+            }
             if (Param.VersionType == SystemVersionEnum.Test)
             {
                 info.TagCodeNum = ServiceMessage.TEST;
@@ -3151,6 +3153,7 @@ namespace KilyCore.Service.ServiceCore
                     TargetValue = t.TargetValue,
                     Id = t.Id,
                     Result = t.Result,
+                    Img=t.Img,
                     ResultTime = t.ResultTime,
                     Manager = t.Manager
                 }).OrderBy(o => o.ResultTime).ToList();
@@ -3165,7 +3168,14 @@ namespace KilyCore.Service.ServiceCore
         public string EditProBatchAttach(RequestEnterpriseProductionBatchAttach Param)
         {
             EnterpriseProductionBatchAttach Attach = Param.MapToEntity<EnterpriseProductionBatchAttach>();
-            return Insert(Attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            if (Param.Id == Guid.Empty)
+                return Insert(Attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+            {
+                var data = Kily.Set<EnterpriseProductionBatchAttach>().Where(t => t.Id == Param.Id).AsNoTracking().FirstOrDefault();
+                data.Img = Attach.Img;
+                return UpdateField(data,"Img")? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            }
         }
         #endregion
         #region 设施管理

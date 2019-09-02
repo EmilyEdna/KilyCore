@@ -21,7 +21,6 @@
                     async: false,
                     type: "post",
                     success: function (result) {
-                        //controller.SetCtrlValue("#Edit", result.data);
                         controller.SetLableValue("#Edit", result.data);
                         options.BindHonor(result.data.HonorCertification);
                         options.BindProduct(result.data.MainPro);

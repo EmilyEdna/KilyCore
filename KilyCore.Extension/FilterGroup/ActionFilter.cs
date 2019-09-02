@@ -61,6 +61,8 @@ namespace KilyCore.Extension.FilterGroup
                     {
                         return;
                     }
+                    if (RequestPath.Contains("EditProBatchAttach"))
+                        return;
                 }
                 context.Result = new StatusCodeResult(403);
             }
