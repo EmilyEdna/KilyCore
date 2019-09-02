@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ÉÏ´«Í¼Æ¬</title>
+    <link href="../Content/Uploader/css/upload.css" rel="stylesheet" />
+    <script src="../Content/JavaScript/jquery.min.js"></script>
+    <script src="../Content/JavaScript/jquery.cookie.js"></script>
+    <script src="../Content/Layer/layer.js"></script>
+    <script src="../Content/Uploader/js/upload.js"></script>
+    <script src="../Content/JavaScript/Controller.js"></script>
+    <script>
+        var option = {
+            Init: function () {
+                option.InitDom();
+            },
+            InitDom: function () {
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-1",
+                    maxNum: 2,
+                    node: '#Img1',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        $("#Certification").val(result.data);
+                    }
+                });
+            },
+        };
+        $(document).ready(function () {
+            option.Init();
+        });
+    </script>
+</head>
+
+<body>
+    <table class="table table-hover table-bordered">
+        <tr>
+            <td class="has-warning" colspan="3">
+                <div class="image-box clear" id="Img1">
+                    <section class="upload-section">
+                        <div class="upload-btn"></div>
+                        <input type="file" name="Files" id="upload-input-1" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                    </section>
+                </div>
+                <input type="hidden" id="Certification" name="Certification" />
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>
