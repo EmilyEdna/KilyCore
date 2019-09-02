@@ -2091,7 +2091,8 @@ namespace KilyCore.Service.ServiceCore
             return goods.Join(queryable, t => t.CompanyId, x => x.Id, (t, x) => new { t.ProductType }).GroupBy(t => t.ProductType).Select(t => new DataPie
             {
                 value = t.Count(),
-                name = t.Key
+                name = t.Key,
+                url=""
             }).ToList();
         }
         /// <summary>
