@@ -1649,7 +1649,7 @@ namespace KilyCore.Service.ServiceCore
                     .Replace("{personName}", Param.PersonName)
                     .Replace("{companyPhone}", Param.CompanyPhone)
                     .Replace("{companyCode}", Param.CompanyCode)
-                    .Replace("{companySign}", $"http://system.cfda.vip{ Param.CompanySign}")
+                    .Replace("{companySign}", $"<img src='http://system.cfda.vip{Param.CompanySign}' style='width: 10 %; '/>")
                     .Replace("{CheckTime}", Param.PatrolTime.ToString())
                     .Replace("{CheckPerson}", Param.PatrolUser)
                     .Replace("{CheckItemList}", Sb.ToString());
