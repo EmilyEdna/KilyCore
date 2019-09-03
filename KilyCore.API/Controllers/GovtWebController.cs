@@ -715,6 +715,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetGovtMovePatrolDetail")]
+        [AllowAnonymous]
         public ObjectResultEx GetGovtMovePatrolDetail(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(GovtWebService.GetGovtMovePatrolDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);

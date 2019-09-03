@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
+using PuppeteerSharp;
 using SelectPdf;
 using System;
 using System.Collections;
@@ -15,6 +16,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Web;
 /// <summary>
 /// 作者：刘泽华
@@ -532,6 +534,39 @@ namespace KilyCore.WEB.Util
         {
             Random rd = new Random();
             return rd.Next(1, 10);
+        }
+        /// <summary>
+        /// 将网页保存为图片
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="WebRootPath"></param>
+        /// <returns></returns>
+        public static async Task<Object> GetPageToImage(CreateImgHelper data, String WebRootPath)
+        {
+            await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultRevision);
+            var browser = await Puppeteer.LaunchAsync(new LaunchOptions
+            {
+                Headless = true,
+                Args = new string[] { "--no-sandbox" }
+            });
+            var page = await browser.NewPageAsync();
+            bool fullPage = true;
+            if (data.Width.HasValue && data.Height.HasValue)
+            {
+                await page.SetViewportAsync(new ViewPortOptions
+                {
+                    Width = data.Width.Value,
+                    Height = data.Height.Value
+                });
+                fullPage = false;
+            }
+            await page.GoToAsync(HttpUtility.UrlDecode($"{data.Path}?Id={data.Id}&Type=Img"));
+            string Path = WebRootPath + "/Upload/Images/";
+            string fileName = $"{Guid.NewGuid().ToString()}.png";
+            if (!Directory.Exists(Path))
+                Directory.CreateDirectory(Path);
+            await page.ScreenshotAsync($"{Path + fileName}", new ScreenshotOptions { FullPage = fullPage, Type = ScreenshotType.Png });
+            return new { data = "http://system.cfda.vip/Upload/Images/" + fileName, flag = 1, msg = "生成成功！", HttpCode = 10 };
         }
     }
 }

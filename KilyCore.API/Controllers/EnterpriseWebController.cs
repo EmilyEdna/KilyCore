@@ -2185,6 +2185,18 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.GetPieCountBatch(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 台账管理
+        /// <summary>
+        /// 进销台账
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <returns></returns>
+        [HttpGet("GetTickPrint")]
+        public ObjectResultEx GetTickPrint(SimpleParam<Dictionary<String, String>> Key)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetTickPrint(Key.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
         #region 手机扫描页面
         /// <summary>
         /// 一企一码

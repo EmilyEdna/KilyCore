@@ -87,7 +87,7 @@ namespace KilyCore.WEB.Model
         /// <summary>
         /// 支付方式
         /// </summary>
-        public int PayModel { get; set; } 
+        public int PayModel { get; set; }
     }
     public class FromData
     {
@@ -112,14 +112,15 @@ namespace KilyCore.WEB.Model
     public class ScanCodeModel
     {
         public String Id { get; set; }
-        public Int64 SCode => SCodes.Contains("W") ? Convert.ToInt64(SCodes.Split("W")[1]) :(SCodes.Contains("P")?Convert.ToInt64(SCodes.Split("P")[1]): Convert.ToInt64(SCodes.Split("B")[1]));
+        public Int64 SCode => SCodes.Contains("W") ? Convert.ToInt64(SCodes.Split("W")[1]) : (SCodes.Contains("P") ? Convert.ToInt64(SCodes.Split("P")[1]) : Convert.ToInt64(SCodes.Split("B")[1]));
         public Int64 ECode => ECodes.Contains("W") ? Convert.ToInt64(ECodes.Split("W")[1]) : (ECodes.Contains("P") ? Convert.ToInt64(ECodes.Split("P")[1]) : Convert.ToInt64(ECodes.Split("B")[1]));
         public String SCodes { get; set; }
         public String ECodes { get; set; }
-        public String CodeHost => ECodes.Contains("W") ? ECodes.Split("W")[0] + "W" : (ECodes.Contains("P")?ECodes.Split("P")[0] + "P": ECodes.Split("B")[0] + "B");
+        public String CodeHost => ECodes.Contains("W") ? ECodes.Split("W")[0] + "W" : (ECodes.Contains("P") ? ECodes.Split("P")[0] + "P" : ECodes.Split("B")[0] + "B");
 
     }
-    public class AmbientModel {
+    public class AmbientModel
+    {
         /// <summary>
         /// 空气温度
         /// </summary>
@@ -144,5 +145,12 @@ namespace KilyCore.WEB.Model
         /// co2浓度
         /// </summary>
         public string CO2 { get; set; }
+    }
+    public class CreateImgHelper
+    {
+        public string Id { get; set; }
+        public string Path { get; set; }
+        public int? Width { get; set; }
+        public int? Height { get; set; }
     }
 }

@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using PuppeteerSharp;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点51分
@@ -62,7 +62,7 @@ namespace KilyCore.Extension.UtilExtension
     /// <summary>
     /// 字符串扩展
     /// </summary>
-    public static partial class Extensions
+    public static class Extensions
     {
         #region PinYin(获取汉字的拼音简码)
         /// <summary>
@@ -319,34 +319,6 @@ namespace KilyCore.Extension.UtilExtension
             sb.Replace("&gt;", ">");
             sb.Replace("&amp;", "&");
             return sb.ToString();
-        }
-        #endregion
-        #region 网页存图片
-
-        public static async Task<string> PageToImage(string url, int? width, int? height)
-        {
-            await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultRevision);
-            var browser = await Puppeteer.LaunchAsync(new LaunchOptions
-            {
-                Headless = true,
-                //ExecutablePath="",
-                Args = new string[] { "--no-sandbox" }
-            });
-            var page = await browser.NewPageAsync();
-            bool fullPage = true;
-            if (width.HasValue && height.HasValue)
-            {
-                await page.SetViewportAsync(new ViewPortOptions
-                {
-                    Width = width.Value,
-                    Height = height.Value
-                });
-                fullPage = false;
-            }
-            await page.GoToAsync(System.Web.HttpUtility.UrlDecode(url));
-            string fileName = $"/Files/{Guid.NewGuid().ToString()}.png";
-            await page.ScreenshotAsync($"{Environment.CurrentDirectory}{fileName}", new ScreenshotOptions { FullPage = fullPage, Type = ScreenshotType.Png });
-            return $"{fileName}";
         }
         #endregion
     }

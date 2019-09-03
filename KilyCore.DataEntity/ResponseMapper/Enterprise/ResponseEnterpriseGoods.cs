@@ -29,7 +29,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// 产品图片
         /// </summary>
         public string ProductImg { set; get; }
-        public string  ProductSeriesName { get; set; }
+        public string ProductSeriesName { get; set; }
         public string ExpiredDate { get; set; }
         public string Spec { get; set; }
         public string Unit { get; set; }
@@ -41,5 +41,13 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// 企业名称
         /// </summary>
         public string CompanyName { set; get; }
+        /// <summary>
+        /// 图片
+        /// </summary>
+        public string Image { get; set; }
+        /// <summary>
+        /// 介绍
+        /// </summary>
+        public string Remark { get; set; }
     }
 }
