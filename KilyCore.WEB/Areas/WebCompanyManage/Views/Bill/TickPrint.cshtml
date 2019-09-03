@@ -1,0 +1,106 @@
+﻿
+@{
+    ViewData["Title"] = "TickPrint";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                controller.LayDate({ elem: "input[name='Date']", max: controller.GetDate(1) });
+                this.InitDom(undefined);
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function (Param) {
+                var data = { "Id": CompanyInfo.Id, "CompanyType": CompanyInfo.CompanyType };
+                if (controller.CheckFeild(Param))
+                    data.Date = Param;
+                controller.ajax({
+                    url: "EnterpriseWeb/GetTickPrint",
+                    data: { Id: data },
+                    async: false,
+                    success: function (result) {
+                        let html = '';
+                        $.each(result.data, function (index, item) {
+                            html += '<tr><td>' + item.BatchNo + '</td>';
+                            html += '<td>' + item.ProductName + '</td>';
+                            html += '<td>' + item.Num + '</td>';
+                            html += '<td>' + item.Spec + '</td>';
+                            html += '<td>' + item.Unit + '</td>';
+                            html += '<td>' + item.CheckResult + '</td>';
+                            html += '<td>' + item.Supplier + '</td>';
+                            html += '<td>' + item.Seller + '</td>';
+                            html += '<td>' + item.Time + '</td>';
+                            html += '<td>' + item.OutStockUser + '</td></tr>';
+                        });
+                        $("tbody").html(html);
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                $("#search").on("click", function () {
+                    var time = $("input[name='Date']").val();
+                    options.InitDom(time);
+                });
+            },
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+@section css{
+    <style>
+        th {
+            text-align: center;
+        }
+
+        td {
+            text-align: center;
+        }
+    </style>
+}
+<div class="container-fluid">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>进销台账</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <form id="Edit">
+                        <div class="col-sm-2 m-b-xs col-sm-offset-9"><input type="text" class="form-control input-sm" placeholder="请选择日期" name="Date" /></div>
+                        <button type="button" class="btn btn-sm btn-white" id="search"><i class="fa fa-search"></i>查询</button>
+                    </form>
+                </div>
+                <div class="table-responsive m-t-sm">
+                    <table id="tableList" class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th colspan="10">今日进销台账</th>
+                            </tr>
+                            <tr>
+                                <th>批次号</th>
+                                <th>产品名称</th>
+                                <th>数量</th>
+                                <th>规格</th>
+                                <th>单位</th>
+                                <th>质检结果</th>
+                                <th>供应商</th>
+                                <th>经销商</th>
+                                <th>日期</th>
+                                <th>负责人</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

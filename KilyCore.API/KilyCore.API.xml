@@ -1862,6 +1862,13 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetTickPrint(KilyCore.Service.QueryExtend.SimpleParam{System.Collections.Generic.Dictionary{System.String,System.String}})">
+            <summary>
+            进销台账
+            </summary>
+            <param name="Key"></param>
+            <returns></returns>
+        </member>
         <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetScanCompanyFirst(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
             <summary>
             一企一码

@@ -566,7 +566,7 @@ namespace KilyCore.WEB.Util
             if (!Directory.Exists(Path))
                 Directory.CreateDirectory(Path);
             await page.ScreenshotAsync($"{Path + fileName}", new ScreenshotOptions { FullPage = fullPage, Type = ScreenshotType.Png });
-            return new { data = "http://system.cfda.vip/Upload/Images/" + fileName, flag = 1, msg = "生产成功！", HttpCode = 10 };
+            return new { data = "http://system.cfda.vip/Upload/Images/" + fileName, flag = 1, msg = "生成成功！", HttpCode = 10 };
         }
     }
 }

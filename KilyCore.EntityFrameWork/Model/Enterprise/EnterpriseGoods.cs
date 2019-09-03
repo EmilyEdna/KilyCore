@@ -53,5 +53,13 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 审核类型
         /// </summary>
         public virtual AuditEnum AuditType { get; set; }
+        /// <summary>
+        /// 图片
+        /// </summary>
+        public virtual string Image { get; set; }
+        /// <summary>
+        /// 介绍
+        /// </summary>
+        public virtual string Remark { get; set; }
     }
 }

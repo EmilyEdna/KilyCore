@@ -3153,7 +3153,7 @@ namespace KilyCore.Service.ServiceCore
                     TargetValue = t.TargetValue,
                     Id = t.Id,
                     Result = t.Result,
-                    Img=t.Img,
+                    Img = t.Img,
                     ResultTime = t.ResultTime,
                     Manager = t.Manager
                 }).OrderBy(o => o.ResultTime).ToList();
@@ -3174,7 +3174,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 var data = Kily.Set<EnterpriseProductionBatchAttach>().Where(t => t.Id == Param.Id).AsNoTracking().FirstOrDefault();
                 data.Img = Attach.Img;
-                return UpdateField(data,"Img")? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+                return UpdateField(data, "Img") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
             }
         }
         #endregion
@@ -3270,7 +3270,9 @@ namespace KilyCore.Service.ServiceCore
                 ExpiredDate = t.ExpiredDate,
                 ProductName = t.ProductName,
                 ProductType = t.ProductType,
-                Unit = t.Unit
+                Unit = t.Unit,
+                Image = t.Image,
+                Remark = t.Remark
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -3316,7 +3318,9 @@ namespace KilyCore.Service.ServiceCore
                 ExpiredDate = t.ExpiredDate,
                 ProductName = t.ProductName,
                 ProductType = t.ProductType,
-                Unit = t.Unit
+                Unit = t.Unit,
+                Image = t.Image,
+                Remark = t.Remark
             }).AsNoTracking().FirstOrDefault();
             return data;
         }
@@ -5216,6 +5220,56 @@ namespace KilyCore.Service.ServiceCore
                 OutSideData = OutSideData
             };
             return dataCount;
+        }
+        #endregion
+
+        #region 台账管理
+        /// <summary>
+        /// 进销台账
+        /// </summary>
+        /// <param name="pairs"></param>
+        /// <returns></returns>
+        public Object GetTickPrint(Dictionary<String, String> pairs)
+        {
+            var Id = Guid.Parse(pairs["Id"]);
+            var CompanyType = (CompanyEnum)Convert.ToInt32(pairs["CompanyType"]);
+            DateTime? SearchTime = null;
+            if (pairs.ContainsKey("Date"))
+                SearchTime = DateTime.Parse(pairs["Date"]);
+            else
+                SearchTime = DateTime.Parse(DateTime.Now.ToShortDateString());
+            List<EnterpriseGoods> Goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).Where(t => t.CompanyId == Id).ToList();
+            List<EnterpriseGoodsStock> Stocks = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false).Where(t => t.CompanyId == Id).ToList();
+            List<EnterpriseBuyer> Buyers = Kily.Set<EnterpriseBuyer>().Where(t => t.IsDelete == false).Where(t => t.CompanyId == Id).ToList();
+            List<EnterpriseGoodsStockAttach> StockAttach = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false).Where(t => t.CompanyId == Id).ToList();
+            List<EnterpriseCheckGoods> Checks = Kily.Set<EnterpriseCheckGoods>().Where(t => t.IsDelete == false).Where(t => t.CompanyId == Id).ToList();
+            List<EnterpriseLogistics> Logistics = Kily.Set<EnterpriseLogistics>().Where(t => t.IsDelete == false).Where(t => t.CompanyId == Id).ToList();
+            List<EnterpriseGoodsPackage> Packs = Kily.Set<EnterpriseGoodsPackage>().Where(t => t.IsDelete == false).Where(t => t.CompanyId == Id).ToList();
+            var Temp = Goods.Join(Stocks, t => t.Id, x => x.GoodsId, (t, x) => new { t.ProductName, t.Spec, t.Unit, x.InStockNum, x.Id, x.CheckGoodsId, x.BuyId })
+                 .Join(StockAttach, x => x.Id, t => t.StockId, (x, t) => new { x, t.OutStockNum, t.GoodsBatchNo, t.OutStockTime, t.OutStockUser })
+                 .Join(Checks, t => t.x.CheckGoodsId, x => x.Id, (t, x) => new { t, x.CheckResult }).ToList();
+            if (Packs.Count == 0)
+            {
+                var Temps = Temp.GroupJoin(Logistics, n => n.t.x.ProductName, m => m.GoodsName, (n, m) => new { n, GainUser = (m.FirstOrDefault() == null ? "" : m.FirstOrDefault().GainUser) }).ToList();
+                if (CompanyEnum.Circulation == CompanyType)
+                    return Temps.Join(Buyers, o => o.n.t.x.BuyId, y => y.Id, (o, y) => new { o.n.t.x.ProductName, o.n.t.x.Spec, o.n.t.x.Unit, y.Num, y.BatchNo, y.Supplier, Time = y.GetGoodsTime, o.n.t.OutStockUser, o.n.CheckResult, Seller = o.GainUser })
+                        .Where(t => t.Time >= SearchTime).ToList();
+                else
+                    return Temps.Select(o => new { o.n.t.x.ProductName, o.n.t.x.Spec, o.n.t.x.Unit, Num = o.n.t.OutStockNum, BatchNo = o.n.t.GoodsBatchNo, Supplier = "", Time = o.n.t.OutStockTime, o.n.t.OutStockUser, o.n.CheckResult, Seller = o.GainUser })
+                        .Where(t => t.Time >= SearchTime).ToList();
+            }
+            else
+            {
+                var Temps = Temp.GroupJoin(Packs, a => a.t.GoodsBatchNo, b => b.ProductOutStockNo, (a, b) => new { a, b.FirstOrDefault()?.PackageNo })
+                    .GroupJoin(Logistics, n => n.a.t.x.ProductName, m => m.GoodsName, (n, m) => new { n, GainUser = (m.FirstOrDefault() == null ? "" : m.FirstOrDefault().GainUser) }).ToList();
+                if (CompanyEnum.Circulation == CompanyType)
+                    return Temps.Join(Buyers, o => o.n.a.t.x.BuyId, y => y.Id, (o, y) => new { o.n.a.t.x.ProductName, o.n.a.t.x.Spec, o.n.a.t.x.Unit, y.Num, y.BatchNo, y.Supplier, Time = y.GetGoodsTime, o.n.a.t.OutStockUser, o.n.a.CheckResult, Seller = o.GainUser })
+                        .Where(t => t.Time >= SearchTime).ToList();
+                else
+                    return Temps.Select(o => new { o.n.a.t.x.ProductName, o.n.a.t.x.Spec, o.n.a.t.x.Unit, Num = o.n.a.t.OutStockNum, BatchNo = o.n.a.t.GoodsBatchNo, Supplier = "", Time = o.n.a.t.OutStockTime, o.n.a.t.OutStockUser, o.n.a.CheckResult, Seller = o.GainUser })
+                         .Where(t => t.Time >= SearchTime).ToList();
+            }
+
         }
         #endregion
 
