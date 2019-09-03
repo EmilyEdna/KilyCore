@@ -18,6 +18,10 @@
             //元素
             InitDom: function () {
                 var Id = controller.GetParam("Id");
+                var Type = controller.GetParam("Type");
+                if (controller.CheckFeild(Type)) {
+                    $(".btn-group").addClass("hidden");
+                }
                 $("#Id").val(Id);
                 controller.ajax({
                     url: "GovtWeb/GetGovtMovePatrolDetail",

@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using System.Dynamic;
+using System.Threading.Tasks;
 
 namespace KilyCore.WEB.Controllers
 {
@@ -31,7 +32,7 @@ namespace KilyCore.WEB.Controllers
         {
             var WebRootPath = Environment.WebRootPath;
             Object data = FileUtil.UploadFile(Files, FolderName, WebRootPath);
-            return new JsonResult(data); 
+            return new JsonResult(data);
         }
         /// <summary>
         /// 上传音频
@@ -156,6 +157,17 @@ namespace KilyCore.WEB.Controllers
                 CO2 = JArray.Parse(data)[1]["DevHumiValue"].ToString(),
             };
             return JsonConvert.SerializeObject(ambient);
+        }
+        /// <summary>
+        /// 将网页保存为图片
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<Object> GetPageToImage(CreateImgHelper data)
+        {
+            var WebRootPath = Environment.WebRootPath;
+            return await FileUtil.GetPageToImage(data, WebRootPath);
         }
     }
 }
