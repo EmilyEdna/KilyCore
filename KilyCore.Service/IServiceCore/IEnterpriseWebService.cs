@@ -317,6 +317,9 @@ namespace KilyCore.Service.IServiceCore
         ResponseDataCount GetPieCount(Guid? Id);
         ResponseDataCount GetPieCountBatch(Guid? Id);
         #endregion
+        #region 台账管理
+        Object GetTickPrint(Dictionary<String, String> pairs);
+        #endregion
         #region 手机扫描页面
         ResponseEnterprise GetScanCompanyFirst(Guid Id);
         BaseInfo GetScanCodeInfo(Guid? Id, String Code);

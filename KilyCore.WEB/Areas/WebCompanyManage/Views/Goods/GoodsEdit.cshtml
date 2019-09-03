@@ -16,6 +16,7 @@
             //元素
             InitDom: function () {
                 var Guid = controller.GetParam("Id");
+                options.Editor = controller.Editor(".summernote", { width: $(window).width });
                 $("input[name='CompanyId']").val(CompanyInfo.Id);
                 options.GetSeries();
                 options.GetSelect();
@@ -28,7 +29,7 @@
                     document: '#Unit',
                     arrelemnt: ['#Unit'],
                     url: 'EnterpriseWeb/GetDictionaryList',
-                    data: { Id:"计量单位"}
+                    data: { Id: "计量单位" }
                 });
                 $("#Unit").on('changed.bs.select', function () {
                     $('input[name="Unit"]').val($(this).val());
@@ -45,7 +46,7 @@
                     success: function (result) {
                         var html = '<option>==请选择==</option>';
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '">' + obj.SeriesName+'('+obj.Standard+')' + '</option>';
+                            html += '<option value="' + obj.Id + '">' + obj.SeriesName + '(' + obj.Standard + ')' + '</option>';
                         });
                         $("#ProductSeriesId").html(html);
                     }
@@ -63,11 +64,29 @@
                             controller.SetCtrlValue("#Edit", result.data);
                             $("#Unit").selectpicker('val', result.data.Unit);
                             $("#Spec").selectpicker('val', result.data.Spec);
+                             options.Editor.summernote('code', result.data.Remark);
+                            if (controller.CheckFeild(result.data.Image)) {
+                                //产品图片
+                                $.each(result.data.Image.split(","), function (i, item) {
+                                    $(".image-box").append('<section class="image-section" img-url="' + item + '"><div class="image-shade"></div><div class="image-delete"></div><div class="image-zoom"></div><img class="image-show" src="' + item + '"></section>');
+                                })
+                            }
                         }
                     });
             },
             //事件
             InitEvents: function () {
+                //产品图片
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: ".upload-input",
+                    maxNum: 5,
+                    node: '.image-box',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        $("#Image").val(result.data)
+                    }
+                });
                 //验证
                 controller.ValidateConfirm("#Edit");
             },
@@ -85,6 +104,7 @@
         <form class="form-horizontal" method="post" action="EnterpriseWeb/EditGoods" id="Edit">
             <input type="hidden" name="Id" />
             <input type="hidden" name="CompanyId" />
+            <input type="hidden" name="Remark" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">产品名称</label></th>
@@ -93,7 +113,7 @@
                     </td>
                     <th><label class="control-label">产品类型</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="ProductType" list="datas"/>
+                        <input type="text" class="form-control" name="ProductType" list="datas" />
                         <datalist id="datas">
                             <option value="农产品"></option>
                             <option value="食品"></option>
@@ -111,7 +131,7 @@
                     </td>
                     <th><label class="control-label">保质期/天<span style="color:red">*</span></label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control required IsNumber" name="ExpiredDate" data-msg-required="请输入数字"/> 
+                        <input type="text" class="form-control required IsNumber" name="ExpiredDate" data-msg-required="请输入数字" />
                     </td>
                 </tr>
                 <tr>
@@ -122,6 +142,24 @@
                     <th><label class="control-label">单位</label></th>
                     <td class="has-warning">
                         <select type="select" class="selectpicker form-control" data-max-options="2" id="Unit" multiple data-live-search="true" data-live-search-placeholder="搜索"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">产品图片</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                        <input type="hidden" id="Image" name="Image" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">产品介绍</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="summernote" name="Remark"></div>
                     </td>
                 </tr>
             </table>

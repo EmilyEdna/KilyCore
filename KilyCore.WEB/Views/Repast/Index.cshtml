@@ -4,129 +4,55 @@
 }
 @section script{
 <script>
+    let MsgC = JSON.parse(window.localStorage.getItem("RepastUser"));  //获取localstorage里面的数据
+    var DataSources = 0;
+    var CodeUrl = "http://www.cfda.vip/Wap/RepastCode?DataSource=" + DataSources + "&Id=";
     var option = {
         Init: function () {
-            this.InitDrop();
             this.InitDom();
+            this.InitCode();
             this.InitEvent();
-            this.InitDataCount(RepastUser.Id)
-        },
-        InitDrop: function () {
-            $(".dropdown-toggle").html(RepastUser.MerchantName + '<b class="caret"></b>');
-            if (RepastUser.InfoId != 40)
-                $(".nav-pills").addClass("hidden");
-            else {
-                $(".nav-pills").removeClass("hidden");
-                //获取子账户
-                controller.ajax({
-                    url: "RepastWeb/GetChildAccount",
-                    data: { Id: RepastUser.Id },
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        var html = '';
-                        $.each(result.data, function (key, val) {
-                            html += '<li><a href="javascript:void(0);" data-Id="' + key + '">' + val + '</a></li>';
-                        });
-                        $(".dropdown-menu").html(html);
-                    }
-                });
-            }
-            $(".dropdown-menu").find("a").on('click', function () {
-                $(".dropdown-toggle").html($(this).text() + '<b class="caret"></b>');
-                option.InitDataCount($(this).data().id);
-            });
         },
         InitDom: function () {
-            $("body").addClass("gray-bg");
-            $("input").addClass("noborder");
-            $("img[name='Certification']").addClass("imgheight");
-            //获取详细
-            controller.ajax({
-                url: "RepastWeb/GetMerchantDetail",
-                data: { Id: RepastUser.Id },
-                type: "post",
-                async: false,
-                success: function (result) {
-                    controller.SetCtrlValue("#Edit", result.data);
-                    if (result.data.IdCard != null) {
-                        $("img[name='IdCard_1']").attr("src", result.data.IdCard.split(',')[0]);
-                        $("img[name='IdCard_2']").attr("src", result.data.IdCard.split(',')[1]);
-                    }
-                }
+            //渲染页面头部dom
+            $(".RepastName").html(MsgC.MerchantName);
+            $("#Manager").html(MsgC.ImplUser);
+            $("#CreditCode").html(MsgC.CommunityCode);
+            $("#RepastImg").attr("src", "http://system.cfda.vip" + MsgC.Certification)
+            //页面内容左侧选项卡
+            $(".content .left .hd a").on("click", function () {
+                let indexC = $(this).index();
+                $(this).addClass("active").siblings().removeClass("active");
+                $(".content .left .bd>div").eq(indexC).addClass("on").siblings().removeClass("on");
             });
-            //获取视频
-            controller.ajax({
-                url: "RepastWeb/GetVideoPage",
-                data: { pageSize: 4, pageNumber: 1, QueryParam: { IsIndex: true } },
-                async: false,
-                type: "post",
-                success: function (result) {
-                    $(".img-thumbnail").each(function (i, obj) {
-                        if (result.data.rows[i] != undefined)
-                            $(this).attr("title", result.data.rows[i].MonitorAddress).attr("vedio", result.data.rows[i].VideoAddress).attr("src", result.data.rows[i].CoverPhoto);
-                    });
-                }
+        },
+        //生成二维码
+        InitCode: function () {
+            jQuery('#qrcode').qrcode({
+                render: "canvas",
+                text: CodeUrl + MsgC.Id,
+                width: "120",               //二维码的宽度
+                height: "120",              //二维码的高度
+                background: "#ffffff",      //二维码的后景色
+                foreground: "#000000",      //二维码的前景色
+                src: "http://www.cfda.vip/web/images/logo.png"//二维码中间的图片
             });
         },
         InitEvent: function () {
-            $(".img-thumbnail").on('click', function () {
-                controller.OpenWindow({
-                    title: "视频播放",
-                    type: 2,
-                    btn: [],
-                    maxmin: false,
-                    height: "480px",
-                    width: "520px",
-                    url: "StaticHtml/PlayVedio.html?addr=" + $(this).attr("vedio") + "&cover=" + $(this).attr("src"),
-                    callBack: function (result) {
-                        result.popClose();
-                    }
-                });
-            });
-            //查看图片
-            $("img").on('click', function () {
-                var option = {
-                    title: "商家资料",
-                    data: [{
-                        alt: "商家资料",
-                        src: $(this).attr("src")
-                    }]
-                };
-                controller.Photos(option);
-            });
-            //显示或隐藏
-            $(".collapse-link").on('click', function () {
-                var ibox = $(this.closest('div.ibox'));
-                var i = $(this).find("i");
-                var content = ibox.find("div.ibox-content");
-                content.slideToggle(200);
-                i.toggleClass("fa-chevron-up").toggleClass("fa-chevron-down");
-                ibox.toggleClass("").toggleClass("border-bottom");
-                setTimeout(function () {
-                    ibox.resize();
-                    ibox.find("[id^=map-]").resize();
-                }, 50);
-            });
-            //关闭
-            $(".close-link").click(function () {
-                var ibox = $(this).closest("div.ibox");
-                ibox.hide()
-            });
-        },
-        InitDataCount: function (Param) {
-            //数据统计
-            controller.ajax({
-                url: "RepastWeb/GetDataCount",
-                data: { Id: Param },
-                type: "post",
-                async: false,
-                success: function (result) {
-                    $.each(result.data, function (obj, i) {
-                        $("[name='" + obj + "']", $("tbody")).text(i);
-                    })
-                }
-            });
+            //渲染基础信息
+            //controller.ajax({
+            //url: "Web/GetCompanyInfo",
+            //data: { Id: MsgC.Id, DataSouces: DataSources },
+            //type: "post",
+            //async: false,
+            //xhrFields: {
+            //    withCredentials: true
+            //},
+            //crossDomain: true,
+            //success: function (result) {
+
+            //}
+            //});
         }
     };
     $(document).ready(function () {
@@ -136,20 +62,35 @@
 }
 @section css{
 <style>
-    p, h3 {
+    p, h3, ul, li {
         margin: 0;
         padding: 0;
     }
 
-    .noborder {
-        border: none;
+    img {
+        border: 1px solid #ccc;
     }
 
-    .imgheight {
-        height: 337px;
+    ul, li {
+        list-style: none;
+    }
+
+    .icon {
+        width: 6px;
+        height: 28px;
+        margin-right: 5px;
+        background: #1AB394;
+    }
+
+    .icon1 {
+        width: 4px;
+        height: 6px;
+        margin-right: 5px;
+        background: #1AB394;
     }
 
     .header {
+        background: #fff;
         display: flex;
         justify-content: space-between;
         width: 100%;
@@ -163,22 +104,28 @@
         }
 
             .header .left img {
+                min-width: 120px;
                 max-width: 160px;
                 height: 120px;
-                border: 1px solid #ccc;
                 margin-right: 10px;
             }
 
             .header .left div h3 {
                 font-size: 24px;
+                line-height: 40px;
                 color: #414242;
+                margin-bottom: 18px;
             }
 
             .header .left div p {
                 color: #808080;
                 font-size: 16px;
-                margin-top: 27px;
+                line-height: 36px;
             }
+
+                .header .left div p span {
+                    color: #000;
+                }
 
         .header .right {
             font-size: 12px;
@@ -187,14 +134,195 @@
 
             .header .right #qrcode {
                 margin: 0 auto;
-                width: 120px;
-                height: 120px;
-                border: 1px solid red;
             }
-            .header .right .RepastName{
+
+            .header .right .RepastName {
                 margin-top: 5px;
             }
 
+    .content {
+        margin-top: 25px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+        .content .left {
+            background: #fff;
+            box-sizing: border-box;
+            width: 74%;
+            box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.24);
+        }
+
+            .content .left .hd {
+                font-size: 18px;
+                width: 100%;
+                display: flex;
+                border-bottom: 1px solid #EAEFF5;
+            }
+
+                .content .left .hd a {
+                    text-align: center;
+                    color: #000;
+                    display: block;
+                    width: 12.5%;
+                    line-height: 60px;
+                }
+
+                    .content .left .hd a.active {
+                        background: #1AB394;
+                        color: #fff;
+                    }
+
+                    .content .left .hd a:not(:last-child) {
+                        border-right: 1px solid #EAEFF5;
+                    }
+
+            .content .left .bd {
+                padding: 30px;
+                box-sizing: border-box;
+            }
+
+                .content .left .bd > div {
+                    display: none;
+                }
+
+                    .content .left .bd > div.on {
+                        display: block;
+                    }
+
+                .content .left .bd .bd-item1 .title {
+                    display: flex;
+                    font-size: 22px;
+                    line-height: 36px;
+                    font-weight: bold;
+                    color: #000;
+                }
+
+                .content .left .bd .bd-item1 p {
+                    color: #808080;
+                    font-size: 16px;
+                    line-height: 32px;
+                    margin-top: 10px;
+                    padding-left: 12px;
+                    position: relative;
+                }
+
+                    .content .left .bd .bd-item1 p::before {
+                        content: '';
+                        display: inline-block;
+                        width: 6px;
+                        height: 6px;
+                        border-radius: 3px;
+                        background: #808080;
+                        position: absolute;
+                        top: 13px;
+                        left: 0;
+                    }
+
+                    .content .left .bd .bd-item1 p span {
+                        color: #000;
+                    }
+
+                .content .left .bd .bd-item1 .msg {
+                    display: flex;
+                    justify-content: space-between;
+                }
+
+                    .content .left .bd .bd-item1 .msg div {
+                        width: 48%;
+                    }
+
+                .content .left .bd .bd-item2 img {
+                    width: 320px;
+                    height: 240px;
+                    margin: 0 20px 20px 0;
+                }
+
+                .content .left .bd .bd-item3 div {
+                    width: 390px;
+                    height: 300px;
+                    border: 1px solid #ccc;
+                    margin: 0 20px 20px 0;
+                }
+
+                    .content .left .bd .bd-item3 div video {
+                        height: 220px !important;
+                    }
+
+                    .content .left .bd .bd-item3 div p {
+                        width: 90%;
+                        margin: 0 auto;
+                        line-height: 40px;
+                        height: 40px;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        text-align: center;
+                    }
+
+                    .content .left .bd .bd-item3 div .p1 {
+                        border-bottom: 1px solid #ccc;
+                        font-size: 16px;
+                    }
+
+                .content .left .bd .bd-item4 div {
+                    margin-bottom: 50px;
+                }
+
+                    .content .left .bd .bd-item4 div p {
+                        font-size: 16px;
+                        display: flex;
+                        align-items: center;
+                    }
+
+                    .content .left .bd .bd-item4 div > img {
+                        width: 48%;
+                        height: 320px;
+                        margin: 20px 20px 20px 0;
+                    }
+
+                    .content .left .bd .bd-item4 div p img {
+                        width: 16px;
+                        height: 16px;
+                        margin-right: 10px;
+                    }
+
+        .content .right {
+            width: 24%;
+        }
+
+            .content .right > div {
+                background: #fff;
+                margin-bottom: 20px;
+                box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.24);
+            }
+
+                .content .right > div .hd {
+                    background: #F5F5F5;
+                    padding: 0 22px;
+                    box-sizing: border-box;
+                    display: flex;
+                    align-items: center;
+                    font-size: 18px;
+                    line-height: 60px;
+                    font-weight: bold;
+                    color: #000;
+                }
+
+                .content .right > div .bd li {
+                    padding: 0 22px;
+                    box-sizing: border-box;
+                    height: 60px;
+                    line-height: 60px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                }
+
+                    .content .right > div .bd li:not(:last-child) {
+                        border-bottom: 1px solid #EBEBEB;
+                    }
 </style>
 }
 <form id="Edit">
@@ -202,18 +330,111 @@
         <!--首页头部-->
         <div class="header">
             <div class="left">
-                <img id="RepastImg" src="http://system.cfda.vip/Upload/Images/眉山市东坡区苏祠初级中学/20190813/20190813101820373.png" />
+                <img id="RepastImg" />
                 <div>
-                    <h3 class="RepastName">眉山市东坡区苏祠初级中学</h3>
-                    <p>法人代表：<span id="Manager">岳家军</span></p>
-                    <p>社会信用代码：<span id="CreditCode">JY35114020034834</span></p>
+                    <h3 class="RepastName"></h3>
+                    <p>法人代表：<span id="Manager"></span></p>
+                    <p>社会信用代码：<span id="CreditCode"></span></p>
                 </div>
             </div>
             <div class="right">
                 <div id="qrcode">
                     <!--此处生成二维码-->
                 </div>
-                <div class="RepastName">眉山市东坡区苏祠初级中学</div>
+                <div class="RepastName"></div>
+            </div>
+        </div>
+        <!--首页内容模块-->
+        <div class="content">
+            <div class="left">
+                <div class="hd">
+                    <a>基本信息</a>
+                    <a>资质荣誉</a>
+                    <a class="active">企业视频</a>
+                    <a>食材供应</a>
+                    <a>供应商</a>
+                    <a>人员健康证</a>
+                    <a>废物处理</a>
+                    <a>留样管理</a>
+                </div>
+                <div class="bd">
+                    <div class="bd-item1">
+                        <div class="title">
+                            <div class="icon"></div>
+                            基本信息
+                        </div>
+                        <div class="msg">
+                            <div class="i-left">
+                                <p>企业名称：<span></span></p>
+                                <p>法人代表：<span></span></p>
+                                <p>企业电话：<span></span></p>
+                                <p>所属行业：<span></span></p>
+                            </div>
+                            <div class="i-right">
+                                <p>所属地区：<span></span></p>
+                                <p>营业期限：<span></span></p>
+                                <p>安全管理员：<span></span></p>
+                                <p>统一社会信用代码/注册号：<span></span></p>
+                            </div>
+                        </div>
+                        <p>企业地址：<span></span></p>
+                        <p>经营范围：<span></span></p>
+                        <p>企业简介：<span></span></p>
+                    </div>
+                    <div class="bd-item2">
+                        <img />
+                        <img />
+                        <img />
+                        <img />
+                    </div>
+                    <div class="on bd-item3">
+                        <div>
+                            <video></video>
+                            <p class="p1">苏祠中学厨房-烹调操作间3</p>
+                            <p>发表于2019-09-03 17:21</p>
+                        </div>
+                    </div>
+                    <div class="bd-item4">
+                        <div>
+                            <p><img src="/web/images/fgsag12f.png" /><span>2019年05月28日进货台账</span></p>
+                            <img />
+                        </div>
+                        <div>
+                            <p><img src="/web/images/fgsag12f.png" /><span>2019年05月28日进货台账</span></p>
+                            <img />
+                            <img />
+                            <img />
+                        </div>
+                        <div>
+                            <p><img src="/web/images/fgsag12f.png" /><span>2019年05月28日进货台账</span></p>
+                            <img />
+                            <img />
+                            <img />
+                        </div>
+                    </div>
+                    <div class="bd-item5">
+
+                    </div>
+                    <div class="bd-item6">
+
+                    </div>
+                    <div class="bd-item7">
+
+                    </div>
+                    <div class="bd-item8">
+
+                    </div>
+                </div>
+            </div>
+            <div class="right">
+                <div>
+                    <div class="hd"><div class="icon1"></div>陪餐制度</div>
+                    <ul class="bd"></ul>
+                </div>
+                <div>
+                    <div class="hd"><div class="icon1"></div>法律法规</div>
+                    <ul class="bd"></ul>
+                </div>
             </div>
         </div>
 

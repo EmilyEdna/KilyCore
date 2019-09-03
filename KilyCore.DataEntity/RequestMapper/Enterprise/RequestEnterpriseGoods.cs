@@ -30,5 +30,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public string Spec { get; set; }
         public string Unit { get; set; }
         public AuditEnum AuditType { get; set; }
+        public string Image { get; set; }
+        public string Remark { get; set; }
     }
 }
