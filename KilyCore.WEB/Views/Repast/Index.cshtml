@@ -131,6 +131,7 @@
                 async: false,
                 type: "post",
                 success: function (result) {
+                    //循环渲染供应商
                     let data = result.data;
                     let item5Str = "";
                     for (i5 in data) {
