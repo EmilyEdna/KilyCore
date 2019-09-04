@@ -43,9 +43,9 @@
                                 $("#Img2").append('<section class="image-section" img-url="' + item + '"><div class="image-shade"></div><div class="image-delete"></div><div class="image-zoom"></div><img class="image-show" src="' + item + '"></section>');
                             })
                         }
-                        if (controller.CheckFeild(result.data.ComImage)) {
+                        if (controller.CheckFeild(result.data.MerchantImage)) {
                             //企业形象
-                            $.each(result.data.ComImage.split(","), function (i, item) {
+                            $.each(result.data.MerchantImage.split(","), function (i, item) {
                                 $("#Img4").append('<section class="image-section" img-url="' + item + '"><div class="image-shade"></div><div class="image-delete"></div><div class="image-zoom"></div><img class="image-show" src="' + item + '"></section>');
                             })
                         }

@@ -80,6 +80,7 @@ namespace KilyCore.Service.ServiceCore
                 Account = t.Account,
                 PassWord = t.PassWord,
                 MerchantName = t.MerchantName,
+                MerchantImage = t.MerchantImage,
                 CardExpiredDate = t.CardExpiredDate,
                 SafeOffer = t.SafeOffer,
                 OfferLv = t.OfferLv,

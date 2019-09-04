@@ -23,9 +23,13 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         public Guid Id { get; set; }
         public Guid InfoId { get; set; }
         /// <summary>
-        /// 菜谱名称
+        /// 菜品名称
         /// </summary>
         public string DishName { get; set; }
+        /// <summary>
+        /// 菜品图片
+        /// </summary>
+        public string DishImg { set; get; }
         /// <summary>
         /// 类型
         /// </summary>
@@ -64,5 +68,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         public Guid Id { get; set; }
         public string FoodMenuName { get; set; }
         public DateTime? UpTime { get; set; }
+        public string Content { set; get; }
     }
 }

@@ -51,5 +51,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         public Guid Id { get; set; }
         public string Theme { get; set; }
         public DateTime? UpTime { get; set; }
+
+        public string Content { set; get; }
     }
 }
