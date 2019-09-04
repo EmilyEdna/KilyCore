@@ -22,6 +22,7 @@ namespace KilyCore.DataEntity.RequestMapper.Govt
     public class RequestGovtInfo
     {
         public Guid Id { get; set; }
+        public bool? IsEdu { get; set; }
         public Guid? GovtId { get; set; }
         /// <summary>
         /// 账号

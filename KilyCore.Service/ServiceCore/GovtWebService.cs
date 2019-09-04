@@ -76,12 +76,19 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<GovtMenu> queryable = Kily.Set<GovtMenu>().Where(t => t.Level == MenuEnum.LevelOne).Where(t => t.IsDelete == false).AsNoTracking().AsQueryable().OrderBy(t => t.CreateTime);
             IQueryable<GovtRoleAuthor> queryables = Kily.Set<GovtRoleAuthor>().Where(t => t.IsDelete == false);
-            if (GovtInfo().AccountType <= GovtAccountEnum.Area)
-                queryables = queryables.Where(t => !t.AuthorName.Contains("乡镇"));
+            if (!GovtInfo().IsEdu.Value)
+            {
+                if (GovtInfo().AccountType <= GovtAccountEnum.Area)
+                    queryables = queryables.Where(t => !t.AuthorName.Contains("乡镇"));
+                else
+                    queryables = queryables.Where(t => t.AuthorName.Contains("乡镇"));
+            }
             else
-                queryables = queryables.Where(t => t.AuthorName.Contains("乡镇"));
+            {
+                queryables = queryables.Where(t => t.AuthorName.Contains("教育局"));
+            }
             GovtRoleAuthor Author = queryables.FirstOrDefault();
-            var data = queryable.OrderBy(t => t.CreateTime).Select(t => new ResponseGovtMenu()
+            var data = queryable.OrderBy(t => t.CreateTime).Where(t => Author.AuthorMenuPath.Contains(t.Id.ToString())).Select(t => new ResponseGovtMenu()
             {
                 Id = t.Id,
                 MenuId = t.MenuId,
@@ -91,20 +98,20 @@ namespace KilyCore.Service.ServiceCore
                 HasChildrenNode = t.HasChildrenNode,
                 MenuIcon = t.MenuIcon,
                 MenuChildren = Kily.Set<GovtMenu>()
-              .Where(x => x.ParentId == t.MenuId)
-              .Where(x => x.Level != MenuEnum.LevelOne)
-              .Where(x => x.IsDelete == false)
-              .Where(x => Author.AuthorMenuPath.Contains(x.Id.ToString()))
-              .OrderBy(x => x.CreateTime).Select(x => new ResponseGovtMenu()
-              {
-                  Id = x.Id,
-                  MenuId = x.MenuId,
-                  ParentId = x.ParentId,
-                  MenuAddress = x.MenuAddress,
-                  MenuName = x.MenuName,
-                  HasChildrenNode = x.HasChildrenNode,
-                  MenuIcon = x.MenuIcon
-              }).ToList()
+             .Where(x => x.ParentId == t.MenuId)
+             .Where(x => x.Level != MenuEnum.LevelOne)
+             .Where(x => x.IsDelete == false)
+             .Where(x => Author.AuthorMenuPath.Contains(x.Id.ToString()))
+             .OrderBy(x => x.CreateTime).Select(x => new ResponseGovtMenu()
+             {
+                 Id = x.Id,
+                 MenuId = x.MenuId,
+                 ParentId = x.ParentId,
+                 MenuAddress = x.MenuAddress,
+                 MenuName = x.MenuName,
+                 HasChildrenNode = x.HasChildrenNode,
+                 MenuIcon = x.MenuIcon
+             }).ToList()
             }).ToList();
             return data;
         }
@@ -148,6 +155,7 @@ namespace KilyCore.Service.ServiceCore
                      GovtId = t.GovtId,
                      TableName = typeof(ResponseGovtInfo).Name,
                      Account = t.Account,
+                     IsEdu = t.IsEdu,
                      Phone = t.Phone,
                      AccountType = t.AccountType,
                      TrueName = t.TrueName,
@@ -252,20 +260,37 @@ namespace KilyCore.Service.ServiceCore
             }
             if (!string.IsNullOrEmpty(pageParam.QueryParam.MerchantName))
                 queryable = queryable.Where(t => t.MerchantName.Contains(pageParam.QueryParam.MerchantName));
-            var data = queryable.Select(t => new ResponseMerchant()
-            {
-                Id = t.Id,
-                MerchantName = t.MerchantName,
-                DiningTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
-                CommunityCode = t.CommunityCode,
-                Phone = t.Phone,
-                CardExpiredDate = t.CardExpiredDate,
-                MerchantSafeLv = t.MerchantSafeLv,
-                Certification = t.Certification,
-                AllowUnit = t.AllowUnit,
-                Address = t.Address,
-                ImplUser = t.ImplUser
-            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            PagedResult<ResponseMerchant> data = new PagedResult<ResponseMerchant>();
+            if (!GovtInfo().IsEdu.Value)
+                data = queryable.Select(t => new ResponseMerchant()
+                {
+                    Id = t.Id,
+                    MerchantName = t.MerchantName,
+                    DiningTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
+                    CommunityCode = t.CommunityCode,
+                    Phone = t.Phone,
+                    CardExpiredDate = t.CardExpiredDate,
+                    MerchantSafeLv = t.MerchantSafeLv,
+                    Certification = t.Certification,
+                    AllowUnit = t.AllowUnit,
+                    Address = t.Address,
+                    ImplUser = t.ImplUser
+                }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            else
+                data = queryable.Select(t => new ResponseMerchant()
+                {
+                    Id = t.Id,
+                    MerchantName = t.MerchantName,
+                    DiningTypeName = t.AllowUnit,
+                    CommunityCode = t.CommunityCode,
+                    Phone = t.Phone,
+                    CardExpiredDate = t.CardExpiredDate,
+                    MerchantSafeLv = t.MerchantSafeLv,
+                    Certification = t.Certification,
+                    AllowUnit = t.AllowUnit,
+                    Address = t.Address,
+                    ImplUser = t.ImplUser
+                }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
         /// <summary>
@@ -655,23 +680,38 @@ namespace KilyCore.Service.ServiceCore
                     queryables = queryables.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                 }
             }
-            var data = queryable.Select(t => new ResponseGovtDistribut()
+            List<ResponseGovtDistribut> data = new List<ResponseGovtDistribut>();
+            if (!GovtInfo().IsEdu.Value)
             {
-                Name = t.CompanyName,
-                LngAndLat = t.LngAndLat,
-                Address = t.CompanyAddress,
-                CompanyCode = t.CommunityCode,
-                CompanyType = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType)
-            }).ToList();
-            var temp = queryables.Select(t => new ResponseGovtDistribut()
+                data = queryable.Select(t => new ResponseGovtDistribut()
+                {
+                    Name = t.CompanyName,
+                    LngAndLat = t.LngAndLat,
+                    Address = t.CompanyAddress,
+                    CompanyCode = t.CommunityCode,
+                    CompanyType = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType)
+                }).ToList();
+                var temp = queryables.Select(t => new ResponseGovtDistribut()
+                {
+                    Name = t.MerchantName,
+                    LngAndLat = t.LngAndLat,
+                    Address = t.Address,
+                    CompanyCode = t.CommunityCode,
+                    CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType)
+                }).ToList();
+                data.AddRange(temp);
+            }
+            else
             {
-                Name = t.MerchantName,
-                LngAndLat = t.LngAndLat,
-                Address = t.Address,
-                CompanyCode = t.CommunityCode,
-                CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType)
-            }).ToList();
-            data.AddRange(temp);
+                data = queryables.Where(t=>t.DiningType==MerchantEnum.UnitCanteen).Select(t => new ResponseGovtDistribut()
+                {
+                    Name = t.MerchantName,
+                    LngAndLat = t.LngAndLat,
+                    Address = t.Address,
+                    CompanyCode = t.CommunityCode,
+                    CompanyType =t.AllowUnit
+                }).ToList();
+            }
             return data;
         }
         /// <summary>
@@ -1263,37 +1303,63 @@ namespace KilyCore.Service.ServiceCore
                     users = users.Where(t => t.TypePath.Contains(GovtInfo().Area));
                 }
             }
-            var Enterprise = queryable.Select(t => new
+            if (GovtInfo().IsEdu.Value)
             {
-                t.Id,
-                Name = t.CompanyName,
-                CardType = "营业执照",
-                CompanyType = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
-                CardImg = t.Certification,
-                t.CardExpiredDate
-            }).ToList();
-            var Repast = queryables.Select(t => new
+                var Enterprise = queryable.Select(t => new
+                {
+                    t.Id,
+                    Name = t.CompanyName,
+                    CardType = "营业执照",
+                    CompanyType = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
+                    CardImg = t.Certification,
+                    t.CardExpiredDate
+                }).ToList();
+                var Repast = queryables.Select(t => new
+                {
+                    t.Id,
+                    Name = t.MerchantName,
+                    CardType = "营业执照",
+                    CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
+                    CardImg = t.Certification,
+                    t.CardExpiredDate
+                }).ToList();
+                var MerUser = users.Select(t => new
+                {
+                    t.Id,
+                    Name = t.TrueName + "(" + t.MerchantName + ")",
+                    CardType = "健康证",
+                    CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
+                    CardImg = t.HealthCard,
+                    CardExpiredDate = t.ExpiredTime
+                }).ToList();
+                Enterprise.AddRange(Repast);
+                Enterprise.AddRange(MerUser);
+                Enterprise.RemoveAll(t => !t.CardExpiredDate.HasValue);
+                return Enterprise.Where(t => t.CardExpiredDate.Value <= DateTime.Now.AddDays(20)).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            }
+            else
             {
-                t.Id,
-                Name = t.MerchantName,
-                CardType = "营业执照",
-                CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
-                CardImg = t.Certification,
-                t.CardExpiredDate
-            }).ToList();
-            var MerUser = users.Select(t => new
-            {
-                t.Id,
-                Name = t.TrueName + "(" + t.MerchantName + ")",
-                CardType = "健康证",
-                CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
-                CardImg = t.HealthCard,
-                CardExpiredDate = t.ExpiredTime
-            }).ToList();
-            Enterprise.AddRange(Repast);
-            Enterprise.AddRange(MerUser);
-            Enterprise.RemoveAll(t => !t.CardExpiredDate.HasValue);
-            return Enterprise.Where(t => t.CardExpiredDate.Value <= DateTime.Now.AddDays(20)).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                var Repast = queryables.Select(t => new
+                {
+                    t.Id,
+                    Name = t.MerchantName,
+                    CardType = "营业执照",
+                    CompanyType = t.AllowUnit,
+                    CardImg = t.Certification,
+                    t.CardExpiredDate
+                }).ToList();
+                var MerUser = users.Where(t => t.DiningType == MerchantEnum.UnitCanteen).Select(t => new
+                {
+                    t.Id,
+                    Name = t.TrueName + "(" + t.MerchantName + ")",
+                    CardType = "健康证",
+                    CompanyType = Repast.Where(x => x.Id == t.InfoId).Select(x => x.CompanyType).FirstOrDefault(),
+                    CardImg = t.HealthCard,
+                    CardExpiredDate = t.ExpiredTime
+                }).ToList();
+                Repast.AddRange(MerUser);
+                return Repast.Where(t => t.CardExpiredDate.Value <= DateTime.Now.AddDays(20)).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            }
         }
         /// <summary>
         /// 证件到期提醒
@@ -2093,7 +2159,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 value = t.Count(),
                 name = t.Key,
-                url=""
+                url = ""
             }).ToList();
         }
         /// <summary>
@@ -2102,6 +2168,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public ResponseGovtMap GetAllCityMerchantCount()
         {
+            var Temp = GovtInfo();
             ResponseCity City = Kily.Set<SystemCity>().Where(t => t.Id.ToString() == GovtInfo().City).Select(t => new ResponseCity
             {
                 CityId = t.Code,
@@ -2119,7 +2186,10 @@ namespace KilyCore.Service.ServiceCore
             {
                 int TotalCompany = queryable.Where(x => x.TypePath.Contains(t.Id.ToString())).Select(x => x.Id).Count();
                 int TotalMerchant = queryables.Where(x => x.TypePath.Contains(t.Id.ToString())).Select(x => x.Id).Count();
-                data.Add(new ResponseGovtRanking { AreaName = t.AreaName, TotalCount = TotalCompany + TotalMerchant });
+                if (!Temp.IsEdu.Value)
+                    data.Add(new ResponseGovtRanking { AreaName = t.AreaName, TotalCount = TotalCompany + TotalMerchant });
+                else
+                    data.Add(new ResponseGovtRanking { AreaName = t.AreaName, TotalCount = TotalMerchant });
             });
             data = data.OrderByDescending(t => t.TotalCount).ToList();
             int Total = data.Sum(t => t.TotalCount);
@@ -2220,7 +2290,14 @@ namespace KilyCore.Service.ServiceCore
             var total = Pie.Where(t => t.name == "小经营店" || t.name == "小作坊" || t.name == "小摊贩").Sum(t => t.value);
             Pie.RemoveAll(t => t.name == "小经营店" || t.name == "小作坊" || t.name == "小摊贩");
             Pie.Add(new DataPie { name = "三小企业", value = total });
-            return Pie;
+            if (!Temp.IsEdu.Value)
+                return Pie;
+            else
+            {
+                Pie = new List<DataPie>();
+                Pie = mers.Where(t => t.DiningType == MerchantEnum.UnitCanteen).GroupBy(t => t.AllowUnit).Select(t => new DataPie { name = t.Key, value = t.Count() }).ToList();
+                return Pie;
+            }
         }
         /// <summary>
         /// 今日入住
@@ -2258,8 +2335,16 @@ namespace KilyCore.Service.ServiceCore
                     mers = mers.Where(t => t.TypePath.Contains(GovtInfo().Area));
                 }
             }
-            var data = coms.Select(t => t.CompanyName).ToList();
-            data.AddRange(mers.Select(t => t.MerchantName).ToList());
+            List<string> data = new List<string>();
+            if (!GovtInfo().IsEdu.Value)
+            {
+                data.AddRange(coms.Select(t => t.CompanyName).ToList());
+                data.AddRange(mers.Select(t => t.MerchantName).ToList());
+            }
+            else
+            {
+                data.AddRange(mers.Select(t => t.MerchantName).ToList());
+            }
             return string.Join(",", data);
         }
         /// <summary>
@@ -2448,20 +2533,33 @@ namespace KilyCore.Service.ServiceCore
             }
             int CompanyVedio = vedios.Where(t => t.CreateTime.Value >= DateTime.Parse(DateTime.Now.ToShortDateString()) && t.CreateTime.Value <= DateTime.Parse(DateTime.Now.ToShortDateString())).Count();
             int MerchantVedio = videos.Where(t => t.CreateTime.Value >= DateTime.Parse(DateTime.Now.ToShortDateString()) && t.CreateTime.Value <= DateTime.Parse(DateTime.Now.ToShortDateString())).Count();
-            var data = vedios.Select(t => new
+            if (!GovtInfo().IsEdu.Value)
             {
-                t.VedioAddr,
-                t.VedioName,
-                t.VedioCover
-            }).Take(4).ToList();
-            var datas = videos.Select(t => new
+                var data = vedios.Select(t => new
+                {
+                    t.VedioAddr,
+                    t.VedioName,
+                    t.VedioCover
+                }).Take(4).ToList();
+                var datas = videos.Select(t => new
+                {
+                    VedioAddr = t.VideoAddress,
+                    VedioName = t.MonitorAddress,
+                    VedioCover = t.CoverPhoto
+                }).Take(4).ToList();
+                data.AddRange(datas);
+                return new { Vedio = data, CompanyVedio, MerchantVedio };
+            }
+            else
             {
-                VedioAddr = t.VideoAddress,
-                VedioName = t.MonitorAddress,
-                VedioCover = t.CoverPhoto
-            }).Take(4).ToList();
-            data.AddRange(datas);
-            return new { Vedio = data, CompanyVedio, MerchantVedio };
+                var datas = videos.Select(t => new
+                {
+                    VedioAddr = t.VideoAddress,
+                    VedioName = t.MonitorAddress,
+                    VedioCover = t.CoverPhoto
+                }).Take(4).ToList();
+                return new { Vedio = datas, CompanyVedio, MerchantVedio };
+            }
         }
         #endregion
         #region 旧大屏

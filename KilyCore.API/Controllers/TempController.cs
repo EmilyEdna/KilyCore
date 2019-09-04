@@ -58,7 +58,7 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(Temp.GetAllSample(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
-        /// 获取商家留样
+        /// 获取废物处理
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>

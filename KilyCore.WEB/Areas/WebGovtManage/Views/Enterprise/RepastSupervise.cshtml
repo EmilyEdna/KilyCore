@@ -16,6 +16,13 @@
             },
             //元素
             InitDom: function () {
+                var data = null;
+                if (GovtInfo.IsEdu) {
+                    $("h5").text("机关单位");
+                    data = { DiningType: 20 };
+                } else {
+                     data = { DiningType: 10 };
+                }
                 //恢复高度
                 $(window).resize(function (e) {
                     window.setTimeout(function () {
@@ -24,7 +31,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "GovtWeb/GetMerchantPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { DiningType: 10 } });
+                this.$table = controller.Table("#tableList", { url: "GovtWeb/GetMerchantPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: data });
             },
             //事件
             InitEvents: function () {
@@ -43,7 +50,7 @@
             },
             //行为
             action: {
-             
+
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary detail"><i class="fa fa-pencil-square-o"></i>详情</button>');
@@ -63,7 +70,7 @@
                             title: row.MerchantName,
                             type: 2,
                             height: "90%",
-                            width: "80%",  
+                            width: "80%",
                             url: "WebGovtManage/Enterprise/RepastSuperviseDetail?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();

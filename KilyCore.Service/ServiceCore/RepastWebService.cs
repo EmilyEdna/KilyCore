@@ -1311,6 +1311,7 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.Select(t => new ResponseRepastSupplier()
             {
                 Id = t.Id,
+                SupplierUser=t.SupplierUser,
                 LinkPhone = t.LinkPhone,
                 SupplierName = t.SupplierName,
                 Address = t.Address,

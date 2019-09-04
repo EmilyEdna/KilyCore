@@ -32,5 +32,9 @@ namespace KilyCore.WEB.Controllers
         {
             return View();
         }
+        public IActionResult DataV3()
+        {
+            return View();
+        }
     }
 }

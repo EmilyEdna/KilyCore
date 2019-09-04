@@ -111,7 +111,7 @@
             },
             //事件
             InitEvents: function () {
-                Number($("input[name='DiningType']").val()) != 20 ? $("input[name='AllowUnit']").attr("disabled", "true") : $("input[name='AllowUnit']").attr("disabled", "false");
+                Number($("input[name='DiningType']").val()) != 20 ? $("select[name='AllowUnit']").attr("disabled", true) : $("select[name='AllowUnit']").attr("disabled", false);
                 //坐标选区
                 $("input[name='LngAndLat']").on('click', function () {
                     controller.OpenWindow({
@@ -150,12 +150,6 @@
             <input type="hidden" name="Area" />
             <input type="hidden" name="Town" />
             <table class="table table-hover table-bordered">
-                <colgroup>
-                    <col width="10%" />
-                    <col width="40%" />
-                    <col width="10%" />
-                    <col width="40%" />
-                </colgroup>
                 <tr>
                     <th><label class="control-label">商家名称</label></th>
                     <td class="has-warning">
@@ -191,9 +185,17 @@
                     <td class="has-warning">
                         <input type="text" class="form-control" name="ImplUser">
                     </td>
-                    <th><label class="control-label">所属单位</label></th>
+                    <th><label class="control-label">单位类型</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="AllowUnit" placeholder="单位食堂必填">
+                        <select type="select" name="AllowUnit" class="form-control">
+                            <option value="">--请选择--</option>
+                            <option value="机关单位">机关单位</option>
+                            <option value="学前教育">学前教育</option>
+                            <option value="义务教育">义务教育</option>
+                            <option value="高中教育">高中教育</option>
+                            <option value="高等教育">高等教育</option>
+                            <option value="职业教育">职业教育</option>
+                        </select>
                     </td>
                 </tr>
                 <tr>
