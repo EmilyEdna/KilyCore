@@ -26,6 +26,10 @@ namespace KilyCore.EntityFrameWork.Model.Govt
     public class GovtInfo: GovtBase
     {
         /// <summary>
+        /// 教育局
+        /// </summary>
+        public virtual bool? IsEdu { get; set; }
+        /// <summary>
         /// 账号
         /// </summary>
         public virtual string Account { get; set; }

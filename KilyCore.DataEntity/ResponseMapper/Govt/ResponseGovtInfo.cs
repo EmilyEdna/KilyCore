@@ -24,6 +24,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Govt
         public Guid Id { get; set; }
         public Guid? GovtId { get; set; }
         public string TableName { get; set; }
+        public bool? IsEdu { get; set; }
         /// <summary>
         /// 账号
         /// </summary>

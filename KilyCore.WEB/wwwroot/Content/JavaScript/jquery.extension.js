@@ -20,7 +20,7 @@ $.fn.SetTree = function (data) {
         html += '<li id="' + obj.MenuId + '"><a href="#"><i class="' + obj.MenuIcon + '"></i><span class="nav-label">' + obj.MenuName + '</span><span class="fa arrow"></span></a>';
         if (obj.HasChildrenNode) {
             $.each(obj.MenuChildren, function (n, child) {
-                html += '<ul class="nav nav-second-level"><li id="' + child.MenuId + '"><a class="J_menuItem" href="' + child.MenuAddress + '">' + child.MenuName + '</a></li></ul>';
+                html += '<ul class="nav nav-second-level"><li id="' + child.MenuId + '"><a class="J_menuItem" href="' + child.MenuAddress + '" id="' + child.MenuName+'">' + child.MenuName + '</a></li></ul>';
             });
             html += '</li>';
         } else {

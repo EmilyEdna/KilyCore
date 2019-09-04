@@ -53,6 +53,8 @@
                     crossDomain: true,
                     success: function (result) {
                         $('#side-menu').SetTree(result.data);
+                        if (Govt.IsEdu)
+                            $("#餐饮企业").text("机关单位");
                     }
                 });
             },

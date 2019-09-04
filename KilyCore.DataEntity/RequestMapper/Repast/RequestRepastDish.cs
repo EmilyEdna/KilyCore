@@ -61,6 +61,7 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
     }
     public class RequestFoodMenu {
         public string FoodMenuName { get; set; }
+        public Guid? InfoId { get; set; }
         public DateTime? UpTime { get; set; }
         public string Content { get; set; }
     }

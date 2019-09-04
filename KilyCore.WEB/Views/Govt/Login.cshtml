@@ -49,8 +49,12 @@
                     success: function (result) {
                         if (result.flag != -1) {
                             controller.SetCookie(result.data);
-                            if (result.data.GovtAdmin.Flag != null)
-                                controller.SetHref("DataV2");
+                            if (result.data.GovtAdmin.Flag != null) {
+                                if (result.data.GovtAdmin.IsEdu)
+                                    controller.SetHref("DataV3");
+                                else
+                                    controller.SetHref("DataV2");
+                            }
                             else
                                 controller.OpenWindow({
                                     title: "更新密码",
@@ -66,7 +70,10 @@
                                             controller.Msg("两次输入的密码不一致");
                                         } else {
                                             result.$("#Edit").submit();
-                                            controller.SetHref("DataV");
+                                            if (result.data.GovtAdmin.IsEdu)
+                                                controller.SetHref("DataV3");
+                                            else
+                                                controller.SetHref("DataV2");
                                         }
                                     }
                                 });
