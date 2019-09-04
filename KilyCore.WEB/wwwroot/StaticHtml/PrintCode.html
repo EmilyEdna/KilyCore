@@ -11,6 +11,7 @@
     <script src="../Content/QRCode/Script/QRCode.js"></script>
     <script src="../Content/JavaScript/jquery.cookie.js"></script>
     <script src="../Content/JavaScript/Controller.js"></script>
+    <script src="http://printfree.jatools.com/demos/jcpfree.js"></script>
     <script>
         var option = {
             Init: function () {
@@ -41,22 +42,23 @@
                                 flag = false;
                             }
                         });
-                    var html = `<div class="wrap">
-                                            <div class="left">
-                                                <p>产品名称：<span>${option.ProName}</span></p>
-                                                <p>入库批次：<span>${option.n}</span></p>
-                                                <p>等&emsp;&emsp;级：<span>${option.LvName}</span></p>
-                                                <p>保&nbsp;质&nbsp;期 ：<span>${option.Ex}</span></p>
-                                                <p>储藏条件：<span>${option.Type}</span></p>
-                                                <p>生产时间：<span>${option.Time}</span></p>
-                                                <p>产&emsp;&emsp;地：<span>${$.parseJSON(localStorage.CompanyUser).CompanyAddress}</span></p>
-                                            </div>
-                                            <div class="right">
-                                                <div id="code_${i}" width="160" height="160"></div>
-                                                <img src="StaticImg/TagFlag.png" width="156" height="146" style="margin-top: 16px">
-                                                <p>溯源编码：<span>${FullCode}</span></p>
-                                            </div>
-                                        </div>`
+                    var html = `<div class="wrap" id="page${i}">
+                                                    <div class="left">
+                                                        <p>产品名称：<span>${option.ProName}</span></p>
+                                                        <p>入库批次：<span>${option.n}</span></p>
+                                                        <p>等&emsp;&emsp;级：<span>${option.LvName}</span></p>
+                                                        <p>保&nbsp;质&nbsp;期 ：<span>${option.Ex}</span></p>
+                                                        <p>储藏条件：<span>${option.Type}</span></p>
+                                                        <p>生产时间：<span>${option.Time}</span></p>
+                                                        <p>产&emsp;&emsp;地：<span>${$.parseJSON(localStorage.CompanyUser).CompanyAddress}</span></p>
+                                                    </div>
+                                                    <div class="right">
+                                                        <img src="StaticImg/TagFlag.png" width="156" height="146" style="margin-top: 16px">
+                                                        <div id="code_${i}" width="160" height="160"></div>
+
+                                                        <p>溯源编码：<span>${FullCode}</span></p>
+                                                    </div>
+                                                </div>`
                     $("body").append(html);
                     controller.QRCode("#code_" + i, {
                         text: "http://phone.cfda.vip/newphone/codeindex.html?id=&Code=" + FullCode,
@@ -68,7 +70,25 @@
         };
         $(document).ready(function () {
             option.Init();
+            printWin("打印预览");
         });
+        function printWin(how) {
+		    var myDoc = {
+			    documents : document, // 打印页面(div)们在本文档中
+			    copyrights : '杰创软件拥有版权  www.jatools.com' // 版权声明必须
+		    };
+		    var jcp = getJCP();
+		    // 调用打印方法
+            if (how == '打印预览')
+                jcp.printPreview(myDoc, false);
+            else if (how == "打印预览(显示进度条)") {
+                jcp.printPreview(myDoc, true);
+            } else if (how == '弹出打印机选择对话框打印') {
+                jcp.print(myDoc, true);
+            } else {
+                jcp.print(myDoc, false); // 不弹出对话框打印
+            }
+	    }
     </script>
     <style>
         * {
@@ -99,8 +119,8 @@
         .right {
             width: 270px;
             position: absolute;
-            right: 25px;
-            top: 50px;
+            right: 32px;
+            top: 16px;
             text-align: right;
         }
 
@@ -113,7 +133,7 @@
 </head>
 
 <body>
-
+    <OBJECT id="jatoolsPrinter" classid="CLSID:B43D3361-D075-4BE2-87FE-057188254255" codebase="jatoolsPrinter.cab#version=8,6,0,0"></OBJECT>
 </body>
 
 </html>
