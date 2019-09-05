@@ -16,18 +16,33 @@
                 this.InitEvent();
             },
             InitDom: function () {
+                if (RepastUser.DiningTypeName == "单位食堂") {
+                    $("#NavFoods").hide();
+                    $("#FoodsContent").hide();
+                    //$("#NavBook").show();
+                    //$("#BookContent").show();
+                }
+                else {
+                    //$("#NavFoods").show();
+                    //$("#FoodsContent").show();
+                    $("#NavBook").hide();
+                    $("#BookContent").hide();
+                }
                 //缓存数据渲染页面dom
                 $(".RepastName").html(RepastUser.MerchantName);
-                debugger;
                 $(".Manager").html(RepastUser.ImplUser);
+                $(".Address").html(RepastUser.Address);
                 $(".CreditCode").html(RepastUser.CommunityCode);
                 $("#RepastImg").attr("src", "http://system.cfda.vip" + RepastUser.MerchantImage);
                 $("#DiningTypeName").html(RepastUser.DiningTypeName);
                 $("#SafeOffer").html(RepastUser.SafeOffer);
                 //缓存数据循环渲染资质荣誉
                 let item2Str = "";
+                if (RepastUser.Certification != undefined && RepastUser.Certification != null) {
+                    item2Str += `<img src="http://system.cfda.vip${RepastUser.Certification}">`;
+                }
                 for (i2 in RepastUser.HonorCertification) {
-                    item2Str += `<img src="${RepastUser.HonorCertification[i2]}"`;
+                    item2Str += `<img src="${RepastUser.HonorCertification[i2]}">`;
                 }
                 $(".bd-item2").html(item2Str);
                 //页面内容左侧选项卡
@@ -63,64 +78,68 @@
                         for (i3 in data.VedioScan) {
                             let type = ((data.VedioScan[i3].视频连接.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
                             item3Str += `
-                                <div class="bd-item3-item">
-                                    <video class="video-js vjs-default-skin vjs-big-play-centered" src="${data.VedioScan[i3].视频连接}" type="${type}"><source></video >
-                                    <p>${data.VedioScan[i3].监控区域}</p>
-                                </div>`;
+                                    <div class="bd-item3-item">
+                                        <video class="video-js vjs-default-skin vjs-big-play-centered" src="${data.VedioScan[i3].视频连接}" type="${type}"><source></video >
+                                        <p>${data.VedioScan[i3].监控区域}</p>
+                                    </div>`;
                         }
                         $(".bd-item3").html(item3Str);
                         //循环渲染台账管理
                         let item4Str = "";
                         for (i4 in data.TicketScan) {
                             item4Str += `
-                            <div class="bd-item4-item">
-                                <p>主题名称：<span>${data.TicketScan[i4].台账主题}</span></p>
-                                <p>上报日期：<span>${data.TicketScan[i4].上报时间}</span></p>
-                                ${data.TicketScan[i4].台账内容}
-                            </div>`;
+                                <div class="bd-item4-item">
+                                    <p>主题名称：<span>${data.TicketScan[i4].台账主题}</span></p>
+                                    <p>上报日期：<span>${data.TicketScan[i4].上报时间}</span></p>
+                                    ${data.TicketScan[i4].台账内容}
+                                </div>`;
                         }
                         $(".bd-item4").html(item4Str);
                         //循环渲染人员健康证
                         let item6Str = "";
                         for (i6 in data.UserScan) {
+                             var Color = "";
+                            if (DateCompare(data.UserScan[i6].健康证到期时间)) {
+                                var Color = "color:red;";
+                            }
                             item6Str += `
-                                <div class="bd-item6-item">
-                                    <img src="${data.UserScan[i6].健康证}"/>
-                                    <p class="p1"><label>姓名：<span>${data.UserScan[i6].人员姓名}</span></label><label>状态：<span>在职</span></label></p>
-                                    <p><label>有效期: <span>${data.UserScan[i6].健康证到期时间}</span></label></p>
-                                </div>`;
+                                    <div class="bd-item6-item">
+                                        <img src="http://system.cfda.vip${data.UserScan[i6].健康证}"/>
+                                        <p class="p1"><label>姓名：<span>${data.UserScan[i6].人员姓名}</span></label><label>状态：<span>在职</span></label></p>
+                                        <p><label>有效期: <span style="${Color}">${data.UserScan[i6].健康证到期时间}</span></label></p>
+                                    </div>`;
                         }
                         $(".bd-item6").html(item6Str);
                         //循环渲染废物处理
                         let item7Str = "";
                         for (i7 in data.DuckScan) {
                             item7Str += `
-                                <div>
-                                    —&emsp;<span>2019年05月28日</span>
-                                </div>
-                                <table>
-                                    <tr>
-                                        <td>处理人</td>
-                                        <td>处理方式</td>
-                                        <td>处理时间</td>
-                                    </tr>
-                                    <tr>
-                                        <td>${data.DuckScan[i7].处理人}</td>
-                                        <td>${data.DuckScan[i7].处理方式}</td>
-                                        <td>${data.DuckScan[i7].处理时间}</td>
-                                    </tr>
-                                </table>`;
+                                    <div>
+                                        —&emsp;<span>${data.DuckScan[i7].处理时间}</span>
+                                    </div>
+                                    <table>
+                                        <tr>
+                                            <td>处理人</td>
+                                            <td>处理方式</td>
+                                            <td>处理时间</td>
+                                        </tr>
+                                        <tr>
+                                            <td>${data.DuckScan[i7].处理人}</td>
+                                            <td>${data.DuckScan[i7].处理方式}</td>
+                                            <td>${data.DuckScan[i7].处理时间}</td>
+                                        </tr>
+                                    </table>`;
                         }
                         $(".bd-item7").html(item7Str);
                         //循环渲染留样管理
                         let item8Str = "";
                         for (i8 in data.SampleScan) {
                             item8Str += `
-                                <div class="bd-item8-item">
-                                    <img src="${data.SampleScan[i8].留样图片}" />
-                                    <p class="p1"><label>菜品名称：<span>${data.SampleScan[i8].留样菜品}</span></label><label>储存方式：<span>冷藏</span></label></p>
-                                    <p><label>操作人员: <span>${data.SampleScan[i8].操作人}</span></label><label>留样时间：<span>${data.SampleScan[i8].留样时间}</span></label></p>
-                                </div>`;
+                                    <div class="bd-item8-item">
+                                        <img src="http://system.cfda.vip${data.SampleScan[i8].留样图片}" />
+                                        <p class="p1"><label>菜品名称：<span>${data.SampleScan[i8].留样菜品}</span></label><label>储存方式：<span>冷藏</span></label></p>
+                                        <p><label>操作人员: <span>${data.SampleScan[i8].操作人}</span></label><label>留样时间：<span>${data.SampleScan[i8].留样时间}</span></label></p>
+                                    </div>`;
                         }
                         $(".bd-item8").html(item8Str);
                     }
@@ -136,19 +155,66 @@
                         let data = result.data;
                         let item5Str = "";
                         for (i5 in data) {
+                            if (data[i5].SupplierNo == null) data[i5].SupplierNo = "-";
                             item5Str += `
-                                <div class="bd-item5-item">
-                                    <img src="${data[i5].RunCard}"/>
-                                    <div>
-                                        <p>供应商：<span>${data[i5].SupplierName}</span></p>
-                                        <p>负责人：<span>${data[i5].SupplierUser}</span></p>
-                                        <p>单位代码：<span>${data[i5].SupplierNo}</span></p>
-                                        <p>联系方式：<span>${data[i5].LinkPhone}</span></p>
-                                        <p>经营资质是否齐全：<span>是</span></p>
-                                    </div>
-                                </div>`;
+                                    <div class="bd-item5-item">
+                                        <img src="http://system.cfda.vip${data[i5].RunCard}"/>
+                                        <div>
+                                            <p>供应商：<span>${data[i5].SupplierName}</span></p>
+                                            <p>负责人：<span>${data[i5].SupplierUser}</span></p>
+                                            <p>单位代码：<span>${data[i5].SupplierNo}</span></p>
+                                            <p>联系方式：<span>${data[i5].LinkPhone}</span></p>
+                                            <p>经营资质是否齐全：<span>是</span></p>
+                                        </div>
+                                    </div>`;
                         }
                         $(".bd-item5").html(item5Str);
+                    }
+                });
+                //周菜谱
+                controller.ajax({
+                    url: "RepastWeb/GetMerchantWeekPage",
+                    data: { pageSize: 10, pageNumber: 1 },
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        //循环渲染周菜谱
+                        let data = result.data;
+                        let itemStr = "";
+                        $.each(data.rows, function (i, item) {
+                            itemStr += `
+                                <div class="bd-item9-item">
+                                    <p>菜谱名称：<span>${item.FoodMenuName}</span></p>
+                                    <p>上报日期：<span>${item.UpTime}</span></p>
+                                    ${item.Content}
+                                </div>`;
+
+                        })
+                        $(".bd-item9").html(itemStr);
+                    }
+                });
+                 //抽检信息
+                controller.ajax({
+                    url: "RepastWeb/GetDrawPage",
+                    data: { pageSize: 10, pageNumber: 1 },
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        //循环渲染抽检信息
+                        let data = result.data;
+                        let itemStr = "";
+                        $.each(data.rows, function (i, item) {
+                            if (item.Remark == null) item.Remark = "";
+                            itemStr += `
+                                <div class="bd-item9-item">
+                                    <p>负责人：<span>${item.DrawUser}</span></p>
+                                    <p>联系电话：<span>${item.Phone}</span></p>
+                                    <p>抽检时间：<span>${item.DrawTime}</span></p>
+                                    ${item.Remark}
+                                </div>`;
+
+                        })
+                        $(".bd-item10").html(itemStr);
                     }
                 });
             }
@@ -156,6 +222,22 @@
         $(document).ready(function () {
             option.Init();
         });
+        function DateCompare(TimeLength) {
+            // 获取当前日期
+            let currentDate = new Date();
+            let str = "" + currentDate.getFullYear() + "-";
+            str += (currentDate.getMonth() + 1) + "-";
+            str += currentDate.getDate();
+            let today = new Date(str.replace("-", "/").replace("-", "/"));
+        
+            let fulfill_appointment_time = new Date(TimeLength.replace("年", "/").replace("月", "/").replace("日", ""));
+            if (fulfill_appointment_time < today) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
     </script>
 }
 @section css{
@@ -187,8 +269,9 @@
             background: #fff;
             display: flex;
             justify-content: space-between;
-            width: 100%;
+            width: 98%;
             padding: 20px;
+            margin: 12px auto;
             box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.24);
         }
 
@@ -205,16 +288,16 @@
                 }
 
                 .header .left div h3 {
-                    font-size: 24px;
+                    font-size: 16px;
                     line-height: 40px;
                     color: #414242;
-                    margin-bottom: 18px;
+                    margin-bottom: 6px;
                 }
 
                 .header .left div p {
                     color: #808080;
-                    font-size: 16px;
-                    line-height: 36px;
+                    font-size: 15px;
+                    line-height: 24px;
                 }
 
                     .header .left div p span {
@@ -232,11 +315,13 @@
 
                 .header .right .RepastName {
                     margin-top: 5px;
+                    font-size: 15px;
                 }
 
         .content {
             margin-top: 25px;
-            width: 100%;
+            width: 98%;
+            margin: auto auto;
             display: flex;
             justify-content: space-between;
         }
@@ -249,7 +334,7 @@
             }
 
                 .content .left .hd {
-                    font-size: 18px;
+                    font-size: 16px;
                     width: 100%;
                     display: flex;
                     border-bottom: 1px solid #EAEFF5;
@@ -296,7 +381,7 @@
 
                     .content .left .bd .bd-item1 p {
                         color: #808080;
-                        font-size: 16px;
+                        font-size: 15px;
                         line-height: 32px;
                         margin-top: 10px;
                         padding-left: 12px;
@@ -304,7 +389,7 @@
                     }
 
                         .content .left .bd .bd-item1 p::before {
-                            content: '';
+                            /*content: '';*/
                             display: inline-block;
                             width: 6px;
                             height: 6px;
@@ -338,6 +423,7 @@
                         width: 390px;
                         height: 270px;
                         border: 1px solid #ccc;
+                        float: left;
                         margin: 0 20px 20px 0;
                     }
 
@@ -356,7 +442,9 @@
                         }
 
                     .content .left .bd .bd-item4 .bd-item4-item {
-                        margin-bottom: 50px;
+                        margin-bottom: 10px;
+                        padding: 20px 0px;
+                        border-bottom: 1px dotted #ddd;
                     }
 
                         .content .left .bd .bd-item4 .bd-item4-item p {
@@ -414,11 +502,14 @@
                                         color: #000;
                                     }
 
+                  
+
                     .content .left .bd .bd-item6 .bd-item6-item {
                         width: 390px;
                         height: 300px;
                         border: 1px solid #ccc;
                         margin: 0 20px 20px 0;
+                        float: left;
                     }
 
                         .content .left .bd .bd-item6 .bd-item6-item img {
@@ -491,6 +582,7 @@
                         height: 300px;
                         border: 1px solid #ccc;
                         margin: 0 20px 20px 0;
+                        float: left;
                     }
 
                         .content .left .bd .bd-item8 .bd-item8-item img {
@@ -558,6 +650,30 @@
                         .content .right .right-item .bd li:not(:last-child) {
                             border-bottom: 1px solid #EBEBEB;
                         }
+
+
+                         .content .left .bd .bd-item9 .bd-item9-item {
+                        margin-bottom: 10px;
+                        padding: 20px 0px;
+                        border-bottom: 1px dotted #ddd;
+                    }
+
+                        .content .left .bd .bd-item9 .bd-item9-item p {
+                            line-height: 32px;
+                            font-size: 16px;
+                            display: flex;
+                            align-items: center;
+                        }
+
+                            .content .left .bd .bd-item9 .bd-item9-item p span {
+                                color: #000;
+                            }
+
+                        .content .left .bd .bd-item9 .bd-item9-item > img {
+                            width: 48%;
+                            height: 320px;
+                            margin: 10px 10px 10px 0;
+                        }
     </style>
 }
 <form id="Edit">
@@ -569,6 +685,7 @@
                 <h3 class="RepastName"></h3>
                 <p>法人代表：<span class="Manager"></span></p>
                 <p>社会信用代码：<span class="CreditCode"></span></p>
+                <p>单位地址：<span class="Address"></span></p>
             </div>
         </div>
         <div class="right">
@@ -584,12 +701,15 @@
             <div class="hd">
                 <a class="active">基本信息</a>
                 <a>资质荣誉</a>
-                <a>企业视频</a>
+                <a>视频监控</a>
+                <a id="NavFoods">主营菜品</a>
+                <a id="NavBook">周菜谱</a>
                 <a>台账管理</a>
                 <a>供应商</a>
                 <a>人员健康证</a>
                 <a>废物处理</a>
                 <a>留样管理</a>
+                <a>抽检信息</a>
             </div>
             <div class="bd">
                 <!--基本信息-->
@@ -617,6 +737,10 @@
                 <div class="bd-item2"></div>
                 <!--企业视频-->
                 <div class="bd-item3"></div>
+                <!--主营菜品-->
+                <div class="bd-item11" id="FoodsContent"></div>
+                <!--周菜谱-->
+                <div class="bd-item9" id="BookContent"></div>
                 <!--台账管理-->
                 <div class="bd-item4"></div>
                 <!--供应商-->
@@ -627,6 +751,8 @@
                 <div class="bd-item7"></div>
                 <!--留样管理-->
                 <div class="bd-item8"></div>
+                <!--抽检信息-->
+                <div class="bd-item10"></div>
             </div>
         </div>
         <div class="right">
