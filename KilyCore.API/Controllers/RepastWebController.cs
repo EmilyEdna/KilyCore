@@ -1411,9 +1411,9 @@ namespace KilyCore.API.Controllers
         }
         #endregion
 
-        #region 配餐管理
+        #region 陪餐管理
         /// <summary>
-        /// 配餐列表
+        /// 陪餐列表
         /// </summary>
         /// <param name="pageParam"></param>
         /// <returns></returns>
@@ -1423,7 +1423,7 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(RepastWebService.GetUnitInsPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
-        /// 删除配餐
+        /// 删除陪餐
         /// </summary>
         /// <param name="Key"></param>
         /// <returns></returns>
@@ -1433,7 +1433,7 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(RepastWebService.DeleteUnitIns(Key.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
-        /// 编辑配餐
+        /// 编辑陪餐
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
@@ -1443,7 +1443,7 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(RepastWebService.SaveUnitIns(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
-        /// 配餐详情
+        /// 陪餐详情
         /// </summary>
         /// <param name="Key"></param>
         /// <returns></returns>
@@ -1453,7 +1453,7 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(RepastWebService.GetUnitInsDetail(Key.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
-        /// 配餐记录
+        /// 陪餐记录
         /// </summary>
         /// <param name="pageParam"></param>
         /// <returns></returns>
@@ -1463,7 +1463,7 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(RepastWebService.GetUnitInsRecordPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
-        /// 删除配餐记录
+        /// 删除陪餐记录
         /// </summary>
         /// <param name="Key"></param>
         /// <returns></returns>
@@ -1473,7 +1473,7 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(RepastWebService.DeleteUnitInsRecord(Key.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
-        /// 编辑配餐记录
+        /// 编辑陪餐记录
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
@@ -1483,7 +1483,7 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(RepastWebService.SaveUnitInsRecord(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
-        /// 配餐记录详情
+        /// 陪餐记录详情
         /// </summary>
         /// <param name="Key"></param>
         /// <returns></returns>
