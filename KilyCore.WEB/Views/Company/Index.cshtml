@@ -1,430 +1,382 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "首页";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
-    <script src="http://api.map.baidu.com/api?v=2.0&ak=3ce7ddfda60046708248ea55e10b1435"></script>
-    <script>
-        var option = {
-            Init: function () {
-                this.InitDom();
-                this.InitEvent();
-                this.InitDataCount(CompanyInfo.Id);
-                this.InitMap();
-            },
-            InitDom: function () {
-                $("body").addClass("gray-bg");
-                $(".dropdown-toggle").html(CompanyInfo.CompanyName + '<b class="caret"></b>');
-                if (CompanyInfo.Version != 40)
-                    $(".nav-pills").addClass("hidden");
-                else {
-                    $(".nav-pills").removeClass("hidden");
-                    //获取子账户
-                    controller.ajax({
-                        url: "EnterpriseWeb/GetChildAccount",
-                        data: { Id: CompanyInfo.Id },
-                        type: "post",
-                        async: false,
-                        success: function (result) {
-                            var html = '';
-                            $.each(result.data, function (key, val) {
-                                html += '<li><a href="javascript:void(0);" data-Id="' + key + '">' + val + '</a></li>';
-                            });
-                            $(".dropdown-menu").html(html);
-                        }
+<script src="http://api.map.baidu.com/api?v=2.0&ak=3ce7ddfda60046708248ea55e10b1435"></script>
+<script>
+    var option = {
+        Init: function () {
+            this.InitDom();
+            this.InitEvent();
+            this.InitMap();
+        },
+        InitDom: function () {
+
+        },
+        InitEvent: function () {
+
+        },
+        InitMap: function () {
+            var Map = new BMap.Map("Map");//在百度地图容器中创建一个地图
+            var Point = new BMap.Point(CompanyInfo.LngAndLat.split(",")[0], CompanyInfo.LngAndLat.split(",")[1]);//定义一个中心点坐标
+            Map.centerAndZoom(Point, 6);//设定地图的中心点和坐标并将地图显示在地图容器中
+            Map.enableScrollWheelZoom();//启用地图滚轮放大缩小
+            var markers = new BMap.Marker(new BMap.Point(CompanyInfo.LngAndLat.split(",")[0], CompanyInfo.LngAndLat.split(",")[1]));
+            Map.addOverlay(markers);
+            controller.ajax({
+                url: "EnterpriseWeb/GetReceipt",
+                data: {},
+                async: false,
+                type: "post",
+                success: function (result) {
+                    $.each(result.data, function (i, obj) {
+                        $.ajax({
+                            url: "http://api.map.baidu.com/geocoder/v2/?address=" + obj.Address + "&output=json&ak=3ce7ddfda60046708248ea55e10b1435",
+                            type: "get",
+                            async: false,
+                            dataType: "jsonp",
+                            success: function (result) {
+                                var marker = new BMap.Marker(new BMap.Point(result.result.location.lng, result.result.location.lat));
+                                Map.addOverlay(marker);
+                                marker.addEventListener('click', function (e) {
+                                    var InfoWin = '<table class="table table-bordered">' +
+                                        '<tr><th>分销商名称</th> <td>' + obj.GainUser + '</td></tr>' +
+                                        '<tr><th>分销商电话</th><td>' + obj.LinkPhone + '</td></tr>' +
+                                        '<tr><th>分销商地址</th><td>' + obj.Address + '</td></tr></table>'
+                                    var p = e.target;
+                                    var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+                                    var infoWindow = new BMap.InfoWindow(InfoWin);  // 创建信息窗口对象
+                                    Map.openInfoWindow(infoWindow, point); //开启信息窗口
+                                });
+                            }
+                        });
                     });
                 }
-                $(".dropdown-menu").find("a").on('click', function () {
-                    $(".dropdown-toggle").html($(this).text() + '<b class="caret"></b>');
-                    option.InitDataCount($(this).data().id);
-                });
-                //获取视频
-                controller.ajax({
-                    url: "EnterpriseWeb/GetVedioPage",
-                    data: { pageSize: 4, pageNumber: 1, QueryParam: { IsIndex: true } },
-                    async: false,
-                    type: "post",
-                    success: function (result) {
-                        $("img").each(function (i, obj) {
-                            if (result.data.rows[i] != undefined)
-                                $(this).attr("title", result.data.rows[i].VedioName).attr("vedio", result.data.rows[i].VedioAddr).attr("src", result.data.rows[i].VedioCover);
-                        });
-                    }
-                });
-            },
-            InitEvent: function () {
-                $("img").on('click', function () {
-                    controller.OpenWindow({
-                        title: "视频播放",
-                        type: 2,
-                        btn: [],
-                        maxmin: false,
-                        height: "480px",
-                        width: "520px",
-                        url: "StaticHtml/PlayVedio.html?addr=" + $(this).attr("Vedio") + "&cover=" + $(this).attr("src"),
-                        callBack: function (result) {
-                            result.popClose();
-                        }
-                    });
-                });
-                //显示或隐藏
-                $(".collapse-link").on('click', function () {
-                    var ibox = $(this.closest('div.ibox'));
-                    var i = $(this).find("i");
-                    var content = ibox.find("div.ibox-content");
-                    content.slideToggle(200);
-                    i.toggleClass("fa-chevron-up").toggleClass("fa-chevron-down");
-                    ibox.toggleClass("").toggleClass("border-bottom");
-                    setTimeout(function () {
-                        ibox.resize();
-                        ibox.find("[id^=map-]").resize();
-                    }, 50);
-                });
-                //关闭
-                $(".close-link").click(function () {
-                    var ibox = $(this).closest("div.ibox");
-                    ibox.hide()
-                });
-            },
-            InitDataCount: function (Param) {
-                //数据统计
-                controller.ajax({
-                    url: "EnterpriseWeb/GetDataCount",
-                    data: { Id: Param },
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        $.each(result.data, function (obj, i) {
-                            $("[name='" + obj + "']", $("#data1")).text(i);
-                            $("[name='" + obj + "']", $("#data2")).text(i);
-                            $("[name='" + obj + "']", $("#data3")).text(i);
-                        })
-                    }
-                });
-                //产量统计
-                controller.ajax({
-                    url: "EnterpriseWeb/GetPieCount",
-                    data: { Id: Param },
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        controller.Echarts("#echarts-pie-chart", result.data);
-                    }
-                });
-                //批次统计
-                controller.ajax({
-                    url: "EnterpriseWeb/GetPieCountBatch",
-                    data: { Id: Param },
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        controller.Echarts("#echarts-pie-chart-batch", result.data);
-                    }
-                });
-            },
-            InitMap: function () {
-                var Map = new BMap.Map("Map");//在百度地图容器中创建一个地图
-                var Point = new BMap.Point(CompanyInfo.LngAndLat.split(",")[0], CompanyInfo.LngAndLat.split(",")[1]);//定义一个中心点坐标
-                Map.centerAndZoom(Point, 6);//设定地图的中心点和坐标并将地图显示在地图容器中
-                Map.enableScrollWheelZoom();//启用地图滚轮放大缩小
-                var markers = new BMap.Marker(new BMap.Point(CompanyInfo.LngAndLat.split(",")[0], CompanyInfo.LngAndLat.split(",")[1]));
-                Map.addOverlay(markers);
-                controller.ajax({
-                    url: "EnterpriseWeb/GetReceipt",
-                    data: {},
-                    async: false,
-                    type: "post",
-                    success: function (result) {
-                        $.each(result.data, function (i, obj) {
-                            $.ajax({
-                                url: "http://api.map.baidu.com/geocoder/v2/?address=" + obj.Address + "&output=json&ak=3ce7ddfda60046708248ea55e10b1435",
-                                type: "get",
-                                async: false,
-                                dataType: "jsonp",
-                                success: function (result) {
-                                    var marker = new BMap.Marker(new BMap.Point(result.result.location.lng, result.result.location.lat));
-                                    Map.addOverlay(marker);
-                                    marker.addEventListener('click', function (e) {
-                                        var InfoWin = '<table class="table table-bordered">' +
-                                            '<tr><th>分销商名称</th> <td>' + obj.GainUser + '</td></tr>' +
-                                            '<tr><th>分销商电话</th><td>' + obj.LinkPhone + '</td></tr>' +
-                                            '<tr><th>分销商地址</th><td>' + obj.Address + '</td></tr></table>'
-                                        var p = e.target;
-                                        var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
-                                        var infoWindow = new BMap.InfoWindow(InfoWin);  // 创建信息窗口对象
-                                        Map.openInfoWindow(infoWindow, point); //开启信息窗口
-                                    });
-                                }
-                            });
-                        });
-                    }
-                });
-                markers.addEventListener('click', function (e) {
-                    var InfoWin = '<table class="table table-bordered">' +
-                        '<tr><th>企业名称</th> <td>' + CompanyInfo.CompanyName + '</td></tr>' +
-                        '<tr><th>企业地址</th><td>' + CompanyInfo.CompanyAddress + '</td></tr></table>'
-                    var p = e.target;
-                    var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
-                    var infoWindow = new BMap.InfoWindow(InfoWin);  // 创建信息窗口对象
-                    Map.openInfoWindow(infoWindow, point); //开启信息窗口
-                });
-            }
-        };
-        $(document).ready(function () {
-            option.Init();
-        });
-    </script>
-
+            });
+            markers.addEventListener('click', function (e) {
+                var InfoWin = '<table class="table table-bordered">' +
+                    '<tr><th>企业名称</th> <td>' + CompanyInfo.CompanyName + '</td></tr>' +
+                    '<tr><th>企业地址</th><td>' + CompanyInfo.CompanyAddress + '</td></tr></table>'
+                var p = e.target;
+                var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+                var infoWindow = new BMap.InfoWindow(InfoWin);  // 创建信息窗口对象
+                Map.openInfoWindow(infoWindow, point); //开启信息窗口
+            });
+        }
+    };
+    $(document).ready(function () {
+        option.Init();
+    });
+</script>
 }
 @section css{
-    <style>
-        .noborder {
-            border: none;
+<style>
+    #Edit {
+        box-sizing: border-box;
+        padding: 30px;
+        color: #404040;
+    }
+    /*共有样式*/
+    .section {
+        margin-bottom: 30px;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .item {
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: 0px 4px 16px 0px rgba(47,64,80,0.16);
+    }
+
+        .item .title {
+            padding: 0 15px;
+            height: 50px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #E6E6E6;
         }
-    </style>
+
+            .item .title div {
+                background: #239FE6;
+                width: 4px;
+                height: 18px;
+                margin-right: 8px;
+            }
+
+        .item .content {
+            padding: 15px;
+        }
+    /*第一个区域样式*/
+    .section1 .item1 {
+        padding: 15px;
+        width: 24%;
+        height: 110px;
+        display: flex;
+        align-items: center;
+    }
+
+        .section1 .item1 .left {
+            margin-right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 28px;
+            background: url("/Content/Company/images/firm_index.png") center center no-repeat;
+        }
+
+        .section1 .item1 .right {
+            min-width: 62%;
+        }
+
+            .section1 .item1 .right p {
+                font-size: 16px;
+                line-height: 24px;
+            }
+
+                .section1 .item1 .right p:last-child {
+                    margin-bottom: 0;
+                }
+
+                .section1 .item1 .right p span {
+                    color: #000;
+                    font-weight: bold;
+                }
+    /*第二个区域样式*/
+    .section2 .item2 {
+        width: 24%;
+        height: 320px;
+    }
+
+        .section2 .item2:first-child {
+            width: 49.5%;
+        }
+
+        .section2 .item2 .item2-item {
+            height: 155px;
+        }
+
+            .section2 .item2 .item2-item:first-child {
+                margin-bottom: 10px;
+            }
+
+        .section2 .item2 .content1 {
+            padding-bottom: 0;
+        }
+
+            .section2 .item2 .content1 a {
+                display: inline-block;
+                width: 22%;
+                height: 110px;
+                margin-right: 2%;
+                margin-bottom: 15px;
+                text-align: center;
+                font-size: 16px;
+                color: #404040;
+            }
+
+                .section2 .item2 .content1 a img {
+                    width: 60px;
+                    height: 60px;
+                    margin: 10px 0;
+                }
+
+        .section2 .item2 .content2 img {
+            height: 75px !important;
+            width: 75px !important;
+        }
+    /*第三个区域样式*/
+    .section3 .item3 {
+        width: 30%;
+        height: 320px;
+    }
+
+        .section3 .item3:nth-child(2) {
+            width: 36%;
+        }
+
+        .section3 .item3 .content3 div {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+            .section3 .item3 .content3 div .progress {
+                height: 16px;
+                border-radius: 8px;
+                margin-bottom: 0;
+                width: 75%;
+            }
+
+            .section3 .item3 .content3 div .bar {
+                background: #3FC8F6;
+                height: 16px;
+                border-radius: 8px 0 0 8px;
+            }
+    /*地图样式*/
+    #Map {
+        width: 100%;
+        height: 600px;
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: 0px 4px 16px 0px rgba(47,64,80,0.16);
+    }
+</style>
 }
 <form id="Edit">
-    <div class="wrapper wrapper-content">
-        <ul class="nav nav-pills">
-            <li class="dropdown all-camera-dropdown">
-                <a class="dropdown-toggle text-danger" data-toggle="dropdown" href="#">
+    <!--第一个区域-->
+    <div class="section section1">
+        <div class="item item1">
+            <div class="left" style="background-color: #FCB600;"></div>
+            <div class="right">
+                <p>周产量：<span name="">452,451</span></p>
+                <p>较上周：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="">245吨</span></p>
+            </div>
+        </div>
+        <div class="item item1">
+            <div class="left" style="background-color: #00D1CE;"></div>
+            <div class="right">
+                <p>周产量：<span name="">452,451</span></p>
+                <p>较上周：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="">245吨</span></p>
+            </div>
+        </div>
+        <div class="item item1">
+            <div class="left" style="background-color: #36C3FF;"></div>
+            <div class="right">
+                <p>周产量：<span name="">452,451</span></p>
+                <p>较上周：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="">245吨</span></p>
+            </div>
+        </div>
+        <div class="item item1">
+            <div class="left" style="background-color: #AF6CC1;"></div>
+            <div class="right">
+                <p>周产量：<span name="">452,451</span></p>
+                <p>较上周：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="">245吨</span></p>
+            </div>
+        </div>
+    </div>
+    <!--第二个区域-->
+    <div class="section section2">
+        <div class="item item2">
+            <div class="title">
+                <div></div>
+                常用功能
+            </div>
+            <div class="content content1">
+                <a>
+                    <img src="" />
+                    <p>成长档案</p>
                 </a>
-                <ul class="dropdown-menu"></ul>
-            </li>
-        </ul>
-        <div class="row">
-            <div class="col-sm-4">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>数据统计</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content" style="background-color:#f8f8f8;">
-                        <table class="table table-hover no-margins">
-                            <thead>
-                                <tr>
-                                    <th>产品系列</th>
-                                    <th>产品种类</th>
-                                    <th>供应商数量</th>
-                                    <th>经销商数量</th>
-                                </tr>
-                            </thead>
-                            <tbody id="data1">
-                                <tr>
-                                    <td name="Series"></td>
-                                    <td name="Goods"></td>
-                                    <td name="Supplier"></td>
-                                    <td name="Sale"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <a>
+                    <img src="" />
+                    <p>成长档案</p>
+                </a>
+                <a>
+                    <img src="" />
+                    <p>成长档案</p>
+                </a>
+                <a>
+                    <img src="" />
+                    <p>成长档案</p>
+                </a>
+                <a>
+                    <img src="" />
+                    <p>成长档案</p>
+                </a>
+                <a>
+                    <img src="" />
+                    <p>成长档案</p>
+                </a>
+                <a>
+                    <img src="" />
+                    <p>成长档案</p>
+                </a>
+                <a>
+                    <img src="" />
+                    <p>成长档案</p>
+                </a>
+            </div>
+        </div>
+        <div class="item item2">
+            <div class="title">
+                <div></div>
+                库存
+            </div>
+
+        </div>
+        <div class="item2">
+            <div class="item item2-item">
+                <div class="title">
+                    <div></div>
+                    视频一
+                </div>
+                <div class="content content2">
+                    <img src="~/Content/Company/images/firm_video.jpg" />
                 </div>
             </div>
-            <div class="col-sm-4">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>质量统计</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content" style="background-color:#f8f8f8;">
-                        <table class="table table-hover no-margins">
-                            <thead>
-                                <tr>
-                                    <th>不合格品数量</th>
-                                    <th>过期产品数量</th>
-                                    <th>产品召回数量</th>
-                                    <th>投诉数量</th>
-                                </tr>
-                            </thead>
-                            <tbody id="data2">
-                                <tr>
-                                    <td name="Inferior"></td>
-                                    <td name="Exprired"></td>
-                                    <td name="Recover"></td>
-                                    <td name="Msg"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+            <div class="item item2-item">
+                <div class="title">
+                    <div></div>
+                    视频二
                 </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>溯源统计</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content" style="background-color:#f8f8f8;">
-                        <table class="table table-hover no-margins">
-                            <thead>
-                                <tr>
-                                    <th>纹理二维码</th>
-                                    <th>一品一码</th>
-                                    <th>一物一码</th>
-                                    <th>扫码次数</th>
-                                </tr>
-                            </thead>
-                            <tbody id="data3">
-                                <tr>
-                                    <td name="VeinTag"></td>
-                                    <td name="TagClass"></td>
-                                    <td name="TagThing"></td>
-                                    <td name="Info"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>产量统计</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content">
-                        <div class="echarts" id="echarts-pie-chart"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>批次统计</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content">
-                        <div class="echarts" id="echarts-pie-chart-batch"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>视频一</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content">
-                        <img class="img-thumbnail" title="" src="" vedio="" />
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>视频二</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content">
-                        <img class="img-thumbnail" title="" src="" vedio="" />
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>视频三</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content">
-                        <img class="img-thumbnail" title="" src="" vedio="" />
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>视频四</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content">
-                        <img class="img-thumbnail" title="" src="" vedio="" />
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-12">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>区域发货图</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                            <a class="close-link">
-                                <i class="fa fa-times"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content">
-                        <div id="Map" style="height:800px; width:100%"></div>
-                    </div>
+                <div class="content content2">
+                    <img src="~/Content/Company/images/firm_video.jpg" />
                 </div>
             </div>
         </div>
     </div>
+    <!--第三个区域-->
+    <div class="section section3">
+        <div class="item item3">
+            <div class="title">
+                <div></div>
+                数据统计
+            </div>
+            <div class="content content3">
+                <div>
+                    产品系列
+                    <div class="progress">
+                        <div class="bar" style="width: 60%;"></div>
+                    </div>
+                </div>
+                <div>
+                    产品系列
+                    <div class="progress">
+                        <div class="bar" style="width: 60%;"></div>
+                    </div>
+                </div>
+                <div>
+                    产品系列
+                    <div class="progress">
+                        <div class="bar" style="width: 60%;"></div>
+                    </div>
+                </div>
+                <div>
+                    产品系列
+                    <div class="progress">
+                        <div class="bar" style="width: 60%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="item item3">
+            <div class="title">
+                <div></div>
+                质量统计
+            </div>
+
+        </div>
+        <div class="item item3">
+            <div class="title">
+                <div></div>
+                溯源统计
+            </div>
+
+        </div>
+    </div>
+    <!--地图区域-->
+    <div id="Map"></div>
 </form>
