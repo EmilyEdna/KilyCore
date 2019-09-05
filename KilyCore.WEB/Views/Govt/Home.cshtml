@@ -81,9 +81,10 @@
                 });
             },
             //事件
-            InitEvents: function () { },
-            //行为
-            action: {}
+            InitEvents: function () {
+                if (Govt.IsEdu)
+                    $("#IsEdu").attr("href", "/Govt/DataV3");
+            },
         };
         //初始化
         $(document).ready(function () {
@@ -166,7 +167,7 @@
                             <a>关闭其他选项卡</a>
                         </li>
                         <li class="J_tabCloseOther">
-                            <a href="/Govt/DataV2">返回大屏</a>
+                            <a href="/Govt/DataV2" id="IsEdu">返回大屏</a>
                         </li>
                     </ul>
                 </div>
