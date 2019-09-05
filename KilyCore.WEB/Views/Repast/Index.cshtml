@@ -18,9 +18,10 @@
             InitDom: function () {
                 //缓存数据渲染页面dom
                 $(".RepastName").html(RepastUser.MerchantName);
+                debugger;
                 $(".Manager").html(RepastUser.ImplUser);
                 $(".CreditCode").html(RepastUser.CommunityCode);
-                $("#RepastImg").attr("src", host + RepastUser.Certification);
+                $("#RepastImg").attr("src", "http://system.cfda.vip" + RepastUser.MerchantImage);
                 $("#DiningTypeName").html(RepastUser.DiningTypeName);
                 $("#SafeOffer").html(RepastUser.SafeOffer);
                 //缓存数据循环渲染资质荣誉

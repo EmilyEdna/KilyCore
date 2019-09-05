@@ -76,19 +76,22 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<GovtMenu> queryable = Kily.Set<GovtMenu>().Where(t => t.Level == MenuEnum.LevelOne).Where(t => t.IsDelete == false).AsNoTracking().AsQueryable().OrderBy(t => t.CreateTime);
             IQueryable<GovtRoleAuthor> queryables = Kily.Set<GovtRoleAuthor>().Where(t => t.IsDelete == false);
+            GovtRoleAuthor Author = null;
             if (!GovtInfo().IsEdu.Value)
             {
                 if (GovtInfo().AccountType <= GovtAccountEnum.Area)
                     queryables = queryables.Where(t => !t.AuthorName.Contains("乡镇"));
                 else
                     queryables = queryables.Where(t => t.AuthorName.Contains("乡镇"));
+                Author= queryables.FirstOrDefault();
             }
             else
             {
                 queryables = queryables.Where(t => t.AuthorName.Contains("教育局"));
+                Author = queryables.FirstOrDefault();
+                queryable = queryable.Where(t => Author.AuthorMenuPath.Contains(t.Id.ToString()));
             }
-            GovtRoleAuthor Author = queryables.FirstOrDefault();
-            var data = queryable.OrderBy(t => t.CreateTime).Where(t => Author.AuthorMenuPath.Contains(t.Id.ToString())).Select(t => new ResponseGovtMenu()
+            var data = queryable.OrderBy(t => t.CreateTime).Select(t => new ResponseGovtMenu()
             {
                 Id = t.Id,
                 MenuId = t.MenuId,
@@ -580,6 +583,7 @@ namespace KilyCore.Service.ServiceCore
             var data = Kily.Set<GovtInfo>().Where(t => t.Id == Id).Select(t => new ResponseGovtInfo()
             {
                 Id = t.Id,
+                IsEdu=t.IsEdu,
                 Account = t.Account,
                 AccountType = t.AccountType,
                 DepartId = t.DepartId,
@@ -703,13 +707,13 @@ namespace KilyCore.Service.ServiceCore
             }
             else
             {
-                data = queryables.Where(t=>t.DiningType==MerchantEnum.UnitCanteen).Select(t => new ResponseGovtDistribut()
+                data = queryables.Where(t => t.DiningType == MerchantEnum.UnitCanteen).Select(t => new ResponseGovtDistribut()
                 {
                     Name = t.MerchantName,
                     LngAndLat = t.LngAndLat,
                     Address = t.Address,
                     CompanyCode = t.CommunityCode,
-                    CompanyType =t.AllowUnit
+                    CompanyType = t.AllowUnit
                 }).ToList();
             }
             return data;
@@ -1303,7 +1307,7 @@ namespace KilyCore.Service.ServiceCore
                     users = users.Where(t => t.TypePath.Contains(GovtInfo().Area));
                 }
             }
-            if (GovtInfo().IsEdu.Value)
+            if (!GovtInfo().IsEdu.Value)
             {
                 var Enterprise = queryable.Select(t => new
                 {
@@ -1411,16 +1415,18 @@ namespace KilyCore.Service.ServiceCore
                 else
                     queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
             }
-            var data = queryable.Select(t => new ResponseGovtNetPatrol()
-            {
-                Id = t.Id,
-                CompanyId = t.CompanyId,
-                CompanyName = t.CompanyName,
-                BulletinNum = t.BulletinNum,
-                PotrolNum = t.PotrolNum,
-                TradeType = t.TradeType,
-                QualifiedNum = t.QualifiedNum
-            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            if (GovtInfo().IsEdu.Value)
+                queryable = queryable.Where(t => !t.TradeType.Contains("企业") && !t.TradeType.Contains("小"));
+                var data = queryable.Select(t => new ResponseGovtNetPatrol()
+                {
+                    Id = t.Id,
+                    CompanyId = t.CompanyId,
+                    CompanyName = t.CompanyName,
+                    BulletinNum = t.BulletinNum,
+                    PotrolNum = t.PotrolNum,
+                    TradeType = t.TradeType,
+                    QualifiedNum = t.QualifiedNum
+                }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
         /// <summary>
@@ -2047,9 +2053,12 @@ namespace KilyCore.Service.ServiceCore
             }
             if (!string.IsNullOrEmpty(pageParam.QueryParam.ComplainContent))
                 queryable = queryable.Where(t => t.ComplainContent.Contains(pageParam.QueryParam.ComplainContent));
+            if (GovtInfo().IsEdu.Value)
+                queryable = queryable.Where(t => t.CompanyType.Contains("单位"));
             var data = queryable.Select(t => new ResponseGovtComplain
             {
                 Id = t.Id,
+                CompanyId=t.CompanyId,
                 CompanyName = t.CompanyName,
                 Status = t.Status,
                 CompanyType = t.CompanyType,
@@ -2060,8 +2069,23 @@ namespace KilyCore.Service.ServiceCore
                 ComplainUser = t.ComplainUser,
                 HandlerContent = t.HandlerContent,
                 SendStatus = t.IsDelete == true ? "已推送" : "待推送"
-            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
-            return data;
+            }).ToList();
+            if (GovtInfo().IsEdu.Value)
+                data = data.Select(t => new ResponseGovtComplain {
+                    Id = t.Id,
+                    CompanyId = t.CompanyId,
+                    CompanyName = t.CompanyName,
+                    Status = t.Status,
+                    CompanyType = Kily.Set<RepastInfo>().Where(x => x.Id == t.CompanyId).Where(x => x.DiningType == MerchantEnum.UnitCanteen).Select(x => x.AllowUnit).FirstOrDefault(),
+                    ComplainContent = t.ComplainContent,
+                    ComplainTime = t.ComplainTime,
+                    ComplainUserPhone = t.ComplainUserPhone,
+                    ProductName = t.ProductName,
+                    ComplainUser = t.ComplainUser,
+                    HandlerContent = t.HandlerContent,
+                    SendStatus = t.SendStatus
+                }).ToList();
+            return data.ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
         }
         /// <summary>
         /// 删除投诉
@@ -2189,7 +2213,10 @@ namespace KilyCore.Service.ServiceCore
                 if (!Temp.IsEdu.Value)
                     data.Add(new ResponseGovtRanking { AreaName = t.AreaName, TotalCount = TotalCompany + TotalMerchant });
                 else
-                    data.Add(new ResponseGovtRanking { AreaName = t.AreaName, TotalCount = TotalMerchant });
+                {
+                    var total = queryables.Where(x => x.TypePath.Contains(t.Id.ToString())).Where(x => x.DiningType == MerchantEnum.UnitCanteen).Count();
+                    data.Add(new ResponseGovtRanking { AreaName = t.AreaName, TotalCount = total });
+                }
             });
             data = data.OrderByDescending(t => t.TotalCount).ToList();
             int Total = data.Sum(t => t.TotalCount);
@@ -2503,10 +2530,12 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseVedio> vedios = Kily.Set<EnterpriseVedio>().Where(t => t.IsIndex).OrderByDescending(t => t.CreateTime);
             IQueryable<RepastVideo> videos = Kily.Set<RepastVideo>().Where(t => t.IsIndex).OrderByDescending(t => t.CreateTime);
+            IQueryable<RepastInfo> queryable = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false);
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
             {
                 vedios = vedios.Where(t => t.TypePath.Contains(GovtInfo().City));
                 videos = videos.Where(t => t.TypePath.Contains(GovtInfo().City));
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
             }
             else
             {
@@ -2518,17 +2547,20 @@ namespace KilyCore.Service.ServiceCore
                         {
                             vedios = vedios.Where(t => t.TypePath.Contains(item));
                             videos = videos.Where(t => t.TypePath.Contains(item));
+                            queryable = queryable.Where(t => t.TypePath.Contains(item));
                         }
                     else
                     {
                         vedios = vedios.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                         videos = videos.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                        queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                     }
                 }
                 else
                 {
                     vedios = vedios.Where(t => t.TypePath.Contains(GovtInfo().Area));
                     videos = videos.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                    queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
                 }
             }
             int CompanyVedio = vedios.Where(t => t.CreateTime.Value >= DateTime.Parse(DateTime.Now.ToShortDateString()) && t.CreateTime.Value <= DateTime.Parse(DateTime.Now.ToShortDateString())).Count();
@@ -2552,7 +2584,8 @@ namespace KilyCore.Service.ServiceCore
             }
             else
             {
-                var datas = videos.Select(t => new
+                var Ids = Kily.Set<RepastInfo>().Where(t => t.DiningType == MerchantEnum.UnitCanteen).Select(t => t.Id).ToList();
+                var datas = videos.Where(t => Ids.Contains(t.InfoId)).Select(t => new
                 {
                     VedioAddr = t.VideoAddress,
                     VedioName = t.MonitorAddress,

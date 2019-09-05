@@ -4130,56 +4130,56 @@
         </member>
         <member name="M:KilyCore.API.Controllers.RepastWebController.GetUnitInsPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastUnitIns})">
             <summary>
-            配餐列表
+            陪餐列表
             </summary>
             <param name="pageParam"></param>
             <returns></returns>
         </member>
         <member name="M:KilyCore.API.Controllers.RepastWebController.DeleteUnitIns(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
             <summary>
-            删除配餐
+            删除陪餐
             </summary>
             <param name="Key"></param>
             <returns></returns>
         </member>
         <member name="M:KilyCore.API.Controllers.RepastWebController.SaveUnitIns(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastUnitIns)">
             <summary>
-            编辑配餐
+            编辑陪餐
             </summary>
             <param name="Param"></param>
             <returns></returns>
         </member>
         <member name="M:KilyCore.API.Controllers.RepastWebController.GetUnitInsDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
             <summary>
-            配餐详情
+            陪餐详情
             </summary>
             <param name="Key"></param>
             <returns></returns>
         </member>
         <member name="M:KilyCore.API.Controllers.RepastWebController.GetUnitInsRecordPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastUnitInsRecord})">
             <summary>
-            配餐记录
+            陪餐记录
             </summary>
             <param name="pageParam"></param>
             <returns></returns>
         </member>
         <member name="M:KilyCore.API.Controllers.RepastWebController.DeleteUnitInsRecord(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
             <summary>
-            删除配餐记录
+            删除陪餐记录
             </summary>
             <param name="Key"></param>
             <returns></returns>
         </member>
         <member name="M:KilyCore.API.Controllers.RepastWebController.SaveUnitInsRecord(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastUnitInsRecord)">
             <summary>
-            编辑配餐记录
+            编辑陪餐记录
             </summary>
             <param name="Param"></param>
             <returns></returns>
         </member>
         <member name="M:KilyCore.API.Controllers.RepastWebController.GetUnitInsRecordDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
             <summary>
-            配餐记录详情
+            陪餐记录详情
             </summary>
             <param name="Key"></param>
             <returns></returns>

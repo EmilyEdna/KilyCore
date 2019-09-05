@@ -21,7 +21,11 @@
             InitDom: function () {
                 options.Guid = controller.GetParam("Id");
                 //表示新增
-                if (options.Guid == null || options.Guid == undefined || options.Guid == "") {
+                if (!controller.CheckFeild(options.Guid)) {
+                    if (GovtInfo.IsEdu)
+                        $("#IsEdu").find("option:contains('是')").attr("selected", true);
+                    else
+                        $("#IsEdu").find("option:contains('否')").attr("selected", true);
                     if (GovtInfo.AccountType == 20) 
                         $("#AccountType").find("option:contains('区县账号')").attr("selected", true);
                     if (GovtInfo.AccountType == 30)
@@ -99,7 +103,7 @@
             },
             //获取详情
             GetDetail: function () {
-                if (options.Guid != null && options.Guid != undefined && options.Guid != "") {
+                if (controller.CheckFeild(options.Guid)) {
                     controller.ajax({
                         url: "GovtWeb/GetGovtInfoDetail",
                         data: { Id: options.Guid },
@@ -183,7 +187,6 @@
         <form class="form-horizontal" method="post" action="GovtWeb/EditUser" id="Edit">
             <input type="hidden" name="Id" />
             <input type="hidden" name="GovtId" />
-            <input type="hidden" name="AccountType" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">账号<span style="color:red">*</span></label></th>
@@ -227,11 +230,18 @@
                 </tr>
                 <tr>
                     <th><label class="control-label">账号类型</label></th>
-                    <td class="has-warning" colspan="3">
+                    <td class="has-warning">
                         <select type="select" class="form-control" name="AccountType" id="AccountType" disabled>
                             <option value="20">市级账号</option>
                             <option value="30">区县账号</option>
                             <option value="40">乡镇账号</option>
+                        </select>
+                    </td>
+                    <th><label class="control-label">是否教育局</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="IsEdu" id="IsEdu" disabled>
+                            <option value="true">是</option>
+                            <option value="false">否</option>
                         </select>
                     </td>
                 </tr>

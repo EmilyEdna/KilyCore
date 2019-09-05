@@ -25,6 +25,7 @@
             this.InitEvent();
             $("body").GetGovtInfo();
             $("#DepartName").html(Govt.DepartName);
+             $(document).attr("title", Govt.DepartName+"可视化平台");
         },
         //页面dom操作
         InitDom: function () {
@@ -92,7 +93,7 @@
                         options.Map.setOption({
                             tooltip: {
                                 trigger: 'item',
-                                formatter: '{b}<br/>{c} (家企业)'
+                                formatter: '{b}<br/>{c} (家学校)'
                             },
                             dataRange: {
                                 bottom: 20,
@@ -324,7 +325,7 @@
                     for (index in result.data.rows) {
                         listStr += `<li class="clearfix">
                                                         <div class="hidden">${result.data.rows[index].Id}</div>
-                                                        <div>${result.data.rows[index].Name}</div>
+                                                        <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" title="${result.data.rows[index].Name}">${result.data.rows[index].Name}</div>
                                                         <div>${result.data.rows[index].CompanyType}</div>
                                                         <div>${result.data.rows[index].CardType}</div>
                                                         <div>${result.data.rows[index].CardExpiredDate}</div></li>`;
@@ -571,17 +572,17 @@
             </div>
             <!-- 入驻企业 -->
             <div class="firmsettled">
-                <div class="num">累计入驻企业<span id="Sum"></span>家</div>
+                <div class="num">累计入驻学校<span id="Sum"></span>家</div>
                 <div class="map" id="mapChart"></div>
             </div>
             <!-- 证件到期 -->
-            <div class="tittle">证件到期</div>
+            <div class="tittle">预警提醒</div>
             <div class="cardexpire boxs">
                 <div class="head clearfix">
                     <div>企业名称</div>
                     <div>企业类型</div>
-                    <div>证件类型</div>
-                    <div>到期日期</div>
+                    <div>预警类型</div>
+                    <div>预警日期</div>
                 </div>
                 <div class="bd"><div class="ulwrap"><ul></ul></div></div>
             </div>
