@@ -6,7 +6,7 @@ using System.Text;
 namespace KilyCore.EntityFrameWork.Model.Repast
 {
     /// <summary>
-    /// 配餐制度表
+    /// 陪餐制度表
     /// </summary>
     public class RepastUnitIns : RepastBase
     {
@@ -24,16 +24,16 @@ namespace KilyCore.EntityFrameWork.Model.Repast
         public virtual DateTime? InsTime { get; set; }
     }
     /// <summary>
-    /// 配餐记录表
+    /// 陪餐记录表
     /// </summary>
     public class RepastUnitInsRecord : RepastBase
     {
         /// <summary>
-        /// 配餐主题
+        /// 陪餐主题
         /// </summary>
         public virtual string InsTheme { get; set; }
         /// <summary>
-        /// 配餐负责人
+        /// 陪餐负责人
         /// </summary>
         public virtual string InsUser { get; set; }
         /// <summary>

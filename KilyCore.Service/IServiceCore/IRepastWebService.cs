@@ -236,7 +236,7 @@ namespace KilyCore.Service.IServiceCore
         #region 手机端信息
         ResponseRepastScanInfos GetMobileScanInfo(Guid Id);
         #endregion
-        #region 配餐管理
+        #region 陪餐管理
         PagedResult<ReponseRepastUnitIns> GetUnitInsPage(PageParamList<RequestRepastUnitIns> pageParam);
         String DeleteUnitIns(Guid Id);
         String SaveUnitIns(RequestRepastUnitIns Param);

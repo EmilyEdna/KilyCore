@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "配餐列表";
+    ViewData["Title"] = "陪餐列表";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
@@ -27,7 +27,7 @@
             InitEvents: function () {
                 $("#add").on('click', function () {
                     controller.OpenWindow({
-                        title: "新增配餐",
+                        title: "新增陪餐",
                         type: 2,
                         height: "90%",
                         width: "80%",
@@ -63,7 +63,7 @@
                     },
                     "click .edit": function (event, val, row, index) {
                         controller.OpenWindow({
-                            title: "编辑配餐",
+                            title: "编辑陪餐",
                             type: 2,
                             height: "90%",
                             width: "80%",
@@ -90,7 +90,7 @@
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
-                <h5>配餐制度</h5>
+                <h5>陪餐制度</h5>
             </div>
             <div class="ibox-content">
                 <div class="row">

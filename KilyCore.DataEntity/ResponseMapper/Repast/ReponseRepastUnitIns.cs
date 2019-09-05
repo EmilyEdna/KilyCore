@@ -26,11 +26,11 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         public Guid Id { get; set; }
         public Guid InfoId { get; set; }
         /// <summary>
-        /// 配餐主题
+        /// 陪餐主题
         /// </summary>
         public string InsTheme { get; set; }
         /// <summary>
-        /// 配餐负责人
+        /// 陪餐负责人
         /// </summary>
         public string InsUser { get; set; }
         /// <summary>

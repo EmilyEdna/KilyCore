@@ -2388,9 +2388,9 @@ namespace KilyCore.Service.ServiceCore
 
         #endregion
 
-        #region 配餐管理
+        #region 陪餐管理
         /// <summary>
-        /// 配餐列表
+        /// 陪餐列表
         /// </summary>
         /// <param name="pageParam"></param>
         /// <returns></returns>
@@ -2413,7 +2413,7 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         /// <summary>
-        /// 删除配餐
+        /// 删除陪餐
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
@@ -2422,7 +2422,7 @@ namespace KilyCore.Service.ServiceCore
             return Remove<RepastUnitIns>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         /// <summary>
-        /// 编辑配餐
+        /// 编辑陪餐
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
@@ -2435,7 +2435,7 @@ namespace KilyCore.Service.ServiceCore
                 return Update(Param, Ins) ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
         }
         /// <summary>
-        /// 配餐详情
+        /// 陪餐详情
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
@@ -2444,7 +2444,7 @@ namespace KilyCore.Service.ServiceCore
             return Kily.Set<RepastUnitIns>().Where(t => t.Id == Id).FirstOrDefault().MapToEntity<ReponseRepastUnitIns>();
         }
         /// <summary>
-        /// 配餐记录
+        /// 陪餐记录
         /// </summary>
         /// <param name="pageParam"></param>
         /// <returns></returns>
@@ -2468,7 +2468,7 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         /// <summary>
-        /// 删除配餐记录
+        /// 删除陪餐记录
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
@@ -2477,7 +2477,7 @@ namespace KilyCore.Service.ServiceCore
             return Remove<RepastUnitInsRecord>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         /// <summary>
-        /// 编辑配餐记录
+        /// 编辑陪餐记录
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
@@ -2490,7 +2490,7 @@ namespace KilyCore.Service.ServiceCore
                 return Update(Param, Ins) ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
         }
         /// <summary>
-        /// 配餐记录详情
+        /// 陪餐记录详情
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
