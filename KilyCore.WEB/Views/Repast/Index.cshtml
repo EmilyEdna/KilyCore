@@ -4,642 +4,639 @@
 }
 @section script{
     @* 视频美化插件js *@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.6.0/video.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.15.0/videojs-contrib-hls.js"></script>
-<script>
-    var DataSources = 0;
-    var CodeUrl = "http://www.cfda.vip/Wap/RepastCode?DataSource=" + DataSources + "&Id=";
-    var option = {
-        Init: function () {
-            this.InitDom();
-            this.InitCode();
-            this.InitEvent();
-        },
-        InitDom: function () {
-            //缓存数据渲染页面dom
-            $(".RepastName").html(RepastUser.MerchantName);
-            $(".Manager").html(RepastUser.ImplUser);
-            $(".CreditCode").html(RepastUser.CommunityCode);
-            $("#RepastImg").attr("src", host + RepastUser.Certification);
-            $("#DiningTypeName").html(RepastUser.DiningTypeName);
-            $("#SafeOffer").html(RepastUser.SafeOffer);
-            //缓存数据循环渲染资质荣誉
-            let item2Str = "";
-            for (i2 in RepastUser.HonorCertification) {
-                item2Str += `<img src="${RepastUser.HonorCertification[i2]}"`;
-            }
-            $(".bd-item2").html(item2Str);
-            //页面内容左侧选项卡
-            $(".content .left .hd a").on("click", function () {
-                let indexC = $(this).index();
-                $(this).addClass("active").siblings().removeClass("active");
-                $(".content .left .bd>div").eq(indexC).addClass("on").siblings().removeClass("on");
-            });
-        },
-        //生成二维码
-        InitCode: function () {
-            jQuery('#qrcode').qrcode({
-                render: "canvas",
-                text: CodeUrl + RepastUser.Id,
-                width: "120",               //二维码的宽度
-                height: "120",              //二维码的高度
-                background: "#ffffff",      //二维码的后景色
-                foreground: "#000000",      //二维码的前景色
-                src: "http://www.cfda.vip/web/images/logo.png"//二维码中间的图片
-            });
-        },
-        InitEvent: function () {
-            controller.ajax({
-                url: "RepastWeb/GetMobileScanInfo",
-                data: { Id: RepastUser.Id },
-                async: false,
-                success: function (result) {
-                    let data = result.data;
-                    //渲染基础信息
-                    controller.SetLableValue(".bd-item1", data.InfoScan[0]);
-                    //循环渲染监管视频
-                    let item3Str = "";
-                    for (i3 in data.VedioScan) {
-                        let type = ((data.VedioScan[i3].视频连接.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
-                        item3Str += `
-                            <div class="bd-item3-item">
-                                <video class="video-js vjs-default-skin vjs-big-play-centered" src="${data.VedioScan[i3].视频连接}" type="${type}"><source></video >
-                                <p>${data.VedioScan[i3].监控区域}</p>
-                            </div>`;
-                    }
-                    $(".bd-item3").html(item3Str);
-                    //循环渲染台账管理
-                    let item4Str = "";
-                    for (i4 in data.TicketScan) {
-                        item4Str += `
-                        <div class="bd-item4-item">
-                            <p>主题名称：<span>${data.TicketScan[i4].台账主题}</span></p>
-                            <p>上报日期：<span>${data.TicketScan[i4].上报时间}</span></p>
-                            ${data.TicketScan[i4].台账内容}
-                        </div>`;
-                    }
-                    $(".bd-item4").html(item4Str);
-                    //循环渲染人员健康证
-                    let item6Str = "";
-                    for (i6 in data.UserScan) {
-                        item6Str += `
-                            <div class="bd-item6-item">
-                                <img src="${data.UserScan[i6].健康证}"/>
-                                <p class="p1"><label>姓名：<span>${data.UserScan[i6].人员姓名}</span></label><label>状态：<span>在职</span></label></p>
-                                <p><label>有效期: <span>${data.UserScan[i6].健康证到期时间}</span></label></p>
-                            </div>`;
-                    }
-                    $(".bd-item6").html(item6Str);
-                    //循环渲染废物处理
-                    let item7Str = "";
-                    for (i7 in data.DuckScan) {
-                        item7Str += `
-                            <div>
-                                —&emsp;<span>2019年05月28日</span>
-                            </div>
-                            <table>
-                                <tr>
-                                    <td>处理人</td>
-                                    <td>处理方式</td>
-                                    <td>处理时间</td>
-                                </tr>
-                                <tr>
-                                    <td>${data.DuckScan[i7].处理人}</td>
-                                    <td>${data.DuckScan[i7].处理方式}</td>
-                                    <td>${data.DuckScan[i7].处理时间}</td>
-                                </tr>
-                            </table>`;
-                    }
-                    $(".bd-item7").html(item7Str);
-                    //循环渲染留样管理
-                    let item8Str = "";
-                    for (i8 in data.SampleScan) {
-                        item8Str += `
-                            <div class="bd-item8-item">
-                                <img src="${data.SampleScan[i8].留样图片}" />
-                                <p class="p1"><label>菜品名称：<span>${data.SampleScan[i8].留样菜品}</span></label><label>储存方式：<span>冷藏</span></label></p>
-                                <p><label>操作人员: <span>${data.SampleScan[i8].操作人}</span></label><label>留样时间：<span>${data.SampleScan[i8].留样时间}</span></label></p>
-                            </div>`;
-                    }
-                    $(".bd-item8").html(item8Str);
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.6.0/video.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.15.0/videojs-contrib-hls.js"></script>
+    <script>
+        var DataSources = 0;
+        var CodeUrl = "http://www.cfda.vip/Wap/RepastCode?DataSource=" + DataSources + "&Id=";
+        var option = {
+            Init: function () {
+                this.InitDom();
+                this.InitCode();
+                this.InitEvent();
+            },
+            InitDom: function () {
+                //缓存数据渲染页面dom
+                $(".RepastName").html(RepastUser.MerchantName);
+                $(".Manager").html(RepastUser.ImplUser);
+                $(".CreditCode").html(RepastUser.CommunityCode);
+                $("#RepastImg").attr("src", host + RepastUser.Certification);
+                $("#DiningTypeName").html(RepastUser.DiningTypeName);
+                $("#SafeOffer").html(RepastUser.SafeOffer);
+                //缓存数据循环渲染资质荣誉
+                let item2Str = "";
+                for (i2 in RepastUser.HonorCertification) {
+                    item2Str += `<img src="${RepastUser.HonorCertification[i2]}"`;
                 }
-            });
-
-            controller.ajax({
-                url: "RepastWeb/GetSupplierList",
-                data: {},
-                async: false,
-                type: "post",
-                success: function (result) {
-                    //循环渲染供应商
-                    let data = result.data;
-                    let item5Str = "";
-                    for (i5 in data) {
-                        item5Str += `
-                            <div class="bd-item5-item">
-                                <img src="${data[i5].RunCard}"/>
+                $(".bd-item2").html(item2Str);
+                //页面内容左侧选项卡
+                $(".content .left .hd a").on("click", function () {
+                    let indexC = $(this).index();
+                    $(this).addClass("active").siblings().removeClass("active");
+                    $(".content .left .bd>div").eq(indexC).addClass("on").siblings().removeClass("on");
+                });
+            },
+            //生成二维码
+            InitCode: function () {
+                jQuery('#qrcode').qrcode({
+                    render: "canvas",
+                    text: CodeUrl + RepastUser.Id,
+                    width: "120",               //二维码的宽度
+                    height: "120",              //二维码的高度
+                    background: "#ffffff",      //二维码的后景色
+                    foreground: "#000000",      //二维码的前景色
+                    src: "http://www.cfda.vip/web/images/logo.png"//二维码中间的图片
+                });
+            },
+            InitEvent: function () {
+                controller.ajax({
+                    url: "RepastWeb/GetMobileScanInfo",
+                    data: { Id: RepastUser.Id },
+                    async: false,
+                    success: function (result) {
+                        let data = result.data;
+                        //渲染基础信息
+                        controller.SetLableValue(".bd-item1", data.InfoScan[0]);
+                        //循环渲染监管视频
+                        let item3Str = "";
+                        for (i3 in data.VedioScan) {
+                            let type = ((data.VedioScan[i3].视频连接.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
+                            item3Str += `
+                                <div class="bd-item3-item">
+                                    <video class="video-js vjs-default-skin vjs-big-play-centered" src="${data.VedioScan[i3].视频连接}" type="${type}"><source></video >
+                                    <p>${data.VedioScan[i3].监控区域}</p>
+                                </div>`;
+                        }
+                        $(".bd-item3").html(item3Str);
+                        //循环渲染台账管理
+                        let item4Str = "";
+                        for (i4 in data.TicketScan) {
+                            item4Str += `
+                            <div class="bd-item4-item">
+                                <p>主题名称：<span>${data.TicketScan[i4].台账主题}</span></p>
+                                <p>上报日期：<span>${data.TicketScan[i4].上报时间}</span></p>
+                                ${data.TicketScan[i4].台账内容}
+                            </div>`;
+                        }
+                        $(".bd-item4").html(item4Str);
+                        //循环渲染人员健康证
+                        let item6Str = "";
+                        for (i6 in data.UserScan) {
+                            item6Str += `
+                                <div class="bd-item6-item">
+                                    <img src="${data.UserScan[i6].健康证}"/>
+                                    <p class="p1"><label>姓名：<span>${data.UserScan[i6].人员姓名}</span></label><label>状态：<span>在职</span></label></p>
+                                    <p><label>有效期: <span>${data.UserScan[i6].健康证到期时间}</span></label></p>
+                                </div>`;
+                        }
+                        $(".bd-item6").html(item6Str);
+                        //循环渲染废物处理
+                        let item7Str = "";
+                        for (i7 in data.DuckScan) {
+                            item7Str += `
                                 <div>
-                                    <p>供应商：<span>${data[i5].SupplierName}</span></p>
-                                    <p>负责人：<span>${data[i5].SupplierUser}</span></p>
-                                    <p>单位代码：<span>${data[i5].SupplierNo}</span></p>
-                                    <p>联系方式：<span>${data[i5].LinkPhone}</span></p>
-                                    <p>经营资质是否齐全：<span>是</span></p>
+                                    —&emsp;<span>2019年05月28日</span>
                                 </div>
-                            </div>`;
+                                <table>
+                                    <tr>
+                                        <td>处理人</td>
+                                        <td>处理方式</td>
+                                        <td>处理时间</td>
+                                    </tr>
+                                    <tr>
+                                        <td>${data.DuckScan[i7].处理人}</td>
+                                        <td>${data.DuckScan[i7].处理方式}</td>
+                                        <td>${data.DuckScan[i7].处理时间}</td>
+                                    </tr>
+                                </table>`;
+                        }
+                        $(".bd-item7").html(item7Str);
+                        //循环渲染留样管理
+                        let item8Str = "";
+                        for (i8 in data.SampleScan) {
+                            item8Str += `
+                                <div class="bd-item8-item">
+                                    <img src="${data.SampleScan[i8].留样图片}" />
+                                    <p class="p1"><label>菜品名称：<span>${data.SampleScan[i8].留样菜品}</span></label><label>储存方式：<span>冷藏</span></label></p>
+                                    <p><label>操作人员: <span>${data.SampleScan[i8].操作人}</span></label><label>留样时间：<span>${data.SampleScan[i8].留样时间}</span></label></p>
+                                </div>`;
+                        }
+                        $(".bd-item8").html(item8Str);
                     }
-                    $(".bd-item5").html(item5Str);
-                }
-            });
-        }
-    };
-    $(document).ready(function () {
-        option.Init();
-    });
-</script>
+                });
+
+                controller.ajax({
+                    url: "RepastWeb/GetSupplierList",
+                    data: {},
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        //循环渲染供应商
+                        let data = result.data;
+                        let item5Str = "";
+                        for (i5 in data) {
+                            item5Str += `
+                                <div class="bd-item5-item">
+                                    <img src="${data[i5].RunCard}"/>
+                                    <div>
+                                        <p>供应商：<span>${data[i5].SupplierName}</span></p>
+                                        <p>负责人：<span>${data[i5].SupplierUser}</span></p>
+                                        <p>单位代码：<span>${data[i5].SupplierNo}</span></p>
+                                        <p>联系方式：<span>${data[i5].LinkPhone}</span></p>
+                                        <p>经营资质是否齐全：<span>是</span></p>
+                                    </div>
+                                </div>`;
+                        }
+                        $(".bd-item5").html(item5Str);
+                    }
+                });
+            }
+        };
+        $(document).ready(function () {
+            option.Init();
+        });
+    </script>
 }
 @section css{
-<style>
-    p, h3, ul, li {
-        margin: 0;
-        padding: 0;
-    }
-
-    ul, li {
-        list-style: none;
-    }
-
-    .icon {
-        width: 6px;
-        height: 28px;
-        margin-right: 5px;
-        background: #1AB394;
-    }
-
-    .icon1 {
-        width: 4px;
-        height: 6px;
-        margin-right: 5px;
-        background: #1AB394;
-    }
-
-    .header {
-        background: #fff;
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-        padding: 20px;
-        box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.24);
-    }
-
-        .header .left {
-            display: flex;
-            margin-top: 10px;
+    <style>
+        p, h3, ul, li {
+            margin: 0;
+            padding: 0;
         }
 
-            .header .left img {
-                min-width: 120px;
-                max-width: 160px;
-                height: 120px;
-                margin-right: 10px;
-            }
-
-            .header .left div h3 {
-                font-size: 24px;
-                line-height: 40px;
-                color: #414242;
-                margin-bottom: 18px;
-            }
-
-            .header .left div p {
-                color: #808080;
-                font-size: 16px;
-                line-height: 36px;
-            }
-
-                .header .left div p span {
-                    color: #000;
-                }
-
-        .header .right {
-            font-size: 12px;
-            text-align: center;
+        ul, li {
+            list-style: none;
         }
 
-            .header .right #qrcode {
-                margin: 0 auto;
-            }
+        .icon {
+            width: 6px;
+            height: 28px;
+            margin-right: 5px;
+            background: #1AB394;
+        }
 
-            .header .right .RepastName {
-                margin-top: 5px;
-            }
+        .icon1 {
+            width: 4px;
+            height: 6px;
+            margin-right: 5px;
+            background: #1AB394;
+        }
 
-    .content {
-        margin-top: 25px;
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-    }
-
-        .content .left {
+        .header {
             background: #fff;
-            box-sizing: border-box;
-            width: 74%;
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            padding: 20px;
             box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.24);
         }
 
-            .content .left .hd {
-                font-size: 18px;
-                width: 100%;
+            .header .left {
                 display: flex;
-                border-bottom: 1px solid #EAEFF5;
+                margin-top: 10px;
             }
 
-                .content .left .hd a {
-                    text-align: center;
-                    color: #000;
-                    display: block;
-                    width: 12.5%;
-                    line-height: 60px;
+                .header .left img {
+                    min-width: 120px;
+                    max-width: 160px;
+                    height: 120px;
+                    margin-right: 10px;
                 }
 
-                    .content .left .hd a.active {
-                        background: #1AB394;
-                        color: #fff;
-                    }
-
-                    .content .left .hd a:not(:last-child) {
-                        border-right: 1px solid #EAEFF5;
-                    }
-
-            .content .left .bd {
-                min-height: 400px;
-                padding: 30px;
-                box-sizing: border-box;
-            }
-
-                .content .left .bd > div {
-                    display: none;
+                .header .left div h3 {
+                    font-size: 24px;
+                    line-height: 40px;
+                    color: #414242;
+                    margin-bottom: 18px;
                 }
 
-                    .content .left .bd > div.on {
-                        display: block;
-                    }
-
-                .content .left .bd .bd-item1 .title {
-                    display: flex;
-                    font-size: 22px;
-                    line-height: 36px;
-                    font-weight: bold;
-                    color: #000;
-                }
-
-                .content .left .bd .bd-item1 p {
+                .header .left div p {
                     color: #808080;
                     font-size: 16px;
-                    line-height: 32px;
-                    margin-top: 10px;
-                    padding-left: 12px;
-                    position: relative;
+                    line-height: 36px;
                 }
 
-                    .content .left .bd .bd-item1 p::before {
-                        content: '';
-                        display: inline-block;
-                        width: 6px;
-                        height: 6px;
-                        border-radius: 3px;
-                        background: #808080;
-                        position: absolute;
-                        top: 13px;
-                        left: 0;
-                    }
-
-                    .content .left .bd .bd-item1 p span {
+                    .header .left div p span {
                         color: #000;
                     }
 
-                .content .left .bd .bd-item1 .msg {
+            .header .right {
+                font-size: 12px;
+                text-align: center;
+            }
+
+                .header .right #qrcode {
+                    margin: 0 auto;
+                }
+
+                .header .right .RepastName {
+                    margin-top: 5px;
+                }
+
+        .content {
+            margin-top: 25px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+            .content .left {
+                background: #fff;
+                box-sizing: border-box;
+                width: 74%;
+                box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.24);
+            }
+
+                .content .left .hd {
+                    font-size: 18px;
+                    width: 100%;
                     display: flex;
-                    justify-content: space-between;
+                    border-bottom: 1px solid #EAEFF5;
                 }
 
-                    .content .left .bd .bd-item1 .msg div {
-                        width: 48%;
-                    }
-
-                .content .left .bd .bd-item2 img {
-                    width: 320px;
-                    height: 240px;
-                    margin: 0 20px 20px 0;
-                }
-
-                .content .left .bd .bd-item3 .bd-item3-item {
-                    width: 390px;
-                    height: 270px;
-                    border: 1px solid #ccc;
-                    margin: 0 20px 20px 0;
-                }
-
-                    .content .left .bd .bd-item3 .bd-item3-item video {
-                        height: 220px !important;
-                    }
-
-                    .content .left .bd .bd-item3 .bd-item3-item p {
+                    .content .left .hd a {
                         text-align: center;
-                        line-height: 40px;
-                        overflow: hidden;
-                        white-space: nowrap;
-                        text-overflow: ellipsis;
-                        font-size: 16px;
+                        color: #000;
+                        display: block;
+                        width: 12.5%;
+                        line-height: 60px;
+                    }
+
+                        .content .left .hd a.active {
+                            background: #1AB394;
+                            color: #fff;
+                        }
+
+                        .content .left .hd a:not(:last-child) {
+                            border-right: 1px solid #EAEFF5;
+                        }
+
+                .content .left .bd {
+                    min-height: 400px;
+                    padding: 30px;
+                    box-sizing: border-box;
+                }
+
+                    .content .left .bd > div {
+                        display: none;
+                    }
+
+                        .content .left .bd > div.on {
+                            display: block;
+                        }
+
+                    .content .left .bd .bd-item1 .title {
+                        display: flex;
+                        font-size: 22px;
+                        line-height: 36px;
+                        font-weight: bold;
                         color: #000;
                     }
 
-                .content .left .bd .bd-item4 .bd-item4-item {
-                    margin-bottom: 50px;
-                }
-
-                    .content .left .bd .bd-item4 .bd-item4-item p {
-                        line-height: 32px;
+                    .content .left .bd .bd-item1 p {
+                        color: #808080;
                         font-size: 16px;
-                        display: flex;
-                        align-items: center;
+                        line-height: 32px;
+                        margin-top: 10px;
+                        padding-left: 12px;
+                        position: relative;
                     }
 
-                        .content .left .bd .bd-item4 .bd-item4-item p span {
+                        .content .left .bd .bd-item1 p::before {
+                            content: '';
+                            display: inline-block;
+                            width: 6px;
+                            height: 6px;
+                            border-radius: 3px;
+                            background: #808080;
+                            position: absolute;
+                            top: 13px;
+                            left: 0;
+                        }
+
+                        .content .left .bd .bd-item1 p span {
                             color: #000;
                         }
 
-                    .content .left .bd .bd-item4 .bd-item4-item > img {
-                        width: 48%;
-                        height: 320px;
-                        margin: 10px 10px 10px 0;
-                    }
-
-                .content .left .bd .bd-item5 {
-                    overflow: hidden;
-                }
-
-                    .content .left .bd .bd-item5 .bd-item5-item {
-                        float: left;
-                        width: 48%;
-                        height: 280px;
-                        margin-bottom: 30px;
-                        border: 1px solid #ccc;
-                        padding: 20px;
-                        box-sizing: border-box;
+                    .content .left .bd .bd-item1 .msg {
                         display: flex;
                         justify-content: space-between;
                     }
 
-                        .content .left .bd .bd-item5 .bd-item5-item:nth-child(2n) {
-                            float: right;
+                        .content .left .bd .bd-item1 .msg div {
+                            width: 48%;
                         }
 
-                        .content .left .bd .bd-item5 .bd-item5-item img {
-                            width: 180px;
+                    .content .left .bd .bd-item2 img {
+                        width: 320px;
+                        height: 240px;
+                        margin: 0 20px 20px 0;
+                    }
+
+                    .content .left .bd .bd-item3 .bd-item3-item {
+                        width: 390px;
+                        height: 270px;
+                        border: 1px solid #ccc;
+                        margin: 0 20px 20px 0;
+                    }
+
+                        .content .left .bd .bd-item3 .bd-item3-item video {
+                            height: 220px !important;
                         }
 
-                        .content .left .bd .bd-item5 .bd-item5-item div {
-                            width: 60%;
+                        .content .left .bd .bd-item3 .bd-item3-item p {
+                            text-align: center;
+                            line-height: 40px;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                            font-size: 16px;
+                            color: #000;
                         }
 
-                            .content .left .bd .bd-item5 .bd-item5-item div p {
-                                font-size: 16px;
-                                line-height: 24px;
-                                margin-bottom: 15px;
+                    .content .left .bd .bd-item4 .bd-item4-item {
+                        margin-bottom: 50px;
+                    }
+
+                        .content .left .bd .bd-item4 .bd-item4-item p {
+                            line-height: 32px;
+                            font-size: 16px;
+                            display: flex;
+                            align-items: center;
+                        }
+
+                            .content .left .bd .bd-item4 .bd-item4-item p span {
+                                color: #000;
                             }
 
-                                .content .left .bd .bd-item5 .bd-item5-item div p span {
-                                    color: #000;
+                        .content .left .bd .bd-item4 .bd-item4-item > img {
+                            width: 48%;
+                            height: 320px;
+                            margin: 10px 10px 10px 0;
+                        }
+
+                    .content .left .bd .bd-item5 {
+                        overflow: hidden;
+                    }
+
+                        .content .left .bd .bd-item5 .bd-item5-item {
+                            float: left;
+                            width: 48%;
+                            height: 280px;
+                            margin-bottom: 30px;
+                            border: 1px solid #ccc;
+                            padding: 20px;
+                            box-sizing: border-box;
+                            display: flex;
+                            justify-content: space-between;
+                        }
+
+                            .content .left .bd .bd-item5 .bd-item5-item:nth-child(2n) {
+                                float: right;
+                            }
+
+                            .content .left .bd .bd-item5 .bd-item5-item img {
+                                width: 180px;
+                            }
+
+                            .content .left .bd .bd-item5 .bd-item5-item div {
+                                width: 60%;
+                            }
+
+                                .content .left .bd .bd-item5 .bd-item5-item div p {
+                                    font-size: 16px;
+                                    line-height: 24px;
+                                    margin-bottom: 15px;
                                 }
 
-                .content .left .bd .bd-item6 .bd-item6-item {
-                    width: 390px;
-                    height: 300px;
-                    border: 1px solid #ccc;
-                    margin: 0 20px 20px 0;
-                }
+                                    .content .left .bd .bd-item5 .bd-item5-item div p span {
+                                        color: #000;
+                                    }
 
-                    .content .left .bd .bd-item6 .bd-item6-item img {
+                    .content .left .bd .bd-item6 .bd-item6-item {
                         width: 390px;
-                        height: 220px;
-                    }
-
-                    .content .left .bd .bd-item6 .bd-item6-item p {
-                        width: 90%;
-                        margin: 0 auto;
-                        line-height: 40px;
-                        height: 40px;
-                        display: flex;
-                    }
-
-                    .content .left .bd .bd-item6 .bd-item6-item .p1 {
-                        border-bottom: 1px solid #ccc;
-                    }
-
-                    .content .left .bd .bd-item6 .bd-item6-item p label {
-                        display: block;
-                        width: 40%;
-                    }
-
-                        .content .left .bd .bd-item6 .bd-item6-item p label:first-child {
-                            width: 60%;
-                        }
-
-                    .content .left .bd .bd-item6 .bd-item6-item p span {
-                        color: #000;
-                    }
-
-                .content .left .bd .bd-item7 {
-                    border-left: 4px solid #D3D6DD;
-                }
-
-                    .content .left .bd .bd-item7 div {
-                        color: #ccc;
-                        height: 50px;
-                        line-height: 50px;
-                    }
-
-                        .content .left .bd .bd-item7 div span {
-                            color: #000;
-                            font-size: 18px;
-                            font-weight: bold;
-                        }
-
-                    .content .left .bd .bd-item7 table {
-                        text-align: center;
-                        margin-left: 26px;
-                        width: 95%;
+                        height: 300px;
                         border: 1px solid #ccc;
-                        font-size: 16px;
+                        margin: 0 20px 20px 0;
                     }
 
-                        .content .left .bd .bd-item7 table tr:first-child {
-                            color: #000;
-                            font-weight: bold;
-                            background: #F7F8FA;
-                            line-height: 42px;
+                        .content .left .bd .bd-item6 .bd-item6-item img {
+                            width: 390px;
+                            height: 220px;
                         }
 
-                        .content .left .bd .bd-item7 table tr:last-child {
-                            line-height: 56px;
+                        .content .left .bd .bd-item6 .bd-item6-item p {
+                            width: 90%;
+                            margin: 0 auto;
+                            line-height: 40px;
+                            height: 40px;
+                            display: flex;
                         }
 
-                .content .left .bd .bd-item8 .bd-item8-item {
-                    width: 390px;
-                    height: 300px;
-                    border: 1px solid #ccc;
-                    margin: 0 20px 20px 0;
-                }
+                        .content .left .bd .bd-item6 .bd-item6-item .p1 {
+                            border-bottom: 1px solid #ccc;
+                        }
 
-                    .content .left .bd .bd-item8 .bd-item8-item img {
-                        width: 390px;
-                        height: 220px;
-                    }
-
-                    .content .left .bd .bd-item8 .bd-item8-item p {
-                        width: 90%;
-                        margin: 0 auto;
-                        line-height: 40px;
-                        height: 40px;
-                        display: flex;
-                    }
-
-                        .content .left .bd .bd-item8 .bd-item8-item p label {
+                        .content .left .bd .bd-item6 .bd-item6-item p label {
                             display: block;
-                            width: 60%;
+                            width: 40%;
                         }
 
-                            .content .left .bd .bd-item8 .bd-item8-item p label:first-child {
-                                width: 40%;
+                            .content .left .bd .bd-item6 .bd-item6-item p label:first-child {
+                                width: 60%;
                             }
 
-                    .content .left .bd .bd-item8 .bd-item8-item .p1 {
-                        border-bottom: 1px solid #ccc;
+                        .content .left .bd .bd-item6 .bd-item6-item p span {
+                            color: #000;
+                        }
+
+                    .content .left .bd .bd-item7 {
+                        border-left: 4px solid #D3D6DD;
                     }
 
-                    .content .left .bd .bd-item8 .bd-item8-item p span {
+                        .content .left .bd .bd-item7 div {
+                            color: #ccc;
+                            height: 50px;
+                            line-height: 50px;
+                        }
+
+                            .content .left .bd .bd-item7 div span {
+                                color: #000;
+                                font-size: 18px;
+                                font-weight: bold;
+                            }
+
+                        .content .left .bd .bd-item7 table {
+                            text-align: center;
+                            margin-left: 26px;
+                            width: 95%;
+                            border: 1px solid #ccc;
+                            font-size: 16px;
+                        }
+
+                            .content .left .bd .bd-item7 table tr:first-child {
+                                color: #000;
+                                font-weight: bold;
+                                background: #F7F8FA;
+                                line-height: 42px;
+                            }
+
+                            .content .left .bd .bd-item7 table tr:last-child {
+                                line-height: 56px;
+                            }
+
+                    .content .left .bd .bd-item8 .bd-item8-item {
+                        width: 390px;
+                        height: 300px;
+                        border: 1px solid #ccc;
+                        margin: 0 20px 20px 0;
+                    }
+
+                        .content .left .bd .bd-item8 .bd-item8-item img {
+                            width: 390px;
+                            height: 220px;
+                        }
+
+                        .content .left .bd .bd-item8 .bd-item8-item p {
+                            width: 90%;
+                            margin: 0 auto;
+                            line-height: 40px;
+                            height: 40px;
+                            display: flex;
+                        }
+
+                            .content .left .bd .bd-item8 .bd-item8-item p label {
+                                display: block;
+                                width: 60%;
+                            }
+
+                                .content .left .bd .bd-item8 .bd-item8-item p label:first-child {
+                                    width: 40%;
+                                }
+
+                        .content .left .bd .bd-item8 .bd-item8-item .p1 {
+                            border-bottom: 1px solid #ccc;
+                        }
+
+                        .content .left .bd .bd-item8 .bd-item8-item p span {
+                            color: #000;
+                        }
+
+            .content .right {
+                width: 24%;
+            }
+
+                .content .right .right-item {
+                    background: #fff;
+                    margin-bottom: 20px;
+                    box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.24);
+                }
+
+                    .content .right .right-item .hd {
+                        background: #F5F5F5;
+                        padding: 0 22px;
+                        box-sizing: border-box;
+                        display: flex;
+                        align-items: center;
+                        font-size: 18px;
+                        line-height: 60px;
+                        font-weight: bold;
                         color: #000;
                     }
 
-        .content .right {
-            width: 24%;
-        }
-
-            .content .right .right-item {
-                background: #fff;
-                margin-bottom: 20px;
-                box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.24);
-            }
-
-                .content .right .right-item .hd {
-                    background: #F5F5F5;
-                    padding: 0 22px;
-                    box-sizing: border-box;
-                    display: flex;
-                    align-items: center;
-                    font-size: 18px;
-                    line-height: 60px;
-                    font-weight: bold;
-                    color: #000;
-                }
-
-                .content .right .right-item .bd li {
-                    padding: 0 22px;
-                    box-sizing: border-box;
-                    height: 60px;
-                    line-height: 60px;
-                    overflow: hidden;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                }
-
-                    .content .right .right-item .bd li:not(:last-child) {
-                        border-bottom: 1px solid #EBEBEB;
+                    .content .right .right-item .bd li {
+                        padding: 0 22px;
+                        box-sizing: border-box;
+                        height: 60px;
+                        line-height: 60px;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
                     }
-</style>
+
+                        .content .right .right-item .bd li:not(:last-child) {
+                            border-bottom: 1px solid #EBEBEB;
+                        }
+    </style>
 }
 <form id="Edit">
-    <div class="wrapper wrapper-content">
-        <!--首页头部-->
-        <div class="header">
-            <div class="left">
-                <img id="RepastImg" />
-                <div>
-                    <h3 class="RepastName"></h3>
-                    <p>法人代表：<span class="Manager"></span></p>
-                    <p>社会信用代码：<span class="CreditCode"></span></p>
-                </div>
-            </div>
-            <div class="right">
-                <div id="qrcode">
-                    <!--此处生成二维码-->
-                </div>
-                <div class="RepastName"></div>
+    <!--首页头部-->
+    <div class="header">
+        <div class="left">
+            <img id="RepastImg" />
+            <div>
+                <h3 class="RepastName"></h3>
+                <p>法人代表：<span class="Manager"></span></p>
+                <p>社会信用代码：<span class="CreditCode"></span></p>
             </div>
         </div>
-        <!--首页内容模块-->
-        <div class="content">
-            <div class="left">
-                <div class="hd">
-                    <a class="active">基本信息</a>
-                    <a>资质荣誉</a>
-                    <a>企业视频</a>
-                    <a>台账管理</a>
-                    <a>供应商</a>
-                    <a>人员健康证</a>
-                    <a>废物处理</a>
-                    <a>留样管理</a>
-                </div>
-                <div class="bd">
-                    <!--基本信息-->
-                    <div class="on bd-item1">
-                        <div class="title">
-                            <div class="icon"></div>
-                            基本信息
-                        </div>
-                        <div class="msg">
-                            <div class="i-left">
-                                <p>企业名称：<span name="商家名称"></span></p>
-                                <p>法人代表：<span class="Manager"></span></p>
-                                <p>企业电话：<span name="商家电话"></span></p>
-                            </div>
-                            <div class="i-right">
-                                <p>所属行业：<span id="DiningTypeName"></span></p>
-                                <p>安全管理员：<span id="SafeOffer"></span></p>
-                                <p>统一社会信用代码/注册号：<span class="CreditCode"></span></p>
-                            </div>
-                        </div>
-                        <p>企业地址：<span name="商家地址"></span></p>
-                        <p>企业简介：<span name="商家介绍"></span></p>`
+        <div class="right">
+            <div id="qrcode">
+                <!--此处生成二维码-->
+            </div>
+            <div class="RepastName"></div>
+        </div>
+    </div>
+    <!--首页内容模块-->
+    <div class="content">
+        <div class="left">
+            <div class="hd">
+                <a class="active">基本信息</a>
+                <a>资质荣誉</a>
+                <a>企业视频</a>
+                <a>台账管理</a>
+                <a>供应商</a>
+                <a>人员健康证</a>
+                <a>废物处理</a>
+                <a>留样管理</a>
+            </div>
+            <div class="bd">
+                <!--基本信息-->
+                <div class="on bd-item1">
+                    <div class="title">
+                        <div class="icon"></div>
+                        基本信息
                     </div>
-                    <!--资质荣誉-->
-                    <div class="bd-item2"></div>
-                    <!--企业视频-->
-                    <div class="bd-item3"></div>
-                    <!--台账管理-->
-                    <div class="bd-item4"></div>
-                    <!--供应商-->
-                    <div class="bd-item5"></div>
-                    <!--人员健康证-->
-                    <div class="bd-item6"></div>
-                    <!--废物处理-->
-                    <div class="bd-item7"></div>
-                    <!--留样管理-->
-                    <div class="bd-item8"></div>
+                    <div class="msg">
+                        <div class="i-left">
+                            <p>企业名称：<span name="商家名称"></span></p>
+                            <p>法人代表：<span class="Manager"></span></p>
+                            <p>企业电话：<span name="商家电话"></span></p>
+                        </div>
+                        <div class="i-right">
+                            <p>所属行业：<span id="DiningTypeName"></span></p>
+                            <p>安全管理员：<span id="SafeOffer"></span></p>
+                            <p>统一社会信用代码/注册号：<span class="CreditCode"></span></p>
+                        </div>
+                    </div>
+                    <p>企业地址：<span name="商家地址"></span></p>
+                    <p>企业简介：<span name="商家介绍"></span></p>`
                 </div>
-            </div>
-            <div class="right">
-                <div class="right-item">
-                    <div class="hd"><div class="icon1"></div>陪餐制度</div>
-                    <ul class="bd"></ul>
-                </div>
-                <div class="right-item">
-                    <div class="hd"><div class="icon1"></div>法律法规</div>
-                    <ul class="bd"></ul>
-                </div>
+                <!--资质荣誉-->
+                <div class="bd-item2"></div>
+                <!--企业视频-->
+                <div class="bd-item3"></div>
+                <!--台账管理-->
+                <div class="bd-item4"></div>
+                <!--供应商-->
+                <div class="bd-item5"></div>
+                <!--人员健康证-->
+                <div class="bd-item6"></div>
+                <!--废物处理-->
+                <div class="bd-item7"></div>
+                <!--留样管理-->
+                <div class="bd-item8"></div>
             </div>
         </div>
-
+        <div class="right">
+            <div class="right-item">
+                <div class="hd"><div class="icon1"></div>陪餐制度</div>
+                <ul class="bd"></ul>
+            </div>
+            <div class="right-item">
+                <div class="hd"><div class="icon1"></div>法律法规</div>
+                <ul class="bd"></ul>
+            </div>
+        </div>
     </div>
 </form>
