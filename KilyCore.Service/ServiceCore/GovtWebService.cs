@@ -80,7 +80,7 @@ namespace KilyCore.Service.ServiceCore
             if (!GovtInfo().IsEdu.Value)
             {
                 if (GovtInfo().AccountType <= GovtAccountEnum.Area)
-                    queryables = queryables.Where(t => !t.AuthorName.Contains("乡镇"));
+                    queryables = queryables.Where(t => t.AuthorName.Contains("区县"));
                 else
                     queryables = queryables.Where(t => t.AuthorName.Contains("乡镇"));
                 Author= queryables.FirstOrDefault();
