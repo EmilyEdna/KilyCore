@@ -76,6 +76,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<GovtMenu> queryable = Kily.Set<GovtMenu>().Where(t => t.Level == MenuEnum.LevelOne).Where(t => t.IsDelete == false).AsNoTracking().AsQueryable().OrderBy(t => t.CreateTime);
             IQueryable<GovtRoleAuthor> queryables = Kily.Set<GovtRoleAuthor>().Where(t => t.IsDelete == false);
+            GovtRoleAuthor Author = queryables.FirstOrDefault();
             if (!GovtInfo().IsEdu.Value)
             {
                 if (GovtInfo().AccountType <= GovtAccountEnum.Area)
@@ -85,10 +86,9 @@ namespace KilyCore.Service.ServiceCore
             }
             else
             {
-                queryables = queryables.Where(t => t.AuthorName.Contains("教育局"));
+                queryables = queryables.Where(t => t.AuthorName.Contains("教育局")).Where(t => Author.AuthorMenuPath.Contains(t.Id.ToString()));
             }
-            GovtRoleAuthor Author = queryables.FirstOrDefault();
-            var data = queryable.OrderBy(t => t.CreateTime).Where(t => Author.AuthorMenuPath.Contains(t.Id.ToString())).Select(t => new ResponseGovtMenu()
+            var data = queryable.OrderBy(t => t.CreateTime).Select(t => new ResponseGovtMenu()
             {
                 Id = t.Id,
                 MenuId = t.MenuId,
