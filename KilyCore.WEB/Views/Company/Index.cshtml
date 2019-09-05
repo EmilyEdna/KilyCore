@@ -114,43 +114,36 @@
     .section1 .item1 {
         padding: 15px;
         width: 24%;
-        height: 200px;
+        height: 110px;
         display: flex;
+        align-items: center;
     }
 
         .section1 .item1 .left {
-            text-align: center;
-            width: 80px;
             margin-right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 28px;
+            background: url("/Content/Company/images/firm_index.png") center center no-repeat;
         }
-
-            .section1 .item1 .left div {
-                margin-top: 15px;
-                width: 80px;
-                height: 80px;
-                border-radius: 45px;
-                background: url("/Content/Company/images/firm_index.png") center center no-repeat;
-            }
-
-            .section1 .item1 .left img {
-                margin-top: 20px;
-            }
 
         .section1 .item1 .right {
             min-width: 62%;
         }
 
-            .section1 .item1 .right p:first-child, .section1 .item1 .right p:last-child {
-                font-size: 18px;
-                line-height: 48px;
+            .section1 .item1 .right p {
+                font-size: 16px;
+                line-height: 24px;
             }
 
-            .section1 .item1 .right p:nth-child(2) {
-                font-size: 30px;
-                line-height: 46px;
-                margin: 10px 0;
-                font-weight: bold
-            }
+                .section1 .item1 .right p:last-child {
+                    margin-bottom: 0;
+                }
+
+                .section1 .item1 .right p span {
+                    color: #000;
+                    font-weight: bold;
+                }
     /*第二个区域样式*/
     .section2 .item2 {
         width: 24%;
@@ -237,47 +230,31 @@
     <!--第一个区域-->
     <div class="section section1">
         <div class="item item1">
-            <div class="left">
-                <div style="background-color: #FCB600;"></div>
-                <img src="~/Content/Company/images/firm_index2.png" />
-            </div>
+            <div class="left" style="background-color: #FCB600;"></div>
             <div class="right">
-                <p>周产量</p>
-                <p><span name="">452,451</span></p>
-                <p>较上周：<img src="~/Content/Company/images/firm_up.png" /><span name="">245吨</span></p>
+                <p>周产量：<span name="">452,451</span></p>
+                <p>较上周：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="">245吨</span></p>
             </div>
         </div>
         <div class="item item1">
-            <div class="left">
-                <div style="background-color: #00D1CE;"></div>
-                <img src="~/Content/Company/images/firm_index2.png" />
-            </div>
+            <div class="left" style="background-color: #00D1CE;"></div>
             <div class="right">
-                <p>月产量</p>
-                <p><span name="">452,451</span></p>
-                <p>较上周：<img src="~/Content/Company/images/firm_up.png" /><span name="">245吨</span></p>
+                <p>周产量：<span name="">452,451</span></p>
+                <p>较上周：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="">245吨</span></p>
             </div>
         </div>
         <div class="item item1">
-            <div class="left">
-                <div style="background-color: #36C3FF;"></div>
-                <img src="~/Content/Company/images/firm_index2.png" />
-            </div>
+            <div class="left" style="background-color: #36C3FF;"></div>
             <div class="right">
-                <p>年产量</p>
-                <p><span name="">452,451</span></p>
-                <p>较上周：<img src="~/Content/Company/images/firm_up.png" /><span name="">245吨</span></p>
+                <p>周产量：<span name="">452,451</span></p>
+                <p>较上周：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="">245吨</span></p>
             </div>
         </div>
         <div class="item item1">
-            <div class="left">
-                <div style="background-color: #AF6CC1;"></div>
-                <img src="~/Content/Company/images/firm_index2.png" />
-            </div>
+            <div class="left" style="background-color: #AF6CC1;"></div>
             <div class="right">
-                <p>批次统计</p>
-                <p><span name="">452,451</span></p>
-                <p>较上周：<img src="~/Content/Company/images/firm_up.png" /><span name="">245吨</span></p>
+                <p>周产量：<span name="">452,451</span></p>
+                <p>较上周：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="">245吨</span></p>
             </div>
         </div>
     </div>
@@ -401,7 +378,5 @@
         </div>
     </div>
     <!--地图区域-->
-    <div id="Map">
-
-    </div>
+    <div id="Map"></div>
 </form>
