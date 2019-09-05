@@ -644,6 +644,7 @@ namespace KilyCore.Service.ServiceCore
                     PassWord = t.PassWord,
                     CommunityCode = t.CommunityCode,
                     MerchantName = t.MerchantName,
+                    MerchantImage=t.MerchantImage,
                     LngAndLat = t.LngAndLat,
                     DiningType = t.DiningType,
                     CardExpiredDate = t.CardExpiredDate,
@@ -959,6 +960,8 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 InfoId = t.InfoId,
                 TrueName = t.TrueName,
+                HealthCard=t.HealthCard,
+                ExpiredTime=t.ExpiredTime,
                 Phone = t.Phone,
                 Account = t.Account,
                 IdCard = t.IdCard
@@ -1412,6 +1415,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 Theme = t.Theme,
+                Content=t.Content.Replace("/Upload/","http://system.cfda.vip/Upload/").Replace("<img","<img style='max-width:100%;' "),
                 UpTime = t.UpTime
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -1603,6 +1607,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 FoodMenuName = t.FoodMenuName,
+                Content=t.Content,
                 UpTime = t.UpTime,
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
