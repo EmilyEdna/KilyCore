@@ -1314,6 +1314,7 @@ namespace KilyCore.Service.ServiceCore
                 SupplierUser=t.SupplierUser,
                 LinkPhone = t.LinkPhone,
                 SupplierName = t.SupplierName,
+                RunCard=t.RunCard,
                 Address = t.Address,
             }).ToList();
             return data;
@@ -1607,7 +1608,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 FoodMenuName = t.FoodMenuName,
-                Content=t.Content,
+                Content=t.Content.Replace("<img","<img style='max-width:100%' ").Replace("/Upload","http://system.cfda.vip/Upload"),
                 UpTime = t.UpTime,
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;

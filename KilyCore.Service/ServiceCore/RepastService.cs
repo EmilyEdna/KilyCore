@@ -586,13 +586,14 @@ namespace KilyCore.Service.ServiceCore
                 VersionType = t.VersionType,
                 VersionTypeName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.VersionType),
                 DiningTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
+                MerchantImage=t.MerchantImage,
                 AuditType = t.AuditType,
                 AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
                 DingRoleId = t.DingRoleId,
                 TypePath = t.TypePath,
+                Address=t.Address,
                 Certification = t.Certification,
                 Email = t.Email,
-                Address=t.Address,
                 ImplUser = t.ImplUser,
                 TableName = typeof(ResponseMerchant).Name
             }).FirstOrDefault();

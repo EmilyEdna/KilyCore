@@ -21,7 +21,7 @@
                     $("h5").text("机关单位");
                     data = { DiningType: 20 };
                 } else {
-                     data = { DiningType: 10 };
+                    data = { DiningType: 10 };
                 }
                 //恢复高度
                 $(window).resize(function (e) {
@@ -35,6 +35,10 @@
             },
             //事件
             InitEvents: function () {
+                $(".test").on('click', function () {
+                    $("input[name='AllowUnit']").val($(this).data().value);
+                    $("#type").text($(this).text());
+                });
                 //导出Excel
                 $("#export").on('click', function () {
                     $("#tableList").tableExport({
@@ -106,10 +110,35 @@
                         <div class="col-sm-4">
                             <div class="input-group">
                                 <input type="text" placeholder="企业名称" class="input-sm form-control" name="CompanyName">
-                                <span class="input-group-btn">
+                                <input type="hidden" name="AllowUnit">
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                                        <small id="type">企业类型</small>
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a href="javascript:void(0);" data-value="" class="test">全部</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0);" data-value="学前教育" class="test">学前教育</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0);" data-value="义务教育" class="test">义务教育</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0);" data-value="高中教育" class="test">高中教育</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0);" data-value="高等教育" class="test">高等教育</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0);" data-value="职业教育" class="test">职业教育</a>
+                                        </li>
+                                    </ul>
                                     <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
                                     <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
-                                </span>
+                                </div>
                             </div>
                         </div>
                     </form>
