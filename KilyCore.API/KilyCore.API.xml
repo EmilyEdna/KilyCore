@@ -3598,6 +3598,13 @@
             <param name="Param"></param>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetSellBuyPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastSellbill})">
+            <summary>
+            进销台账分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
         <member name="M:KilyCore.API.Controllers.RepastWebController.GetVideoPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastVideo})">
             <summary>
             视频分页
@@ -4182,6 +4189,27 @@
             陪餐记录详情
             </summary>
             <param name="Key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetWaringRiskPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Govt.RequestGovtRisk})">
+            <summary>
+            风险预警
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetComplainPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Govt.RequestGovtComplain})">
+            <summary>
+            投诉建议
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetNetPatrolPage(KilyCore.Service.QueryExtend.PageParamList{System.Object})">
+            <summary>
+            督查信息
+            </summary>
+            <param name="pageParam"></param>
             <returns></returns>
         </member>
         <member name="T:KilyCore.API.Controllers.SystemController">
