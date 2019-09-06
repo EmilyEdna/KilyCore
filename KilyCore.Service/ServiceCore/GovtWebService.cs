@@ -83,7 +83,7 @@ namespace KilyCore.Service.ServiceCore
                     queryables = queryables.Where(t => t.AuthorName.Contains("区县"));
                 else
                     queryables = queryables.Where(t => t.AuthorName.Contains("乡镇"));
-                Author= queryables.FirstOrDefault();
+                Author = queryables.FirstOrDefault();
             }
             else
             {
@@ -263,6 +263,8 @@ namespace KilyCore.Service.ServiceCore
             }
             if (!string.IsNullOrEmpty(pageParam.QueryParam.MerchantName))
                 queryable = queryable.Where(t => t.MerchantName.Contains(pageParam.QueryParam.MerchantName));
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.AllowUnit))
+                queryable = queryable.Where(t => t.AllowUnit.Contains(pageParam.QueryParam.AllowUnit));
             PagedResult<ResponseMerchant> data = new PagedResult<ResponseMerchant>();
             if (!GovtInfo().IsEdu.Value)
                 data = queryable.Select(t => new ResponseMerchant()
@@ -583,7 +585,7 @@ namespace KilyCore.Service.ServiceCore
             var data = Kily.Set<GovtInfo>().Where(t => t.Id == Id).Select(t => new ResponseGovtInfo()
             {
                 Id = t.Id,
-                IsEdu=t.IsEdu,
+                IsEdu = t.IsEdu,
                 Account = t.Account,
                 AccountType = t.AccountType,
                 DepartId = t.DepartId,
@@ -1417,16 +1419,16 @@ namespace KilyCore.Service.ServiceCore
             }
             if (GovtInfo().IsEdu.Value)
                 queryable = queryable.Where(t => !t.TradeType.Contains("企业") && !t.TradeType.Contains("小"));
-                var data = queryable.Select(t => new ResponseGovtNetPatrol()
-                {
-                    Id = t.Id,
-                    CompanyId = t.CompanyId,
-                    CompanyName = t.CompanyName,
-                    BulletinNum = t.BulletinNum,
-                    PotrolNum = t.PotrolNum,
-                    TradeType = t.TradeType,
-                    QualifiedNum = t.QualifiedNum
-                }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            var data = queryable.Select(t => new ResponseGovtNetPatrol()
+            {
+                Id = t.Id,
+                CompanyId = t.CompanyId,
+                CompanyName = t.CompanyName,
+                BulletinNum = t.BulletinNum,
+                PotrolNum = t.PotrolNum,
+                TradeType = t.TradeType,
+                QualifiedNum = t.QualifiedNum
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
         /// <summary>
@@ -2058,7 +2060,7 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.Select(t => new ResponseGovtComplain
             {
                 Id = t.Id,
-                CompanyId=t.CompanyId,
+                CompanyId = t.CompanyId,
                 CompanyName = t.CompanyName,
                 Status = t.Status,
                 CompanyType = t.CompanyType,
@@ -2071,7 +2073,8 @@ namespace KilyCore.Service.ServiceCore
                 SendStatus = t.IsDelete == true ? "已推送" : "待推送"
             }).ToList();
             if (GovtInfo().IsEdu.Value)
-                data = data.Select(t => new ResponseGovtComplain {
+                data = data.Select(t => new ResponseGovtComplain
+                {
                     Id = t.Id,
                     CompanyId = t.CompanyId,
                     CompanyName = t.CompanyName,
@@ -2843,11 +2846,28 @@ namespace KilyCore.Service.ServiceCore
                 else
                     queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
             }
-            //分组
-            var ZZ_Com = queryable.Where(t => t.CompanyType.Equals("种植企业")).OrderByDescending(t => t.CreateTime).ToList();
-            var YZ_Com = queryable.Where(t => t.CompanyType.Equals("养殖企业")).OrderByDescending(t => t.CreateTime).ToList();
-            var SC_Com = queryable.Where(t => t.CompanyType.Equals("生产企业")).OrderByDescending(t => t.CreateTime).ToList();
-            var LT_Com = queryable.Where(t => t.CompanyType.Equals("流通企业")).OrderByDescending(t => t.CreateTime).ToList();
+            List<GovtComplain> ZZ_Com = null;
+            List<GovtComplain> YZ_Com = null;
+            List<GovtComplain> SC_Com = null;
+            List<GovtComplain> LT_Com = null;
+            if (!GovtInfo().IsEdu.Value)
+            {
+                //分组
+                ZZ_Com = queryable.Where(t => t.CompanyType.Equals("种植企业")).OrderByDescending(t => t.CreateTime).ToList();
+                YZ_Com = queryable.Where(t => t.CompanyType.Equals("养殖企业")).OrderByDescending(t => t.CreateTime).ToList();
+                SC_Com = queryable.Where(t => t.CompanyType.Equals("生产企业")).OrderByDescending(t => t.CreateTime).ToList();
+                LT_Com = queryable.Where(t => t.CompanyType.Equals("流通企业")).OrderByDescending(t => t.CreateTime).ToList();
+            }
+            else
+            {
+
+                //分组
+                ZZ_Com = queryable.Where(t => t.CompanyType.Equals("学前教育")).OrderByDescending(t => t.CreateTime).ToList();
+                YZ_Com = queryable.Where(t => t.CompanyType.Equals("义务教育")).OrderByDescending(t => t.CreateTime).ToList();
+                SC_Com = queryable.Where(t => t.CompanyType.Equals("高中教育")).OrderByDescending(t => t.CreateTime).ToList();
+                LT_Com = queryable.Where(t => t.CompanyType.Equals("高等教育")).OrderByDescending(t => t.CreateTime).ToList();
+            }
+            var ZYJY = queryable.Where(t => t.CompanyType.Equals("职业教育")).OrderByDescending(t => t.CreateTime).ToList();
             //时间分组
             #region 种植
             //近3天投诉
@@ -2929,11 +2949,35 @@ namespace KilyCore.Service.ServiceCore
             var L365 = LT_Com.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
                 .Where(t => DateTime.Now.Year - t.CreateTime.Value.Year <= 1).Count();
             #endregion
+            #region 流通
+            //近3天投诉
+            var ZY3 = ZYJY.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Day - t.CreateTime.Value.Day <= 3).Count();
+            //近7天投诉
+            var ZY7 = ZYJY.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Day - t.CreateTime.Value.Day <= 7).Count();
+            //近15天投诉
+            var ZY15 = ZYJY.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Day - t.CreateTime.Value.Day <= 15).Count();
+            //近30天投诉
+            var ZY30 = ZYJY.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Month - t.CreateTime.Value.Month <= 1).Count();
+            //近180天投诉
+            var ZY180 = ZYJY.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Month - t.CreateTime.Value.Month <= 6).Count();
+            //近365天投诉
+            var ZY365 = ZYJY.Where(t => DateTime.Now.Day - t.CreateTime.Value.Day >= 1)
+                .Where(t => DateTime.Now.Year - t.CreateTime.Value.Year <= 1).Count();
+            #endregion
             List<int> ZCom = new List<int> { Z3, Z7, Z15, Z30, Z180, Z365 };
             List<int> YCom = new List<int> { Y3, Y7, Y15, Y30, Y180, Y365 };
             List<int> SCom = new List<int> { S3, S7, S15, S30, S180, S365 };
             List<int> LCom = new List<int> { L3, L7, L15, L30, L180, L365 };
-            return new { ZCom, YCom, SCom, LCom };
+            List<int> ZYJYS = new List<int> { ZY3, ZY7, ZY15, ZY30, ZY180, ZY365 };
+            if (!GovtInfo().IsEdu.Value)
+                return new { ZCom, YCom, SCom, LCom };
+            else
+                return new { ZCom, YCom, SCom, LCom, ZYJYS };
         }
         #endregion
         #endregion
