@@ -1503,6 +1503,91 @@ namespace KilyCore.Service.ServiceCore
         }
         #endregion
 
+        #region 进销台账
+        /// <summary>
+        /// 进销台账分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<Object> GetSellBuyPage(PageParamList<RequestRepastSellbill> pageParam)
+        {
+            IQueryable<RepastSellbill> queryable = Kily.Set<RepastSellbill>().Where(t => t.IsDelete == false && t.CreateTime > DateTime.Now.AddDays(-3)).AsNoTracking();
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.GoodsName))
+                queryable = queryable.Where(t => t.GoodsName.Contains(pageParam.QueryParam.GoodsName));
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseRepastSellbill()
+            {
+                Id = t.Id,
+                GoodsName = t.GoodsName,
+                GoodsNum = t.GoodsNum,
+                ToPay = t.ToPay,
+                SellTime = t.SellTime,
+                UnPay = t.UnPay,
+                Manager = t.Manager
+            }).ToList();
+
+            IQueryable<RepastBuybill> Buyqueryable = Kily.Set<RepastBuybill>().Where(t => t.IsDelete == false&&t.CreateTime>DateTime.Now.AddDays(-3)).AsNoTracking();
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.GoodsName))
+                Buyqueryable = Buyqueryable.Where(t => t.GoodsName.Contains(pageParam.QueryParam.GoodsName));
+            if (MerchantInfo() != null)
+                Buyqueryable = Buyqueryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                Buyqueryable = Buyqueryable.Where(t => t.InfoId == MerchantUser().Id);
+            var Buydata = Buyqueryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseRepastBuybill()
+            {
+                Id = t.Id,
+                GoodsName = t.GoodsName,
+                GoodsNum = t.GoodsNum,
+                LinkPhone = t.LinkPhone,
+                Purchase = t.Purchase,
+                Unit = t.Unit,
+                ToPay = t.ToPay,
+                Supplier = t.Supplier,
+                OrderTime = t.OrderTime,
+                UnPay = t.UnPay
+            }).ToList();
+
+            var List = new List<dynamic>();
+            foreach(var item in data)
+            {
+                List.Add(new {
+                    Id = item.Id,
+                    GoodsName =item.GoodsName,
+                    GoodsNum = item.GoodsNum,
+                    LinkPhone = "",
+                    Type="销售",
+                    Purchase = "",
+                    Unit = "",
+                    ToPay = item.ToPay,
+                    Supplier = "",
+                    OrderTime = item.SellTime,
+                    UnPay = item.UnPay
+                });
+            }
+            foreach (var item in Buydata)
+            {
+                List.Add(new
+                {
+                    Id = item.Id,
+                    GoodsName = item.GoodsName,
+                    GoodsNum = item.GoodsNum,
+                    LinkPhone = item.LinkPhone,
+                    Purchase = item.Purchase,
+                    Type = "采购",
+                    Unit = item.Unit,
+                    ToPay = item.ToPay,
+                    Supplier = item.Supplier,
+                    OrderTime = item.OrderTime,
+                    UnPay = item.UnPay
+                });
+            }
+            return List.ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+        }
+        #endregion
+
         #region 实时监控
         /// <summary>
         /// 视频分页
@@ -3040,5 +3125,81 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         #endregion
+
+        #region APP接口
+        /// <summary>
+        /// 督查信息
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseSystemMessage> GetNetPatrolPage(PageParamList<Object> pageParam)
+        {
+            IQueryable<SystemMessage> queryable = Kily.Set<SystemMessage>().OrderByDescending(t => t.ReleaseTime);
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == MerchantInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == MerchantUser().Id);
+            var data = queryable.Select(t => new ResponseSystemMessage()
+            {
+                Id = t.Id,
+                MsgName = t.MsgName,
+                MsgContent = t.MsgContent,
+                Status = t.Status,
+                ReleaseTime = t.ReleaseTime
+            }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 投诉建议
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseGovtComplain> GetComplainPage(PageParamList<RequestGovtComplain> pageParam)
+        {
+            IQueryable<GovtComplain> queryable = Kily.Set<GovtComplain>().OrderByDescending(t => t.ComplainTime);
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == MerchantInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == MerchantUser().Id);
+            var data = queryable.Select(t => new ResponseGovtComplain()
+            {
+                Id = t.Id,
+                ComplainUser = t.ComplainUser,
+                ComplainContent=t.ComplainContent,
+                ComplainUserPhone=t.ComplainUserPhone,   
+                HandlerContent=t.HandlerContent,                
+                Status = t.Status,
+                ComplainTime = t.ComplainTime
+            }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 风险预警
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseGovtRisk> GetWaringRiskPage(PageParamList<RequestGovtRisk> pageParam)
+        {
+            IQueryable<GovtRisk> queryable = Kily.Set<GovtRisk>().OrderByDescending(t => t.CreateTime);
+            queryable = queryable.Where(t => t.TypePath.Contains(MerchantInfo().City));
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.EventName))
+                queryable = queryable.Where(t => t.EventName.Contains(pageParam.QueryParam.EventName));
+            var data = queryable.Select(t => new ResponseGovtRisk()
+            {
+                Id = t.Id,
+                EventName = t.EventName,
+                TradeType = t.TradeType,
+                WaringLv = t.WaringLv,
+                ReleaseTime = t.ReleaseTime,
+                ReportPlay = t.ReportPlay,
+                Remark = t.Remark,
+                Desc = t.Remark.NoHtml(),
+                TypePath = t.TypePath
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        #endregion
+
+       
     }
 }
