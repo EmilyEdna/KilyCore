@@ -226,135 +226,171 @@
         options.Init();
     });
 </script>
+<script src="~/Content/MetisMenu/Script/metisMenu.js"></script>
 }
 
 @section css{
 <style>
-       .content1 a {
-            display: inline-block;
-            width: 22%;
-            height: 100px;
-            margin-right: 2%;
-            text-align: center;
-            font-size: 16px;
-            color: #404040;
+    .content1 a {
+        display: inline-block;
+        width: 22%;
+        height: 100px;
+        margin-right: 2%;
+        text-align: center;
+        font-size: 16px;
+        color: #404040;
+    }
+
+        .content1 a img {
+            width: 60px;
+            height: 60px;
+            margin: 10px 0;
         }
 
-            .content1 a img {
-                width: 60px;
-                height: 60px;
-                margin: 10px 0;
+    .item {
+        border-top: 1px solid #E7EAEC;
+        background: #fff;
+        padding: 15px;
+        height: 110px;
+        display: flex;
+        align-items: center;
+    }
+
+        .item .left {
+            margin-right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 28px;
+            background: url("/Content/Company/images/firm_index.png") center center no-repeat;
+        }
+
+        .item .right {
+            min-width: 62%;
+        }
+
+            .item .right p {
+                font-size: 16px;
+                line-height: 24px;
             }
+
+                .item .right p:last-child {
+                    margin-bottom: 0;
+                }
+
+                .item .right p span {
+                    color: #000;
+                    font-weight: bold;
+                }
 </style>
 }
 <div class="wrapper wrapper-content">
     <div class="row">
         <div class="col-sm-3">
-            <div class="ibox float-e-margins">
+            <div class=" ibox float-e-margins">
                 <div class="ibox-title">
                     <span class="label label-success pull-right">月</span>
                     <h5>入住</h5>
                 </div>
-                <div class="ibox-content">
-                    <h1 class="no-margins" id="A1"></h1>
-                    <div class="stat-percent font-bold text-success" id="B1">
-                        <i class="fa fa-bolt"></i>
+                <div class="item">
+                    <div class="left" style="background-color: #1C84C6;"></div>
+                    <div class="right">
+                        <p>月入驻：<span id="A1"></span></p>
+                        <p>增长比：<span id="B1">&emsp;<i class="fa fa-bolt" style="color: #1C84C6;"></i></span></p>
                     </div>
-                    <small>月入住</small>
                 </div>
             </div>
         </div>
         <div class="col-sm-3">
-            <div class="ibox float-e-margins">
+            <div class=" ibox float-e-margins">
                 <div class="ibox-title">
                     <span class="label label-info pull-right">月</span>
-                    <h5>产品</h5>
+                    <h5>入住</h5>
                 </div>
-                <div class="ibox-content">
-                    <h1 class="no-margins" id="A2"></h1>
-                    <div class="stat-percent font-bold text-info" id="B2">
-                        <i class="fa fa-level-up"></i>
+                <div class="item">
+                    <div class="left" style="background-color: #23C6C8;"></div>
+                    <div class="right">
+                        <p>月产量：<span id="A2"></span></p>
+                        <p>增长比：<span id="B2">&emsp;<i class="fa fa-level-up" style="color: #23C6C8;"></i></span></p>
                     </div>
-                    <small>月产量</small>
                 </div>
             </div>
         </div>
         <div class="col-sm-3">
-            <div class="ibox float-e-margins">
+            <div class=" ibox float-e-margins">
                 <div class="ibox-title">
                     <span class="label label-warning pull-right">月</span>
-                    <h5>抽查</h5>
+                    <h5>入住</h5>
                 </div>
-                <div class="ibox-content">
-                    <h1 class="no-margins" id="A3"></h1>
-                    <div class="stat-percent font-bold text-warning" id="B3">
-                        <i class="fa fa-level-up"></i>
+                <div class="item">
+                    <div class="left" style="background-color: #F8AC59;"></div>
+                    <div class="right">
+                        <p>月抽查：<span id="A3"></span></p>
+                        <p>增长比：<span id="B3">&emsp;<i class="fa fa-level-up" style="color: #F8AC59;"></i></span></p>
                     </div>
-                    <small>月抽查</small>
                 </div>
             </div>
         </div>
         <div class="col-sm-3">
-            <div class="ibox float-e-margins">
+            <div class=" ibox float-e-margins">
                 <div class="ibox-title">
                     <span class="label label-danger pull-right">月</span>
-                    <h5>群宴</h5>
+                    <h5>入住</h5>
                 </div>
-                <div class="ibox-content">
-                    <h1 class="no-margins" id="A4"></h1>
-                    <div class="stat-percent font-bold text-danger" id="B4">
-                        <i class="fa fa-level-up"></i>
+                <div class="item">
+                    <div class="left" style="background-color: #ED5565;"></div>
+                    <div class="right">
+                        <p>月报备：<span id="A4">452,451</span></p>
+                        <p>增长比：<span id="B4">&emsp;<i class="fa fa-level-up" style="color: #ED5565;"></i></span></p>
                     </div>
-                    <small>月报备</small>
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-6">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>常用功能</h5>
                 </div>
                 <div class="ibox-content">
                     <div class="content content1">
-                        <a>
+                        <a href="/WebGovtManage/Enterprise/DistributionSupervise">
                             <img src="" />
-                            <p>成长档案</p>
+                            <p>企业分布</p>
                         </a>
-                        <a>
+                        <a href="/WebGovtManage/Risk/EventRisk">
                             <img src="" />
-                            <p>成长档案</p>
+                            <p>事件分布图</p>
                         </a>
-                        <a>
+                        <a href="/WebGovtManage/Risk/WaringRisk">
                             <img src="" />
-                            <p>成长档案</p>
+                            <p>预警信息</p>
                         </a>
-                        <a>
+                        <a href="/WebGovtManage/Risk/CertificateRisk">
                             <img src="" />
-                            <p>成长档案</p>
+                            <p>证件到期</p>
                         </a>
-                        <a>
+                        <a href="/WebGovtManage/Inspect/NetPatrol">
                             <img src="" />
-                            <p>成长档案</p>
+                            <p>网上巡查</p>
                         </a>
-                        <a>
+                        <a href="/WebGovtManage/Department/InstitutionDepartment">
                             <img src="" />
-                            <p>成长档案</p>
+                            <p>机构管理</p>
                         </a>
-                        <a>
+                        <a href="/WebGovtManage/Department/UserDepartment">
                             <img src="" />
-                            <p>成长档案</p>
+                            <p>用户管理</p>
                         </a>
-                        <a>
+                        <a href="/WebGovtManage/Complain/InfoComplain">
                             <img src="" />
-                            <p>成长档案</p>
+                            <p>投诉信息</p>
                         </a>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-8">
+        <div class="col-sm-6">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>投诉</h5>

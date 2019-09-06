@@ -3,228 +3,300 @@
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
-<script src="http://api.map.baidu.com/api?v=2.0&ak=3ce7ddfda60046708248ea55e10b1435"></script>
-<script>
-    var option = {
-        Init: function () {
-            this.InitDom();
-            this.InitEvent();
-            this.InitMap();
-        },
-        InitDom: function () {
+    <script src="http://api.map.baidu.com/api?v=2.0&ak=3ce7ddfda60046708248ea55e10b1435"></script>
+    <script>
+        var option = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvent();
+                this.InitMap();
+            },
+            InitDom: function () {
+                //获取当前页面可见高度，给视频盒子设置高度
+                let HC = document.body.clientHeight;
+                $("#center-video").css({ height: HC });
+                //视频图片点击事件
+                $(".item2 .content2 img").on("click", function () {
+                    $("#center-video").css({ display: "block" });
+                });
+                //关闭视频窗口
+                $("#center-video .shut").on("click", function () {
+                    $("#center-video").css({ display: "none" });
+                });
+            },
+            InitEvent: function () {
 
-        },
-        InitEvent: function () {
-
-        },
-        InitMap: function () {
-            var Map = new BMap.Map("Map");//在百度地图容器中创建一个地图
-            var Point = new BMap.Point(CompanyInfo.LngAndLat.split(",")[0], CompanyInfo.LngAndLat.split(",")[1]);//定义一个中心点坐标
-            Map.centerAndZoom(Point, 6);//设定地图的中心点和坐标并将地图显示在地图容器中
-            Map.enableScrollWheelZoom();//启用地图滚轮放大缩小
-            var markers = new BMap.Marker(new BMap.Point(CompanyInfo.LngAndLat.split(",")[0], CompanyInfo.LngAndLat.split(",")[1]));
-            Map.addOverlay(markers);
-            controller.ajax({
-                url: "EnterpriseWeb/GetReceipt",
-                data: {},
-                async: false,
-                type: "post",
-                success: function (result) {
-                    $.each(result.data, function (i, obj) {
-                        $.ajax({
-                            url: "http://api.map.baidu.com/geocoder/v2/?address=" + obj.Address + "&output=json&ak=3ce7ddfda60046708248ea55e10b1435",
-                            type: "get",
-                            async: false,
-                            dataType: "jsonp",
-                            success: function (result) {
-                                var marker = new BMap.Marker(new BMap.Point(result.result.location.lng, result.result.location.lat));
-                                Map.addOverlay(marker);
-                                marker.addEventListener('click', function (e) {
-                                    var InfoWin = '<table class="table table-bordered">' +
-                                        '<tr><th>分销商名称</th> <td>' + obj.GainUser + '</td></tr>' +
-                                        '<tr><th>分销商电话</th><td>' + obj.LinkPhone + '</td></tr>' +
-                                        '<tr><th>分销商地址</th><td>' + obj.Address + '</td></tr></table>'
-                                    var p = e.target;
-                                    var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
-                                    var infoWindow = new BMap.InfoWindow(InfoWin);  // 创建信息窗口对象
-                                    Map.openInfoWindow(infoWindow, point); //开启信息窗口
-                                });
-                            }
+            },
+            InitMap: function () {
+                var Map = new BMap.Map("Map");//在百度地图容器中创建一个地图
+                var Point = new BMap.Point(CompanyInfo.LngAndLat.split(",")[0], CompanyInfo.LngAndLat.split(",")[1]);//定义一个中心点坐标
+                Map.centerAndZoom(Point, 6);//设定地图的中心点和坐标并将地图显示在地图容器中
+                Map.enableScrollWheelZoom();//启用地图滚轮放大缩小
+                var markers = new BMap.Marker(new BMap.Point(CompanyInfo.LngAndLat.split(",")[0], CompanyInfo.LngAndLat.split(",")[1]));
+                Map.addOverlay(markers);
+                controller.ajax({
+                    url: "EnterpriseWeb/GetReceipt",
+                    data: {},
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        $.each(result.data, function (i, obj) {
+                            $.ajax({
+                                url: "http://api.map.baidu.com/geocoder/v2/?address=" + obj.Address + "&output=json&ak=3ce7ddfda60046708248ea55e10b1435",
+                                type: "get",
+                                async: false,
+                                dataType: "jsonp",
+                                success: function (result) {
+                                    var marker = new BMap.Marker(new BMap.Point(result.result.location.lng, result.result.location.lat));
+                                    Map.addOverlay(marker);
+                                    marker.addEventListener('click', function (e) {
+                                        var InfoWin = '<table class="table table-bordered">' +
+                                            '<tr><th>分销商名称</th> <td>' + obj.GainUser + '</td></tr>' +
+                                            '<tr><th>分销商电话</th><td>' + obj.LinkPhone + '</td></tr>' +
+                                            '<tr><th>分销商地址</th><td>' + obj.Address + '</td></tr></table>'
+                                        var p = e.target;
+                                        var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+                                        var infoWindow = new BMap.InfoWindow(InfoWin);  // 创建信息窗口对象
+                                        Map.openInfoWindow(infoWindow, point); //开启信息窗口
+                                    });
+                                }
+                            });
                         });
-                    });
-                }
-            });
-            markers.addEventListener('click', function (e) {
-                var InfoWin = '<table class="table table-bordered">' +
-                    '<tr><th>企业名称</th> <td>' + CompanyInfo.CompanyName + '</td></tr>' +
-                    '<tr><th>企业地址</th><td>' + CompanyInfo.CompanyAddress + '</td></tr></table>'
-                var p = e.target;
-                var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
-                var infoWindow = new BMap.InfoWindow(InfoWin);  // 创建信息窗口对象
-                Map.openInfoWindow(infoWindow, point); //开启信息窗口
-            });
-        }
-    };
-    $(document).ready(function () {
-        option.Init();
-    });
-</script>
+                    }
+                });
+                markers.addEventListener('click', function (e) {
+                    var InfoWin = '<table class="table table-bordered">' +
+                        '<tr><th>企业名称</th> <td>' + CompanyInfo.CompanyName + '</td></tr>' +
+                        '<tr><th>企业地址</th><td>' + CompanyInfo.CompanyAddress + '</td></tr></table>'
+                    var p = e.target;
+                    var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+                    var infoWindow = new BMap.InfoWindow(InfoWin);  // 创建信息窗口对象
+                    Map.openInfoWindow(infoWindow, point); //开启信息窗口
+                });
+            }
+        };
+        $(document).ready(function () {
+            option.Init();
+        });
+    </script>
 }
 @section css{
-<style>
-    #Edit {
-        box-sizing: border-box;
-        padding: 30px;
-        color: #404040;
-    }
-    /*共有样式*/
-    .section {
-        margin-bottom: 30px;
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .item {
-        border-radius: 8px;
-        background: #fff;
-        box-shadow: 0px 4px 16px 0px rgba(47,64,80,0.16);
-    }
-
-        .item .title {
-            padding: 0 15px;
-            height: 50px;
-            font-size: 18px;
+    <style>
+        #Edit {
+            box-sizing: border-box;
+            padding: 30px;
+            color: #404040;
+        }
+        /*共有样式*/
+        .section {
+            margin-bottom: 30px;
+            width: 100%;
             display: flex;
-            align-items: center;
-            border-bottom: 1px solid #E6E6E6;
-        }
-
-            .item .title div {
-                background: #239FE6;
-                width: 4px;
-                height: 18px;
-                margin-right: 8px;
-            }
-
-        .item .content {
-            padding: 15px;
-        }
-    /*第一个区域样式*/
-    .section1 .item1 {
-        padding: 15px;
-        width: 24%;
-        height: 110px;
-        display: flex;
-        align-items: center;
-    }
-
-        .section1 .item1 .left {
-            margin-right: 20px;
-            width: 56px;
-            height: 56px;
-            border-radius: 28px;
-            background: url("/Content/Company/images/firm_index.png") center center no-repeat;
-        }
-
-        .section1 .item1 .right {
-            min-width: 62%;
-        }
-
-            .section1 .item1 .right p {
-                font-size: 16px;
-                line-height: 24px;
-            }
-
-                .section1 .item1 .right p:last-child {
-                    margin-bottom: 0;
-                }
-
-                .section1 .item1 .right p span {
-                    color: #000;
-                    font-weight: bold;
-                }
-    /*第二个区域样式*/
-    .section2 .item2 {
-        width: 24%;
-        height: 320px;
-    }
-
-        .section2 .item2:first-child {
-            width: 49.5%;
-        }
-
-        .section2 .item2 .item2-item {
-            height: 155px;
-        }
-
-            .section2 .item2 .item2-item:first-child {
-                margin-bottom: 10px;
-            }
-
-        .section2 .item2 .content1 {
-            padding-bottom: 0;
-        }
-
-            .section2 .item2 .content1 a {
-                display: inline-block;
-                width: 22%;
-                height: 110px;
-                margin-right: 2%;
-                margin-bottom: 15px;
-                text-align: center;
-                font-size: 16px;
-                color: #404040;
-            }
-
-                .section2 .item2 .content1 a img {
-                    width: 60px;
-                    height: 60px;
-                    margin: 10px 0;
-                }
-
-        .section2 .item2 .content2 img {
-            height: 75px !important;
-            width: 75px !important;
-        }
-    /*第三个区域样式*/
-    .section3 .item3 {
-        width: 30%;
-        height: 320px;
-    }
-
-        .section3 .item3:nth-child(2) {
-            width: 36%;
-        }
-
-        .section3 .item3 .content3 div {
-            height: 60px;
-            display: flex;
-            align-items: center;
             justify-content: space-between;
         }
 
-            .section3 .item3 .content3 div .progress {
-                height: 16px;
-                border-radius: 8px;
-                margin-bottom: 0;
-                width: 75%;
+        .item {
+            border-radius: 8px;
+            background: #fff;
+            box-shadow: 0px 4px 16px 0px rgba(47,64,80,0.16);
+        }
+
+            .item .title {
+                padding: 0 15px;
+                height: 50px;
+                font-size: 18px;
+                display: flex;
+                align-items: center;
+                border-bottom: 1px solid #E6E6E6;
             }
 
-            .section3 .item3 .content3 div .bar {
-                background: #3FC8F6;
-                height: 16px;
-                border-radius: 8px 0 0 8px;
+                .item .title div {
+                    background: #239FE6;
+                    width: 4px;
+                    height: 18px;
+                    margin-right: 8px;
+                }
+
+            .item .content {
+                padding: 15px;
             }
-    /*地图样式*/
-    #Map {
-        width: 100%;
-        height: 600px;
-        border-radius: 8px;
-        background: #fff;
-        box-shadow: 0px 4px 16px 0px rgba(47,64,80,0.16);
-    }
-</style>
+        /*第一个区域样式*/
+        .section1 .item1 {
+            padding: 15px;
+            width: 24%;
+            height: 110px;
+            display: flex;
+            align-items: center;
+        }
+
+            .section1 .item1 .left {
+                margin-right: 20px;
+                width: 56px;
+                height: 56px;
+                border-radius: 28px;
+                background: url("/Content/Company/images/firm_index.png") center center no-repeat;
+            }
+
+            .section1 .item1 .right {
+                min-width: 62%;
+            }
+
+                .section1 .item1 .right p {
+                    font-size: 16px;
+                    line-height: 24px;
+                }
+
+                    .section1 .item1 .right p:last-child {
+                        margin-bottom: 0;
+                    }
+
+                    .section1 .item1 .right p span {
+                        color: #000;
+                        font-weight: bold;
+                    }
+        /*第二个区域样式*/
+        .section2 .item2 {
+            width: 24%;
+            height: 320px;
+        }
+
+            .section2 .item2:first-child {
+                width: 49.5%;
+            }
+            .section2 .item2-3{
+                overflow: hidden;
+            }
+            .section2 .item2-3 .item2-item {
+                float: left;
+                width: 48%;
+                height: 155px;
+            }
+             .section2 .item2-3 .item2-item:nth-child(1), .section2 .item2-3 .item2-item:nth-child(3){
+                 margin-right: 4%;
+             }
+
+                .section2 .item2-3 .item2-item:nth-child(1), .section2 .item2-3 .item2-item:nth-child(2){
+                    margin-bottom: 10px;
+                }
+
+            .section2 .item2 .content1 {
+                padding-bottom: 0;
+            }
+
+                .section2 .item2 .content1 a {
+                    display: inline-block;
+                    width: 22%;
+                    height: 110px;
+                    margin-right: 2%;
+                    margin-bottom: 15px;
+                    text-align: center;
+                    font-size: 16px;
+                    color: #404040;
+                }
+
+                    .section2 .item2 .content1 a img {
+                        width: 60px;
+                        height: 60px;
+                        margin: 10px 0;
+                    }
+
+            .section2 .item2 .content2 img {
+                cursor: pointer;
+                height: 75px !important;
+                width: 75px !important;
+            }
+        /*第三个区域样式*/
+        .section3 .item3 {
+            width: 30%;
+            height: 320px;
+        }
+
+            .section3 .item3:nth-child(2) {
+                width: 36%;
+            }
+
+            .section3 .item3 .content3 div {
+                height: 60px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+                .section3 .item3 .content3 div p {
+                    width: 16%;
+                }
+
+                .section3 .item3 .content3 div .progress {
+                    height: 16px;
+                    border-radius: 8px;
+                    margin-bottom: 0;
+                    width: 60%;
+                }
+
+                .section3 .item3 .content3 div span {
+                    width: 16%;
+                }
+
+                .section3 .item3 .content3 div .progress .bar {
+                    background: #3FC8F6;
+                    height: 16px;
+                    border-radius: 8px 0 0 8px;
+                }
+        /*地图样式*/
+        #Map {
+            width: 100%;
+            height: 600px;
+            border-radius: 8px;
+            background: #fff;
+            box-shadow: 0px 4px 16px 0px rgba(47,64,80,0.16);
+        }
+        /*居中显示的视频*/
+        #center-video {
+            display: none;
+            width: 100%;
+            position: fixed;
+            left: 0;
+            top: 0;
+            background: rgba(0,0,0,.5);
+        }
+
+            #center-video .center {
+                width: 600px;
+                height: 348px;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                margin-left: -300px;
+                margin-top: -174px;
+                background: #fff;
+            }
+
+                #center-video .center .shut {
+                    cursor: pointer;
+                    position: absolute;
+                    right: -30px;
+                    top: -10px;
+                    width: 20px;
+                    height: 20px;
+                    line-height: 20px;
+                    text-align: center;
+                    background: #fff;
+                    font-weight: bold;
+                    border-radius: 10px;
+                }
+
+                #center-video .center video {
+                    display: block;
+                    background: #000;
+                }
+
+                #center-video .center p {
+                    line-height: 48px;
+                    margin: 0;
+                    text-indent: 2em;
+                    font-size: 16px;
+                }
+    </style>
 }
 <form id="Edit">
     <!--第一个区域-->
@@ -239,21 +311,21 @@
         <div class="item item1">
             <div class="left" style="background-color: #00D1CE;"></div>
             <div class="right">
-                <p>周产量：<span name="">452,451</span></p>
-                <p>较上周：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="">245吨</span></p>
+                <p>月产量：<span name="">452,451</span></p>
+                <p>较上月：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="">245吨</span></p>
             </div>
         </div>
         <div class="item item1">
             <div class="left" style="background-color: #36C3FF;"></div>
             <div class="right">
-                <p>周产量：<span name="">452,451</span></p>
-                <p>较上周：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="">245吨</span></p>
+                <p>年产量：<span name="">452,451</span></p>
+                <p>较去年：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="">245吨</span></p>
             </div>
         </div>
         <div class="item item1">
             <div class="left" style="background-color: #AF6CC1;"></div>
             <div class="right">
-                <p>周产量：<span name="">452,451</span></p>
+                <p>批次总量：<span name="">452,451</span></p>
                 <p>较上周：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="">245吨</span></p>
             </div>
         </div>
@@ -307,7 +379,7 @@
             </div>
 
         </div>
-        <div class="item2">
+        <div class="item2 item2-3">
             <div class="item item2-item">
                 <div class="title">
                     <div></div>
@@ -326,7 +398,28 @@
                     <img src="~/Content/Company/images/firm_video.jpg" />
                 </div>
             </div>
+
+            <div class="item item2-item">
+                <div class="title">
+                    <div></div>
+                    视频三
+                </div>
+                <div class="content content2">
+                    <img src="~/Content/Company/images/firm_video.jpg" />
+                </div>
+            </div>
+            <div class="item item2-item">
+                <div class="title">
+                    <div></div>
+                    视频四
+                </div>
+                <div class="content content2">
+                    <img src="~/Content/Company/images/firm_video.jpg" />
+                </div>
+            </div>
         </div>
+
+        
     </div>
     <!--第三个区域-->
     <div class="section section3">
@@ -337,28 +430,32 @@
             </div>
             <div class="content content3">
                 <div>
-                    产品系列
+                    <p>产品系列</p>
                     <div class="progress">
                         <div class="bar" style="width: 60%;"></div>
                     </div>
+                    <span name="">2000</span>
                 </div>
                 <div>
-                    产品系列
+                    <p>产品种类</p>
                     <div class="progress">
                         <div class="bar" style="width: 60%;"></div>
                     </div>
+                    <span name="">50000</span>
                 </div>
                 <div>
-                    产品系列
+                    <p>供应商数量</p>
                     <div class="progress">
                         <div class="bar" style="width: 60%;"></div>
                     </div>
+                    <span span="">30000</span>
                 </div>
                 <div>
-                    产品系列
+                    <p>经销商数量</p>
                     <div class="progress">
                         <div class="bar" style="width: 60%;"></div>
                     </div>
+                    <span name="">4000</span>
                 </div>
             </div>
         </div>
@@ -379,4 +476,12 @@
     </div>
     <!--地图区域-->
     <div id="Map"></div>
+    <!--居中显示视频-->
+    <div id="center-video">
+        <div class="center">
+            <div class="shut">x</div>
+            <video></video>
+            <p>视频名称</p>
+        </div>
+    </div>
 </form>
