@@ -206,6 +206,14 @@
                 this.InitEvents();
             },
             InitAddr: function () {
+                if (GovtInfo.IsEdu) {
+                    $(".y").each(function (index, item) {
+                        $(item).removeClass("hidden").addClass("show");
+                    });
+                    $(".x").each(function (index, item) {
+                        $(item).removeClass("show").addClass("hidden");
+                    });
+                }
                 controller.ajax({
                     url: "GovtWeb/GetCityName",
                     data: { Id: GovtInfo.City },
@@ -214,7 +222,7 @@
                     success: function (result) {
                         options.CityName = result.data;
                         $("#Area").html(options.CityName);
-                        
+
                     }
                 });
                 $.ajax({
@@ -232,7 +240,7 @@
                 options.Map = new BMap.Map("Map");//在百度地图容器中创建一个地图
                 options.Map.centerAndZoom(new BMap.Point(Lng, Lat), 11);//设定地图的中心点和坐标并将地图显示在地图容器中
                 options.Map.enableScrollWheelZoom();//启用地图滚轮放大缩小
-                addDistrict(options.CityName, options.Map )//添加行政区域
+                addDistrict(options.CityName, options.Map)//添加行政区域
                 controller.ajax({
                     url: "GovtWeb/GetDistributArea",
                     data: {},
@@ -241,30 +249,30 @@
                     success: function (result) {
                         $.each(result.data, function (i, obj) {
                             var imgLoction = "http://system.cfda.vip/content/HPlus/img/keysor.png";
-                            if (obj.CompanyType == "种植企业"||obj.CompanyType == "养殖企业") {
-                                 imgLoction = "http://system.cfda.vip/content/HPlus/img/blue.png";
+                            if (obj.CompanyType == "种植企业" || obj.CompanyType == "养殖企业") {
+                                imgLoction = "http://system.cfda.vip/content/HPlus/img/blue.png";
                             }
                             if (obj.CompanyType == "生产企业") {
-                                 imgLoction = "http://system.cfda.vip/content/HPlus/img/green.png";
+                                imgLoction = "http://system.cfda.vip/content/HPlus/img/green.png";
                             }
-                             if (obj.CompanyType == "流通企业") {
-                                 imgLoction = "http://system.cfda.vip/content/HPlus/img/lightblue.png";
+                            if (obj.CompanyType == "流通企业") {
+                                imgLoction = "http://system.cfda.vip/content/HPlus/img/lightblue.png";
                             }
-                             if (obj.CompanyType == "餐饮企业") {
-                                 imgLoction = "http://system.cfda.vip/content/HPlus/img/red.png";
+                            if (obj.CompanyType == "餐饮企业") {
+                                imgLoction = "http://system.cfda.vip/content/HPlus/img/red.png";
                             }
-                             if (obj.CompanyType == "单位食堂") {
-                                 imgLoction = "http://system.cfda.vip/content/HPlus/img/yellow.png";
+                            if (obj.CompanyType == "单位食堂") {
+                                imgLoction = "http://system.cfda.vip/content/HPlus/img/yellow.png";
                             }
                             var myIcon = new BMap.Icon(imgLoction, new BMap.Size(26, 33));
                             options.marker = new BMap.Marker(new BMap.Point(obj.Lng, obj.Lat), { icon: myIcon });
                             options.marker.setTitle(obj.CompanyType);
                             options.Map.addOverlay(options.marker);               // 将标注添加到地图中
-                             if (obj.CompanyImg == null) obj.CompanyImg = "http://system.cfda.vip/content/HPlus/img/Nopic.jpg";
+                            if (obj.CompanyImg == null) obj.CompanyImg = "http://system.cfda.vip/content/HPlus/img/Nopic.jpg";
                             options.AddClickHandler(obj.Name, obj.Address, obj.CompanyCode, obj.CompanyType, obj.CompanyImg);
                             if (obj.CompanyUser == null) {
                                 obj.CompanyUser = "-";
-                            }                           
+                            }
                             var CompanyHtml = '<li>'
                                 + '<img src="' + obj.CompanyImg + '">'
                                 + '<div>'
@@ -400,7 +408,7 @@
                 map.addOverlay(label);
 
                 //添加多边形层并显示
-                var ply = new BMap.Polygon(blist[i].points, { strokeWeight:2, strokeColor: "#FF0000", fillOpacity: 0.01, fillColor: " #FFFFFF" }); //建立多边形覆盖物
+                var ply = new BMap.Polygon(blist[i].points, { strokeWeight: 2, strokeColor: "#FF0000", fillOpacity: 0.01, fillColor: " #FFFFFF" }); //建立多边形覆盖物
                 ply.name = blist[i].name;
                 ply.label = label;
                 //ply.addEventListener("click", click);
@@ -436,16 +444,21 @@
 <div class="search_com">
     <select class="form-control" name="CompanyType">
         <option value="全部">全部</option>
-        <option value="种植企业">种植企业</option>
-        <option value="养殖企业">养殖企业</option>
-        <option value="生产企业">生产企业</option>
-        <option value="流通企业">流通企业</option>
-        <option value="其他企业">其他企业</option>
-        <option value="餐饮企业">餐饮企业</option>
-        <option value="单位食堂">单位食堂</option>
-        <option value="小经营店">小经营店</option>
-        <option value="小作坊">小作坊</option>
-        <option value="小摊贩">小摊贩</option>
+        <option value="种植企业" class="show x">种植企业</option>
+        <option value="养殖企业" class="show x">养殖企业</option>
+        <option value="生产企业" class="show x">生产企业</option>
+        <option value="流通企业" class="show x">流通企业</option>
+        <option value="其他企业" class="show x">其他企业</option>
+        <option value="餐饮企业" class="show x">餐饮企业</option>
+        <option value="单位食堂" class="show x">单位食堂</option>
+        <option value="小经营店" class="show x">小经营店</option>
+        <option value="小作坊" class="show x">小作坊</option>
+        <option value="小摊贩" class="show x">小摊贩</option>
+        <option value="学前教育" class="hidden y">学前教育</option>
+        <option value="义务教育" class="hidden y">义务教育</option>
+        <option value="高中教育" class="hidden y">高中教育</option>
+        <option value="高等教育" class="hidden y">高等教育</option>
+        <option value="职业教育" class="hidden y">职业教育</option>
     </select>
 </div>
 
