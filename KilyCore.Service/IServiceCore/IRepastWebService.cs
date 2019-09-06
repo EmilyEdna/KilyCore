@@ -114,6 +114,9 @@ namespace KilyCore.Service.IServiceCore
         ResponseRepastSellbill GetSellbillDetail(Guid Id);
         String EditSellbill(RequestRepastSellbill Param);
         #endregion
+        #region 进销台账
+        PagedResult<Object> GetSellBuyPage(PageParamList<RequestRepastSellbill> pageParam);
+        #endregion
         #region 实时监控
         PagedResult<ResponseRepastVideo> GetVideoPage(PageParamList<RequestRepastVideo> pageParam);
         String SaveVideo(RequestRepastVideo Param);
@@ -245,6 +248,13 @@ namespace KilyCore.Service.IServiceCore
         String DeleteUnitInsRecord(Guid Id);
         String SaveUnitInsRecord(RequestRepastUnitInsRecord Param);
         ReponseRepastUnitInsRecord GetUnitInsRecordDetail(Guid Id);
+        #endregion
+
+        #region APP接口
+        PagedResult<ResponseGovtRisk> GetWaringRiskPage(PageParamList<RequestGovtRisk> pageParam);
+        PagedResult<ResponseGovtComplain> GetComplainPage(PageParamList<RequestGovtComplain> pageParam);
+        PagedResult<ResponseSystemMessage> GetNetPatrolPage(PageParamList<Object> pageParam);
+
         #endregion
     }
 }

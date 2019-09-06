@@ -217,6 +217,47 @@
                         $(".bd-item10").html(itemStr);
                     }
                 });
+
+                  //抽检信息
+                controller.ajax({
+                    url: "RepastWeb/GetSellBuyPage",
+                    data: { pageSize: 10, pageNumber: 1 },
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                       
+                    }
+                });
+                 //抽检信息
+                controller.ajax({
+                    url: "RepastWeb/GetWaringRiskPage",
+                    data: { pageSize: 10, pageNumber: 1 },
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                       
+                    }
+                });
+                  //抽检信息
+                controller.ajax({
+                    url: "RepastWeb/GetComplainPage",
+                    data: { pageSize: 10, pageNumber: 1 },
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                       
+                    }
+                });
+                  //抽检信息
+                controller.ajax({
+                    url: "RepastWeb/GetNetPatrolPage",
+                    data: { pageSize: 10, pageNumber: 1 },
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                       
+                    }
+                });
             }
         };
         $(document).ready(function () {

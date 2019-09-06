@@ -579,6 +579,19 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(RepastWebService.EditSellbill(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+
+        #region 进销台账
+        /// <summary>
+        /// 进销台账分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetSellBuyPage")]
+        public ObjectResultEx GetSellBuyPage(PageParamList<RequestRepastSellbill> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetSellBuyPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
         #region 实时监控
         /// <summary>
         /// 视频分页
@@ -1491,6 +1504,40 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetUnitInsRecordDetail(SimpleParam<Guid> Key)
         {
             return ObjectResultEx.Instance(RepastWebService.GetUnitInsRecordDetail(Key.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+
+        #region APP接口
+        /// <summary>
+        /// 风险预警
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetWaringRiskPage")]
+        public ObjectResultEx GetWaringRiskPage(PageParamList<RequestGovtRisk> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetWaringRiskPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 投诉建议
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetComplainPage")]
+        public ObjectResultEx GetComplainPage(PageParamList<RequestGovtComplain> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetComplainPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 督查信息
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetNetPatrolPage")]
+        public ObjectResultEx GetNetPatrolPage(PageParamList<Object> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetNetPatrolPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }
