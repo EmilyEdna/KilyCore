@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>APK上传</title>
+    <link href="../Content/BootStrap/Css/bootstrap.css" rel="stylesheet" />
+    <script src="../Content/JavaScript/jquery.min.js"></script>
+    <script src="../Content/BootStrap/Script/bootstrap.js"></script>
+    <script>
+        opt = {
+            Init: function () {
+                $("#excelImport").click(function () {
+                    $("#fileupload").click();
+                });
+                $('#fileupload').change(function () {
+                    var formData = new FormData();
+                    var fileData = $(this)[0].files;
+                    formData.append("Files", fileData[0]);
+                    $.ajax({
+                        url: "/File/UploadApk",
+                        data: formData,
+                        type: "post",
+                        processData: false,
+                        contentType: false,
+                        success: function (res) {
+                            $("#textfield").val(res)
+                        }
+                    });
+                });
+                $("#uploadSubmit").click(function () {
+                    var data = {
+                        Fix: $("#Fix").val(),
+                        Name: $("#name").val(),
+                        Version: $("#secret").val(),
+                        Down: $("#textfield").val()
+                    };
+                    $.ajax({
+                        url: "/File/ApkVer",
+                        data: data,
+                        type: "get",
+                        dataType: "json",
+                        success: function (res) {
+                            alert(res);
+                        }
+                    });
+                });
+            }
+        };
+        $(function () {
+            opt.Init();
+        });
+    </script>
+</head>
+<body>
+    <div class="row" style="margin-top: 50px;">
+        <form class="form-inline" id="excelForm" action="" method="post" enctype="multipart/form-data">
+            <div class="form-group" style="margin-left: 30px">
+                <label for="fileupload">下载地址:</label>
+                <input id="fileupload" type="file" name="Files" style="display:none;" />
+                <input type='text' class="form-control" name='textfield' id='textfield' autocomplete="off" readonly="readonly" />
+                <input id="excelImport" type="button" value="浏览" class="btn btn-primary" />
+            </div>
+            <div class="form-group" style="margin-left: 20px">
+                <label for="input_second">APK名称：</label>
+                <input type="text" class="form-control" name="Name" id="name" placeholder="" autocomplete="off">
+            </div>
+            <div class="form-group" style="margin-left: 20px">
+                <label for="input_third">版本号：</label>
+                <input type="text" class="form-control" name="Version" id="secret" placeholder="" autocomplete="off">
+            </div>
+            <div class="row" style=" margin-top:50px;margin-left:10px">
+                <div class="form-group" style="margin-left: 20px">
+                    <label for="input_third">修复内容：</label>
+                    <textarea rows="10" class="form-control" style=" width:600px;" name="Fix" id="Fix"></textarea>
+                </div>
+            </div>
+            <div class="row" style="margin-left:33%;margin-top:10px;">
+                <button type="button" id="uploadSubmit" class="btn btn-danger" style="color: #FFFFFF;background-color: #10B47D;font-size:15px; padding: 0px 16px 0px !important;height:30px;">提交</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
