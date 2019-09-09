@@ -314,7 +314,7 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 数据统计
         Object GetDataCount(Guid? Id);
-        ResponseDataCount GetPieCount(Guid? Id);
+        Object GetPieCount(Guid? Id);
         ResponseDataCount GetPieCountBatch(Guid? Id);
         #endregion
         #region 台账管理

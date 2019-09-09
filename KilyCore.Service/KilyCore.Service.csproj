@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\KilyCore.DataEntity\KilyCore.DataEntity.csproj" />
+    <ProjectReference Include="..\KilyCore.EntityFrameWork\KilyCore.EntityFrameWork.csproj" />
     <ProjectReference Include="..\KilyCore.Quartz\KilyCore.Quartz.csproj" />
     <ProjectReference Include="..\KilyCore.Repositories\KilyCore.Repositories.csproj" />
   </ItemGroup>

@@ -5103,64 +5103,95 @@ namespace KilyCore.Service.ServiceCore
             List<EnterpriseTagAttach> tagAttaches = Kily.Set<EnterpriseTagAttach>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id).ToList();
             List<EnterpriseScanCodeInfo> infos = Kily.Set<EnterpriseScanCodeInfo>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id).ToList();
             List<SystemMessage> msg = Kily.Set<SystemMessage>().Where(t => t.IsDelete == false).Where(t => t.CompanyId == Id).ToList();
+            IList<DataPie> OutSideData = new List<DataPie>();
+            IList<DataPie> OutSideDatas = new List<DataPie>();
             int Series = series.Select(t => t.Id).Count();
             int Goods = goods.GroupBy(t => t.ProductSeriesId).Count();
             int Supplier = sellers.Where(t => t.SellerType == SellerEnum.Supplier).Select(t => t.Id).Count();
             int Sale = sellers.Where(t => t.SellerType == SellerEnum.Sale).Select(t => t.Id).Count();
-            int Inferior = exprireds.Where(t => t.InferiorExprired == 1).Select(t => Convert.ToInt32(t.InferNum)).Sum();
-            int Exprired = exprireds.Where(t => t.InferiorExprired == 2).Select(t => Convert.ToInt32(t.InferNum)).Sum();
-            int Recover = recovers.Select(t => Convert.ToInt32(t.RecoverNum)).Sum();
-            int Msg = msg.Select(t => t.Id).Count();
-            int TagClass = tagAttaches.Where(t => t.TagType == "3").Sum(t => t.UseNum);
-            int TagThing = tagAttaches.Where(t => t.TagType == "2").Sum(t => t.UseNum);
-            int VeinTag = tagAttaches.Where(t => t.TagType == "1").Sum(t => t.UseNum);
-            int Info = infos.Sum(t => t.ScanNum);
-            Object obj = new { Series, Goods, Supplier, Sale, Inferior, Exprired, Recover, Msg, VeinTag, TagClass, TagThing, Info };
+            OutSideData.Add(new DataPie { value = exprireds.Where(t => t.InferiorExprired == 1).Select(t => Convert.ToInt32(t.InferNum)).Sum(), name = "不合格数量" });
+            OutSideData.Add(new DataPie { value = exprireds.Where(t => t.InferiorExprired == 2).Select(t => Convert.ToInt32(t.InferNum)).Sum(), name = "过期数量" });
+            OutSideData.Add(new DataPie { value = recovers.Select(t => Convert.ToInt32(t.RecoverNum)).Sum(), name = "召回数量" });
+            OutSideData.Add(new DataPie { value = msg.Select(t => t.Id).Count(), name = "投诉次数" });
+            OutSideDatas.Add(new DataPie { value = tagAttaches.Where(t => t.TagType == "3").Sum(t => t.UseNum), name = "一品一码" });
+            OutSideDatas.Add(new DataPie { value = tagAttaches.Where(t => t.TagType == "2").Sum(t => t.UseNum), name = "一物一码" });
+            OutSideDatas.Add(new DataPie { value = tagAttaches.Where(t => t.TagType == "1").Sum(t => t.UseNum), name = "纹理二维码" });
+            OutSideDatas.Add(new DataPie { value = infos.Sum(t => t.ScanNum), name = "扫码次数" });
+            ResponseDataCount dataCount = new ResponseDataCount()
+            {
+                Name = "质量统计",
+                Type = true,
+                DataTitle = new List<string> { "不合格数量", "过期数量", "召回数量", "投诉次数" },
+                InSideData = null,
+                OutSideData = OutSideData
+            };
+            ResponseDataCount dataCounts = new ResponseDataCount()
+            {
+                Name = "溯源统计",
+                Type = true,
+                DataTitle = new List<string> { "一品一码", "一物一码", "纹理二维码", "扫码次数" },
+                InSideData = null,
+                OutSideData = OutSideData
+            };
+            Object obj = new { Series, Goods, Supplier, Sale, dataCount, dataCounts };
             return obj;
         }
         /// <summary>
         /// 产量统计
         /// </summary>
         /// <returns></returns>
-        public ResponseDataCount GetPieCount(Guid? Id)
+        public Object GetPieCount(Guid? Id)
         {
             List<EnterpriseGoodsStock> queryable = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id).ToList();
             List<EnterpriseGoodsStockAttach> queryables = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id).ToList();
-            int WeekDataCount = queryable.Where(t => t.ProductTime > DateTime.Now.AddDays(-7))
+            //上一周周产
+            int WeekDataCount = queryable.Where(t => t.ProductTime > DateTime.Now.AddDays(-7)).Where(t => t.ProductTime < DateTime.Now).GroupJoin(queryables, t => t.Id, x => x.StockId, (t, x) => new
+            {
+                Total = t.InStockNum + x.Sum(o => o.OutStockNum)
+            }).Sum(t => t.Total);
+            //上两周周产
+            int WeekDataCount_2 = queryable.Where(t => t.ProductTime > DateTime.Now.AddDays(-14)).Where(t => t.ProductTime < DateTime.Now).GroupJoin(queryables, t => t.Id, x => x.StockId, (t, x) => new
+            {
+                Total = t.InStockNum + x.Sum(o => o.OutStockNum)
+            }).Sum(t => t.Total);
+            //上一月
+            int MonthDataCount = queryable.Where(t => t.ProductTime > DateTime.Now.AddMonths(-1))
                 .Where(t => t.ProductTime < DateTime.Now)
                 .GroupJoin(queryables, t => t.Id, x => x.StockId, (t, x) => new
                 {
                     Total = t.InStockNum + x.Sum(o => o.OutStockNum)
                 }).Sum(t => t.Total);
-            int MonthDataCount = queryable.Where(t => t.ProductTime > DateTime.Now.AddMonths(-1))
-              .Where(t => t.ProductTime < DateTime.Now)
-              .GroupJoin(queryables, t => t.Id, x => x.StockId, (t, x) => new
-              {
-                  Total = t.InStockNum + x.Sum(o => o.OutStockNum)
-              }).Sum(t => t.Total);
+            //上两月
+            int MonthDataCount_2 = queryable.Where(t => t.ProductTime > DateTime.Now.AddMonths(-1))
+                .Where(t => t.ProductTime < DateTime.Now)
+                .GroupJoin(queryables, t => t.Id, x => x.StockId, (t, x) => new
+                {
+                    Total = t.InStockNum + x.Sum(o => o.OutStockNum)
+                }).Sum(t => t.Total);
+            //上一年
             int YearDataCount = queryable.Where(t => t.ProductTime > DateTime.Now.AddYears(-1))
                 .Where(t => t.ProductTime < DateTime.Now)
                 .GroupJoin(queryables, t => t.Id, x => x.StockId, (t, x) => new
                 {
                     Total = t.InStockNum + x.Sum(o => o.OutStockNum)
                 }).Sum(t => t.Total);
-            IList<DataPie> OutSideData = new List<DataPie>
+            //前两年
+            int YearDataCount_2 = queryable.Where(t => t.ProductTime > DateTime.Now.AddYears(-1))
+                .Where(t => t.ProductTime < DateTime.Now).GroupJoin(queryables, t => t.Id, x => x.StockId, (t, x) => new
+                {
+                    Total = t.InStockNum + x.Sum(o => o.OutStockNum)
+                }).Sum(t => t.Total);
+            int Total = queryable.GroupJoin(queryables, t => t.Id, x => x.StockId, (t, x) => new
             {
-                new DataPie { value = WeekDataCount, name = "周产量" },
-                new DataPie { value = MonthDataCount, name = "月产量" },
-                new DataPie { value = YearDataCount, name = "年产量" }
-            };
-            List<String> title = new List<String>() { "周产量", "月产量", "年产量" };
-            ResponseDataCount dataCount = new ResponseDataCount()
+                Total = t.InStockNum + x.Sum(o => o.OutStockNum)
+            }).Sum(t => t.Total);
+            int WeekSync = queryable.Where(t => t.ProductTime > DateTime.Now.AddDays(-7)).GroupJoin(queryables, t => t.Id, x => x.StockId, (t, x) => new
             {
-                Name = "数据统计",
-                Type = true,
-                DataTitle = title,
-                InSideData = null,
-                OutSideData = OutSideData
-            };
-            return dataCount;
+                Total = t.InStockNum + x.Sum(o => o.OutStockNum)
+            }).Sum(t => t.Total);
+            return new { WeekDataCount, TwoWeek = WeekDataCount - WeekDataCount_2, MonthDataCount, TwoMonth = MonthDataCount - MonthDataCount_2, YearDataCount, TwoYear = YearDataCount - YearDataCount_2, Total, Totals = Total - WeekSync };
         }
+
         /// <summary>
         /// 批次统计
         /// </summary>
