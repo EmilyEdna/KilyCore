@@ -153,4 +153,10 @@ namespace KilyCore.WEB.Model
         public int? Width { get; set; }
         public int? Height { get; set; }
     }
+    public class ApkVer {
+        public string Name { get; set; }
+        public string Version { get; set; }
+        public string Down { get; set; }
+        public string Fix { get; set; }
+    }
 }

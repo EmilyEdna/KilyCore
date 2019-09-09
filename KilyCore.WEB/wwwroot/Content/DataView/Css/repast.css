@@ -1,0 +1,516 @@
+
+/*公用样式*/
+p, h3, ul, li {
+    margin: 0;
+    padding: 0;
+}
+
+ul, li {
+    list-style: none;
+}
+
+.icon { /*左竖线 长*/
+    width: 6px;
+    height: 22px;
+    margin-right: 10px;
+    background: #1AB394;
+}
+
+.icon1 { /*左竖线 短*/
+    height: 18px;
+}
+
+.mark1 { /*左上角数字标签父盒子*/
+    position: relative;
+    border: 1px solid #F9AD39;
+}
+
+    .mark1::before { /*左上角标签*/
+        transform: rotate(135deg);
+        position: absolute;
+        left: -30px;
+        top: -30px;
+        display: block;
+        content: '';
+        width: 0;
+        height: 0;
+        border: 30px solid #F9AD39;
+        border-color: #F9AD39 transparent transparent transparent;
+    }
+
+.marknum { /*左上角标签数字*/
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 25px !important;
+    height: 30px;
+    line-height: 30px;
+    color: #fff;
+    font-size: 24px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.clearfix::after { /*清除浮动*/
+    display: block;
+    clear: both;
+    content: "";
+    visibility: hidden;
+    height: 0
+}
+
+.clearfix {
+    zoom: 1
+}
+
+/*头部*/
+.header {
+    background: #fff;
+    display: flex;
+    justify-content: space-between;
+    width: 98%;
+    padding: 20px;
+    margin: 12px auto;
+    box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.24);
+}
+    /*头部左侧*/
+    .header .left {
+        display: flex;
+        margin-top: 10px;
+    }
+
+        .header .left img {
+            min-width: 120px;
+            max-width: 160px;
+            height: 120px;
+            margin-right: 10px;
+        }
+
+        .header .left div h3 {
+            font-size: 16px;
+            line-height: 40px;
+            color: #414242;
+            margin-bottom: 6px;
+        }
+
+        .header .left div p {
+            color: #808080;
+            font-size: 15px;
+            line-height: 28px;
+        }
+
+            .header .left div p span {
+                color: #000;
+            }
+    /*头部右侧*/
+    .header .right {
+        font-size: 12px;
+        text-align: center;
+    }
+
+        .header .right #qrcode {
+            margin: 0 auto;
+        }
+
+        .header .right .RepastName {
+            margin-top: 5px;
+            font-size: 15px;
+        }
+/*内容样式*/
+.content {
+    margin-top: 25px;
+    width: 98%;
+    margin: auto auto;
+    display: flex;
+    justify-content: space-between;
+}
+    /*内容左侧*/
+    .content .left {
+        background: #fff;
+        box-sizing: border-box;
+        width: 74%;
+        box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.24);
+    }
+        /*内容左侧导航*/
+        .content .left .hd {
+            font-size: 16px;
+            font-weight: bold;
+            width: 100%;
+            display: flex;
+            border-bottom: 1px solid #EAEFF5;
+        }
+
+            .content .left .hd a {
+                text-align: center;
+                color: #333;
+                display: block;
+                width: 12.5%;
+                line-height: 48px;
+            }
+
+                .content .left .hd a.active {
+                    background: #1AB394;
+                    color: #fff;
+                }
+
+                .content .left .hd a:not(:last-child) {
+                    border-right: 1px solid #EAEFF5;
+                }
+        /*内容左侧内容*/
+        .content .left .bd {
+            min-height: 400px;
+            padding: 30px;
+            box-sizing: border-box;
+        }
+
+            .content .left .bd > div {
+                display: none;
+            }
+
+                .content .left .bd > div.on {
+                    display: block;
+                }
+            /*基本内容*/
+            .content .left .bd .bd-item1 .title {
+                display: flex;
+                font-size: 22px;
+                line-height: 22px;
+                margin-bottom: 12px;
+                font-weight: bold;
+                color: #000;
+            }
+
+            .content .left .bd .bd-item1 p {
+                color: #808080;
+                font-size: 15px;
+                line-height: 32px;
+                margin-top: 10px;
+                padding-left: 16px;
+                position: relative;
+            }
+
+                .content .left .bd .bd-item1 p span {
+                    color: #000;
+                }
+
+            .content .left .bd .bd-item1 .msg {
+                display: flex;
+                justify-content: space-between;
+            }
+
+                .content .left .bd .bd-item1 .msg div {
+                    width: 48%;
+                }
+            /*资质荣誉*/
+            .content .left .bd .bd-item2 img {
+                width: 320px;
+                height: 240px;
+                margin: 0 20px 20px 0;
+            }
+            /*视频监控*/
+            .content .left .bd .bd-item3 .bd-item3-item {
+                width: 390px;
+                height: 270px;
+                float: left;
+                margin: 0 20px 20px 0;
+                border: 1px solid #ccc;
+            }
+
+                .content .left .bd .bd-item3 .bd-item3-item p {
+                    text-align: center;
+                    line-height: 40px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    font-size: 16px;
+                    color: #000;
+                }
+                .content .left .bd .bd-item3 .bd-item3-item .video-js {
+                    width: 100% !important;
+                    height: 88% !important;
+                    border: 1px solid transparent;
+                    box-shadow: 0 0 3px rgba(135, 234, 246,.5);
+                }
+
+                    .content .left .bd .bd-item3 .bd-item3-item .video-js .vjs-big-play-button {
+                        font-size: 2em;
+                    }
+            /*主营菜品*/
+            .content .left .bd .bd-item4 {
+            }
+            /*周菜谱*/
+            .content .left .bd .bd-item5 .bd-item5-item {
+                margin-bottom: 10px;
+                padding: 20px 0px;
+            }
+
+                .content .left .bd .bd-item5 .bd-item5-item:not(:last-child) {
+                    border-bottom: 1px dotted #F9AD39;
+                }
+
+                .content .left .bd .bd-item5 .bd-item5-item p {
+                    line-height: 32px;
+                    font-size: 16px;
+                    display: flex;
+                    align-items: center;
+                }
+
+                    .content .left .bd .bd-item5 .bd-item5-item p span {
+                        color: #000;
+                    }
+
+                .content .left .bd .bd-item5 .bd-item5-item img {
+                    width: 600px !important;
+                    max-width: 600px !important;
+                    height: auto;
+                    margin: 10px 10px 10px 0;
+                }
+            /*台账管理*/
+            .content .left .bd .bd-item6 .bd-item6-item {
+                margin-bottom: 10px;
+                padding: 20px 0px;
+            }
+
+                .content .left .bd .bd-item6 .bd-item6-item:not(:last-child) {
+                    border-bottom: 1px dotted #F9AD39;
+                }
+
+                .content .left .bd .bd-item6 .bd-item6-item p {
+                    line-height: 32px;
+                    font-size: 16px;
+                    display: flex;
+                    align-items: center;
+                }
+
+                    .content .left .bd .bd-item6 .bd-item6-item p span {
+                        color: #000;
+                    }
+
+                .content .left .bd .bd-item6 .bd-item6-item > img {
+                    width: 500px !important;
+                    max-width: 500px !important;
+                    height: auto;
+                    margin: 10px 10px 10px 0;
+                }
+            /*供应商*/
+
+            .content .left .bd .bd-item7 .bd-item7-item {
+                float: left;
+                width: 48%;
+                height: 280px;
+                margin-bottom: 30px;
+                padding: 20px;
+                box-sizing: border-box;
+                display: flex;
+            }
+
+                .content .left .bd .bd-item7 .bd-item7-item:nth-child(2n) {
+                    float: right;
+                }
+
+                .content .left .bd .bd-item7 .bd-item7-item img {
+                    width: 180px;
+                    margin-right: 10px;
+                }
+
+                .content .left .bd .bd-item7 .bd-item7-item div {
+                    width: 60%;
+                }
+
+                    .content .left .bd .bd-item7 .bd-item7-item div p {
+                        font-size: 16px;
+                        line-height: 24px;
+                        margin-bottom: 17px;
+                    }
+
+                        .content .left .bd .bd-item7 .bd-item7-item div p span {
+                            color: #000;
+                        }
+
+
+            /*人员健康证*/
+            .content .left .bd .bd-item8 .bd-item8-item {
+                width: 368px;
+                height: 300px;
+                margin: 0 20px 20px 0;
+                float: left;
+            }
+
+                .content .left .bd .bd-item8 .bd-item8-item img {
+                    width: 366px;
+                    height: 220px;
+                }
+
+                .content .left .bd .bd-item8 .bd-item8-item p {
+                    width: 90%;
+                    margin: 0 auto;
+                    line-height: 40px;
+                    height: 40px;
+                    display: flex;
+                }
+
+                .content .left .bd .bd-item8 .bd-item8-item .p1 {
+                    border-bottom: 1px solid #F9AD39;
+                }
+
+                .content .left .bd .bd-item8 .bd-item8-item p label {
+                    display: block;
+                    width: 40%;
+                }
+
+                    .content .left .bd .bd-item8 .bd-item8-item p label:first-child {
+                        width: 80%;
+                    }
+
+                .content .left .bd .bd-item8 .bd-item8-item p span {
+                    color: #000;
+                }
+            /*废物处理*/
+            .content .left .bd .bd-item9 {
+                border-left: 4px solid #F9AD39;
+            }
+
+                .content .left .bd .bd-item9 div {
+                    color: #F9AD39;
+                    height: 50px;
+                    line-height: 50px;
+                }
+
+                    .content .left .bd .bd-item9 div span {
+                        color: #000;
+                        font-size: 18px;
+                        font-weight: bold;
+                    }
+
+                .content .left .bd .bd-item9 table {
+                    text-align: center;
+                    margin-left: 26px;
+                    width: 95%;
+                    border: 1px solid #F9AD39;
+                    font-size: 16px;
+                }
+
+                    .content .left .bd .bd-item9 table tr:first-child {
+                        color: #000;
+                        font-weight: bold;
+                        background: #F9F8FA;
+                        line-height: 42px;
+                    }
+
+                    .content .left .bd .bd-item9 table tr:last-child {
+                        line-height: 56px;
+                    }
+            /*留样管理*/
+            .content .left .bd .bd-item10 .bd-item10-item {
+                width: 368px;
+                height: 300px;
+                margin: 0 20px 20px 0;
+                float: left;
+            }
+
+                .content .left .bd .bd-item10 .bd-item10-item img {
+                    width: 366px;
+                    height: 220px;
+                }
+
+                .content .left .bd .bd-item10 .bd-item10-item p {
+                    width: 90%;
+                    margin: 0 auto;
+                    line-height: 40px;
+                    height: 40px;
+                    display: flex;
+                }
+
+                    .content .left .bd .bd-item10 .bd-item10-item p label {
+                        display: block;
+                        width: 60%;
+                    }
+
+                        .content .left .bd .bd-item10 .bd-item10-item p label:first-child {
+                            width: 40%;
+                        }
+
+                .content .left .bd .bd-item10 .bd-item10-item .p1 {
+                    border-bottom: 1px solid #F9AD39;
+                }
+
+                .content .left .bd .bd-item10 .bd-item10-item p span {
+                    color: #000;
+                }
+            /*抽检信息*/
+            .content .left .bd .bd-item11 {
+                border-left: 4px solid #F9AD39;
+            }
+
+                .content .left .bd .bd-item11 div {
+                    color: #F9AD39;
+                    height: 50px;
+                    line-height: 50px;
+                }
+
+                    .content .left .bd .bd-item11 div span {
+                        color: #000;
+                        font-size: 18px;
+                        font-weight: bold;
+                    }
+
+                .content .left .bd .bd-item11 table {
+                    text-align: center;
+                    margin-left: 26px;
+                    width: 95%;
+                    border: 1px solid #F9AD39;
+                    font-size: 16px;
+                }
+
+                    .content .left .bd .bd-item11 table tr:nth-child(2n+1) {
+                        color: #000;
+                        font-weight: bold;
+                        background: #F9F8FA;
+                    }
+
+                    .content .left .bd .bd-item11 table tr {
+                        line-height: 42px;
+                    }
+
+    /*内容右侧*/
+    .content .right {
+        width: 24%;
+    }
+
+        .content .right .right-item {
+            background: #fff;
+            margin-bottom: 20px;
+            color: #333;
+            box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.24);
+        }
+
+            .content .right .right-item .hd {
+                background: #F5F5F5;
+                padding: 0 22px;
+                box-sizing: border-box;
+                display: flex;
+                align-items: center;
+                font-size: 16px;
+                line-height: 48px;
+                font-weight: bold;
+            }
+
+            .content .right .right-item .bd li {
+                padding: 0 22px;
+                box-sizing: border-box;
+                height: 48px;
+                line-height: 48px;
+                text-indent: 16px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+
+                .content .right .right-item .bd li a {
+                    color: #333;
+                    font-size: 15px;
+                }
+
+                .content .right .right-item .bd li:not(:last-child) {
+                    border-bottom: 1px solid #EBEBEB;
+                }

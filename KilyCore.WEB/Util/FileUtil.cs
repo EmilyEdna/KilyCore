@@ -3,6 +3,7 @@ using iTextSharp.text.pdf;
 using KilyCore.WEB.Model;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using PuppeteerSharp;
@@ -567,6 +568,67 @@ namespace KilyCore.WEB.Util
                 Directory.CreateDirectory(Path);
             await page.ScreenshotAsync($"{Path + fileName}", new ScreenshotOptions { FullPage = fullPage, Type = ScreenshotType.Png });
             return new { data = "http://system.cfda.vip/Upload/Images/" + fileName, flag = 1, msg = "生成成功！", HttpCode = 10 };
+        }
+        /// <summary>
+        /// APK版本
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="t"></param>
+        /// <param name="WebRootPath"></param>
+        /// <param name="section"></param>
+        public static string ApkVer(List<ApkVer> t, string WebRootPath, string section = "")
+        {
+            string Path = WebRootPath + "\\Config\\Apk.json";
+            if (Directory.Exists(WebRootPath))
+                Directory.CreateDirectory(WebRootPath + "\\Config");
+            if (!File.Exists(Path))
+            {
+                FileStream fs = new FileStream(Path, FileMode.OpenOrCreate);
+                StreamWriter sw = new StreamWriter(fs);
+                sw.WriteLine(JsonConvert.SerializeObject(t));
+                sw.Close();
+                fs.Close();
+            }
+            else
+            {
+                var streams = new FileStream(Path, FileMode.Open);
+                StreamReader reader = new StreamReader(streams);
+                var result = reader.ReadToEnd();
+                var entity = JsonConvert.DeserializeObject<List<ApkVer>>(result);
+                reader.Close();
+                streams.Close();
+                FileStream fs = File.Open(Path, FileMode.OpenOrCreate, FileAccess.Write);
+                fs.Seek(0, SeekOrigin.Begin);
+                fs.SetLength(0);
+                entity.AddRange(t);
+                StreamWriter sw = new StreamWriter(fs);
+                sw.WriteLine(JsonConvert.SerializeObject(entity));
+                sw.Close();
+                fs.Close();
+            }
+            return "/Config/Apk.json";
+        }
+        /// <summary>
+        /// 上传APK
+        /// </summary>
+        /// <param name="Files"></param>
+        /// <param name="FolderName"></param>
+        /// <param name="WebRootPath"></param>
+        /// <returns></returns>
+        public static string UploadAPK(IFormFile Files, String WebRootPath)
+        {
+            long bytes = Files.Length;
+            String RootPath = "/Config/";
+            String SavePath = WebRootPath + RootPath;
+            if (!Directory.Exists(SavePath))
+                Directory.CreateDirectory(SavePath);
+            String Names = Guid.NewGuid().ToString();
+            using (FileStream fs = File.Create(SavePath + Names+".Apk"))
+            {
+                Files.CopyTo(fs);
+                fs.Flush();
+            }
+            return RootPath + Names + ".Apk";
         }
     }
 }

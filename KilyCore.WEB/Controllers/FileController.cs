@@ -169,5 +169,29 @@ namespace KilyCore.WEB.Controllers
             var WebRootPath = Environment.WebRootPath;
             return await FileUtil.GetPageToImage(data, WebRootPath);
         }
+        /// <summary>
+        /// APK版本
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public JsonResult ApkVer(ApkVer param)
+        {
+            var WebRootPath = Environment.WebRootPath;
+            List<ApkVer> datas = new List<ApkVer>() { param };
+            var data = new { data = FileUtil.ApkVer(datas, WebRootPath) };
+            return new JsonResult(data);
+        }
+        /// <summary>
+        /// 上传APK
+        /// </summary>
+        /// <param name="Files"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public string UploadApk(IFormFile Files)
+        {
+            var WebRootPath = Environment.WebRootPath;
+            return FileUtil.UploadAPK(Files, WebRootPath);
+        }
     }
 }

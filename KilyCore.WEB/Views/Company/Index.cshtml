@@ -68,17 +68,17 @@
                         controller.Echarts("#echarts-pie-chart-source", result.data.dataCounts);
                     }
                 });
-                 //产量统计
+                //产量统计
                 controller.ajax({
                     url: "EnterpriseWeb/GetPieCount",
-                    data:  { Id: CompanyInfo.Id },
+                    data: { Id: CompanyInfo.Id },
                     type: "post",
                     async: false,
                     success: function (result) {
-                          controller.SetLableValue(".section1", result.data);
+                        controller.SetLableValue(".section1", result.data);
                     }
                 });
-                 //批次统计
+                //批次统计
                 controller.ajax({
                     url: "EnterpriseWeb/GetPieCountBatch",
                     data: { Id: CompanyInfo.Id },
@@ -99,182 +99,7 @@
     </script>
 }
 @section css{
-    <style>
-        #Edit {
-            box-sizing: border-box;
-            padding: 30px;
-            color: #404040;
-        }
-        /*共有样式*/
-        .section {
-            margin-bottom: 30px;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .item {
-            border-radius: 8px;
-            background: #fff;
-            box-shadow: 0px 4px 16px 0px rgba(47,64,80,0.16);
-        }
-
-            .item .title {
-                padding: 0 15px;
-                height: 50px;
-                font-size: 18px;
-                display: flex;
-                align-items: center;
-                border-bottom: 1px solid #E6E6E6;
-            }
-
-                .item .title div {
-                    background: #239FE6;
-                    width: 4px;
-                    height: 18px;
-                    margin-right: 8px;
-                }
-
-            .item .content {
-                padding: 15px;
-            }
-        /*第一个区域样式*/
-        .section1 .item1 {
-            width: 24%;
-            height: 140px;
-        }
-
-            .section1 .item1 .content0 {
-                display: flex;
-                align-items: center;
-            }
-
-            .section1 .item1 .left {
-                margin-right: 20px;
-                width: 56px;
-                height: 56px;
-                border-radius: 28px;
-                background: url("/Content/Company/images/firm_index.png") center center no-repeat;
-            }
-
-            .section1 .item1 .right {
-                min-width: 62%;
-            }
-
-                .section1 .item1 .right p {
-                    font-size: 16px;
-                    line-height: 24px;
-                }
-
-                    .section1 .item1 .right p:last-child {
-                        margin-bottom: 0;
-                    }
-
-                    .section1 .item1 .right p span {
-                        color: #000;
-                        font-weight: bold;
-                    }
-        /*第二个区域样式*/
-        .section2 .item2 {
-            width: 24%;
-            height: 320px;
-        }
-
-            .section2 .item2:first-child {
-                width: 49.5%;
-            }
-
-        .section2 .item2-3 {
-            overflow: hidden;
-        }
-
-            .section2 .item2-3 .item2-item {
-                float: left;
-                width: 48%;
-                height: 155px;
-            }
-
-                .section2 .item2-3 .item2-item:nth-child(1), .section2 .item2-3 .item2-item:nth-child(3) {
-                    margin-right: 4%;
-                }
-
-                .section2 .item2-3 .item2-item:nth-child(1), .section2 .item2-3 .item2-item:nth-child(2) {
-                    margin-bottom: 10px;
-                }
-
-        .section2 .item2 .content1 {
-            padding-bottom: 0;
-        }
-
-            .section2 .item2 .content1 a {
-                display: inline-block;
-                width: 18%;
-                height: 110px;
-                margin-right: 1%;
-                margin-bottom: 15px;
-                text-align: center;
-                font-size: 16px;
-                color: #404040;
-            }
-
-                .section2 .item2 .content1 a img {
-                    width: 50px;
-                    height: 50px;
-                    margin: 10px 0;
-                }
-
-        .section2 .item2 .content2 img {
-            margin-left: 12px;
-            cursor: pointer;
-            height: 75px !important;
-            width: 75px !important;
-        }
-        /*第三个区域样式*/
-        .section3 .item3 {
-            width: 30%;
-            height: 320px;
-        }
-
-            .section3 .item3:nth-child(2) {
-                width: 36%;
-            }
-
-            .section3 .item3 .content3 div {
-                height: 60px;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-            }
-
-                .section3 .item3 .content3 div p {
-                    width: 16%;
-                }
-
-                .section3 .item3 .content3 div .progress {
-                    height: 16px;
-                    border-radius: 8px;
-                    margin-bottom: 0;
-                    width: 60%;
-                }
-
-                .section3 .item3 .content3 div span {
-                    width: 16%;
-                }
-
-                .section3 .item3 .content3 div .progress .bar {
-                    background: #3FC8F6;
-                    height: 16px;
-                    border-radius: 8px 0 0 8px;
-                }
-        /*地图样式*/
-        #Map {
-            width: 100%;
-            height: 600px;
-            border-radius: 8px;
-            background: #fff;
-            box-shadow: 0px 4px 16px 0px rgba(47,64,80,0.16);
-        }
-    </style>
+    <link href="~/Content/Company/css/company.css" rel="stylesheet" />
 }
 <form id="Edit">
     <!--第一个区域-->

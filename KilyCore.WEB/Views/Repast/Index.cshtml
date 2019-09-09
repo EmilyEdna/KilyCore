@@ -2,6 +2,13 @@
     ViewData["Title"] = "首页";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
+
+@section css{
+    @* 视频美化插件css *@
+<link href="~/Content/DataView/Css/video-js.min.css.css" rel="stylesheet" />
+    @* 当前页面样式表 *@
+<link href="~/Content/DataView/Css/repast.css" rel="stylesheet" />
+}
 @section script{
     @* 视频美化插件js *@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.6.0/video.min.js"></script>
@@ -14,6 +21,7 @@
             this.InitDom();
             this.InitCode();
             this.InitEvent();
+            this.InitEventOther();
         },
         InitDom: function () {
             //根据餐饮企业类型显示相应模块
@@ -35,14 +43,14 @@
             if (RepastUser.SafeOffer == null) RepastUser.SafeOffer = "-";
             $("#SafeOffer").html(RepastUser.SafeOffer);//安全员
             //缓存数据循环渲染资质荣誉
-            let item2Str = "";
+            let str2 = "";
             if (RepastUser.Certification != undefined && RepastUser.Certification != null) {
-                item2Str += `<img src="http://system.cfda.vip${RepastUser.Certification}">`;
+                str2 += `<img src="http://system.cfda.vip${RepastUser.Certification}">`;
             }
-            for (i2 in RepastUser.HonorCertification) {
-                item2Str += `<img src="http://system.cfda.vip${RepastUser.HonorCertification[i2]}">`;
+            for (let i in RepastUser.HonorCertification) {
+                str2 += `<img src="http://system.cfda.vip${RepastUser.HonorCertification[i]}">`;
             }
-            $(".bd-item2").html(item2Str);
+            $(".bd-item2").html(str2);
             //页面内容左侧选项卡事件
             $(".content .left .hd a").on("click", function () {
                 let indexC = $(this).index();
@@ -63,6 +71,7 @@
             });
         },
         InitEvent: function () {
+            //手机扫码信息
             controller.ajax({
                 url: "RepastWeb/GetMobileScanInfo",
                 data: { Id: RepastUser.Id },
@@ -72,77 +81,94 @@
                     //渲染基础信息
                     controller.SetLableValue(".bd-item1", data.InfoScan[0]);
                     //循环渲染监控视频
-                    let item3Str = "";
-                    for (i3 in data.VedioScan) {
-                        let type = ((data.VedioScan[i3].视频连接.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
-                        item3Str += `
-                                <div class="bd-item3-item mark1">
-                                    <div class="marknum">${i3}</div>
-                                    <video class="video-js vjs-default-skin vjs-big-play-centered" src="${data.VedioScan[i3].视频连接}" type="${type}"><source></video >
-                                    <p>${data.VedioScan[i3].监控区域}</p>
-                                </div>`;
-                    }
-                    $(".bd-item3").html(item3Str);
+                    let str3 = "";
+                    $.each(data.VedioScan, function (i, item) {
+                        if (i == 0) {
+                            let type = ((item.视频连接.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
+                            $($(".bd-item3-item").find("p")[0]).before(`<video id="vedio_${i}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.视频连接}" type="${type}"></video>`);
+                            $($(".bd-item3-item").find("p")[0]).find("span").text(item.监控区域);
+                        }
+                        if (i == 1) {
+                            let type = ((item.视频连接.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
+                            $($(".bd-item3-item").find("p")[1]).before(`<video id="vedio_${i}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.视频连接}" type="${type}"></video>`);
+                            $($(".bd-item3-item").find("p")[1]).find("span").text(item.监控区域);
+                        }
+                        if (i == 2) {
+                            let type = ((item.视频连接.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
+                            $($(".bd-item3-item").find("p")[2]).before(`<video id="vedio_${i}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.视频连接}" type="${type}"></video>`);
+                            $($(".bd-item3-item").find("p")[2]).find("span").text(item.监控区域);
+                        }
+                        if (i == 3) {
+                            let type = ((item.视频连接.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
+                            $($(".bd-item3-item").find("p")[3]).before(`<video id="vedio_${i}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.视频连接}" type="${type}"></video>`);
+                            $($(".bd-item3-item").find("p")[3]).find("span").text(item.监控区域);
+                        }
+                    });
+                    videojs("vedio_0", { autoplay: false, controls: true, width: 390, height: 220 });
+                    videojs("vedio_1", { autoplay: false, controls: true, width: 390, height: 220 });
+                    videojs("vedio_2", { autoplay: false, controls: true, width: 390, height: 220 });
+                    videojs("vedio_3", { autoplay: false, controls: true, width: 390, height: 220 });
+                    //$(".bd-item3").html(str3);
                     //循环渲染台账管理
-                    let item6Str = "";
-                    for (i6 in data.TicketScan) {
-                        item6Str += `
-                                <div class="bd-item6-item">
-                                    <p>主题名称：<span>${data.TicketScan[i6].台账主题}</span></p>
-                                    <p>上报日期：<span>${data.TicketScan[i6].上报时间}</span></p>
-                                    ${data.TicketScan[i6].台账内容}
-                                </div>`;
-                    }
-                    $(".bd-item6").html(item6Str);
+                    let str6 = "";
+                    for (let i in data.TicketScan) {
+                        str6 += `
+                                        <div class="bd-item6-item">
+                                            <p>主题名称：<span>${data.TicketScan[i].台账主题}</span></p>
+                                            <p>上报日期：<span>${data.TicketScan[i].上报时间}</span></p>
+                                            ${data.TicketScan[i].台账内容}
+                                        </div>`;
+                    };
+                    $(".bd-item6").html(str6);
                     //循环渲染人员健康证
-                    let item8Str = "";
-                    for (i8 in data.UserScan) {
+                    let str8 = "";
+                    for (let i in data.UserScan) {
                         var Color = "";
-                        if (DateCompare(data.UserScan[i8].健康证到期时间)) {
+                        if (DateCompare(data.UserScan[i].健康证到期时间)) {
                             var Color = "color:red;";
                         }
-                        item8Str += `
-                                <div class="bd-item8-item mark1">
-                                    <div class="marknum">${i8}</div>
-                                    <img src="http://system.cfda.vip${data.UserScan[i8].健康证}"/>
-                                    <p class="p1"><label>姓名：<span>${data.UserScan[i8].人员姓名}</span></label><label>状态：<span>在职</span></label></p>
-                                    <p><label>有效期: <span style="${Color}">${data.UserScan[i8].健康证到期时间}</span></label></p>
-                                </div>`;
-                    }
-                    $(".bd-item8").html(item8Str);
+                        str8 += `
+                                        <div class="bd-item8-item mark1">
+                                            <div class="marknum">${parseInt(i) + 1}</div>
+                                            <img src="http://system.cfda.vip${data.UserScan[i].健康证}"/>
+                                            <p class="p1"><label>姓名：<span>${data.UserScan[i].人员姓名}</span></label><label>状态：<span>在职</span></label></p>
+                                            <p><label>有效期: <span style="${Color}">${data.UserScan[i].健康证到期时间}</span></label></p>
+                                        </div>`;
+                    };
+                    $(".bd-item8").html(str8);
                     //循环渲染废物处理
-                    let item9Str = "";
-                    for (i9 in data.DuckScan) {
-                        item9Str += `
-                                <div>
-                                    —&emsp;<span>${data.DuckScan[i9].处理时间}</span>
-                                </div>
-                                <table>
-                                    <tr>
-                                        <td>处理人</td>
-                                        <td>处理方式</td>
-                                        <td>处理时间</td>
-                                    </tr>
-                                    <tr>
-                                        <td>${data.DuckScan[i9].处理人}</td>
-                                        <td>${data.DuckScan[i9].处理方式}</td>
-                                        <td>${data.DuckScan[i9].处理时间}</td>
-                                    </tr>
-                                </table>`;
-                    }
-                    $(".bd-item9").html(item9Str);
+                    let str9 = "";
+                    for (let i in data.DuckScan) {
+                        str9 += `
+                                        <div>
+                                            —&emsp;<span>${data.DuckScan[i].处理时间}</span>
+                                        </div>
+                                        <table>
+                                            <tr>
+                                                <td>处理人</td>
+                                                <td>处理方式</td>
+                                                <td>处理时间</td>
+                                            </tr>
+                                            <tr>
+                                                <td>${data.DuckScan[i].处理人}</td>
+                                                <td>${data.DuckScan[i].处理方式}</td>
+                                                <td>${data.DuckScan[i].处理时间}</td>
+                                            </tr>
+                                        </table>`;
+                    };
+                    $(".bd-item9").html(str9);
                     //循环渲染留样管理
-                    let item10Str = "";
-                    for (i10 in data.SampleScan) {
-                        item10Str += `
-                                <div class="bd-item10-item mark1">
-                                    <div class="marknum">${i10}</div>
-                                    <img src="http://system.cfda.vip${data.SampleScan[i10].留样图片}" />
-                                    <p class="p1"><label>菜品名称：<span>${data.SampleScan[i10].留样菜品}</span></label><label>储存方式：<span>冷藏</span></label></p>
-                                    <p><label>操作人员: <span>${data.SampleScan[i10].操作人}</span></label><label>留样时间：<span>${data.SampleScan[i10].留样时间}</span></label></p>
-                                </div>`;
-                    }
-                    $(".bd-item10").html(item10Str);
+                    let str10 = "";
+                    for (let i in data.SampleScan) {
+                        str10 += `
+                                        <div class="bd-item10-item mark1">
+                                            <div class="marknum">${parseInt(i) + 1}</div>
+                                            <img src="http://system.cfda.vip${data.SampleScan[i].留样图片}" />
+                                            <p class="p1"><label>菜品名称：<span>${data.SampleScan[i].留样菜品}</span></label><label>储存方式：<span>冷藏</span></label></p>
+                                            <p><label>操作人员: <span>${data.SampleScan[i].操作人}</span></label><label>留样时间：<span>${data.SampleScan[i].留样时间}</span></label></p>
+                                        </div>`;
+                    };
+                    $(".bd-item10").html(str10);
                 }
             });
             //供应商
@@ -154,24 +180,24 @@
                 success: function (result) {
                     //循环渲染供应商
                     let data = result.data;
-                    let item7Str = "";
-                    for (i7 in data) {
-                        if (data[i7].SupplierNo == null) data[i7].SupplierNo = "-";
-                        if (data[i7].LinkPhone == null) data[i7].LinkPhone = "-";
-                        item7Str += `
-                            <div class="bd-item7-item mark1">
-                                <div class="marknum">${i7}</div>
-                                <img src="http://system.cfda.vip${data[i7].RunCard}"/>
-                                <div>
-                                    <p>供应商：<span>${data[i7].SupplierName}</span></p>
-                                    <p>法人代表：<span>${data[i7].SupplierUser}</span></p>
-                                    <p>单位编号：<span>${data[i7].SupplierNo}</span></p>
-                                    <p>联系方式：<span>${data[i7].LinkPhone}</span></p>
-                                    <p>经营资质是否齐全：<span>是</span></p>
-                                </div>
-                            </div>`;
+                    let str = "";
+                    for (let i in data) {
+                        if (data[i].SupplierNo == null) data[i].SupplierNo = "-";
+                        if (data[i].LinkPhone == null) data[i].LinkPhone = "-";
+                        str += `
+                                        <div class="bd-item7-item mark1">
+                                            <div class="marknum">${parseInt(i) + 1}</div>
+                                            <img src="http://system.cfda.vip${data[i].RunCard}"/>
+                                            <div>
+                                                <p>供应商：<span>${data[i].SupplierName}</span></p>
+                                                <p>法人代表：<span>${data[i].SupplierUser}</span></p>
+                                                <p>单位编号：<span>${data[i].SupplierNo}</span></p>
+                                                <p>联系方式：<span>${data[i].LinkPhone}</span></p>
+                                                <p>经营资质是否齐全：<span>是</span></p>
+                                            </div>
+                                        </div>`;
                     }
-                    $(".bd-item7").html(item7Str);
+                    $(".bd-item7").html(str);
                 }
             });
             //周菜谱
@@ -182,17 +208,17 @@
                 type: "post",
                 success: function (result) {
                     //循环渲染周菜谱
-                    let data = result.data;
-                    let item5Str = "";
-                    $.each(data.rows, function (i, item) {
-                        item5Str += `
-                                <div class="bd-item5-item">
-                                    <p>菜谱名称：<span>${item.FoodMenuName}</span></p>
-                                    <p>上报日期：<span>${item.UpTime}</span></p>
-                                    ${item.Content}
-                                </div>`;
-                    })
-                    $(".bd-item5").html(item5Str);
+                    let data = result.data.rows;
+                    let str = "";
+                    $.each(data, function (i, item) {
+                        str += `
+                                        <div class="bd-item5-item">
+                                            <p>菜谱名称：<span>${item.FoodMenuName}</span></p>
+                                            <p>上报日期：<span>${item.UpTime}</span></p>
+                                            ${item.Content}
+                                        </div>`;
+                    });
+                    $(".bd-item5").html(str);
                 }
             });
             //抽检信息
@@ -203,32 +229,49 @@
                 type: "post",
                 success: function (result) {
                     //循环渲染抽检信息
-                    let data = result.data;
-                    let item11Str = "";
-                    $.each(data.rows, function (i, item) {
+                    let data = result.data.rows;
+                    let str = "";
+                    $.each(data, function (i, item) {
                         if (item.Remark == null) item.Remark = "-";
-                        item11Str += `
-                                <div>
-                                    —&emsp;<span>抽检单位：${item.DrawUnit}</span>
-                                </div>
-                                <table>
-                                    <tr>
-                                        <td style="text-align: left; text-indent: 3em;">负责人</td>
-                                        <td>联系电话</td>
-                                        <td>抽检时间</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="text-align: left; text-indent: 3em;">${item.DrawUser}</td>
-                                        <td>${item.Phone}</td>
-                                        <td>${item.DrawTime}</td>
-                                    </tr>
-                                    <tr><td colspan="3" style="text-align: left; text-indent: 3em;">备注: <span style="color: #676a6c; font-weight: normal;">${item.Remark}</span></td></tr>
-                                </table>`;
+                        str += `
+                                        <div>
+                                            —&emsp;<span>抽检单位：${item.DrawUnit}</span>
+                                        </div>
+                                        <table>
+                                            <tr>
+                                                <td style="text-align: left; text-indent: 3em;">负责人</td>
+                                                <td>联系电话</td>
+                                                <td>抽检时间</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: left; text-indent: 3em;">${item.DrawUser}</td>
+                                                <td>${item.Phone}</td>
+                                                <td>${item.DrawTime}</td>
+                                            </tr>
+                                            <tr><td colspan="3" style="text-align: left; text-indent: 3em;">备注: <span style="color: #676a6c; font-weight: normal;">${item.Remark}</span></td></tr>
+                                        </table>`;
                     });
-                    $(".bd-item11").html(item11Str);
+                    $(".bd-item11").html(str);
                 }
             });
-
+            //陪餐列表
+            controller.ajax({
+                url: "RepastWeb/GetUnitInsPage",
+                data: { pageSize: 10, pageNumber: 1 },
+                async: false,
+                type: "post",
+                success: function (result) {
+                    let data = result.data.rows;
+                    let str = "";
+                    $.each(data, function (i, item) {
+                        str += `<li><a href="javascript:">${item.InsName}</a></li>`;
+                    });
+                    $(".content .right .right-item1 .bd").html(str);
+                }
+            });
+        },
+        //暂未用到的其他请求函数
+        InitEventOther: function () {
             //进销台账
             //controller.ajax({
             //    url: "RepastWeb/GetSellBuyPage",
@@ -295,506 +338,6 @@
     }
 </script>
 }
-@section css{
-<style>
-    /*公用样式*/
-    p, h3, ul, li {
-        margin: 0;
-        padding: 0;
-    }
-
-    ul, li {
-        list-style: none;
-    }
-
-    .icon { /*左竖线 长*/
-        width: 6px;
-        height: 28px;
-        margin-right: 5px;
-        background: #1AB394;
-    }
-
-    .icon1 { /*左竖线 短*/
-        width: 4px;
-        height: 6px;
-        margin-right: 5px;
-        background: #1AB394;
-    }
-
-    .mark1 { /*左上角数字标签父盒子*/
-        position: relative;
-        border: 1px solid #F9AD39;
-    }
-
-        .mark1::before { /*左上角标签*/
-            transform: rotate(135deg);
-            position: absolute;
-            left: -30px;
-            top: -30px;
-            display: block;
-            content: '';
-            width: 0;
-            height: 0;
-            border: 30px solid #F9AD39;
-            border-color: #F9AD39 transparent transparent transparent;
-        }
-
-    .marknum { /*左上角标签数字*/
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 25px!important;
-        height: 30px;
-        line-height: 30px;
-        color: #fff;
-        font-size: 24px;
-        text-align: center;
-        font-weight: bold;
-    }
-
-    .clearfix::after { /*清除浮动*/
-        display: block;
-        clear: both;
-        content: "";
-        visibility: hidden;
-        height: 0
-    }
-
-    .clearfix {
-        zoom: 1
-    }
-
-    /*头部*/
-    .header {
-        background: #fff;
-        display: flex;
-        justify-content: space-between;
-        width: 98%;
-        padding: 20px;
-        margin: 12px auto;
-        box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.24);
-    }
-        /*头部左侧*/
-        .header .left {
-            display: flex;
-            margin-top: 10px;
-        }
-
-            .header .left img {
-                min-width: 120px;
-                max-width: 160px;
-                height: 120px;
-                margin-right: 10px;
-            }
-
-            .header .left div h3 {
-                font-size: 16px;
-                line-height: 40px;
-                color: #414242;
-                margin-bottom: 6px;
-            }
-
-            .header .left div p {
-                color: #808080;
-                font-size: 15px;
-                line-height: 28px;
-            }
-
-                .header .left div p span {
-                    color: #000;
-                }
-        /*头部右侧*/
-        .header .right {
-            font-size: 12px;
-            text-align: center;
-        }
-
-            .header .right #qrcode {
-                margin: 0 auto;
-            }
-
-            .header .right .RepastName {
-                margin-top: 5px;
-                font-size: 15px;
-            }
-    /*内容样式*/
-    .content {
-        margin-top: 25px;
-        width: 98%;
-        margin: auto auto;
-        display: flex;
-        justify-content: space-between;
-    }
-        /*内容左侧*/
-        .content .left {
-            background: #fff;
-            box-sizing: border-box;
-            width: 74%;
-            box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.24);
-        }
-            /*内容左侧导航*/
-            .content .left .hd {
-                font-size: 16px;
-                width: 100%;
-                display: flex;
-                border-bottom: 1px solid #EAEFF5;
-            }
-
-                .content .left .hd a {
-                    text-align: center;
-                    color: #000;
-                    display: block;
-                    width: 12.5%;
-                    line-height: 60px;
-                }
-
-                    .content .left .hd a.active {
-                        background: #1AB394;
-                        color: #fff;
-                    }
-
-                    .content .left .hd a:not(:last-child) {
-                        border-right: 1px solid #EAEFF5;
-                    }
-            /*内容左侧内容*/
-            .content .left .bd {
-                min-height: 400px;
-                padding: 30px;
-                box-sizing: border-box;
-            }
-
-                .content .left .bd > div {
-                    display: none;
-                }
-
-                    .content .left .bd > div.on {
-                        display: block;
-                    }
-                /*基本内容*/
-                .content .left .bd .bd-item1 .title {
-                    display: flex;
-                    font-size: 22px;
-                    line-height: 36px;
-                    font-weight: bold;
-                    color: #000;
-                }
-
-                .content .left .bd .bd-item1 p {
-                    color: #808080;
-                    font-size: 15px;
-                    line-height: 32px;
-                    margin-top: 10px;
-                    padding-left: 12px;
-                    position: relative;
-                }
-
-                    .content .left .bd .bd-item1 p span {
-                        color: #000;
-                    }
-
-                .content .left .bd .bd-item1 .msg {
-                    display: flex;
-                    justify-content: space-between;
-                }
-
-                    .content .left .bd .bd-item1 .msg div {
-                        width: 48%;
-                    }
-                /*资质荣誉*/
-                .content .left .bd .bd-item2 img {
-                    width: 320px;
-                    height: 240px;
-                    margin: 0 20px 20px 0;
-                }
-                /*视频监控*/
-                .content .left .bd .bd-item3 .bd-item3-item {
-                    width: 368px;
-                    height: 270px;
-                    float: left;
-                    margin: 0 20px 20px 0;
-                }
-
-                    .content .left .bd .bd-item3 .bd-item3-item video {
-                        height: 220px !important;
-                    }
-
-                    .content .left .bd .bd-item3 .bd-item3-item p {
-                        text-align: center;
-                        line-height: 40px;
-                        overflow: hidden;
-                        white-space: nowrap;
-                        text-overflow: ellipsis;
-                        font-size: 16px;
-                        color: #000;
-                    }
-                /*主营菜品*/
-                .content .left .bd .bd-item4 {
-                }
-                /*周菜谱*/
-                .content .left .bd .bd-item5 .bd-item5-item {
-                    margin-bottom: 10px;
-                    padding: 20px 0px;
-                    border-bottom: 1px dotted #F9AD39;
-                }
-
-                    .content .left .bd .bd-item5 .bd-item5-item p {
-                        line-height: 32px;
-                        font-size: 16px;
-                        display: flex;
-                        align-items: center;
-                    }
-
-                        .content .left .bd .bd-item5 .bd-item5-item p span {
-                            color: #000;
-                        }
-
-                    .content .left .bd .bd-item5 .bd-item5-item img {
-                        width: 600px !important;
-                        max-width: 600px !important;
-                        height: auto;
-                        margin: 10px 10px 10px 0;
-                    }
-                /*台账管理*/
-                .content .left .bd .bd-item6 .bd-item6-item {
-                    margin-bottom: 10px;
-                    padding: 20px 0px;
-                    border-bottom: 1px dotted #F9AD39;
-                }
-
-                    .content .left .bd .bd-item6 .bd-item6-item p {
-                        line-height: 32px;
-                        font-size: 16px;
-                        display: flex;
-                        align-items: center;
-                    }
-
-                        .content .left .bd .bd-item6 .bd-item6-item p span {
-                            color: #000;
-                        }
-
-                    .content .left .bd .bd-item6 .bd-item6-item > img {
-                        width: 500px !important;
-                        height: auto;
-                        margin: 10px 10px 10px 0;
-                    }
-                /*供应商*/
-
-                .content .left .bd .bd-item7 .bd-item7-item {
-                    float: left;
-                    width: 48%;
-                    height: 280px;
-                    margin-bottom: 30px;
-                    padding: 20px;
-                    box-sizing: border-box;
-                    display: flex;
-                }
-
-                    .content .left .bd .bd-item7 .bd-item7-item:nth-child(2n) {
-                        float: right;
-                    }
-
-                    .content .left .bd .bd-item7 .bd-item7-item img {
-                        width: 180px;
-                        margin-right: 10px;
-                    }
-
-                    .content .left .bd .bd-item7 .bd-item7-item div {
-                        width: 60%;
-                    }
-
-                        .content .left .bd .bd-item7 .bd-item7-item div p {
-                            font-size: 16px;
-                            line-height: 24px;
-                            margin-bottom: 17px;
-                        }
-
-                            .content .left .bd .bd-item7 .bd-item7-item div p span {
-                                color: #000;
-                            }
-
-
-                /*人员健康证*/
-                .content .left .bd .bd-item8 .bd-item8-item {
-                    width: 368px;
-                    height: 300px;
-                    margin: 0 20px 20px 0;
-                    float: left;
-                }
-
-                    .content .left .bd .bd-item8 .bd-item8-item img {
-                        width: 366px;
-                        height: 220px;
-                    }
-
-                    .content .left .bd .bd-item8 .bd-item8-item p {
-                        width: 90%;
-                        margin: 0 auto;
-                        line-height: 40px;
-                        height: 40px;
-                        display: flex;
-                    }
-
-                    .content .left .bd .bd-item8 .bd-item8-item .p1 {
-                        border-bottom: 1px solid #F9AD39;
-                    }
-
-                    .content .left .bd .bd-item8 .bd-item8-item p label {
-                        display: block;
-                        width: 40%;
-                    }
-
-                        .content .left .bd .bd-item8 .bd-item8-item p label:first-child {
-                            width: 80%;
-                        }
-
-                    .content .left .bd .bd-item8 .bd-item8-item p span {
-                        color: #000;
-                    }
-                /*废物处理*/
-                .content .left .bd .bd-item9 {
-                    border-left: 4px solid #F9AD39;
-                }
-
-                    .content .left .bd .bd-item9 div {
-                        color: #F9AD39;
-                        height: 50px;
-                        line-height: 50px;
-                    }
-
-                        .content .left .bd .bd-item9 div span {
-                            color: #000;
-                            font-size: 18px;
-                            font-weight: bold;
-                        }
-
-                    .content .left .bd .bd-item9 table {
-                        text-align: center;
-                        margin-left: 26px;
-                        width: 95%;
-                        border: 1px solid #F9AD39;
-                        font-size: 16px;
-                    }
-
-                        .content .left .bd .bd-item9 table tr:first-child {
-                            color: #000;
-                            font-weight: bold;
-                            background: #F9F8FA;
-                            line-height: 42px;
-                        }
-
-                        .content .left .bd .bd-item9 table tr:last-child {
-                            line-height: 56px;
-                        }
-                /*留样管理*/
-                .content .left .bd .bd-item10 .bd-item10-item {
-                    width: 368px;
-                    height: 300px;
-                    margin: 0 20px 20px 0;
-                    float: left;
-                }
-
-                    .content .left .bd .bd-item10 .bd-item10-item img {
-                        width: 366px;
-                        height: 220px;
-                    }
-
-                    .content .left .bd .bd-item10 .bd-item10-item p {
-                        width: 90%;
-                        margin: 0 auto;
-                        line-height: 40px;
-                        height: 40px;
-                        display: flex;
-                    }
-
-                        .content .left .bd .bd-item10 .bd-item10-item p label {
-                            display: block;
-                            width: 60%;
-                        }
-
-                            .content .left .bd .bd-item10 .bd-item10-item p label:first-child {
-                                width: 40%;
-                            }
-
-                    .content .left .bd .bd-item10 .bd-item10-item .p1 {
-                        border-bottom: 1px solid #F9AD39;
-                    }
-
-                    .content .left .bd .bd-item10 .bd-item10-item p span {
-                        color: #000;
-                    }
-                /*抽检信息*/
-                .content .left .bd .bd-item11 {
-                    border-left: 4px solid #F9AD39;
-                }
-
-                    .content .left .bd .bd-item11 div {
-                        color: #F9AD39;
-                        height: 50px;
-                        line-height: 50px;
-                    }
-
-                        .content .left .bd .bd-item11 div span {
-                            color: #000;
-                            font-size: 18px;
-                            font-weight: bold;
-                        }
-
-                    .content .left .bd .bd-item11 table {
-                        text-align: center;
-                        margin-left: 26px;
-                        width: 95%;
-                        border: 1px solid #F9AD39;
-                        font-size: 16px;
-                    }
-
-                        .content .left .bd .bd-item11 table tr:nth-child(2n+1) {
-                            color: #000;
-                            font-weight: bold;
-                            background: #F9F8FA;
-                        }
-
-                        .content .left .bd .bd-item11 table tr {
-                            line-height: 42px;
-                        }
-
-
-        .content .right {
-            width: 24%;
-        }
-
-            .content .right .right-item {
-                background: #fff;
-                margin-bottom: 20px;
-                box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.24);
-            }
-
-                .content .right .right-item .hd {
-                    background: #F5F5F5;
-                    padding: 0 22px;
-                    box-sizing: border-box;
-                    display: flex;
-                    align-items: center;
-                    font-size: 18px;
-                    line-height: 60px;
-                    font-weight: bold;
-                    color: #000;
-                }
-
-                .content .right .right-item .bd li {
-                    padding: 0 22px;
-                    box-sizing: border-box;
-                    height: 60px;
-                    line-height: 60px;
-                    overflow: hidden;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                }
-
-                    .content .right .right-item .bd li:not(:last-child) {
-                        border-bottom: 1px solid #EBEBEB;
-                    }
-</style>
-}
 <form id="Edit">
     <!--首页头部-->
     <div class="header">
@@ -855,7 +398,20 @@
                 <!--资质荣誉-->
                 <div class="bd-item2"></div>
                 <!--企业视频-->
-                <div class="bd-item3 clearfix"></div>
+                <div class="bd-item3 clearfix">
+                    <div class="bd-item3-item">
+                        <p>监控区域：<span></span></p>
+                    </div>
+                    <div class="bd-item3-item">
+                        <p>监控区域：<span></span></p>
+                    </div>
+                    <div class="bd-item3-item">
+                        <p>监控区域：<span></span></p>
+                    </div>
+                    <div class="bd-item3-item">
+                        <p>监控区域：<span></span></p>
+                    </div>
+                </div>
                 <!--主营菜品-->
                 <div class="bd-item4"></div>
                 <!--周菜谱-->
@@ -875,12 +431,12 @@
             </div>
         </div>
         <div class="right">
-            <div class="right-item">
-                <div class="hd"><div class="icon1"></div>陪餐制度</div>
+            <div class="right-item right-item1">
+                <div class="hd"><div class="icon icon1"></div>陪餐制度</div>
                 <ul class="bd"></ul>
             </div>
-            <div class="right-item">
-                <div class="hd"><div class="icon1"></div>法律法规</div>
+            <div class="right-item right-item2" style="display: none;">
+                <div class="hd"><div class="icon icon1"></div>法律法规</div>
                 <ul class="bd"></ul>
             </div>
         </div>
