@@ -11,8 +11,6 @@
             this.InitEcharts();
             this.InitDom();
             this.InitEvent();
-            $("body").GetGovtInfo();
-            //$("#DepartName").html(Govt.DepartName);
         },
         //页面dom操作
         InitDom: function () {
@@ -109,7 +107,6 @@
                                 name: '企业统计',
                                 label: {
                                     normal: {
-                                        // formatter: '{b|{b}：}{c}  {per|{d}%}  ',
                                         formatter: '{b|{b}:}{c}家 ',
                                         backgroundColor: '#fff',
                                         borderColor: '#aaa',
@@ -121,13 +118,6 @@
                                                 lineHeight: 12,
                                                 align: 'center'
                                             },
-                                            // abg: {
-                                            //     backgroundColor: '#333',
-                                            //     width: '100%',
-                                            //     align: 'right',
-                                            //     height: 22,
-                                            //     borderRadius: [4, 4, 0, 0]
-                                            // },
                                             hr: {
                                                 borderColor: '#aaa',
                                                 width: '100%',
