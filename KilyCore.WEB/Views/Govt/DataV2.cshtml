@@ -4,15 +4,15 @@
 }
 
 @section css{
-    @* 当前页面样式表 *@
-<link href="~/Content/DataView/Css/DAtaV.css" rel="stylesheet" />
-    @* 视频美化插件css *@
+@*视频美化插件css*@
 <link href="~/Content/DataView/Css/video-js.min.css.css" rel="stylesheet" />
+@*当前页面样式表*@
+<link href="~/Content/DataView/Css/DAtaV.css" rel="stylesheet" />
 }
 @section script{
-    @* echarts主题样式 *@
+@*echarts主题样式*@
 <script src="~/Content/DataView/JS/shine.js"></script>
-    @* 视频美化插件js *@
+@*视频美化插件js*@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.6.0/video.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.15.0/videojs-contrib-hls.js"></script>
 <script>
@@ -323,12 +323,14 @@
                 success: function (result) {
                     let listStr = '';
                     for (index in result.data.rows) {
-                        listStr += `<li class="clearfix">
-                                                        <div class="hidden">${result.data.rows[index].Id}</div>
-                                                        <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" title="${result.data.rows[index].Name}">${result.data.rows[index].Name}</div>
-                                                        <div>${result.data.rows[index].CompanyType}</div>
-                                                        <div>${result.data.rows[index].CardType}</div>
-                                                        <div>${result.data.rows[index].CardExpiredDate.split(" ")[0]}</div></li>`;
+                        listStr += `
+                            <li class="clearfix">
+                                <div class="hidden">${result.data.rows[index].Id}</div>
+                                <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" title="${result.data.rows[index].Name}">${result.data.rows[index].Name}</div>
+                                <div>${result.data.rows[index].CompanyType}</div>
+                                <div>${result.data.rows[index].CardType}</div>
+                                <div>${result.data.rows[index].CardExpiredDate.split(" ")[0]}</div>
+                            </li>`;
                     }
                     $(".cardexpire .bd ul").html(listStr);
                 }
