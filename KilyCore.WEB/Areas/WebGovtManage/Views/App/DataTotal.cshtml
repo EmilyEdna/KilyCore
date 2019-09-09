@@ -8,6 +8,11 @@
     var options = {
         //挂载需要初始化的方法
         Init: function () {
+             var ApiKey = controller.GetParam("ApiKey");
+            var Syskey = controller.GetParam("SysKey");
+            var Token = controller.GetParam("Token");
+            var obj = { "RSAToKen": Token, "RSAApiKey": ApiKey, "RSASysKey": Syskey };
+            controller.SetCookie(obj);
             this.InitEcharts();
             this.InitDom();
             this.InitEvent();

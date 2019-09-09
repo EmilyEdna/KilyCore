@@ -35,6 +35,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Govt
         }
     }
     public class ResponseGovtDistribut {
+        public string Id { set; get; }
         public string Name { get; set; }
         public string LngAndLat { get; set; }
         public string Address { get; set; }

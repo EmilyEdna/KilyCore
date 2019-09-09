@@ -41,10 +41,17 @@
                     async: false,
                     type: "post",
                     success: function (result) {
-                        $(".item2 .content2 img").each(function (i, obj) {
-                            if (result.data.rows[i] != undefined)
-                                $(this).attr("title", result.data.rows[i].VedioName).attr("vedio", result.data.rows[i].VedioAddr).attr("src", result.data.rows[i].VedioCover);
-                        });
+                        if (result.data.rows.length==0) {
+                            $(".item2 .content2").html("暂无视频");
+                        } else {
+                            $(".item2 .content2 img").each(function (i, obj) {
+                                if (result.data.rows[i].VedioCover == undefined || result.data.rows[i].VedioCover == null) {
+                                    result.data.rows[i].VedioCover = "http://system.cfda.vip/Content/HPlus/img/Nopic.jpg";
+                                }
+                                if (result.data.rows[i] != undefined)
+                                    $(this).attr("title", result.data.rows[i].VedioName).attr("vedio", result.data.rows[i].VedioAddr).attr("src", result.data.rows[i].VedioCover);
+                            });
+                        }
                     }
                 });
             },
@@ -280,8 +287,8 @@
             <div class="content content0">
                 <div class="left" style="background-color: #FCB600;"></div>
                 <div class="right">
-                    <p>周产量：<span name="WeekDataCount"></span>吨</p>
-                    <p>较上周：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="TwoWeek"></span>吨</p>
+                    <p>周产量：<span name="WeekDataCount"></span>件</p>
+                    <p>较上周：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="TwoWeek"></span>件</p>
                 </div>
             </div>
         </div>
@@ -293,8 +300,8 @@
             <div class="content content0">
                 <div class="left" style="background-color: #00D1CE;"></div>
                 <div class="right">
-                    <p>月产量：<span name="MonthDataCount"></span>吨</p>
-                    <p>较上月：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="TwoMonth"></span>吨</p>
+                    <p>月产量：<span name="MonthDataCount"></span>件</p>
+                    <p>较上月：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="TwoMonth"></span>件</p>
                 </div>
             </div>
         </div>
@@ -306,8 +313,8 @@
             <div class="content content0">
                 <div class="left" style="background-color: #36C3FF;"></div>
                 <div class="right">
-                    <p>年产量：<span name="YearDataCount"></span>吨</p>
-                    <p>较去年：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="TwoYear"></span>吨</p>
+                    <p>年产量：<span name="YearDataCount"></span>件</p>
+                    <p>较去年：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="TwoYear"></span>件</p>
                 </div>
             </div>
         </div>
@@ -319,8 +326,8 @@
             <div class="content content0">
                 <div class="left" style="background-color: #AF6CC1;"></div>
                 <div class="right">
-                    <p>总量：<span name="Total"></span>吨</p>
-                    <p>同比数量：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="Totals"></span>吨</p>
+                    <p>总量：<span name="Total"></span>件</p>
+                    <p>同比数量：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="Totals"></span>件</p>
                 </div>
             </div>
         </div>
