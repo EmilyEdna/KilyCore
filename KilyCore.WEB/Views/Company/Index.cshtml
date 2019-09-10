@@ -12,9 +12,6 @@
                 this.InitMap();
             },
             InitDom: function () {
-                //获取当前页面可见高度，给视频盒子设置高度
-                let HC = document.body.clientHeight;
-                $("#center-video").css({ height: HC });
                 //视频图片点击事件
                 $(".item2 .content2 img").on("click", function () {
                     controller.OpenWindow({
@@ -41,7 +38,7 @@
                     async: false,
                     type: "post",
                     success: function (result) {
-                        if (result.data.rows.length==0) {
+                        if (result.data.rows.length == 0) {
                             $(".item2 .content2").html("暂无视频");
                         } else {
                             $(".item2 .content2 img").each(function (i, obj) {
@@ -66,6 +63,14 @@
                         controller.SetLableValue(".content3", result.data);
                         controller.Echarts("#echarts-pie-chart-safe", result.data.dataCount);
                         controller.Echarts("#echarts-pie-chart-source", result.data.dataCounts);
+                        //动态设置进度条宽度
+                        let sum = $(".content3").width(); //进度条总宽度
+                        let sum1 = 0.01; //进度条的0.01代表1
+                        let sum2 = 0.1;//进度条的0.1代表1
+                        $(".content3 .product:first .bar").css({ width: result.data.Series*sum*sum1});
+                        $(".content3 .product:last .bar").css({ width: result.data.Goods*sum*sum1});
+                        $(".content3 .business:first .bar").css({ width: result.data.Supplier*sum*sum2});
+                        $(".content3 .business:last .bar").css({ width: result.data.Sale*sum*sum2});
                     }
                 });
                 //产量统计
@@ -263,31 +268,31 @@
                 数据统计
             </div>
             <div class="content content3">
-                <div>
+                <div class="product">
                     <p>产品系列</p>
                     <div class="progress">
-                        <div class="bar" style="width: 60%;"></div>
+                        <div class="bar"></div>
                     </div>
                     <span name="Series"></span>
                 </div>
-                <div>
+                <div class="product">
                     <p>产品总量</p>
                     <div class="progress">
-                        <div class="bar" style="width: 60%;"></div>
+                        <div class="bar"></div>
                     </div>
                     <span name="Goods"></span>
                 </div>
-                <div>
+                <div class="business">
                     <p>供应商数量</p>
                     <div class="progress">
-                        <div class="bar" style="width: 60%;"></div>
+                        <div class="bar"></div>
                     </div>
                     <span name="Supplier"></span>
                 </div>
-                <div>
+                <div class="business">
                     <p>经销商数量</p>
                     <div class="progress">
-                        <div class="bar" style="width: 60%;"></div>
+                        <div class="bar"></div>
                     </div>
                     <span name="Sale"></span>
                 </div>
