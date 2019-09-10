@@ -350,7 +350,7 @@ namespace KilyCore.Service.ServiceCore
                 Phone = t.Phone,
                 AllowUnit = t.AllowUnit,
                 Honor = t.HonorCertification,
-                Remark = t.Remark,
+                Remark = t.Remark.Replace("/Upload/","http://system.cfda.vip/Upload/"),
                 Video = Kily.Set<RepastVideo>().Where(x => x.InfoId == Id && x.IsIndex == true)
                 .OrderByDescending(x => x.CreateTime).Select(m => new ResponseRepastVideo
                 {
@@ -691,6 +691,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 data = queryable.Select(t => new ResponseGovtDistribut()
                 {
+                    Id=t.Id.ToString(),
                     Name = t.CompanyName,
                     LngAndLat = t.LngAndLat,
                     Address = t.CompanyAddress,
@@ -699,6 +700,7 @@ namespace KilyCore.Service.ServiceCore
                 }).ToList();
                 var temp = queryables.Select(t => new ResponseGovtDistribut()
                 {
+                    Id = t.Id.ToString(),
                     Name = t.MerchantName,
                     LngAndLat = t.LngAndLat,
                     Address = t.Address,
@@ -711,6 +713,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 data = queryables.Where(t => t.DiningType == MerchantEnum.UnitCanteen).Select(t => new ResponseGovtDistribut()
                 {
+                    Id = t.Id.ToString(),
                     Name = t.MerchantName,
                     LngAndLat = t.LngAndLat,
                     Address = t.Address,

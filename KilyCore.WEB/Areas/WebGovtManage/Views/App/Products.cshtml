@@ -10,6 +10,11 @@
              this.InitDom();
         },
         InitDom: function () {
+             var ApiKey = controller.GetParam("ApiKey");
+            var Syskey = controller.GetParam("SysKey");
+            var Token = controller.GetParam("Token");
+            var obj = { "RSAToKen": Token, "RSAApiKey": ApiKey, "RSASysKey": Syskey };
+            controller.SetCookie(obj);
              var Id = controller.GetParam("Id");
              controller.ajax({
                 url: "GovtWeb/GetEdibleDetail",

@@ -269,7 +269,7 @@
                             options.marker.setTitle(obj.CompanyType);
                             options.Map.addOverlay(options.marker);               // 将标注添加到地图中
                             if (obj.CompanyImg == null) obj.CompanyImg = "http://system.cfda.vip/content/HPlus/img/Nopic.jpg";
-                            options.AddClickHandler(obj.Name, obj.Address, obj.CompanyCode, obj.CompanyType, obj.CompanyImg);
+                            options.AddClickHandler(obj.Id,obj.Name, obj.Address, obj.CompanyCode, obj.CompanyType, obj.CompanyImg);
                             if (obj.CompanyUser == null) {
                                 obj.CompanyUser = "-";
                             }
@@ -290,10 +290,10 @@
                     }
                 });
             },
-            AddClickHandler: function (name, path, code, type, img) {
+            AddClickHandler: function (id,name, path, code, type, img) {
                 options.marker.addEventListener("click", function (e) {
-                    var InfoWin = '<table class="table table-bordered">' +
-                        '<tr><th>商家名称</th> <td>' + name + '</td><td rowspan="4"><img src="' + img + '" style="height:100%;min-width:96px;"/></td></tr>' +
+                    var InfoWin = '<table class="table table-bordered" style="width:596px;">' +
+                        '<tr><th>商家名称</th> <td><a href="javascript:Detail('+id+',\"'+name+'\",\"'+type+'\");" style="color:#333">' + name + '</a></td><td rowspan="4" style="width:196px;"><img src="' + img + '" style="height:156px;max-width:196px;"/></td></tr>' +
                         '<tr><th>商家类型</th><td>' + type + '</td></tr>' +
                         '<tr><th>工商代码</th><td>' + code + '</td></tr>' +
                         '<tr><th>商家地址</th><td>' + path + '</td></tr></table>'
@@ -302,6 +302,28 @@
                     var infoWindow = new BMap.InfoWindow(InfoWin);  // 创建信息窗口对象
                     options.Map.openInfoWindow(infoWindow, point); //开启信息窗口
                 });
+            },
+            Detail: function (id, name, type) {
+                if (type == "餐饮企业") {
+                    //追加抽查次数
+                    controller.ajax({
+                        url: "GovtWeb/EditPatrol",
+                        data: { CompanyId: id, TradeType: type, CompanyName: name, TypePath: GovtInfo.TypePath },
+                        async: false,
+                        type: "post",
+                        success: function (result) { }
+                    });
+                    controller.OpenWindow({
+                        title: row.MerchantName,
+                        type: 2,
+                        height: "90%",
+                        width: "80%",
+                        url: "WebGovtManage/Enterprise/RepastSuperviseDetail?Id=" + id,
+                        callBack: function (result) {
+                            result.$("#Edit").submit();
+                        }
+                    })
+                }
             },
             //事件
             InitEvents: function () {
@@ -317,6 +339,11 @@
                             allOverlays[i].show();
                     }
                 });
+                //搜索
+                $("#search").click(function () {
+
+                });
+                
             }
         };
         //初始化

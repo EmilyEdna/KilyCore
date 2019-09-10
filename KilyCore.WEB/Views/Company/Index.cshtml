@@ -41,10 +41,17 @@
                     async: false,
                     type: "post",
                     success: function (result) {
-                        $(".item2 .content2 img").each(function (i, obj) {
-                            if (result.data.rows[i] != undefined)
-                                $(this).attr("title", result.data.rows[i].VedioName).attr("vedio", result.data.rows[i].VedioAddr).attr("src", result.data.rows[i].VedioCover);
-                        });
+                        if (result.data.rows.length==0) {
+                            $(".item2 .content2").html("暂无视频");
+                        } else {
+                            $(".item2 .content2 img").each(function (i, obj) {
+                                if (result.data.rows[i].VedioCover == undefined || result.data.rows[i].VedioCover == null) {
+                                    result.data.rows[i].VedioCover = "http://system.cfda.vip/Content/HPlus/img/Nopic.jpg";
+                                }
+                                if (result.data.rows[i] != undefined)
+                                    $(this).attr("title", result.data.rows[i].VedioName).attr("vedio", result.data.rows[i].VedioAddr).attr("src", result.data.rows[i].VedioCover);
+                            });
+                        }
                     }
                 });
             },

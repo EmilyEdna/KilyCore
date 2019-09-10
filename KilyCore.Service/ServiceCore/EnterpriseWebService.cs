@@ -198,6 +198,7 @@ namespace KilyCore.Service.ServiceCore
                     MenuChildren = Kily.Set<EnterpriseMenu>()
                   .Where(x => x.ParentId == t.MenuId)
                   .Where(x => x.Level != MenuEnum.LevelOne)
+
                   .Where(x => x.IsDelete == false)
                   .Where(x => AuthorWeb.AuthorMenuPath.Contains(x.Id.ToString()))
                   .OrderBy(x => x.CreateTime).Select(x => new ResponseEnterpriseMenu()
@@ -217,6 +218,9 @@ namespace KilyCore.Service.ServiceCore
         /// <summary>
         /// 获取权限菜单树
         /// </summary>
+        /// +
+        /// 
+        /// 
         /// <returns></returns>
         public IList<ResponseParentTree> GetEnterpriseWebTree(String Key)
         {
