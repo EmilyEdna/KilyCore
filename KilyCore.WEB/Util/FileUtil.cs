@@ -622,12 +622,12 @@ namespace KilyCore.WEB.Util
             String SavePath = WebRootPath + RootPath;
             if (!Directory.Exists(SavePath))
                 Directory.CreateDirectory(SavePath);
-            using (FileStream fs = File.Create(SavePath + Files.FileName))
+            using (FileStream fs = File.Create(SavePath + DateTime.Now.ToShortDateString() +Files.FileName))
             {
                 Files.CopyTo(fs);
                 fs.Flush();
             }
-            return RootPath + Files.FileName;
+            return RootPath + DateTime.Now.ToShortDateString() + Files.FileName;
         }
     }
 }
