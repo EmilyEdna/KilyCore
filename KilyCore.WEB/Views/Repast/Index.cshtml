@@ -5,338 +5,338 @@
 
 @section css{
     @* 视频美化插件css *@
-<link href="~/Content/DataView/Css/video-js.min.css.css" rel="stylesheet" />
+    <link href="~/Content/DataView/Css/video-js.min.css.css" rel="stylesheet" />
     @* 当前页面样式表 *@
-<link href="~/Content/DataView/Css/repast.css" rel="stylesheet" />
+    <link href="~/Content/Repast/css/repast.css" rel="stylesheet" />
 }
 @section script{
     @* 视频美化插件js *@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.6.0/video.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.15.0/videojs-contrib-hls.js"></script>
-<script>
-    var DataSources = 0;
-    var CodeUrl = "http://www.cfda.vip/Wap/RepastCode?DataSource=" + DataSources + "&Id=";
-    var option = {
-        Init: function () {
-            this.InitDom();
-            this.InitCode();
-            this.InitEvent();
-            this.InitEventOther();
-        },
-        InitDom: function () {
-            //根据餐饮企业类型显示相应模块
-            if (RepastUser.DiningTypeName == "单位食堂") {
-                $("#NavFoods").hide();
-                $(".bd-item4").hide();
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.6.0/video.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.15.0/videojs-contrib-hls.js"></script>
+    <script>
+        var DataSources = 0;
+        var CodeUrl = "http://www.cfda.vip/Wap/RepastCode?DataSource=" + DataSources + "&Id=";
+        var option = {
+            Init: function () {
+                this.InitDom();
+                this.InitCode();
+                this.InitEvent();
+                this.InitEventOther();
+            },
+            InitDom: function () {
+                //根据餐饮企业类型显示相应模块
+                if (RepastUser.DiningTypeName == "单位食堂") {
+                    $("#NavFoods").hide();
+                    $(".bd-item4").hide();
+                }
+                else {
+                    $("#NavBook").hide();
+                    $(".bd-item5").hide();
+                }
+                //缓存数据渲染页面dom
+                $(".RepastName").html(RepastUser.MerchantName);//餐饮企业或单位名称
+                $(".Manager").html(RepastUser.ImplUser);//企业法人
+                $(".Address").html(RepastUser.Address);//企业地址
+                $(".CreditCode").html(RepastUser.CommunityCode);//工商代码
+                $("#RepastImg").attr("src", "http://system.cfda.vip" + RepastUser.MerchantImage);//企业形象
+                $("#DiningTypeName").html(RepastUser.DiningTypeName);//所属行业
+                if (RepastUser.SafeOffer == null) RepastUser.SafeOffer = "-";
+                $("#SafeOffer").html(RepastUser.SafeOffer);//安全员
+                //缓存数据循环渲染资质荣誉
+                let str2 = "";
+                if (RepastUser.Certification != undefined && RepastUser.Certification != null) {
+                    str2 += `<img src="http://system.cfda.vip${RepastUser.Certification}">`;
+                }
+                for (let i in RepastUser.HonorCertification) {
+                    str2 += `<img src="http://system.cfda.vip${RepastUser.HonorCertification[i]}">`;
+                }
+                $(".bd-item2").html(str2);
+                //页面内容左侧选项卡事件
+                $(".content .left .hd a").on("click", function () {
+                    let indexC = $(this).index();
+                    $(this).addClass("active").siblings().removeClass("active");
+                    $(".content .left .bd>div").eq(indexC).addClass("on").siblings().removeClass("on");
+                });
+            },
+            //生成二维码
+            InitCode: function () {
+                jQuery('#qrcode').qrcode({
+                    render: "canvas",
+                    text: CodeUrl + RepastUser.Id,
+                    width: "120",               //二维码的宽度
+                    height: "120",              //二维码的高度
+                    background: "#ffffff",      //二维码的后景色
+                    foreground: "#000000",      //二维码的前景色
+                    src: "http://www.cfda.vip/web/images/logo.png"//二维码中间的图片
+                });
+            },
+            InitEvent: function () {
+                //手机扫码信息
+                controller.ajax({
+                    url: "RepastWeb/GetMobileScanInfo",
+                    data: { Id: RepastUser.Id },
+                    async: false,
+                    success: function (result) {
+                        let data = result.data;
+                        //渲染基础信息
+                        controller.SetLableValue(".bd-item1", data.InfoScan[0]);
+                        //循环渲染监控视频
+                        let str3 = "";
+                        $.each(data.VedioScan, function (i, item) {
+                            if (i == 0) {
+                                let type = ((item.视频连接.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
+                                $($(".bd-item3-item").find("p")[0]).before(`<video id="vedio_${i}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.视频连接}" type="${type}"></video>`);
+                                $($(".bd-item3-item").find("p")[0]).find("span").text(item.监控区域);
+                            }
+                            if (i == 1) {
+                                let type = ((item.视频连接.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
+                                $($(".bd-item3-item").find("p")[1]).before(`<video id="vedio_${i}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.视频连接}" type="${type}"></video>`);
+                                $($(".bd-item3-item").find("p")[1]).find("span").text(item.监控区域);
+                            }
+                            if (i == 2) {
+                                let type = ((item.视频连接.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
+                                $($(".bd-item3-item").find("p")[2]).before(`<video id="vedio_${i}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.视频连接}" type="${type}"></video>`);
+                                $($(".bd-item3-item").find("p")[2]).find("span").text(item.监控区域);
+                            }
+                            if (i == 3) {
+                                let type = ((item.视频连接.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
+                                $($(".bd-item3-item").find("p")[3]).before(`<video id="vedio_${i}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.视频连接}" type="${type}"></video>`);
+                                $($(".bd-item3-item").find("p")[3]).find("span").text(item.监控区域);
+                            }
+                        });
+                        videojs("vedio_0", { autoplay: false, controls: true, width: 390, height: 220 });
+                        videojs("vedio_1", { autoplay: false, controls: true, width: 390, height: 220 });
+                        videojs("vedio_2", { autoplay: false, controls: true, width: 390, height: 220 });
+                        videojs("vedio_3", { autoplay: false, controls: true, width: 390, height: 220 });
+                        //$(".bd-item3").html(str3);
+                        //循环渲染台账管理
+                        let str6 = "";
+                        for (let i in data.TicketScan) {
+                            str6 += `
+                                            <div class="bd-item6-item">
+                                                <p>主题名称：<span>${data.TicketScan[i].台账主题}</span></p>
+                                                <p>上报日期：<span>${data.TicketScan[i].上报时间}</span></p>
+                                                ${data.TicketScan[i].台账内容}
+                                            </div>`;
+                        };
+                        $(".bd-item6").html(str6);
+                        //循环渲染人员健康证
+                        let str8 = "";
+                        for (let i in data.UserScan) {
+                            var Color = "";
+                            if (DateCompare(data.UserScan[i].健康证到期时间)) {
+                                var Color = "color:red;";
+                            }
+                            str8 += `
+                                            <div class="bd-item8-item mark1">
+                                                <div class="marknum">${parseInt(i) + 1}</div>
+                                                <img src="http://system.cfda.vip${data.UserScan[i].健康证}"/>
+                                                <p class="p1"><label>姓名：<span>${data.UserScan[i].人员姓名}</span></label><label>状态：<span>在职</span></label></p>
+                                                <p><label>有效期: <span style="${Color}">${data.UserScan[i].健康证到期时间}</span></label></p>
+                                            </div>`;
+                        };
+                        $(".bd-item8").html(str8);
+                        //循环渲染废物处理
+                        let str9 = "";
+                        for (let i in data.DuckScan) {
+                            str9 += `
+                                            <div>
+                                                —&emsp;<span>${data.DuckScan[i].处理时间}</span>
+                                            </div>
+                                            <table>
+                                                <tr>
+                                                    <td>处理人</td>
+                                                    <td>处理方式</td>
+                                                    <td>处理时间</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>${data.DuckScan[i].处理人}</td>
+                                                    <td>${data.DuckScan[i].处理方式}</td>
+                                                    <td>${data.DuckScan[i].处理时间}</td>
+                                                </tr>
+                                            </table>`;
+                        };
+                        $(".bd-item9").html(str9);
+                        //循环渲染留样管理
+                        let str10 = "";
+                        for (let i in data.SampleScan) {
+                            str10 += `
+                                            <div class="bd-item10-item mark1">
+                                                <div class="marknum">${parseInt(i) + 1}</div>
+                                                <img src="http://system.cfda.vip${data.SampleScan[i].留样图片}" />
+                                                <p class="p1"><label>菜品名称：<span>${data.SampleScan[i].留样菜品}</span></label><label>储存方式：<span>冷藏</span></label></p>
+                                                <p><label>操作人员: <span>${data.SampleScan[i].操作人}</span></label><label>留样时间：<span>${data.SampleScan[i].留样时间}</span></label></p>
+                                            </div>`;
+                        };
+                        $(".bd-item10").html(str10);
+                    }
+                });
+                //供应商
+                controller.ajax({
+                    url: "RepastWeb/GetSupplierList",
+                    data: {},
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        //循环渲染供应商
+                        let data = result.data;
+                        let str = "";
+                        for (let i in data) {
+                            if (data[i].SupplierNo == null) data[i].SupplierNo = "-";
+                            if (data[i].LinkPhone == null) data[i].LinkPhone = "-";
+                            str += `
+                                            <div class="bd-item7-item mark1">
+                                                <div class="marknum">${parseInt(i) + 1}</div>
+                                                <img src="http://system.cfda.vip${data[i].RunCard}"/>
+                                                <div>
+                                                    <p>供应商：<span>${data[i].SupplierName}</span></p>
+                                                    <p>法人代表：<span>${data[i].SupplierUser}</span></p>
+                                                    <p>单位编号：<span>${data[i].SupplierNo}</span></p>
+                                                    <p>联系方式：<span>${data[i].LinkPhone}</span></p>
+                                                    <p>经营资质是否齐全：<span>是</span></p>
+                                                </div>
+                                            </div>`;
+                        }
+                        $(".bd-item7").html(str);
+                    }
+                });
+                //周菜谱
+                controller.ajax({
+                    url: "RepastWeb/GetMerchantWeekPage",
+                    data: { pageSize: 10, pageNumber: 1 },
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        //循环渲染周菜谱
+                        let data = result.data.rows;
+                        let str = "";
+                        $.each(data, function (i, item) {
+                            str += `
+                                            <div class="bd-item5-item">
+                                                <p>菜谱名称：<span>${item.FoodMenuName}</span></p>
+                                                <p>上报日期：<span>${item.UpTime}</span></p>
+                                                ${item.Content}
+                                            </div>`;
+                        });
+                        $(".bd-item5").html(str);
+                    }
+                });
+                //抽检信息
+                controller.ajax({
+                    url: "RepastWeb/GetDrawPage",
+                    data: { pageSize: 10, pageNumber: 1 },
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        //循环渲染抽检信息
+                        let data = result.data.rows;
+                        let str = "";
+                        $.each(data, function (i, item) {
+                            if (item.Remark == null) item.Remark = "-";
+                            str += `
+                                            <div>
+                                                —&emsp;<span>抽检单位：${item.DrawUnit}</span>
+                                            </div>
+                                            <table>
+                                                <tr>
+                                                    <td style="text-align: left; text-indent: 3em;">负责人</td>
+                                                    <td>联系电话</td>
+                                                    <td>抽检时间</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align: left; text-indent: 3em;">${item.DrawUser}</td>
+                                                    <td>${item.Phone}</td>
+                                                    <td>${item.DrawTime}</td>
+                                                </tr>
+                                                <tr><td colspan="3" style="text-align: left; text-indent: 3em;">备注: <span style="color: #676a6c; font-weight: normal;">${item.Remark}</span></td></tr>
+                                            </table>`;
+                        });
+                        $(".bd-item11").html(str);
+                    }
+                });
+                //陪餐列表
+                controller.ajax({
+                    url: "RepastWeb/GetUnitInsPage",
+                    data: { pageSize: 10, pageNumber: 1 },
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        let data = result.data.rows;
+                        let str = "";
+                        $.each(data, function (i, item) {
+                            str += `<li><a href="javascript:">${item.InsName}</a></li>`;
+                        });
+                        $(".content .right .right-item1 .bd").html(str);
+                    }
+                });
+            },
+            //暂未用到的其他请求函数
+            InitEventOther: function () {
+                //进销台账
+                //controller.ajax({
+                //    url: "RepastWeb/GetSellBuyPage",
+                //    data: { pageSize: 10, pageNumber: 1 },
+                //    async: false,
+                //    type: "post",
+                //    success: function (result) {
+
+                //    }
+                //});
+
+                //风险预警
+                //controller.ajax({
+                //    url: "RepastWeb/GetWaringRiskPage",
+                //    data: { pageSize: 10, pageNumber: 1 },
+                //    async: false,
+                //    type: "post",
+                //    success: function (result) {
+
+                //    }
+                //});
+
+                //投诉建议
+                //controller.ajax({
+                //    url: "RepastWeb/GetComplainPage",
+                //    data: { pageSize: 10, pageNumber: 1 },
+                //    async: false,
+                //    type: "post",
+                //    success: function (result) {
+
+                //    }
+                //});
+
+                //督查信息
+                //controller.ajax({
+                //    url: "RepastWeb/GetNetPatrolPage",
+                //    data: { pageSize: 10, pageNumber: 1 },
+                //    async: false,
+                //    type: "post",
+                //    success: function (result) {
+
+                //    }
+                //});
+            }
+        };
+        $(document).ready(function () {
+            option.Init();
+        });
+        function DateCompare(TimeLength) {
+            // 获取当前日期（以判断健康证是否过期）
+            let currentDate = new Date();
+            let str = "" + currentDate.getFullYear() + "-";
+            str += (currentDate.getMonth() + 1) + "-";
+            str += currentDate.getDate();
+            let today = new Date(str.replace("-", "/").replace("-", "/"));
+
+            let fulfill_appointment_time = new Date(TimeLength.replace("年", "/").replace("月", "/").replace("日", ""));
+            if (fulfill_appointment_time < today) {
+                return true;
             }
             else {
-                $("#NavBook").hide();
-                $(".bd-item5").hide();
+                return false;
             }
-            //缓存数据渲染页面dom
-            $(".RepastName").html(RepastUser.MerchantName);//餐饮企业或单位名称
-            $(".Manager").html(RepastUser.ImplUser);//企业法人
-            $(".Address").html(RepastUser.Address);//企业地址
-            $(".CreditCode").html(RepastUser.CommunityCode);//工商代码
-            $("#RepastImg").attr("src", "http://system.cfda.vip" + RepastUser.MerchantImage);//企业形象
-            $("#DiningTypeName").html(RepastUser.DiningTypeName);//所属行业
-            if (RepastUser.SafeOffer == null) RepastUser.SafeOffer = "-";
-            $("#SafeOffer").html(RepastUser.SafeOffer);//安全员
-            //缓存数据循环渲染资质荣誉
-            let str2 = "";
-            if (RepastUser.Certification != undefined && RepastUser.Certification != null) {
-                str2 += `<img src="http://system.cfda.vip${RepastUser.Certification}">`;
-            }
-            for (let i in RepastUser.HonorCertification) {
-                str2 += `<img src="http://system.cfda.vip${RepastUser.HonorCertification[i]}">`;
-            }
-            $(".bd-item2").html(str2);
-            //页面内容左侧选项卡事件
-            $(".content .left .hd a").on("click", function () {
-                let indexC = $(this).index();
-                $(this).addClass("active").siblings().removeClass("active");
-                $(".content .left .bd>div").eq(indexC).addClass("on").siblings().removeClass("on");
-            });
-        },
-        //生成二维码
-        InitCode: function () {
-            jQuery('#qrcode').qrcode({
-                render: "canvas",
-                text: CodeUrl + RepastUser.Id,
-                width: "120",               //二维码的宽度
-                height: "120",              //二维码的高度
-                background: "#ffffff",      //二维码的后景色
-                foreground: "#000000",      //二维码的前景色
-                src: "http://www.cfda.vip/web/images/logo.png"//二维码中间的图片
-            });
-        },
-        InitEvent: function () {
-            //手机扫码信息
-            controller.ajax({
-                url: "RepastWeb/GetMobileScanInfo",
-                data: { Id: RepastUser.Id },
-                async: false,
-                success: function (result) {
-                    let data = result.data;
-                    //渲染基础信息
-                    controller.SetLableValue(".bd-item1", data.InfoScan[0]);
-                    //循环渲染监控视频
-                    let str3 = "";
-                    $.each(data.VedioScan, function (i, item) {
-                        if (i == 0) {
-                            let type = ((item.视频连接.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
-                            $($(".bd-item3-item").find("p")[0]).before(`<video id="vedio_${i}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.视频连接}" type="${type}"></video>`);
-                            $($(".bd-item3-item").find("p")[0]).find("span").text(item.监控区域);
-                        }
-                        if (i == 1) {
-                            let type = ((item.视频连接.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
-                            $($(".bd-item3-item").find("p")[1]).before(`<video id="vedio_${i}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.视频连接}" type="${type}"></video>`);
-                            $($(".bd-item3-item").find("p")[1]).find("span").text(item.监控区域);
-                        }
-                        if (i == 2) {
-                            let type = ((item.视频连接.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
-                            $($(".bd-item3-item").find("p")[2]).before(`<video id="vedio_${i}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.视频连接}" type="${type}"></video>`);
-                            $($(".bd-item3-item").find("p")[2]).find("span").text(item.监控区域);
-                        }
-                        if (i == 3) {
-                            let type = ((item.视频连接.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
-                            $($(".bd-item3-item").find("p")[3]).before(`<video id="vedio_${i}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.视频连接}" type="${type}"></video>`);
-                            $($(".bd-item3-item").find("p")[3]).find("span").text(item.监控区域);
-                        }
-                    });
-                    videojs("vedio_0", { autoplay: false, controls: true, width: 390, height: 220 });
-                    videojs("vedio_1", { autoplay: false, controls: true, width: 390, height: 220 });
-                    videojs("vedio_2", { autoplay: false, controls: true, width: 390, height: 220 });
-                    videojs("vedio_3", { autoplay: false, controls: true, width: 390, height: 220 });
-                    //$(".bd-item3").html(str3);
-                    //循环渲染台账管理
-                    let str6 = "";
-                    for (let i in data.TicketScan) {
-                        str6 += `
-                                        <div class="bd-item6-item">
-                                            <p>主题名称：<span>${data.TicketScan[i].台账主题}</span></p>
-                                            <p>上报日期：<span>${data.TicketScan[i].上报时间}</span></p>
-                                            ${data.TicketScan[i].台账内容}
-                                        </div>`;
-                    };
-                    $(".bd-item6").html(str6);
-                    //循环渲染人员健康证
-                    let str8 = "";
-                    for (let i in data.UserScan) {
-                        var Color = "";
-                        if (DateCompare(data.UserScan[i].健康证到期时间)) {
-                            var Color = "color:red;";
-                        }
-                        str8 += `
-                                        <div class="bd-item8-item mark1">
-                                            <div class="marknum">${parseInt(i) + 1}</div>
-                                            <img src="http://system.cfda.vip${data.UserScan[i].健康证}"/>
-                                            <p class="p1"><label>姓名：<span>${data.UserScan[i].人员姓名}</span></label><label>状态：<span>在职</span></label></p>
-                                            <p><label>有效期: <span style="${Color}">${data.UserScan[i].健康证到期时间}</span></label></p>
-                                        </div>`;
-                    };
-                    $(".bd-item8").html(str8);
-                    //循环渲染废物处理
-                    let str9 = "";
-                    for (let i in data.DuckScan) {
-                        str9 += `
-                                        <div>
-                                            —&emsp;<span>${data.DuckScan[i].处理时间}</span>
-                                        </div>
-                                        <table>
-                                            <tr>
-                                                <td>处理人</td>
-                                                <td>处理方式</td>
-                                                <td>处理时间</td>
-                                            </tr>
-                                            <tr>
-                                                <td>${data.DuckScan[i].处理人}</td>
-                                                <td>${data.DuckScan[i].处理方式}</td>
-                                                <td>${data.DuckScan[i].处理时间}</td>
-                                            </tr>
-                                        </table>`;
-                    };
-                    $(".bd-item9").html(str9);
-                    //循环渲染留样管理
-                    let str10 = "";
-                    for (let i in data.SampleScan) {
-                        str10 += `
-                                        <div class="bd-item10-item mark1">
-                                            <div class="marknum">${parseInt(i) + 1}</div>
-                                            <img src="http://system.cfda.vip${data.SampleScan[i].留样图片}" />
-                                            <p class="p1"><label>菜品名称：<span>${data.SampleScan[i].留样菜品}</span></label><label>储存方式：<span>冷藏</span></label></p>
-                                            <p><label>操作人员: <span>${data.SampleScan[i].操作人}</span></label><label>留样时间：<span>${data.SampleScan[i].留样时间}</span></label></p>
-                                        </div>`;
-                    };
-                    $(".bd-item10").html(str10);
-                }
-            });
-            //供应商
-            controller.ajax({
-                url: "RepastWeb/GetSupplierList",
-                data: {},
-                async: false,
-                type: "post",
-                success: function (result) {
-                    //循环渲染供应商
-                    let data = result.data;
-                    let str = "";
-                    for (let i in data) {
-                        if (data[i].SupplierNo == null) data[i].SupplierNo = "-";
-                        if (data[i].LinkPhone == null) data[i].LinkPhone = "-";
-                        str += `
-                                        <div class="bd-item7-item mark1">
-                                            <div class="marknum">${parseInt(i) + 1}</div>
-                                            <img src="http://system.cfda.vip${data[i].RunCard}"/>
-                                            <div>
-                                                <p>供应商：<span>${data[i].SupplierName}</span></p>
-                                                <p>法人代表：<span>${data[i].SupplierUser}</span></p>
-                                                <p>单位编号：<span>${data[i].SupplierNo}</span></p>
-                                                <p>联系方式：<span>${data[i].LinkPhone}</span></p>
-                                                <p>经营资质是否齐全：<span>是</span></p>
-                                            </div>
-                                        </div>`;
-                    }
-                    $(".bd-item7").html(str);
-                }
-            });
-            //周菜谱
-            controller.ajax({
-                url: "RepastWeb/GetMerchantWeekPage",
-                data: { pageSize: 10, pageNumber: 1 },
-                async: false,
-                type: "post",
-                success: function (result) {
-                    //循环渲染周菜谱
-                    let data = result.data.rows;
-                    let str = "";
-                    $.each(data, function (i, item) {
-                        str += `
-                                        <div class="bd-item5-item">
-                                            <p>菜谱名称：<span>${item.FoodMenuName}</span></p>
-                                            <p>上报日期：<span>${item.UpTime}</span></p>
-                                            ${item.Content}
-                                        </div>`;
-                    });
-                    $(".bd-item5").html(str);
-                }
-            });
-            //抽检信息
-            controller.ajax({
-                url: "RepastWeb/GetDrawPage",
-                data: { pageSize: 10, pageNumber: 1 },
-                async: false,
-                type: "post",
-                success: function (result) {
-                    //循环渲染抽检信息
-                    let data = result.data.rows;
-                    let str = "";
-                    $.each(data, function (i, item) {
-                        if (item.Remark == null) item.Remark = "-";
-                        str += `
-                                        <div>
-                                            —&emsp;<span>抽检单位：${item.DrawUnit}</span>
-                                        </div>
-                                        <table>
-                                            <tr>
-                                                <td style="text-align: left; text-indent: 3em;">负责人</td>
-                                                <td>联系电话</td>
-                                                <td>抽检时间</td>
-                                            </tr>
-                                            <tr>
-                                                <td style="text-align: left; text-indent: 3em;">${item.DrawUser}</td>
-                                                <td>${item.Phone}</td>
-                                                <td>${item.DrawTime}</td>
-                                            </tr>
-                                            <tr><td colspan="3" style="text-align: left; text-indent: 3em;">备注: <span style="color: #676a6c; font-weight: normal;">${item.Remark}</span></td></tr>
-                                        </table>`;
-                    });
-                    $(".bd-item11").html(str);
-                }
-            });
-            //陪餐列表
-            controller.ajax({
-                url: "RepastWeb/GetUnitInsPage",
-                data: { pageSize: 10, pageNumber: 1 },
-                async: false,
-                type: "post",
-                success: function (result) {
-                    let data = result.data.rows;
-                    let str = "";
-                    $.each(data, function (i, item) {
-                        str += `<li><a href="javascript:">${item.InsName}</a></li>`;
-                    });
-                    $(".content .right .right-item1 .bd").html(str);
-                }
-            });
-        },
-        //暂未用到的其他请求函数
-        InitEventOther: function () {
-            //进销台账
-            //controller.ajax({
-            //    url: "RepastWeb/GetSellBuyPage",
-            //    data: { pageSize: 10, pageNumber: 1 },
-            //    async: false,
-            //    type: "post",
-            //    success: function (result) {
-
-            //    }
-            //});
-
-            //风险预警
-            //controller.ajax({
-            //    url: "RepastWeb/GetWaringRiskPage",
-            //    data: { pageSize: 10, pageNumber: 1 },
-            //    async: false,
-            //    type: "post",
-            //    success: function (result) {
-
-            //    }
-            //});
-
-            //投诉建议
-            //controller.ajax({
-            //    url: "RepastWeb/GetComplainPage",
-            //    data: { pageSize: 10, pageNumber: 1 },
-            //    async: false,
-            //    type: "post",
-            //    success: function (result) {
-
-            //    }
-            //});
-
-            //督查信息
-            //controller.ajax({
-            //    url: "RepastWeb/GetNetPatrolPage",
-            //    data: { pageSize: 10, pageNumber: 1 },
-            //    async: false,
-            //    type: "post",
-            //    success: function (result) {
-
-            //    }
-            //});
         }
-    };
-    $(document).ready(function () {
-        option.Init();
-    });
-    function DateCompare(TimeLength) {
-        // 获取当前日期（以判断健康证是否过期）
-        let currentDate = new Date();
-        let str = "" + currentDate.getFullYear() + "-";
-        str += (currentDate.getMonth() + 1) + "-";
-        str += currentDate.getDate();
-        let today = new Date(str.replace("-", "/").replace("-", "/"));
-
-        let fulfill_appointment_time = new Date(TimeLength.replace("年", "/").replace("月", "/").replace("日", ""));
-        if (fulfill_appointment_time < today) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-</script>
+    </script>
 }
 <form id="Edit">
     <!--首页头部-->
