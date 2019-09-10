@@ -1,203 +1,257 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "首页";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section css{
+<style>
+    .row {
+        margin-bottom: 20px;
+    }
 
+        .row .item > div {
+            background: #fff;
+            border-radius: 4px;
+        }
+
+    .row1 .item {
+        text-align: center;
+    }
+
+        .row1 .item > div {
+            height: 100px;
+            display: flex;
+        }
+
+        .row1 .item div .left {
+            border-radius: 4px 0 0 4px;
+            width: 90px;
+            height: 100%;
+            margin-right: 15px;
+        }
+
+        .row1 .item div .right {
+            padding-right: 15px;
+            min-width: 30%;
+            height: 100%;
+        }
+
+        .row1 .item div .left img {
+            margin: 10px 0;
+            height: 50px;
+        }
+
+        .row1 .item div p {
+            line-height: 20px;
+            font-size: 14px;
+        }
+
+        .row1 .item div .left p {
+            color: #fff;
+        }
+
+        .row1 .item > div .right p:nth-child(1) {
+            margin: 30px 0 20px;
+            font-size: 30px;
+            color: #000;
+            font-weight: bold;
+            height: 20px;
+        }
+
+
+
+    .row2 .item > div {
+        height: 320px;
+        padding: 15px;
+    }
+
+    .row3 .item > div {
+        width: 100%;
+        padding-bottom: 10px;
+    }
+
+        .row3 .item > div .title {
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+            font-size: 18px;
+            color: #31507E;
+            font-weight: bold;
+        }
+
+        .row3 .item > div table {
+            width: 99%;
+            margin: 0 auto;
+        }
+
+            .row3 .item > div table tr {
+                height: 36px;
+                line-height: 36px;
+                font-size: 14px;
+            }
+
+            .row3 .item > div table thead {
+                border: 1px solid #2D8CF0;
+                background: #2D8CF0;
+                color: #fff;
+            }
+
+                .row3 .item > div table thead th {
+                    text-align: center;
+                }
+
+            .row3 .item > div table tbody td {
+                border: 1px solid #EBEBEB;
+                text-indent: 0.5em;
+            }
+</style>
 }
 @section script{
-    <script>
-        var options = {
-            Init: function () {
-                this.InitDom();
-                this.InitEvents();
-            },
-            InitDom: function () {
-                controller.ajax({
-                    url: "Function/GetPieData",
-                    data: {},
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        controller.Echarts("#echarts-pie-chart", result.data);
-                    }
-                });
-                controller.ajax({
-                    url: "Function/GetBarData",
-                    data: {},
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        controller.Echarts("#echarts-bar-chart", result.data);
-                    }
-                });
-                controller.ajax({
-                    url: "Function/GetStatistics",
-                    data: {},
-                    async: false,
-                    success: function (result) {
-                        var html = '';
-                        $.each(result.data.Temp, function (i, obj) {
-                            html += "<tr>";
-                            html += "<td>" + obj.ProvinceName + "</td>";
-                            html += "<td>" + result.data.PlantCount[i] + "</td>";
-                            html += "<td>" + result.data.ProCount[i] + "</td>";
-                            html += "<td>" + result.data.MoveCount[i] + "</td>";
-                            html += "<td>" + result.data.FoodCount[i] + "</td>";
-                            html += "<td>" + result.data.UnitCount[i] + "</td>";
-                            html += "<td>" + result.data.SmallCount[i] + "</td>";
-                            html += "</tr>";
-                        });
-                        $("tbody").html(html);
-                    }
-                });
-                controller.ajax({
-                    url: "Function/GetCreateTagList",
-                    data: {},
-                    async: false,
-                    success: function (result) {
-                        $.each(result.data, function (i, obj) {
-                            if (obj.CompanyType == 10)
-                                $("#zz").html(obj.Sum);
-                            else if (obj.CompanyType == 20)
-                                $("#yz").html(obj.Sum);
-                            else if (obj.CompanyType == 30)
-                                $("#sc").html(obj.Sum);
-                            else
-                                 $("#lt").html(obj.Sum);
-                        });
-                    }
-                });
-            },
-            InitEvents: function () {
-                //显示或隐藏
-                $(".collapse-link").on('click', function () {
-                    var ibox = $(this.closest('div.ibox'));
-                    var i = $(this).find("i");
-                    var content = ibox.find("div.ibox-content");
-                    content.slideToggle(200);
-                    i.toggleClass("fa-chevron-up").toggleClass("fa-chevron-down");
-                    ibox.toggleClass("").toggleClass("border-bottom");
-                    setTimeout(function () {
-                        ibox.resize();
-                        ibox.find("[id^=map-]").resize();
-                    }, 50);
-                });
-                //关闭
-                $(".close-link").click(function () {
-                    var ibox = $(this).closest("div.ibox");
-                    ibox.hide()
-                });
-            }
+<script>
+    var options = {
+        Init: function () {
+            this.InitDom();
+            this.InitEvents();
+        },
+        InitDom: function () {
+            //企业占比
+            controller.ajax({
+                url: "Function/GetPieData",
+                data: {},
+                type: "post",
+                async: false,
+                success: function (result) {
+                    controller.Echarts("#echarts-pie-chart", result.data);
+                }
+            });
+            //合同统计
+            controller.ajax({
+                url: "Function/GetBarData",
+                data: {},
+                type: "post",
+                async: false,
+                success: function (result) {
+                    controller.Echarts("#echarts-bar-chart", result.data);
+                }
+            });
+            //区域分布一览表
+            controller.ajax({
+                url: "Function/GetStatistics",
+                data: {},
+                async: false,
+                success: function (result) {
+                    var str = '';
+                    $.each(result.data.Temp, function (i, item) {
+                        str += `
+                                    <tr>
+                                        <td>${item.ProvinceName}</td>
+                                        <td>${result.data.PlantCount[i]}</td>
+                                        <td>${result.data.ProCount[i]}</td>
+                                        <td>${result.data.MoveCount[i]}</td>
+                                        <td>${result.data.FoodCount[i]}</td>
+                                        <td>${result.data.UnitCount[i]}</td>
+                                        <td>${result.data.SmallCount[i]}</td>
+                                    </tr>`;
+                    });
+                    $("tbody").html(str);
+                }
+            });
+            //追数码生成数量统计
+            controller.ajax({
+                url: "Function/GetCreateTagList",
+                data: {},
+                async: false,
+                success: function (result) {
+                    $.each(result.data, function (i, obj) {
+                        if (obj.CompanyType == 10) {
+                            $("#zz").html(obj.Sum);
+                        } else if (obj.CompanyType == 20) {
+                            $("#yz").html(obj.Sum);
+                        } else if (obj.CompanyType == 30) {
+                            $("#sc").html(obj.Sum);
+                        } else if (obj.CompanyType == 40) {
+                            $("#lt").html(obj.Sum);
+                        }
+                    });
+                }
+            });
+        },
+        InitEvents: function () {
+
         }
-        $(document).ready(function () {
-            options.Init();
-        });
-    </script>
+    }
+    $(document).ready(function () {
+        options.Init();
+    });
+</script>
 }
-<div class="row">
-    <div class="col-sm-3">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>饼状图</h5>
-                <div class="ibox-tools">
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
-                    <a class="close-link">
-                        <i class="fa fa-times"></i>
-                    </a>
+<div class="wrapper wrapper-content">
+    <!--第一行-->
+    <div class="row row1">
+        <div class="col-sm-3 item">
+            <div>
+                <div class="left" style="background: #19BE6B;">
+                    <img src="~/Content/Admin/images/admin1.png" />
+                    <p>种植企业</p>
                 </div>
-            </div>
-            <div class="ibox-content">
-                <div class="echarts" id="echarts-pie-chart"></div>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-6">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>柱状图</h5>
-                <div class="ibox-tools">
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
-                    <a class="close-link">
-                        <i class="fa fa-times"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="ibox-content">
-                <div class="echarts" id="echarts-bar-chart"></div>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-3">
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="ibox">
-                    <div class="ibox-content">
-                        <h5 class="m-b-md">生产企业追溯码生成数量统计</h5>
-                        <h2 class="text-navy">
-                            <i class="fa fa-play fa-rotate-270"></i><b id="sc"></b>
-                        </h2>
-                        <small>更新时间：今天</small>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="ibox">
-                    <div class="ibox-content">
-                        <h5 class="m-b-md">流通企业追溯码生成数量统计</h5>
-                        <h2 class="text-navy">
-                            <i class="fa fa-play fa-rotate-270"></i><b id="lt"></b>
-                        </h2>
-                        <small>更新时间：今天</small>
-                    </div>
+                <div class="right">
+                    <p id="zz">0</p>
+                    <p>追溯码生成数</p>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="ibox">
-                    <div class="ibox-content">
-                        <h5 class="m-b-md">种植企业追溯码生成数量统计</h5>
-                        <h2 class="text-navy">
-                            <i class="fa fa-play fa-rotate-270"></i> <b id="zz"></b>
-                        </h2>
-                        <small>更新时间：今天</small>
-                    </div>
+        <div class="col-sm-3 item">
+            <div>
+                <div class="left" style="background: #2D8CF0;">
+                    <img src="~/Content/Admin/images/admin2.png" />
+                    <p>养殖企业</p>
+                </div>
+                <div class="right">
+                    <p id="yz">0</p>
+                    <p>追溯码生成数</p>
                 </div>
             </div>
-            <div class="col-sm-6">
-                <div class="ibox">
-                    <div class="ibox-content">
-                        <h5 class="m-b-md">养殖企业追溯码生成数量统计</h5>
-                        <h2 class="text-navy">
-                            <i class="fa fa-play fa-rotate-270"></i><b id="yz"></b>
-                        </h2>
-                        <small>更新时间：今天</small>
-                    </div>
+
+        </div>
+        <div class="col-sm-3 item">
+            <div>
+                <div class="left" style="background: #2D8CF0;">
+                    <img src="~/Content/Admin/images/admin3.png" />
+                    <p>生产企业</p>
+                </div>
+                <div class="right">
+                    <p id="sc">0</p>
+                    <p>追溯码生成数</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 item">
+            <div>
+                <div class="left" style="background: #EC6A4A;">
+                    <img src="~/Content/Admin/images/admin4.png" />
+                    <p>流通企业</p>
+                </div>
+                <div class="right">
+                    <p id="lt">0</p>
+                    <p>追溯码生成数</p>
                 </div>
             </div>
         </div>
     </div>
-    <div class="col-sm-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>区域信息一览</h5>
-                <div class="ibox-tools">
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
-                    <a class="close-link">
-                        <i class="fa fa-times"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="ibox-content">
-                <table class="table table-bordered">
+    <!--第二行-->
+    <div class="row row2">
+        <div class="col-sm-4 item">
+            <div id="echarts-pie-chart"></div>
+        </div>
+        <div class="col-sm-8 item">
+            <div id="echarts-bar-chart"></div>
+        </div>
+    </div>
+    <!--第三行-->
+    <div class="row row3">
+        <div class="col-sm-12 item">
+            <div>
+                <div class="title">区域信息一览表</div>
+                <table>
                     <thead>
                         <tr>
                             <th>区域名称</th>
@@ -215,4 +269,3 @@
         </div>
     </div>
 </div>
-
