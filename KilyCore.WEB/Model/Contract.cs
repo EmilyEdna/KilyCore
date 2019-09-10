@@ -158,5 +158,6 @@ namespace KilyCore.WEB.Model
         public string Version { get; set; }
         public string Down { get; set; }
         public string Fix { get; set; }
+        public string Category { get; set; }
     }
 }

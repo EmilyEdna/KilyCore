@@ -617,18 +617,16 @@ namespace KilyCore.WEB.Util
         /// <returns></returns>
         public static string UploadAPK(IFormFile Files, String WebRootPath)
         {
-            long bytes = Files.Length;
             String RootPath = "/Config/";
             String SavePath = WebRootPath + RootPath;
             if (!Directory.Exists(SavePath))
                 Directory.CreateDirectory(SavePath);
-            String Names = Guid.NewGuid().ToString();
-            using (FileStream fs = File.Create(SavePath + Names+".Apk"))
+            using (FileStream fs = File.Create(SavePath + Files.FileName))
             {
                 Files.CopyTo(fs);
                 fs.Flush();
             }
-            return RootPath + Names + ".Apk";
+            return RootPath + Files.FileName;
         }
     }
 }
