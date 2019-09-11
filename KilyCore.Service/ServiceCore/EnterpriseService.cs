@@ -681,6 +681,12 @@ namespace KilyCore.Service.ServiceCore
             EnterpriseRoleAuthor Author = Kily.Set<EnterpriseRoleAuthor>().Where(t => t.IsDelete == false).Where(t => t.EnterpriseRoleName.Contains("基本")).OrderBy(t => t.CreateTime).FirstOrDefault();
             Param.EnterpriseRoleId = Author.Id;
             EnterpriseInfo Info = Param.MapToEntity<EnterpriseInfo>();
+           var IsReplay =  Kily.Set<EnterpriseInfo>().Where(t => t.CompanyAccount == Param.CompanyAccount).FirstOrDefault();
+            if (IsReplay != null)
+                return "账号已经被注册";
+            var IsReplays = Kily.Set<EnterpriseInfo>().Where(t => t.CompanyName == Param.CompanyName).FirstOrDefault();
+            if (IsReplays != null)
+                return "企业已经注册,请勿重复注册";
             if (!NormalUtil.CheckStringChineseUn(Info.CompanyAccount))
             {
                 if (Insert<EnterpriseInfo>(Info))

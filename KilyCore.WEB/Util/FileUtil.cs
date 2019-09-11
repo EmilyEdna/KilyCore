@@ -585,7 +585,8 @@ namespace KilyCore.WEB.Util
             {
                 FileStream fs = new FileStream(Path, FileMode.OpenOrCreate);
                 StreamWriter sw = new StreamWriter(fs);
-                sw.WriteLine(JsonConvert.SerializeObject(t));
+                ApkVers data = new ApkVers() { data = t };
+                sw.WriteLine(JsonConvert.SerializeObject(data));
                 sw.Close();
                 fs.Close();
             }
@@ -594,13 +595,13 @@ namespace KilyCore.WEB.Util
                 var streams = new FileStream(Path, FileMode.Open);
                 StreamReader reader = new StreamReader(streams);
                 var result = reader.ReadToEnd();
-                var entity = JsonConvert.DeserializeObject<List<ApkVer>>(result);
+                var entity = JsonConvert.DeserializeObject<ApkVers>(result);
                 reader.Close();
                 streams.Close();
                 FileStream fs = File.Open(Path, FileMode.OpenOrCreate, FileAccess.Write);
                 fs.Seek(0, SeekOrigin.Begin);
                 fs.SetLength(0);
-                entity.AddRange(t);
+                entity.data.AddRange(t);
                 StreamWriter sw = new StreamWriter(fs);
                 sw.WriteLine(JsonConvert.SerializeObject(entity));
                 sw.Close();
@@ -617,18 +618,17 @@ namespace KilyCore.WEB.Util
         /// <returns></returns>
         public static string UploadAPK(IFormFile Files, String WebRootPath)
         {
-            long bytes = Files.Length;
             String RootPath = "/Config/";
             String SavePath = WebRootPath + RootPath;
             if (!Directory.Exists(SavePath))
                 Directory.CreateDirectory(SavePath);
-            String Names = Guid.NewGuid().ToString();
-            using (FileStream fs = File.Create(SavePath + Names+".Apk"))
+            var replay = Guid.NewGuid().ToString() + "_";
+            using (FileStream fs = File.Create(SavePath + replay + Files.FileName))
             {
                 Files.CopyTo(fs);
                 fs.Flush();
             }
-            return RootPath + Names + ".Apk";
+            return RootPath + replay + Files.FileName;
         }
     }
 }

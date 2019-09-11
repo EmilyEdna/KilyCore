@@ -32,7 +32,8 @@
                         Fix: $("#Fix").val(),
                         Name: $("#name").val(),
                         Version: $("#secret").val(),
-                        Down: $("#textfield").val()
+                        Down: $("#textfield").val(),
+                        Category: $("#category").val()
                     };
                     $.ajax({
                         url: "/File/ApkVer",
@@ -40,7 +41,8 @@
                         type: "get",
                         dataType: "json",
                         success: function (res) {
-                            alert(res);
+                            $("#result").text(res.data);
+                            $("#result").removeClass("hidden");
                         }
                     });
                 });
@@ -53,6 +55,7 @@
 </head>
 <body>
     <div class="row" style="margin-top: 50px;">
+        <span class="hidden text-danger" id="result" style="margin-left:30px;"></span>
         <form class="form-inline" id="excelForm" action="" method="post" enctype="multipart/form-data">
             <div class="form-group" style="margin-left: 30px">
                 <label for="fileupload">下载地址:</label>
@@ -67,6 +70,10 @@
             <div class="form-group" style="margin-left: 20px">
                 <label for="input_third">版本号：</label>
                 <input type="text" class="form-control" name="Version" id="secret" placeholder="" autocomplete="off">
+            </div>
+            <div class="form-group" style="margin-left: 20px">
+                <label for="input_third">类&nbsp;&nbsp;别：</label>
+                <input type="text" class="form-control" name="Category" id="category" placeholder="" autocomplete="off">
             </div>
             <div class="row" style=" margin-top:50px;margin-left:10px">
                 <div class="form-group" style="margin-left: 20px">

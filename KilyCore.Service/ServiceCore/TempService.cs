@@ -1,8 +1,10 @@
 ﻿using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.EntityFrameWork.Model.Enterprise;
 using KilyCore.EntityFrameWork.Model.Repast;
+using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AutoMapperExtension;
+using KilyCore.Extension.ValidateExtension;
 using KilyCore.Repositories.BaseRepository;
 using KilyCore.Service.ConstMessage;
 using KilyCore.Service.IServiceCore;
@@ -88,7 +90,7 @@ namespace KilyCore.Service.ServiceCore
                 SaveTime = t.SampleTime.Value.ToString("yyyy年MM月dd日"),
                 ReportImg = t.SampleImg,
                 t.Remark
-            }).Take(12).OrderByDescending(o=>o.SaveTime).ToList();
+            }).Take(12).OrderByDescending(o => o.SaveTime).ToList();
         }
         /// <summary>
         /// 废物处理
@@ -106,7 +108,7 @@ namespace KilyCore.Service.ServiceCore
                 ReportImg = t.HandleImg,
                 BadRemark = t.Remark,
                 BadPerson = t.HandleUser
-            }).Take(12).OrderByDescending(o=>o.BadTime).ToList();
+            }).Take(12).OrderByDescending(o => o.BadTime).ToList();
         }
         /// <summary>
         /// 食材供应
@@ -120,8 +122,8 @@ namespace KilyCore.Service.ServiceCore
             {
                 ThingName = t.Theme,
                 Remark = t.Content.Replace("/upload/", "http://system.cfda.vip/upload/"),
-                BuyTime = t.UpTime.Value    
-            }).Take(9).OrderByDescending(o=>o.BuyTime).ToList();
+                BuyTime = t.UpTime.Value
+            }).Take(9).OrderByDescending(o => o.BuyTime).ToList();
         }
         /// <summary>
         /// 周菜谱
@@ -149,8 +151,8 @@ namespace KilyCore.Service.ServiceCore
             return Kily.Set<RepastDraw>().Where(t => t.InfoId == CompanyId).Select(t => new
             {
                 Title = t.DrawUnit,
-                Person=t.DrawUser,
-                Remark = t.Remark.Replace("/upload/","http://system.cfda.vip/upload/").Replace("/editor/", "http://system.cfda.vip/editor/"),
+                Person = t.DrawUser,
+                Remark = t.Remark.Replace("/upload/", "http://system.cfda.vip/upload/").Replace("/editor/", "http://system.cfda.vip/editor/"),
                 DateTime = t.DrawTime.Value
             }).Take(9).ToList();
         }
@@ -190,6 +192,23 @@ namespace KilyCore.Service.ServiceCore
             InviteCode.IsDelete = true;
             UpdateField<EnterpriseInviteCode>(InviteCode, "IsDelete");
             return Convert.ToBase64String(Encoding.Default.GetBytes(InviteCode.InviteCode));
+        }
+        #endregion
+
+        #region 生成活动码
+        public string CreateInviteCode()
+        {
+            EnterpriseInviteCode code = new EnterpriseInviteCode();
+            var Province = Kily.Set<SystemProvince>().ToList();
+            foreach (var item in Province)
+            {
+                code.InviteCode = $"{item.Code}-{DateTime.Now.Millisecond}-{ValidateCode.CreateValidateCode()}";
+                code.UseTypePath = item.Id.ToString();
+                code.EffectiveSt = DateTime.Parse("2019-09-16");
+                code.EffectiveEt = DateTime.Parse("2019-10-15");
+                Insert(code);
+            }
+            return ServiceMessage.INSERTSUCCESS;
         }
         #endregion
     }
