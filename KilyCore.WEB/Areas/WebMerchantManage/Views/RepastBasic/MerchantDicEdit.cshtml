@@ -35,7 +35,7 @@
             },
             //事件
             InitEvents: function () {
-                   $("#check").click(function () {
+                $("#check").click(function () {
                     let ck = $(this).is(":checked");
                     if (ck) {
                         $.getJSON("/Template/Unit.txt", function (res) {
@@ -46,6 +46,8 @@
                             $("#map").html(html);
                         });
                     }
+                    else
+                        $("#map").html('');
                 });
                 //验证
                 controller.ValidateConfirm("#Edit");

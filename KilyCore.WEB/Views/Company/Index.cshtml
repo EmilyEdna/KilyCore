@@ -9,7 +9,6 @@
             Init: function () {
                 this.InitDom();
                 this.InitEvent();
-                this.InitMap();
             },
             InitDom: function () {
                 //视频图片点击事件
@@ -93,9 +92,6 @@
                         controller.Echarts("#echarts-pie-chart-batch", result.data);
                     }
                 });
-            },
-            InitMap: function () {
-
             }
         };
         $(document).ready(function () {
