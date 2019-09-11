@@ -35,6 +35,18 @@
             },
             //事件
             InitEvents: function () {
+                   $("#check").click(function () {
+                    let ck = $(this).is(":checked");
+                    if (ck) {
+                        $.getJSON("/Template/Unit.txt", function (res) {
+                            let html = '';
+                            $.each(res.datas, function (index, item) {
+                                html += '<option value="' + item.key + '"></option>'
+                            });
+                            $("#map").html(html);
+                        });
+                    }
+                });
                 //验证
                 controller.ValidateConfirm("#Edit");
             },
@@ -64,13 +76,14 @@
                     </td>
                     <th><label class="control-label">字典名称<span style="color:red">*</span></label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control required" name="DicName" data-msg-required="请输入字典名称" />
+                        <input type="text" class="form-control required" name="DicName" data-msg-required="请输入字典名称" list="map" />
+                        <datalist id="map"></datalist>
                     </td>
                 </tr>
                 <tr>
                     <th><label class="control-label">字典值<span style="color:red">*</span></label></th>
                     <td class="has-warning" colspan="3">
-                        <input type="text" class="form-control required" name="DicValue" data-msg-required="请输入字典值" />
+                        <input type="text" class="form-control required" name="DicValue" data-msg-required="请输入字典值" list="map" />
                     </td>
                 </tr>
                 <tr>
