@@ -347,6 +347,8 @@ namespace KilyCore.Service.ServiceCore
                 CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
                 AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
                 TableName = t.GetType().Name,
+                InviteCode = t.InviteCode??"-",
+                CreateTime = t.CreateTime.Value,
                 AuditType = t.AuditType
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
