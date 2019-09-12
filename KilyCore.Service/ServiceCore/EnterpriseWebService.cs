@@ -347,13 +347,14 @@ namespace KilyCore.Service.ServiceCore
             EnterpriseInfo data = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
             Param.EnterpriseRoleId = data.EnterpriseRoleId;
             Param.CompanyId = data.CompanyId;
+            Param.InviteCode = data.InviteCode;
             EnterpriseInfo Info = Param.MapToEntity<EnterpriseInfo>();
             //调用远程接口
             if (!string.IsNullOrEmpty(data.InviteCode))
             {
                 if (data.AuditType != AuditEnum.AuditSuccess)
                 {
-                    var InviteCode = System.Text.Encoding.Default.GetString(Convert.FromBase64String(data.InviteCode));
+                    var InviteCode = Encoding.Default.GetString(Convert.FromBase64String(data.InviteCode));
                     string Area = Kily.Set<EnterpriseInviteCode>().Where(t => t.InviteCode == InviteCode).Select(t => t.UseTypePath).FirstOrDefault() ?? "|";
                     if (!data.TypePath.Contains(Area))
                         return "请在邀请码选中区域使用!";
@@ -5135,7 +5136,7 @@ namespace KilyCore.Service.ServiceCore
                 Type = true,
                 DataTitle = new List<string> { "一品一码", "一物一码", "纹理二维码", "扫码次数" },
                 InSideData = null,
-                OutSideData = OutSideData
+                OutSideData = OutSideDatas
             };
             Object obj = new { Series, Goods, Supplier, Sale, dataCount, dataCounts };
             return obj;

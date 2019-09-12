@@ -644,7 +644,11 @@ controller.RemoveDisabled = function (element) {
  * @param {any} 表单数据
  * @param {any} 是否刷新当前页面
  */
-controller.Validate = function (element, data, isRefrsh = false, isRole = false) {
+controller.Validate = function (element, data, isRefrsh, isRole) {
+    if (isRefrsh == undefined)
+        isRefrsh = false;
+    if (isRole == undefined)
+        isRole = false;
     return $(element).validate({
         meta: 'validate',
         ignore: [],

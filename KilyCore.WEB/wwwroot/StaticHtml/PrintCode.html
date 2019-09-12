@@ -16,7 +16,7 @@
         var option = {
             Init: function () {
                 option.s = Number(controller.GetParam("S"));
-                option.c = controller.GetParam("H");
+                option.c = decodeURI(controller.GetParam("H"));
                 option.n = controller.GetParam("N");
                 option.k = controller.GetParam("K");
                 option.t = Number(controller.GetParam("T"));
@@ -42,23 +42,39 @@
                                 flag = false;
                             }
                         });
-                    var html = `<div class="wrap" id="page${i}">
-                                                    <div class="left">
-                                                        <p>产品名称：<span>${option.ProName}</span></p>
-                                                        <p>入库批次：<span>${option.n}</span></p>
-                                                        <p>等&emsp;&emsp;级：<span>${option.LvName}</span></p>
-                                                        <p>保&nbsp;质&nbsp;期 ：<span>${option.Ex}</span></p>
-                                                        <p>储藏条件：<span>${option.Type}</span></p>
-                                                        <p>生产时间：<span>${option.Time}</span></p>
-                                                        <p>产&emsp;&emsp;地：<span>${$.parseJSON(localStorage.CompanyUser).CompanyAddress}</span></p>
-                                                    </div>
-                                                    <div class="right">
-                                                        <img src="StaticImg/TagFlag.png" width="156" height="146" style="margin-top: 16px">
-                                                        <div id="code_${i}" width="160" height="160"></div>
+                    //var html = `<div class="wrap" id="page${i}">
+                    //                                <div class="left">
+                    //                                    <p>产品名称：<span>${option.ProName}</span></p>
+                    //                                    <p>入库批次：<span>${option.n}</span></p>
+                    //                                    <p>等&emsp;&emsp;级：<span>${option.LvName}</span></p>
+                    //                                    <p>保&nbsp;质&nbsp;期 ：<span>${option.Ex}</span></p>
+                    //                                    <p>储藏条件：<span>${option.Type}</span></p>
+                    //                                    <p>生产时间：<span>${option.Time}</span></p>
+                    //                                    <p>产&emsp;&emsp;地：<span>${$.parseJSON(localStorage.CompanyUser).CompanyAddress}</span></p>
+                    //                                </div>
+                    //                                <div class="right">
+                    //                                    <img src="StaticImg/TagFlag.png" width="156" height="146" style="margin-top: 16px">
+                    //                                    <div id="code_${i}" width="160" height="160"></div>
 
-                                                        <p>溯源编码：<span>${FullCode}</span></p>
-                                                    </div>
-                                                </div>`
+                    //                                    <p>溯源编码：<span>${FullCode}</span></p>
+                    //                                </div>
+                    //                            </div>`
+                    var html = '<div class="wrap" id="page'+i+'">'
+                                                    +'<div class="left">'
+                                                        +'<p>产品名称：<span>'+option.ProName+'</span></p>'
+                                                        +'<p>入库批次：<span>'+option.n+'</span></p>'
+                                                        +'<p>等&emsp;&emsp;级：<span>'+option.LvName+'</span></p>'
+                                                        +'<p>保&nbsp;质&nbsp;期 ：<span>'+option.Ex+'</span></p>'
+                                                        +'<p>储藏条件：<span>'+option.Type+'</span></p>'
+                                                        +'<p>生产时间：<span>'+option.Time+'</span></p>'
+                                                        +'<p>产&emsp;&emsp;地：<span>'+$.parseJSON(localStorage.CompanyUser).CompanyAddress+'</span></p>'
+                                                    +'</div>'
+                                                    +'<div class="right">'
+                                                        +'<img src="StaticImg/TagFlag.png" width="156" height="146" style="margin-top: 16px">'
+                                                        +'<div id="code_'+i+'" width="160" height="160"></div>'
+                                                        +'<p>溯源编码：<span>'+FullCode+'</span></p>'
+                                                    +'</div>'
+                                                +'</div>'
                     $("body").append(html);
                     controller.QRCode("#code_" + i, {
                         text: "http://phone.cfda.vip/newphone/codeindex.html?id=&Code=" + FullCode,

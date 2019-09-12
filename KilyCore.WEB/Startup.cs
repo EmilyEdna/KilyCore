@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace KilyCore.WEB
 {
@@ -15,7 +16,7 @@ namespace KilyCore.WEB
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration; 
+            Configuration = configuration;
             GetSystemConfiger();
         }
 
@@ -41,6 +42,13 @@ namespace KilyCore.WEB
             }
 
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                ContentTypeProvider = new FileExtensionContentTypeProvider(new Dictionary<string, string>
+                {
+                      { ".apk", "application/vnd.android.package-archive" }
+                })
+            });
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
@@ -63,6 +71,6 @@ namespace KilyCore.WEB
             Configer.WebHost = Configuration["Host:WebHost"];
             Configer.WebHostClass = Configuration["Host:WebHostClass"];
             Configer.WebHostBox = Configuration["Host:WebHostBox"];
-        } 
+        }
     }
 }

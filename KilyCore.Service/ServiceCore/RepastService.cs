@@ -551,6 +551,12 @@ namespace KilyCore.Service.ServiceCore
             RepastRoleAuthor Author = Kily.Set<RepastRoleAuthor>().Where(t => t.IsDelete == false).Where(t => t.AuthorName.Contains("基本")).OrderBy(t => t.CreateTime).FirstOrDefault();
             Param.DingRoleId = Author.Id;
             RepastInfo Info = Param.MapToEntity<RepastInfo>();
+            var IsReplay = Kily.Set<RepastInfo>().Where(t => t.Account == Param.Account).FirstOrDefault();
+            if (IsReplay != null)
+                return "账号已经被注册";
+            var IsReplays = Kily.Set<RepastInfo>().Where(t => t.MerchantName == Param.MerchantName).FirstOrDefault();
+            if (IsReplays != null)
+                return "企业已经注册,请勿重复注册";
             if (!NormalUtil.CheckStringChineseUn(Info.Account))
             {
                 if (Insert<RepastInfo>(Info))

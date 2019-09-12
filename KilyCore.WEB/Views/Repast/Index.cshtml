@@ -269,6 +269,11 @@
                         $(".content .right .right-item1 .bd").html(str);
                     }
                 });
+                //点击图片放大
+                $(".bd img").each(function (i, item) {
+                     var img = $(this);
+                     $(this).removeAttr("width").removeAttr("height").wrap("<a href='" + $(this).attr("src") + "' target='_blank'></a>");
+                });
             },
             //暂未用到的其他请求函数
             InitEventOther: function () {

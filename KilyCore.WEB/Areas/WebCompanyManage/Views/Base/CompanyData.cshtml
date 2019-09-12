@@ -78,6 +78,12 @@
                             url: "WebCompanyManage/Base/CompanyDataEdit?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
+                                controller.Msg("资料更新完成，即将退出系统，请重新登录!");
+                                setTimeout(function () {
+                                    controller.ClearLocal();
+                                    controller.DeleteCookie();
+                                    controller.SetHref("/Company/Login");
+                                }, 3000);
                             }
                         })
                     },

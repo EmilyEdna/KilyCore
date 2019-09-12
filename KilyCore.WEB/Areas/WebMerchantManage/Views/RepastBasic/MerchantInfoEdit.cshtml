@@ -15,7 +15,6 @@
             },
             //元素
             InitDom: function () {
-
                 controller.LayDate({ elem: "input[name='CardExpiredDate']", max: controller.GetDate(10) });
                 options.Editor = controller.Editor(".summernote");
                 options.GetCompanyInfo();
@@ -235,6 +234,17 @@
                     <td class="has-warning">
                         <input type="text" class="form-control" name="ComplainPhone">
                     </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">营业范围</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SaleScope">
+                    </td>
+                    <th><label class="control-label">营业时间</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="SaleTime" placeholder="例如:9:00-5:30或者早上9点至下午5点30分">
+                    </td>
+                </tr>
                 <tr>
                     <th><label class="control-label">商家介绍</label></th>
                     <td class="has-warning" colspan="3">

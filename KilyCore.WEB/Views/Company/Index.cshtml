@@ -3,115 +3,104 @@
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
-<script src="http://api.map.baidu.com/api?v=2.0&ak=3ce7ddfda60046708248ea55e10b1435"></script>
-<script src="~/Content/MetisMenu/Script/metisMenu.js"></script>
-<script>
-    var option = {
-        Init: function () {
-            this.InitDom();
-            this.InitEvent();
-            this.InitMap();
-        },
-        InitDom: function () {
-            //视频图片点击事件
-            $(".item2 .content2 img").on("click", function () {
-                controller.OpenWindow({
-                    title: "视频播放",
-                    type: 2,
-                    btn: [],
-                    maxmin: false,
-                    height: "480px",
-                    width: "520px",
-                    url: "StaticHtml/PlayVedio.html?addr=" + $(this).attr("Vedio") + "&cover=" + $(this).attr("src"),
-                    callBack: function (result) {
-                        result.popClose();
+    <script src="http://api.map.baidu.com/api?v=2.0&ak=3ce7ddfda60046708248ea55e10b1435"></script>
+    <script>
+        var option = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvent();
+            },
+            InitDom: function () {
+                //视频图片点击事件
+                $(".item2 .content2 img").on("click", function () {
+                    controller.OpenWindow({
+                        title: "视频播放",
+                        type: 2,
+                        btn: [],
+                        maxmin: false,
+                        height: "480px",
+                        width: "520px",
+                        url: "StaticHtml/PlayVedio.html?addr=" + $(this).attr("Vedio") + "&cover=" + $(this).attr("src"),
+                        callBack: function (result) {
+                            result.popClose();
+                        }
+                    });
+                });
+                //关闭视频窗口
+                $("#center-video .shut").on("click", function () {
+                    $("#center-video").css({ display: "none" });
+                });
+                //获取视频
+                controller.ajax({
+                    url: "EnterpriseWeb/GetVedioPage",
+                    data: { pageSize: 4, pageNumber: 1, QueryParam: { IsIndex: true } },
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        if (result.data.rows.length == 0) {
+                            $(".item2 .content2").html("暂无视频");
+                        } else {
+                            $(".item2 .content2 img").each(function (i, obj) {
+                                if (result.data.rows[i].VedioCover == undefined || result.data.rows[i].VedioCover == null) {
+                                    result.data.rows[i].VedioCover = "http://system.cfda.vip/Content/HPlus/img/Nopic.jpg";
+                                }
+                                if (result.data.rows[i] != undefined)
+                                    $(this).attr("title", result.data.rows[i].VedioName).attr("vedio", result.data.rows[i].VedioAddr).attr("src", result.data.rows[i].VedioCover);
+                            });
+                        }
                     }
                 });
-            });
-            //关闭视频窗口
-            $("#center-video .shut").on("click", function () {
-                $("#center-video").css({ display: "none" });
-            });
-            //获取视频
-            controller.ajax({
-                url: "EnterpriseWeb/GetVedioPage",
-                data: { pageSize: 4, pageNumber: 1, QueryParam: { IsIndex: true } },
-                async: false,
-                type: "post",
-                success: function (result) {
-                    if (result.data.rows.length == 0) {
-                        $(".item2 .content2").html("暂无视频");
-                    } else {
-                        $(".item2 .content2 img").each(function (i, obj) {
-                            if (result.data.rows[i].VedioCover == undefined || result.data.rows[i].VedioCover == null) {
-                                result.data.rows[i].VedioCover = "http://system.cfda.vip/Content/HPlus/img/Nopic.jpg";
-                            }
-                            if (result.data.rows[i] != undefined)
-                                $(this).attr("title", result.data.rows[i].VedioName).attr("vedio", result.data.rows[i].VedioAddr).attr("src", result.data.rows[i].VedioCover);
-                        });
+            },
+            InitEvent: function () {
+                //数据统计
+                controller.ajax({
+                    url: "EnterpriseWeb/GetDataCount",
+                    data: { Id: CompanyInfo.Id },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        controller.SetLableValue(".content3", result.data);
+                        controller.Echarts("#echarts-pie-chart-safe", result.data.dataCount);
+                        controller.Echarts("#echarts-pie-chart-source", result.data.dataCounts);
+                        //动态设置进度条宽度
+                        let sum = $(".content3").width(); //进度条总宽度
+                        let sum1 = 0.01; //进度条的0.01代表1
+                        let sum2 = 0.1;//进度条的0.1代表1
+                        $(".content3 .product:first .bar").css({ width: result.data.Series*sum*sum1});
+                        $(".content3 .product:last .bar").css({ width: result.data.Goods*sum*sum1});
+                        $(".content3 .business:first .bar").css({ width: result.data.Supplier*sum*sum2});
+                        $(".content3 .business:last .bar").css({ width: result.data.Sale*sum*sum2});
                     }
-                }
-            });
-            //常用功能点击事件
-            $("#CommonFunction a").on("click", function () {
-                let node = $(this)
-                console.log(node)
-            });
-        },
-        InitEvent: function () {
-            //数据统计
-            controller.ajax({
-                url: "EnterpriseWeb/GetDataCount",
-                data: { Id: CompanyInfo.Id },
-                type: "post",
-                async: false,
-                success: function (result) {
-                    controller.SetLableValue(".content3", result.data);
-                    controller.Echarts("#echarts-pie-chart-safe", result.data.dataCount);
-                    controller.Echarts("#echarts-pie-chart-source", result.data.dataCounts);
-                    //动态设置进度条宽度
-                    let sum = $(".content3").width(); //进度条总宽度
-                    let sum1 = 0.01; //进度条的0.01代表1
-                    let sum2 = 0.1;//进度条的0.1代表1
-                    $(".content3 .product:first .bar").css({ width: result.data.Series * sum * sum1 });
-                    $(".content3 .product:last .bar").css({ width: result.data.Goods * sum * sum1 });
-                    $(".content3 .business:first .bar").css({ width: result.data.Supplier * sum * sum2 });
-                    $(".content3 .business:last .bar").css({ width: result.data.Sale * sum * sum2 });
-                }
-            });
-            //产量统计
-            controller.ajax({
-                url: "EnterpriseWeb/GetPieCount",
-                data: { Id: CompanyInfo.Id },
-                type: "post",
-                async: false,
-                success: function (result) {
-                    controller.SetLableValue(".section1", result.data);
-                }
-            });
-            //批次统计
-            controller.ajax({
-                url: "EnterpriseWeb/GetPieCountBatch",
-                data: { Id: CompanyInfo.Id },
-                type: "post",
-                async: false,
-                success: function (result) {
-                    controller.Echarts("#echarts-pie-chart-batch", result.data);
-                }
-            });
-        },
-        InitMap: function () {
-
-        }
-    };
-    $(document).ready(function () {
-        option.Init();
-    });
-</script>
+                });
+                //产量统计
+                controller.ajax({
+                    url: "EnterpriseWeb/GetPieCount",
+                    data: { Id: CompanyInfo.Id },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        controller.SetLableValue(".section1", result.data);
+                    }
+                });
+                //批次统计
+                controller.ajax({
+                    url: "EnterpriseWeb/GetPieCountBatch",
+                    data: { Id: CompanyInfo.Id },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        controller.Echarts("#echarts-pie-chart-batch", result.data);
+                    }
+                });
+            }
+        };
+        $(document).ready(function () {
+            option.Init();
+        });
+    </script>
 }
 @section css{
-<link href="~/Content/Company/css/company.css" rel="stylesheet" />
-<link href="~/Content/MetisMenu/Css/metisMenu.css" rel="stylesheet" />
+    <link href="~/Content/Company/css/company.css" rel="stylesheet" />
 }
 <form id="Edit">
     <!--第一个区域-->
@@ -176,12 +165,8 @@
                 <div></div>
                 常用功能
             </div>
-            <div class="content content1" id="CommonFunction">
-                <a href="javascript:void(0)" class="J_menuTab" data-id="/WebCompanyManage/Base/UserManage">
-                    <img src="~/Content/Company/images/firm_cygn1.png" />
-                    <p>人员管理</p>
-                </a>
-                @*<a href="/WebCompanyManage/Base/UserManage">
+            <div class="content content1">
+                <a href="/WebCompanyManage/Base/UserManage">
                     <img src="~/Content/Company/images/firm_cygn1.png" />
                     <p>人员管理</p>
                 </a>
@@ -220,7 +205,7 @@
                 <a href="/WebCompanyManage/Quality/GoodsCheck">
                     <img src="~/Content/Company/images/firm_cygn10.png" />
                     <p>产品质检</p>
-                </a>*@
+                </a>
             </div>
         </div>
         <div class="item item2">
