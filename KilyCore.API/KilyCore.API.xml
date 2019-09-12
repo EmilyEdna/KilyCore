@@ -4316,6 +4316,13 @@
             <param name="Param"></param>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.SendPhoneMsg(KilyCore.Service.QueryExtend.SimpleParam{System.String},KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            发送短信
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
         <member name="M:KilyCore.API.Controllers.SystemController.LoginOut">
             <summary>
             安全退出
