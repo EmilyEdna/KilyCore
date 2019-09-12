@@ -517,6 +517,16 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(RepastWebService.GetMerchantTicketPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
+        /// 台账详情
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetMerchantTicketDetail")]
+        public ObjectResultEx GetMerchantTicketDetail(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetMerchantTicketDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 添加凭证
         /// </summary>
         /// <param name="Param"></param>
@@ -922,9 +932,9 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("EditAdditive")]
-        public ObjectResultEx EditAdditive(RequestRepastAdditive Param)
+        public ObjectResultEx SaveAdditive(RequestRepastAdditive Param)
         {
-            return ObjectResultEx.Instance(RepastWebService.EditAdditive(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.SaveAdditive(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 删除添加剂

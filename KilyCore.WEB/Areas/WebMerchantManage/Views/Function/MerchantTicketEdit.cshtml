@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewData["Title"] = "台账详情";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                options.Editor = controller.Editor(".summernote");
+                controller.LayDate({ elem: "input[name='UpTime']" });
+                controller.ajax({
+                    url: "RepastWeb/GetMerchantTicketDetail",
+                    data: { Id: controller.GetParam("Id") },
+                    type: 'post',
+                    success: function (result) {
+                        controller.SetCtrlValue("#Edit", result.data);
+                        options.Editor.summernote('code', result.data.Content);
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+            }
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="RepastWeb/SaveSupplier" id="Edit">
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">主题名称</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Theme">
+                    </td>
+                    <th><label class="control-label">上报日期</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="UpTime">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">内容</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="summernote" name="Content"></div>
+                        <input class="hidden" name="Content" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

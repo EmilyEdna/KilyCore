@@ -566,7 +566,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string DeleteTicket(Guid Id)
         {
-            return Delete<RepastBillTicket>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+            return Remove<RepastBillTicket>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         #endregion
         #region 周菜谱
@@ -644,12 +644,14 @@ namespace KilyCore.Service.ServiceCore
                     PassWord = t.PassWord,
                     CommunityCode = t.CommunityCode,
                     MerchantName = t.MerchantName,
-                    MerchantImage=t.MerchantImage,
+                    MerchantImage = t.MerchantImage,
                     LngAndLat = t.LngAndLat,
                     DiningType = t.DiningType,
                     CardExpiredDate = t.CardExpiredDate,
                     SafeOffer = t.SafeOffer,
                     OfferLv = t.OfferLv,
+                    SaleScope = t.SaleScope,
+                    SaleTime = t.SaleTime,
                     DiningTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
                     Phone = t.Phone,
                     VersionType = t.VersionType,
@@ -960,8 +962,8 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 InfoId = t.InfoId,
                 TrueName = t.TrueName,
-                HealthCard=t.HealthCard,
-                ExpiredTime=t.ExpiredTime,
+                HealthCard = t.HealthCard,
+                ExpiredTime = t.ExpiredTime,
                 Phone = t.Phone,
                 Account = t.Account,
                 IdCard = t.IdCard
@@ -1311,10 +1313,10 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.Select(t => new ResponseRepastSupplier()
             {
                 Id = t.Id,
-                SupplierUser=t.SupplierUser,
+                SupplierUser = t.SupplierUser,
                 LinkPhone = t.LinkPhone,
                 SupplierName = t.SupplierName,
-                RunCard=t.RunCard,
+                RunCard = t.RunCard,
                 Address = t.Address,
             }).ToList();
             return data;
@@ -1416,10 +1418,19 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 Theme = t.Theme,
-                Content=t.Content.Replace("/Upload/","http://system.cfda.vip/Upload/").Replace("<img","<img style='max-width:100%;' "),
+                Content = t.Content.Replace("/Upload/", "http://system.cfda.vip/Upload/").Replace("<img", "<img style='max-width:100%;' "),
                 UpTime = t.UpTime
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
+        }
+        /// <summary>
+        /// 台账详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseBillTicket GetMerchantTicketDetail(Guid Id)
+        {
+            return Kily.Set<RepastBillTicket>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.Id == Id).FirstOrDefault().MapToEntity<ResponseBillTicket>();
         }
         /// <summary>
         /// 添加凭证
@@ -1529,7 +1540,7 @@ namespace KilyCore.Service.ServiceCore
                 Manager = t.Manager
             }).ToList();
 
-            IQueryable<RepastBuybill> Buyqueryable = Kily.Set<RepastBuybill>().Where(t => t.IsDelete == false&&t.CreateTime>DateTime.Now.AddDays(-3)).AsNoTracking();
+            IQueryable<RepastBuybill> Buyqueryable = Kily.Set<RepastBuybill>().Where(t => t.IsDelete == false && t.CreateTime > DateTime.Now.AddDays(-3)).AsNoTracking();
             if (!string.IsNullOrEmpty(pageParam.QueryParam.GoodsName))
                 Buyqueryable = Buyqueryable.Where(t => t.GoodsName.Contains(pageParam.QueryParam.GoodsName));
             if (MerchantInfo() != null)
@@ -1551,14 +1562,15 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
 
             var List = new List<dynamic>();
-            foreach(var item in data)
+            foreach (var item in data)
             {
-                List.Add(new {
+                List.Add(new
+                {
                     Id = item.Id,
-                    GoodsName =item.GoodsName,
+                    GoodsName = item.GoodsName,
                     GoodsNum = item.GoodsNum,
                     LinkPhone = "",
-                    Type="销售",
+                    Type = "销售",
                     Purchase = "",
                     Unit = "",
                     ToPay = item.ToPay,
@@ -1693,7 +1705,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 FoodMenuName = t.FoodMenuName,
-                Content=t.Content.Replace("<img","<img style='max-width:100%' ").Replace("/Upload","http://system.cfda.vip/Upload"),
+                Content = t.Content.Replace("<img", "<img style='max-width:100%' ").Replace("/Upload", "http://system.cfda.vip/Upload"),
                 UpTime = t.UpTime,
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -2024,7 +2036,7 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        public string EditAdditive(RequestRepastAdditive Param)
+        public string SaveAdditive(RequestRepastAdditive Param)
         {
             RepastAdditive additive = Param.MapToEntity<RepastAdditive>();
             if (Param.Id == Guid.Empty)
@@ -3165,9 +3177,9 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 ComplainUser = t.ComplainUser,
-                ComplainContent=t.ComplainContent,
-                ComplainUserPhone=t.ComplainUserPhone,   
-                HandlerContent=t.HandlerContent,                
+                ComplainContent = t.ComplainContent,
+                ComplainUserPhone = t.ComplainUserPhone,
+                HandlerContent = t.HandlerContent,
                 Status = t.Status,
                 ComplainTime = t.ComplainTime
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -3200,6 +3212,6 @@ namespace KilyCore.Service.ServiceCore
         }
         #endregion
 
-       
+
     }
 }

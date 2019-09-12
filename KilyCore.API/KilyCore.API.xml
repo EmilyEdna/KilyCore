@@ -3556,6 +3556,13 @@
             <param name="pageParam"></param>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetMerchantTicketDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            台账详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
         <member name="M:KilyCore.API.Controllers.RepastWebController.EditTheme(KilyCore.DataEntity.RequestMapper.Repast.RequestBillTicket)">
             <summary>
             添加凭证
@@ -3815,7 +3822,7 @@
             <param name="pageParam"></param>
             <returns></returns>
         </member>
-        <member name="M:KilyCore.API.Controllers.RepastWebController.EditAdditive(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastAdditive)">
+        <member name="M:KilyCore.API.Controllers.RepastWebController.SaveAdditive(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastAdditive)">
             <summary>
             编辑添加剂
             </summary>

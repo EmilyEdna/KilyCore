@@ -79,7 +79,7 @@
                             url: "WebMerchantManage/RepastBasic/Payment?Id=" + row.Id + "&TypePath=" + row.TypePath + "&MerchantName=" + row.MerchantName,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
-                                controller.Msg("即将退出登录");
+                                 controller.Msg("资料更新完成，即将退出系统，请重新登录!");
                                 setTimeout(function () {
                                     controller.ClearLocal();
                                     controller.DeleteCookie();

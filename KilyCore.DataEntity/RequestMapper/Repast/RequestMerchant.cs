@@ -33,6 +33,8 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
         public string Area { get; set; }
         public string Town { get; set; }
         public string LngAndLat { get; set; }
+        public string SaleScope { get; set; }
+        public string SaleTime { get; set; }
         public string TypePath
         {
             get
