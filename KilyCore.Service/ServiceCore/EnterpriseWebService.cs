@@ -347,6 +347,7 @@ namespace KilyCore.Service.ServiceCore
             EnterpriseInfo data = Kily.Set<EnterpriseInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
             Param.EnterpriseRoleId = data.EnterpriseRoleId;
             Param.CompanyId = data.CompanyId;
+            Param.InviteCode = data.InviteCode;
             EnterpriseInfo Info = Param.MapToEntity<EnterpriseInfo>();
             //调用远程接口
             if (!string.IsNullOrEmpty(data.InviteCode))

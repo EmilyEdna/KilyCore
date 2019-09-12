@@ -105,6 +105,7 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 台账凭证
         PagedResult<ResponseBillTicket> GetMerchantTicketPage(PageParamList<RequestBillTicket> pageParam);
+        ResponseBillTicket GetMerchantTicketDetail(Guid Id);
         String EditTheme(RequestBillTicket Param);
         String DeleteTicket(Guid Id);
         #endregion
@@ -163,7 +164,7 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 添加剂管理
         PagedResult<ResponseRepastAdditive> GetAdditivePage(PageParamList<RequestRepastAdditive> pageParam);
-        String EditAdditive(RequestRepastAdditive Param);
+        String SaveAdditive(RequestRepastAdditive Param);
         String RemoveAdditive(Guid Id);
         ResponseRepastAdditive GetAdditiveDetail(Guid Id);
         #endregion
@@ -249,7 +250,6 @@ namespace KilyCore.Service.IServiceCore
         String SaveUnitInsRecord(RequestRepastUnitInsRecord Param);
         ReponseRepastUnitInsRecord GetUnitInsRecordDetail(Guid Id);
         #endregion
-
         #region APP接口
         PagedResult<ResponseGovtRisk> GetWaringRiskPage(PageParamList<RequestGovtRisk> pageParam);
         PagedResult<ResponseGovtComplain> GetComplainPage(PageParamList<RequestGovtComplain> pageParam);

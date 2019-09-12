@@ -16,9 +16,9 @@
             },
             //元素
             InitDom: function () {
-                controller.Editor(".summernote", { width: 1000 });
+                options.Editor = controller.Editor(".summernote", { width: 1000 });
                 controller.LayDate({ elem: "input[name='UpTime']" });
-                 $("input[name='InfoId']").val(RepastUser.Id);
+                $("input[name='InfoId']").val(RepastUser.Id);
                 //恢复高度
                 $(window).resize(function (e) {
                     window.setTimeout(function () {
@@ -40,6 +40,7 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
+                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>详情</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
@@ -54,6 +55,18 @@
                                         options.$table.refresh();
                                     }
                                 });
+                            }
+                        });
+                    },
+                    "click .edit": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "台账详情",
+                            type: 2,
+                            height: "90%",
+                            width: "80%",
+                            url: "WebMerchantManage/Function/MerchantTicketEdit?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.popClose();
                             }
                         });
                     }

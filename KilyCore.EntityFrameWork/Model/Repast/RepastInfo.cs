@@ -19,6 +19,14 @@ namespace KilyCore.EntityFrameWork.Model.Repast
         /// </summary>
         public virtual Guid? InfoId { get; set; }
         /// <summary>
+        /// 营业范围
+        /// </summary>
+        public virtual string SaleScope { get; set; }
+        /// <summary>
+        /// 营业时间
+        /// </summary>
+        public virtual string SaleTime { get; set; }
+        /// <summary>
         /// 账号
         /// </summary>
         public virtual string Account { get; set; }
