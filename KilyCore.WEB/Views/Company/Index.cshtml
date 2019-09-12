@@ -11,6 +11,12 @@
                 this.InitEvent();
             },
             InitDom: function () {
+                //初始化显示
+                if (CompanyInfo.CompanyType == "40" || CompanyInfo.CompanyType == "50") {
+                    $(".title").each(function (i,item) {
+                         $(this).html($(this).html().replace(new RegExp("产量", "g"), "销量"));
+                    })
+                }   
                 //视频图片点击事件
                 $(".item2 .content2 img").on("click", function () {
                     controller.OpenWindow({
