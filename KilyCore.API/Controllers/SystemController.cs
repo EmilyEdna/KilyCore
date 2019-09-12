@@ -211,6 +211,18 @@ namespace KilyCore.API.Controllers
             //return ObjectResultEx.Instance(Code, 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
+        /// 发送短信
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpGet("SendPhoneMsg")]
+        [AllowAnonymous]
+        public ObjectResultEx SendPhoneMsg(SimpleParam<String> Phone,SimpleParam<String> Msg)
+        {
+            return ObjectResultEx.Instance(PhoneSMS.SendPhoneMsg(Phone.Id, Msg.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            //return ObjectResultEx.Instance(Code, 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 安全退出
         /// </summary>
         /// <returns></returns>

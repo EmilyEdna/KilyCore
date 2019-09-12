@@ -46,7 +46,7 @@
                             type: 2,
                             height: "90%",
                             width: "80%",
-                            url: "StaticHtml/PrintCode.html?S=" + row.StarSerialNo + "&T=" + row.UseNum + "&N=" + row.StockNo + "&K=" + row.StockStutas.Id+"&H="+CompanyInfo.CodeStar,
+                            url: encodeURI("StaticHtml/PrintCode.html?S=" + row.StarSerialNo + "&T=" + row.UseNum + "&N=" + row.StockNo + "&K=" + row.StockStutas.Id + "&H=" + CompanyInfo.CodeStar),
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }
