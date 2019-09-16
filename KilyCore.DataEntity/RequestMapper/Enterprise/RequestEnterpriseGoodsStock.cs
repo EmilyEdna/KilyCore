@@ -58,6 +58,8 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
     }
     public class RequestEnterpriseGoodsStockAttach
     {
+        public string Star { get; set; }
+        public string End { get; set; }
         public string GoodsName { get; set; }
         public Guid Id { get; set; }
         public Guid CompanyId { get; set; }

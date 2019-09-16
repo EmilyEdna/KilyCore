@@ -180,7 +180,7 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseInfo> queryables = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.CompanyName))
                 queryables = queryables.Where(t => t.CompanyName.Contains(pageParam.QueryParam.CompanyName));
-            var data = queryables.OrderBy(t => t.CreateTime).GroupJoin(queryable, t => t.EnterpriseRoleId, x => x.Id, (t, x) => new ResponseEnterpriseRoleAuthor()
+            var data = queryables.OrderByDescending(t => t.CreateTime).GroupJoin(queryable, t => t.EnterpriseRoleId, x => x.Id, (t, x) => new ResponseEnterpriseRoleAuthor()
             {
                 Id = t.Id,
                 EnterpriseRoleId = x.FirstOrDefault().Id,

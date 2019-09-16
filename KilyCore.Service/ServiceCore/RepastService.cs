@@ -61,6 +61,7 @@ namespace KilyCore.Service.ServiceCore
                 Phone = t.Phone,
                 Email = t.Email,
                 TypePath = t.TypePath,
+                InviteCode=t.InviteCode??"-",
                 TableName = t.GetType().Name
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;

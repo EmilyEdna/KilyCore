@@ -58,5 +58,9 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
         /// </summary>
         public string MerchantSafeLv { get; set; }
         public string ComplainPhone { get; set; }
+        /// <summary>
+        /// 邀请码
+        /// </summary>
+        public string InviteCode { get; set; }
     }
 }

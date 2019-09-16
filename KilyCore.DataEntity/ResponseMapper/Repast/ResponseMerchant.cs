@@ -35,6 +35,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         public string IdCard { get; set; }
         public string Honor { get; set; }
         public bool IsPayContract { get; set; }
+        /// <summary>
+        /// 邀请码
+        /// </summary>
+        public string InviteCode { get; set; }
         public string Province
         {
             get

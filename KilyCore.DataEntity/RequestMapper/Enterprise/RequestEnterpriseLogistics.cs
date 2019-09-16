@@ -92,6 +92,8 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// 箱码
         /// </summary>
         public string BoxCode { get; set; }
+        public string End { get; set; }
+        public string Star { get; set; }
         /// <summary>
         /// 企业类型
         /// </summary>

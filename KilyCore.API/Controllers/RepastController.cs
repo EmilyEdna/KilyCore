@@ -285,6 +285,8 @@ namespace KilyCore.API.Controllers
                         VerificationExtension.WriteToken(cookie, RepAdmin);
                         return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ResponseCookieInfo.RSASysKey, RepAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
                     }
+                    else if (RepAdmin == null)
+                        return ObjectResultEx.Instance(null, -1, "请检查用户名和密码是否正确", HttpCode.NoAuth);
                     else if (!Code.ToUpper().Equals(LoginValidate.ValidateCode.Trim().ToUpper()))
                         return ObjectResultEx.Instance(null, -1, "验证码错误", HttpCode.NoAuth);
                     else
