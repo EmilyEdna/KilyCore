@@ -130,5 +130,9 @@ namespace KilyCore.EntityFrameWork.Model.Repast
         /// 投诉电话
         /// </summary>
         public virtual string ComplainPhone { get; set; }
+        /// <summary>
+        /// 邀请码
+        /// </summary>
+        public virtual string InviteCode { get; set; }
     }
 }

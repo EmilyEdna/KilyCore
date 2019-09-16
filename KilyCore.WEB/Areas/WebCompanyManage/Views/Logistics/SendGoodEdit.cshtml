@@ -124,20 +124,29 @@
             InitType: function () {
                 $("input[type='radio']").click(function () {
                     if ($(this).val() == 1) {
-                        $("#car").css({ display: "table-row" });
-                        $("#one").css({ display: "none" });
-                        $("#box").css({ display: "none" });
-                        $("#model").css({ display: "none" });
+                        $("#car").removeClass("hidden");
+                        $("#one").addClass("hidden");
+                        $("#box").addClass("hidden");
+                        $("#model").addClass("hidden");
+                        $("#last").removeClass("hidden");
                     } else if ($(this).val() == 2) {
-                        $("#box").css({ display: "table-row" });
-                        $("#car").css({ display: "none" });
-                        $("#one").css({ display: "none" });
-                        $("#model").css({ display: "table-row" });
+                        $("#box").removeClass("hidden");
+                        $("#car").addClass("hidden");
+                        $("#one").addClass("hidden");
+                        $("#model").removeClass("hidden");
+                        $("#last").removeClass("hidden");
+                    } else if ($(this).val() == 3) {
+                        $("#one").removeClass("hidden");
+                        $("#car").addClass("hidden");
+                        $("#box").addClass("hidden");
+                        $("#model").removeClass("hidden");
+                        $("#last").removeClass("hidden");
                     } else {
-                        $("#one").css({ display: "table-row" });
-                        $("#car").css({ display: "none" });
-                        $("#box").css({ display: "none" });
-                        $("#model").css({ display: "table-row" });
+                        $("#one").addClass("hidden");
+                        $("#car").addClass("hidden");
+                        $("#box").addClass("hidden");
+                        $("#model").removeClass("hidden");
+                        $("#last").removeClass("hidden");
                     }
                 });
             }
@@ -171,6 +180,10 @@
                         <label class="radio-inline">
                             <input type="radio" name="SendType" value="3" style="margin-top:3px" />
                             <text title="追溯码发货方式">追溯码发货方式</text>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="SendType" value="4" style="margin-top:3px" />
+                            <text title="区间段码">区间段码</text>
                         </label>
                     </td>
                 </tr>
@@ -228,19 +241,29 @@
                         <input type="text" class="form-control" name="Traffic" />
                     </td>
                 </tr>
+                <tr id="last" class="hidden">
+                    <th><label class="control-label">开始号段</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Star" id="Star" placeholder="追溯码前15位或者纹理二维码前11位" />
+                    </td>
+                    <th><label class="control-label">结束号段</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="End" id="End" placeholder="追溯码前15位或者纹理二维码前11位" />
+                    </td>
+                </tr>
                 <tr>
                     <th><label class="control-label">发货地址</label></th>
                     <td class="has-warning" colspan="3">
                         <input type="text" class="form-control" name="SendAddress" />
                     </td>
                 </tr>
-                <tr style="display:none" id="one">
+                <tr class="hidden" id="one">
                     <th><label class="control-label">追溯码</label><span style="color:red">*</span></th>
                     <td class="has-warning" colspan="3">
                         <textarea class="form-control" name="OneCode" rows="30" cols="30" placeholder="最大扫入2000个，建议不要超过4000个"></textarea>
                     </td>
                 </tr>
-                <tr style="display:none" id="box">
+                <tr class="hidden" id="box">
                     <th><label class="control-label">箱码</label><span style="color:red">*</span></th>
                     <td class="has-warning" colspan="3">
                         <textarea class="form-control" name="BoxCode" rows="30" cols="30" placeholder="最大扫入2000个，建议不要超过4000个"></textarea>

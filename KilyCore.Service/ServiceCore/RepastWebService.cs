@@ -6,12 +6,14 @@ using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Govt;
 using KilyCore.DataEntity.ResponseMapper.Repast;
 using KilyCore.DataEntity.ResponseMapper.System;
+using KilyCore.EntityFrameWork.Model.Enterprise;
 using KilyCore.EntityFrameWork.Model.Govt;
 using KilyCore.EntityFrameWork.Model.Repast;
 using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AttributeExtension;
 using KilyCore.Extension.AutoMapperExtension;
+using KilyCore.Extension.OutSideService;
 using KilyCore.Extension.PayCore.AliPay;
 using KilyCore.Extension.PayCore.WxPay;
 using KilyCore.Extension.UtilExtension;
@@ -299,8 +301,42 @@ namespace KilyCore.Service.ServiceCore
             RepastInfo data = Kily.Set<RepastInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
             Param.DingRoleId = data.DingRoleId;
             Param.InfoId = data.InfoId;
-            RepastInfo info = Param.MapToEntity<RepastInfo>();
-            return Update<RepastInfo, RequestMerchant>(info, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+            RepastInfo Info = Param.MapToEntity<RepastInfo>();
+            //调用远程接口
+            if (!string.IsNullOrEmpty(data.InviteCode))
+            {
+                if (data.AuditType != AuditEnum.AuditSuccess)
+                {
+                    var InviteCode = Encoding.Default.GetString(Convert.FromBase64String(data.InviteCode));
+                    string Area = Kily.Set<EnterpriseInviteCode>().Where(t => t.InviteCode == InviteCode).Select(t => t.UseTypePath).FirstOrDefault() ?? "|";
+                    if (!data.TypePath.Contains(Area))
+                        return "请在邀请码选中区域使用!";
+                    //验证信息是否正确
+                    if (!CompanySearchApi.GetOutSideApiSearchApi.CheckCompany(Param.MerchantName, Param.CommunityCode))
+                        return "对不起，您录入的企业名称和社会统一代码不一致！";
+                    //正确才审核和提交合同
+                    Info.AuditType = AuditEnum.AuditSuccess;
+                    RequestStayContract contract = new RequestStayContract()
+                    {
+                        CompanyId = Info.Id,
+                        TypePath = Info.TypePath,
+                        CompanyName = Info.MerchantName,
+                        VersionType = SystemVersionEnum.Base,
+                        ContractYear = "1",
+                        ContractType = 2,
+                        IsFormInviteCode = true
+                    };
+                    SaveContract(contract);
+                    var CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(Info.DiningType);
+                    EnterpriseRoleAuthor Role = Kily.Set<EnterpriseRoleAuthor>().Where(t => t.EnterpriseRoleName.Contains(CompanyType + "基础")).FirstOrDefault();
+                    Info.DingRoleId = Role.Id;
+                }
+            }
+            else
+            {
+                Info.AuditType = AuditEnum.WaitAduit;
+            }
+            return Update<RepastInfo, RequestMerchant>(Info, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
         /// <summary>
         /// 修改账号密码
@@ -3211,7 +3247,5 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         #endregion
-
-
     }
 }

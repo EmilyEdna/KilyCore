@@ -3827,7 +3827,7 @@ namespace KilyCore.Service.ServiceCore
                     }
                 }
             }
-            else
+            else if (Param.CodeType == 2)
             {
                 if (!string.IsNullOrEmpty(Param.SourceCodeNo))
                 {
@@ -3866,7 +3866,7 @@ namespace KilyCore.Service.ServiceCore
                         Param.OutStockNum = OneTag.Count;
                         foreach (var item in OneTag)
                         {
-                            long No = Convert.ToInt64(item.Split("W")[1].Substring(0, 12));
+                            long No = item.Contains("W")?Convert.ToInt64(item.Split("W")[1].Substring(0, 12)): Convert.ToInt64(item.Split("P")[1].Substring(0, 12));
                             TagAttach = TagAttachs.Where(t => t.StarSerialNo <= No && t.EndSerialNo >= No).AsQueryable().AsNoTracking().FirstOrDefault();
                             //判断是否重复使用
                             if (!string.IsNullOrEmpty(TagAttach.UseTag))
@@ -3925,6 +3925,89 @@ namespace KilyCore.Service.ServiceCore
                             TagCount = Param.OutStockNum,
                             Source = "正常出库",
                             Code = OneTag.Count() != 0 ? string.Join(",", OneTag) : string.Join(",", VenTag)
+                        };
+                        Insert<EnterpriseTagUseRecord>(record);
+                        UpdateField(TagAttach, "UseTag");
+                    }
+                }
+            }
+            else {
+                if (!string.IsNullOrEmpty(Param.Star) && !string.IsNullOrEmpty(Param.End)) {
+                    var stockInNo = Kily.Set<EnterpriseGoodsStock>().Where(t => t.Id == Param.StockId).Select(t => t.GoodsBatchNo).FirstOrDefault();
+                    var TagAttachs = Kily.Set<EnterpriseTagAttach>().Where(t => t.StockNo == stockInNo).AsNoTracking().ToList();
+                    EnterpriseTagAttach TagAttach = null;
+                    string UseTag = string.Empty;
+                    string TempTag = string.Empty;
+                    if (Param.Star.Contains("W") || Param.Star.Contains("P"))
+                    {
+                        long SNo = Convert.ToInt64(Regex.Split(Param.Star, "[W|P]")[1]);
+                        long ENo = Convert.ToInt64(Regex.Split(Param.End, "[W|P]")[1]);
+                        String Host = Regex.Split(Param.End, "[W|P]")[0];
+                        TagAttach = TagAttachs.Where(t => t.StarSerialNo <= SNo && t.EndSerialNo >= ENo).AsQueryable().AsNoTracking().FirstOrDefault();
+                        string CodeType = TagAttach.StarSerialNos.Contains("W") ? "W" : "P";
+                        for (long i = SNo; i <= ENo; i++)
+                        {
+                            string item = Host + CodeType + i;
+                            TempTag += item + ",";
+                            //判断是否重复使用
+                            if (!string.IsNullOrEmpty(TagAttach.UseTag))
+                            {
+
+                                if (TagAttach.UseTag.Split(',').Where(t => !string.IsNullOrEmpty(t)).ToList().Contains(item))
+                                    UseTag += item + "|";
+                                else
+                                    TagAttach.UseTag += item + ",";
+                            }
+                            else
+                            {
+                                TagAttach.UseTag += item + ",";
+                            }
+                        }
+                        Param.OutStockNum =(int)(ENo - SNo)+1;
+                    }
+                    else {
+                        long SNo = Convert.ToInt64(Param.Star);
+                        long ENo = Convert.ToInt64(Param.End);
+                        Param.OutStockNum = (int)(ENo - SNo)+1;
+                        TagAttach = TagAttachs.Where(t => t.StarSerialNo <= SNo && t.EndSerialNo >= ENo).AsQueryable().AsNoTracking().FirstOrDefault();
+                        for (long i = SNo; i <= ENo; i++) {
+                            TempTag += i + ",";
+                            //判断是否重复使用
+                            if (!string.IsNullOrEmpty(TagAttach.UseTag))
+                            {
+                                if (TagAttach.UseTag.Split(',').Where(t => !string.IsNullOrEmpty(t)).ToList().Contains(i.ToString()))
+                                    UseTag += i + "|";
+                                else
+                                    TagAttach.UseTag += i + ",";
+                            }
+                            else
+                            {
+                                TagAttach.UseTag += i + ",";
+                            }
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(UseTag))
+                    {
+                        EnterpriseTagUseRecord record = new EnterpriseTagUseRecord
+                        {
+                            CompanyId = Param.CompanyId,
+                            TagUser = CompanyInfo() == null ? CompanyUser().TrueName : CompanyInfo().CompanyName,
+                            TagCount = UseTag.Split('|').Count() - 1,
+                            Source = "重复使用出库异常",
+                            Code = UseTag
+                        };
+                        Insert<EnterpriseTagUseRecord>(record);
+                        return $"号段{UseTag}已经出库，请勿重复出库!";
+                    }
+                    else
+                    {
+                        EnterpriseTagUseRecord record = new EnterpriseTagUseRecord
+                        {
+                            CompanyId = Param.CompanyId,
+                            TagUser = CompanyInfo() == null ? CompanyUser().TrueName : CompanyInfo().CompanyName,
+                            TagCount = Param.OutStockNum,
+                            Source = "正常出库",
+                            Code = TempTag
                         };
                         Insert<EnterpriseTagUseRecord>(record);
                         UpdateField(TagAttach, "UseTag");
@@ -4673,7 +4756,7 @@ namespace KilyCore.Service.ServiceCore
 
                 }
             }
-            else
+            else if (Param.SendType == 3)
             {
                 var VenTag = Regex.Matches(Param.OneCode, "e=\\d{12}").Select(t => Regex.Split(t.Groups[0].Value, "=")[1]).ToList();
                 var HostStar = Regex.Split(Regex.Match(Param.OneCode.Split(",")[0], "e=(.*)?").Groups[1].Value, "[W|P]")[0];
@@ -4741,6 +4824,67 @@ namespace KilyCore.Service.ServiceCore
                 if (!string.IsNullOrEmpty(UseTag))
                     return $"当前号段：{UseTag}，已经被发货使用过，请勿重复使用！";
                 UpdateField(TagAttach, "SendTag");
+            }
+            else {
+                var temp = Param.GoodsName;
+                Param.GoodsName = temp.Split("_")[0];
+                var GoodId = Guid.Parse(temp.Split("_")[1]);
+                var TagAttachs = Kily.Set<EnterpriseTagAttach>().Where(t => t.GoodsId == GoodId).ToList();
+                EnterpriseTagAttach TagAttach = null;
+                string UseTag = string.Empty;
+                string NoBing = string.Empty;
+                String Temp = "http://phone.cfda.vip/NewPhone/CodeIndex.html?Id=&Code=";
+                if (Param.Star.Contains("W") || Param.Star.Contains("P"))
+                {
+                    long SNo = Convert.ToInt64(Regex.Split(Param.Star, "[W|P]")[1]);
+                    long ENo = Convert.ToInt64(Regex.Split(Param.End, "[W|P]")[1]);
+                    String Host = Regex.Split(Param.End, "[W|P]")[0]+(Param.Star.Contains("W")?"W":"P");
+                    Param.SendGoodsNum = (ENo - SNo+1).ToString();
+                    for (long i = SNo; i <= ENo; i++)
+                    {
+                        Param.OneCode += (Temp + Host + i + NormalUtil.CreateRandomNum()+",");
+                        TagAttach = TagAttachs.Where(t => t.StarSerialNo <= SNo && t.EndSerialNo >= i).AsQueryable().AsNoTracking().FirstOrDefault();
+                        if (TagAttach == null)
+                            NoBing += i + "|";
+                        else
+                        {
+                            if (!string.IsNullOrEmpty(TagAttach.SendTag))
+                            {
+                                if (TagAttach.SendTag.Contains(Host + i.ToString()))
+                                    UseTag += (Host + i + "|");
+                                else
+                                    TagAttach.SendTag += (Host + i + ",");
+                            }
+                            else
+                                TagAttach.SendTag += (Host + i + ",");
+                        }
+                    }
+                }
+                else
+                {
+                    long SNo = Convert.ToInt64(Param.Star);
+                    long ENo = Convert.ToInt64(Param.End);
+                    Param.SendGoodsNum = (ENo - SNo+1).ToString();
+                    for (long i = SNo; i <= ENo; i++)
+                    {
+                        Param.OneCode += (Temp + i + NormalUtil.CreateRandomNum() + ",");
+                        TagAttach = TagAttachs.Where(t => t.StarSerialNo <= SNo && t.EndSerialNo >= i).AsQueryable().AsNoTracking().FirstOrDefault();
+                        if (TagAttach == null)
+                            NoBing += i + "|";
+                        else
+                        {
+                            if (!string.IsNullOrEmpty(TagAttach.SendTag))
+                            {
+                                if (TagAttach.SendTag.Contains(i.ToString()))
+                                    UseTag += (i + "|");
+                                else
+                                    TagAttach.SendTag += (i + ",");
+                            }
+                            else
+                                TagAttach.SendTag += (i + ",");
+                        }
+                    }
+                }
             }
             EnterpriseLogistics logistics = Param.MapToEntity<EnterpriseLogistics>();
             return Insert<EnterpriseLogistics>(logistics) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
