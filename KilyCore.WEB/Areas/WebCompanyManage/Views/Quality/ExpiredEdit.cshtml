@@ -21,7 +21,18 @@
                 controller.LayDate({ elem: "#HandleTime" });
                 options.GetUsers();
                 options.GetGoodsList();
-                $("#InferId").val(controller.GetParam("Id"));
+                if (controller.CheckFeild(controller.GetParam("Id")))
+                {
+                    controller.ajax({
+                        url: "EnterpriseWeb/GetInferiorExpriredDetail",
+                        data: { Id: controller.GetParam("Id") },
+                        type: "post",
+                        async: false,
+                        success: function (res) {
+                            controller.SetCtrlValue("#Edit", res.data);
+                        }
+                    });
+                }
             },
             //获取管理员
             GetUsers: function () {
@@ -63,9 +74,7 @@
             InitEvents: function () {
                 //验证
                 controller.ValidateConfirm("#Edit");
-            },
-            //行为
-            action: {}
+            }
         };
         //初始化
         $(document).ready(function () {
