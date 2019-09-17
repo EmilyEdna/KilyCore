@@ -177,21 +177,6 @@
                             color: #666;
                             margin: auto auto
                         }
-
-        .bottom-btn {
-            position: absolute;
-            left: 50%;
-            margin-left: -28px;
-            bottom: -21px;
-            width: 56px;
-            height: 20px;
-            cursor: pointer;
-            background: url(/content/Hplus/img/up_d.png) center center no-repeat;
-            border: 1px solid #dbdbdb;
-            border-top: none;
-            border-radius: 0 0 3px 3px;
-            box-shadow: #999 2px 2px 4px
-        }
     </style>
 }
 @section script{
@@ -203,6 +188,7 @@
             Init: function () {
                 this.InitAddr();
                 this.InitEvents();
+                this.InitDoms();
             },
             InitAddr: function () {
                 if (GovtInfo.IsEdu) {
@@ -266,9 +252,9 @@
                             var myIcon = new BMap.Icon(imgLoction, new BMap.Size(26, 33));
                             options.marker = new BMap.Marker(new BMap.Point(obj.Lng, obj.Lat), { icon: myIcon });
                             options.marker.setTitle(obj.CompanyType);
-                            options.Map.addOverlay(options.marker);               // 将标注添加到地图中
+                            options.Map.addOverlay(options.marker); // 将标注添加到地图中
                             if (obj.CompanyImg == null) obj.CompanyImg = "http://system.cfda.vip/content/HPlus/img/Nopic.jpg";
-                            options.AddClickHandler(obj.Id,obj.Name, obj.Address, obj.CompanyCode, obj.CompanyType, obj.CompanyImg);
+                            options.AddClickHandler(obj.Id, obj.Name, obj.Address, obj.CompanyCode, obj.CompanyType, obj.CompanyImg);
                             if (obj.CompanyUser == null) {
                                 obj.CompanyUser = "-";
                             }
@@ -276,9 +262,9 @@
                                 + '<img src="' + obj.CompanyImg + '">'
                                 + '<div>'
                                 + '<h4>' + obj.Name + '</h4>'
-                                + '<p>负责人：<span id="chargeman">' + obj.CompanyUser + '</span></p>'
-                                + '<p>社会统一代码：<span id="phone">' + obj.CompanyCode + '</span></p>'
-                                + '<p>联系地址：<span id="address">' + obj.Address + '</span></p>'
+                                + '<p>负责人：<span>' + obj.CompanyUser + '</span></p>'
+                                + '<p>社会统一代码：<span>' + obj.CompanyCode + '</span></p>'
+                                + '<p>联系地址：<span>' + obj.Address + '</span></p>'
                                 + '</div>'
                                 + '</li>';
                             //加载列表
@@ -289,10 +275,10 @@
                     }
                 });
             },
-            AddClickHandler: function (id,name, path, code, type, img) {
+            AddClickHandler: function (id, name, path, code, type, img) {
                 options.marker.addEventListener("click", function (e) {
                     var InfoWin = '<table class="table table-bordered" style="width:596px;">' +
-                        '<tr><th>商家名称</th> <td><a href="javascript:Detail('+id+',\"'+name+'\",\"'+type+'\");" style="color:#333">' + name + '</a></td><td rowspan="4" style="width:196px;"><img src="' + img + '" style="height:156px;max-width:196px;"/></td></tr>' +
+                        '<tr><th>商家名称</th> <td><a href="javascript:Detail(' + id + ',\"' + name + '\",\"' + type + '\");" style="color:#333">' + name + '</a></td><td rowspan="4" style="width:196px;"><img src="' + img + '" style="height:156px;max-width:196px;"/></td></tr>' +
                         '<tr><th>商家类型</th><td>' + type + '</td></tr>' +
                         '<tr><th>工商代码</th><td>' + code + '</td></tr>' +
                         '<tr><th>商家地址</th><td>' + path + '</td></tr></table>'
@@ -342,21 +328,42 @@
                 $("#search").click(function () {
 
                 });
-                
+
+            },
+            //右侧停靠栏js
+            InitDoms: function () {
+                //设置右侧停靠栏高度
+                $(".list").attr("style", "height:" + ($(document).height() - 60) + "px");
+                //给左侧按钮注册点击事件，点击时隐藏或显示右侧停靠栏盒子
+                let flag = true;
+                $(".left-btn").on('click', function () {
+                    if (flag == true) {
+                        flag = false;
+                        $('.right-tab').css({
+                            right: -410 + 'px',
+                            transition: 'right 1s'
+                        });
+                        $(this).text("<");
+                    } else {
+                        flag = true;
+                        $('.right-tab').css({
+                            right: 0,
+                            transition: 'right 1s'
+                        });
+                        $(this).text(">");
+                    }
+                });
             }
         };
         //初始化
         $(document).ready(function () {
             options.Init();
         });
-        //提示：下面的代码用jquery，所以如果有不能运行的情况请引用后尝试
+        //提示：下面的代码用jquery，如果有不能运行的情况请引用后尝试
         //百度地图api container对应前端div名称 前端要引用2.0版本的百度地图api
         //需引用api.map.baidu.com/library/AreaRestriction/1.2/src/AreaRestriction_min.js
-
         var blist = [];
         var districtLoading = 0;
-
-
 
         /**
          * 添加行政区划
@@ -437,16 +444,7 @@
                 var ply = new BMap.Polygon(blist[i].points, { strokeWeight: 2, strokeColor: "#FF0000", fillOpacity: 0.01, fillColor: " #FFFFFF" }); //建立多边形覆盖物
                 ply.name = blist[i].name;
                 ply.label = label;
-                //ply.addEventListener("click", click);
-                //ply.addEventListener("mouseover", mouseover);
-                //ply.addEventListener("mouseout", mouseout);
-                //ply.addEventListener("mousemove", mousemove);
                 map.addOverlay(ply);
-
-                //添加名称标签层
-                //var centerlabel = new BMap.Label(blist[i].name, { offset: new BMap.Size(0, 0) });
-                //centerlabel.setPosition(ply.getBounds().getCenter());
-                //map.addOverlay(centerlabel);
 
                 //将点增加到视野范围内
                 var path = ply.getPath();
@@ -504,57 +502,6 @@
             <div id="Area"></div>
             <div>该地区共有&nbsp;<span id="Num">0</span>&nbsp;家企业</div>
         </div>
-        <ul id="CompanyList">
-        </ul>
-        <div class="bottom-btn"></div>
+        <ul id="CompanyList"></ul>
     </div>
 </div>
-<script>
-    $(function () {
-        $(".list").attr("style", "height:" + ($(document).height() - 60) + "px");
-    })
-    // 给左侧按钮注册点击事件，点击时隐藏或显示右侧停靠栏盒子
-    let flag = true;
-    $(".left-btn").on('click', function () {
-        if (flag == true) {
-            flag = false;
-            $('.right-tab').css({
-                right: -410 + 'px',
-                transition: 'right 1s'
-            });
-            $(this).text("<");
-        } else {
-            flag = true;
-            $('.right-tab').css({
-                right: 0,
-                transition: 'right 1s'
-            });
-            $(this).text(">");
-        }
-    });
-    // 给下侧按钮注册点击事件，点击时收缩dic.list盒子高度并隐藏列表
-    let flag1 = true;
-    $(".bottom-btn").on('click', function () {
-        if (flag1 == true) {
-            flag1 = false;
-            $(".list").css({
-                height: 64 + 'px'
-            }).find("ul").css({
-                display: 'none'
-            })
-            $(this).css({
-                backgroundImage: 'url("/content/Hplus/img/down_d.png")'
-            });
-        } else {
-            flag1 = true;
-            $(".list").css({
-                height: "92%"
-            }).find("ul").css({
-                display: 'block'
-            })
-            $(this).css({
-                backgroundImage: 'url("/content/Hplus/img/up_d.png")'
-            });
-        }
-    });
-</script>

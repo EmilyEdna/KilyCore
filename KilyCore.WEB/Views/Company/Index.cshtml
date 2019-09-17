@@ -3,161 +3,282 @@
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
-    <script src="http://api.map.baidu.com/api?v=2.0&ak=3ce7ddfda60046708248ea55e10b1435"></script>
-    <script>
-        var option = {
-            Init: function () {
-                this.InitDom();
-                this.InitMap();
-                this.InitEvent();
-            },
-            InitDom: function () {
-                //初始化显示
-                if (CompanyInfo.CompanyType == "40" || CompanyInfo.CompanyType == "50") {
-                    $(".title").each(function (i, item) {
-                        $(this).html($(this).html().replace(new RegExp("产量", "g"), "销量"));
-                    })
-                }
-                //视频图片点击事件
-                $(".item2 .content2 img").on("click", function () {
-                    controller.OpenWindow({
-                        title: "视频播放",
-                        type: 2,
-                        btn: [],
-                        maxmin: false,
-                        height: "480px",
-                        width: "520px",
-                        url: "StaticHtml/PlayVedio.html?addr=" + $(this).attr("Vedio") + "&cover=" + $(this).attr("src"),
-                        callBack: function (result) {
-                            result.popClose();
-                        }
-                    });
-                });
-                //关闭视频窗口
-                $("#center-video .shut").on("click", function () {
-                    $("#center-video").css({ display: "none" });
-                });
-                //获取视频
-                controller.ajax({
-                    url: "EnterpriseWeb/GetVedioPage",
-                    data: { pageSize: 4, pageNumber: 1, QueryParam: { IsIndex: true } },
-                    async: false,
-                    type: "post",
-                    success: function (result) {
-                        if (result.data.rows.length == 0) {
-                            $(".item2 .content2").html("暂无视频");
-                        } else {
-                            $(".item2 .content2 img").each(function (i, obj) {
-                                if (result.data.rows[i].VedioCover == undefined || result.data.rows[i].VedioCover == null) {
-                                    result.data.rows[i].VedioCover = "http://system.cfda.vip/Content/HPlus/img/Nopic.jpg";
-                                }
-                                if (result.data.rows[i] != undefined)
-                                    $(this).attr("title", result.data.rows[i].VedioName).attr("vedio", result.data.rows[i].VedioAddr).attr("src", result.data.rows[i].VedioCover);
-                            });
-                        }
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=3ce7ddfda60046708248ea55e10b1435"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/library/AreaRestriction/1.2/src/AreaRestriction_min.js"></script>
+<script>
+    var option = {
+        Init: function () {
+            this.InitDom();
+            this.InitMap();
+            this.InitEvent();
+        },
+        InitDom: function () {
+            //初始化显示
+            if (CompanyInfo.CompanyType == "40" || CompanyInfo.CompanyType == "50") {
+                $(".title").each(function (i, item) {
+                    $(this).html($(this).html().replace(new RegExp("产量", "g"), "销量"));
+                })
+            }
+            //视频图片点击事件
+            $(".item2 .content2 img").on("click", function () {
+                controller.OpenWindow({
+                    title: "视频播放",
+                    type: 2,
+                    btn: [],
+                    maxmin: false,
+                    height: "480px",
+                    width: "520px",
+                    url: "StaticHtml/PlayVedio.html?addr=" + $(this).attr("Vedio") + "&cover=" + $(this).attr("src"),
+                    callBack: function (result) {
+                        result.popClose();
                     }
                 });
-            },
-            InitEvent: function () {
-                //数据统计
-                controller.ajax({
-                    url: "EnterpriseWeb/GetDataCount",
-                    data: { Id: CompanyInfo.Id },
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        controller.SetLableValue(".content3", result.data);
-                        controller.Echarts("#echarts-pie-chart-safe", result.data.dataCount);
-                        controller.Echarts("#echarts-pie-chart-source", result.data.dataCounts);
-                        //动态设置进度条宽度
-                        let sum = $(".content3").width(); //进度条总宽度
-                        let sum1 = 0.01; //进度条的0.01代表1
-                        let sum2 = 0.1; //进度条的0.1代表1
-                        $(".content3 .product:first .bar").css({ width: result.data.Series * sum * sum1 });
-                        $(".content3 .product:last .bar").css({ width: result.data.Goods * sum * sum1 });
-                        $(".content3 .business:first .bar").css({ width: result.data.Supplier * sum * sum2 });
-                        $(".content3 .business:last .bar").css({ width: result.data.Sale * sum * sum2 });
-                    }
-                });
-                //产量统计
-                controller.ajax({
-                    url: "EnterpriseWeb/GetPieCount",
-                    data: { Id: CompanyInfo.Id },
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        controller.SetLableValue(".section1", result.data);
-                    }
-                });
-                //批次统计
-                controller.ajax({
-                    url: "EnterpriseWeb/GetPieCountBatch",
-                    data: { Id: CompanyInfo.Id },
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        controller.Echarts("#echarts-pie-chart-batch", result.data);
-                    }
-                });
-            },
-            InitMap: function () {
-                var Map = new BMap.Map("Map");//在百度地图容器中创建一个地图
-                var Point = new BMap.Point(CompanyInfo.LngAndLat.split(",")[0], CompanyInfo.LngAndLat.split(",")[1]);//定义一个中心点坐标
-                Map.centerAndZoom(Point, 6);//设定地图的中心点和坐标并将地图显示在地图容器中
-                Map.enableScrollWheelZoom();//启用地图滚轮放大缩小
-                var markers = new BMap.Marker(new BMap.Point(CompanyInfo.LngAndLat.split(",")[0], CompanyInfo.LngAndLat.split(",")[1]));
-                Map.addOverlay(markers);
-                controller.ajax({
-                    url: "EnterpriseWeb/GetReceipt",
-                    data: {},
-                    async: false,
-                    type: "post",
-                    success: function (result) {
-                        debugger;
-                        $.each(result.data, function (i, obj) {
-                            $.ajax({
-                                url: "http://api.map.baidu.com/geocoder/v2/?address=" + obj.Address + "&output=json&ak=3ce7ddfda60046708248ea55e10b1435",
-                                type: "get",
-                                async: false,
-                                dataType: "jsonp",
-                                success: function (result) {
-                                    var marker = new BMap.Marker(new BMap.Point(result.result.location.lng, result.result.location.lat));
-                                    Map.addOverlay(marker);
-                                    marker.addEventListener('click', function (e) {
-                                        var InfoWin = '<table class="table table-bordered">' +
-                                            '<tr><th>分销商名称</th> <td>' + obj.GainUser + '</td></tr>' +
-                                            '<tr><th>分销商电话</th><td>' + obj.LinkPhone + '</td></tr>' +
-                                            '<tr><th>分销商地址</th><td>' + obj.Address + '</td></tr></table>'
-                                        var p = e.target;
-                                        var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
-                                        var infoWindow = new BMap.InfoWindow(InfoWin);  // 创建信息窗口对象
-                                       Map.openInfoWindow(infoWindow, point); //开启信息窗口
-                                    });
-                                }
-                            });
+            });
+            //关闭视频窗口
+            $("#center-video .shut").on("click", function () {
+                $("#center-video").css({ display: "none" });
+            });
+            //获取视频
+            controller.ajax({
+                url: "EnterpriseWeb/GetVedioPage",
+                data: { pageSize: 4, pageNumber: 1, QueryParam: { IsIndex: true } },
+                async: false,
+                type: "post",
+                success: function (result) {
+                    if (result.data.rows.length == 0) {
+                        $(".item2 .content2").html("暂无视频");
+                    } else {
+                        $(".item2 .content2 img").each(function (i, obj) {
+                            if (result.data.rows[i].VedioCover == undefined || result.data.rows[i].VedioCover == null) {
+                                result.data.rows[i].VedioCover = "http://system.cfda.vip/Content/HPlus/img/Nopic.jpg";
+                            }
+                            if (result.data.rows[i] != undefined)
+                                $(this).attr("title", result.data.rows[i].VedioName).attr("vedio", result.data.rows[i].VedioAddr).attr("src", result.data.rows[i].VedioCover);
                         });
                     }
-                });
-                markers.addEventListener('click', function (e) {
-                    var InfoWin = '<table class="table table-bordered">' +
-                        '<tr><th>企业名称</th> <td>' + CompanyInfo.CompanyName + '</td></tr>' +
-                        '<tr><th>企业地址</th><td>' + CompanyInfo.CompanyAddress + '</td></tr></table>'
-                    var p = e.target;
-                    var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
-                    var infoWindow = new BMap.InfoWindow(InfoWin);  // 创建信息窗口对象
-                    Map.openInfoWindow(infoWindow, point); //开启信息窗口
-                });
+                }
+            });
+            //给左侧按钮注册点击事件，点击时隐藏或显示右侧停靠栏盒子
+            let flag = true;
+            $(".left-btn").on('click', function () {
+                if (flag == true) {
+                    flag = false;
+                    $('.right-tab').css({
+                        right: -410 + 'px',
+                        transition: 'right 1s'
+                    });
+                    $(this).text("<");
+                } else {
+                    flag = true;
+                    $('.right-tab').css({
+                        right: 0,
+                        transition: 'right 1s'
+                    });
+                    $(this).text(">");
+                }
+            });
+        },
+        InitEvent: function () {
+            //数据统计
+            controller.ajax({
+                url: "EnterpriseWeb/GetDataCount",
+                data: { Id: CompanyInfo.Id },
+                type: "post",
+                async: false,
+                success: function (result) {
+                    controller.SetLableValue(".content3", result.data);
+                    controller.Echarts("#echarts-pie-chart-safe", result.data.dataCount);
+                    controller.Echarts("#echarts-pie-chart-source", result.data.dataCounts);
+                    //动态设置进度条宽度
+                    let sum = $(".content3").width(); //进度条总宽度
+                    let sum1 = 0.01; //进度条的0.01代表1
+                    let sum2 = 0.1; //进度条的0.1代表1
+                    $(".content3 .product:first .bar").css({ width: result.data.Series * sum * sum1 });
+                    $(".content3 .product:last .bar").css({ width: result.data.Goods * sum * sum1 });
+                    $(".content3 .business:first .bar").css({ width: result.data.Supplier * sum * sum2 });
+                    $(".content3 .business:last .bar").css({ width: result.data.Sale * sum * sum2 });
+                }
+            });
+            //产量统计
+            controller.ajax({
+                url: "EnterpriseWeb/GetPieCount",
+                data: { Id: CompanyInfo.Id },
+                type: "post",
+                async: false,
+                success: function (result) {
+                    controller.SetLableValue(".section1", result.data);
+                }
+            });
+            //批次统计
+            controller.ajax({
+                url: "EnterpriseWeb/GetPieCountBatch",
+                data: { Id: CompanyInfo.Id },
+                type: "post",
+                async: false,
+                success: function (result) {
+                    controller.Echarts("#echarts-pie-chart-batch", result.data);
+                }
+            });
+        },
+        //地图
+        InitMap: function () {
+            let Country = "中华人民共和国";
+            var myIcon = new BMap.Icon("http://system.cfda.vip/content/HPlus/img/red.png", new BMap.Size(26, 33));
+            var Map = new BMap.Map("Map");//在百度地图容器中创建一个地图
+            var Point = new BMap.Point(CompanyInfo.LngAndLat.split(",")[0], CompanyInfo.LngAndLat.split(",")[1]);//定义一个中心点坐标
+            Map.centerAndZoom(Point,5);// 初始化地图,设置中心点坐标和地图级别
+            Map.enableScrollWheelZoom();//启用地图滚轮放大缩小
+            addDistrict(Country, Map)//添加行政区域
+            var markers = new BMap.Marker(Point, { icon: myIcon });
+            Map.addOverlay(markers);
+            controller.ajax({
+                url: "EnterpriseWeb/GetReceipt",
+                data: {},
+                async: false,
+                type: "post",
+                success: function (result) {
+                    $.each(result.data, function (i, obj) {
+                        $.ajax({
+                            url: "http://api.map.baidu.com/geocoder/v2/?address=" + obj.Address + "&output=json&ak=3ce7ddfda60046708248ea55e10b1435",
+                            type: "get",
+                            async: false,
+                            dataType: "jsonp",
+                            success: function (result) {
+                                //逆解析得到坐标点经纬度
+                                var marker = new BMap.Marker(new BMap.Point(result.result.location.lng, result.result.location.lat), { icon: myIcon });
+                                marker.setAnimation(BMAP_ANIMATION_BOUNCE);//跳动的动画
+                                //发货路线图连线
+                                function drawLine() {
+                                    var polyline = new BMap.Polyline([
+                                        new BMap.Point(CompanyInfo.LngAndLat.split(",")[0], CompanyInfo.LngAndLat.split(",")[1]),//起始点的经纬度
+                                        new BMap.Point(marker.point.lng, marker.point.lat)//终点的经纬度
+                                    ],
+                                        {
+                                            strokeColor: "black",//设置颜色
+                                            strokeWeight: 2, //宽度
+                                            strokeOpacity: 0.3 //透明度
+                                        });//透明度
+                                    Map.addOverlay(polyline);
+                                }
+                                drawLine();
+                                //分销商坐标点点击弹出框
+                                Map.addOverlay(marker);
+                                marker.addEventListener('click', function (e) {
+                                    var InfoWin = '<table class="table table-bordered">' +
+                                        '<tr><th>分销商名称</th> <td>' + obj.GainUser + '</td></tr>' +
+                                        '<tr><th>分销商电话</th><td>' + obj.LinkPhone + '</td></tr>' +
+                                        '<tr><th>分销商地址</th><td>' + obj.Address + '</td></tr></table>'
+                                    var p = e.target;
+                                    var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+                                    var infoWindow = new BMap.InfoWindow(InfoWin);  // 创建信息窗口对象
+                                    Map.openInfoWindow(infoWindow, point); //开启信息窗口
+                                });
+                            }
+                        });
+                        if (obj.DistributorImg == null) obj.DistributorImg = "http://system.cfda.vip/content/HPlus/img/Nopic.jpg";
+                        var Distributor = `
+                            <li>
+                                <img src="${obj.DistributorImg}">
+                                <div>
+                                    <h4>${obj.GainUser}</h4>
+                                    <p>发货状态：<span>${obj.FlagName}</span></p>
+                                    <p>联系电话：<span>${obj.LinkPhone}</span></p>
+                                    <p>发货地址：<span>${obj.Address}</span></p>
+                                </div>
+                            </li>`;
+                        //加载列表
+                        $("#Distributor").append(Distributor);
+                    });
+                    $("#Num").html(result.data.length);
+                }
+            });
+            //企业坐标点点击弹出框
+            markers.addEventListener('click', function (e) {
+                var InfoWin = '<table class="table table-bordered">' +
+                    '<tr><th>企业名称</th> <td>' + CompanyInfo.CompanyName + '</td></tr>' +
+                    '<tr><th>企业地址</th><td>' + CompanyInfo.CompanyAddress + '</td></tr></table>'
+                var p = e.target;
+                var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+                var infoWindow = new BMap.InfoWindow(InfoWin);  // 创建信息窗口对象
+                Map.openInfoWindow(infoWindow, point); //开启信息窗口
+            });
+        }
+    };
+    $(document).ready(function () {
+        option.Init();
+    });
+    //提示：下面的代码用jquery，所以如果有不能运行的情况请引用后尝试
+    //百度地图api container对应前端div名称 前端要引用2.0版本的百度地图api
+    //需引用api.map.baidu.com/library/AreaRestriction/1.2/src/AreaRestriction_min.js
+    var blist = [];
+    var districtLoading = 0;
+
+    /**
+    * 添加行政区划
+    *  districtName 行政区划名
+    * returns  无返回值
+    */
+    function addDistrict(districtName, map) {
+        //使用计数器来控制加载过程
+        districtLoading++;
+        var bdary = new BMap.Boundary();
+        bdary.get(districtName, function (rs){//获取行政区域
+            var count = rs.boundaries.length;//行政区域的点有多少个
+            if (count === 0) {
+                alert('未能获取当前输入行政区域');
+                return;
             }
-        };
-        $(document).ready(function () {
-            option.Init();
+            for (var i = 0; i < count; i++) {
+                blist.push({ points: rs.boundaries[i], name: districtName });
+            };
+            //加载完成区域点后计数器-1
+            districtLoading--;
+            if (districtLoading == 0) {
+                //全加载完成后画端点
+                drawBoundary(map);
+            }
         });
-    </script>
+    };
+    function drawBoundary(map) {
+        //包含所有区域的点数组
+        var pointArray = [];
+        //定义中国东南西北端点，作为第一层
+        var pNW = { lat: 59.0, lng: 73.0 }
+        var pNE = { lat: 59.0, lng: 136.0 }
+        var pSE = { lat: 3.0, lng: 136.0 }
+        var pSW = { lat: 3.0, lng: 73.0 }
+        //向数组中添加一次闭合多边形，并将西北角再加一次作为之后画闭合区域的起点
+        var pArray = [];
+        pArray.push(pNW);
+        pArray.push(pSW);
+        pArray.push(pSE);
+        pArray.push(pNE);
+        pArray.push(pNW);
+        //循环添加各闭合区域
+        for (var i = 0; i < blist.length; i++) {
+            //添加显示用标签层
+            var label = new BMap.Label(blist[i].name, { offset: new BMap.Size(20, -10) });
+            label.hide();
+            map.addOverlay(label);
+            //添加多边形层并显示
+            var ply = new BMap.Polygon(blist[i].points, { strokeWeight: 2, strokeColor: "#FF0000", fillOpacity: 0.01, fillColor: " #FFFFFF" }); //建立多边形覆盖物
+            ply.name = blist[i].name;
+            ply.label = label;
+            map.addOverlay(ply);
+            //将点增加到视野范围内
+            var path = ply.getPath();
+            pointArray = pointArray.concat(path);
+            //将闭合区域加到遮蔽层上，每次添加完后要再加一次西北角作为下次添加的起点和最后一次的终点
+            pArray = pArray.concat(path);
+            pArray.push(pArray[0]);
+        }
+    }
+</script>
 }
 @section css{
-    <link href="~/Content/Company/css/company.css" rel="stylesheet" />
+<link href="~/Content/Company/css/company.css" rel="stylesheet" />
 }
-<form id="Edit">
+<div id="Edit">
     <!--第一个区域-->
     <div class="section section1">
         <div class="item item1">
@@ -365,5 +486,23 @@
         </div>
     </div>
     <!--地图区域-->
-    <div id="Map"></div>
-</form>
+    <div class="section4">
+        <div id="Map"></div>
+        <!-- 右侧停靠栏 -->
+        <div class="right-tab">
+            <div class="left-btn">></div>
+            <form action="" method="post">
+                <input type="text" name="" placeholder="请输入关键词（查询区域）">
+                <input type="button" id="search" value="查找">
+            </form>
+            <div class="list">
+                <div class="msg">
+                    <img src="/content/Hplus/img/map.png">
+                    <div id="Area"></div>
+                    <div>共&nbsp;<span id="Num">0</span>&nbsp;个发货批次</div>
+                </div>
+                <ul id="Distributor"></ul>
+            </div>
+        </div>
+    </div>
+</div>
