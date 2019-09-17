@@ -123,7 +123,7 @@
         //地图
         InitMap: function () {
             let Country = "中华人民共和国";
-            var myIcon = new BMap.Icon("http://system.cfda.vip/content/HPlus/img/red.png", new BMap.Size(26, 33));
+            let myIcon = new BMap.Icon("http://system.cfda.vip/content/HPlus/img/lightblue.png", new BMap.Size(26, 33));
             var Map = new BMap.Map("Map");//在百度地图容器中创建一个地图
             var Point = new BMap.Point(CompanyInfo.LngAndLat.split(",")[0], CompanyInfo.LngAndLat.split(",")[1]);//定义一个中心点坐标
             Map.centerAndZoom(Point,5);// 初始化地图,设置中心点坐标和地图级别
@@ -145,7 +145,8 @@
                             dataType: "jsonp",
                             success: function (result) {
                                 //逆解析得到坐标点经纬度
-                                var marker = new BMap.Marker(new BMap.Point(result.result.location.lng, result.result.location.lat), { icon: myIcon });
+                                let myIcon = new BMap.Icon("http://system.cfda.vip/content/HPlus/img/red.png", new BMap.Size(26, 33));
+                                let marker = new BMap.Marker(new BMap.Point(result.result.location.lng, result.result.location.lat), { icon: myIcon });
                                 marker.setAnimation(BMAP_ANIMATION_BOUNCE);//跳动的动画
                                 //发货路线图连线
                                 function drawLine() {
@@ -153,11 +154,12 @@
                                         new BMap.Point(CompanyInfo.LngAndLat.split(",")[0], CompanyInfo.LngAndLat.split(",")[1]),//起始点的经纬度
                                         new BMap.Point(marker.point.lng, marker.point.lat)//终点的经纬度
                                     ],
-                                        {
-                                            strokeColor: "black",//设置颜色
-                                            strokeWeight: 2, //宽度
-                                            strokeOpacity: 0.3 //透明度
-                                        });//透明度
+                                    {
+                                        strokeColor: "#f60",//设置颜色
+                                        strokeWeight: 2, //宽度
+                                        strokeOpacity: 1, //透明度
+                                        strokeStyle: "dashed"
+                                    });//透明度
                                     Map.addOverlay(polyline);
                                 }
                                 drawLine();
