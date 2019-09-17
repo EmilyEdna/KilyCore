@@ -106,29 +106,28 @@
                 async: false,
                 type: "post",
                 success: function (result) {
-                    console.log(result.data)
-            //        $.each(result.data, function (i, obj) {
-            //            $.ajax({
-            //                url: "http://api.map.baidu.com/geocoder/v2/?address=" + obj.Address + "&output=json&ak=3ce7ddfda60046708248ea55e10b1435",
-            //                type: "get",
-            //                async: false,
-            //                dataType: "jsonp",
-            //                success: function (result) {
-            //                    var marker = new BMap.Marker(new BMap.Point(result.result.location.lng, result.result.location.lat));
-            //                    Map.addOverlay(marker);
-            //                    marker.addEventListener('click', function (e) {
-            //                        var InfoWin = '<table class="table table-bordered">' +
-            //                            '<tr><th>分销商名称</th> <td>' + obj.GainUser + '</td></tr>' +
-            //                            '<tr><th>分销商电话</th><td>' + obj.LinkPhone + '</td></tr>' +
-            //                            '<tr><th>分销商地址</th><td>' + obj.Address + '</td></tr></table>'
-            //                        var p = e.target;
-            //                        var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
-            //                        var infoWindow = new BMap.InfoWindow(InfoWin);  // 创建信息窗口对象
-            //                        Map.openInfoWindow(infoWindow, point); //开启信息窗口
-            //                    });
-            //                }
-            //            });
-            //        });
+                    $.each(result.data, function (i, obj) {
+                        $.ajax({
+                            url: "http://api.map.baidu.com/geocoder/v2/?address=" + obj.Address + "&output=json&ak=3ce7ddfda60046708248ea55e10b1435",
+                            type: "get",
+                            async: false,
+                            dataType: "jsonp",
+                            success: function (result) {
+                                var marker = new BMap.Marker(new BMap.Point(result.result.location.lng, result.result.location.lat));
+                                Map.addOverlay(marker);
+                                marker.addEventListener('click', function (e) {
+                                    var InfoWin = '<table class="table table-bordered">' +
+                                        '<tr><th>分销商名称</th> <td>' + obj.GainUser + '</td></tr>' +
+                                        '<tr><th>分销商电话</th><td>' + obj.LinkPhone + '</td></tr>' +
+                                        '<tr><th>分销商地址</th><td>' + obj.Address + '</td></tr></table>'
+                                    var p = e.target;
+                                    var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+                                    var infoWindow = new BMap.InfoWindow(InfoWin);  // 创建信息窗口对象
+                                    Map.openInfoWindow(infoWindow, point); //开启信息窗口
+                                });
+                            }
+                        });
+                    });
                 }
             });
         }
