@@ -113,6 +113,7 @@
                     async: false,
                     type: "post",
                     success: function (result) {
+                        debugger;
                         $.each(result.data, function (i, obj) {
                             $.ajax({
                                 url: "http://api.map.baidu.com/geocoder/v2/?address=" + obj.Address + "&output=json&ak=3ce7ddfda60046708248ea55e10b1435",
