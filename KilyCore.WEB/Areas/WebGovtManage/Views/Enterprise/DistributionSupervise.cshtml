@@ -203,6 +203,7 @@
             Init: function () {
                 this.InitAddr();
                 this.InitEvents();
+                this.InitDoms();
             },
             InitAddr: function () {
                 if (GovtInfo.IsEdu) {
@@ -268,7 +269,7 @@
                             options.marker.setTitle(obj.CompanyType);
                             options.Map.addOverlay(options.marker);               // 将标注添加到地图中
                             if (obj.CompanyImg == null) obj.CompanyImg = "http://system.cfda.vip/content/HPlus/img/Nopic.jpg";
-                            options.AddClickHandler(obj.Id,obj.Name, obj.Address, obj.CompanyCode, obj.CompanyType, obj.CompanyImg);
+                            options.AddClickHandler(obj.Id, obj.Name, obj.Address, obj.CompanyCode, obj.CompanyType, obj.CompanyImg);
                             if (obj.CompanyUser == null) {
                                 obj.CompanyUser = "-";
                             }
@@ -289,10 +290,10 @@
                     }
                 });
             },
-            AddClickHandler: function (id,name, path, code, type, img) {
+            AddClickHandler: function (id, name, path, code, type, img) {
                 options.marker.addEventListener("click", function (e) {
                     var InfoWin = '<table class="table table-bordered" style="width:596px;">' +
-                        '<tr><th>商家名称</th> <td><a href="javascript:Detail('+id+',\"'+name+'\",\"'+type+'\");" style="color:#333">' + name + '</a></td><td rowspan="4" style="width:196px;"><img src="' + img + '" style="height:156px;max-width:196px;"/></td></tr>' +
+                        '<tr><th>商家名称</th> <td><a href="javascript:Detail(' + id + ',\"' + name + '\",\"' + type + '\");" style="color:#333">' + name + '</a></td><td rowspan="4" style="width:196px;"><img src="' + img + '" style="height:156px;max-width:196px;"/></td></tr>' +
                         '<tr><th>商家类型</th><td>' + type + '</td></tr>' +
                         '<tr><th>工商代码</th><td>' + code + '</td></tr>' +
                         '<tr><th>商家地址</th><td>' + path + '</td></tr></table>'
@@ -342,7 +343,31 @@
                 $("#search").click(function () {
 
                 });
-                
+
+            },
+            //右侧停靠栏js
+            InitDoms: function () {
+                //设置右侧停靠栏高度
+                $(".list").attr("style", "height:" + ($(document).height() - 60) + "px");
+                //给左侧按钮注册点击事件，点击时隐藏或显示右侧停靠栏盒子
+                let flag = true;
+                $(".left-btn").on('click', function () {
+                    if (flag == true) {
+                        flag = false;
+                        $('.right-tab').css({
+                            right: -410 + 'px',
+                            transition: 'right 1s'
+                        });
+                        $(this).text("<");
+                    } else {
+                        flag = true;
+                        $('.right-tab').css({
+                            right: 0,
+                            transition: 'right 1s'
+                        });
+                        $(this).text(">");
+                    }
+                });
             }
         };
         //初始化
@@ -355,8 +380,6 @@
 
         var blist = [];
         var districtLoading = 0;
-
-
 
         /**
          * 添加行政区划
@@ -504,57 +527,6 @@
             <div id="Area"></div>
             <div>该地区共有&nbsp;<span id="Num">0</span>&nbsp;家企业</div>
         </div>
-        <ul id="CompanyList">
-        </ul>
-        <div class="bottom-btn"></div>
+        <ul id="CompanyList"></ul>
     </div>
 </div>
-<script>
-    $(function () {
-        $(".list").attr("style", "height:" + ($(document).height() - 60) + "px");
-    })
-    // 给左侧按钮注册点击事件，点击时隐藏或显示右侧停靠栏盒子
-    let flag = true;
-    $(".left-btn").on('click', function () {
-        if (flag == true) {
-            flag = false;
-            $('.right-tab').css({
-                right: -410 + 'px',
-                transition: 'right 1s'
-            });
-            $(this).text("<");
-        } else {
-            flag = true;
-            $('.right-tab').css({
-                right: 0,
-                transition: 'right 1s'
-            });
-            $(this).text(">");
-        }
-    });
-    // 给下侧按钮注册点击事件，点击时收缩dic.list盒子高度并隐藏列表
-    let flag1 = true;
-    $(".bottom-btn").on('click', function () {
-        if (flag1 == true) {
-            flag1 = false;
-            $(".list").css({
-                height: 64 + 'px'
-            }).find("ul").css({
-                display: 'none'
-            })
-            $(this).css({
-                backgroundImage: 'url("/content/Hplus/img/down_d.png")'
-            });
-        } else {
-            flag1 = true;
-            $(".list").css({
-                height: "92%"
-            }).find("ul").css({
-                display: 'block'
-            })
-            $(this).css({
-                backgroundImage: 'url("/content/Hplus/img/up_d.png")'
-            });
-        }
-    });
-</script>
