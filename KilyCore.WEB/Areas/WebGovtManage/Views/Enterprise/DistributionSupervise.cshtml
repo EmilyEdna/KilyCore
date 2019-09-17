@@ -177,21 +177,6 @@
                             color: #666;
                             margin: auto auto
                         }
-
-        .bottom-btn {
-            position: absolute;
-            left: 50%;
-            margin-left: -28px;
-            bottom: -21px;
-            width: 56px;
-            height: 20px;
-            cursor: pointer;
-            background: url(/content/Hplus/img/up_d.png) center center no-repeat;
-            border: 1px solid #dbdbdb;
-            border-top: none;
-            border-radius: 0 0 3px 3px;
-            box-shadow: #999 2px 2px 4px
-        }
     </style>
 }
 @section script{
@@ -267,7 +252,7 @@
                             var myIcon = new BMap.Icon(imgLoction, new BMap.Size(26, 33));
                             options.marker = new BMap.Marker(new BMap.Point(obj.Lng, obj.Lat), { icon: myIcon });
                             options.marker.setTitle(obj.CompanyType);
-                            options.Map.addOverlay(options.marker);               // 将标注添加到地图中
+                            options.Map.addOverlay(options.marker); // 将标注添加到地图中
                             if (obj.CompanyImg == null) obj.CompanyImg = "http://system.cfda.vip/content/HPlus/img/Nopic.jpg";
                             options.AddClickHandler(obj.Id, obj.Name, obj.Address, obj.CompanyCode, obj.CompanyType, obj.CompanyImg);
                             if (obj.CompanyUser == null) {
@@ -277,9 +262,9 @@
                                 + '<img src="' + obj.CompanyImg + '">'
                                 + '<div>'
                                 + '<h4>' + obj.Name + '</h4>'
-                                + '<p>负责人：<span id="chargeman">' + obj.CompanyUser + '</span></p>'
-                                + '<p>社会统一代码：<span id="phone">' + obj.CompanyCode + '</span></p>'
-                                + '<p>联系地址：<span id="address">' + obj.Address + '</span></p>'
+                                + '<p>负责人：<span>' + obj.CompanyUser + '</span></p>'
+                                + '<p>社会统一代码：<span>' + obj.CompanyCode + '</span></p>'
+                                + '<p>联系地址：<span>' + obj.Address + '</span></p>'
                                 + '</div>'
                                 + '</li>';
                             //加载列表
@@ -374,10 +359,9 @@
         $(document).ready(function () {
             options.Init();
         });
-        //提示：下面的代码用jquery，所以如果有不能运行的情况请引用后尝试
+        //提示：下面的代码用jquery，如果有不能运行的情况请引用后尝试
         //百度地图api container对应前端div名称 前端要引用2.0版本的百度地图api
         //需引用api.map.baidu.com/library/AreaRestriction/1.2/src/AreaRestriction_min.js
-
         var blist = [];
         var districtLoading = 0;
 
@@ -460,16 +444,7 @@
                 var ply = new BMap.Polygon(blist[i].points, { strokeWeight: 2, strokeColor: "#FF0000", fillOpacity: 0.01, fillColor: " #FFFFFF" }); //建立多边形覆盖物
                 ply.name = blist[i].name;
                 ply.label = label;
-                //ply.addEventListener("click", click);
-                //ply.addEventListener("mouseover", mouseover);
-                //ply.addEventListener("mouseout", mouseout);
-                //ply.addEventListener("mousemove", mousemove);
                 map.addOverlay(ply);
-
-                //添加名称标签层
-                //var centerlabel = new BMap.Label(blist[i].name, { offset: new BMap.Size(0, 0) });
-                //centerlabel.setPosition(ply.getBounds().getCenter());
-                //map.addOverlay(centerlabel);
 
                 //将点增加到视野范围内
                 var path = ply.getPath();

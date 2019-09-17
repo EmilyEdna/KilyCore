@@ -1,13 +1,13 @@
-
 #Edit {
     box-sizing: border-box;
     padding: 30px;
     color: #404040;
 }
 /*共有样式*/
-.echarts{
+.echarts {
     padding: 15px !important;
 }
+
 .section {
     margin-bottom: 30px;
     width: 100%;
@@ -168,11 +168,165 @@
             height: 16px;
             border-radius: 8px 0 0 8px;
         }
-#Map {
-    width: 100%;
-    height: 600px;
-    background: #fff;
-    border-radius: 8px;
-    padding: 15px;
+
+.section4 {
     box-shadow: 0px 4px 16px 0px rgba(47,64,80,0.16);
+    position: relative;
+    overflow: hidden;
 }
+
+    .section4 #Map {
+        width: 100%;
+        height: 800px;
+        background: #fff;
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0px 4px 16px 0px rgba(47,64,80,0.16);
+    }
+
+    .section4 .right-tab {
+        width: 410px;
+        height: 800px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: #fff;
+        border-radius: 0 8px 8px 0;
+        box-sizing: border-box;
+        padding: 15px;
+        z-index: 10;
+        zoom: 1;
+    }
+
+    .section4 .left-btn {
+        position: absolute;
+        background-color: #fff;
+        left: -17px;
+        top: 50%;
+        width: 16px;
+        height: 56px;
+        text-align: center;
+        line-height: 56px;
+        margin-top: -28px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 3px 0 0 3px;
+        font-family: '黑体';
+        box-shadow: #999 -2px -2px 4px;
+        border: 1px solid #dbdbdb;
+        border-right: none;
+        color: #999
+    }
+
+.section4 form {
+    width: 380px;
+    display: flex;
+    justify-content: flex-start
+}
+
+.section4 form input[type=text] {
+    width: 290px;
+    border: 1px solid #2ca8d1;
+    border-radius: 4px 0 0 4px;
+    line-height: 32px;
+    text-indent: .5em
+}
+
+.section4 form input[type=button] {
+    width: 90px;
+    border: none;
+    background-color: #2ca8d1;
+    border-radius: 0 4px 4px 0;
+    line-height: 32px;
+    font-size: 16px;
+    color: #fff
+}
+
+    .section4 .list {
+        position: relative;
+        width: 380px;
+        height: 92%;
+        padding: 10px;
+        border: 1px solid #dbdbdb;
+        box-sizing: border-box;
+        margin-top: 15px;
+        border-radius: 4px
+    }
+
+        .section4 .list .msg {
+            background-color: #ececec;
+            padding: 6px;
+            margin-bottom: 10px;
+            height: 42px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between
+        }
+
+            .section4 .list .msg img {
+                width: 30px;
+                height: 30px
+            }
+
+            .section4 .list .msg #Area {
+                width: 100%;
+                font-size: 18px;
+                line-height: 30px;
+                text-align: left
+            }
+
+                .section4 .list .msg #Area ~ div {
+                    width: 280px;
+                    text-align: right;
+                    font-size: 14px;
+                    color: #666
+                }
+
+                    .section4 .list .msg #Area ~ div span {
+                        color: #f20;
+                        font-size: 18px
+                    }
+
+        .section4 .list ul {
+            height: 92%;
+            padding-left: 0;
+            overflow-y: scroll
+        }
+
+            .section4 .list ul li {
+                width: 96%;
+                padding: 15px 0;
+                border-bottom: 1px solid #dbdbdb;
+                display: flex;
+                justify-content: space-between
+            }
+
+                .section4 .list ul li img {
+                    width: 120px;
+                    height: 90px
+                }
+
+                .section4 .list ul li div {
+                    width: 210px
+                }
+
+                    .section4 .list ul li div h4 {
+                        font-size: 18px;
+                        line-height: 20px;
+                        margin-bottom: 10px;
+                        font-weight: 400;
+                        margin-top: 0;
+                        color: #333;
+                        width: 100%;
+                        text-overflow: ellipsis;
+                        -o-text-overflow: ellipsis;
+                        white-space: nowrap;
+                        overflow: hidden;
+                    }
+
+                    .section4 .list ul li div p {
+                        font-size: 14px;
+                        line-height: 20px;
+                        color: #666;
+                        margin: auto auto
+                    }
