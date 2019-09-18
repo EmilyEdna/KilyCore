@@ -2355,10 +2355,17 @@ namespace KilyCore.Service.ServiceCore
             if (Areas != null)
             {
                 if (Areas.Count > 1)
-                    foreach (var item in Areas)
+                {
+                    Expression<Func<RepastInfo, bool>> exp_1 = null;
+                    for (int i = 0; i < Areas.Count; i++)
                     {
-                        queryable = queryable.Where(t => t.TypePath.Contains(item));
+                        if (i == 0)
+                            exp_1 = ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                        else
+                            exp_1 = exp_1.Or(ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like));
                     }
+                    queryable = queryable.Where(exp_1);
+                }
                 else
                     queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
             }

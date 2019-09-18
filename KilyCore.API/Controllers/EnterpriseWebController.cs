@@ -2295,7 +2295,36 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseWebService.GetAppDataCount(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-
+        /// <summary>
+        /// 风险预警
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetWaringRiskPage")]
+        public ObjectResultEx GetWaringRiskPage(PageParamList<RequestGovtRisk> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetWaringRiskPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 投诉建议
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetComplainPage")]
+        public ObjectResultEx GetComplainPage(PageParamList<RequestGovtComplain> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetComplainPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 整改意见
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetNetPatrolPage")]
+        public ObjectResultEx GetNetPatrolPage(PageParamList<Object> pageParam)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetNetPatrolPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
     }
 }

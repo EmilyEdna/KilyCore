@@ -333,6 +333,10 @@ namespace KilyCore.Service.IServiceCore
 
         #region APP统计页面
         Object GetAppDataCount(Guid? id);
+        PagedResult<ResponseGovtRisk> GetWaringRiskPage(PageParamList<RequestGovtRisk> pageParam);
+        PagedResult<ResponseGovtComplain> GetComplainPage(PageParamList<RequestGovtComplain> pageParam);
+        PagedResult<ResponseSystemMessage> GetNetPatrolPage(PageParamList<Object> pageParam);
+
         #endregion
     }
 }
