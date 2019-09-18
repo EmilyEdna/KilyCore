@@ -33,9 +33,9 @@
                         var html = "<option>===请选择===</option>"
                         $.each(result.data, function (i, obj) {
                             if (obj.BatchNo != null)
-                                html += '<option>' + obj.BatchNo + '</option>';
+                                html += '<option value="' + obj.BatchNo + '">' + obj.BatchNo + '(剩余'+obj.TotalNo+'个)</option>';
                             else
-                                html += '<option>' + obj.SingleBatchNo + '</option>';
+                                html += '<option value="'+obj.SingleBatchNo+'">' + obj.SingleBatchNo + '(剩余'+obj.TotalNo+'个)</option>';
                         });
                         $("#No").html(html);
                     }

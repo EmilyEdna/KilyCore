@@ -453,13 +453,15 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<FunctionVeinTag> queryable = Kily.Set<FunctionVeinTag>().AsNoTracking().OrderByDescending(t => t.CreateTime).Where(t => t.IsDelete == false);
             IQueryable<FunctionVeinTagAttach> queryables = Kily.Set<FunctionVeinTagAttach>().AsNoTracking().OrderByDescending(t => t.CreateTime).Where(t => t.IsDelete == false);
             if (UserInfo().AccountType == AccountEnum.Admin || UserInfo().AccountType == AccountEnum.Country)
-                return queryable.Select(t => new ResponseVeinTag()
+                return queryable.Where(t=>t.TotalNo- t.AllotNum > 0).Select(t => new ResponseVeinTag()
                 {
                     BatchNo = t.BatchNo,
+                    TotalNo=t.TotalNo-t.AllotNum
                 }).ToList();
-            return queryables.Where(t => t.TotalNo > t.AllotNum).Where(t => t.AcceptUser.Contains(UserInfo().Id.ToString())).Select(t => new ResponseVeinTag()
+            return queryables.Where(t => t.TotalNo-t.AllotNum>0).Where(t => t.AcceptUser.Contains(UserInfo().Id.ToString())).Select(t => new ResponseVeinTag()
             {
                 SingleBatchNo = t.SingleBatchNo,
+                TotalNo = t.TotalNo - t.AllotNum
             }).ToList();
         }
         /// <summary>

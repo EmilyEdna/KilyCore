@@ -41,6 +41,7 @@ namespace KilyCore.DataEntity.ResponseMapper.System
         public int Alipay { get; set; }
         public int WxPay { get; set; }
         public int UnionPay { get; set; }
+        public int AgentPay { get; set; }
         public int Test { get; set; }
         public int Base { get; set; }
         public int Lv { get; set; }
@@ -64,6 +65,7 @@ namespace KilyCore.DataEntity.ResponseMapper.System
         public int AlipaySum { get; set; }
         public int WxPaySum { get; set; }
         public int UnionPaySum { get; set; }
+        public int AgentPaySum { get; set; }
         public int TestSum { get; set; }
         public int BaseSum { get; set; }
         public int LvSum { get; set; }

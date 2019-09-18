@@ -328,6 +328,11 @@ namespace KilyCore.Service.IServiceCore
         RequestEnterpriseLogistics GetScanSendInfo(String Id);
         String CheckLogistics(RequestEnterpriseLogistics Param);
         ResponseEnterpriseGoodsPackage GetScanPackageInfo(Guid Id);
+
+        #endregion
+
+        #region APP统计页面
+        Object GetAppDataCount(Guid? id);
         #endregion
     }
 }

@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 #region << 版 本 注 释 >>
@@ -205,12 +206,28 @@ namespace KilyCore.Service.ServiceCore
                 if (Areas != null)
                 {
                     if (Areas.Count > 1)
-                        foreach (var item in Areas)
+                    {
+                        Expression<Func<EnterpriseInfo, bool>> exp_1 = null;
+
+                        for (int i = 0; i < Areas.Count; i++)
                         {
-                            queryable = queryable.Where(t => t.TypePath.Contains(item));
+                            if (i == 0)
+                            {
+                                exp_1 = ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+
+                            }
+                            else
+                            {
+                                exp_1 = exp_1.Or(ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+
+                            }
                         }
+                        queryable = queryable.Where(exp_1);
+                    }
                     else
+                    {
                         queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    }
                 }
                 else
                     queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
@@ -251,10 +268,24 @@ namespace KilyCore.Service.ServiceCore
                 if (Areas != null)
                 {
                     if (Areas.Count > 1)
-                        foreach (var item in Areas)
+                    {
+                        Expression<Func<RepastInfo, bool>> exp_1 = null;
+
+                        for (int i = 0; i < Areas.Count; i++)
                         {
-                            queryable = queryable.Where(t => t.TypePath.Contains(item));
+                            if (i == 0)
+                            {
+                                exp_1 = ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+
+                            }
+                            else
+                            {
+                                exp_1 = exp_1.Or(ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+
+                            }
                         }
+                        queryable = queryable.Where(exp_1);
+                    }
                     else
                         queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                 }
@@ -350,7 +381,7 @@ namespace KilyCore.Service.ServiceCore
                 Phone = t.Phone,
                 AllowUnit = t.AllowUnit,
                 Honor = t.HonorCertification,
-                Remark = t.Remark.Replace("/Upload/","http://system.cfda.vip/Upload/"),
+                Remark = t.Remark.Replace("/Upload/", "http://system.cfda.vip/Upload/"),
                 Video = Kily.Set<RepastVideo>().Where(x => x.InfoId == Id && x.IsIndex == true)
                 .OrderByDescending(x => x.CreateTime).Select(m => new ResponseRepastVideo
                 {
@@ -675,11 +706,28 @@ namespace KilyCore.Service.ServiceCore
             if (Areas != null)
             {
                 if (Areas.Count > 1)
-                    foreach (var item in Areas)
+                {
+                    Expression<Func<EnterpriseInfo, bool>> exp_1 = null;
+                    Expression<Func<RepastInfo, bool>> exp_2 = null;
+                    for (int i = 0; i < Areas.Count; i++)
                     {
-                        queryable = queryable.Where(t => t.TypePath.Contains(item));
-                        queryables = queryables.Where(t => t.TypePath.Contains(item));
+                        if (i == 0)
+                        {
+                            exp_1 = ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                            exp_2 = ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+
+                        }
+                        else
+                        {
+                            exp_1 = exp_1.Or(ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                            exp_2 = exp_2.Or(ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+
+                        }
                     }
+                    queryable = queryable.Where(exp_1);
+                    queryables = queryables.Where(exp_2);
+                }
+
                 else
                 {
                     queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
@@ -691,7 +739,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 data = queryable.Select(t => new ResponseGovtDistribut()
                 {
-                    Id=t.Id.ToString(),
+                    Id = t.Id.ToString(),
                     Name = t.CompanyName,
                     LngAndLat = t.LngAndLat,
                     Address = t.CompanyAddress,
@@ -752,10 +800,27 @@ namespace KilyCore.Service.ServiceCore
             if (Areas != null)
             {
                 if (Areas.Count > 1)
+                {
+
                     foreach (var item in Areas)
                     {
                         queryable = queryable.Where(t => t.Id.ToString() == item);
                     }
+                    Expression<Func<SystemArea, bool>> exp_1 = null;
+                    for (int i = 0; i < Areas.Count; i++)
+                    {
+                        if (i == 0)
+                        {
+                            exp_1 = ExpressionExtension.GetExpression<SystemArea>("Id", Areas[i], ExpressionEnum.Equals);
+
+                        }
+                        else
+                        {
+                            exp_1 = exp_1.Or(ExpressionExtension.GetExpression<SystemArea>("Id", Areas[i], ExpressionEnum.Equals));
+                        }
+                    }
+                    queryable = queryable.Where(exp_1);
+                }
                 else
                     queryable = queryable.Where(t => t.Id.ToString() == Areas.FirstOrDefault());
 
@@ -802,10 +867,22 @@ namespace KilyCore.Service.ServiceCore
                 if (Areas != null)
                 {
                     if (Areas.Count > 1)
-                        foreach (var item in Areas)
+                    {
+                        Expression<Func<EnterpriseInfo, bool>> exp_1 = null;
+                        for (int i = 0; i < Areas.Count; i++)
                         {
-                            queryable = queryable.Where(t => t.TypePath.Contains(item));
+                            if (i == 0)
+                            {
+                                exp_1 = ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+
+                            }
+                            else
+                            {
+                                exp_1 = exp_1.Or(ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                            }
                         }
+                        queryable = queryable.Where(exp_1);
+                    }
                     else
                         queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                 }
@@ -944,10 +1021,22 @@ namespace KilyCore.Service.ServiceCore
                 if (Areas != null)
                 {
                     if (Areas.Count > 1)
-                        foreach (var item in Areas)
+                    {
+                        Expression<Func<EnterpriseInfo, bool>> exp_1 = null;
+                        for (int i = 0; i < Areas.Count; i++)
                         {
-                            queryable = queryable.Where(t => t.TypePath.Contains(item));
+                            if (i == 0)
+                            {
+                                exp_1 = ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+
+                            }
+                            else
+                            {
+                                exp_1 = exp_1.Or(ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                            }
                         }
+                        queryable = queryable.Where(exp_1);
+                    }
                     else
                         queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                 }
@@ -1029,10 +1118,21 @@ namespace KilyCore.Service.ServiceCore
                 if (Areas != null)
                 {
                     if (Areas.Count > 1)
-                        foreach (var item in Areas)
+                    {
+                        Expression<Func<CookBanquet, bool>> exp_1 = null;
+                        for (int i = 0; i < Areas.Count; i++)
                         {
-                            queryable = queryable.Where(t => t.TypePath.Contains(item));
+                            if (i == 0)
+                            {
+                                exp_1 = ExpressionExtension.GetExpression<CookBanquet>("TypePath", Areas[i], ExpressionEnum.Like);
+                            }
+                            else
+                            {
+                                exp_1 = exp_1.Or(ExpressionExtension.GetExpression<CookBanquet>("TypePath", Areas[i], ExpressionEnum.Like));
+                            }
                         }
+                        queryable = queryable.Where(exp_1);
+                    }
                     else
                         queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                 }
@@ -1143,10 +1243,21 @@ namespace KilyCore.Service.ServiceCore
                 if (Areas != null)
                 {
                     if (Areas.Count > 1)
-                        foreach (var item in Areas)
+                    {
+                        Expression<Func<GovtRisk, bool>> exp_1 = null;
+                        for (int i = 0; i < Areas.Count; i++)
                         {
-                            queryable = queryable.Where(t => t.TypePath.Contains(item));
+                            if (i == 0)
+                            {
+                                exp_1 = ExpressionExtension.GetExpression<GovtRisk>("TypePath", Areas[i], ExpressionEnum.Like);
+                            }
+                            else
+                            {
+                                exp_1 = exp_1.Or(ExpressionExtension.GetExpression<GovtRisk>("TypePath", Areas[i], ExpressionEnum.Like));
+                            }
                         }
+                        queryable = queryable.Where(exp_1);
+                    }
                     else
                         queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                 }
@@ -1292,12 +1403,29 @@ namespace KilyCore.Service.ServiceCore
                 if (Areas != null)
                 {
                     if (Areas.Count > 1)
-                        foreach (var item in Areas)
+                    {
+                        Expression<Func<EnterpriseInfo, bool>> exp_1 = null;
+                        Expression<Func<RepastInfo, bool>> exp_2 = null;
+                        Expression<Func<RepastInfoUser, bool>> exp_3 = null;
+                        for (int i = 0; i < Areas.Count; i++)
                         {
-                            queryable = queryable.Where(t => t.TypePath.Contains(item));
-                            queryables = queryables.Where(t => t.TypePath.Contains(item));
-                            users = users.Where(t => t.TypePath.Contains(item));
+                            if (i == 0)
+                            {
+                                exp_1 = ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                                exp_2 = ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                                exp_3 = ExpressionExtension.GetExpression<RepastInfoUser>("TypePath", Areas[i], ExpressionEnum.Like);
+                            }
+                            else
+                            {
+                                exp_1 = exp_1.Or(ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                                exp_2 = exp_2.Or(ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                                exp_3 = exp_3.Or(ExpressionExtension.GetExpression<RepastInfoUser>("TypePath", Areas[i], ExpressionEnum.Like));
+                            }
                         }
+                        queryable = queryable.Where(exp_1);
+                        queryables = queryables.Where(exp_2);
+                        users = users.Where(exp_3);
+                    }
                     else
                     {
                         queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
@@ -1410,10 +1538,17 @@ namespace KilyCore.Service.ServiceCore
                 if (Areas != null)
                 {
                     if (Areas.Count > 1)
-                        foreach (var item in Areas)
+                    {
+                        Expression<Func<GovtNetPatrol, bool>> exp_1 = null;
+                        for (int i = 0; i < Areas.Count; i++)
                         {
-                            queryable = queryable.Where(t => t.TypePath.Contains(item));
+                            if (i == 0)
+                                exp_1 = ExpressionExtension.GetExpression<GovtNetPatrol>("TypePath", Areas[i], ExpressionEnum.Like);
+                            else
+                                exp_1 = exp_1.Or(ExpressionExtension.GetExpression<GovtNetPatrol>("TypePath", Areas[i], ExpressionEnum.Like));
                         }
+                        queryable = queryable.Where(exp_1);
+                    }
                     else
                         queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                 }
@@ -2046,10 +2181,17 @@ namespace KilyCore.Service.ServiceCore
                 if (Areas != null)
                 {
                     if (Areas.Count > 1)
-                        foreach (var item in Areas)
+                    {
+                        Expression<Func<GovtComplain, bool>> exp_1 = null;
+                        for (int i = 0; i < Areas.Count; i++)
                         {
-                            queryable = queryable.Where(t => t.TypePath.Contains(item));
+                            if (i == 0)
+                                exp_1 = ExpressionExtension.GetExpression<GovtComplain>("TypePath", Areas[i], ExpressionEnum.Like);
+                            else
+                                exp_1 = exp_1.Or(ExpressionExtension.GetExpression<GovtComplain>("TypePath", Areas[i], ExpressionEnum.Like));
                         }
+                        queryable = queryable.Where(exp_1);
+                    }
                     else
                         queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                 }
@@ -2176,10 +2318,17 @@ namespace KilyCore.Service.ServiceCore
             if (Areas != null)
             {
                 if (Areas.Count > 1)
-                    foreach (var item in Areas)
+                {
+                    Expression<Func<EnterpriseInfo, bool>> exp_1 = null;
+                    for (int i = 0; i < Areas.Count; i++)
                     {
-                        queryable = queryable.Where(t => t.TypePath.Contains(item));
+                        if (i == 0)
+                            exp_1 = ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                        else
+                            exp_1 = exp_1.Or(ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like));
                     }
+                    queryable = queryable.Where(exp_1);
+                }
                 else
                     queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
             }
@@ -2191,6 +2340,50 @@ namespace KilyCore.Service.ServiceCore
                 name = t.Key,
                 url = ""
             }).ToList();
+        }
+        /// <summary>
+        /// 获取人员统计
+        /// </summary>
+        /// <returns></returns>
+        public IList<DataPie> GetPersonBank()
+        {
+            IQueryable<RepastInfoUser> users = Kily.Set<RepastInfoUser>().Where(t => t.IsDelete == false);
+            IQueryable<RepastInfo> queryable = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess && t.DiningType == MerchantEnum.UnitCanteen);
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
+            {
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        queryable = queryable.Where(t => t.TypePath.Contains(item));
+                    }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+            }
+            else
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            var companyList = queryable.ToList().Select(o => o.Id.ToString()).ToList<string>();
+            companyList.Add("");
+            var companyIds = string.Join(",", companyList);
+            var UserList = users.Where(o => companyList.Contains(o.InfoId.ToString())).ToList();
+            var OutPie = new DataPie
+            {
+                value = UserList.Where(o => o.ExpiredTime.Value <= DateTime.Now).ToList().Count,
+                name = "已到期",
+                url = ""
+            };
+            var OKPie = new DataPie
+            {
+                value = UserList.Where(o => o.ExpiredTime.Value > DateTime.Now).ToList().Count,
+                name = "正常",
+                url = ""
+            };
+            var list = new List<DataPie>();
+            list.Add(OutPie);
+            list.Add(OKPie);
+            return list;
         }
         /// <summary>
         /// 获取入驻的企业地图
@@ -2253,11 +2446,25 @@ namespace KilyCore.Service.ServiceCore
                 if (Areas != null)
                 {
                     if (Areas.Count > 1)
-                        foreach (var item in Areas)
+                    {
+                        Expression<Func<EnterpriseInfo, bool>> exp_1 = null;
+                        Expression<Func<RepastInfo, bool>> exp_2 = null;
+                        for (int i = 0; i < Areas.Count; i++)
                         {
-                            coms = coms.Where(t => t.TypePath.Contains(item));
-                            mers = mers.Where(t => t.TypePath.Contains(item));
+                            if (i == 0)
+                            {
+                                exp_1 = ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                                exp_2 = ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                            }
+                            else
+                            {
+                                exp_1 = exp_1.Or(ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                                exp_2 = exp_2.Or(ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                            }
                         }
+                        coms = coms.Where(exp_1);
+                        mers = mers.Where(exp_2);
+                    }
                     else
                     {
                         coms = coms.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
@@ -2297,12 +2504,29 @@ namespace KilyCore.Service.ServiceCore
                 if (Areas != null)
                 {
                     if (Areas.Count > 1)
-                        foreach (var item in Areas)
+                    {
+                        Expression<Func<EnterpriseInfo, bool>> exp_1 = null;
+                        Expression<Func<RepastInfo, bool>> exp_2 = null;
+                        Expression<Func<CookInfo, bool>> exp_3 = null;
+                        for (int i = 0; i < Areas.Count; i++)
                         {
-                            coms = coms.Where(t => t.TypePath.Contains(item));
-                            mers = mers.Where(t => t.TypePath.Contains(item));
-                            cooks = cooks.Where(t => t.TypePath.Contains(item));
+                            if (i == 0)
+                            {
+                                exp_1 = ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                                exp_2 = ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                                exp_3 = ExpressionExtension.GetExpression<CookInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                            }
+                            else
+                            {
+                                exp_1 = exp_1.Or(ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                                exp_2 = exp_2.Or(ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                                exp_3 = exp_3.Or(ExpressionExtension.GetExpression<CookInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                            }
                         }
+                        coms = coms.Where(exp_1);
+                        mers = mers.Where(exp_2);
+                        cooks = cooks.Where(exp_3);
+                    }
                     else
                     {
                         coms = coms.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
@@ -2351,11 +2575,25 @@ namespace KilyCore.Service.ServiceCore
                 if (Areas != null)
                 {
                     if (Areas.Count > 1)
-                        foreach (var item in Areas)
+                    {
+                        Expression<Func<EnterpriseInfo, bool>> exp_1 = null;
+                        Expression<Func<RepastInfo, bool>> exp_2 = null;
+                        for (int i = 0; i < Areas.Count; i++)
                         {
-                            coms = coms.Where(t => t.TypePath.Contains(item));
-                            mers = mers.Where(t => t.TypePath.Contains(item));
+                            if (i == 0)
+                            {
+                                exp_1 = ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                                exp_2 = ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                            }
+                            else
+                            {
+                                exp_1 = exp_1.Or(ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                                exp_2 = exp_2.Or(ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                            }
                         }
+                        coms = coms.Where(exp_1);
+                        mers = mers.Where(exp_2);
+                    }
                     else
                     {
                         coms = coms.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
@@ -2399,11 +2637,25 @@ namespace KilyCore.Service.ServiceCore
                 if (Areas != null)
                 {
                     if (Areas.Count > 1)
-                        foreach (var item in Areas)
+                    {
+                        Expression<Func<GovtRisk, bool>> exp_1 = null;
+                        Expression<Func<GovtComplain, bool>> exp_2 = null;
+                        for (int i = 0; i < Areas.Count; i++)
                         {
-                            risks = risks.Where(t => t.TypePath.Contains(item));
-                            complains = complains.Where(t => t.TypePath.Contains(item));
+                            if (i == 0)
+                            {
+                                exp_1 = ExpressionExtension.GetExpression<GovtRisk>("TypePath", Areas[i], ExpressionEnum.Like);
+                                exp_2 = ExpressionExtension.GetExpression<GovtComplain>("TypePath", Areas[i], ExpressionEnum.Like);
+                            }
+                            else
+                            {
+                                exp_1 = exp_1.Or(ExpressionExtension.GetExpression<GovtRisk>("TypePath", Areas[i], ExpressionEnum.Like));
+                                exp_2 = exp_2.Or(ExpressionExtension.GetExpression<GovtComplain>("TypePath", Areas[i], ExpressionEnum.Like));
+                            }
                         }
+                        risks = risks.Where(exp_1);
+                        complains = complains.Where(exp_2);
+                    }
                     else
                     {
                         risks = risks.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
@@ -2466,11 +2718,25 @@ namespace KilyCore.Service.ServiceCore
                 if (Areas != null)
                 {
                     if (Areas.Count > 1)
-                        foreach (var item in Areas)
+                    {
+                        Expression<Func<GovtTemplateChild, bool>> exp_1 = null;
+                        Expression<Func<GovtNetPatrol, bool>> exp_2 = null;
+                        for (int i = 0; i < Areas.Count; i++)
                         {
-                            children = children.Where(t => t.TypePath.Contains(item));
-                            patrols = patrols.Where(t => t.TypePath.Contains(GovtInfo().City));
+                            if (i == 0)
+                            {
+                                exp_1 = ExpressionExtension.GetExpression<GovtTemplateChild>("TypePath", Areas[i], ExpressionEnum.Like);
+                                exp_2 = ExpressionExtension.GetExpression<GovtNetPatrol>("TypePath", Areas[i], ExpressionEnum.Like);
+                            }
+                            else
+                            {
+                                exp_1 = exp_1.Or(ExpressionExtension.GetExpression<GovtTemplateChild>("TypePath", Areas[i], ExpressionEnum.Like));
+                                exp_2 = exp_2.Or(ExpressionExtension.GetExpression<GovtNetPatrol>("TypePath", Areas[i], ExpressionEnum.Like));
+                            }
                         }
+                        children = children.Where(exp_1);
+                        patrols = patrols.Where(exp_2);
+                    }
                     else
                     {
                         children = children.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
@@ -2549,12 +2815,29 @@ namespace KilyCore.Service.ServiceCore
                 if (Areas != null)
                 {
                     if (Areas.Count > 1)
-                        foreach (var item in Areas)
+                    {
+                        Expression<Func<EnterpriseVedio, bool>> exp_1 = null;
+                        Expression<Func<RepastVideo, bool>> exp_2 = null;
+                        Expression<Func<RepastInfo, bool>> exp_3 = null;
+                        for (int i = 0; i < Areas.Count; i++)
                         {
-                            vedios = vedios.Where(t => t.TypePath.Contains(item));
-                            videos = videos.Where(t => t.TypePath.Contains(item));
-                            queryable = queryable.Where(t => t.TypePath.Contains(item));
+                            if (i == 0)
+                            {
+                                exp_1 = ExpressionExtension.GetExpression<EnterpriseVedio>("TypePath", Areas[i], ExpressionEnum.Like);
+                                exp_2 = ExpressionExtension.GetExpression<RepastVideo>("TypePath", Areas[i], ExpressionEnum.Like);
+                                exp_3 = ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                            }
+                            else
+                            {
+                                exp_1 = exp_1.Or(ExpressionExtension.GetExpression<EnterpriseVedio>("TypePath", Areas[i], ExpressionEnum.Like));
+                                exp_2 = exp_2.Or(ExpressionExtension.GetExpression<RepastVideo>("TypePath", Areas[i], ExpressionEnum.Like));
+                                exp_3 = exp_3.Or(ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                            }
                         }
+                        vedios = vedios.Where(exp_1);
+                        videos = videos.Where(exp_2);
+                        queryable = queryable.Where(exp_3);
+                    }
                     else
                     {
                         vedios = vedios.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
@@ -2618,11 +2901,21 @@ namespace KilyCore.Service.ServiceCore
                 if (Areas != null)
                 {
                     if (Areas.Count > 1)
-                        foreach (var item in Areas)
+                    {
+                        Expression<Func<GovtNetPatrol, bool>> exp_1 = null;
+                        for (int i = 0; i < Areas.Count; i++)
                         {
-                            //外环
-                            Patrol = Patrol.Where(t => t.TypePath.Contains(item));
+                            if (i == 0)
+                            {
+                                exp_1 = ExpressionExtension.GetExpression<GovtNetPatrol>("TypePath", Areas[i], ExpressionEnum.Like);
+                            }
+                            else
+                            {
+                                exp_1 = exp_1.Or(ExpressionExtension.GetExpression<GovtNetPatrol>("TypePath", Areas[i], ExpressionEnum.Like));
+                            }
                         }
+                        Patrol = Patrol.Where(exp_1);
+                    }
                     else
                         Patrol = Patrol.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                 }
@@ -2662,13 +2955,33 @@ namespace KilyCore.Service.ServiceCore
                 if (Areas != null)
                 {
                     if (Areas.Count > 1)
-                        foreach (var item in Areas)
+                    {
+                        Expression<Func<EnterpriseInfo, bool>> exp_1 = null;
+                        Expression<Func<RepastInfo, bool>> exp_2 = null;
+                        Expression<Func<GovtRisk, bool>> exp_3 = null;
+                        Expression<Func<GovtComplain, bool>> exp_4 = null;
+                        for (int i = 0; i < Areas.Count; i++)
                         {
-                            com = com.Where(t => t.TypePath.Contains(item));
-                            mer = mer.Where(t => t.TypePath.Contains(item));
-                            risk = risk.Where(t => t.TypePath.Contains(item));
-                            plain = plain.Where(t => t.TypePath.Contains(item));
+                            if (i == 0)
+                            {
+                                exp_1 = ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                                exp_2 = ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                                exp_3 = ExpressionExtension.GetExpression<GovtRisk>("TypePath", Areas[i], ExpressionEnum.Like);
+                                exp_4 = ExpressionExtension.GetExpression<GovtComplain>("TypePath", Areas[i], ExpressionEnum.Like);
+                            }
+                            else
+                            {
+                                exp_1 = exp_1.Or(ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                                exp_2 = exp_2.Or(ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                                exp_3 = exp_3.Or(ExpressionExtension.GetExpression<GovtRisk>("TypePath", Areas[i], ExpressionEnum.Like));
+                                exp_4 = exp_4.Or(ExpressionExtension.GetExpression<GovtComplain>("TypePath", Areas[i], ExpressionEnum.Like));
+                            }
                         }
+                        com = com.Where(exp_1);
+                        mer = mer.Where(exp_2);
+                        risk = risk.Where(exp_3);
+                        plain = plain.Where(exp_4);
+                    }
                     else
                     {
                         com = com.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
@@ -2736,10 +3049,17 @@ namespace KilyCore.Service.ServiceCore
                 if (Areas != null)
                 {
                     if (Areas.Count > 1)
-                        foreach (var item in Areas)
+                    {
+                        Expression<Func<GovtComplain, bool>> exp = null;
+                        for (int i = 0; i < Areas.Count; i++)
                         {
-                            queryable = queryable.Where(t => t.TypePath.Contains(item));
+                            if (i == 0)
+                                exp = ExpressionExtension.GetExpression<GovtComplain>("TypePath", Areas[i], ExpressionEnum.Like);
+                            else
+                                exp = exp.Or(ExpressionExtension.GetExpression<GovtComplain>("TypePath", Areas[i], ExpressionEnum.Like));
                         }
+                        queryable = queryable.Where(exp);
+                    }
                     else
                         queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                 }
@@ -2780,14 +3100,31 @@ namespace KilyCore.Service.ServiceCore
                 if (Areas != null)
                 {
                     if (Areas.Count > 1)
-                        foreach (var item in Areas)
+                    {
+                        Expression<Func<EnterpriseInfo, bool>> exp_1 = null;
+                        Expression<Func<RepastInfo, bool>> exp_2 = null;
+                        Expression<Func<CookBanquet, bool>> exp_3 = null;
+                        for (int i = 0; i < Areas.Count; i++)
                         {
-                            //外环
-                            Merchant = Merchant.Where(t => t.TypePath.Contains(item));
-                            //内环
-                            Enterprise = Enterprise.Where(t => t.TypePath.Contains(item));
-                            Banquet = Banquet.Where(t => t.TypePath.Contains(item));
+                            if (i == 0)
+                            {
+                                exp_1 = ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                                exp_2 = ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                                exp_3 = ExpressionExtension.GetExpression<CookBanquet>("TypePath", Areas[i], ExpressionEnum.Like);
+                            }
+                            else
+                            {
+                                exp_1 = exp_1.Or(ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                                exp_2 = exp_2.Or(ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                                exp_3 = exp_3.Or(ExpressionExtension.GetExpression<CookBanquet>("TypePath", Areas[i], ExpressionEnum.Like));
+                            }
                         }
+                        //外环
+                        Merchant = Merchant.Where(exp_2);
+                        //内环
+                        Enterprise = Enterprise.Where(exp_1);
+                        Banquet = Banquet.Where(exp_3);
+                    }
                     else
                     {
                         //外环
@@ -2839,10 +3176,17 @@ namespace KilyCore.Service.ServiceCore
                 if (Areas != null)
                 {
                     if (Areas.Count > 1)
-                        foreach (var item in Areas)
+                    {
+                        Expression<Func<GovtComplain, bool>> exp = null;
+                        for (int i = 0; i < Areas.Count; i++)
                         {
-                            queryable = queryable.Where(t => t.TypePath.Contains(item));
+                            if (i == 0)
+                                exp = ExpressionExtension.GetExpression<GovtComplain>("TypePath", Areas[i], ExpressionEnum.Like);
+                            else
+                                exp = exp.Or(ExpressionExtension.GetExpression<GovtComplain>("TypePath", Areas[i], ExpressionEnum.Like));
                         }
+                        queryable = queryable.Where(exp);
+                    }
                     else
                         queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                 }

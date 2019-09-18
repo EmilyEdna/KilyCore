@@ -1037,6 +1037,15 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(GovtWebService.GetProductRank(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
+        /// 获取人员统计
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetPersonRank")]
+        public ObjectResultEx GetPersonRank()
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetPersonBank(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
         /// 获取执行检查统计
         /// </summary>
         /// <returns></returns>

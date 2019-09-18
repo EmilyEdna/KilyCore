@@ -921,7 +921,7 @@ namespace KilyCore.Service.ServiceCore
                 info.TagCodeNum = ServiceMessage.TEST;
                 if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
                     AliPayModel.Money = ConfigMoney.PlantAndCultureTest * Convert.ToInt32(Param.ContractYear);
-                if (info.CompanyType == CompanyEnum.Production)
+                if (info.CompanyType == CompanyEnum.Production || info.CompanyType == CompanyEnum.Other)
                     AliPayModel.Money = ConfigMoney.ProductionTest * Convert.ToInt32(Param.ContractYear);
                 if (info.CompanyType == CompanyEnum.Circulation)
                     AliPayModel.Money = ConfigMoney.CirculationTest * Convert.ToInt32(Param.ContractYear);
@@ -931,7 +931,7 @@ namespace KilyCore.Service.ServiceCore
                 info.TagCodeNum = ServiceMessage.BASE;
                 if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
                     AliPayModel.Money = ConfigMoney.PlantAndCultureBase * Convert.ToInt32(Param.ContractYear);
-                if (info.CompanyType == CompanyEnum.Production)
+                if (info.CompanyType == CompanyEnum.Production || info.CompanyType == CompanyEnum.Other)
                     AliPayModel.Money = ConfigMoney.ProductionBase * Convert.ToInt32(Param.ContractYear);
                 if (info.CompanyType == CompanyEnum.Circulation)
                     AliPayModel.Money = ConfigMoney.CirculationBase * Convert.ToInt32(Param.ContractYear);
@@ -941,7 +941,7 @@ namespace KilyCore.Service.ServiceCore
                 info.TagCodeNum = ServiceMessage.LEVEL;
                 if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
                     AliPayModel.Money = ConfigMoney.PlantAndCultureLv * Convert.ToInt32(Param.ContractYear);
-                if (info.CompanyType == CompanyEnum.Production)
+                if (info.CompanyType == CompanyEnum.Production || info.CompanyType == CompanyEnum.Other)
                     AliPayModel.Money = ConfigMoney.ProductionLv * Convert.ToInt32(Param.ContractYear);
                 if (info.CompanyType == CompanyEnum.Circulation)
                     AliPayModel.Money = ConfigMoney.CirculationLv * Convert.ToInt32(Param.ContractYear);
@@ -951,7 +951,7 @@ namespace KilyCore.Service.ServiceCore
                 info.TagCodeNum = ServiceMessage.ENTERPRISE;
                 if (info.CompanyType == CompanyEnum.Plant || info.CompanyType == CompanyEnum.Culture)
                     AliPayModel.Money = ConfigMoney.PlantAndCultureEnterprise * Convert.ToInt32(Param.ContractYear);
-                if (info.CompanyType == CompanyEnum.Production)
+                if (info.CompanyType == CompanyEnum.Production || info.CompanyType == CompanyEnum.Other)
                     AliPayModel.Money = ConfigMoney.ProductionEnterprise * Convert.ToInt32(Param.ContractYear);
                 if (info.CompanyType == CompanyEnum.Circulation)
                     AliPayModel.Money = ConfigMoney.CirculationEnterprise * Convert.ToInt32(Param.ContractYear);
@@ -3866,7 +3866,7 @@ namespace KilyCore.Service.ServiceCore
                         Param.OutStockNum = OneTag.Count;
                         foreach (var item in OneTag)
                         {
-                            long No = item.Contains("W")?Convert.ToInt64(item.Split("W")[1].Substring(0, 12)): Convert.ToInt64(item.Split("P")[1].Substring(0, 12));
+                            long No = item.Contains("W") ? Convert.ToInt64(item.Split("W")[1].Substring(0, 12)) : Convert.ToInt64(item.Split("P")[1].Substring(0, 12));
                             TagAttach = TagAttachs.Where(t => t.StarSerialNo <= No && t.EndSerialNo >= No).AsQueryable().AsNoTracking().FirstOrDefault();
                             //判断是否重复使用
                             if (!string.IsNullOrEmpty(TagAttach.UseTag))
@@ -3931,8 +3931,10 @@ namespace KilyCore.Service.ServiceCore
                     }
                 }
             }
-            else {
-                if (!string.IsNullOrEmpty(Param.Star) && !string.IsNullOrEmpty(Param.End)) {
+            else
+            {
+                if (!string.IsNullOrEmpty(Param.Star) && !string.IsNullOrEmpty(Param.End))
+                {
                     var stockInNo = Kily.Set<EnterpriseGoodsStock>().Where(t => t.Id == Param.StockId).Select(t => t.GoodsBatchNo).FirstOrDefault();
                     var TagAttachs = Kily.Set<EnterpriseTagAttach>().Where(t => t.StockNo == stockInNo).AsNoTracking().ToList();
                     EnterpriseTagAttach TagAttach = null;
@@ -3963,14 +3965,16 @@ namespace KilyCore.Service.ServiceCore
                                 TagAttach.UseTag += item + ",";
                             }
                         }
-                        Param.OutStockNum =(int)(ENo - SNo)+1;
+                        Param.OutStockNum = (int)(ENo - SNo) + 1;
                     }
-                    else {
+                    else
+                    {
                         long SNo = Convert.ToInt64(Param.Star);
                         long ENo = Convert.ToInt64(Param.End);
-                        Param.OutStockNum = (int)(ENo - SNo)+1;
+                        Param.OutStockNum = (int)(ENo - SNo) + 1;
                         TagAttach = TagAttachs.Where(t => t.StarSerialNo <= SNo && t.EndSerialNo >= ENo).AsQueryable().AsNoTracking().FirstOrDefault();
-                        for (long i = SNo; i <= ENo; i++) {
+                        for (long i = SNo; i <= ENo; i++)
+                        {
                             TempTag += i + ",";
                             //判断是否重复使用
                             if (!string.IsNullOrEmpty(TagAttach.UseTag))
@@ -4825,7 +4829,8 @@ namespace KilyCore.Service.ServiceCore
                     return $"当前号段：{UseTag}，已经被发货使用过，请勿重复使用！";
                 UpdateField(TagAttach, "SendTag");
             }
-            else {
+            else
+            {
                 var temp = Param.GoodsName;
                 Param.GoodsName = temp.Split("_")[0];
                 var GoodId = Guid.Parse(temp.Split("_")[1]);
@@ -4838,11 +4843,11 @@ namespace KilyCore.Service.ServiceCore
                 {
                     long SNo = Convert.ToInt64(Regex.Split(Param.Star, "[W|P]")[1]);
                     long ENo = Convert.ToInt64(Regex.Split(Param.End, "[W|P]")[1]);
-                    String Host = Regex.Split(Param.End, "[W|P]")[0]+(Param.Star.Contains("W")?"W":"P");
-                    Param.SendGoodsNum = (ENo - SNo+1).ToString();
+                    String Host = Regex.Split(Param.End, "[W|P]")[0] + (Param.Star.Contains("W") ? "W" : "P");
+                    Param.SendGoodsNum = (ENo - SNo + 1).ToString();
                     for (long i = SNo; i <= ENo; i++)
                     {
-                        Param.OneCode += (Temp + Host + i + NormalUtil.CreateRandomNum()+",");
+                        Param.OneCode += (Temp + Host + i + NormalUtil.CreateRandomNum() + ",");
                         TagAttach = TagAttachs.Where(t => t.StarSerialNo <= SNo && t.EndSerialNo >= i).AsQueryable().AsNoTracking().FirstOrDefault();
                         if (TagAttach == null)
                             NoBing += i + "|";
@@ -4864,7 +4869,7 @@ namespace KilyCore.Service.ServiceCore
                 {
                     long SNo = Convert.ToInt64(Param.Star);
                     long ENo = Convert.ToInt64(Param.End);
-                    Param.SendGoodsNum = (ENo - SNo+1).ToString();
+                    Param.SendGoodsNum = (ENo - SNo + 1).ToString();
                     for (long i = SNo; i <= ENo; i++)
                     {
                         Param.OneCode += (Temp + i + NormalUtil.CreateRandomNum() + ",");
@@ -5811,6 +5816,22 @@ namespace KilyCore.Service.ServiceCore
             List<Guid> GoodsIds = Kily.Set<EnterpriseGoodsStock>().Where(t => StockIds.Contains(t.Id)).Select(t => t.GoodsId).ToList();
             data.ProductName = string.Join(",", Kily.Set<EnterpriseGoods>().Where(t => GoodsIds.Contains(t.Id)).Select(t => t.ProductName).ToArray());
             return data;
+        }
+        #endregion
+
+        #region APP 接口
+        /// <summary>
+        /// 数据统计
+        /// </summary>
+        /// <returns></returns>
+        public Object GetAppDataCount(Guid? Id)
+        {
+            List<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id).ToList();
+            List<EnterpriseTagAttach> tagAttaches = Kily.Set<EnterpriseTagAttach>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id).ToList();
+            List<SystemMessage> msg = Kily.Set<SystemMessage>().Where(t => t.IsDelete == false).Where(t => t.CompanyId == Id).ToList();
+          
+            Object obj = new { goods, tagAttaches, msg };
+            return obj;
         }
         #endregion
     }
