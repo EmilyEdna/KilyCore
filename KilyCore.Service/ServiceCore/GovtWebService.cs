@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 #region << 版 本 注 释 >>
@@ -350,7 +351,7 @@ namespace KilyCore.Service.ServiceCore
                 Phone = t.Phone,
                 AllowUnit = t.AllowUnit,
                 Honor = t.HonorCertification,
-                Remark = t.Remark.Replace("/Upload/","http://system.cfda.vip/Upload/"),
+                Remark = t.Remark.Replace("/Upload/", "http://system.cfda.vip/Upload/"),
                 Video = Kily.Set<RepastVideo>().Where(x => x.InfoId == Id && x.IsIndex == true)
                 .OrderByDescending(x => x.CreateTime).Select(m => new ResponseRepastVideo
                 {
@@ -691,7 +692,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 data = queryable.Select(t => new ResponseGovtDistribut()
                 {
-                    Id=t.Id.ToString(),
+                    Id = t.Id.ToString(),
                     Name = t.CompanyName,
                     LngAndLat = t.LngAndLat,
                     Address = t.CompanyAddress,
@@ -2342,12 +2343,27 @@ namespace KilyCore.Service.ServiceCore
                 {
                     if (Areas.Count > 1)
                     {
-                        foreach (var item in Areas)
+                        Expression<Func<EnterpriseInfo, bool>> exp_1 = null;
+                        Expression<Func<RepastInfo, bool>> exp_2 = null;
+                        Expression<Func<CookInfo, bool>> exp_3 = null;
+                        for (int i = 0; i < Areas.Count; i++)
                         {
-                            coms = coms.Where(t => t.TypePath.Contains(item));
-                            mers = mers.Where(t => t.TypePath.Contains(item));
-                            cooks = cooks.Where(t => t.TypePath.Contains(item));
+                            if (i == 0)
+                            {
+                                exp_1 = ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                                exp_2 = ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                                exp_3 = ExpressionExtension.GetExpression<CookInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                            }
+                            else
+                            {
+                                exp_1 = exp_1.Or(ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                                exp_2 = exp_2.Or(ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                                exp_3 = exp_3.Or(ExpressionExtension.GetExpression<CookInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                            }
                         }
+                        coms = coms.Where(exp_1);
+                        mers = mers.Where(exp_2);
+                        cooks = cooks.Where(exp_3);
                     }
                     else
                     {
