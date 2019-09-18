@@ -2283,5 +2283,19 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.GetScanPackageInfo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+
+        #region APP 接口
+
+        /// <summary>
+        /// 数据统计
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetAppDataCount")]
+        public ObjectResultEx GetAppDataCount(SimpleParam<Guid?> Param)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetAppDataCount(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+
+        #endregion
     }
 }

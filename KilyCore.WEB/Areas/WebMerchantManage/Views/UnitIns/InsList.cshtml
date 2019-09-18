@@ -27,7 +27,7 @@
             InitEvents: function () {
                 $("#add").on('click', function () {
                     controller.OpenWindow({
-                        title: "新增陪餐",
+                        title: "新增陪餐制度",
                         type: 2,
                         height: "90%",
                         width: "80%",
@@ -63,7 +63,7 @@
                     },
                     "click .edit": function (event, val, row, index) {
                         controller.OpenWindow({
-                            title: "编辑陪餐",
+                            title: "编辑陪餐制度",
                             type: 2,
                             height: "90%",
                             width: "80%",
@@ -113,6 +113,11 @@
                 </div>
                 <div class="table-responsive">
                     <table id="tableList" class="table">
+                        <colgroup>
+                            <col width="240" />
+                            <col />
+                            <col />
+                        </colgroup>
                         <thead>
                             <tr>
                                 <th data-field="InsName" data-halign="center" data-align="center" data-valign="middle">制度名称</th>

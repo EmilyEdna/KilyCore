@@ -170,6 +170,7 @@ namespace KilyCore.Service.IServiceCore
         #region 数据统计
         #region 新旧大屏
         IList<DataPie> GetProductRank();
+        IList<DataPie> GetPersonBank();
         ResponseGovtMap GetAllCityMerchantCount();
         #endregion
         #region 新大屏

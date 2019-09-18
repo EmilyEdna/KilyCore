@@ -5818,5 +5818,21 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         #endregion
+
+        #region APP 接口
+        /// <summary>
+        /// 数据统计
+        /// </summary>
+        /// <returns></returns>
+        public Object GetAppDataCount(Guid? Id)
+        {
+            List<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id).ToList();
+            List<EnterpriseTagAttach> tagAttaches = Kily.Set<EnterpriseTagAttach>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id).ToList();
+            List<SystemMessage> msg = Kily.Set<SystemMessage>().Where(t => t.IsDelete == false).Where(t => t.CompanyId == Id).ToList();
+          
+            Object obj = new { goods, tagAttaches, msg };
+            return obj;
+        }
+        #endregion
     }
 }
