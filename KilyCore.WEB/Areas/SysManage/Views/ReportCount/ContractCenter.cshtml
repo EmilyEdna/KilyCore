@@ -82,6 +82,7 @@
                             content += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (item.Alipay != 0 ? 'red' : 'black') + '">' + (item.Alipay != 0 ? '✔' : 'X') + '</td>';
                             content += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (item.WxPay != 0 ? 'red' : 'black') + '">' + (item.WxPay != 0 ? '✔' : 'X') + '</td>';
                             content += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (item.UnionPay != 0 ? 'red' : 'black') + '">' + (item.UnionPay != 0 ? '✔' : 'X') + '</td>';
+                            content += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (item.AgentPay != 0 ? 'red' : 'black') + '">' + (item.AgentPay != 0 ? '✔' : 'X') + '</td>';
                             content += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:pink">' + item.ContractMoneny + '</td>';
                             content += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:pink">' + item.WayTags + '</td>';
                             content += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:pink">' + item.TargetMoneny + '</td>';
@@ -104,6 +105,7 @@
                         html += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (result.data.AlipaySum != 0 ? 'red' : 'black') + '">' + result.data.AlipaySum + '</td>';
                         html += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (result.data.WxPaySum != 0 ? 'red' : 'black') + '">' + result.data.WxPaySum + '</td>';
                         html += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (result.data.UnionPaySum != 0 ? 'red' : 'black') + '">' + result.data.UnionPaySum + '</td>';
+                        html += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:' + (result.data.AgentPaySum != 0 ? 'red' : 'black') + '">' + result.data.AgentPaySum + '</td>';
                         html += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:pink">' + result.data.ContractMonenySum + '</td>';
                         html += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:pink">' + result.data.WayTagsSum + '</td>';
                         html += '<td align="center" valign="middle" style="text-align: center;vertical-align: central;border:1px solid black;color:pink">' + result.data.TargetMonenySum + '</td>';
@@ -173,12 +175,12 @@
                 <table id="tableList" class="table table-hover table-bordered">
                     <thead>
                         <tr>
-                            <th colspan="20" style="text-align: center;vertical-align: central;border:1px solid black;">
+                            <th colspan="21" style="text-align: center;vertical-align: central;border:1px solid black;">
                                 企业合同统计一览表
                             </th>
                         </tr>
                         <tr>
-                            <th colspan="20" style="text-align: right;vertical-align: central;border:1px solid black;">
+                            <th colspan="21" style="text-align: right;vertical-align: central;border:1px solid black;">
                                 单位：元&nbsp;&nbsp;&nbsp;
                             </th>
                         </tr>
@@ -187,7 +189,7 @@
                             <th rowspan="2" style="text-align: center;vertical-align: central;border:1px solid black;">公司名称</th>
                             <th colspan="6" style="text-align: center;vertical-align: central;border:1px solid black;">所属行业</th>
                             <th colspan="4" style="text-align: center;vertical-align: central;border:1px solid black;">合同版本</th>
-                            <th colspan="3" style="text-align: center;vertical-align: central;border:1px solid black;">缴费方式</th>
+                            <th colspan="4" style="text-align: center;vertical-align: central;border:1px solid black;">缴费方式</th>
                             <th rowspan="2" style="text-align: center;vertical-align: central;border:1px solid black;">合同金额</th>
                             <th rowspan="2" style="text-align: center;vertical-align: central;border:1px solid black;">赠送追溯码/枚</th>
                             <th rowspan="2" style="text-align: center;vertical-align: central;border:1px solid black;">实收金额</th>
@@ -208,6 +210,7 @@
                             <th style="text-align: center;vertical-align: central;border:1px solid black;">支付宝</th>
                             <th style="text-align: center;vertical-align: central;border:1px solid black;">微信</th>
                             <th style="text-align: center;vertical-align: central;border:1px solid black;">银行转账</th>
+                            <th style="text-align: center;vertical-align: central;border:1px solid black;">其他支付</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -216,19 +219,19 @@
                         <tr id="content_foot"></tr>
                         <tr>
                             <th style="text-align: center;vertical-align: central;border:1px solid black;"> 副总经理：</th>
-                            <td colspan="15" style="text-align: center;vertical-align: central;border:1px solid black;"></td>
+                            <td colspan="16" style="text-align: center;vertical-align: central;border:1px solid black;"></td>
                             <th style="text-align: center;vertical-align: central;border:1px solid black;">签字：</th>
                             <td colspan="3" style="text-align: center;vertical-align: central;border:1px solid black;"></td>
                         </tr>
                         <tr>
                             <th style="text-align: center;vertical-align: central;border:1px solid black;">总经理：</th>
-                            <td colspan="15" style="text-align: center;vertical-align: central;border:1px solid black;"></td>
+                            <td colspan="16" style="text-align: center;vertical-align: central;border:1px solid black;"></td>
                             <th style="text-align: center;vertical-align: central;border:1px solid black;">签字：</th>
                             <td colspan="3" style="text-align: center;vertical-align: central;border:1px solid black;"></td>
                         </tr>
                         <tr>
                             <th style="text-align: center;vertical-align: central;border:1px solid black;">统计时间：</th>
-                            <td colspan="19" style="text-align: right;vertical-align: central;border:1px solid black;" id="Time"></td>
+                            <td colspan="20" style="text-align: right;vertical-align: central;border:1px solid black;" id="Time"></td>
                         </tr>
                     </tfoot>
                 </table>
