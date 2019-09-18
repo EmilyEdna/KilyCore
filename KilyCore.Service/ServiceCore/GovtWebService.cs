@@ -2193,6 +2193,50 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
         }
         /// <summary>
+        /// 获取人员统计
+        /// </summary>
+        /// <returns></returns>
+        public IList<DataPie> GetPersonBank()
+        {
+            IQueryable<RepastInfoUser> users = Kily.Set<RepastInfoUser>().Where(t => t.IsDelete == false);
+            IQueryable<RepastInfo> queryable = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess&&t.DiningType== MerchantEnum.UnitCanteen);
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
+            IList<string> Areas = GetDepartArea();
+            if (Areas != null)
+            {
+                if (Areas.Count > 1)
+                    foreach (var item in Areas)
+                    {
+                        queryable = queryable.Where(t => t.TypePath.Contains(item));
+                    }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+            }
+            else
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            var companyList = queryable.ToList().Select(o=>o.Id.ToString()).ToList<string>();
+            companyList.Add("");
+            var companyIds = string.Join(",", companyList);
+            var UserList = users.Where(o => companyList.Contains(o.InfoId.ToString())).ToList();
+            var OutPie = new DataPie
+            {
+                value = UserList.Where(o=>o.ExpiredTime.Value<=DateTime.Now).ToList().Count,
+                name = "已到期",
+                url = ""
+            };
+            var OKPie = new DataPie
+            {
+                value = UserList.Where(o => o.ExpiredTime.Value > DateTime.Now).ToList().Count,
+                name = "正常",
+                url = ""
+            };
+            var list = new List<DataPie>();
+            list.Add(OutPie);
+            list.Add(OKPie);
+            return list;
+        }
+        /// <summary>
         /// 获取入驻的企业地图
         /// </summary>
         /// <returns></returns>
@@ -2297,12 +2341,14 @@ namespace KilyCore.Service.ServiceCore
                 if (Areas != null)
                 {
                     if (Areas.Count > 1)
+                    {
                         foreach (var item in Areas)
                         {
                             coms = coms.Where(t => t.TypePath.Contains(item));
                             mers = mers.Where(t => t.TypePath.Contains(item));
                             cooks = cooks.Where(t => t.TypePath.Contains(item));
                         }
+                    }
                     else
                     {
                         coms = coms.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));

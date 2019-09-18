@@ -15,7 +15,7 @@
         InitDom: function () {
             //初始化显示
             if (CompanyInfo.CompanyType == "40" || CompanyInfo.CompanyType == "50") {
-                $(".title").each(function (i, item) {
+                $(".ts").each(function (i, item) {
                     $(this).html($(this).html().replace(new RegExp("产量", "g"), "销量"));
                 })
             }
@@ -282,40 +282,40 @@
     <!--第一个区域-->
     <div class="section section1">
         <div class="item item1">
-            <div class="title">
+            <div class="title ts">
                 <div></div>
                 周产量
             </div>
             <div class="content content0">
                 <div class="left" style="background-color: #FCB600;"></div>
                 <div class="right">
-                    <p>周产量：<span name="WeekDataCount"></span>件</p>
+                    <p class="ts">周产量：<span name="WeekDataCount"></span>件</p>
                     <p>较上周：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="TwoWeek"></span>件</p>
                 </div>
             </div>
         </div>
         <div class="item item1">
-            <div class="title">
+            <div class="title ts">
                 <div></div>
                 月产量
             </div>
             <div class="content content0">
                 <div class="left" style="background-color: #00D1CE;"></div>
                 <div class="right">
-                    <p>月产量：<span name="MonthDataCount"></span>件</p>
+                    <p class="ts">月产量：<span name="MonthDataCount"></span>件</p>
                     <p>较上月：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="TwoMonth"></span>件</p>
                 </div>
             </div>
         </div>
         <div class="item item1">
-            <div class="title">
+            <div class="title ts">
                 <div></div>
                 年产量
             </div>
             <div class="content content0">
                 <div class="left" style="background-color: #36C3FF;"></div>
                 <div class="right">
-                    <p>年产量：<span name="YearDataCount"></span>件</p>
+                    <p class="ts">年产量：<span name="YearDataCount"></span>件</p>
                     <p>较去年：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="TwoYear"></span>件</p>
                 </div>
             </div>

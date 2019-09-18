@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "DataV3";
+    ViewData["Title"] = "中食药追溯管理可视化平台";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 
@@ -184,9 +184,9 @@
                     $("#CodeNum").text(result.data.ScanCodeSum_Today);
                 }
             });
-            //产品统计
+            //人员统计
             controller.ajax({
-                url: "GovtWeb/GetProductRank",
+                url: "GovtWeb/GetPersonRank",
                 data: {},
                 type: "post",
                 async: false,
@@ -380,6 +380,7 @@
                 async: false,
                 type: "Post",
                 success: function (result) {
+                    debugger;
                     $.each(result.data.Vedio, function (index, item) {
                         if (index == 0) {
                             let type = ((item.VedioAddr.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
@@ -402,30 +403,32 @@
                             $($(".videoitem").find("p")[3]).find("span").text(item.VedioName);
                         }
                     });
-                    videojs('vedio_0', {
-                        autoplay: false,
-                        controls: true,
-                        width: 216,
-                        height: 120
-                    });
-                    videojs('vedio_1', {
-                        autoplay: false,
-                        controls: true,
-                        width: 216,
-                        height: 100
-                    });
-                    videojs('vedio_2', {
-                        autoplay: false,
-                        controls: true,
-                        width: 216,
-                        height: 100
-                    });
-                    videojs('vedio_3', {
-                        autoplay: false,
-                        controls: true,
-                        width: 216,
-                        height: 100
-                    });
+                    if (result.data.Vedio.length > 0) {
+                        videojs('vedio_0', {
+                            autoplay: false,
+                            controls: true,
+                            width: 216,
+                            height: 120
+                        });
+                        videojs('vedio_1', {
+                            autoplay: false,
+                            controls: true,
+                            width: 216,
+                            height: 100
+                        });
+                        videojs('vedio_2', {
+                            autoplay: false,
+                            controls: true,
+                            width: 216,
+                            height: 100
+                        });
+                        videojs('vedio_3', {
+                            autoplay: false,
+                            controls: true,
+                            width: 216,
+                            height: 100
+                        });
+                    }
                     $("#firmNo").text(result.data.CompanyVedio); // 今日企业视频条数
                     $("#MerchantNo").text(result.data.MerchantVedio); //今日餐饮视频条数
                 }
