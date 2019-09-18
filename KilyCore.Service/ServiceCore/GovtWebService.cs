@@ -727,7 +727,7 @@ namespace KilyCore.Service.ServiceCore
                     queryable = queryable.Where(exp_1);
                     queryables = queryables.Where(exp_2);
                 }
-                   
+
                 else
                 {
                     queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
@@ -2348,7 +2348,7 @@ namespace KilyCore.Service.ServiceCore
         public IList<DataPie> GetPersonBank()
         {
             IQueryable<RepastInfoUser> users = Kily.Set<RepastInfoUser>().Where(t => t.IsDelete == false);
-            IQueryable<RepastInfo> queryable = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess&&t.DiningType== MerchantEnum.UnitCanteen);
+            IQueryable<RepastInfo> queryable = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess && t.DiningType == MerchantEnum.UnitCanteen);
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
             IList<string> Areas = GetDepartArea();
@@ -2364,13 +2364,13 @@ namespace KilyCore.Service.ServiceCore
             }
             else
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
-            var companyList = queryable.ToList().Select(o=>o.Id.ToString()).ToList<string>();
+            var companyList = queryable.ToList().Select(o => o.Id.ToString()).ToList<string>();
             companyList.Add("");
             var companyIds = string.Join(",", companyList);
             var UserList = users.Where(o => companyList.Contains(o.InfoId.ToString())).ToList();
             var OutPie = new DataPie
             {
-                value = UserList.Where(o=>o.ExpiredTime.Value<=DateTime.Now).ToList().Count,
+                value = UserList.Where(o => o.ExpiredTime.Value <= DateTime.Now).ToList().Count,
                 name = "已到期",
                 url = ""
             };
