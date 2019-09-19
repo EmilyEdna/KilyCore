@@ -24,11 +24,6 @@ namespace KilyCore.WEB.Controllers
         {
             return View();
         }
-
-        public IActionResult DataCounts()
-        {
-            return View();
-        }
         public IActionResult Room()
         {
             return View();
