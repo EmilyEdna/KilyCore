@@ -26,6 +26,7 @@
             InitDom: function () {
                 //根据餐饮企业类型显示相应模块
                 if (RepastUser.DiningTypeName == "单位食堂") {
+                    window.location.href = "/Repast/Room";
                     $("#NavFoods").hide();
                     $(".bd-item4").hide();
                 }

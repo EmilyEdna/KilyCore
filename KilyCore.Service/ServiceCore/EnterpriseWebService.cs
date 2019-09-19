@@ -5830,8 +5830,79 @@ namespace KilyCore.Service.ServiceCore
             List<EnterpriseTagAttach> tagAttaches = Kily.Set<EnterpriseTagAttach>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.CompanyId == Id).ToList();
             List<SystemMessage> msg = Kily.Set<SystemMessage>().Where(t => t.IsDelete == false).Where(t => t.CompanyId == Id).ToList();
           
-            Object obj = new { goods, tagAttaches, msg };
+            Object obj = new { GoodCount=goods.Count, TagCount=tagAttaches.Count,MsgCount= msg.Count };
             return obj;
+        }
+        /// <summary>
+        /// 风险预警
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseGovtRisk> GetWaringRiskPage(PageParamList<RequestGovtRisk> pageParam)
+        {
+            IQueryable<GovtRisk> queryable = Kily.Set<GovtRisk>().OrderByDescending(t => t.CreateTime);
+            queryable = queryable.Where(t => t.TypePath.Contains(CompanyInfo().City));
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.EventName))
+                queryable = queryable.Where(t => t.EventName.Contains(pageParam.QueryParam.EventName));
+            var data = queryable.Select(t => new ResponseGovtRisk()
+            {
+                Id = t.Id,
+                EventName = t.EventName,
+                TradeType = t.TradeType,
+                WaringLv = t.WaringLv,
+                ReleaseTime = t.ReleaseTime,
+                ReportPlay = t.ReportPlay,
+                Remark = t.Remark,
+                Desc = t.Remark.NoHtml(),
+                TypePath = t.TypePath
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 整改意见
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseSystemMessage> GetNetPatrolPage(PageParamList<Object> pageParam)
+        {
+            IQueryable<SystemMessage> queryable = Kily.Set<SystemMessage>().OrderByDescending(t => t.ReleaseTime);
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            var data = queryable.Select(t => new ResponseSystemMessage()
+            {
+                Id = t.Id,
+                MsgName = t.MsgName,
+                MsgContent = t.MsgContent,
+                Status = t.Status,
+                ReleaseTime = t.ReleaseTime
+            }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 投诉建议
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseGovtComplain> GetComplainPage(PageParamList<RequestGovtComplain> pageParam)
+        {
+            IQueryable<GovtComplain> queryable = Kily.Set<GovtComplain>().OrderByDescending(t => t.ComplainTime);
+            if (CompanyInfo() != null)
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            else
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id);
+            var data = queryable.Select(t => new ResponseGovtComplain()
+            {
+                Id = t.Id,
+                ComplainUser = t.ComplainUser,
+                ComplainContent = t.ComplainContent,
+                ComplainUserPhone = t.ComplainUserPhone,
+                HandlerContent = t.HandlerContent,
+                Status = t.Status,
+                ComplainTime = t.ComplainTime
+            }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
         }
         #endregion
     }

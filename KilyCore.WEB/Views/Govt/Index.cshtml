@@ -25,6 +25,12 @@
                     $("#B2").prepend(result.data.CGTotal + "%");
                     $("#B3").prepend(result.data.CPTotal + "%");
                     $("#B4").prepend(result.data.CBTotal + "%");
+
+                    //教育局
+                    if (GovtInfo.IsEdu) {
+                        $(".ts").html($(this).html().replace(new RegExp("产量", "g"), "人员"));
+                        $(".tq").html($(this).html().replace(new RegExp("报备", "g"), "预警"));
+                    }
                 }
             });
             //投诉占比
@@ -354,12 +360,12 @@
             <div class=" ibox float-e-margins">
                 <div class="ibox-title">
                     <span class="label label-info pull-right">月</span>
-                    <h5>产量</h5>
+                    <h5 class="ts">产量</h5>
                 </div>
                 <div class="item">
                     <div class="left" style="background-color: #23C6C8;"></div>
                     <div class="right">
-                        <p>月产量：<span id="A2"></span></p>
+                        <p class="ts">月产量：<span id="A2"></span></p>
                         <p>增长比：<span id="B2">&emsp;<i class="fa fa-level-up" style="color: #23C6C8;"></i></span></p>
                     </div>
                 </div>
@@ -384,12 +390,12 @@
             <div class=" ibox float-e-margins">
                 <div class="ibox-title">
                     <span class="label label-danger pull-right">月</span>
-                    <h5>报备</h5>
+                    <h5 class="tq">报备</h5>
                 </div>
                 <div class="item">
                     <div class="left" style="background-color: #ED5565;"></div>
                     <div class="right">
-                        <p>月报备：<span id="A4">452,451</span></p>
+                        <p class="tq">月报备：<span id="A4">452,451</span></p>
                         <p>增长比：<span id="B4">&emsp;<i class="fa fa-level-up" style="color: #ED5565;"></i></span></p>
                     </div>
                 </div>

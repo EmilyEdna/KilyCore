@@ -40,6 +40,25 @@
             },
             //行为
             action: {
+                ImgFormatter: function (val, row, index) {
+                    var action = [];
+                    if (row.HealthCard != null) {
+                        action.push('<img class="photo" src="' + row.HealthCard + '" style="width:48px;height:32px;"">')
+                    }
+                    return action.join("&nbsp;");
+                },
+                ImgEvents: {
+                    "click .photo": function (event, val, row, index) {
+                        var option = {
+                            title: "健康证",
+                            data: [{
+                                alt: "健康证",
+                                src: $(this).attr("src")
+                            }]
+                        };
+                        controller.Photos(option);
+                    }
+                },
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
@@ -114,9 +133,11 @@
                         <thead>
                             <tr>
                                 <th data-field="TrueName" data-halign="center" data-align="center" data-valign="middle">姓名</th>
-                                <th data-field="Account" data-halign="center" data-align="center" data-valign="middle">账号</th>
-                                <th data-field="Phone" data-halign="center" data-align="center" data-valign="middle">电话</th>
-                                <th data-field="IdCard" data-halign="center" data-align="center" data-valign="middle">身份证</th>
+                                @*<th data-field="Account" data-halign="center" data-align="center" data-valign="middle">账号</th>*@
+                                @*<th data-field="Phone" data-halign="center" data-align="center" data-valign="middle">电话</th>
+                                <th data-field="IdCard" data-halign="center" data-align="center" data-valign="middle">身份证</th>*@
+                                <th data-field="ExpiredTime" data-halign="center" data-align="center" data-valign="middle">有效期</th>
+                                <th data-formatter="options.action.ImgFormatter" data-events="options.action.ImgEvents" data-halign="center" data-align="center" data-valign="middle">健康证</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>

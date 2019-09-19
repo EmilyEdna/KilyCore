@@ -16,6 +16,10 @@
             },
             //元素
             InitDom: function () {
+              
+
+               
+
                 options.Editor = controller.Editor(".summernote", { width: 1000 });
                 controller.LayDate({ elem: "input[name='UpTime']" });
                 $("input[name='InfoId']").val(RepastUser.Id);
@@ -28,6 +32,8 @@
                 });
                 //设置表单
                 this.$table = controller.Table("#tableList", { url: "RepastWeb/GetMerchantTicketPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#PEdit" });
+
+                
             },
             //事件
             InitEvents: function () {
@@ -76,7 +82,15 @@
         //初始化
         $(document).ready(function () {
             options.Init();
+           
         });
+        $(function () {
+             $(".table tbody tr td img").each(function (i) {
+                debugger;
+                var img = $(this);
+                $(this).removeAttr("width").removeAttr("height").css("height", "48px").wrap("<a href='" + $(this).attr("src") + "' target='_blank'></a>");
+            });
+        })
     </script>
 }
 <!--导航-->
@@ -98,7 +112,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input type="text" placeholder="上报主题" class="input-sm form-control" name="Theme">
+                                <input type="text" placeholder="上报台账" class="input-sm form-control" name="Theme">
                                 <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
                                     <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
@@ -111,8 +125,9 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="Theme" data-halign="center" data-align="center" data-valign="middle">上报主题</th>
+                                <th data-field="Theme" data-halign="center" data-align="center" data-valign="middle">台账记录</th>
                                 <th data-field="UpTime" data-halign="center" data-align="center" data-valign="middle">上报时间</th>
+                                @*<th data-field="Content" data-halign="center" data-align="center" data-valign="middle">台账凭证</th>*@
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>
