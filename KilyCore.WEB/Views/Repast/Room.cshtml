@@ -1,0 +1,274 @@
+﻿@{
+    ViewData["Title"] = "首页";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=3ce7ddfda60046708248ea55e10b1435"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/AreaRestriction/1.2/src/AreaRestriction_min.js"></script>
+    <script>
+    var option = {
+        Init: function () {
+            this.InitDom();
+            this.InitEvent();
+        },
+        InitDom: function () {
+            //视频图片点击事件
+            $(".item2 .content2 img").on("click", function () {
+                controller.OpenWindow({
+                    title: "视频播放",
+                    type: 2,
+                    btn: [],
+                    maxmin: false,
+                    height: "480px",
+                    width: "520px",
+                    url: "StaticHtml/PlayVedio.html?addr=" + $(this).attr("Vedio") + "&cover=" + $(this).attr("src"),
+                    callBack: function (result) {
+                        result.popClose();
+                    }
+                });
+            });
+            //关闭视频窗口
+            $("#center-video .shut").on("click", function () {
+                $("#center-video").css({ display: "none" });
+            });
+            //获取视频
+            controller.ajax({
+                url: "RepastWeb/GetVideoPage",
+                data: { pageSize: 4, pageNumber: 1, QueryParam: { IsIndex: true } },
+                async: false,
+                type: "post",
+                success: function (result) {
+                    if (result.data.rows.length == 0) {
+                        $(".item2 .content2").html("暂无视频");
+                    } else {
+                        $(".item2 .content2 img").each(function (i, obj) {
+                            if (result.data.rows[i].VedioCover == undefined || result.data.rows[i].VedioCover == null) {
+                                result.data.rows[i].VedioCover = "http://system.cfda.vip/Content/HPlus/img/Nopic.jpg";
+                            }
+                            if (result.data.rows[i] != undefined)
+                                $(this).attr("title", result.data.rows[i].VedioName).attr("vedio", result.data.rows[i].VedioAddr).attr("src", result.data.rows[i].VedioCover);
+                        });
+                    }
+                }
+            });
+            //给左侧按钮注册点击事件，点击时隐藏或显示右侧停靠栏盒子
+            let flag = true;
+            $(".left-btn").on('click', function () {
+                if (flag == true) {
+                    flag = false;
+                    $('.right-tab').css({
+                        right: -410 + 'px',
+                        transition: 'right 1s'
+                    });
+                    $(this).text("<");
+                } else {
+                    flag = true;
+                    $('.right-tab').css({
+                        right: 0,
+                        transition: 'right 1s'
+                    });
+                    $(this).text(">");
+                }
+            });
+        },
+        InitEvent: function () {
+            //数据统计
+            controller.ajax({
+                url: "RepastWeb/GetDataCount",
+                data: { Id: CompanyInfo.Id },
+                type: "post",
+                async: false,
+                success: function (result) {
+                    controller.SetLableValue(".content3", result.data);
+                    controller.Echarts("#echarts-pie-chart-safe", result.data.dataCount);
+                    controller.Echarts("#echarts-pie-chart-source", result.data.dataCounts);
+                    //动态设置进度条宽度
+                    let sum = $(".content3").width(); //进度条总宽度
+                    let sum1 = 0.01; //进度条的0.01代表1
+                    let sum2 = 0.1; //进度条的0.1代表1
+                    $(".content3 .product:first .bar").css({ width: result.data.Series * sum * sum1 });
+                    $(".content3 .product:last .bar").css({ width: result.data.Goods * sum * sum1 });
+                    $(".content3 .business:first .bar").css({ width: result.data.Supplier * sum * sum2 });
+                    $(".content3 .business:last .bar").css({ width: result.data.Sale * sum * sum2 });
+                }
+            });
+           
+        }
+    };
+    $(document).ready(function () {
+        option.Init();
+    });
+    
+    </script>
+}
+@section css{
+    <link href="~/Content/Company/css/company.css" rel="stylesheet" />
+}
+<div id="Edit">
+    <!--第一个区域-->
+    <div class="section section1">
+        <div class="item item1">
+            <div class="title ts">
+                <div></div>
+                台账
+            </div>
+            <div class="content content0">
+                <div class="left" style="background-color: #FCB600;"></div>
+                <div class="right">
+                    <p class="ts">上报：<span name="WeekDataCount"></span>条</p>
+                    <p>总数：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="TwoWeek"></span>条</p>
+                </div>
+            </div>
+        </div>
+        <div class="item item1">
+            <div class="title ts">
+                <div></div>
+                供应商
+            </div>
+            <div class="content content0">
+                <div class="left" style="background-color: #00D1CE;"></div>
+                <div class="right">
+                    <p class="ts">总量：<span name="MonthDataCount">4</span>家</p>
+                </div>
+            </div>
+        </div>
+        <div class="item item1">
+            <div class="title ts">
+                <div></div>
+                健康证
+            </div>
+            <div class="content content0">
+                <div class="left" style="background-color: #36C3FF;"></div>
+                <div class="right">
+                    <p class="ts">已到期：<span name="YearDataCount">12</span>人</p>
+                    <p>总数：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="TwoYear">19</span>人</p>
+                </div>
+            </div>
+        </div>
+        <div class="item item1">
+            <div class="title">
+                <div></div>
+                自查
+            </div>
+            <div class="content content0">
+                <div class="left" style="background-color: #AF6CC1;"></div>
+                <div class="right">
+                    <p>月记录：<span name="Total">0</span>次</p>
+                    <p>总记录：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="Totals"></span>次</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--第二个区域-->
+    <div class="section section2">
+        <div class="item item2">
+            <div class="title">
+                <div></div>
+                常用功能
+            </div>
+            <div class="content content1">
+                <a href="/WebMerchantManage/RepastVariety/MerchantDish">
+                    <img src="~/Content/Company/images/firm_cygn9.png" />
+                    <p>菜品管理</p>
+                </a>
+                <a href="/WebMerchantManage/RepastBasic/MerchantUser">
+                    <img src="~/Content/Company/images/firm_cygn1.png" />
+                    <p>人员管理</p>
+                </a>
+                <a href="/WebMerchantManage/Function/MerchantTicket">
+                    <img src="~/Content/Company/images/firm_cygn2.png" />
+                    <p>进销台账</p>
+                </a>
+                <a href="/WebMerchantManage/Function/MerchantSupplier">
+                    <img src="~/Content/Company/images/firm_cygn3.png" />
+                    <p>供应商</p>
+                </a>
+                <a href="/WebMerchantManage/Source/MerchantDraw">
+                    <img src="~/Content/Company/images/firm_cygn4.png" />
+                    <p>抽检记录</p>
+                </a>
+                <a href="/WebMerchantManage/Source/MerchantDuck">
+                    <img src="~/Content/Company/images/firm_cygn5.png" />
+                    <p>废物处理</p>
+                </a>
+                <a href="/WebMerchantManage/Source/MerchantSample">
+                    <img src="~/Content/Company/images/firm_cygn6.png" />
+                    <p>留样记录</p>
+                </a>
+                <a href="/WebMerchantManage/RepastVariety/MerchantWeek">
+                    <img src="~/Content/Company/images/firm_cygn7.png" />
+                    <p>周菜谱</p>
+                </a>
+                <a href="/WebMerchantManage/UnitIns/InsRecordList">
+                    <img src="~/Content/Company/images/firm_cygn8.png" />
+                    <p>陪餐记录</p>
+                </a>
+
+                <a href="/WebMerchantManage/Stock/MerchantStuffStock">
+                    <img src="~/Content/Company/images/firm_cygn10.png" />
+                    <p>原料溯源</p>
+                </a>
+            </div>
+        </div>
+        <div class="item2" style="width:49.5%">
+            <div class="item item2-item" style="width:49.5%;float:left;">
+                <div class="title">
+                    <div></div>
+                    视频一
+                </div>
+                <div class="content content2">
+                    <img src="" title="暂无视频" />
+                </div>
+            </div>
+            <div class="item item2-item" style="width:49.5%;float:left;margin-left:1%;">
+                <div class="title">
+                    <div></div>
+                    视频二
+                </div>
+                <div class="content content2">
+                    <img src="" title="暂无视频" />
+                </div>
+            </div>
+
+            <div class="item item2-item" style="width:49.5%;float:left;margin-top:12px;">
+                <div class="title">
+                    <div></div>
+                    视频三
+                </div>
+                <div class="content content2">
+                    <img src="" title="暂无视频" />
+                </div>
+            </div>
+            <div class="item item2-item" style="float:left;margin-left:1%;margin-top:12px;width:49.5%;">
+                <div class="title">
+                    <div></div>
+                    视频四
+                </div>
+                <div class="content content2">
+                    <img title="暂无视频" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--第三个区域-->
+    <div class="section section3">
+        @*<div class="row row3">
+            <div class="col-sm-12 item">
+                <div>
+                    <div class="title">陪餐记录表</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>陪餐记录</th>
+                                <th>负责人</th>
+                                <th>陪餐时间</th>
+                                <th>陪餐记录</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>*@
+    </div>
+</div>
