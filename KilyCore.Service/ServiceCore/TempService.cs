@@ -83,14 +83,14 @@ namespace KilyCore.Service.ServiceCore
         [Obsolete]
         public object GetAllSample(Guid CompanyId)
         {
-            return Kily.Set<RepastSample>().Where(t => t.InfoId == CompanyId).Select(t => new
+            return Kily.Set<RepastSample>().Where(t => t.InfoId == CompanyId).OrderByDescending(o => o.SampleTime).Select(t => new
             {
                 FoodsName = t.DishName,
                 SavePerson = t.OperatUser,
                 SaveTime = t.SampleTime.Value.ToString("yyyy年MM月dd日"),
                 ReportImg = t.SampleImg,
                 t.Remark
-            }).Take(12).OrderByDescending(o => o.SaveTime).ToList();
+            }).Take(12).ToList();
         }
         /// <summary>
         /// 废物处理
@@ -100,7 +100,7 @@ namespace KilyCore.Service.ServiceCore
         [Obsolete]
         public object RepastDuck(Guid CompanyId)
         {
-            return Kily.Set<RepastDuck>().Where(t => t.InfoId == CompanyId).Select(t => new
+            return Kily.Set<RepastDuck>().Where(t => t.InfoId == CompanyId).OrderByDescending(o => o.HandleTime).Select(t => new
             {
                 BadType = t.HandleWays,
                 BadPhone = t.Phone,
@@ -108,7 +108,7 @@ namespace KilyCore.Service.ServiceCore
                 ReportImg = t.HandleImg,
                 BadRemark = t.Remark,
                 BadPerson = t.HandleUser
-            }).Take(12).OrderByDescending(o => o.BadTime).ToList();
+            }).Take(12).ToList();
         }
         /// <summary>
         /// 食材供应
@@ -118,12 +118,12 @@ namespace KilyCore.Service.ServiceCore
         [Obsolete]
         public object RepastThing(Guid CompanyId)
         {
-            return Kily.Set<RepastBillTicket>().Where(t => t.InfoId == CompanyId).Select(t => new
+            return Kily.Set<RepastBillTicket>().Where(t => t.InfoId == CompanyId).OrderByDescending(o => o.UpTime).Select(t => new
             {
                 ThingName = t.Theme,
                 Remark = t.Content.Replace("/upload/", "http://system.cfda.vip/upload/"),
                 BuyTime = t.UpTime.Value
-            }).Take(9).OrderByDescending(o => o.BuyTime).ToList();
+            }).Take(9).ToList();
         }
         /// <summary>
         /// 周菜谱
@@ -133,12 +133,12 @@ namespace KilyCore.Service.ServiceCore
         [Obsolete]
         public object RepastWeek(Guid CompanyId)
         {
-            return Kily.Set<RepastFoodMenu>().Where(t => t.InfoId == CompanyId).Select(t => new
+            return Kily.Set<RepastFoodMenu>().Where(t => t.InfoId == CompanyId).OrderByDescending(o => o.UpTime).Select(t => new
             {
                 Title = t.FoodMenuName,
                 Content = t.Content.Replace("/upload/", "http://system.cfda.vip/upload/"),
                 DateTime = t.UpTime.Value
-            }).Take(9).OrderByDescending(o => o.DateTime).ToList();
+            }).Take(9).ToList();
         }
         /// <summary>
         /// 抽检信息
@@ -148,7 +148,7 @@ namespace KilyCore.Service.ServiceCore
         [Obsolete]
         public object RepastCheck(Guid CompanyId)
         {
-            return Kily.Set<RepastDraw>().Where(t => t.InfoId == CompanyId).Select(t => new
+            return Kily.Set<RepastDraw>().Where(t => t.InfoId == CompanyId).OrderByDescending(o => o.DrawTime).Select(t => new
             {
                 Title = t.DrawUnit,
                 Person = t.DrawUser,

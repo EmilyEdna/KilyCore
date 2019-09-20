@@ -5899,6 +5899,8 @@ namespace KilyCore.Service.ServiceCore
                 ComplainContent = t.ComplainContent,
                 ComplainUserPhone = t.ComplainUserPhone,
                 HandlerContent = t.HandlerContent,
+                ProductName=t.ProductName,
+                CompanyName=t.CompanyName,
                 Status = t.Status,
                 ComplainTime = t.ComplainTime
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);

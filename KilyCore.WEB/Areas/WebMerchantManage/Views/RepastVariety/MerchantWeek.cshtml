@@ -36,7 +36,24 @@
                     $("#Edit").submit();
                 })
             },
-              action: {
+            action: {
+                 ContentFormatter: function (val, row, index) {
+                    var action = [];
+                    action.push(row.Content.replace(new RegExp("<img ", 'g'), "<img class='photo' style='max-height:36px;width:auto'"));
+                    return action;
+                },
+                ContentEvents: {
+                    "click .photo": function (event, val, row, index) {
+                        var option = {
+                            title: "周菜谱",
+                            data: [{
+                                alt: "周菜谱",
+                                src: $(this).attr("src")
+                            }]
+                        };
+                        controller.Photos(option);
+                    }
+                },
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
@@ -96,10 +113,17 @@
                 </div>
                 <div class="table-responsive m-t-sm">
                     <table id="tableList" class="table">
+                        <colgroup>
+                            <col width="356"/>
+                            <col width="166" />
+                            <col />
+                            <col width="256"/>
+                        </colgroup>
                         <thead>
                             <tr>
                                 <th data-field="FoodMenuName" data-halign="center" data-align="center" data-valign="middle">菜谱名称</th>
                                 <th data-field="UpTime" data-halign="center" data-align="center" data-valign="middle">上报时间</th>
+                                <th data-field="Content" data-formatter="options.action.ContentFormatter" data-events="options.action.ContentEvents"  data-halign="center" data-align="center" data-valign="middle">图片</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>

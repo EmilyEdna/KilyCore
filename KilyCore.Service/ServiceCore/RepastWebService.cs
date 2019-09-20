@@ -1903,6 +1903,7 @@ namespace KilyCore.Service.ServiceCore
                 DrawUnit = t.DrawUnit,
                 Phone = t.Phone,
                 DrawTime = t.DrawTime,
+                Remark=t.Remark,
                 DrawUser = t.DrawUser
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -2149,8 +2150,12 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public IList<ResponseRepastInStorage> GetInStorageList(string Param)
         {
-            var data = Kily.Set<RepastInStorage>().Where(t => t.IsDelete == false)
-                .Where(t => t.MaterType.Equals(Param))
+            var queryable = Kily.Set<RepastInStorage>().Where(t => t.IsDelete == false);
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data= queryable.Where(t => t.MaterType.Equals(Param))
                 .Select(t => new ResponseRepastInStorage()
                 {
                     Id = t.Id,

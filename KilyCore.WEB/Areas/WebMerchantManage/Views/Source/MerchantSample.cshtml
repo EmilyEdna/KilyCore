@@ -41,9 +41,9 @@
         action: {
             ImgFormatter: function (val, row, index) {
                 var action = [];
-                if (row.HealthCard != null) {
-                    for (var i = 0; i < row.HandleImg.split(',').length; i++) {
-                        action.push('<img class="photo" src="' + row.HandleImg.split(',')[i] + '" style="width:48px;height:32px;"">')
+                if (row.SampleImg != null) {
+                    for (var i = 0; i < row.SampleImg.split(',').length; i++) {
+                        action.push('<img class="photo" src="' + row.SampleImg.split(',')[i] + '" style="width:48px;height:32px;"">')
                     }
                 }
                 return action.join("&nbsp;");
@@ -51,9 +51,9 @@
             ImgEvents: {
                 "click .photo": function (event, val, row, index) {
                     var option = {
-                        title: "现场图",
+                        title: "留样图片",
                         data: [{
-                            alt: "现场图",
+                            alt: "留样图片",
                             src: $(this).attr("src")
                         }]
                     };
