@@ -2872,13 +2872,13 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public Object GetDataCount(Guid? Id)
         {
-            var Supplier = Kily.Set<RepastSupplier>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id).Count();
-            var Video = Kily.Set<RepastVideo>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id).Count();
-            var Dish = Kily.Set<RepastDish>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id).Count();
-            var User = Kily.Set<RepastInfoUser>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id).Count();
-            var Stuff = Kily.Set<RepastStuff>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id).Count();
-            var Info = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id).Count();
-            Object data = new { Supplier, Video, Dish, User, Stuff, Info };
+            var TypePath = Kily.Set<RepastInfo>().Where(t => t.Id == Id).Select(t => t.TypePath).FirstOrDefault();
+            var bill = Kily.Set<RepastBillTicket>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id).Count();
+            var supplier = Kily.Set<RepastSupplier>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id).Count();
+            var record = Kily.Set<GovtTemplateChild>().Where(t => t.IsDelete == false).Where(t => t.TypePath == TypePath).Count();
+            var touser = Kily.Set<RepastInfoUser>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id).Count();
+            var exp = Kily.Set<RepastInfoUser>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id).Where(t => t.ExpiredTime >= DateTime.Now).Count();
+            Object data = new { bill, supplier, record, touser, exp};
             return data;
         }
         #endregion

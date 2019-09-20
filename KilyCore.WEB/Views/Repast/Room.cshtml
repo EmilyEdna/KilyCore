@@ -21,15 +21,11 @@
                     maxmin: false,
                     height: "480px",
                     width: "520px",
-                    url: "StaticHtml/PlayVedio.html?addr=" + $(this).attr("Vedio") + "&cover=" + $(this).attr("src"),
+                    url: "StaticHtml/PlayVedio.html?addr=" + $(this).data().value + "&cover=" + $(this).attr("src"),
                     callBack: function (result) {
                         result.popClose();
                     }
                 });
-            });
-            //关闭视频窗口
-            $("#center-video .shut").on("click", function () {
-                $("#center-video").css({ display: "none" });
             });
             //获取视频
             controller.ajax({
@@ -41,58 +37,49 @@
                     if (result.data.rows.length == 0) {
                         $(".item2 .content2").html("暂无视频");
                     } else {
-                        $(".item2 .content2 img").each(function (i, obj) {
-                            if (result.data.rows[i].VedioCover == undefined || result.data.rows[i].VedioCover == null) {
-                                result.data.rows[i].VedioCover = "http://system.cfda.vip/Content/HPlus/img/Nopic.jpg";
-                            }
-                            if (result.data.rows[i] != undefined)
-                                $(this).attr("title", result.data.rows[i].VedioName).attr("vedio", result.data.rows[i].VedioAddr).attr("src", result.data.rows[i].VedioCover);
+                        $.each(result.data.rows, function (index, item) {
+                            if (!controller.CheckFeild(item.VedioCover))
+                                item.VedioCover = "http://system.cfda.vip/Content/HPlus/img/Nopic.jpg";
+                            var img = $($(".item2 .content2 img")[index]);
+                            img.attr("title", item.VedioName);
+                            img.attr("src", item.VedioCover);
+                            img.data().value = item.VideoAddress;
                         });
                     }
                 }
             });
-            //给左侧按钮注册点击事件，点击时隐藏或显示右侧停靠栏盒子
-            let flag = true;
-            $(".left-btn").on('click', function () {
-                if (flag == true) {
-                    flag = false;
-                    $('.right-tab').css({
-                        right: -410 + 'px',
-                        transition: 'right 1s'
-                    });
-                    $(this).text("<");
-                } else {
-                    flag = true;
-                    $('.right-tab').css({
-                        right: 0,
-                        transition: 'right 1s'
-                    });
-                    $(this).text(">");
-                }
-            });
         },
         InitEvent: function () {
+               //数据统计
+                controller.ajax({
+                    url: "RepastWeb/GetDataCount",
+                    data: {Id:RepastUser.Id},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        controller.SetLableValue(".section1", result.data);
+                    }
+                });
             //数据统计
-            controller.ajax({
-                url: "RepastWeb/GetDataCount",
-                data: { Id: CompanyInfo.Id },
-                type: "post",
-                async: false,
-                success: function (result) {
-                    controller.SetLableValue(".content3", result.data);
-                    controller.Echarts("#echarts-pie-chart-safe", result.data.dataCount);
-                    controller.Echarts("#echarts-pie-chart-source", result.data.dataCounts);
-                    //动态设置进度条宽度
-                    let sum = $(".content3").width(); //进度条总宽度
-                    let sum1 = 0.01; //进度条的0.01代表1
-                    let sum2 = 0.1; //进度条的0.1代表1
-                    $(".content3 .product:first .bar").css({ width: result.data.Series * sum * sum1 });
-                    $(".content3 .product:last .bar").css({ width: result.data.Goods * sum * sum1 });
-                    $(".content3 .business:first .bar").css({ width: result.data.Supplier * sum * sum2 });
-                    $(".content3 .business:last .bar").css({ width: result.data.Sale * sum * sum2 });
-                }
-            });
-           
+            //controller.ajax({
+            //    url: "RepastWeb/GetDataCount",
+            //    data: { Id: CompanyInfo.Id },
+            //    type: "post",
+            //    async: false,
+            //    success: function (result) {
+            //        controller.SetLableValue(".content3", result.data);
+            //        controller.Echarts("#echarts-pie-chart-safe", result.data.dataCount);
+            //        controller.Echarts("#echarts-pie-chart-source", result.data.dataCounts);
+            //        //动态设置进度条宽度
+            //        let sum = $(".content3").width(); //进度条总宽度
+            //        let sum1 = 0.01; //进度条的0.01代表1
+            //        let sum2 = 0.1; //进度条的0.1代表1
+            //        $(".content3 .product:first .bar").css({ width: result.data.Series * sum * sum1 });
+            //        $(".content3 .product:last .bar").css({ width: result.data.Goods * sum * sum1 });
+            //        $(".content3 .business:first .bar").css({ width: result.data.Supplier * sum * sum2 });
+            //        $(".content3 .business:last .bar").css({ width: result.data.Sale * sum * sum2 });
+            //    }
+            //});
         }
     };
     $(document).ready(function () {
@@ -115,8 +102,7 @@
             <div class="content content0">
                 <div class="left" style="background-color: #FCB600;"></div>
                 <div class="right">
-                    <p class="ts">上报：<span name="WeekDataCount"></span>条</p>
-                    <p>总数：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="TwoWeek"></span>条</p>
+                    <p class="ts">总记录：<span name="bill"></span>条</p>
                 </div>
             </div>
         </div>
@@ -128,7 +114,7 @@
             <div class="content content0">
                 <div class="left" style="background-color: #00D1CE;"></div>
                 <div class="right">
-                    <p class="ts">总量：<span name="MonthDataCount">4</span>家</p>
+                    <p class="ts">总数量：<span name="supplier"></span>家</p>
                 </div>
             </div>
         </div>
@@ -140,8 +126,8 @@
             <div class="content content0">
                 <div class="left" style="background-color: #36C3FF;"></div>
                 <div class="right">
-                    <p class="ts">已到期：<span name="YearDataCount">12</span>人</p>
-                    <p>总数：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="TwoYear">19</span>人</p>
+                    <p class="ts">已到期：<span name="exp"></span>人</p>
+                    <p>总数：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="touser"></span>人</p>
                 </div>
             </div>
         </div>
@@ -153,8 +139,7 @@
             <div class="content content0">
                 <div class="left" style="background-color: #AF6CC1;"></div>
                 <div class="right">
-                    <p>月记录：<span name="Total">0</span>次</p>
-                    <p>总记录：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="Totals"></span>次</p>
+                    <p>记录数：<span name="record"></span>次</p>
                 </div>
             </div>
         </div>
@@ -217,7 +202,7 @@
                     视频一
                 </div>
                 <div class="content content2">
-                    <img src="" title="暂无视频" />
+                    <img src="" title="暂无视频"  data-value=""/>
                 </div>
             </div>
             <div class="item item2-item" style="width:49.5%;float:left;margin-left:1%;">
@@ -226,7 +211,7 @@
                     视频二
                 </div>
                 <div class="content content2">
-                    <img src="" title="暂无视频" />
+                    <img src="" title="暂无视频" data-value=""/>
                 </div>
             </div>
 
@@ -236,7 +221,7 @@
                     视频三
                 </div>
                 <div class="content content2">
-                    <img src="" title="暂无视频" />
+                    <img src="" title="暂无视频" data-value=""/>
                 </div>
             </div>
             <div class="item item2-item" style="float:left;margin-left:1%;margin-top:12px;width:49.5%;">
@@ -245,7 +230,7 @@
                     视频四
                 </div>
                 <div class="content content2">
-                    <img title="暂无视频" />
+                    <img src="" title="暂无视频" data-value="" />
                 </div>
             </div>
         </div>
