@@ -27,13 +27,13 @@
                 //获取名称
                 controller.ajax({
                     url: "RepastWeb/GetNamesList",
-                    data: {Id:2},
+                    data: { Id: 0 },
                     type: "post",
                     async: false,
                     success: function (result) {
                         var html = '<option>==请选择==</option>';
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.TypeNames + '">' + obj.TypeNames + '</option>';
+                            html += '<option value="' + obj.TypeNames + '" data-value="' + obj.Id + '">' + obj.TypeNames + '</option>';
                         });
                         $("#ArticleName").html(html);
                     }
@@ -76,7 +76,7 @@
                         success: function (result) {
                             controller.SetCtrlValue("#Edit", result.data);
                             Editor.summernote('code', result.data.Remark);
-                             $("#t1").text("库存数量");
+                            $("#t1").text("库存数量");
                         }
                     });
             },
@@ -94,6 +94,9 @@
                     var num = $("input[name='InStockNum']").val();
                     $("input[name='ToPrice']").val(price * num);
                 });
+                $("#ArticleName").change(function () {
+                    $("#NameId").val($(this).find("option:selected").data().value);
+                });
                 //验证
                 controller.ValidateConfirm("#Edit");
             },
@@ -110,15 +113,10 @@
     <div class="ibox-content">
         <form class="form-horizontal" method="post" action="RepastWeb/EditInStock" id="Edit">
             <input type="hidden" id="Id" name="Id" />
-            <input type="hidden" class="form-control" name="InfoId" id="InfoId" />
+            <input type="hidden" name="InfoId" id="InfoId" />
+            <input type="hidden" name="NameId" id="NameId" />
             <input name="Remark" type="hidden" />
             <table class="table table-hover table-bordered">
-                <colgroup>
-                    <col width="10%" />
-                    <col width="40%" />
-                    <col width="10%" />
-                    <col width="40%" />
-                </colgroup>
                 <tr>
                     <th><label class="control-label">批次号</label></th>
                     <td class="has-warning">
@@ -132,7 +130,7 @@
                 <tr>
                     <th><label class="control-label" id="t1">入库数量</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="InStockNum"  placeholder="请输入数字"/>
+                        <input type="text" class="form-control" name="InStockNum" placeholder="请输入数字" />
                     </td>
                     <th><label class="control-label">负责人</label></th>
                     <td class="has-warning">
@@ -142,7 +140,7 @@
                 <tr>
                     <th><label class="control-label">单价</label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="PrePrice" placeholder="请输入数字"/>
+                        <input type="text" class="form-control" name="PrePrice" placeholder="请输入数字" />
                     </td>
                     <th><label class="control-label">总价</label></th>
                     <td class="has-warning">

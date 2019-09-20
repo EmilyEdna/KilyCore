@@ -1,4 +1,5 @@
 ﻿using KilyCore.DataEntity.RequestMapper.Enterprise;
+using KilyCore.DataEntity.ResponseMapper.Repast;
 using KilyCore.EntityFrameWork.Model.Enterprise;
 using KilyCore.EntityFrameWork.Model.Repast;
 using KilyCore.EntityFrameWork.Model.System;
@@ -155,6 +156,24 @@ namespace KilyCore.Service.ServiceCore
                 Remark = t.Remark.Replace("/upload/", "http://system.cfda.vip/upload/").Replace("/editor/", "http://system.cfda.vip/editor/"),
                 DateTime = t.DrawTime.Value
             }).Take(9).ToList();
+        }
+        /// <summary>
+        /// 产品信息
+        /// </summary>
+        /// <param name="CompanyId"></param>
+        /// <returns></returns>
+        [Obsolete]
+        public object RepastProduct(Guid CompanyId)
+        {
+            return Kily.Set<RepastArticleInStock>().Where(t => t.InfoId == CompanyId)
+                   .Join(Kily.Set<RepastTypeName>(), t => t.NameId, x => x.Id, (t, x) => new { t, x }).Select(t => new ResponseRepastTypeName
+                   {
+                       TypeNames = t.x.TypeNames,
+                       Spec = t.x.Spec,
+                       ProImg = t.x.ProImg,
+                       Types = t.x.Types,
+                       Remark = t.t.Remark
+                   }).ToList();
         }
         #endregion
 

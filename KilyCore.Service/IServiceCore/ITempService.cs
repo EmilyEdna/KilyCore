@@ -17,5 +17,6 @@ namespace KilyCore.Service.IServiceCore
         object RepastThing(Guid id);
         object RepastWeek(Guid id);
         object RepastCheck(Guid id);
+        object RepastProduct(Guid CompanyId);
     }
 }

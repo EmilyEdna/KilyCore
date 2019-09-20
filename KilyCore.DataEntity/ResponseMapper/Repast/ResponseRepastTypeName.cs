@@ -24,7 +24,9 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         public Guid InfoId { get; set; }
         public string TypeNames { get; set; }
         public int Types { get; set; }
-        public string Type { get => Types == 1 ? "原料" : "物品"; }
+        public string Type { get => Types == 1 ? "原料" : (Types == 2 ? "物品" : "产品"); }
         public string Spec { get; set; }
+        public string ProImg { get; set; }
+        public string Remark { get; set; }
     }
 }
