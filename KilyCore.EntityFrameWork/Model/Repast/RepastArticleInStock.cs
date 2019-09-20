@@ -25,6 +25,10 @@ namespace KilyCore.EntityFrameWork.Model.Repast
     public class RepastArticleInStock: RepastBase
     {
         /// <summary>
+        /// 类型Id
+        /// </summary>
+        public virtual Guid? NameId{ get; set; }
+        /// <summary>
         /// 批次号
         /// </summary>
         public virtual string BatchNo { get; set; }

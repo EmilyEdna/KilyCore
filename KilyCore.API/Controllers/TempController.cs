@@ -101,6 +101,17 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(Temp.RepastCheck(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        ///产品图片
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpGet("RepastProduct")]
+        [AllowAnonymous]
+        public ObjectResultEx RepastProduct(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(Temp.RepastProduct(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
         #region 微信公众号
         /// <summary>

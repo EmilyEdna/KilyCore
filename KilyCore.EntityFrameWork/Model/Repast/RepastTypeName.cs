@@ -29,12 +29,16 @@ namespace KilyCore.EntityFrameWork.Model.Repast
         /// </summary>
         public virtual string TypeNames { get; set; }
         /// <summary>
-        /// 1代表原料2代表物品
+        /// 1代表原料2代表物品3代表产品
         /// </summary>
         public virtual int Types { get; set; }
         /// <summary>
         /// 规格
         /// </summary>
         public virtual string Spec { get; set; }
+        /// <summary>
+        /// 产品图片
+        /// </summary>
+        public virtual string ProImg { get; set; }
     }
 }

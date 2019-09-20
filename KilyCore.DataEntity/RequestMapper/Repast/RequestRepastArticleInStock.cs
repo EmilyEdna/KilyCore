@@ -23,6 +23,10 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
         public Guid Id { get; set; }
         public Guid InfoId { get; set; }
         /// <summary>
+        /// 类型Id
+        /// </summary>
+        public Guid? NameId { get; set; }
+        /// <summary>
         /// 批次号
         /// </summary>
         public string BatchNo { get; set; }
