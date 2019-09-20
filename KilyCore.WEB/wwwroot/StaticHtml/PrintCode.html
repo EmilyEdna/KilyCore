@@ -42,39 +42,22 @@
                                 flag = false;
                             }
                         });
-                    //var html = `<div class="wrap" id="page${i}">
-                    //                                <div class="left">
-                    //                                    <p>产品名称：<span>${option.ProName}</span></p>
-                    //                                    <p>入库批次：<span>${option.n}</span></p>
-                    //                                    <p>等&emsp;&emsp;级：<span>${option.LvName}</span></p>
-                    //                                    <p>保&nbsp;质&nbsp;期 ：<span>${option.Ex}</span></p>
-                    //                                    <p>储藏条件：<span>${option.Type}</span></p>
-                    //                                    <p>生产时间：<span>${option.Time}</span></p>
-                    //                                    <p>产&emsp;&emsp;地：<span>${$.parseJSON(localStorage.CompanyUser).CompanyAddress}</span></p>
-                    //                                </div>
-                    //                                <div class="right">
-                    //                                    <img src="StaticImg/TagFlag.png" width="156" height="146" style="margin-top: 16px">
-                    //                                    <div id="code_${i}" width="160" height="160"></div>
-
-                    //                                    <p>溯源编码：<span>${FullCode}</span></p>
-                    //                                </div>
-                    //                            </div>`
-                    var html = '<div class="wrap" id="page'+i+'">'
-                                                    +'<div class="left">'
-                                                        +'<p>产品名称：<span>'+option.ProName+'</span></p>'
-                                                        +'<p>入库批次：<span>'+option.n+'</span></p>'
-                                                        +'<p>等&emsp;&emsp;级：<span>'+option.LvName+'</span></p>'
-                                                        +'<p>保&nbsp;质&nbsp;期 ：<span>'+option.Ex+'</span></p>'
-                                                        +'<p>储藏条件：<span>'+option.Type+'</span></p>'
-                                                        +'<p>生产时间：<span>'+option.Time+'</span></p>'
-                                                        +'<p>产&emsp;&emsp;地：<span>'+$.parseJSON(localStorage.CompanyUser).CompanyAddress+'</span></p>'
-                                                    +'</div>'
-                                                    +'<div class="right">'
-                                                        +'<img src="StaticImg/TagFlag.png" width="156" height="146" style="margin-top: 16px">'
-                                                        +'<div id="code_'+i+'" width="160" height="160"></div>'
-                                                        +'<p>溯源编码：<span>'+FullCode+'</span></p>'
-                                                    +'</div>'
-                                                +'</div>'
+                    var html = '<div class="wrap1" id="page'+i+'">'
+                        +'<div class="left">'
+                            +'<p>产品名称：<span>'+option.ProName+'</span></p>'
+                            +'<p>入库批次：<span>'+option.n+'</span></p>'
+                            +'<p>等&emsp;&emsp;级：<span>'+option.LvName+'</span></p>'
+                            +'<p>保&nbsp;质&nbsp;期 ：<span>'+option.Ex+'</span></p>'
+                            +'<p>储藏条件：<span>'+option.Type+'</span></p>'
+                            +'<p>生产时间：<span>'+option.Time+'</span></p>'
+                            +'<p>产&emsp;&emsp;地：<span>'+$.parseJSON(localStorage.CompanyUser).CompanyAddress+'</span></p>'
+                        +'</div>'
+                        +'<div class="right">'
+                            +'<img src="StaticImg/TagFlag.png" width="160" height="160">'
+                            +'<div id="code_'+i+'" width="160" height="160" style="margin-top: 10px"></div>'
+                            +'<p>溯源编码：<span>'+FullCode+'</span></p>'
+                        +'</div>'
+                    +'</div>'
                     $("body").append(html);
                     controller.QRCode("#code_" + i, {
                         text: "http://phone.cfda.vip/newphone/codeindex.html?id=&Code=" + FullCode,
@@ -112,10 +95,10 @@
             margin: 0;
         }
 
-        .wrap {
-            width: 709px;
+        .wrap1 {
+            width: 708px;
             height: 472px;
-            margin: 100px auto;
+            margin: 0 auto 50px;
             box-sizing: border-box;
             padding: 25px;
             overflow: hidden;
@@ -135,15 +118,15 @@
         .right {
             width: 270px;
             position: absolute;
-            right: 32px;
-            top: 16px;
+            right: 25px;
+            top: 25px;
             text-align: right;
         }
 
             .right p {
                 font-size: 15px;
                 line-height: 20px;
-                margin-top: 46px;
+                margin-top: 10px;
             }
     </style>
 </head>

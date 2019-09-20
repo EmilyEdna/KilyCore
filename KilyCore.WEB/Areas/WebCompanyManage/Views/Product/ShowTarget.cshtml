@@ -3,19 +3,6 @@
     ViewData["Title"] = "指标参考";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
-@section css{
-    <style>
-        th {
-            text-align: center;
-            vertical-align: middle;
-        }
-
-        td {
-            text-align: center;
-            vertical-align: middle;
-        }
-    </style>
-}
 @section script{
     <script>
         //配置
@@ -36,7 +23,6 @@
                     type: "post",
                     async: false,
                     success: function (result) {
-                        debugger;
                         var html = '';
                         $.each(result.data, function (i, obj) {
                             html += '<tr>';
@@ -143,29 +129,29 @@
         <form class="form-horizontal">
             <table class="table table-hover table-bordered">
                 <thead>
-                    <tr>
-                        <th>
+                    <tr class="th-center">
+                        <th class="col-sm-2">
                             <span class="text-navy">关键点名称</span>
                         </th>
-                        <th>
+                        <th class="col-sm-1">
                             <span class="text-navy">关键点单位</span>
                         </th>
-                        <th>
+                        <th class="col-sm-1">
                             <span class="text-navy">关键点限制值</span>
                         </th>
-                        <th>
+                        <th class="col-sm-1">
                             <span class="text-navy">记录结果</span>
                         </th>
-                        <th>
+                        <th class="col-sm-2">
                             <span class="text-navy">记录时间</span>
                         </th>
-                        <th>
+                        <th class="col-sm-1">
                             <span class="text-navy">负责人</span>
                         </th>
-                        <th>
+                        <th class="col-sm-2">
                             <span class="text-navy">图片</span>
                         </th>
-                        <th>
+                        <th class="col-sm-2">
                             <span class="text-navy">操作</span>
                         </th>
                     </tr>

@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "发货管理";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
@@ -96,17 +95,13 @@
         });
     </script>
 }
-@section css{
-
-}
-
 <div class="container-fluid">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
+        <div class="ibox ibox-c float-e-margins">
+            <div class="ibox-title ibox-title-c">
                 <h5>发货管理</h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="Edit">
                         <div class="col-sm-8 m-b-xs">
@@ -129,20 +124,20 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="BatchNo" data-halign="center" data-align="center" data-valign="middle">发货批次</th>
-                                <th data-field="WayBill" data-halign="center" data-align="center" data-valign="middle">运单号</th>
-                                <th data-field="GoodsName" data-halign="center" data-align="center" data-valign="middle">产品名称</th>
-                                <th data-field="LinkPhone" data-halign="center" data-align="center" data-valign="middle">发货人电话</th>
-                                <th data-field="GainUser" data-halign="center" data-align="center" data-valign="middle">收货人</th>
-                                <th data-field="Address" data-halign="center" data-align="center" data-valign="middle">收货地址</th>
-                                <th data-field="SendGoodsNum" data-halign="center" data-align="center" data-valign="middle">发货数量</th>
-                                <th data-field="SendTime" data-halign="center" data-align="center" data-valign="middle">发货时间</th>
-                                <th data-field="FlagName" data-halign="center" data-align="center" data-valign="middle">状态</th>
-                                <th data-field="TransportWay" data-halign="center" data-align="center" data-valign="middle">运输方式</th>
-                                <th data-field="Traffic" data-halign="center" data-align="center" data-valign="middle">交通工具</th>
-                                <th data-field="SendAddress" data-halign="center" data-align="center" data-valign="middle">发货地址</th>
-                                <th data-field="CorrectError" data-halign="center" data-align="center" data-valign="middle">串货率(%)</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th data-field="BatchNo" class="th-center">发货批次</th>
+                                <th data-field="WayBill" class="th-center">运单号</th>
+                                <th data-field="GoodsName" class="th-center">产品名称</th>
+                                <th data-field="LinkPhone" class="th-center">发货人电话</th>
+                                <th data-field="GainUser" class="th-center">收货人</th>
+                                <th data-field="Address" class="th-center">收货地址</th>
+                                <th data-field="SendGoodsNum" class="th-center">发货数量</th>
+                                <th data-field="SendTime" class="th-center">发货时间</th>
+                                <th data-field="FlagName" class="th-center">状态</th>
+                                <th data-field="TransportWay" class="th-center">运输方式</th>
+                                <th data-field="Traffic" class="th-center">交通工具</th>
+                                <th data-field="SendAddress" class="th-center">发货地址</th>
+                                <th data-field="CorrectError" class="th-center">串货率(%)</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" class="th-center">操作</th>
                             </tr>
                         </thead>
                     </table>

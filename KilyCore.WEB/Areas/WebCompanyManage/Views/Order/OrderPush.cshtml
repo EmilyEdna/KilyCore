@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "服务下单";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
@@ -101,15 +100,13 @@
         });
     </script>
 }
-@section css{
-}
 <div class="container-fluid">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
+        <div class="ibox ibox-c float-e-margins">
+            <div class="ibox-title ibox-title-c">
                 <h5>服务下单</h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="Edit">
                         <div class="col-sm-7 m-b-xs">
@@ -182,16 +179,16 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="OrderNo" data-halign="center" data-align="center" data-valign="middle">订单编号</th>
-                                <th data-field="OrderType" data-halign="center" data-align="center" data-valign="middle">订单类型</th>
-                                <th data-field="CompanyName" data-halign="center" data-align="center" data-valign="middle">企业名称</th>
-                                <th data-field="ServicePrice" data-halign="center" data-align="center" data-valign="middle">服务金额/元</th>
-                                <th data-field="SubmitTime" data-halign="center" data-align="center" data-valign="middle">提交时间</th>
-                                <th data-field="IsExpireTxt" data-halign="center" data-align="center" data-valign="middle">是否过期</th>
-                                <th data-field="OrderStatusTxt" data-halign="center" data-align="center" data-valign="middle">订单状态</th>
-                                <th data-field="OrderAccepter" data-halign="center" data-align="center" data-valign="middle">接单人</th>
-                                <th data-field="OrderAccepterTime" data-halign="center" data-align="center" data-valign="middle">接单时间</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th data-field="OrderNo" class="th-center">订单编号</th>
+                                <th data-field="OrderType" class="th-center">订单类型</th>
+                                <th data-field="CompanyName" class="th-center">企业名称</th>
+                                <th data-field="ServicePrice" class="th-center">服务金额/元</th>
+                                <th data-field="SubmitTime" class="th-center">提交时间</th>
+                                <th data-field="IsExpireTxt" class="th-center">是否过期</th>
+                                <th data-field="OrderStatusTxt" class="th-center">订单状态</th>
+                                <th data-field="OrderAccepter" class="th-center">接单人</th>
+                                <th data-field="OrderAccepterTime" class="th-center">接单时间</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" class="th-center">操作</th>
                             </tr>
                         </thead>
                     </table>

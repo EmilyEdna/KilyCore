@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "TickPrint";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
@@ -53,24 +52,13 @@
         });
     </script>
 }
-@section css{
-    <style>
-        th {
-            text-align: center;
-        }
-
-        td {
-            text-align: center;
-        }
-    </style>
-}
 <div class="container-fluid">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
+        <div class="ibox ibox-c float-e-margins">
+            <div class="ibox-title ibox-title-c">
                 <h5>进销台账</h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="Edit">
                         <div class="col-sm-2 m-b-xs col-sm-offset-9"><input type="text" class="form-control input-sm" placeholder="请选择日期" name="Date" /></div>
@@ -81,19 +69,19 @@
                     <table id="tableList" class="table table-hover table-bordered">
                         <thead>
                             <tr>
-                                <th colspan="10">今日进销台账</th>
+                                <th class="th-center" colspan="10">今日进销台账</th>
                             </tr>
                             <tr>
-                                <th>批次号</th>
-                                <th>产品名称</th>
-                                <th>数量</th>
-                                <th>规格</th>
-                                <th>单位</th>
-                                <th>质检结果</th>
-                                <th>供应商</th>
-                                <th>经销商</th>
-                                <th>日期</th>
-                                <th>负责人</th>
+                                <th class="th-center">批次号</th>
+                                <th class="th-center">产品名称</th>
+                                <th class="th-center">数量</th>
+                                <th class="th-center">规格</th>
+                                <th class="th-center">单位</th>
+                                <th class="th-center">质检结果</th>
+                                <th class="th-center">供应商</th>
+                                <th class="th-center">经销商</th>
+                                <th class="th-center">日期</th>
+                                <th class="th-center">负责人</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -102,18 +102,11 @@
         });
     </script>
 }
-@section css{
-    <style>
-        .ibox-content {
-            border-top-style: none;
-        }
-    </style>
-}
 <!--导航-->
-<div class="tabs-container" style="margin-top:10px;">
-    <ul class="nav nav-tabs">
+<div class="tabs-container" style="padding: 15px; background: #f5f5f5;">
+    <ul class="nav nav-tabs" style="border-radius: 8px 8px 0 0; box-shadow: 0px -2px 16px 0px rgba(47,64,80,0.16);">
         <li class="active">
-            <a data-toggle="tab" href="#tab-1" aria-expanded="true"> 角色列表</a>
+            <a data-toggle="tab" href="#tab-1" aria-expanded="true" style="border-left: #fff;"> 角色列表</a>
         </li>
         <li>
             <a data-toggle="tab" href="#tab-2" aria-expanded="false">新增角色</a>
@@ -121,7 +114,7 @@
     </ul>
     <div class="tab-content">
         <div id="tab-1" class="tab-pane active">
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="Role">
                         <div class="col-sm-8 m-b-xs">
@@ -141,9 +134,9 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="AuthorName" data-halign="center" data-align="center" data-valign="middle">角色名称</th>
-                                <th data-field="AuthorMenuCount" data-halign="center" data-align="center" data-valign="middle">菜单总数</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th class="col-sm-4 th-center" data-field="AuthorName">角色名称</th>
+                                <th class="col-sm-4 th-center" data-field="AuthorMenuCount">菜单总数</th>
+                                <th class="col-sm-4 th-center" data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents">操作</th>
                             </tr>
                         </thead>
                     </table>
@@ -151,7 +144,7 @@
             </div>
         </div>
         <div id="tab-2" class="tab-pane">
-            <div class="panel-body">
+            <div class="panel-body" style="border-radius: 0 0 8px 8px; box-shadow: 0px 4px 16px 0px rgba(47,64,80,0.16);">
                 <form method="post" class="form-horizontal" action="EnterpriseWeb/SaveRoleAuthor" id="Edit" enctype="multipart/form-data">
                     <input  type="hidden" name="Id"/>
                     <!--名称-->
@@ -178,7 +171,7 @@
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-2">
                             <button class="btn btn-primary" type="button" id="save">保存内容</button>
-                            <button class="btn btn-white" type="button">取消</button>
+                            <button class="btn btn-white" type="button">&nbsp;取&emsp;消&nbsp;</button>
                         </div>
                     </div>
                 </form>

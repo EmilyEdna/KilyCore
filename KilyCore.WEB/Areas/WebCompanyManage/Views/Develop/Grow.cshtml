@@ -83,17 +83,13 @@
         });
     </script>
 }
-@section css{
-
-}
-
 <div class="container-fluid">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
+        <div class="ibox ibox-c float-e-margins">
+            <div class="ibox-title ibox-title-c">
                 <h5>育苗管理</h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="Edit">
                         <div class="col-sm-8 m-b-xs">
@@ -116,12 +112,12 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="BatchNo" data-halign="center" data-align="center" data-valign="middle">批次编号</th>
-                                <th data-field="GrowName" data-halign="center" data-align="center" data-valign="middle">育苗名称</th>
-                                <th data-field="BuyNum" data-halign="center" data-align="center" data-valign="middle">采购数量</th>
-                                <th data-field="Unit" data-halign="center" data-align="center" data-valign="middle">计量单位</th>
-                                <th data-field="PlantTime" data-halign="center" data-align="center" data-valign="middle">播种时间</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th class="col-sm-2 th-center" data-field="BatchNo">批次编号</th>
+                                <th class="col-sm-2 th-center" data-field="GrowName">育苗名称</th>
+                                <th class="col-sm-2 th-center" data-field="BuyNum">采购数量</th>
+                                <th class="col-sm-2 th-center" data-field="Unit">计量单位</th>
+                                <th class="col-sm-2 th-center" data-field="PlantTime">播种时间</th>
+                                <th class="col-sm-2 th-center" data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents">操作</th>
                             </tr>
                         </thead>
                     </table>

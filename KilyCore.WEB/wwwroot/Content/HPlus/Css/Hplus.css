@@ -23,6 +23,13 @@ h3,h4,h5 {
 	margin-top:5px;
 	font-weight:600
 }
+input,button{
+    outline: none!important;
+}
+.th-center{
+    text-align: center;
+    vertical-align:middle;
+}
 a:focus {
 	outline:0
 }
@@ -2785,10 +2792,15 @@ code {
 	white-space:nowrap
 }
 .ibox {
-	clear:both;
-	margin-bottom:25px;
-	margin-top:0;
-	padding:0
+    background: #fff;
+    clear: both;
+    margin-bottom: 25px;
+    margin-top: 0;
+    padding: 0;
+}
+.ibox-c {
+    border-radius: 8px;
+    box-shadow: 0px 4px 16px 0px rgba(47,64,80,0.16);
 }
 .ibox.collapsed .ibox-content {
 	display:none
@@ -2803,32 +2815,39 @@ code {
 	display:table
 }
 .ibox-title {
-	-moz-border-bottom-colors:none;
-	-moz-border-left-colors:none;
-	-moz-border-right-colors:none;
-	-moz-border-top-colors:none;
-	background-color:#fff;
-	border-color:#e7eaec;
-	-webkit-border-image:none;
-	-o-border-image:none;
-	border-image:none;
-	border-style:solid solid none;
-	border-width:4px 0 0;
-	color:inherit;
-	margin-bottom:0;
-	padding:14px 15px 7px;
-	min-height:48px
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #fff;
+    border-color: #e7eaec;
+    -webkit-border-image: none;
+    -o-border-image: none;
+    border-image: none;
+    border-style: solid solid none;
+    border-width: 4px 0 0;
+    color: inherit;
+    margin-bottom: 0;
+    padding: 14px 15px 7px;
+    min-height: 48px
+}
+.ibox-title-c {
+    border-radius: 8px 8px 0 0;
 }
 .ibox-content {
-	background-color:#fff;
-	color:inherit;
-	padding:15px 20px 20px;
-	border-color:#e7eaec;
-	-webkit-border-image:none;
-	-o-border-image:none;
-	border-image:none;
-	border-style:solid solid none;
-	border-width:1px 0
+    background-color: #fff;
+    color: inherit;
+    padding: 15px;
+    border-color: #e7eaec;
+    -webkit-border-image: none;
+    -o-border-image: none;
+    border-image: none;
+    border-style: solid solid none;
+    border-width: 1px 0
+}
+.ibox-content-c {
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0px 4px 16px 0px rgba(47,64,80,0.16);
 }
 table.table-mail tr td {
 	padding:12px

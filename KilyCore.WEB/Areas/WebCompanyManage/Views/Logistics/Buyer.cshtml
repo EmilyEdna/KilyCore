@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "进货管理";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
@@ -90,17 +89,13 @@
         });
     </script>
 }
-@section css{
-
-}
-
 <div class="container-fluid">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
+        <div class="ibox ibox-c float-e-margins">
+            <div class="ibox-title ibox-title-c">
                 <h5>进货管理</h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="Edit">
                         <div class="col-sm-8 m-b-xs">
@@ -123,18 +118,18 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="BatchNo" data-halign="center" data-align="center" data-valign="middle">进货批次</th>
-                                <th data-field="GoodName" data-halign="center" data-align="center" data-valign="middle">货品名称</th>
-                                <th data-field="Supplier" data-halign="center" data-align="center" data-valign="middle">供应商</th>
-                                <th data-field="ProMerchant" data-halign="center" data-align="center" data-valign="middle">生产商</th>
-                                <th data-field="ExpiredDate" data-halign="center" data-align="center" data-valign="middle">保质期</th>
-                                <th data-field="GetGoodsTime" data-halign="center" data-align="center" data-valign="middle">进货日期</th>
-                                <th data-field="ProTime" data-halign="center" data-align="center" data-valign="middle">生产日期</th>
-                                <th data-field="Num" data-halign="center" data-align="center" data-valign="middle">进货数量</th>
-                                <th data-field="Spec" data-halign="center" data-align="center" data-valign="middle">规格</th>
-                                <th data-field="Address" data-halign="center" data-align="center" data-valign="middle">产地</th>
-                                <th data-formatter="options.action.ImgFormatter" data-events="options.action.ImgEvents" data-halign="center" data-align="center" data-valign="middle">检测报告</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th data-field="BatchNo" class="th-center">进货批次</th>
+                                <th data-field="GoodName" class="th-center">货品名称</th>
+                                <th data-field="Supplier" class="th-center">供应商</th>
+                                <th data-field="ProMerchant" class="th-center">生产商</th>
+                                <th data-field="ExpiredDate" class="th-center">保质期</th>
+                                <th data-field="GetGoodsTime" class="th-center">进货日期</th>
+                                <th data-field="ProTime" class="th-center">生产日期</th>
+                                <th data-field="Num" class="th-center">进货数量</th>
+                                <th data-field="Spec" class="th-center">规格</th>
+                                <th data-field="Address" class="th-center">产地</th>
+                                <th data-formatter="options.action.ImgFormatter" data-events="options.action.ImgEvents" class="th-center">检测报告</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" class="th-center">操作</th>
                             </tr>
                         </thead>
                     </table>

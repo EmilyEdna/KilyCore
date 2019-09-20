@@ -69,17 +69,13 @@
         });
     </script>
 }
-@section css{
-
-}
-
 <div class="container-fluid">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
+        <div class="ibox ibox-c float-e-margins">
+            <div class="ibox-title ibox-title-c">
                 <h5>关键点控制</h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="Edit">
                         <div class="col-sm-8 m-b-xs">
@@ -102,11 +98,11 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="TargetName" data-halign="center" data-align="center" data-valign="middle">关键点名称</th>
-                                <th data-field="TargetValue" data-halign="center" data-align="center" data-valign="middle">关键点限值</th>
-                                <th data-field="TargetUnit" data-halign="center" data-align="center" data-valign="middle">关键点单位</th>
-                                <th data-field="Standard" data-halign="center" data-align="center" data-valign="middle">执行标准</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th class="col-sm-2 th-center" data-field="TargetName">关键点名称</th>
+                                <th class="th-center" data-field="TargetValue">关键点限值</th>
+                                <th class="th-center" data-field="TargetUnit">关键点单位</th>
+                                <th class="th-center" data-field="Standard">执行标准</th>
+                                <th class="th-center" data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents">操作</th>
                             </tr>
                         </thead>
                     </table>

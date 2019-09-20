@@ -101,20 +101,17 @@
         });
     </script>
 }
-@section css{
-
-}
 <form method="post" action="/File/ExportTxt" id="Export">
     <input type="hidden" name="SCodes" />
     <input type="hidden" name="ECodes" />
 </form>
 <div class="container-fluid">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
+        <div class="ibox ibox-c float-e-margins">
+            <div class="ibox-title ibox-title-c">
                 <h5>一品一码</h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="Edit">
                         <div class="col-sm-8 m-b-xs">
@@ -137,14 +134,14 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="BatchNo" data-halign="center" data-align="center" data-valign="middle">批次编号</th>
-                                <th data-field="StarSerialNo" data-halign="center" data-align="center" data-valign="middle">开始号段</th>
-                                <th data-field="EndSerialNo" data-halign="center" data-align="center" data-valign="middle">结束号段</th>
-                                <th data-field="TotalNo" data-halign="center" data-align="center" data-valign="middle">剩余数量</th>
-                                <th data-field="TagTypeName" data-halign="center" data-align="center" data-valign="middle">所属类型</th>
-                                <th data-field="UseNum" data-halign="center" data-align="center" data-valign="middle">绑定数量</th>
-                                <th data-field="CreateEmpty" data-halign="center" data-align="center" data-valign="middle">是否已生成空标签</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th data-field="BatchNo" class="th-center">批次编号</th>
+                                <th data-field="StarSerialNo" class="th-center">开始号段</th>
+                                <th data-field="EndSerialNo" class="th-center">结束号段</th>
+                                <th data-field="TotalNo" class="th-center">剩余数量</th>
+                                <th data-field="TagTypeName" class="th-center">所属类型</th>
+                                <th data-field="UseNum" class="th-center">绑定数量</th>
+                                <th data-field="CreateEmpty" class="th-center">是否已生成空标签</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" class="th-center">操作</th>
                             </tr>
                         </thead>
                     </table>
