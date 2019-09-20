@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "不合格处理";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
@@ -80,16 +79,13 @@
         options.Init();
     });
 </script>
-@section css{
-
-}
 <div class="container-fluid">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
+        <div class="ibox ibox-c float-e-margins">
+            <div class="ibox-title ibox-title-c">
                 <h5>不合格处理</h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="Edit">
                         <div class="col-sm-8 m-b-xs">
@@ -112,16 +108,15 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="BatchNo" data-halign="center" data-align="center" data-valign="middle">生产批次</th>
-                                <th data-field="CustomName" data-halign="center" data-align="center" data-valign="middle">处理名称</th>
-                                <th data-field="InferNum" data-halign="center" data-align="center" data-valign="middle">不合格数量</th>
-                                <th data-field="InferName" data-halign="center" data-align="center" data-valign="middle">产品名称</th>
-                                <th data-field="InferType" data-halign="center" data-align="center" data-valign="middle">类型</th>
-                                <th data-field="HandleUser" data-halign="center" data-align="center" data-valign="middle">处理人</th>
-                                <th data-field="HandleWays" data-halign="center" data-align="center" data-valign="middle">处理方式</th>
-                                <th data-field="HandleTime" data-halign="center" data-align="center" data-valign="middle">处理时间</th>
-
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th data-field="BatchNo" class="th-center">生产批次</th>
+                                <th data-field="CustomName" class="th-center">处理名称</th>
+                                <th data-field="InferNum" class="th-center">不合格数量</th>
+                                <th data-field="InferName" class="th-center">产品名称</th>
+                                <th data-field="InferType" class="th-center">类型</th>
+                                <th data-field="HandleUser" class="th-center">处理人</th>
+                                <th data-field="HandleWays" class="th-center">处理方式</th>
+                                <th data-field="HandleTime" class="th-center">处理时间</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" class="th-center">操作</th>
                             </tr>
                         </thead>
                     </table>

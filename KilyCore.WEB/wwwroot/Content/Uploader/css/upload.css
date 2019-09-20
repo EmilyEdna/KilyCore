@@ -1,32 +1,5 @@
 ﻿@charset "utf-8";
 /*上传图片插件的样式*/
-
-/*.upload-box{
-    padding: 0 20px;
-	margin: 0 auto;
-	margin-top: 40px;
-}
-
-.upload-box .clear{
-	clear: both;
-}
-
-.upload-box .clear:after{
-	content: '';
-	display: block;
-	clear: both;
-}
-
-.upload-box .upload-tip{
-	margin-bottom: 20px;
-	font-size: 16px;
-	color: #555;
-}
-.upload-box .image-box{
-	padding: 18px;
-	border:2px dashed #E7E6E6;
-}*/
-
 .image-box section{
 	position: relative;
 	width: 190px;
@@ -36,11 +9,11 @@
 
 .image-box .upload-section{
 	position: relative;
+    margin: 8px 0;
 }
 
 .image-box .image-section{
-	margin-right: 20px;
-	margin-bottom: 20px;
+	margin: 8px;
 }
 
 .image-section:hover{

@@ -1926,6 +1926,27 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetWaringRiskPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Govt.RequestGovtRisk})">
+            <summary>
+            风险预警
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetComplainPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Govt.RequestGovtComplain})">
+            <summary>
+            投诉建议
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetNetPatrolPage(KilyCore.Service.QueryExtend.PageParamList{System.Object})">
+            <summary>
+            整改意见
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
         <member name="T:KilyCore.API.Controllers.FinanceController">
             <summary>
             系统财务接口

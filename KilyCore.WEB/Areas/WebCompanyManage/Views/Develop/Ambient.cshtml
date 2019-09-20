@@ -70,17 +70,13 @@
         });
     </script>
 }
-@section css{
-
-}
-
 <div class="container-fluid">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
+        <div class="ibox ibox-c float-e-margins">
+            <div class="ibox-title ibox-title-c">
                 <h5>环境监测</h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="Edit">
                         <div class="col-sm-8 m-b-xs">
@@ -102,15 +98,15 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="BatchNo" data-halign="center" data-align="center" data-valign="middle">育苗批次</th>
-                                <th data-field="AirEnv" data-halign="center" data-align="center" data-valign="middle">空气温度</th>
-                                <th data-field="AirHdy" data-halign="center" data-align="center" data-valign="middle">空气湿度</th>
-                                <th data-field="SoilEnv" data-halign="center" data-align="center" data-valign="middle">土壤温度</th>
-                                <th data-field="SoilHdy" data-halign="center" data-align="center" data-valign="middle">土壤湿度</th>
-                                <th data-field="CO2" data-halign="center" data-align="center" data-valign="middle">CO2浓度</th>
-                                <th data-field="Light" data-halign="center" data-align="center" data-valign="middle">光照</th>
-                                <th data-field="RecordTime" data-halign="center" data-align="center" data-valign="middle">采集时间</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th class="th-center" data-field="BatchNo">育苗批次</th>
+                                <th class="th-center" data-field="AirEnv">空气温度</th>
+                                <th class="th-center" data-field="AirHdy">空气湿度</th>
+                                <th class="th-center" data-field="SoilEnv">土壤温度</th>
+                                <th class="th-center" data-field="SoilHdy">土壤湿度</th>
+                                <th class="th-center" data-field="CO2">CO2浓度</th>
+                                <th class="col-sm-1 th-center" data-field="Light">光照</th>
+                                <th class="col-sm-2 th-center" data-field="RecordTime">采集时间</th>
+                                <th class="col-sm-2 th-center" data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents">操作</th>
                             </tr>
                         </thead>
                     </table>

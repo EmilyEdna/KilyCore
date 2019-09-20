@@ -250,10 +250,10 @@
     <input type="hidden" name="ApiUrl" id="ApiUrl" />
 </form>
 <!--导航-->
-<div class="tabs-container" style="margin-top:10px;">
-    <ul class="nav nav-tabs">
+<div class="tabs-container" style="padding: 15px; background: #f5f5f5;">
+    <ul class="nav nav-tabs" style="border-radius: 8px 8px 0 0; box-shadow: 0px -2px 16px 0px rgba(47,64,80,0.16);">
         <li class="active">
-            <a data-toggle="tab" href="#tab-1" aria-expanded="true"> 入库清单</a>
+            <a data-toggle="tab" href="#tab-1" aria-expanded="true" style="border-left: #fff;">入库清单</a>
         </li>
         <li>
             <a data-toggle="tab" href="#tab-2" aria-expanded="false">出库清单</a>
@@ -261,7 +261,7 @@
     </ul>
     <div class="tab-content">
         <div id="tab-1" class="tab-pane active">
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="InStock">
                         <div class="col-sm-8 m-b-xs">
@@ -285,17 +285,17 @@
                     <table id="tableListSet" class="table">
                         <thead>
                             <tr>
-                                <th data-field="Stutas" data-checkbox="true" data-halign="center" data-align="center" data-valign="middle" data-formatter="options.action.CheckInFormatter"></th>
-                                <th data-field="GoodsBatchNo" data-halign="center" data-align="center" data-valign="middle">入库批次</th>
-                                <th data-field="GoodsName" data-halign="center" data-align="center" data-valign="middle">产品名称</th>
-                                <th data-field="Spec" data-halign="center" data-align="center" data-valign="middle">规格</th>
-                                <th data-field="InStockNum" data-halign="center" data-align="center" data-valign="middle">当前库存</th>
-                                <th data-field="MaterialName" data-halign="center" data-align="center" data-valign="middle">原辅料</th>
-                                <th data-field="AuditTypeName" data-halign="center" data-align="center" data-valign="middle">审核状态</th>
-                                <th data-field="Manager" data-halign="center" data-align="center" data-valign="middle">负责人</th>
-                                <th data-field="TotalCount" data-halign="center" data-align="center" data-valign="middle">总库存</th>
-                                <th data-field="StockMsg" data-halign="center" data-align="center" data-valign="middle">库存状况</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th class="th-center" data-field="Stutas" data-checkbox="true" data-formatter="options.action.CheckInFormatter"></th>
+                                <th class="th-center" data-field="GoodsBatchNo">入库批次</th>
+                                <th class="th-center" data-field="GoodsName">产品名称</th>
+                                <th class="th-center" data-field="Spec">规格</th>
+                                <th class="th-center" data-field="InStockNum">当前库存</th>
+                                <th class="th-center" data-field="MaterialName">原辅料</th>
+                                <th class="th-center" data-field="AuditTypeName">审核状态</th>
+                                <th class="th-center" data-field="Manager">负责人</th>
+                                <th class="th-center" data-field="TotalCount">总库存</th>
+                                <th class="th-center" data-field="StockMsg">库存状况</th>
+                                <th class="th-center" data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents">操作</th>
                             </tr>
                         </thead>
                     </table>
@@ -303,7 +303,7 @@
             </div>
         </div>
         <div id="tab-2" class="tab-pane">
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="OutStock">
                         <div class="col-sm-8 m-b-xs">
@@ -324,16 +324,16 @@
                     <table id="tableListOut" class="table">
                         <thead>
                             <tr>
-                                <th data-field="Stutas" data-checkbox="true" data-halign="center" data-align="center" data-valign="middle" data-formatter="options.action.CheckOutFormatter"></th>
-                                <th data-field="StockBatch" data-halign="center" data-align="center" data-valign="middle">入库批次</th>
-                                <th data-field="GoodsBatchNo" data-halign="center" data-align="center" data-valign="middle">出库批次</th>
-                                <th data-field="GoodsName" data-halign="center" data-align="center" data-valign="middle">产品名称</th>
-                                <th data-field="OutStockNum" data-halign="center" data-align="center" data-valign="middle">出库数量</th>
-                                <th data-field="StockEx" data-halign="center" data-align="center" data-valign="middle">库存</th>
-                                <th data-field="BoxCount" data-halign="center" data-align="center" data-valign="middle">装箱数量</th>
-                                <th data-field="OutStockType" data-halign="center" data-align="center" data-valign="middle">出库类型</th>
-                                <th data-field="OutStockUser" data-halign="center" data-align="center" data-valign="middle">负责人</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th class="th-center" data-field="Stutas" data-checkbox="true" data-formatter="options.action.CheckOutFormatter"></th>
+                                <th class="th-center" data-field="StockBatch">入库批次</th>
+                                <th class="th-center" data-field="GoodsBatchNo">出库批次</th>
+                                <th class="th-center" data-field="GoodsName">产品名称</th>
+                                <th class="th-center" data-field="OutStockNum">出库数量</th>
+                                <th class="th-center" data-field="StockEx">库存</th>
+                                <th class="th-center" data-field="BoxCount">装箱数量</th>
+                                <th class="th-center" data-field="OutStockType">出库类型</th>
+                                <th class="th-center" data-field="OutStockUser">负责人</th>
+                                <th class="th-center" data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents">操作</th>
                             </tr>
                         </thead>
                     </table>

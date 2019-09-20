@@ -46,7 +46,6 @@
                 $("#save").click(function () {
                     controller.Validate("#Edit", $("#Edit").SerializeOver(), true);
                     $("#Edit").submit();
-                     
                 });
                 $("#cancel").click(function () {
                     $("#Edit").find("input").val("");
@@ -119,10 +118,10 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="Ways" data-halign="center" data-align="center" data-valign="middle">维护方式</th>
-                                <th data-field="CleanTime" data-halign="center" data-align="center" data-valign="middle">清洗时间</th>
-                                <th data-field="Manager" data-halign="center" data-align="center" data-valign="middle">负责人</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th class="th-center" data-field="Ways" data-halign="center" data-align="center" data-valign="middle">维护方式</th>
+                                <th class="th-center" data-field="CleanTime" data-halign="center" data-align="center" data-valign="middle">清洗时间</th>
+                                <th class="th-center" data-field="Manager" data-halign="center" data-align="center" data-valign="middle">负责人</th>
+                                <th class="th-center" data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>
                     </table>

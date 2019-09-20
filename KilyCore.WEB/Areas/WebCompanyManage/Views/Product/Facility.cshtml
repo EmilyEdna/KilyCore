@@ -82,17 +82,13 @@
         });
     </script>
 }
-@section css{
-
-}
-
 <div class="container-fluid">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
+        <div class="ibox ibox-c float-e-margins">
+            <div class="ibox-title ibox-title-c">
                 <h5>设施管理</h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="Edit">
                         <div class="col-sm-8 m-b-xs">
@@ -115,14 +111,14 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="WorkShopName" data-halign="center" data-align="center" data-valign="middle">车间名称</th>
-                                <th data-field="GetWater" data-halign="center" data-align="center" data-valign="middle">供水</th>
-                                <th data-field="Light" data-halign="center" data-align="center" data-valign="middle">光照</th>
-                                <th data-field="WaterOut" data-halign="center" data-align="center" data-valign="middle">排水</th>
-                                <th data-field="Wind" data-halign="center" data-align="center" data-valign="middle">通风</th>
-                                <th data-field="Waste" data-halign="center" data-align="center" data-valign="middle">废物处理</th>
-                                <th data-field="Environment" data-halign="center" data-align="center" data-valign="middle">环境控制</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th class="th-center" data-field="WorkShopName">车间名称</th>
+                                <th class="th-center" data-field="GetWater">供水</th>
+                                <th class="th-center" data-field="Light">光照</th>
+                                <th class="th-center" data-field="WaterOut">排水</th>
+                                <th class="th-center" data-field="Wind">通风</th>
+                                <th class="th-center" data-field="Waste">废物处理</th>
+                                <th class="th-center" data-field="Environment">环境控制</th>
+                                <th class="col-sm-2 th-center" data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents">操作</th>
                             </tr>
                         </thead>
                     </table>

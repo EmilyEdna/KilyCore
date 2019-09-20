@@ -45,9 +45,8 @@
                     }
                 });
                 $("#save").click(function () {
-                    controller.Validate("#Edit", $("#Edit").SerializeOver());
+                    controller.Validate("#Edit", $("#Edit").SerializeOver(),true);
                     $("#Edit").submit();
-                    $("#Edit").find("input").val("");
                 });
                 $("#cancel").click(function () {
                     $("#Edit").find("input").val("");
@@ -84,13 +83,6 @@
         });
     </script>
 }
-@section css{
-    <style>
-        .ibox-content {
-            border-top-style: none;
-        }
-    </style>
-}
 <div class="tabs-container" style="margin-top:10px;">
     <ul class="nav nav-tabs">
         <li class="active">
@@ -102,7 +94,7 @@
     </ul>
     <div class="tab-content">
         <div id="tab-1" class="tab-pane active">
-            <div class="ibox-content">
+            <div class="ibox-content" style="border-top: none;">
                 <div class="row">
                     <form id="Role">
                         <div class="col-sm-10 m-b-xs">
@@ -120,10 +112,10 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="Reason" data-halign="center" data-align="center" data-valign="middle">维修原因</th>
-                                <th data-field="FixTime" data-halign="center" data-align="center" data-valign="middle">维修时间</th>
-                                <th data-field="Manager" data-halign="center" data-align="center" data-valign="middle">负责人</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th class="th-center" data-field="Reason">维修原因</th>
+                                <th class="th-center" data-field="FixTime">维修时间</th>
+                                <th class="th-center" data-field="Manager">负责人</th>
+                                <th class="th-center" data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents">操作</th>
                             </tr>
                         </thead>
                     </table>

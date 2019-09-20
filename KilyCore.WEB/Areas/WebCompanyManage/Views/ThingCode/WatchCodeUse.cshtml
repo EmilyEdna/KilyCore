@@ -75,14 +75,10 @@
         });
     </script>
 }
-@section css{
-
-}
-
 <div class="container-fluid">
     <div class="col-lg-12">
         <div class="ibox float-e-margins">
-            <div class="ibox-title">
+            <div class="ibox-title" style="border-top: none;">
                 <h5>使用情况</h5>
             </div>
             <div class="ibox-content">
@@ -93,11 +89,11 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="StockNo" data-halign="center" data-align="center" data-valign="middle">库存编号</th>
-                                <th data-field="StarSerialNos" data-halign="center" data-align="center" data-valign="middle">开始号段</th>
-                                <th data-field="EndSerialNos" data-halign="center" data-align="center" data-valign="middle">结束号段</th>
-                                <th data-field="UseNum" data-halign="center" data-align="center" data-valign="middle">使用数量</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th data-field="StockNo" class="th-center">库存编号</th>
+                                <th data-field="StarSerialNos" class="th-center">开始号段</th>
+                                <th data-field="EndSerialNos" class="th-center">结束号段</th>
+                                <th data-field="UseNum" class="th-center">使用数量</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" class="th-center">操作</th>
                             </tr>
                         </thead>
                     </table>

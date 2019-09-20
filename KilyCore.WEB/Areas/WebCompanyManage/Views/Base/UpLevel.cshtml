@@ -68,16 +68,13 @@
         });
     </script>
 }
-@section css{
-
-}
 <div class="container-fluid">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
+        <div class="ibox ibox-c float-e-margins">
+            <div class="ibox-title ibox-title-c">
                 <h5>升级续费</h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="Edit">
                         <div class="col-sm-11 m-b-xs">
@@ -97,12 +94,12 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="StarTime" data-halign="center" data-align="center" data-valign="middle">入驻时间</th>
-                                <th data-field="EndTime" data-halign="center" data-align="center" data-valign="middle">终止时间</th>
-                                <th data-field="Year" data-halign="center" data-align="center" data-valign="middle">合同年限</th>
-                                <th data-field="VersionName" data-halign="center" data-align="center" data-valign="middle">版本名称</th>
-                                <th data-field="CodeNumber" data-halign="center" data-align="center" data-valign="middle">二维码数量/枚</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th class="col-sm-2 th-center" data-field="StarTime">入驻时间</th>
+                                <th class="col-sm-2 th-center" data-field="EndTime">终止时间</th>
+                                <th class="col-sm-2 th-center" data-field="Year">合同年限</th>
+                                <th class="col-sm-2 th-center" data-field="VersionName">版本名称</th>
+                                <th class="col-sm-2 th-center" data-field="CodeNumber">二维码数量/枚</th>
+                                <th class="col-sm-2 th-center" data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents">操作</th>
                             </tr>
                         </thead>
                     </table>
