@@ -1,0 +1,267 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>企业溯源系统操作指南-中食药追溯管理平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: '微软雅黑';
+            color: #3C3C3C;
+        }
+
+        body, html {
+            background: #F0F1F5;
+        }
+
+        .wrap-box {
+            width: 1200px;
+            margin: 0 auto 50px;
+        }
+
+        h2 {
+            margin: 50px auto;
+            width: 320px;
+            font-size: 32px;
+            line-height: 50px;
+            text-align: center;
+            font-weight: normal;
+            border-bottom: 2px solid #3C3C3C;
+        }
+
+        .title {
+            font-size: 24px;
+            border-left: 4px solid #239FE6;
+            line-height: 24px;
+            padding-left: 10px;
+            margin: 30px auto;
+        }
+
+        .subtitle {
+            border-bottom: #D9D9D9 solid 1px;
+            background: #ffffff;
+            display: flex;
+            margin-top: 20px;
+            padding: 20px;
+        }
+
+            .subtitle img {
+                width: 60px;
+                height: 64px;
+                margin-right:20px;
+            }
+            .subtitle div h3{
+                font-size: 24px;
+                line-height: 36px;
+                font-weight: normal;
+            }
+            .subtitle div p{
+                line-height: 30px;
+                font-size:12px;
+                color: #808080;
+            }
+
+        .content {
+            list-style: none;
+            background: #fff;
+            overflow: hidden;
+            padding-left: 48px;
+        }
+
+            .content li {
+                width: 230px;
+                height: 270px;
+                float: left;
+                margin-right: 48px;
+                text-align: center;
+            }
+
+                .content li div {
+                    width: 100px;
+                    height: 100px;
+                    font-size: 18px;
+                    line-height: 100px;
+                    color: #fff;
+                    background: #239FE6;
+                    margin: 35px auto 0;
+                    border-radius: 50%;
+                }
+
+                .content li h4 {
+                    line-height: 50px;
+                    font-size: 18px;
+                }
+
+                .content li p {
+                    font-size: 14px;
+                }
+    </style>
+</head>
+<body>
+    <div class="wrap-box">
+        <h2>企业溯源系统操作指南</h2>
+        <div class="title">基础资料</div>
+        <ul class="content">
+            <li>
+                <div>第1步</div>
+                <h4>企业资料</h4>
+                <p>完善企业信息，包括：营业执照、资质荣誉、联系方式等等</p>
+            </li>
+            <li>
+                <div>第2步</div>
+                <h4>权限管理</h4>
+                <p>添加权限账号，根据部门职责分配相应权限的登陆账号</p>
+            </li>
+            <li>
+                <div>第3步</div>
+                <h4>企业字典</h4>
+                <p>添加常用字段，包括：计量单位、执行标准、关键点单位等等</p>
+            </li>
+            <li>
+                <div>第4步</div>
+                <h4>商户管理</h4>
+                <p>添加及管理商户信息，包括：公司名称、单位、联系方式、资质</p>
+            </li>
+            <li>
+                <div>第5步</div>
+                <h4>仓库管理</h4>
+                <p>添加仓库信息，包括：仓库名称、仓库环境、仓库类型等等</p>
+            </li>
+            <li>
+                <div>第6步</div>
+                <h4>产品系列</h4>
+                <p>添加产品系列，包括：系列名称、产品系列、选择执行标准</p>
+            </li>
+            <li>
+                <div>第7步</div>
+                <h4>视频监控</h4>
+                <p>添加企业中视频监控的链接地址</p>
+            </li>
+            <li>
+                <div>第8步</div>
+                <h4>物码管理</h4>
+                <p>申请物码 （追溯码、箱码）按照企业自己的需求生成相应码）</p>
+            </li>
+        </ul>
+        <div class="title">入库</div>
+        <div class="subtitle">
+            <img src="/StaticHtml/StaticImg/getin-r.png" />
+            <div>
+                <h3>入库-【未装箱】</h3>
+                <p>请依次按照此步骤操作</p>
+            </div>
+        </div>
+        <ul class="content">
+            <li>
+                <div>第1步</div>
+                <h4>产品管理</h4>
+                <p>添加产品列表，选择产品原辅料，产品介绍等</p>
+            </li>
+            <li>
+                <div>第2步</div>
+                <h4>进货管理</h4>
+                <p>添加进货信息，包括：产品名称、数量、供应商、质检报告</p>
+            </li>
+            <li>
+                <div>第3步</div>
+                <h4>产品质检</h4>
+                <p>添加产品质检信息</p>
+            </li>
+            <li>
+                <div>第4步</div>
+                <h4>产品仓库</h4>
+                <p>产品入库，包括：数量、选择检测报告（也可入库完成后选择）绑定追溯码</p>
+            </li>
+            <li>
+                <div>第5步</div>
+                <h4>提交审核</h4>
+                <p></p>
+            </li>
+        </ul>
+        <div class="subtitle">
+            <img src="/StaticHtml/StaticImg/buyin.png" />
+            <div>
+                <h3>入库-【已装箱】</h3>
+                <p>请依次按照此步骤操作</p>
+            </div>
+        </div>
+        <ul class="content">
+            <li>
+                <div>第1步</div>
+                <h4>产品管理</h4>
+                <p>添加产品列表，选择产品原辅料，产品介绍等</p>
+            </li>
+            <li>
+                <div>第2步</div>
+                <h4>进货管理</h4>
+                <p>添加进货信息，包括：产品名称、数量、供应商、质检报告</p>
+            </li>
+            <li>
+                <div>第3步</div>
+                <h4>产品质检</h4>
+                <p>添加产品质检信息</p>
+            </li>
+            <li>
+                <div>第4步</div>
+                <h4>产品仓库</h4>
+                <p>产品入库，包括：数量、选择检测报告（也可入库完成后选择）绑定追溯码</p>
+            </li>
+            <li>
+                <div>第5步</div>
+                <h4>提交审核</h4>
+                <p>添加仓库信息，包括：仓库名称、仓库环境、仓库类型等等</p>
+            </li>
+            <li>
+                <div>第6步</div>
+                <h4>装箱管理</h4>
+                <p>产品入库后进行箱码与追溯码的绑定</p>
+            </li>
+        </ul>
+        <div class="title">出库</div>
+        <div class="subtitle">
+            <img src="/StaticHtml/StaticImg/takeout.png" />
+            <div>
+                <h3>出库-【已装箱物品】</h3>
+                <p>请依次按照此步骤操作</p>
+            </div>
+        </div>
+        <ul class="content">
+            <li>
+                <div>第1步</div>
+                <h4>产品仓库</h4>
+                <p>点击出库，选择装箱码出库</p>
+            </li>
+            <li>
+                <div>第2步</div>
+                <h4>装车管理</h4>
+                <p>点击新增，选择已经装箱的出库批次扫描装箱码。可在该界面直接点击发货，默认是以车码方式发货</p>
+            </li>
+            <li>
+                <div>第3步</div>
+                <h4>发货管理</h4>
+                <p>点击新增，选择以车码或者箱码方式发货</p>
+            </li>
+        </ul>
+        <div class="subtitle">
+            <img src="/StaticHtml/StaticImg/getin-l.png" />
+            <div>
+                <h3>出库-【未装箱物品】</h3>
+                <p>请依次按照此步骤操作</p>
+            </div>
+        </div>
+        <ul class="content">
+            <li>
+                <div>第1步</div>
+                <h4>产品仓库</h4>
+                <p>点击出库，选择溯源码方式出库</p>
+            </li>
+            <li>
+                <div>第2步</div>
+                <h4>发货管理</h4>
+                <p>点击新增，选择以追溯码发货。要发货的二维码</p>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>
