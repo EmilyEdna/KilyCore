@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <UserSecretsId>2fe99d7b-0bd9-400b-b284-359c460581ab</UserSecretsId>
     <Authors>刘泽华</Authors>
   </PropertyGroup>
@@ -10,16 +11,6 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Areas\ComManage\**" />
-    <Content Remove="Areas\ComManage\**" />
-    <EmbeddedResource Remove="Areas\ComManage\**" />
-    <None Remove="Areas\ComManage\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Remove="wwwroot\Content\Echarts\echarts-all.js" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="EPPlus.Core" Version="1.5.4" />
@@ -30,10 +21,6 @@
     <PackageReference Include="PuppeteerSharp" Version="1.19.0" />
     <PackageReference Include="Select.HtmlToPdf.NetCore" Version="19.1.0" />
     <PackageReference Include="XExten" Version="2.2.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
   </ItemGroup>
 
   <ItemGroup>

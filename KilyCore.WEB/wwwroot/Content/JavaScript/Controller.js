@@ -5,8 +5,8 @@ github:https://github.com/EmilyEdna
 email:847432003@qq.com
 */
 var controller = controller || {};
-var host = "http://localhost:50039/api/";
-var WebUrl = "http://localhost:50070/";
+var host = "http://localhost:53325/api/";
+var WebUrl = "http://localhost:52978/";
 /**
  * ajax请求
  * @param {any} 基本配置
