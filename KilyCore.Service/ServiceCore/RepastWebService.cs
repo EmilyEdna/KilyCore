@@ -2605,6 +2605,7 @@ namespace KilyCore.Service.ServiceCore
                 InfoId = t.InfoId,
                 InsTheme = t.InsTheme,
                 InsUser = t.InsUser,
+                InsContent=t.InsContent.Replace("/Upload/", "http://system.cfda.vip/Upload/"),
                 InsTime = t.InsTime
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;

@@ -51,7 +51,7 @@ namespace KilyCore.Extension.FilterGroup
                 if (string.IsNullOrEmpty(SessionCode))
                     context.Result = ObjectResultEx.Instance("请输入验证码", 1, RetrunMessge.SUCCESS, HttpCode.FAIL);
                 if (!SessionCode.Trim().Equals(PhoneCode))
-                    context.Result =ObjectResultEx.Instance("请输入正确的验证码", 1, RetrunMessge.SUCCESS, HttpCode.FAIL);
+                    context.Result = ObjectResultEx.Instance("请输入正确的验证码", 1, RetrunMessge.SUCCESS, HttpCode.FAIL);
                 CacheFactory.Cache().RemoveCache("PhoneCode");
             }
             if (RequestPath.Contains("EnterpriseWeb/Edit") || RequestPath.Contains("EnterpriseWeb/Remove"))

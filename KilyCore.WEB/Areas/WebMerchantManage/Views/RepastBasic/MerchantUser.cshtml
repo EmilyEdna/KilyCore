@@ -40,6 +40,17 @@
             },
             //行为
             action: {
+                ExpiredFormatter: function (val, row, index) {
+                    var action = [];
+                    var Color = "";
+                    if (DateCompare(row.ExpiredTime)) {
+                           Color = "color:red;";
+                     }
+                    if (row.ExpiredTime != null) {
+                        action.push('<span style="' + Color + '">' + row.ExpiredTime + '</span>');
+                    }
+                    return action.join("&nbsp;");
+                },
                 ImgFormatter: function (val, row, index) {
                     var action = [];
                     if (row.HealthCard != null) {
@@ -99,6 +110,22 @@
         $(document).ready(function () {
             options.Init();
         });
+        function DateCompare(TimeLength) {
+            // 获取当前日期
+            let currentDate = new Date();
+            let str = "" + currentDate.getFullYear() + "-";
+            str += (currentDate.getMonth() + 1) + "-";
+            str += currentDate.getDate();
+            let today = new Date(str.replace("-", "/").replace("-", "/"));
+        
+            let fulfill_appointment_time = new Date(TimeLength.replace("年", "/").replace("月", "/").replace("日", ""));
+            if (fulfill_appointment_time < today) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
     </script>
 }
 @section css{
@@ -136,7 +163,7 @@
                                 @*<th data-field="Account" data-halign="center" data-align="center" data-valign="middle">账号</th>*@
                                 @*<th data-field="Phone" data-halign="center" data-align="center" data-valign="middle">电话</th>
                                 <th data-field="IdCard" data-halign="center" data-align="center" data-valign="middle">身份证</th>*@
-                                <th data-field="ExpiredTime" data-halign="center" data-align="center" data-valign="middle">有效期</th>
+                                <th data-field="ExpiredTime"  data-formatter="options.action.ExpiredFormatter"  data-halign="center" data-align="center" data-valign="middle">有效期</th>
                                 <th data-formatter="options.action.ImgFormatter" data-events="options.action.ImgEvents" data-halign="center" data-align="center" data-valign="middle">健康证</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
