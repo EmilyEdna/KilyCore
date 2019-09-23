@@ -56,5 +56,13 @@ namespace KilyCore.EntityFrameWork.Model.Repast
         /// 营业执照
         /// </summary>
         public virtual string RunCard { get; set; }
+        /// <summary>
+        /// 是否公开
+        /// </summary>
+        public virtual bool? IsOpen { get; set; }
+        /// <summary>
+        /// 主营业务
+        /// </summary>
+        public virtual string MainSale { get; set; }
     }
 }

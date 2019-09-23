@@ -54,5 +54,13 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         /// 营业执照
         /// </summary>
         public string RunCard { get; set; }
+        /// <summary>
+        /// 是否公开
+        /// </summary>
+        public bool? IsOpen { get; set; }
+        /// <summary>
+        /// 主营业务
+        /// </summary>
+        public string MainSale { get; set; }
     }
 }
