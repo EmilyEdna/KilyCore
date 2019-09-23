@@ -1,6 +1,5 @@
 ﻿<!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +11,6 @@
     <link href="~/Content/FontAwesome/Css/font-awesome.css" rel="stylesheet" />
     <link href="~/Content/Animate/Css/animate.css" rel="stylesheet" />
     <link href="~/Content/HPlus/Css/Hplus.css" rel="stylesheet" />
-
     <script src="~/Content/JavaScript/jquery.min.js"></script>
     <script src="~/Content/JavaScript/Controller.js"></script>
     <script src="~/Content/JavaScript/jquery.cookie.js"></script>
@@ -148,11 +146,11 @@
             },
             //初始化操作文档
             InitHandleFile: function (Param) {
-                if (Param == 30) 
+                if (Param == 30)
                     $("#HandleFile").attr("href", "../StaticHtml/File/生产企业用户手册（V1).docx");
                 if (Param == 40)
                     $("#HandleFile").attr("href", "../StaticHtml/File/流通企业用户手册(V1).docx");
-                if (Param <30)
+                if (Param < 30)
                     $("#HandleFile").attr("href", "../StaticHtml/File/种养殖企业用户手册（v1).docx");
             },
             //分页事件
@@ -175,7 +173,6 @@
         });
     </script>
 </head>
-
 <body class="fixed-sidebar full-height-layout gray-bg" style="overflow:hidden">
     <div id="wrapper">
         <!--左侧导航开始-->
@@ -216,7 +213,7 @@
             <div class="row border-bottom">
                 <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                     <div class="navbar-header">
-                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i></a>
                     </div>
                     <ul class="nav navbar-top-links navbar-right">
                         <li class="dropdown">
@@ -270,6 +267,10 @@
             </div>
         </div>
         <!--右侧部分结束-->
+        <!--操作指南-->
+        <a href="/StaticHtml/OperationGuideCompany.html" target="_blank" style="position: fixed; left: 20px; bottom: 0px; z-index: 2002;">
+            <img src="~/Content/Company/images/guide.gif" style="width:180px;" />
+        </a>
     </div>
 
     <script src="~/Content/BootStrap/Script/bootstrap.js"></script>
