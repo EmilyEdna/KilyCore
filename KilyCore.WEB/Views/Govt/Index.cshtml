@@ -30,6 +30,7 @@
                     if (GovtInfo.IsEdu) {
                         $(".ts").html($(this).html().replace(new RegExp("产量", "g"), "人员"));
                         $(".tq").html($(this).html().replace(new RegExp("报备", "g"), "预警"));
+                        $(".tk").html($(this).html().replace(new RegExp("学校", "g"), "学校"));
                     }
                 }
             });
@@ -412,7 +413,7 @@
                     <div class="content content1">
                         <a href="/WebGovtManage/Enterprise/DistributionSupervise">
                             <img src="~/Content/DataView/images/zf_cygn1.png" />
-                            <p>企业分布</p>
+                            <p><span class="tk">企业</span>分布</p>
                         </a>
                         <a href="/WebGovtManage/Risk/EventRisk">
                             <img src="~/Content/DataView/images/zf_cygn2.png" />

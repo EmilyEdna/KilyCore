@@ -1,9 +1,6 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "人员编辑";
     Layout = "~/Views/Shared/BaseView.cshtml";
-}
-@section css{
 }
 @section script{
     <script>
@@ -35,7 +32,6 @@
                     type: "post",
                     async: false,
                     success: function (result) {
-                        debugger;
                         controller.SetCtrlValue("#Edit", result.data);
                          if (controller.CheckFeild(result.data.HealthCard)) {
                             //营业执照

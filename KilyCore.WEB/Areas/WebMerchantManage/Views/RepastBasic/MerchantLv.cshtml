@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "续费升级";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
@@ -68,16 +67,13 @@
         });
     </script>
 }
-@section css{
-
-}
 <div class="container-fluid">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
+        <div class="ibox ibox-c float-e-margins">
+            <div class="ibox-title ibox-title-c">
                 <h5>升级续费</h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="Edit">
                         <div class="col-sm-11 m-b-xs">
@@ -97,11 +93,11 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="StarTime" data-halign="center" data-align="center" data-valign="middle">入驻时间</th>
-                                <th data-field="EndTime" data-halign="center" data-align="center" data-valign="middle">终止时间</th>
-                                <th data-field="Year" data-halign="center" data-align="center" data-valign="middle">合同年限</th>
-                                <th data-field="VersionName" data-halign="center" data-align="center" data-valign="middle">版本名称</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th data-field="StarTime" class="th-center">入驻时间</th>
+                                <th data-field="EndTime" class="th-center">终止时间</th>
+                                <th data-field="Year" class="th-center">合同年限</th>
+                                <th data-field="VersionName" class="th-center">版本名称</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" class="th-center">操作</th>
                             </tr>
                         </thead>
                     </table>
