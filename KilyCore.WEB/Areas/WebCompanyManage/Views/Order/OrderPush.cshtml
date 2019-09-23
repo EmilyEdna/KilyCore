@@ -20,7 +20,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "System/GetOrderPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit",param: { CompnayId: CompanyInfo.Id} });
+                this.$table = controller.Table("#tableList", { url: "System/GetOrderPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit",param: { CompanyId: CompanyInfo.Id} });
             },
             //事件
             InitEvents: function () {
