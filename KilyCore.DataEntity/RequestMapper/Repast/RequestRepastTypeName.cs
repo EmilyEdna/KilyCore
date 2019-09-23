@@ -25,5 +25,6 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
         public string TypeNames { get; set; }
         public int Types { get; set; }
         public string Spec { get; set; }
+        public string ProImg { get; set; }
     }
 }

@@ -41,9 +41,14 @@
         action: {
             ImgFormatter: function (val, row, index) {
                 var action = [];
-                if (row.HealthCard != null) {
+                if (row.HandleImg != null) {
                     for (var i = 0; i < row.HandleImg.split(',').length; i++) {
-                        action.push('<img class="photo" src="' + row.HandleImg.split(',')[i] + '" style="width:48px;height:32px;"">')
+                        if (row.HandleImg.indexOf("/") < 0) {
+
+                        }
+                        else {
+                            action.push('<img class="photo" src="' + row.HandleImg.split(',')[i] + '" style="width:48px;height:32px;"">')
+                        }
                     }
                 }
                 return action.join("&nbsp;");

@@ -1,4 +1,5 @@
 ﻿using KilyCore.DataEntity.RequestMapper.Enterprise;
+using KilyCore.DataEntity.ResponseMapper.Repast;
 using KilyCore.EntityFrameWork.Model.Enterprise;
 using KilyCore.EntityFrameWork.Model.Repast;
 using KilyCore.EntityFrameWork.Model.System;
@@ -26,14 +27,14 @@ namespace KilyCore.Service.ServiceCore
         [Obsolete]
         public object GetAllUser(Guid CompanyId)
         {
-            var Euser = Kily.Set<EnterpriseUser>().Where(t => t.CompanyId == CompanyId).Select(t => new
+            var Euser = Kily.Set<EnterpriseUser>().Where(t => t.CompanyId == CompanyId && t.IsDelete == false).Select(t => new
             {
                 PersonName = t.TrueName,
                 JobStatus = "在职",
                 TimeLength = "",
                 HealthImg = ""
             }).ToList();
-            var Ruser = Kily.Set<RepastInfoUser>().Where(t => t.InfoId == CompanyId).Select(t => new
+            var Ruser = Kily.Set<RepastInfoUser>().Where(t => t.InfoId == CompanyId && t.IsDelete == false).Select(t => new
             {
                 PersonName = t.TrueName,
                 JobStatus = "在职",
@@ -52,7 +53,7 @@ namespace KilyCore.Service.ServiceCore
         public object GetAllSupply(Guid CompanyId, int type)
         {
             //var Types = (SellerEnum)type;
-            var Esupper = Kily.Set<EnterpriseSeller>().Where(t => t.SellerType.GetHashCode() == type)
+            var Esupper = Kily.Set<EnterpriseSeller>().Where(t => t.SellerType.GetHashCode() == type && t.IsDelete == false)
                  .Where(t => t.CompanyId == CompanyId)
                  .Select(t => new
                  {
@@ -83,14 +84,14 @@ namespace KilyCore.Service.ServiceCore
         [Obsolete]
         public object GetAllSample(Guid CompanyId)
         {
-            return Kily.Set<RepastSample>().Where(t => t.InfoId == CompanyId).Select(t => new
+            return Kily.Set<RepastSample>().Where(t => t.InfoId == CompanyId && t.IsDelete == false).OrderByDescending(o => o.SampleTime).Select(t => new
             {
                 FoodsName = t.DishName,
                 SavePerson = t.OperatUser,
                 SaveTime = t.SampleTime.Value.ToString("yyyy年MM月dd日"),
                 ReportImg = t.SampleImg,
                 t.Remark
-            }).Take(12).OrderByDescending(o => o.SaveTime).ToList();
+            }).Take(12).ToList();
         }
         /// <summary>
         /// 废物处理
@@ -100,7 +101,7 @@ namespace KilyCore.Service.ServiceCore
         [Obsolete]
         public object RepastDuck(Guid CompanyId)
         {
-            return Kily.Set<RepastDuck>().Where(t => t.InfoId == CompanyId).Select(t => new
+            return Kily.Set<RepastDuck>().Where(t => t.InfoId == CompanyId && t.IsDelete == false).OrderByDescending(o => o.HandleTime).Select(t => new
             {
                 BadType = t.HandleWays,
                 BadPhone = t.Phone,
@@ -108,7 +109,7 @@ namespace KilyCore.Service.ServiceCore
                 ReportImg = t.HandleImg,
                 BadRemark = t.Remark,
                 BadPerson = t.HandleUser
-            }).Take(12).OrderByDescending(o => o.BadTime).ToList();
+            }).Take(12).ToList();
         }
         /// <summary>
         /// 食材供应
@@ -118,12 +119,12 @@ namespace KilyCore.Service.ServiceCore
         [Obsolete]
         public object RepastThing(Guid CompanyId)
         {
-            return Kily.Set<RepastBillTicket>().Where(t => t.InfoId == CompanyId).Select(t => new
+            return Kily.Set<RepastBillTicket>().Where(t => t.InfoId == CompanyId && t.IsDelete == false).OrderByDescending(o => o.UpTime).Select(t => new
             {
                 ThingName = t.Theme,
                 Remark = t.Content.Replace("/upload/", "http://system.cfda.vip/upload/"),
                 BuyTime = t.UpTime.Value
-            }).Take(9).OrderByDescending(o => o.BuyTime).ToList();
+            }).Take(9).ToList();
         }
         /// <summary>
         /// 周菜谱
@@ -133,12 +134,12 @@ namespace KilyCore.Service.ServiceCore
         [Obsolete]
         public object RepastWeek(Guid CompanyId)
         {
-            return Kily.Set<RepastFoodMenu>().Where(t => t.InfoId == CompanyId).Select(t => new
+            return Kily.Set<RepastFoodMenu>().Where(t => t.InfoId == CompanyId && t.IsDelete == false).OrderByDescending(o => o.UpTime).Select(t => new
             {
                 Title = t.FoodMenuName,
                 Content = t.Content.Replace("/upload/", "http://system.cfda.vip/upload/"),
                 DateTime = t.UpTime.Value
-            }).Take(9).OrderByDescending(o => o.DateTime).ToList();
+            }).Take(9).ToList();
         }
         /// <summary>
         /// 抽检信息
@@ -148,13 +149,31 @@ namespace KilyCore.Service.ServiceCore
         [Obsolete]
         public object RepastCheck(Guid CompanyId)
         {
-            return Kily.Set<RepastDraw>().Where(t => t.InfoId == CompanyId).Select(t => new
+            return Kily.Set<RepastDraw>().Where(t => t.InfoId == CompanyId&&t.IsDelete==false).OrderByDescending(o => o.DrawTime).Select(t => new
             {
                 Title = t.DrawUnit,
                 Person = t.DrawUser,
                 Remark = t.Remark.Replace("/upload/", "http://system.cfda.vip/upload/").Replace("/editor/", "http://system.cfda.vip/editor/"),
                 DateTime = t.DrawTime.Value
             }).Take(9).ToList();
+        }
+        /// <summary>
+        /// 产品信息
+        /// </summary>
+        /// <param name="CompanyId"></param>
+        /// <returns></returns>
+        [Obsolete]
+        public object RepastProduct(Guid CompanyId)
+        {
+            return Kily.Set<RepastArticleInStock>().Where(t => t.InfoId == CompanyId)
+                   .Join(Kily.Set<RepastTypeName>(), t => t.NameId, x => x.Id, (t, x) => new { t, x }).Select(t => new ResponseRepastTypeName
+                   {
+                       TypeNames = t.x.TypeNames,
+                       Spec = t.x.Spec,
+                       ProImg = t.x.ProImg,
+                       Types = t.x.Types,
+                       Remark = t.t.Remark
+                   }).ToList();
         }
         #endregion
 

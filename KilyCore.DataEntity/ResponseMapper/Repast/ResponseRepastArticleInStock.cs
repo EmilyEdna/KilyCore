@@ -21,6 +21,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
     public class ResponseRepastArticleInStock
     {
         public Guid Id { get; set; }
+        /// <summary>
+        /// 类型Id
+        /// </summary>
+        public Guid? NameId { get; set; }
         public Guid InfoId { get; set; }
         /// <summary>
         /// 批次号

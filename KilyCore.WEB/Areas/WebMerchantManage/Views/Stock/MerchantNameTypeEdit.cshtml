@@ -16,6 +16,17 @@
             //元素
             InitDom: function () {
                 $("#InfoId").val(RepastUser.Id);
+                //文件上传-产品
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: ".upload-input",
+                    maxNum: 5,
+                    node: '.image-box',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        $("#ProImg").val(result.data);
+                    }
+                });
             },
             //事件
             InitEvents: function () {
@@ -46,6 +57,7 @@
                         <select type="select" name="Types" class="form-control">
                             <option value="1">原料</option>
                             <option value="2">物品</option>
+                            <option value="3">产品</option>
                         </select>
                     </td>
                 </tr>
@@ -53,6 +65,18 @@
                     <th><label class="control-label">规格</label></th>
                     <td class="has-warning" colspan="3">
                         <input type="text" class="form-control" name="Spec" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">产品图片</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                        <input type="hidden" id="ProImg" name="ProImg" />
                     </td>
                 </tr>
             </table>

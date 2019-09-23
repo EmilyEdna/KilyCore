@@ -67,19 +67,19 @@ namespace KilyCore.Extension.FilterGroup
                 }
                 context.Result = new StatusCodeResult(403);
             }
-            if (RequestPath.Contains("RepastWeb/Edit") || RequestPath.Contains("RepastWeb/Remove"))
-            {
-                if (RequestPath.Contains("Edit"))
-                {
-                    if (string.IsNullOrEmpty(request.Form["Id"].ToString()))
-                    {
-                        return;
-                    }
-                }
-                if (RequestPath.Contains("RemoveScan"))
-                    return;
-                context.Result = new StatusCodeResult(403);
-            }
+            //if (RequestPath.Contains("RepastWeb/Edit") || RequestPath.Contains("RepastWeb/Remove"))
+            //{
+            //    if (RequestPath.Contains("Edit"))
+            //    {
+            //        if (string.IsNullOrEmpty(request.Form["Id"].ToString()))
+            //        {
+            //            return;
+            //        }
+            //    }
+            //    if (RequestPath.Contains("RemoveScan"))
+            //        return;
+            //    context.Result = new StatusCodeResult(403);
+            //}
             if (context.Filters.Any(t => (t as AllowAnonymousFilter) != null))
                 return;
             if (request.Headers.ContainsKey("ApiKey") && request.Headers.ContainsKey("SysKey"))

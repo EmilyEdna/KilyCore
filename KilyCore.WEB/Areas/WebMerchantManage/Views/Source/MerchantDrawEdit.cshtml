@@ -15,7 +15,7 @@
             InitDom: function () {
                 $("#InfoId").val(RepastUser.Id);
                 controller.LayDate({ elem: "#DrawTime" });
-                //获取负责人
+                 var Editor = controller.Editor(".summernote", { width: $(window).width });                //获取负责人
                 controller.ajax({
                     url: "RepastWeb/GetMerchantList",
                     data: {},
@@ -72,7 +72,9 @@
                 <tr>
                     <th><label class="control-label">备注</label></th>
                     <td class="has-warning" colspan="3">
-                        <textarea class="form-control" name="Remark" rows="3" maxlength="200"></textarea>
+                        <div class="summernote" name="Remark"></div>
+
+                        @*<textarea class="form-control" name="Remark" rows="3" maxlength="200"></textarea>*@
                     </td>
                 </tr>
             </table>

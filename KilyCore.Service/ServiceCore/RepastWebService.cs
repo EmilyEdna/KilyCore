@@ -1903,6 +1903,7 @@ namespace KilyCore.Service.ServiceCore
                 DrawUnit = t.DrawUnit,
                 Phone = t.Phone,
                 DrawTime = t.DrawTime,
+                Remark = t.Remark,
                 DrawUser = t.DrawUser
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -2115,7 +2116,6 @@ namespace KilyCore.Service.ServiceCore
         #endregion
 
         #region 仓库管理
-
         #region 原料仓库-入库
         /// <summary>
         /// 原料入库分页
@@ -2149,8 +2149,12 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public IList<ResponseRepastInStorage> GetInStorageList(string Param)
         {
-            var data = Kily.Set<RepastInStorage>().Where(t => t.IsDelete == false)
-                .Where(t => t.MaterType.Equals(Param))
+            var queryable = Kily.Set<RepastInStorage>().Where(t => t.IsDelete == false);
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            var data = queryable.Where(t => t.MaterType.Equals(Param))
                 .Select(t => new ResponseRepastInStorage()
                 {
                     Id = t.Id,
@@ -2508,18 +2512,22 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public IList<ResponseRepastTypeName> GetNamesList(int Key)
         {
-            IQueryable<RepastTypeName> queryable = Kily.Set<RepastTypeName>().OrderByDescending(t => t.CreateTime).Where(t => t.Types == Key);
+            IQueryable<RepastTypeName> queryable = Kily.Set<RepastTypeName>().OrderByDescending(t => t.CreateTime);
+            if (Key == 0)
+                queryable = queryable.Where(t => t.Types == 2 || t.Types == 3);
+            else
+                queryable = queryable.Where(t => t.Types == Key);
             if (MerchantInfo() != null)
                 queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
             else
                 queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
             return queryable.Select(t => new ResponseRepastTypeName()
             {
+                Id=t.Id,
                 TypeNames = $"{t.TypeNames}({t.Spec})"
             }).ToList();
         }
         #endregion
-
         #endregion
 
         #region 陪餐管理
@@ -2878,7 +2886,7 @@ namespace KilyCore.Service.ServiceCore
             var record = Kily.Set<GovtTemplateChild>().Where(t => t.IsDelete == false).Where(t => t.TypePath == TypePath).Count();
             var touser = Kily.Set<RepastInfoUser>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id).Count();
             var exp = Kily.Set<RepastInfoUser>().Where(t => t.IsDelete == false).Where(t => t.InfoId == Id).Where(t => t.ExpiredTime >= DateTime.Now).Count();
-            Object data = new { bill, supplier, record, touser, exp};
+            Object data = new { bill, supplier, record, touser, exp };
             return data;
         }
         #endregion
