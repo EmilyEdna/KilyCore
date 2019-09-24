@@ -7,51 +7,61 @@
     <script type="text/javascript" src="http://api.map.baidu.com/library/AreaRestriction/1.2/src/AreaRestriction_min.js"></script>
     <script src="~/Content/Tabs/contabsiframe.js"></script>
     <script>
-        var option = {
-            Init: function () {
-                this.InitDom();
-                this.InitEvent();
-            },
-            InitDom: function () {
-                //视频图片点击事件
-                $(".item2 .content2 img").on("click", function () {
-                    controller.OpenWindow({
-                        title: "视频播放",
-                        type: 2,
-                        btn: [],
-                        maxmin: false,
-                        height: "480px",
-                        width: "520px",
-                        url: "StaticHtml/PlayVedio.html?addr=" + $(this).data().value + "&cover=" + $(this).attr("src"),
-                        callBack: function (result) {
-                            result.popClose();
-                        }
-                    });
-                });
-                //获取视频
-                controller.ajax({
-                    url: "RepastWeb/GetVideoPage",
-                    data: { pageSize: 4, pageNumber: 1, QueryParam: { IsIndex: true } },
-                    async: false,
-                    type: "post",
-                    success: function (result) {
-                        if (result.data.rows.length == 0) {
-                            $(".item2 .content2").html("暂无视频");
-                        } else {
-                            $.each(result.data.rows, function (index, item) {
-                                if (!controller.CheckFeild(item.VedioCover))
-                                    item.VedioCover = "http://system.cfda.vip/Content/HPlus/img/Nopic.jpg";
-                                var img = $($(".item2 .content2 img")[index]);
-                                img.attr("title", item.VedioName);
-                                img.attr("src", item.VedioCover);
-                                img.data().value = item.VideoAddress;
-                            });
-                        }
+    var option = {
+        Init: function () {
+            this.InitDom();
+            this.InitEvent();
+        },
+        InitDom: function () {
+            
+            //获取视频
+            controller.ajax({
+                url: "RepastWeb/GetVideoPage",
+                data: { pageSize: 4, pageNumber: 1, QueryParam: { IsIndex: true } },
+                async: false,
+                type: "post",
+                success: function (result) {
+                    if (result.data.rows.length == 0) {
+                        $(".item2 .content2").html("暂无视频");
+                    } else {
+                        $.each(result.data.rows, function (index, item) {
+                            var leftT = "";
+                            if (index % 2 == 0) {
+                                leftT = "margin-right:2%;";
+                            }
+
+                            var VoideItem = ` <div class="item item2-item" style="width:49%;float:left;${leftT}margin-bottom:12px;">
+                                            <div class="title">
+                                                <div></div>
+                                                ${item.MonitorAddress}
+                                            </div>
+                                            <div class="content content2">
+                                                <img src="http://system.cfda.vip${item.CoverPhoto}" title="${item.MonitorAddress}"  data-value="${item.VideoAddress}"/>
+                                            </div>
+                                        </div>`;
+                            $("#VoideContent").append(VoideItem);
+                        });
+                    }
+                }
+            });
+            //视频图片点击事件
+            $(".item2 .content2 img").on("click", function () {
+                controller.OpenWindow({
+                    title: "视频播放",
+                    type: 2,
+                    btn: [],
+                    maxmin: false,
+                    height: "480px",
+                    width: "520px",
+                    url: "StaticHtml/PlayVedio.html?addr=" + $(this).data().value + "&cover=" + $(this).attr("src"),
+                    callBack: function (result) {
+                        result.popClose();
                     }
                 });
-            },
-            InitEvent: function () {
-                //数据统计
+            });
+        },
+        InitEvent: function () {
+               //数据统计
                 controller.ajax({
                     url: "RepastWeb/GetDataCount",
                     data: { Id: RepastUser.Id },
@@ -176,44 +186,12 @@
                 </a>
             </div>
         </div>
-        <div class="item2" style="width:49.5%">
-            <div class="item item2-item" style="width:49.5%;float:left;">
-                <div class="title">
-                    <div></div>
-                    视频一
-                </div>
-                <div class="content content2">
-                    <img src="" title="暂无视频" data-value="" />
-                </div>
-            </div>
-            <div class="item item2-item" style="width:49.5%;float:left;margin-left:1%;">
-                <div class="title">
-                    <div></div>
-                    视频二
-                </div>
-                <div class="content content2">
-                    <img src="" title="暂无视频" data-value="" />
-                </div>
-            </div>
-
-            <div class="item item2-item" style="width:49.5%;float:left;margin-top:12px;">
-                <div class="title">
-                    <div></div>
-                    视频三
-                </div>
-                <div class="content content2">
-                    <img src="" title="暂无视频" data-value="" />
-                </div>
-            </div>
-            <div class="item item2-item" style="float:left;margin-left:1%;margin-top:12px;width:49.5%;">
-                <div class="title">
-                    <div></div>
-                    视频四
-                </div>
-                <div class="content content2">
-                    <img src="" title="暂无视频" data-value="" />
-                </div>
-            </div>
+        <div class="item2" style="width:49.5%" id="VoideContent">
+           
         </div>
+    </div>
+    <!--第三个区域 最近七天记录（自查记录、陪餐记录、留样记录、废物处理）-->
+    <div class="section section3">
+        
     </div>
 </div>

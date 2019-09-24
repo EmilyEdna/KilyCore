@@ -1937,7 +1937,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseRepastDuck> GetDuckPage(PageParamList<RequestRepastDuck> pageParam)
         {
-            IQueryable<RepastDuck> queryable = Kily.Set<RepastDuck>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<RepastDuck> queryable = Kily.Set<RepastDuck>().Where(t => t.IsDelete == false).OrderByDescending(t => t.HandleTime);
             if (MerchantInfo() != null)
                 queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
             else
