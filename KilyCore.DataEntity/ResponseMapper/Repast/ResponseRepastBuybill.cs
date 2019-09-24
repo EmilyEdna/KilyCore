@@ -57,5 +57,13 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         /// 采购负责人
         /// </summary>
         public string Purchase { get; set; }
+        /// <summary>
+        /// 有效期
+        /// </summary>
+        public string NoExp { get; set; }
+        /// <summary>
+        /// 生成日期
+        /// </summary>
+        public DateTime? ProTime { get; set; }
     }
 }

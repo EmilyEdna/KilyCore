@@ -165,4 +165,86 @@ namespace KilyCore.WEB.Model
     {
         public List<ApkVer> data { get; set; }
     }
+    public class RepastBuybill
+    {
+        /// <summary>
+        /// 物品名称
+        /// </summary>
+        public string GoodsName { get; set; }
+        /// <summary>
+        /// 进货数量
+        /// </summary>
+        public string GoodsNum { get; set; }
+        /// <summary>
+        /// 单价
+        /// </summary>
+        public string UnPay { get; set; }
+        /// <summary>
+        /// 总价
+        /// </summary>
+        public string ToPay { get; set; }
+        /// <summary>
+        /// 进货时间
+        /// </summary>
+        public DateTime? OrderTime { get; set; }
+        /// <summary>
+        /// 供应商
+        /// </summary>
+        public string Supplier { get; set; }
+        /// <summary>
+        /// 单位
+        /// </summary>
+        public string Unit { get; set; }
+        /// <summary>
+        /// 联系电话
+        /// </summary>
+        public string LinkPhone { get; set; }
+        /// <summary>
+        /// 采购负责人
+        /// </summary>
+        public string Purchase { get; set; }
+        /// <summary>
+        /// 有效期
+        /// </summary>
+        public string NoExp { get; set; }
+        /// <summary>
+        /// 生成日期
+        /// </summary>
+        public DateTime? ProTime { get; set; }
+    }
+    public class RepastSellbill
+    {
+        /// <summary>
+        /// 物品名称
+        /// </summary>
+        public string GoodsName { get; set; }
+        /// <summary>
+        /// 销售数量
+        /// </summary>
+        public string GoodsNum { get; set; }
+        /// <summary>
+        /// 单价
+        /// </summary>
+        public string UnPay { get; set; }
+        /// <summary>
+        /// 总价
+        /// </summary>
+        public string ToPay { get; set; }
+        /// <summary>
+        /// 销售时间
+        /// </summary>
+        public DateTime? SellTime { get; set; }
+        /// <summary>
+        /// 负责人
+        /// </summary>
+        public string Manager { get; set; }
+        /// <summary>
+        /// 有效期
+        /// </summary>
+        public string NoExp { get; set; }
+        /// <summary>
+        /// 生成日期
+        /// </summary>
+        public DateTime? ProTime { get; set; }
+    }
 }

@@ -60,6 +60,80 @@ namespace KilyCore.WEB.Util
             return new { data = RootPath + FullFileName, flag = 1, msg = "上传成功！", HttpCode = 10 };
         }
         /// <summary>
+        /// 导入xmls
+        /// </summary>
+        /// <param name="Files"></param>
+        /// <param name="Type">1进货2销售</param>
+        /// <param name="WebRootPath"></param>
+        /// <returns></returns>
+        public static Object ImportXmls(IFormFile Files, int Type, string WebRootPath)
+        {
+            try
+            {
+            if (!Directory.Exists(WebRootPath+"/TempExcel/"))
+                Directory.CreateDirectory(WebRootPath + "/TempExcel/");
+            using (FileStream fs = File.Create(WebRootPath + "/TempExcel/"+Files.FileName))
+            {
+                Files.CopyTo(fs);
+                fs.Flush();
+            }
+            FileInfo file = new FileInfo(WebRootPath + "/TempExcel/" + Files.FileName);
+            if (file != null)
+            {
+                using (ExcelPackage package = new ExcelPackage(file))
+                {
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets.FirstOrDefault();
+                    //获取表格的列数和行数
+                    int rowCount = worksheet.Dimension.Rows;
+                    int ColCount = worksheet.Dimension.Columns;
+                    for (int row = 2; row <= rowCount; row++)
+                    {
+                        if (Type == 1)
+                        {
+                            RepastBuybill bill = new RepastBuybill
+                            {
+                                GoodsName = worksheet.Cells[row, 1].Value.ToString(),
+                                GoodsNum = worksheet.Cells[row, 2].Value.ToString(),
+                                Unit = worksheet.Cells[row, 3].Value.ToString(),
+                                UnPay = worksheet.Cells[row, 4].Value.ToString(),
+                                ToPay = worksheet.Cells[row, 5].Value.ToString(),
+                                Supplier = worksheet.Cells[row, 6].Value.ToString(),
+                                LinkPhone = worksheet.Cells[row, 7].Value.ToString(),
+                                NoExp = worksheet.Cells[row, 8].Value.ToString(),
+                                ProTime = worksheet.Cells[row, 9].Value.ToString() == "-" ? DateTime.Now : DateTime.Parse(worksheet.Cells[row, 8].Value.ToString()),
+                                Purchase = worksheet.Cells[row, 10].Value.ToString(),
+                                OrderTime = worksheet.Cells[row, 11].Value.ToString() == "-" ? DateTime.Now : DateTime.Parse(worksheet.Cells[row, 11].Value.ToString()),
+                            };
+                            var keyValuePairs = HttpClientUtil.KeyValuePairs(bill);
+                            String Result = HttpClientUtil.HttpPostAsync(Configer.Host + "RepastWeb/EditBuybill", keyValuePairs, null, "application/x-www-form-urlencoded").Result;
+                        }
+                        else {
+                            RepastSellbill bill = new RepastSellbill
+                            {
+                                GoodsName = worksheet.Cells[row, 1].Value.ToString(),
+                                GoodsNum = worksheet.Cells[row, 2].Value.ToString(),
+                                UnPay= worksheet.Cells[row, 3].Value.ToString(),
+                                ToPay = worksheet.Cells[row, 4].Value.ToString(),
+                                NoExp = worksheet.Cells[row, 5].Value.ToString(),
+                                ProTime = worksheet.Cells[row, 6].Value.ToString() == "-" ? DateTime.Now : DateTime.Parse(worksheet.Cells[row, 6].Value.ToString()),
+                                SellTime= worksheet.Cells[row, 7].Value.ToString() == "-" ? DateTime.Now : DateTime.Parse(worksheet.Cells[row, 7].Value.ToString()),
+                                Manager= worksheet.Cells[row, 8].Value.ToString(),
+                            };
+                            var keyValuePairs = HttpClientUtil.KeyValuePairs(bill);
+                            String Result = HttpClientUtil.HttpPostAsync(Configer.Host + "RepastWeb/EditSellbill", keyValuePairs, null, "application/x-www-form-urlencoded").Result;
+                        }
+                    }
+                }
+            }
+            File.Delete(WebRootPath + "/TempExcel/" + Files.FileName);
+            return "导入成功";
+            }
+            catch (Exception)
+            {
+                return "导入失败";
+            }
+        }
+        /// <summary>
         /// 上传音频
         /// </summary>
         /// <param name="Files"></param>

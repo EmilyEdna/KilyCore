@@ -4,12 +4,15 @@
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
+    <script src="~/Content/ExportPlugin/Script/xlsx.core.min.js"></script>
+    <script src="~/Content/ExportPlugin/Script/tableExport.js"></script>
     <script>
         //配置
         var options = {
             Init: function () {
                 this.InitDom();
                 this.InitEvents();
+                this.FileUpload();
             },
             //元素
             InitDom: function () {
@@ -30,12 +33,48 @@
                         title: "新增进货台账",
                         type: 2,
                         height: "90%",
-                        width: "80%",  
+                        width: "80%",
                         url: "WebMerchantManage/Function/MerchantBuybillEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
                         }
                     })
+                });
+                 //导出Excel
+                $("#export").on('click', function () {
+                    $("#tableList").tableExport({
+                        fileName: "进货台账",
+                        ignoreColumn: ["Handler"],
+                        type: "excel",
+                        mso: {
+                            fileFormat: "xlsx",
+                            worksheetName: "数据",
+                        }
+                    });
+                });
+            },
+            //导入
+            FileUpload: function () {
+                $(".input-file").change(function () {
+                    if (this.files.length === 1) {
+                        $(".tip").text("正在导入中...");
+                        var formData = new FormData();
+                        formData.append("Files", this.files[0]);
+                        formData.append("Type", 1);
+                        $.ajax({
+                            url: "/File/ImportXmls",
+                            data: formData,
+                            type:"post",
+                            contentType:false,
+                            processData: false,
+                            success: function (res) {
+                                controller.Msg("导入成功！");
+                                $(".tip").html('<i class="fa fa-file-excel-o"></i>导入Excel');
+                            }
+                        });
+                    }
+                    else if (this.files.length >= 2)
+                        controller.Alter("暂不支持多文件导入");
                 });
             },
             //行为
@@ -66,7 +105,7 @@
                             title: "编辑进货台账",
                             type: 2,
                             height: "90%",
-                            width: "80%",  
+                            width: "80%",
                             url: "WebMerchantManage/Function/MerchantBuybillEdit?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
@@ -83,7 +122,41 @@
     </script>
 }
 @section css{
+    <style>
+        .upload-file{
+      position: relative;
+      width: 100px;
+      border: 1px solid rgb(119, 154, 80);
+      border-radius: 5px;
+      color: #333333;
+      font-size: 12px;
+      text-align: center;
+      overflow: hidden;
+      height:30px;
+    }
 
+    .upload-file span{ 
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .upload-file:hover{ 
+      font-size: 12px;
+      border-color: rgb(39, 226, 81);
+    }
+
+    .upload-file input[type='file']{
+      height: 100%;
+      width: 100%;
+      position: absolute; 
+      top: 0;
+      right: 0;
+      opacity: 0;  
+      filter: alpha(opacity=0);
+      cursor: pointer;
+    }
+    </style>
 }
 <div class="container-fluid">
     <div class="col-lg-12">
@@ -97,6 +170,11 @@
                         <div class="col-sm-8 m-b-xs">
                             <div class="input-group">
                                 <button type="button" class="btn btn-sm btn-white" id="add"><i class="fa fa-plus"></i>新增</button>
+                                <button type="button" class="btn btn-sm btn-white" id="export"><i class="fa fa-file-excel-o"></i>导出Excel</button>
+                                <div class="upload-file btn-sm btn-white btn">
+                                    <input type="file" class="input-file" multiple />
+                                    <span type="button" class="tip" id="import"><i class="fa fa-file-excel-o"></i>导入Excel</span>
+                                </div>
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -121,6 +199,8 @@
                                 <th data-field="ToPay" data-halign="center" data-align="center" data-valign="middle">总价</th>
                                 <th data-field="Supplier" data-halign="center" data-align="center" data-valign="middle">供应商</th>
                                 <th data-field="LinkPhone" data-halign="center" data-align="center" data-valign="middle">电话</th>
+                                <th data-field="NoExp" data-halign="center" data-align="center" data-valign="middle">有效期</th>
+                                <th data-field="ProTime" data-halign="center" data-align="center" data-valign="middle">生产日期</th>
                                 <th data-field="Purchase" data-halign="center" data-align="center" data-valign="middle">采购负责人</th>
                                 <th data-field="OrderTime" data-halign="center" data-align="center" data-valign="middle">进货时间</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>

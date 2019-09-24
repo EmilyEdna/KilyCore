@@ -500,6 +500,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("EditBuybill")]
+        [AllowAnonymous]
         public ObjectResultEx EditBuybill(RequestRepastBuybill Param)
         {
             return ObjectResultEx.Instance(RepastWebService.EditBuybill(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
@@ -584,6 +585,7 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("EditSellbill")]
+        [AllowAnonymous]
         public ObjectResultEx EditSellbill(RequestRepastSellbill Param)
         {
             return ObjectResultEx.Instance(RepastWebService.EditSellbill(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
@@ -1525,7 +1527,6 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(RepastWebService.GetUnitInsRecordDetail(Key.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
-
 
         #region APP接口
         /// <summary>

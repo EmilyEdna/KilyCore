@@ -17,6 +17,7 @@
             InitDom: function () {
                 $("#InfoId").val(RepastUser.Id);
                 controller.LayDate({ elem: "input[name='OrderTime']" });
+                 controller.LayDate({ elem: "input[name='ProTime']" });
                 var Guid = controller.GetParam("Id");
                 options.GetList();
                 options.GetDetail(Guid);
@@ -129,6 +130,16 @@
                     <th><label class="control-label">采购负责人</label></th>
                     <td class="has-warning">
                         <select type="select" name="Purchase" class="form-control"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">有效期</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="NoExp" id="NoExp"/>
+                    </td>
+                    <th><label class="control-label">生产日期</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ProTime" id="ProTime"/>
                     </td>
                 </tr>
                 <tr>
