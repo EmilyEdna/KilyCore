@@ -2890,6 +2890,67 @@ namespace KilyCore.Service.ServiceCore
             Object data = new { bill, supplier, record, touser, exp };
             return data;
         }
+        /// <summary>
+        /// 数据统计
+        /// </summary>
+        /// <returns></returns>
+        public Object GetLineData() {
+            IQueryable<GovtTemplateChild> GovtTemplateChilds = Kily.Set<GovtTemplateChild>().OrderByDescending(t => t.CreateTime);
+            IQueryable<RepastUnitIns> RepastUnitInss = Kily.Set<RepastUnitIns>().OrderByDescending(t => t.CreateTime);
+            IQueryable<RepastSample> RepastSamples = Kily.Set<RepastSample>().OrderByDescending(t => t.CreateTime);
+            IQueryable<RepastDuck> RepastDucks = Kily.Set<RepastDuck>().OrderByDescending(t => t.HandleTime);
+            if (MerchantInfo() != null)
+            {
+                GovtTemplateChilds = GovtTemplateChilds.Where(t => t.TypePath.Contains(MerchantInfo().TypePath));
+                RepastUnitInss = RepastUnitInss.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+                RepastSamples = RepastSamples.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+                RepastDucks = RepastDucks.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            }
+            else
+            {
+                RepastUnitInss = RepastUnitInss.Where(t => t.InfoId == MerchantUser().Id);
+                RepastSamples = RepastSamples.Where(t => t.InfoId == MerchantUser().Id);
+                RepastDucks = RepastDucks.Where(t => t.InfoId == MerchantUser().Id);
+                GovtTemplateChilds = GovtTemplateChilds.Where(t => t.TypePath.Contains(MerchantUser().TypePath));
+            }
+            List<int> 自查 = new List<int> {
+            GovtTemplateChilds.Where(t=>t.CreateTime.Value.Day-DateTime.Now.Day==6).Count(),
+            GovtTemplateChilds.Where(t=>t.CreateTime.Value.Day-DateTime.Now.Day==5).Count(),
+            GovtTemplateChilds.Where(t=>t.CreateTime.Value.Day-DateTime.Now.Day==4).Count(),
+            GovtTemplateChilds.Where(t=>t.CreateTime.Value.Day-DateTime.Now.Day==3).Count(),
+            GovtTemplateChilds.Where(t=>t.CreateTime.Value.Day-DateTime.Now.Day==2).Count(),
+            GovtTemplateChilds.Where(t=>t.CreateTime.Value.Day-DateTime.Now.Day==1).Count(),
+            GovtTemplateChilds.Where(t=>t.CreateTime.Value.Day-DateTime.Now.Day==0).Count(),
+            };
+            List<int> 配餐 = new List<int> {
+            RepastUnitInss.Where(t=>t.CreateTime.Value.Day-DateTime.Now.Day==6).Count(),
+            RepastUnitInss.Where(t=>t.CreateTime.Value.Day-DateTime.Now.Day==5).Count(),
+            RepastUnitInss.Where(t=>t.CreateTime.Value.Day-DateTime.Now.Day==4).Count(),
+            RepastUnitInss.Where(t=>t.CreateTime.Value.Day-DateTime.Now.Day==3).Count(),
+            RepastUnitInss.Where(t=>t.CreateTime.Value.Day-DateTime.Now.Day==2).Count(),
+            RepastUnitInss.Where(t=>t.CreateTime.Value.Day-DateTime.Now.Day==1).Count(),
+            RepastUnitInss.Where(t=>t.CreateTime.Value.Day-DateTime.Now.Day==0).Count(),
+            };
+            List<int> 留样 = new List<int> {
+            RepastSamples.Where(t=>t.CreateTime.Value.Day-DateTime.Now.Day==6).Count(),
+            RepastSamples.Where(t=>t.CreateTime.Value.Day-DateTime.Now.Day==5).Count(),
+            RepastSamples.Where(t=>t.CreateTime.Value.Day-DateTime.Now.Day==4).Count(),
+            RepastSamples.Where(t=>t.CreateTime.Value.Day-DateTime.Now.Day==3).Count(),
+            RepastSamples.Where(t=>t.CreateTime.Value.Day-DateTime.Now.Day==2).Count(),
+            RepastSamples.Where(t=>t.CreateTime.Value.Day-DateTime.Now.Day==1).Count(),
+            RepastSamples.Where(t=>t.CreateTime.Value.Day-DateTime.Now.Day==0).Count(),
+            };
+            List<int> 废物 = new List<int> {
+            RepastDucks.Where(t=>t.CreateTime.Value.Day-DateTime.Now.Day==6).Count(),
+            RepastDucks.Where(t=>t.CreateTime.Value.Day-DateTime.Now.Day==5).Count(),
+            RepastDucks.Where(t=>t.CreateTime.Value.Day-DateTime.Now.Day==4).Count(),
+            RepastDucks.Where(t=>t.CreateTime.Value.Day-DateTime.Now.Day==3).Count(),
+            RepastDucks.Where(t=>t.CreateTime.Value.Day-DateTime.Now.Day==2).Count(),
+            RepastDucks.Where(t=>t.CreateTime.Value.Day-DateTime.Now.Day==1).Count(),
+            RepastDucks.Where(t=>t.CreateTime.Value.Day-DateTime.Now.Day==0).Count(),
+            };
+            return new { 自查, 配餐, 留样, 废物 };
+        }
         #endregion
 
         #region 扫码信息

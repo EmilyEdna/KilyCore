@@ -217,6 +217,7 @@ namespace KilyCore.Service.IServiceCore
         #endregion
         #region 数据统计
         Object GetDataCount(Guid? Id);
+        Object GetLineData();
         #endregion
         #region 扫码信息
         PagedResult<ResponseRepastScanInfo> GetScanInfoPage(PageParamList<RequestRepastScanInfo> pageParam);

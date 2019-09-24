@@ -1272,6 +1272,15 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastWebService.GetDataCount(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 数据统计
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetLineData")]
+        public ObjectResultEx GetLineData()
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetLineData(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
 
         #region 扫码信息
