@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KilyCore.RabbitMQ", "KilyCo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KilyCore.WEB", "KilyCore.WEB\KilyCore.WEB.csproj", "{7BAD4454-7E76-494D-AD60-D6AAF4BB6EDC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KilyCore.API", "KilyCore.API\KilyCore.API.csproj", "{BEE75562-14E6-4F93-8B56-364978C8D609}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KilyCore.API", "KilyCore.API\KilyCore.API.csproj", "{BEE75562-14E6-4F93-8B56-364978C8D609}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

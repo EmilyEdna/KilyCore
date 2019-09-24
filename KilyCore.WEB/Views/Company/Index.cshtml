@@ -6,6 +6,7 @@
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=3ce7ddfda60046708248ea55e10b1435"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/library/AreaRestriction/1.2/src/AreaRestriction_min.js"></script>
 <script type="text/javascript" src="http://api.map.baidu.com/library/CurveLine/1.5/src/CurveLine.min.js"></script>
+<script src="~/Content/Tabs/contabsiframe.js"></script>
 <script>
     var option = {
         Init: function () {
@@ -127,7 +128,7 @@
             let myIcon = new BMap.Icon("http://system.cfda.vip/content/HPlus/img/lightblue.png", new BMap.Size(26, 33));//自定义图标地址及大小设置
             var Map = new BMap.Map("Map");//在百度地图容器中创建一个地图
             var Point = new BMap.Point(CompanyInfo.LngAndLat.split(",")[0], CompanyInfo.LngAndLat.split(",")[1]);//定义一个中心点坐标
-            Map.centerAndZoom(Point,5);// 初始化地图,设置中心点坐标和地图级别
+            Map.centerAndZoom(Point, 5);// 初始化地图,设置中心点坐标和地图级别
             Map.enableScrollWheelZoom();//启用地图滚轮放大缩小
             addDistrict(Country, Map)//添加行政区域
             var markers = new BMap.Marker(Point, { icon: myIcon });//自定义坐标点图标
@@ -155,14 +156,14 @@
                                         new BMap.Point(CompanyInfo.LngAndLat.split(",")[0], CompanyInfo.LngAndLat.split(",")[1]),//起始点的经纬度
                                         new BMap.Point(marker.point.lng, marker.point.lat)//终点的经纬度
                                     ],
-                                    {
-                                        enableEditing: false,//是否启用线编辑，默认为false
-                                        enableClicking: true,//是否响应点击事件，默认为true
-                                        strokeColor: "#f60",//设置颜色
-                                        strokeWeight: 2, //宽度
-                                        strokeOpacity: 1, //透明度
-                                        strokeStyle: "dashed"//虚线，默认为实线
-                                    });
+                                        {
+                                            enableEditing: false,//是否启用线编辑，默认为false
+                                            enableClicking: true,//是否响应点击事件，默认为true
+                                            strokeColor: "#f60",//设置颜色
+                                            strokeWeight: 2, //宽度
+                                            strokeOpacity: 1, //透明度
+                                            strokeStyle: "dashed"//虚线，默认为实线
+                                        });
                                     Map.addOverlay(polyline);//画折线
                                 }
                                 drawLine();
@@ -182,15 +183,15 @@
                         });
                         if (obj.DistributorImg == null) obj.DistributorImg = "http://system.cfda.vip/content/HPlus/img/Nopic.jpg";
                         var Distributor = `
-                            <li>
-                                <img src="${obj.DistributorImg}">
-                                <div>
-                                    <h4>${obj.GainUser}</h4>
-                                    <p>发货状态：<span>${obj.FlagName}</span></p>
-                                    <p>联系电话：<span>${obj.LinkPhone}</span></p>
-                                    <p>发货地址：<span>${obj.Address}</span></p>
-                                </div>
-                            </li>`;
+                                <li>
+                                    <img src="${obj.DistributorImg}">
+                                    <div>
+                                        <h4>${obj.GainUser}</h4>
+                                        <p>发货状态：<span>${obj.FlagName}</span></p>
+                                        <p>联系电话：<span>${obj.LinkPhone}</span></p>
+                                        <p>发货地址：<span>${obj.Address}</span></p>
+                                    </div>
+                                </li>`;
                         //加载列表
                         $("#Distributor").append(Distributor);
                     });
@@ -222,7 +223,7 @@
         //使用计数器来控制加载过程
         districtLoading++;
         var bdary = new BMap.Boundary();
-        bdary.get(districtName, function (rs){//获取行政区域
+        bdary.get(districtName, function (rs) {//获取行政区域
             var count = rs.boundaries.length;//行政区域的点有多少个
             if (count === 0) {
                 alert('未能获取当前行政区域');
@@ -326,43 +327,43 @@
                 常用功能
             </div>
             <div class="content content1">
-                <a href="/WebCompanyManage/Base/UserManage">
+                <a class="J_menuItem" href="/WebCompanyManage/Base/UserManage">
                     <img src="~/Content/Company/images/firm_cygn1.png" />
                     <p>人员管理</p>
                 </a>
-                <a href="/WebCompanyManage/ThingCode/OneCode">
+                <a class="J_menuItem" href="/WebCompanyManage/ThingCode/OneCode">
                     <img src="~/Content/Company/images/firm_cygn2.png" />
                     <p>一物一码</p>
                 </a>
-                <a href="/WebCompanyManage/Seller/Supplier">
+                <a class="J_menuItem" href="/WebCompanyManage/Seller/Supplier">
                     <img src="~/Content/Company/images/firm_cygn3.png" />
                     <p>供应商</p>
                 </a>
-                <a href="/WebCompanyManage/Seller/Production">
+                <a class="J_menuItem" href="/WebCompanyManage/Seller/Production">
                     <img src="~/Content/Company/images/firm_cygn4.png" />
                     <p>生产商</p>
                 </a>
-                <a href="/WebCompanyManage/Seller/Distribution">
+                <a class="J_menuItem" href="/WebCompanyManage/Seller/Distribution">
                     <img src="~/Content/Company/images/firm_cygn5.png" />
                     <p>分销商</p>
                 </a>
-                <a href="/WebCompanyManage/Logistics/SendGoods">
+                <a class="J_menuItem" href="/WebCompanyManage/Logistics/SendGoods">
                     <img src="~/Content/Company/images/firm_cygn6.png" />
                     <p>发货管理</p>
                 </a>
-                <a href="/WebCompanyManage/Product/Series">
+                <a class="J_menuItem" href="/WebCompanyManage/Product/Series">
                     <img src="~/Content/Company/images/firm_cygn7.png" />
                     <p>产品系列</p>
                 </a>
-                <a href="/WebCompanyManage/Goods/GoodsList">
+                <a class="J_menuItem" href="/WebCompanyManage/Goods/GoodsList">
                     <img src="~/Content/Company/images/firm_cygn8.png" />
                     <p>产品列表</p>
                 </a>
-                <a href="/WebCompanyManage/Goods/Stock">
+                <a class="J_menuItem" href="/WebCompanyManage/Goods/Stock">
                     <img src="~/Content/Company/images/firm_cygn9.png" />
                     <p>产品仓库</p>
                 </a>
-                <a href="/WebCompanyManage/Quality/GoodsCheck">
+                <a class="J_menuItem" href="/WebCompanyManage/Quality/GoodsCheck">
                     <img src="~/Content/Company/images/firm_cygn10.png" />
                     <p>产品质检</p>
                 </a>

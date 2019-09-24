@@ -2,8 +2,10 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>企业溯源系统操作指南-中食药追溯管理平台</title>
-    <style>
+    <title>流通企业操作指南-中食药追溯管理平台</title>
+    <script src="../Content/JavaScript/jquery.min.js"></script>
+    <script src="../Content/Tabs/contabsiframe.js"></script>
+    <style type="text/css">
         * {
             margin: 0;
             padding: 0;
@@ -22,7 +24,7 @@
 
         h2 {
             margin: 50px auto;
-            width: 320px;
+            width: 260px;
             font-size: 32px;
             line-height: 50px;
             text-align: center;
@@ -39,26 +41,29 @@
         }
 
         .subtitle {
-            border-bottom: #D9D9D9 solid 1px;
             background: #ffffff;
             display: flex;
             margin-top: 20px;
             padding: 20px;
+            border-bottom: #D9D9D9 solid 1px;
+            box-shadow: 0px 4px 16px 0px rgba(47,64,80,0.16);
         }
 
             .subtitle img {
                 width: 60px;
                 height: 64px;
-                margin-right:20px;
+                margin-right: 20px;
             }
-            .subtitle div h3{
+
+            .subtitle div h3 {
                 font-size: 24px;
                 line-height: 36px;
                 font-weight: normal;
             }
-            .subtitle div p{
+
+            .subtitle div p {
                 line-height: 30px;
-                font-size:12px;
+                font-size: 12px;
                 color: #808080;
             }
 
@@ -66,14 +71,15 @@
             list-style: none;
             background: #fff;
             overflow: hidden;
-            padding-left: 48px;
+            padding-left: 50px;
+            box-shadow: 0px 4px 16px 0px rgba(47,64,80,0.16);
         }
 
             .content li {
-                width: 230px;
+                width: 210px;
                 height: 270px;
                 float: left;
-                margin-right: 48px;
+                margin-right: 50px;
                 text-align: center;
             }
 
@@ -88,6 +94,10 @@
                     border-radius: 50%;
                 }
 
+                .content li a {
+                    text-decoration: none;
+                }
+
                 .content li h4 {
                     line-height: 50px;
                     font-size: 18px;
@@ -100,48 +110,92 @@
 </head>
 <body>
     <div class="wrap-box">
-        <h2>企业溯源系统操作指南</h2>
+        <h2>流通企业操作指南</h2>
         <div class="title">基础资料</div>
         <ul class="content">
             <li>
                 <div>第1步</div>
-                <h4>企业资料</h4>
+                <a class="J_menuItem" href="/WebCompanyManage/Base/CompanyData">
+                    <h4>企业资料</h4>
+                </a>
                 <p>完善企业信息，包括：营业执照、资质荣誉、联系方式等等</p>
             </li>
             <li>
                 <div>第2步</div>
-                <h4>权限管理</h4>
+                <a class="J_menuItem" href="/WebCompanyManage/Base/GroupAccount">
+                    <h4>权限管理</h4>
+                </a>
                 <p>添加权限账号，根据部门职责分配相应权限的登陆账号</p>
             </li>
             <li>
                 <div>第3步</div>
-                <h4>企业字典</h4>
+                <a class="J_menuItem" href="/WebCompanyManage/Base/ComDictionary">
+                    <h4>企业字典</h4>
+                </a>
                 <p>添加常用字段，包括：计量单位、执行标准、关键点单位等等</p>
             </li>
             <li>
                 <div>第4步</div>
-                <h4>商户管理</h4>
-                <p>添加及管理商户信息，包括：公司名称、单位、联系方式、资质</p>
+                <a class="J_menuItem" href="/WebCompanyManage/Seller/Supplier">
+                    <h4>供应商</h4>
+                </a>
+                <p>添加商户信息-供应商，包括：公司名称、单位、联系方式、资质</p>
             </li>
             <li>
                 <div>第5步</div>
-                <h4>仓库管理</h4>
-                <p>添加仓库信息，包括：仓库名称、仓库环境、仓库类型等等</p>
+                <a class="J_menuItem" href="/WebCompanyManage/Seller/Distribution">
+                    <h4>分销商</h4>
+                </a>
+                <p>添加商户信息-分销商，包括：公司名称、单位、联系方式、资质</p>
             </li>
             <li>
                 <div>第6步</div>
-                <h4>产品系列</h4>
-                <p>添加产品系列，包括：系列名称、产品系列、选择执行标准</p>
+                <a class="J_menuItem" href="/WebCompanyManage/Seller/Production">
+                    <h4>生产商</h4>
+                </a>
+                <p>添加商户信息-生产商，包括：公司名称、单位、联系方式、资质</p>
             </li>
             <li>
                 <div>第7步</div>
-                <h4>视频监控</h4>
-                <p>添加企业中视频监控的链接地址</p>
+                <a class="J_menuItem" href="/WebCompanyManage/Goods/StockManage">
+                    <h4>仓库管理</h4>
+                </a>
+                <p>添加仓库信息，包括：仓库名称、仓库环境、仓库类型等等</p>
             </li>
             <li>
                 <div>第8步</div>
-                <h4>物码管理</h4>
-                <p>申请物码 （追溯码、箱码）按照企业自己的需求生成相应码）</p>
+                <a class="J_menuItem" href="/WebCompanyManage/Goods/StockManage">
+                    <h4>产品系列</h4>
+                </a>
+                <p>添加产品系列，包括：系列名称、产品系列、选择执行标准</p>
+            </li>
+            <li>
+                <div>第9步</div>
+                <a class="J_menuItem" href="/WebCompanyManage/Base/Vedio">
+                    <h4>视频监控</h4>
+                </a>
+                <p>添加企业中视频监控的链接地址</p>
+            </li>
+            <li>
+                <div>第10步</div>
+                <a class="J_menuItem" href="/WebCompanyManage/ThingCode/CompanyCode">
+                    <h4>物码管理</h4>
+                </a>
+                <p>申请物码-一企一码，按照企业自己的需求生成相应码）</p>
+            </li>
+            <li>
+                <div>第11步</div>
+                <a class="J_menuItem" href="/WebCompanyManage/ThingCode/ClassCode">
+                    <h4>物码管理</h4>
+                </a>
+                <p>申请物码-一品一码，按照企业自己的需求生成相应码）</p>
+            </li>
+            <li>
+                <div>第12步</div>
+                <a class="J_menuItem" href="/WebCompanyManage/ThingCode/OneCode">
+                    <h4>物码管理</h4>
+                </a>
+                <p>申请物码-一物一码，按照企业自己的需求生成相应码）</p>
             </li>
         </ul>
         <div class="title">入库</div>
@@ -155,22 +209,30 @@
         <ul class="content">
             <li>
                 <div>第1步</div>
-                <h4>产品管理</h4>
+                <a class="J_menuItem" href="/WebCompanyManage/Goods/GoodsList">
+                    <h4>产品管理</h4>
+                </a>
                 <p>添加产品列表，选择产品原辅料，产品介绍等</p>
             </li>
             <li>
                 <div>第2步</div>
-                <h4>进货管理</h4>
+                <a class="J_menuItem" href="/WebCompanyManage/Logistics/Buyer">
+                    <h4>进货管理</h4>
+                </a>
                 <p>添加进货信息，包括：产品名称、数量、供应商、质检报告</p>
             </li>
             <li>
                 <div>第3步</div>
-                <h4>产品质检</h4>
+                <a class="J_menuItem" href="/WebCompanyManage/Quality/GoodsCheck">
+                    <h4>产品质检</h4>
+                </a>
                 <p>添加产品质检信息</p>
             </li>
             <li>
                 <div>第4步</div>
-                <h4>产品仓库</h4>
+                <a class="J_menuItem" href="/WebCompanyManage/Goods/Stock">
+                    <h4>产品仓库</h4>
+                </a>
                 <p>产品入库，包括：数量、选择检测报告（也可入库完成后选择）绑定追溯码</p>
             </li>
             <li>
@@ -189,32 +251,42 @@
         <ul class="content">
             <li>
                 <div>第1步</div>
-                <h4>产品管理</h4>
+                <a class="J_menuItem" href="/WebCompanyManage/Goods/GoodsList">
+                    <h4>产品管理</h4>
+                </a>
                 <p>添加产品列表，选择产品原辅料，产品介绍等</p>
             </li>
             <li>
                 <div>第2步</div>
-                <h4>进货管理</h4>
+                <a class="J_menuItem" href="/WebCompanyManage/Logistics/Buyer">
+                    <h4>进货管理</h4>
+                </a>
                 <p>添加进货信息，包括：产品名称、数量、供应商、质检报告</p>
             </li>
             <li>
                 <div>第3步</div>
-                <h4>产品质检</h4>
+                <a class="J_menuItem" href="/WebCompanyManage/Quality/GoodsCheck">
+                    <h4>产品质检</h4>
+                </a>
                 <p>添加产品质检信息</p>
             </li>
             <li>
                 <div>第4步</div>
-                <h4>产品仓库</h4>
+                <a class="J_menuItem" href="/WebCompanyManage/Goods/Stock">
+                    <h4>产品仓库</h4>
+                </a>
                 <p>产品入库，包括：数量、选择检测报告（也可入库完成后选择）绑定追溯码</p>
             </li>
             <li>
                 <div>第5步</div>
                 <h4>提交审核</h4>
-                <p>添加仓库信息，包括：仓库名称、仓库环境、仓库类型等等</p>
+                <p></p>
             </li>
             <li>
                 <div>第6步</div>
-                <h4>装箱管理</h4>
+                <a class="J_menuItem" href="/WebCompanyManage/ThingCode/BoxCode">
+                    <h4>装箱管理</h4>
+                </a>
                 <p>产品入库后进行箱码与追溯码的绑定</p>
             </li>
         </ul>
@@ -229,17 +301,23 @@
         <ul class="content">
             <li>
                 <div>第1步</div>
-                <h4>产品仓库</h4>
+                <a class="J_menuItem" href="/WebCompanyManage/Goods/Stock">
+                    <h4>产品仓库</h4>
+                </a>
                 <p>点击出库，选择装箱码出库</p>
             </li>
             <li>
                 <div>第2步</div>
-                <h4>装车管理</h4>
+                <a class="J_menuItem" href="/WebCompanyManage/Logistics/Package">
+                    <h4>装车管理</h4>
+                </a>
                 <p>点击新增，选择已经装箱的出库批次扫描装箱码。可在该界面直接点击发货，默认是以车码方式发货</p>
             </li>
             <li>
                 <div>第3步</div>
-                <h4>发货管理</h4>
+                <a class="J_menuItem" href="/WebCompanyManage/Logistics/SendGoods">
+                    <h4>发货管理</h4>
+                </a>
                 <p>点击新增，选择以车码或者箱码方式发货</p>
             </li>
         </ul>
@@ -253,12 +331,16 @@
         <ul class="content">
             <li>
                 <div>第1步</div>
-                <h4>产品仓库</h4>
+                <a class="J_menuItem" href="/WebCompanyManage/Goods/Stock">
+                    <h4>产品仓库</h4>
+                </a>
                 <p>点击出库，选择溯源码方式出库</p>
             </li>
             <li>
                 <div>第2步</div>
-                <h4>发货管理</h4>
+                <a class="J_menuItem" href="/WebCompanyManage/Logistics/SendGoods">
+                    <h4>发货管理</h4>
+                </a>
                 <p>点击新增，选择以追溯码发货。要发货的二维码</p>
             </li>
         </ul>
