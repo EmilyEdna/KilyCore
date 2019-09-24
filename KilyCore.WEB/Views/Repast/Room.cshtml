@@ -3,17 +3,16 @@
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=3ce7ddfda60046708248ea55e10b1435"></script>
-    <script type="text/javascript" src="http://api.map.baidu.com/library/AreaRestriction/1.2/src/AreaRestriction_min.js"></script>
-    <script src="~/Content/Tabs/contabsiframe.js"></script>
-    <script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=3ce7ddfda60046708248ea55e10b1435"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/library/AreaRestriction/1.2/src/AreaRestriction_min.js"></script>
+<script src="~/Content/Tabs/contabsiframe.js"></script>
+<script>
     var option = {
         Init: function () {
-            this.InitDom();
-            this.InitEvent();
+            this.InitVideo();
+            this.InitData();
         },
-        InitDom: function () {
-            
+        InitVideo: function () {
             //获取视频
             controller.ajax({
                 url: "RepastWeb/GetVideoPage",
@@ -31,14 +30,14 @@
                             }
 
                             var VoideItem = ` <div class="item item2-item" style="width:49%;float:left;${leftT}margin-bottom:12px;">
-                                            <div class="title">
-                                                <div></div>
-                                                ${item.MonitorAddress}
-                                            </div>
-                                            <div class="content content2">
-                                                <img src="http://system.cfda.vip${item.CoverPhoto}" title="${item.MonitorAddress}"  data-value="${item.VideoAddress}"/>
-                                            </div>
-                                        </div>`;
+                                                    <div class="title">
+                                                        <div></div>
+                                                        ${item.MonitorAddress}
+                                                    </div>
+                                                    <div class="content content2">
+                                                        <img src="http://system.cfda.vip${item.CoverPhoto}" title="${item.MonitorAddress}"  data-value="${item.VideoAddress}"/>
+                                                    </div>
+                                                </div>`;
                             $("#VoideContent").append(VoideItem);
                         });
                     }
@@ -60,27 +59,121 @@
                 });
             });
         },
-        InitEvent: function () {
-               //数据统计
-                controller.ajax({
-                    url: "RepastWeb/GetDataCount",
-                    data: { Id: RepastUser.Id },
-                    type: "post",
-                    async: false,
-                    success: function (result) {
-                        controller.SetLableValue(".section1", result.data);
+        InitData: function () {
+            //数据统计
+            controller.ajax({
+                url: "RepastWeb/GetDataCount",
+                data: { Id: RepastUser.Id },
+                type: "post",
+                async: false,
+                success: function (result) {
+                    controller.SetLableValue(".section1", result.data);
+                }
+            });
+            //最近七天记录（自查记录、陪餐记录、留样记录、废物处理）
+            var DateArr = [getDay(-6), getDay(-5), getDay(-4), getDay(-3), getDay(-2), getDay(-1), getDay(0)];
+            controller.ajax({
+                url: "RepastWeb/GetLineData",
+                data: {},
+                type: "post",
+                async: false,
+                success: function (result) {
+                    let data = result.data;
+                    let dom = document.getElementById("BrokenLine");
+                    let myChart = echarts.init(dom);
+                    option = null;
+                    option = {
+                        title: {
+                            text: '最近七天记录'
+                        },
+                        tooltip: {
+                            trigger: 'axis'
+                        },
+                        legend: {
+                            data: ['废物', '留样', '自查', '配餐']
+                        },
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                        xAxis: {
+                            type: 'category',
+                            boundaryGap: false,
+                            data: DateArr
+                        },
+                        yAxis: [
+                            {
+                                type: 'value',
+                                axisLabel: {
+                                    formatter: '{value}'
+                                },
+                                minInterval: 1,
+                                splitLine: {
+                                    lineStyle: {
+                                        type: 'dotted',
+                                    }
+                                }
+                            }
+                        ],
+                        series: [
+                            {
+                                name: '废物',
+                                type: 'line',
+                                data: data.废物
+                            },
+                            {
+                                name: '留样',
+                                type: 'line',
+                                data: data.留样
+                            },
+                            {
+                                name: '自查',
+                                type: 'line',
+                                data: data.自查
+                            },
+                            {
+                                name: '配餐',
+                                type: 'line',
+                                data: data.配餐
+                            }
+                        ]
+                    };
+                    if (option && typeof option === "object") {
+                        myChart.setOption(option, true);
                     }
-                });
-            }
-        };
-        $(document).ready(function () {
-            option.Init();
-        });
-
-    </script>
+                }
+            })
+        }
+    };
+    $(document).ready(function () {
+        option.Init();
+    });
+    //获取当前日期
+    function getDay(day) {
+        var today = new Date();
+        var targetday_milliseconds = today.getTime() + 1000 * 60 * 60 * 24 * day;
+        today.setTime(targetday_milliseconds);
+        var tYear = today.getFullYear();
+        var tMonth = today.getMonth();
+        var tDate = today.getDate();
+        tMonth = doHandleMonth(tMonth + 1);
+        tDate = doHandleMonth(tDate);
+        return tMonth + "-" + tDate;
+    }
+    //月份不足10，补零
+    function doHandleMonth(month) {
+        var m = month;
+        if (month.toString().length == 1) {
+            m = "0" + month;
+        }
+        return m;
+    }
+</script>
 }
 @section css{
-    <link href="~/Content/Company/css/company.css" rel="stylesheet" />
+<link href="~/Content/Company/css/company.css" rel="stylesheet" />
 }
 <div id="Edit">
     <!--第一个区域-->
@@ -186,12 +279,10 @@
                 </a>
             </div>
         </div>
-        <div class="item2" style="width:49.5%" id="VoideContent">
-           
-        </div>
+        <div class="item2" style="width:49.5%" id="VoideContent"></div>
     </div>
     <!--第三个区域 最近七天记录（自查记录、陪餐记录、留样记录、废物处理）-->
-    <div class="section section3">
-        
+    <div class="row" style="margin: 0;">
+        <div class="col-sm-12 item" id="BrokenLine" style="height: 360px; padding: 15px;"></div>
     </div>
 </div>
