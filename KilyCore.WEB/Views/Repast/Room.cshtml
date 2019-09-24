@@ -12,6 +12,37 @@
             this.InitEvent();
         },
         InitDom: function () {
+            
+            //获取视频
+            controller.ajax({
+                url: "RepastWeb/GetVideoPage",
+                data: { pageSize: 4, pageNumber: 1, QueryParam: { IsIndex: true } },
+                async: false,
+                type: "post",
+                success: function (result) {
+                    if (result.data.rows.length == 0) {
+                        $(".item2 .content2").html("暂无视频");
+                    } else {
+                        $.each(result.data.rows, function (index, item) {
+                            var leftT = "";
+                            if (index % 2 == 0) {
+                                leftT = "margin-right:2%;";
+                            }
+
+                            var VoideItem = ` <div class="item item2-item" style="width:49%;float:left;${leftT}margin-bottom:12px;">
+                                            <div class="title">
+                                                <div></div>
+                                                ${item.MonitorAddress}
+                                            </div>
+                                            <div class="content content2">
+                                                <img src="http://system.cfda.vip${item.CoverPhoto}" title="${item.MonitorAddress}"  data-value="${item.VideoAddress}"/>
+                                            </div>
+                                        </div>`;
+                            $("#VoideContent").append(VoideItem);
+                        });
+                    }
+                }
+            });
             //视频图片点击事件
             $(".item2 .content2 img").on("click", function () {
                 controller.OpenWindow({
@@ -26,27 +57,6 @@
                         result.popClose();
                     }
                 });
-            });
-            //获取视频
-            controller.ajax({
-                url: "RepastWeb/GetVideoPage",
-                data: { pageSize: 4, pageNumber: 1, QueryParam: { IsIndex: true } },
-                async: false,
-                type: "post",
-                success: function (result) {
-                    if (result.data.rows.length == 0) {
-                        $(".item2 .content2").html("暂无视频");
-                    } else {
-                        $.each(result.data.rows, function (index, item) {
-                            if (!controller.CheckFeild(item.VedioCover))
-                                item.VedioCover = "http://system.cfda.vip/Content/HPlus/img/Nopic.jpg";
-                            var img = $($(".item2 .content2 img")[index]);
-                            img.attr("title", item.VedioName);
-                            img.attr("src", item.VedioCover);
-                            img.data().value = item.VideoAddress;
-                        });
-                    }
-                }
             });
         },
         InitEvent: function () {
@@ -195,65 +205,12 @@
                 </a>
             </div>
         </div>
-        <div class="item2" style="width:49.5%">
-            <div class="item item2-item" style="width:49.5%;float:left;">
-                <div class="title">
-                    <div></div>
-                    视频一
-                </div>
-                <div class="content content2">
-                    <img src="" title="暂无视频"  data-value=""/>
-                </div>
-            </div>
-            <div class="item item2-item" style="width:49.5%;float:left;margin-left:1%;">
-                <div class="title">
-                    <div></div>
-                    视频二
-                </div>
-                <div class="content content2">
-                    <img src="" title="暂无视频" data-value=""/>
-                </div>
-            </div>
-
-            <div class="item item2-item" style="width:49.5%;float:left;margin-top:12px;">
-                <div class="title">
-                    <div></div>
-                    视频三
-                </div>
-                <div class="content content2">
-                    <img src="" title="暂无视频" data-value=""/>
-                </div>
-            </div>
-            <div class="item item2-item" style="float:left;margin-left:1%;margin-top:12px;width:49.5%;">
-                <div class="title">
-                    <div></div>
-                    视频四
-                </div>
-                <div class="content content2">
-                    <img src="" title="暂无视频" data-value="" />
-                </div>
-            </div>
+        <div class="item2" style="width:49.5%" id="VoideContent">
+           
         </div>
     </div>
-    <!--第三个区域-->
+    <!--第三个区域 最近七天记录（自查记录、陪餐记录、留样记录、废物处理）-->
     <div class="section section3">
-        @*<div class="row row3">
-            <div class="col-sm-12 item">
-                <div>
-                    <div class="title">陪餐记录表</div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>陪餐记录</th>
-                                <th>负责人</th>
-                                <th>陪餐时间</th>
-                                <th>陪餐记录</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>*@
+        
     </div>
 </div>

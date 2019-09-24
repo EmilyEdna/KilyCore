@@ -40,14 +40,16 @@
                     //获取树
                     options.GetMenu();
                  //根据餐饮企业类型显示相应模块
-                if (RepastInfo.DiningTypeName == "单位食堂") {
-                    $("#iframe0").attr("src", "Room");
-                    $("#iframe0").attr("data-id", "Room");
-                }
-                else {
-                     $("#iframe0").attr("src", "Index");
-                    $("#iframe0").attr("data-id", "index");
-                }
+            if (RepastInfo.DiningTypeName == "单位食堂") {
+                $("#iframe0").attr("src", "/Repast/Room");
+                $("#iframe0").attr("data-id", "/Repast/Room");
+            }
+            else {
+                $("#FirstTab").attr("data-id", "/Repast/index");
+                $("#iframe0").attr("src", "/Repast/Index");
+                $("#iframe0").attr("data-id", "/Repast/index");
+            }
+                
                 //显示登录
                 $(".text-muted").prepend(RepastInfo.MerchantName);
                 $(".font-bold").prepend(RepastInfo.Account);
@@ -182,6 +184,7 @@
         //初始化
         $(document).ready(function () {
             options.Init();
+           
         });
     </script>
 </head>
@@ -244,7 +247,7 @@
                 </button>
                 <nav class="page-tabs J_menuTabs">
                     <div class="page-tabs-content">
-                        <a href="javascript:void(0);" class="active J_menuTab" data-id="/Repast/Index">首页</a>
+                        <a href="javascript:void(0);" class="active J_menuTab" data-id="/Repast/Room" id="FirstTab">首页</a>
                     </div>
                 </nav>
                 <button class="roll-nav roll-right J_tabRight">
@@ -270,7 +273,7 @@
                 <a href="#" class="roll-nav roll-right J_tabExit LoginOut"><i class="fa fa-sign-out"></i> 退出</a>
             </div>
             <div class="row J_mainContent" id="content-main">
-                <iframe class="J_iframe" id="iframe0" name="iframe0" width="100%" height="100%" src="" data-id="" frameborder="0" seamless></iframe>
+                <iframe class="J_iframe" id="iframe0" name="iframe0" width="100%" height="100%" src="~/Repast/Room" data-id="/Repast/Room" frameborder="0" seamless></iframe>
             </div>
             <div class="footer">
                 <div class="pull-right">

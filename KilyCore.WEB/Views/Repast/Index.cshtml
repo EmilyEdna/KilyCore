@@ -26,13 +26,17 @@
             InitDom: function () {
                 //根据餐饮企业类型显示相应模块
                 if (RepastUser.DiningTypeName == "单位食堂") {
-                    window.location.href = "/Repast/Room";
+                    //window.location.href = "/Repast/Room";
                     $("#NavFoods").hide();
                     $(".bd-item4").hide();
                 }
                 else {
                     $("#NavBook").hide();
                     $(".bd-item5").hide();
+                }
+                debugger;
+                if (RepastUser.DiningTypeName == "小作坊") {
+                     $("#NavFoods").html("主要产品");
                 }
                 //缓存数据渲染页面dom
                 $(".RepastName").html(RepastUser.MerchantName);//餐饮企业或单位名称
@@ -437,11 +441,11 @@
             </div>
         </div>
         <div class="right">
-            <div class="right-item right-item1">
+            @*<div class="right-item right-item1">
                 <div class="hd"><div class="icon icon1"></div>陪餐制度</div>
                 <ul class="bd"></ul>
-            </div>
-            <div class="right-item right-item2" style="display: none;">
+            </div>*@
+            <div class="right-item right-item2">
                 <div class="hd"><div class="icon icon1"></div>法律法规</div>
                 <ul class="bd"></ul>
             </div>
