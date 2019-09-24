@@ -5,87 +5,68 @@
 @section script{
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=3ce7ddfda60046708248ea55e10b1435"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/library/AreaRestriction/1.2/src/AreaRestriction_min.js"></script>
+    <script src="~/Content/Tabs/contabsiframe.js"></script>
     <script>
-    var option = {
-        Init: function () {
-            this.InitDom();
-            this.InitEvent();
-        },
-        InitDom: function () {
-            //视频图片点击事件
-            $(".item2 .content2 img").on("click", function () {
-                controller.OpenWindow({
-                    title: "视频播放",
-                    type: 2,
-                    btn: [],
-                    maxmin: false,
-                    height: "480px",
-                    width: "520px",
-                    url: "StaticHtml/PlayVedio.html?addr=" + $(this).data().value + "&cover=" + $(this).attr("src"),
-                    callBack: function (result) {
-                        result.popClose();
+        var option = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvent();
+            },
+            InitDom: function () {
+                //视频图片点击事件
+                $(".item2 .content2 img").on("click", function () {
+                    controller.OpenWindow({
+                        title: "视频播放",
+                        type: 2,
+                        btn: [],
+                        maxmin: false,
+                        height: "480px",
+                        width: "520px",
+                        url: "StaticHtml/PlayVedio.html?addr=" + $(this).data().value + "&cover=" + $(this).attr("src"),
+                        callBack: function (result) {
+                            result.popClose();
+                        }
+                    });
+                });
+                //获取视频
+                controller.ajax({
+                    url: "RepastWeb/GetVideoPage",
+                    data: { pageSize: 4, pageNumber: 1, QueryParam: { IsIndex: true } },
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        if (result.data.rows.length == 0) {
+                            $(".item2 .content2").html("暂无视频");
+                        } else {
+                            $.each(result.data.rows, function (index, item) {
+                                if (!controller.CheckFeild(item.VedioCover))
+                                    item.VedioCover = "http://system.cfda.vip/Content/HPlus/img/Nopic.jpg";
+                                var img = $($(".item2 .content2 img")[index]);
+                                img.attr("title", item.VedioName);
+                                img.attr("src", item.VedioCover);
+                                img.data().value = item.VideoAddress;
+                            });
+                        }
                     }
                 });
-            });
-            //获取视频
-            controller.ajax({
-                url: "RepastWeb/GetVideoPage",
-                data: { pageSize: 4, pageNumber: 1, QueryParam: { IsIndex: true } },
-                async: false,
-                type: "post",
-                success: function (result) {
-                    if (result.data.rows.length == 0) {
-                        $(".item2 .content2").html("暂无视频");
-                    } else {
-                        $.each(result.data.rows, function (index, item) {
-                            if (!controller.CheckFeild(item.VedioCover))
-                                item.VedioCover = "http://system.cfda.vip/Content/HPlus/img/Nopic.jpg";
-                            var img = $($(".item2 .content2 img")[index]);
-                            img.attr("title", item.VedioName);
-                            img.attr("src", item.VedioCover);
-                            img.data().value = item.VideoAddress;
-                        });
-                    }
-                }
-            });
-        },
-        InitEvent: function () {
-               //数据统计
+            },
+            InitEvent: function () {
+                //数据统计
                 controller.ajax({
                     url: "RepastWeb/GetDataCount",
-                    data: {Id:RepastUser.Id},
+                    data: { Id: RepastUser.Id },
                     type: "post",
                     async: false,
                     success: function (result) {
                         controller.SetLableValue(".section1", result.data);
                     }
                 });
-            //数据统计
-            //controller.ajax({
-            //    url: "RepastWeb/GetDataCount",
-            //    data: { Id: CompanyInfo.Id },
-            //    type: "post",
-            //    async: false,
-            //    success: function (result) {
-            //        controller.SetLableValue(".content3", result.data);
-            //        controller.Echarts("#echarts-pie-chart-safe", result.data.dataCount);
-            //        controller.Echarts("#echarts-pie-chart-source", result.data.dataCounts);
-            //        //动态设置进度条宽度
-            //        let sum = $(".content3").width(); //进度条总宽度
-            //        let sum1 = 0.01; //进度条的0.01代表1
-            //        let sum2 = 0.1; //进度条的0.1代表1
-            //        $(".content3 .product:first .bar").css({ width: result.data.Series * sum * sum1 });
-            //        $(".content3 .product:last .bar").css({ width: result.data.Goods * sum * sum1 });
-            //        $(".content3 .business:first .bar").css({ width: result.data.Supplier * sum * sum2 });
-            //        $(".content3 .business:last .bar").css({ width: result.data.Sale * sum * sum2 });
-            //    }
-            //});
-        }
-    };
-    $(document).ready(function () {
-        option.Init();
-    });
-    
+            }
+        };
+        $(document).ready(function () {
+            option.Init();
+        });
+
     </script>
 }
 @section css{
@@ -152,44 +133,44 @@
                 常用功能
             </div>
             <div class="content content1">
-                <a href="/WebMerchantManage/RepastVariety/MerchantDish">
+                <a class="J_menuItem" href="/WebMerchantManage/RepastVariety/MerchantDish">
                     <img src="~/Content/Company/images/firm_cygn9.png" />
                     <p>菜品管理</p>
                 </a>
-                <a href="/WebMerchantManage/RepastBasic/MerchantUser">
+                <a class="J_menuItem" href="/WebMerchantManage/RepastBasic/MerchantUser">
                     <img src="~/Content/Company/images/firm_cygn1.png" />
                     <p>人员管理</p>
                 </a>
-                <a href="/WebMerchantManage/Function/MerchantTicket">
+                <a class="J_menuItem" href="/WebMerchantManage/Function/MerchantTicket">
                     <img src="~/Content/Company/images/firm_cygn2.png" />
                     <p>进销台账</p>
                 </a>
-                <a href="/WebMerchantManage/Function/MerchantSupplier">
+                <a class="J_menuItem" href="/WebMerchantManage/Function/MerchantSupplier">
                     <img src="~/Content/Company/images/firm_cygn3.png" />
                     <p>供应商</p>
                 </a>
-                <a href="/WebMerchantManage/Source/MerchantDraw">
+                <a class="J_menuItem" href="/WebMerchantManage/Source/MerchantDraw">
                     <img src="~/Content/Company/images/firm_cygn4.png" />
                     <p>抽检记录</p>
                 </a>
-                <a href="/WebMerchantManage/Source/MerchantDuck">
+                <a class="J_menuItem" href="/WebMerchantManage/Source/MerchantDuck">
                     <img src="~/Content/Company/images/firm_cygn5.png" />
                     <p>废物处理</p>
                 </a>
-                <a href="/WebMerchantManage/Source/MerchantSample">
+                <a class="J_menuItem" href="/WebMerchantManage/Source/MerchantSample">
                     <img src="~/Content/Company/images/firm_cygn6.png" />
                     <p>留样记录</p>
                 </a>
-                <a href="/WebMerchantManage/RepastVariety/MerchantWeek">
+                <a class="J_menuItem" href="/WebMerchantManage/RepastVariety/MerchantWeek">
                     <img src="~/Content/Company/images/firm_cygn7.png" />
                     <p>周菜谱</p>
                 </a>
-                <a href="/WebMerchantManage/UnitIns/InsRecordList">
+                <a class="J_menuItem" href="/WebMerchantManage/UnitIns/InsRecordList">
                     <img src="~/Content/Company/images/firm_cygn8.png" />
                     <p>陪餐记录</p>
                 </a>
 
-                <a href="/WebMerchantManage/Stock/MerchantStuffStock">
+                <a class="J_menuItem" href="/WebMerchantManage/Stock/MerchantStuffStock">
                     <img src="~/Content/Company/images/firm_cygn10.png" />
                     <p>原料溯源</p>
                 </a>
@@ -202,7 +183,7 @@
                     视频一
                 </div>
                 <div class="content content2">
-                    <img src="" title="暂无视频"  data-value=""/>
+                    <img src="" title="暂无视频" data-value="" />
                 </div>
             </div>
             <div class="item item2-item" style="width:49.5%;float:left;margin-left:1%;">
@@ -211,7 +192,7 @@
                     视频二
                 </div>
                 <div class="content content2">
-                    <img src="" title="暂无视频" data-value=""/>
+                    <img src="" title="暂无视频" data-value="" />
                 </div>
             </div>
 
@@ -221,7 +202,7 @@
                     视频三
                 </div>
                 <div class="content content2">
-                    <img src="" title="暂无视频" data-value=""/>
+                    <img src="" title="暂无视频" data-value="" />
                 </div>
             </div>
             <div class="item item2-item" style="float:left;margin-left:1%;margin-top:12px;width:49.5%;">
@@ -234,26 +215,5 @@
                 </div>
             </div>
         </div>
-    </div>
-    <!--第三个区域-->
-    <div class="section section3">
-        @*<div class="row row3">
-            <div class="col-sm-12 item">
-                <div>
-                    <div class="title">陪餐记录表</div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>陪餐记录</th>
-                                <th>负责人</th>
-                                <th>陪餐时间</th>
-                                <th>陪餐记录</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>*@
     </div>
 </div>
