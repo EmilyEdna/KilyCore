@@ -48,5 +48,13 @@ namespace KilyCore.EntityFrameWork.Model.Repast
         /// 负责人
         /// </summary>
         public virtual string Manager { get; set; }
+        /// <summary>
+        /// 有效期
+        /// </summary>
+        public virtual string NoExp { get; set; }
+        /// <summary>
+        /// 生成日期
+        /// </summary>
+        public virtual DateTime? ProTime { get; set; }
     }
 }

@@ -14,6 +14,7 @@
             InitDom: function () {
                 $("#InfoId").val(RepastUser.Id);
                 controller.LayDate({ elem: "input[name='SellTime']" });
+                controller.LayDate({ elem: "input[name='ProTime']" });
                 var Guid = controller.GetParam("Id");
                 //获取负责人
                 controller.ajax({
@@ -84,6 +85,15 @@
                         <input type="text" class="form-control" name="ToPay" />
                     </td>
                 </tr>
+                <tr>
+                    <th><label class="control-label">保质期</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="NoExp" id="NoExp" />
+                    </td>
+                    <th><label class="control-label">生产日期</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="ProTime" id="ProTime" />
+                    </td>
                 <tr>
                     <th><label class="control-label">销售时间</label></th>
                     <td class="has-warning">

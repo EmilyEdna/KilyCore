@@ -48,6 +48,18 @@ namespace KilyCore.WEB.Controllers
             return new JsonResult(data);
         }
         /// <summary>
+        /// 导入文件
+        /// </summary>
+        /// <param name="Files"></param>
+        /// <param name="Type"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult ImportXmls(IFormFile Files, int Type) {
+            var WebRootPath = Environment.WebRootPath;
+            Object data = FileUtil.ImportXmls(Files, Type, WebRootPath);
+            return new JsonResult(data);
+        }
+        /// <summary>
         /// 下载PDF合同文件
         /// </summary>
         /// <param name="CompanyName"></param>

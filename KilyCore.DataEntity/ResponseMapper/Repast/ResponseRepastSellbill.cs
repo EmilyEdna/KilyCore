@@ -45,6 +45,14 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         /// 负责人
         /// </summary>
         public string Manager { get; set; }
+        /// <summary>
+        /// 有效期
+        /// </summary>
+        public string NoExp { get; set; }
+        /// <summary>
+        /// 生成日期
+        /// </summary>
+        public DateTime? ProTime { get; set; }
     }
     public class ResponseBillTicket
     {

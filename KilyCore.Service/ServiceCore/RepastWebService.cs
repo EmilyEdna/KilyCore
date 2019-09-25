@@ -1382,6 +1382,8 @@ namespace KilyCore.Service.ServiceCore
                 LinkPhone = t.LinkPhone,
                 Purchase = t.Purchase,
                 Unit = t.Unit,
+                NoExp = t.NoExp,
+                ProTime = t.ProTime,
                 ToPay = t.ToPay,
                 Supplier = t.Supplier,
                 OrderTime = t.OrderTime,
@@ -1408,6 +1410,8 @@ namespace KilyCore.Service.ServiceCore
             var data = Kily.Set<RepastBuybill>().Where(t => t.Id == Id).Select(t => new ResponseRepastBuybill()
             {
                 Id = t.Id,
+                NoExp=t.NoExp,
+                ProTime=t.ProTime,
                 GoodsName = t.GoodsName,
                 GoodsNum = t.GoodsNum,
                 LinkPhone = t.LinkPhone,
@@ -1429,7 +1433,10 @@ namespace KilyCore.Service.ServiceCore
         {
             RepastBuybill buybill = Param.MapToEntity<RepastBuybill>();
             if (Param.Id == Guid.Empty)
+            {
+                buybill.InfoId = (MerchantInfo() == null ? MerchantUser().Id : MerchantInfo().Id);
                 return Insert(buybill) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            }
             else
                 return Update<RepastBuybill, RequestRepastBuybill>(buybill, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
@@ -1502,6 +1509,8 @@ namespace KilyCore.Service.ServiceCore
                 GoodsNum = t.GoodsNum,
                 ToPay = t.ToPay,
                 SellTime = t.SellTime,
+                NoExp = t.NoExp,
+                ProTime = t.ProTime,
                 UnPay = t.UnPay,
                 Manager = t.Manager
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -1529,6 +1538,8 @@ namespace KilyCore.Service.ServiceCore
                 GoodsName = t.GoodsName,
                 GoodsNum = t.GoodsNum,
                 ToPay = t.ToPay,
+                NoExp = t.NoExp,
+                ProTime = t.ProTime,
                 SellTime = t.SellTime,
                 UnPay = t.UnPay,
                 Manager = t.Manager,
@@ -1544,7 +1555,10 @@ namespace KilyCore.Service.ServiceCore
         {
             RepastSellbill sellbill = Param.MapToEntity<RepastSellbill>();
             if (Param.Id == Guid.Empty)
+            {
+                sellbill.InfoId = (MerchantInfo() == null ? MerchantUser().Id : MerchantInfo().Id);
                 return Insert(sellbill) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            }
             else
                 return Update<RepastSellbill, RequestRepastSellbill>(sellbill, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
