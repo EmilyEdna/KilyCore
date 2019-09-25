@@ -1,9 +1,6 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "物品出库";
     Layout = "~/Views/Shared/BaseView.cshtml";
-}
-@section css{
 }
 @section script{
     <script>
@@ -54,8 +51,8 @@
         });
     </script>
 }
-<div class="ibox float-e-margins">
-    <div class="ibox-content">
+<div class="ibox ibox-c float-e-margins">
+    <div class="ibox-content ibox-content-c">
         <form class="form-horizontal" method="post" action="RepastWeb/EditOutStock" id="Edit">
             <input type="hidden" id="InStockId" name="InStockId" />
             <input type="hidden" class="form-control" name="InfoId" id="InfoId" />

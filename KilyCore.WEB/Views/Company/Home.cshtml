@@ -48,7 +48,19 @@
                         callBack: function (result) {
                             result.$("#Edit").submit();
                         }
-                    })
+                    });
+                //根据企业类型动态设置操作指南链接地址
+                let href = "";
+                if (CompanyUser.CompanyType == 10) {
+                    href = "/StaticHtml/OperationGuidezz.html"
+                } else if (CompanyUser.CompanyType == 20) {
+                    href = "/StaticHtml/OperationGuideyz.html"
+                } else if (CompanyUser.CompanyType == 30) {
+                    href = "/StaticHtml/OperationGuidesc.html"
+                } else if (CompanyUser.CompanyType == 40) {
+                    href = "/StaticHtml/OperationGuidelt.html"
+                }
+                $("#Guide").attr("href", href);
             },
             //获取树
             GetMenu: function () {
@@ -215,7 +227,7 @@
                     <div class="navbar-header">
                         <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" href="#"><i class="fa fa-bars"></i></a>
                         <!--操作指南-->
-                        <a class="J_menuItem minimalize-styl-2 btn btn-warning" href="/StaticHtml/OperationGuideCompany.html">
+                        <a class="J_menuItem minimalize-styl-2 btn btn-warning" id="Guide">
                             操作指南
                         </a>
                     </div>
