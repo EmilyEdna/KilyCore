@@ -16,7 +16,13 @@
             //元素
             InitDom: function () {
                 $("#GovtId").val(GovtInfo.Id);
-                $("#TypePath").val(GovtInfo.TypePath);
+                if (GovtInfo.AccountType == 20)//市级
+                {
+                    $("#TypePath").val(GovtInfo.City);
+                }
+                else {
+                     $("#TypePath").val(GovtInfo.Area);
+                }
                 var Editor = controller.Editor(".summernote");
                 var Id = controller.GetParam("Id");
                 if (controller.CheckFeild(Id)) {
