@@ -27,12 +27,6 @@
                         $("#B3").prepend(result.data.CPTotal + "%");
                         $("#B4").prepend(result.data.CBTotal + "%");
 
-                        //教育局
-                        if (GovtInfo.IsEdu) {
-                            $(".ts").html($(this).html().replace(new RegExp("产量", "g"), "人员"));
-                            $(".tq").html($(this).html().replace(new RegExp("报备", "g"), "预警"));
-                            $(".tk").html($(this).html().replace(new RegExp("学校", "g"), "学校"));
-                        }
                     }
                 });
                 //投诉占比
@@ -143,7 +137,7 @@
                             },
                             legend: {
                                 textStyle: { color: "#000000" },
-                                data: !GovtInfo.IsEdu ? ['种植企业', '养殖企业', '生产企业', '流通企业'] : ['学前教育', '义务教育', '高中教育', '高等教育', '职业教育']
+                                data:  ['学前教育', '义务教育', '高中教育', '高等教育', '职业教育']
                             },
                             grid: {
                                 left: '3%',
@@ -175,40 +169,6 @@
                                 }
                             ],
                             series: [
-                                {
-                                    name: '种植企业',
-                                    type: 'line',
-                                    stack: '总量',
-                                    areaStyle: {},
-                                    data: result.data.ZCom
-                                },
-                                {
-                                    name: '养殖企业',
-                                    type: 'line',
-                                    stack: '总量',
-                                    areaStyle: {},
-                                    data: result.data.YCom
-                                },
-                                {
-                                    name: '生产企业',
-                                    type: 'line',
-                                    stack: '总量',
-                                    areaStyle: {},
-                                    data: result.data.SCom
-                                },
-                                {
-                                    name: '流通企业',
-                                    type: 'line',
-                                    stack: '总量',
-                                    areaStyle: { normal: {} },
-                                    data: result.data.LCom
-                                }
-                            ],
-                            backgroundColor: 'rgba(7,31,65,0)',
-                            color: ["#fc97af", "#87f7cf", '#f7f494', '#72ccff', '#f7c5a0', '#d4a4eb', '#d2f5a6', '#76f2f2']
-                        };
-                        if (GovtInfo.IsEdu) {
-                            OptionLine.series = [
                                 {
                                     name: '学前教育',
                                     type: 'line',
@@ -244,8 +204,11 @@
                                     areaStyle: { normal: {} },
                                     data: result.data.ZYJYS
                                 }
-                            ]
-                        }
+                            ],
+                            backgroundColor: 'rgba(7,31,65,0)',
+                            color: ["#fc97af", "#87f7cf", '#f7f494', '#72ccff', '#f7c5a0', '#d4a4eb', '#d2f5a6', '#76f2f2']
+                        };
+                       
                         echarts.init($("#echarts-Line-chart")[0]).setOption(OptionLine);
                     }
                 });
@@ -349,7 +312,7 @@
             <div class=" ibox float-e-margins">
                 <div class="ibox-title">
                     <span class="label label-success pull-right">月</span>
-                    <h5>企业入驻</h5>
+                    <h5>入驻</h5>
                 </div>
                 <div class="item">
                     <div class="left" style="background-color: #1C84C6;"></div>
@@ -364,12 +327,12 @@
             <div class=" ibox float-e-margins">
                 <div class="ibox-title">
                     <span class="label label-info pull-right">月</span>
-                    <h5 class="ts">产品数量</h5>
+                    <h5 class="ts">从业人员</h5>
                 </div>
                 <div class="item">
                     <div class="left" style="background-color: #23C6C8;"></div>
                     <div class="right">
-                        <p class="ts">月产品：<span id="A2"></span></p>
+                        <p class="ts">人员：<span id="A2"></span></p>
                         <p>增长比：<span id="B2">&emsp;<i class="fa fa-level-up" style="color: #23C6C8;"></i></span></p>
                     </div>
                 </div>
@@ -379,12 +342,12 @@
             <div class=" ibox float-e-margins">
                 <div class="ibox-title">
                     <span class="label label-warning pull-right">月</span>
-                    <h5>网上巡查</h5>
+                    <h5>抽查</h5>
                 </div>
                 <div class="item">
                     <div class="left" style="background-color: #F8AC59;"></div>
                     <div class="right">
-                        <p>月巡查：<span id="A3"></span></p>
+                        <p>月抽查：<span id="A3"></span></p>
                         <p>增长比：<span id="B3">&emsp;<i class="fa fa-level-up" style="color: #F8AC59;"></i></span></p>
                     </div>
                 </div>
@@ -394,12 +357,12 @@
             <div class=" ibox float-e-margins">
                 <div class="ibox-title">
                     <span class="label label-danger pull-right">月</span>
-                    <h5 class="tq">群宴报备</h5>
+                    <h5 class="tq">预警</h5>
                 </div>
                 <div class="item">
                     <div class="left" style="background-color: #ED5565;"></div>
                     <div class="right">
-                        <p class="tq">月报备：<span id="A4">452,451</span></p>
+                        <p class="tq">月预警：<span id="A4">452,451</span></p>
                         <p>增长比：<span id="B4">&emsp;<i class="fa fa-level-up" style="color: #ED5565;"></i></span></p>
                     </div>
                 </div>
@@ -416,7 +379,7 @@
                     <div class="content content1">
                         <a class="J_menuItem" href="/WebGovtManage/Enterprise/DistributionSupervise">
                             <img src="~/Content/DataView/images/zf_cygn1.png" />
-                            <p><span class="tk">企业</span>分布</p>
+                            <p><span class="tk">学校</span>分布</p>
                         </a>
                         <a class="J_menuItem" href="/WebGovtManage/Risk/EventRisk">
                             <img src="~/Content/DataView/images/zf_cygn2.png" />
@@ -541,8 +504,8 @@
                         <table class="table table-hover no-margins" style="width: 95%; margin: 0 auto !important;">
                             <thead>
                                 <tr>
-                                    <th>被投诉公司</th>
-                                    <th>被投诉产品</th>
+                                    <th>被投诉学校</th>
+                                    <th>被投诉原因</th>
                                     <th>投诉人</th>
                                     <th>处理状态</th>
                                 </tr>

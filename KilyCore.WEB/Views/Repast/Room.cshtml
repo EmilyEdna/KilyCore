@@ -90,7 +90,7 @@
                             trigger: 'axis'
                         },
                         legend: {
-                            data: ['废物', '留样', '自查', '配餐']
+                            data: ['废物处理', '留样记录', '自查记录', '陪餐记录']
                         },
                         grid: {
                             left: '3%',
@@ -119,22 +119,22 @@
                         ],
                         series: [
                             {
-                                name: '废物',
+                                name: '废物处理',
                                 type: 'line',
                                 data: data.废物
                             },
                             {
-                                name: '留样',
+                                name: '留样记录',
                                 type: 'line',
                                 data: data.留样
                             },
                             {
-                                name: '自查',
+                                name: '自查记录',
                                 type: 'line',
                                 data: data.自查
                             },
                             {
-                                name: '配餐',
+                                name: '陪餐记录',
                                 type: 'line',
                                 data: data.配餐
                             }
@@ -178,7 +178,7 @@
 <div id="Edit">
     <!--第一个区域-->
     <div class="section section1">
-        <div class="item item1">
+        <a class="item item1" href="/WebMerchantManage/Function/MerchantTicket" style="display:block;">
             <div class="title ts">
                 <div></div>
                 台账
@@ -189,8 +189,8 @@
                     <p class="ts">总记录：<span name="bill"></span>条</p>
                 </div>
             </div>
-        </div>
-        <div class="item item1">
+        </a>
+        <a class="item item1" href="/WebMerchantManage/Function/MerchantSupplier" style="display:block;">
             <div class="title ts">
                 <div></div>
                 供应商
@@ -201,8 +201,8 @@
                     <p class="ts">总数量：<span name="supplier"></span>家</p>
                 </div>
             </div>
-        </div>
-        <div class="item item1">
+        </a>
+        <a class="item item1" href="/WebMerchantManage/RepastBasic/MerchantUser" style="display:block;">
             <div class="title ts">
                 <div></div>
                 健康证
@@ -214,8 +214,8 @@
                     <p>总数：<img src="~/Content/Company/images/firm_up.png" />&nbsp;<span name="touser"></span>人</p>
                 </div>
             </div>
-        </div>
-        <div class="item item1">
+        </a>
+        <a class="item item1" href="/WebMerchantManage/RepastBasic/MerchantCheck" style="display:block;">
             <div class="title">
                 <div></div>
                 自查
@@ -226,7 +226,7 @@
                     <p>记录数：<span name="record"></span>次</p>
                 </div>
             </div>
-        </div>
+        </a>
     </div>
     <!--第二个区域-->
     <div class="section section2">

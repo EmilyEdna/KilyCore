@@ -105,6 +105,9 @@
     <Content Update="Views\Govt\Home.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Govt\Room.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Govt\Index.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

@@ -26,10 +26,10 @@
             InitEvents: function () {
                 $("#add").on('click', function () {
                     controller.OpenWindow({
-                        title: "新增类型名称",
+                        title: "新增原料/产品",
                         type: 2,
-                        height: "90%",
-                        width: "80%",  
+                        height: "50%",
+                        width: "60%",  
                         url: "WebMerchantManage/Stock/MerchantNameTypeEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();

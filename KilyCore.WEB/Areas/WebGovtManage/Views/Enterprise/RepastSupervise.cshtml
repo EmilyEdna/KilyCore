@@ -18,7 +18,7 @@
             InitDom: function () {
                 var data = null;
                 if (GovtInfo.IsEdu) {
-                    $("h5").text("机关单位");
+                    $("h5").text("学校/单位食堂");
                     data = { DiningType: 20 };
                 } else {
                     data = { DiningType: 10 };
@@ -34,6 +34,7 @@
                 this.$table = controller.Table("#tableList", { url: "GovtWeb/GetMerchantPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: data });
             },
             //事件
+
             InitEvents: function () {
                 $(".test").on('click', function () {
                     $("input[name='AllowUnit']").val($(this).data().value);

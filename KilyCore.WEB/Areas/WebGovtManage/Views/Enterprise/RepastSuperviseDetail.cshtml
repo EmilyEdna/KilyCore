@@ -11,6 +11,10 @@
             Init: function () {
                 this.InitDom();
                 this.InitEvents();
+                this.InitPerson();
+                this.InitThing();
+                this.InitBad();
+                this.InitTemp();
             },
             //元素
             InitDom: function () {
@@ -24,11 +28,14 @@
                         //controller.SetCtrlValue("#Edit", result.data);
                         controller.SetLableValue("#Edit", result.data);
                         options.BindHonor(result.data.HonorCertification);
-                       $.each(result.data.Video, function (i,obj) {
-                             var url = "/StaticHtml/PlayVedio.html?addr=" + obj.VideoAddress+"&cover="+obj.CoverPhoto;
-                           $(".J_iframe").eq(i).attr("src", url);
+                        if (result.data.Certification != null) {
+                            $("#Certification").attr("src", result.data.Certification);
+                        }
+                        $.each(result.data.Video, function (i, obj) {
+                            var url = "/StaticHtml/PlayVedio.html?addr=" + obj.VideoAddress + "&cover=" + obj.CoverPhoto;
+                            $(".J_iframe").eq(i).attr("src", url);
 
-                        })         
+                        })
                     }
                 });
                 //查看大图
@@ -41,6 +48,101 @@
                         }]
                     };
                     controller.Photos(option);
+                });
+            },
+            //人员
+            InitPerson: function () {
+                //取详情
+                controller.ajax({
+                    url: "Temp/GetAllUser",
+                    data: { Id: controller.GetParam("Id") },
+                    async: false,
+                    type: "get",
+                    success: function (result) {
+                         var PersonHTML = "";
+                        $.each(result.data, function (i, item) {
+                            var Color = "";
+                            if (DateCompare(item.TimeLength)) {
+                                var Color = "color:red;";
+                            }
+
+                            PersonHTML += '<tr>'
+                                + '<td>' + item.PersonName + '</td>'
+                                + '<td>' + item.JobStatus + '</td>'
+                                + '<td style="'+Color+'">' + item.TimeLength + '</td>'
+                                + '<td><img src="' + item.HealthImg + '" alt="" class="img-preview-sm" title="点击查看"/></td>'
+                               
+                                + '</tr>';
+                        });
+                        $("#PersonList").append(PersonHTML);
+                    }
+                });
+            },
+             //食材供应
+            InitThing: function () {
+                //取详情
+                controller.ajax({
+                    url: "Temp/RepastThing",
+                    data: { Id: controller.GetParam("Id") },
+                    async: false,
+                    type: "get",
+                    success: function (result) {
+                         var ThingHTML = "";
+                        $.each(result.data, function (i, item) {
+                            ThingHTML += '<tr>'
+                                + '<td>' + item.ThingName + '</td>'
+                                + '<td>' + item.BuyTime + '</td>'
+                                + '<td>' + item.Remark.replace(new RegExp("<img ", 'g'), "<img class='photo' style='max-height:36px;width:auto'").replace(new RegExp("<p", 'g'),"<p style='display:inline-block;' ") + '</td>'
+                                + '</tr>';
+                        });
+                        $("#ThingList").append(ThingHTML);
+                    }
+                });
+            },
+             //废物处理
+            InitBad: function () {
+                //取详情
+                controller.ajax({
+                    url: "Temp/RepastDuck",
+                    data: { Id: controller.GetParam("Id") },
+                    async: false,
+                    type: "get",
+                    success: function (result) {
+                         var BadHTML = "";
+                        $.each(result.data, function (i, item) {
+                            BadHTML += '<tr>'
+                                + '<td>' + item.BadType + '</td>'
+                                + '<td>' + item.BadPhone + '</td>'
+                                + '<td>' + item.BadTime + '</td>'
+                                 + '<td>' + item.BadPerson + '</td>'
+                                + '<td>' + item.BadRemark.replace(new RegExp("<img ", 'g'), "<img class='photo' style='max-height:36px;width:auto'").replace(new RegExp("<p", 'g'),"<p style='display:inline-block;' ") + '</td>'
+                                + '</tr>';
+                        });
+                        $("#BadList").append(BadHTML);
+                    }
+                });
+            },
+            //留样
+            InitTemp: function () {
+                //取详情
+                controller.ajax({
+                    url: "Temp/GetAllSample",
+                    data: { Id: controller.GetParam("Id") },
+                    async: false,
+                    type: "get",
+                    success: function (result) {
+                         var TempHTML = "";
+                        $.each(result.data, function (i, item) {
+                            TempHTML += '<tr>'
+                                + '<td>' + item.FoodsName + '</td>'
+                                + '<td>' + item.Remark + '</td>'
+                                + '<td>' + item.SavePerson + '</td>'
+                                + '<td>' + item.SaveTime + '</td>'
+                                 + '<td><img src="' + item.ReportImg + '" alt="" class="img-preview-sm" title="点击查看"/></td>'
+                                + '</tr>';
+                        });
+                        $("#TempList").append(TempHTML);
+                    }
                 });
             },
             //绑定荣誉证书
@@ -70,7 +172,22 @@
         $(document).ready(function () {
             options.Init();
         });
-
+         function DateCompare(TimeLength) {
+            // 获取当前日期
+            let currentDate = new Date();
+            let str = "" + currentDate.getFullYear() + "-";
+            str += (currentDate.getMonth() + 1) + "-";
+            str += currentDate.getDate();
+            let today = new Date(str.replace("-", "/").replace("-", "/"));
+        
+            let fulfill_appointment_time = new Date(TimeLength.replace("年", "/").replace("月", "/").replace("日", ""));
+            if (fulfill_appointment_time < today) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
     </script>
 }
 <form class="form-horizontal" method="post" id="Edit">
@@ -105,6 +222,12 @@
             </li>
             <li>
                 <a data-toggle="tab" href="#tab-10" aria-expanded="false">抽检信息</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-11" aria-expanded="false">陪餐打卡</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-12" aria-expanded="false">自查记录</a>
             </li>
         </ul>
         <div class="tab-content">
@@ -160,15 +283,18 @@
                     </tr>
                 </table>
             </div>
+            <!--营业执照-->
             <div id="tab-2" class="tab-pane">
                 <div class="ibox-content">
-                    <img class="img-preview" src="" type="image" name="Certification" style="display:block;margin:auto" title="点击放大" />
+                    <img class="img-preview" src="" type="image" id="Certification" style="display:block;margin:auto" title="点击放大" />
                 </div>
             </div>
+            <!--荣誉资质-->
             <div id="tab-3" class="tab-pane">
                 <div class="ibox-content">
                 </div>
             </div>
+            <!--监控视频-->
             <div id="tab-4" class="tab-pane">
                 <div class="ibox-content">
                     <table style="width:1060px">
@@ -183,27 +309,93 @@
                     </table>
                 </div>
             </div>
+            <!--人员管理-->
             <div id="tab-5" class="tab-pane">
-                <div class="ibox-content">
+                <div class="ibox-content" >
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="TrueName" data-halign="center" data-align="center" data-valign="middle">姓名</th>
+                                <th data-field="Phone" data-halign="center" data-align="center" data-valign="middle">入职状态</th>
+                                <th data-field="ExpiredTime" data-halign="center" data-align="center" data-valign="middle">有效期</th>
+                                <th data-halign="center" data-align="center" data-valign="middle">健康证</th>
+                            </tr>
+                        </thead>
+                        <tbody id="PersonList">
+
+                        </tbody>
+                    </table>
                 </div>
             </div>
+            <!--食材供应-->
             <div id="tab-6" class="tab-pane">
                 <div class="ibox-content">
+                        <table id="tableList" class="table">
+                            <thead>
+                                <tr>
+                                    <th data-field="Theme" data-halign="center" data-align="center" data-valign="middle">台账名称</th>
+                                    <th data-field="UpTime" data-halign="center" data-align="center" data-valign="middle">上报时间</th>
+                                    <th data-field="Content" data-halign="center" data-align="center" data-valign="middle">凭证</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ThingList">
+                            </tbody>
+                        </table>
                 </div>
             </div>
+            <!--主营菜品-->
             <div id="tab-7" class="tab-pane">
                 <div class="ibox-content">
                 </div>
             </div>
+            <!--废物处理-->
             <div id="tab-8" class="tab-pane">
                 <div class="ibox-content">
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="HandleWays" data-halign="center" data-align="center" data-valign="middle">处理方式</th>
+                                <th data-field="Phone" data-halign="center" data-align="center" data-valign="middle">电话</th>
+                                <th data-field="HandleTime" data-halign="center" data-align="center" data-valign="middle">处理时间</th>
+                                <th data-field="HandleUser" data-halign="center" data-align="center" data-valign="middle">操作人</th>
+                                <th data-halign="center" data-align="center" data-valign="middle">现场图片</th>
+                            </tr>
+                        </thead>
+                        <tbody id="BadList">
+                        </tbody>
+                    </table>
                 </div>
             </div>
+            <!--留样管理-->
             <div id="tab-9" class="tab-pane">
+                <div class="ibox-content">
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="DishName" data-halign="center" data-align="center" data-valign="middle">菜品名称</th>
+                                <th data-field="Phone" data-halign="center" data-align="center" data-valign="middle">储藏方式</th>
+                                <th data-field="OperatUser" data-halign="center" data-align="center" data-valign="middle">操作人</th>
+                                <th data-field="SampleTime" data-halign="center" data-align="center" data-valign="middle">留样时间</th>
+                                <th data-halign="center" data-align="center" data-valign="middle">留样图片</th>
+                            </tr>
+                        </thead>
+                        <tbody id="TempList">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--抽检信息-->
+            <div id="tab-10" class="tab-pane">
                 <div class="ibox-content">
                 </div>
             </div>
-            <div id="tab-10" class="tab-pane">
+            <!--陪餐打卡-->
+            <div id="tab-11" class="tab-pane">
+                <div class="ibox-content">
+                </div>
+            </div>
+            <!--企业自查-->
+            <div id="tab-12" class="tab-pane">
                 <div class="ibox-content">
                 </div>
             </div>
