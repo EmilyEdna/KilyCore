@@ -1,9 +1,6 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "移动执法编辑";
     Layout = "~/Views/Shared/BaseView.cshtml";
-}
-@section css{
 }
 @section script{
     <script src="~/Content/ExportPlugin/Script/FileSaver.js"></script>
@@ -72,7 +69,7 @@
             <input type="hidden" name="PatrolTable" />
             <div class="btn-group">
                 <button type="button" class="btn btn-default" id="Edit"><i class="fa fa-edit"></i>编辑</button>
-                <button type="button" class="btn btn-default" id="Export"><i class="fa fa-file-word-o fa-fw"></i>导出Word</button>
+                <button type="button" class="btn btn-default" id="Export" style="margin-left: 10px"><i class="fa fa-file-word-o fa-fw"></i>导出Word</button>
             </div>
             <div class="row">
                 <div class="col-sm-12" id="Content">

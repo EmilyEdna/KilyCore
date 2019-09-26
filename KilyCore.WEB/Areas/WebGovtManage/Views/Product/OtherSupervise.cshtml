@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "其他产品";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
@@ -56,16 +55,13 @@
         });
     </script>
 }
-@section css{
-
-}
 <div class="container-fluid">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
+        <div class="ibox ibox-c float-e-margins">
+            <div class="ibox-title ibox-title-c">
                 <h5>其他产品</h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="Edit">
                         <div class="col-sm-8 m-b-xs">
@@ -87,12 +83,12 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="ProductName" data-halign="center" data-align="center" data-valign="middle">产品名称</th>
-                                <th data-field="ProductType" data-halign="center" data-align="center" data-valign="middle">产品类型</th>
-                                <th data-field="ExpiredDate" data-halign="center" data-align="center" data-valign="middle">保质期</th>
-                                <th data-field="Spec" data-halign="center" data-align="center" data-valign="middle">规格</th>
-                                <th data-field="Unit" data-halign="center" data-align="center" data-valign="middle">生产地址</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th data-field="ProductName" class="th-center">产品名称</th>
+                                <th data-field="ProductType" class="th-center">产品类型</th>
+                                <th data-field="ExpiredDate" class="th-center">保质期</th>
+                                <th data-field="Spec" class="th-center">规格</th>
+                                <th data-field="Unit" class="th-center">生产地址</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" class="th-center">操作</th>
                             </tr>
                         </thead>
                     </table>

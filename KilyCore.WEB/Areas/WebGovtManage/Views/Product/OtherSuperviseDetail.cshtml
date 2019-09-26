@@ -1,9 +1,7 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "其他产品详情";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
-@section css{ }
 @section script{
     <script>
         //配置
@@ -36,7 +34,6 @@
                     controller.Photos(option);
                 });
             },
-
             //事件
             InitEvents: function () {
             },
@@ -45,7 +42,6 @@
         $(document).ready(function () {
             options.Init();
         });
-
     </script>
 }
 <form class="form-horizontal" method="post" id="Edit">
