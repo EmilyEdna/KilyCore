@@ -68,5 +68,9 @@ namespace KilyCore.EntityFrameWork.Model.Govt
         /// 所在区域
         /// </summary>
         public virtual string TypePath { get; set; }
+        /// <summary>
+        /// 类别
+        /// </summary>
+        public virtual string Category { get; set; }
     }
 }
