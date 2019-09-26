@@ -429,6 +429,48 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(RepastWebService.GetTemplateChildDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
+        #region 委员
+        /// <summary>
+        /// 委员分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetOrgPage")]
+        public ObjectResultEx GetOrgPage(PageParamList<RequestRepastOrg> pageParam)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetOrgPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 委员详情
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetOrgDetail")]
+        public ObjectResultEx GetOrgDetail(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.GetOrgDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 编辑委员
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditOrg")]
+        public ObjectResultEx EditOrg(RequestRepastOrg Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.EditOrg(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 删除委员
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("RemoveOrg")]
+        public ObjectResultEx RemoveOrg(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(RepastWebService.RemoveOrg(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
         #endregion
 
         #region 功能管理

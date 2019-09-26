@@ -1313,6 +1313,64 @@ namespace KilyCore.Service.ServiceCore
             return Remove<GovtTemplateChild>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         #endregion
+        #region 委员
+        /// <summary>
+        /// 委员分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRepastOrg> GetOrgPage(PageParamList<RequestRepastOrg> pageParam)
+        {
+            IQueryable<RepastOrg> queryable = Kily.Set<RepastOrg>().OrderByDescending(t => t.CreateTime).AsNoTracking();
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.TrueName))
+                queryable = queryable.Where(t => t.TrueName.Contains(pageParam.QueryParam.TrueName));
+            var data = queryable.Select(t => new ResponseRepastOrg()
+            {
+                Id = t.Id,
+                TrueName = t.TrueName,
+                LinkPhone = t.LinkPhone,
+                IdCardNo = t.IdCardNo,
+                Worker = t.Worker,
+                IsWork = t.IsWork,
+                Address = t.Address
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 委员详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseRepastOrg GetOrgDetail(Guid Id)
+        {
+            return Kily.Set<RepastOrg>().Where(t => t.Id == Id).FirstOrDefault().MapToEntity<ResponseRepastOrg>();
+        }
+        /// <summary>
+        /// 编辑委员
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditOrg(RequestRepastOrg Param)
+        {
+            RepastOrg Org = Param.MapToEntity<RepastOrg>();
+            if (Org.Id == Guid.Empty)
+                return Insert(Org) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+                return Update(Org, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        /// <summary>
+        /// 删除委员
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveOrg(Guid Id) {
+            return Remove<RepastOrg>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
         #endregion
 
         #region 功能管理

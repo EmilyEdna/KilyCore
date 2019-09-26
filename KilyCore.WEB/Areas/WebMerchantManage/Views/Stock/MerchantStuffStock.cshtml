@@ -106,7 +106,7 @@
                     var action = [];
                     if (row.InStorageNum != undefined) {
                         action.push('<button class="btn btn-sm btn-primary out"><i class="fa fa-pencil-square-o"></i>出库</button>');
-                        action.push('<button class="btn btn-sm btn-primary detail"><i class="fa fa-pencil-square-o"></i>详情</button>');
+                        action.push('<button class="btn btn-sm btn-primary detail"><i class="fa fa-pencil-square-o"></i>入库记录</button>');
                     }
                    // action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
                     return action.join("&nbsp;");
@@ -161,7 +161,7 @@
                             width: "80%",  
                             url: "WebMerchantManage/Stock/MerchantInStorage?Id=" + row.Id,
                             callBack: function (result) {
-                                result.$("#Edit").submit();
+                                result.popClose();
                             }
                         });
                     }
