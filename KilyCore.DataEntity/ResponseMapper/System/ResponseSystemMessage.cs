@@ -53,5 +53,9 @@ namespace KilyCore.DataEntity.ResponseMapper.System
         /// 状态
         /// </summary>
         public string Status { get; set; }
+        /// <summary>
+        /// 类别
+        /// </summary>
+        public string Category { get; set; }
     }
 }

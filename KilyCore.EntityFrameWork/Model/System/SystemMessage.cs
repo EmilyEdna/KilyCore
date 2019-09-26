@@ -56,5 +56,9 @@ namespace KilyCore.EntityFrameWork.Model.System
         /// 状态
         /// </summary>
         public virtual string Status { get; set; }
+        /// <summary>
+        /// 类别
+        /// </summary>
+        public virtual string Category { get; set; }
     }
 }

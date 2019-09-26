@@ -111,7 +111,7 @@
                         var html = '';
                         $.each(result.data.rows, function (i, obj) {
                             html += '<li><a href="#" data-id="' + obj.ComplainId + '" class="Replay"><div class="row"><section>';
-                            html += ' <dl> <i class="fa fa-comment fa-fw"></i>' + obj.MsgName + '[' + obj.Status + ']</dl>';
+                            html += ' <dl><i class="fa fa-comment fa-fw"></i>' + obj.MsgName + '[' + (obj.Status == null ? "待处理" : obj.Status) + '][' + obj.Category + ']</dl>';
                             html += '<article class="text text-warning">' + obj.MsgContent + '</article>';
                             html += ' <span class="pull-right small">发布时间：' + obj.ReleaseTime + '</span>';
                             html += '</section></div></a></li><li class="divider"></li>';
