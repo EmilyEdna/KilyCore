@@ -165,6 +165,8 @@ namespace KilyCore.Service.IServiceCore
         String EditComplain(RequestGovtComplain Param);
         String ReportComplain(Guid Id);
         String ReportComplainInfo(Guid Id, String Param);
+
+        ResponseGovtComplain GetComplainDetail(Guid Id);
         #endregion
 
         #region 数据统计

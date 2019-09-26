@@ -2259,6 +2259,32 @@ namespace KilyCore.Service.ServiceCore
             return Insert(complain) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         /// <summary>
+        /// 投诉详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseGovtComplain GetComplainDetail(Guid Id)
+        {
+            var queryable = Kily.Set<GovtComplain>().Where(t => t.Id == Id);
+            var data= queryable.Select(t => new ResponseGovtComplain
+            {
+                Id = t.Id, 
+                CompanyId = t.CompanyId,
+                CompanyName = t.CompanyName,
+                Status = t.Status,
+                CompanyType = t.CompanyType,
+                ComplainContent = t.ComplainContent,
+                ComplainTime = t.ComplainTime,
+                ComplainUserPhone = t.ComplainUserPhone,
+                HandlerTime= t.UpdateTime.Value.ToString("yyyy年MM月dd日 HH:mm"),
+                ProductName = t.ProductName,
+                ComplainUser = t.ComplainUser,
+                HandlerContent = t.HandlerContent,
+                SendStatus = t.IsDelete == true ? "已推送" : "待推送"
+            }).FirstOrDefault();
+            return data;
+        }
+        /// <summary>
         /// 推送投诉
         /// </summary>
         /// <param name="Id"></param>
@@ -3489,6 +3515,8 @@ namespace KilyCore.Service.ServiceCore
             var PartyCounts = queryable.Where(t => t.CreateTime.Value.Day - DateTime.Now.Day == 0).Count();
             return new { RiskCount = RiskCount, ComplainCount = ComplainCount, SelfCount = SelfCount, PatrolsCount = PatrolsCount, BadCount = BadCount, PartyCounts = PartyCounts, Percents = (BadCount * 100 / (PatrolsCount == 0 ? 1 : PatrolsCount)) + "%" };
         }
+
+        
 
 
         #endregion

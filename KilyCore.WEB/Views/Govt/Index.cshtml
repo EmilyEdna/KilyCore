@@ -62,7 +62,7 @@
                     success: function (result) {
                         var html = "";
                         $.each(result.data.rows, function (i, obj) {
-                            html += '<div class="col-sm-12 search-result"><a href="javascript:ShowModelDetail("/WebGovtManage/Train/NoticeTrainDetail?Id='+obj.Id+'","'+obj.TrainTitle+'"">'
+                            html += `<div class=\"col-sm-12 search-result\"><a href="javascript:ShowModelDetail('WebGovtManage/Train/NoticeTrainDetail?Id=${obj.Id}','${obj.TrainTitle}');">`
                                 + '<h3><strong>' + obj.TrainTitle + '</strong></h3>'
                                 + '<p><i class="fa fa-map-marker"></i> ' + obj.TrainPlace + '</p>'
                                 + '</a><address>'
@@ -110,7 +110,7 @@
                                     Area = res.data;
                                 }
                             });
-                            html += '<div class="col-sm-12 search-result"><a href="javascript:ShowModelDetail();">'
+                            html +=`<div class=\"col-sm-12 search-result\"><a href="javascript:ShowModelDetail('WebGovtManage/Risk/WaringRiskDetail?Id=${obj.Id}','${obj.EventName}');">`
                                 + '<h3><strong>' + obj.EventName + '</strong><span style="color:red;">(' + obj.WaringLv + ')</span></h3>'
                                 + '<p><i class="fa fa-map-marker"></i> ' + Area + '</p>'
                                 + '</a><address>'
@@ -277,9 +277,10 @@
              controller.OpenWindow({
                     title:Title,
                     type: 2,
-                    height: "90%",
-                    width: "80%",  
-                    url: Url,
+                    height: "80%",
+                    width: "60%",  
+                 url: Url,
+                    btn:["关闭"],
                     callBack: function (result) {
                         controller.Close();
                     }

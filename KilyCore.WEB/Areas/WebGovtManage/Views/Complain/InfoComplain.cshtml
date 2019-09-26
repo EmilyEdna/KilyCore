@@ -31,8 +31,10 @@
             action: {
                 TableFormatter: function (val, row, index) {
                     var action = [];
-                    action.push('<button class="btn btn-sm btn-primary send"><i class="fa fa-pencil-square-o"></i>推送</button>');
-                    action.push('<button class="btn btn-sm btn-primary eye"><i class="fa fa-eye"></i>查看处理</button>');
+                    if (row.SendStatus != "已推送") {
+                        action.push('<button class="btn btn-sm btn-primary send"><i class="fa fa-pencil-square-o"></i>推送</button>');
+                    }
+                    action.push('<button class="btn btn-sm btn-primary eye"><i class="fa fa-eye"></i>查看</button>');
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
                     return action.join("&nbsp;")
                 },
@@ -40,13 +42,15 @@
                     "click .eye": function (event, val, row, index) {
                         controller.OpenWindow({
                             title: row.CompanyName+"-"+row.ComplainContent,
-                            type: 1,
+                            type: 2,
                             height: "456px",
-                            width: "800px",  
+                            width: "60%",  
                             resize: false,
                             maxmin: false,
-                            content: '<article class="lead m-t" style="text-indent:35px;">' + row.HandlerContent+'</article>',
+                            btn:["关闭"],
+                            url: "WebGovtManage/Complain/InfoComplainDetail?Id=" + row.Id,
                             callBack: function (result) {
+                                controller.Close();
                             }
                         });
                     },
@@ -120,7 +124,7 @@
                             <tr>
                                 <th data-field="CompanyName" data-halign="center" data-align="center" data-valign="middle">企业名称</th>
                                 <th data-field="ComplainContent" data-halign="center" data-align="center" data-valign="middle">投诉内容</th>
-                                <th data-field="ProductName" data-halign="center" data-align="center" data-valign="middle">投诉人</th>
+                                <th data-field="ComplainUser" data-halign="center" data-align="center" data-valign="middle">投诉人</th>
                                 <th data-field="ComplainUserPhone" data-halign="center" data-align="center" data-valign="middle">投诉人电话</th>
                                 <th data-field="Status" data-halign="center" data-align="center" data-valign="middle">状态</th>
                                 <th data-field="SendStatus" data-halign="center" data-align="center" data-valign="middle">推送状态</th>
