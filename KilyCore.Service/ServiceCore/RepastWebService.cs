@@ -298,7 +298,7 @@ namespace KilyCore.Service.ServiceCore
         public string SaveMerchant(RequestMerchant Param)
         {
             Param.AuditType = AuditEnum.WaitAduit;
-            RepastInfo data = Kily.Set<RepastInfo>().Where(t => t.Id == Param.Id).FirstOrDefault();
+            RepastInfo data = Kily.Set<RepastInfo>().Where(t => t.Id == Param.Id).AsNoTracking().FirstOrDefault();
             Param.DingRoleId = data.DingRoleId;
             Param.InfoId = data.InfoId;
             RepastInfo Info = Param.MapToEntity<RepastInfo>();
@@ -316,17 +316,20 @@ namespace KilyCore.Service.ServiceCore
                         return "对不起，您录入的企业名称和社会统一代码不一致！";
                     //正确才审核和提交合同
                     Info.AuditType = AuditEnum.AuditSuccess;
-                    RequestStayContract contract = new RequestStayContract()
+                    if(Kily.Set<SystemStayContract>().Where(t => t.CompanyId == Info.Id).FirstOrDefault() == null)
                     {
-                        CompanyId = Info.Id,
-                        TypePath = Info.TypePath,
-                        CompanyName = Info.MerchantName,
-                        VersionType = SystemVersionEnum.Base,
-                        ContractYear = "1",
-                        ContractType = 2,
-                        IsFormInviteCode = true
-                    };
-                    SaveContract(contract);
+                        RequestStayContract contract = new RequestStayContract()
+                        {
+                            CompanyId = Info.Id,
+                            TypePath = Info.TypePath,
+                            CompanyName = Info.MerchantName,
+                            VersionType = SystemVersionEnum.Base,
+                            ContractYear = "1",
+                            ContractType = 2,
+                            IsFormInviteCode = true
+                        };
+                        SaveContract(contract);
+                    }
                     var CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(Info.DiningType);
                     EnterpriseRoleAuthor Role = Kily.Set<EnterpriseRoleAuthor>().Where(t => t.EnterpriseRoleName.Contains(CompanyType + "基础")).FirstOrDefault();
                     Info.DingRoleId = Role.Id;
