@@ -1576,7 +1576,6 @@ pre code {
   background-color: transparent;
   border-radius: 0;
 }
-.pre-scrollable {
   max-height: 340px;
   overflow-y: scroll;
 }
@@ -2511,7 +2510,7 @@ label {
   display: inline-block;
   max-width: 100%;
   margin-bottom: 5px;
-  font-weight: bold;
+  font-weight: normal;
 }
 input[type="search"] {
   -webkit-box-sizing: border-box;

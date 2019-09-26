@@ -21,7 +21,15 @@ namespace KilyCore.WEB.Areas.WebGovtManage.Controllers
         {
             return View();
         }
+        public IActionResult ReportTrainDetail()
+        {
+            return View();
+        }
         public IActionResult NoticeTrainEdit()
+        {
+            return View();
+        }
+        public IActionResult NoticeTrainDetail()
         {
             return View();
         }

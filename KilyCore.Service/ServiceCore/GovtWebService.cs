@@ -2100,6 +2100,7 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 InfoTitle = t.InfoTitle,
                 CompanyType = t.CompanyType,
+                CreateTime=t.CreateTime.Value.ToString("yyyy年MM月dd日 HH:mm"),
                 InfoContent = t.InfoContent
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -2139,6 +2140,7 @@ namespace KilyCore.Service.ServiceCore
                 GovtId = t.GovtId,
                 CompanyType = t.CompanyType,
                 InfoContent = t.InfoContent,
+                CreateTime=t.CreateTime.Value.ToString("yyyy年MM月dd日"),
                 InfoTitle = t.InfoTitle
             }).FirstOrDefault();
             return data;

@@ -43,7 +43,8 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary send"><i class="fa fa-pencil-square-o"></i>推送</button>');
-                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
+                    //action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
+                    action.push('<button class="btn btn-sm btn-primary detail"><i class="fa fa-pencil-square-o"></i>查看</button>');
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
                     return action.join("&nbsp;")
                 },
@@ -71,6 +72,19 @@
                             url: "WebGovtManage/Train/ReportTrainEdit?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
+                            }
+                        });
+                    },
+                     "click .detail": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: row.InfoTitle,
+                            type: 2,
+                            height: "90%",
+                            width: "80%",  
+                            btn:["关闭"],
+                            url: "WebGovtManage/Train/ReportTrainDetail?Id=" + row.Id,
+                            callBack: function (result) {
+                                controller.Close();
                             }
                         });
                     },
@@ -116,7 +130,7 @@
                         </div>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input type="text" placeholder="报道标题" class="input-sm form-control" name="InfoTitle">
+                                <input type="text" placeholder="报道名称" class="input-sm form-control" name="InfoTitle">
                                 <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
                                     <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
@@ -129,9 +143,10 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="InfoTitle" data-halign="center" data-align="center" data-valign="middle">报道标题</th>
-                                <th data-field="InfoContent" data-halign="center" data-align="center" data-valign="middle">报道内容</th>
+                                <th data-field="InfoTitle" data-halign="center" data-align="left" data-valign="middle">报道名称</th>
+                                @*<th data-field="InfoContent" data-halign="center" data-align="center" data-valign="middle">报道内容</th>*@
                                 <th data-field="CompanyType" data-halign="center" data-align="center" data-valign="middle">所属行业</th>
+                                <th data-field="CreateTime" data-halign="center" data-align="center" data-valign="middle">报道日期</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>

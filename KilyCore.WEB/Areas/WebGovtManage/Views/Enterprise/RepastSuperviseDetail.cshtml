@@ -3,7 +3,12 @@
     ViewData["Title"] = "企业详细";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
-@section css{ }
+@section css{
+    <style>
+        .ts{display:none;}
+    </style>
+
+ }
 @section script{
     <script>
         //配置
@@ -36,6 +41,15 @@
                             $(".J_iframe").eq(i).attr("src", url);
 
                         })
+                        //判断是否学校
+                        if (result.data.DiningTypeName == "餐饮企业")
+                        {
+                            $(".ts").hide();
+                        }
+                        else
+                        {
+                              $(".ts").show();
+                        }
                     }
                 });
                 //查看大图
@@ -208,8 +222,9 @@
             <li>
                 <a data-toggle="tab" href="#tab-5" aria-expanded="false">人员管理</a>
             </li>
+
             <li>
-                <a data-toggle="tab" href="#tab-6" aria-expanded="false">食材供应</a>
+                <a data-toggle="tab" href="#tab-6" aria-expanded="false">台账凭证</a>
             </li>
             <li>
                 <a data-toggle="tab" href="#tab-7" aria-expanded="false">主营菜品</a>
@@ -223,11 +238,14 @@
             <li>
                 <a data-toggle="tab" href="#tab-10" aria-expanded="false">抽检信息</a>
             </li>
-            <li>
+            <li class="ts">
                 <a data-toggle="tab" href="#tab-11" aria-expanded="false">陪餐打卡</a>
             </li>
-            <li>
+            <li class="ts">
                 <a data-toggle="tab" href="#tab-12" aria-expanded="false">自查记录</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-13" aria-expanded="false">食材供应</a>
             </li>
         </ul>
         <div class="tab-content">
@@ -311,7 +329,7 @@
             </div>
             <!--人员管理-->
             <div id="tab-5" class="tab-pane">
-                <div class="ibox-content" >
+                <div class="ibox-content">
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
@@ -322,7 +340,6 @@
                             </tr>
                         </thead>
                         <tbody id="PersonList">
-
                         </tbody>
                     </table>
                 </div>
@@ -330,17 +347,17 @@
             <!--食材供应-->
             <div id="tab-6" class="tab-pane">
                 <div class="ibox-content">
-                        <table id="tableList" class="table">
-                            <thead>
-                                <tr>
-                                    <th data-field="Theme" data-halign="center" data-align="center" data-valign="middle">台账名称</th>
-                                    <th data-field="UpTime" data-halign="center" data-align="center" data-valign="middle">上报时间</th>
-                                    <th data-field="Content" data-halign="center" data-align="center" data-valign="middle">凭证</th>
-                                </tr>
-                            </thead>
-                            <tbody id="ThingList">
-                            </tbody>
-                        </table>
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="Theme" data-halign="center" data-align="center" data-valign="middle">台账名称</th>
+                                <th data-field="UpTime" data-halign="center" data-align="center" data-valign="middle">上报时间</th>
+                                <th data-field="Content" data-halign="center" data-align="center" data-valign="middle">凭证</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ThingList">
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <!--主营菜品-->
@@ -395,6 +412,11 @@
                 </div>
             </div>
             <!--企业自查-->
+            <div id="tab-12" class="tab-pane">
+                <div class="ibox-content">
+                </div>
+            </div>
+            <!--食材供应-->
             <div id="tab-12" class="tab-pane">
                 <div class="ibox-content">
                 </div>

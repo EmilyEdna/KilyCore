@@ -47,6 +47,7 @@
                     crossDomain: true,
                     data: $('#Login').SerializeJson(),
                     success: function (result) {
+                        debugger;
                         if (result.flag != -1) {
                             controller.SetCookie(result.data);
                             if (result.data.GovtAdmin.Flag != null) {

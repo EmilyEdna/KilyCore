@@ -62,7 +62,7 @@
                     success: function (result) {
                         var html = "";
                         $.each(result.data.rows, function (i, obj) {
-                            html += '<div class="col-sm-12 search-result"><a href="/WebGovtManage/Train/NoticeTrain">'
+                            html += '<div class="col-sm-12 search-result"><a href="javascript:ShowModelDetail("/WebGovtManage/Train/NoticeTrainDetail?Id='+obj.Id+'","'+obj.TrainTitle+'"">'
                                 + '<h3><strong>' + obj.TrainTitle + '</strong></h3>'
                                 + '<p><i class="fa fa-map-marker"></i> ' + obj.TrainPlace + '</p>'
                                 + '</a><address>'
@@ -110,7 +110,7 @@
                                     Area = res.data;
                                 }
                             });
-                            html += '<div class="col-sm-12 search-result"><a href="/WebGovtManage/Train/NoticeTrain">'
+                            html += '<div class="col-sm-12 search-result"><a href="javascript:ShowModelDetail();">'
                                 + '<h3><strong>' + obj.EventName + '</strong><span style="color:red;">(' + obj.WaringLv + ')</span></h3>'
                                 + '<p><i class="fa fa-map-marker"></i> ' + Area + '</p>'
                                 + '</a><address>'
@@ -272,6 +272,19 @@
         $(document).ready(function () {
             options.Init();
         });
+        //展示
+        function ShowModelDetail(Url,Title) {
+             controller.OpenWindow({
+                    title:Title,
+                    type: 2,
+                    height: "90%",
+                    width: "80%",  
+                    url: Url,
+                    callBack: function (result) {
+                        controller.Close();
+                    }
+                });
+        }
     </script>
 }
 

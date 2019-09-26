@@ -39,5 +39,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Govt
         public string InfoTitle { get; set; }
         public string InfoContent { get; set; }
         public string CompanyType { get; set; }
+
+        public string CreateTime { set; get; }
     }
 }

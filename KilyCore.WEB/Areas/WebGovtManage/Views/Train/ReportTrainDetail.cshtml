@@ -1,0 +1,77 @@
+﻿
+@{
+    ViewData["Title"] = "报道详情";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#GovtId").val(GovtInfo.Id);
+                options.Editor = controller.Editor(".summernote");
+                var Id = controller.GetParam("Id");
+                if (Id != null && Id != undefined && Id != "")
+                    controller.ajax({
+                        url: "GovtWeb/GetTrainReportDetail",
+                        data: { Id: Id },
+                        async: false,
+                        type: "post",
+                        success: function (result) {
+                            controller.SetLableValue("#Edit", result.data);
+                        }
+                    });
+            },
+            //事件
+            InitEvents: function () {
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="GovtWeb/EditTrainReport" id="Edit">
+            <table class="table table-hover table-bordered">
+                <colgroup>
+                    <col width="10%"/>
+                    <col width="90%" />
+                </colgroup>
+                <tr>
+                    <th style="text-align:center"><label class="control-label">报道名称</label></th>
+                    <td class="has-warning">
+                        <label type="txt" name="InfoTitle"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center"><label class="control-label">所属行业</label></th>
+                    <td class="has-warning" colspan="3">
+                        <label type="txt" name="CompanyType"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <th  style="text-align:center"><label class="control-label">报道时间</label></th>
+                    <td class="has-warning" colspan="3">
+                        <label type="txt" name="CreateTime"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <th  style="text-align:center"><label class="control-label">报道内容</label></th>
+                    <td class="has-warning" colspan="3">
+                        <label type="txt" name="InfoContent"></label>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
