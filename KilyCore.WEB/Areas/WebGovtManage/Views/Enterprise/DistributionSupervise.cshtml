@@ -66,13 +66,13 @@
             color: #999
         }
 
-        form {
+        .form {
             width: 380px;
             display: flex;
             justify-content: flex-start
         }
 
-            form input[type=text] {
+            .form input[type=text] {
                 width: 290px;
                 border: 1px solid #2ca8d1;
                 border-radius: 4px 0 0 4px;
@@ -80,7 +80,7 @@
                 text-indent: .5em
             }
 
-            form input[type=button] {
+            .form input[type=button] {
                 width: 90px;
                 border: none;
                 background-color: #2ca8d1;
@@ -353,6 +353,13 @@
                         $(this).text(">");
                     }
                 });
+                //企业模糊查询
+                $("#search").click(function () {
+                    var text = $("#input").val();
+                    if ($.trim(text) != "") {
+                        $("#CompanyList li").hide().filter(":contains('" + text + "')").show();
+                    } 
+                });
             }
         };
         //初始化
@@ -492,10 +499,10 @@
 <!-- 右侧停靠栏 -->
 <div class="right-tab">
     <div class="left-btn">></div>
-    <form action="" method="post">
-        <input type="text" name="" placeholder="请输入关键词（查询区域）">
+    <div class="form">
+        <input type="text" id="input" placeholder="请输入关键词（查询区域）">
         <input type="button" id="search" value="查找">
-    </form>
+    </div>
     <div class="list">
         <div class="msg">
             <img src="/content/Hplus/img/map.png">
