@@ -1,9 +1,7 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "食用产品";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
-
 @section script{
     <script>
         //配置
@@ -57,16 +55,13 @@
         });
     </script>
 }
-@section css{
-
-}
 <div class="container-fluid">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
+        <div class="ibox ibox-c float-e-margins">
+            <div class="ibox-title ibox-title-c">
                 <h5>食用产品</h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="Edit">
                         <div class="col-sm-8 m-b-xs">
@@ -88,7 +83,7 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="ProductName" data-halign="center" data-align="left" data-valign="middle">产品名称</th>
+                                <th data-field="ProductName" class="th-center">产品名称</th>
                                 <th data-field="ProductType" data-halign="center" data-align="center" data-valign="middle">产品类型</th>
                                 <th data-field="ExpiredDate" data-halign="center" data-align="center" data-valign="middle">保质期</th>
                                 <th data-field="Spec" data-halign="center" data-align="center" data-valign="middle">规格</th>

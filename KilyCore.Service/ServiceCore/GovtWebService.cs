@@ -1305,7 +1305,8 @@ namespace KilyCore.Service.ServiceCore
                 ReleaseTime = DateTime.Now,
                 MsgName = risk.EventName,
                 MsgContent = risk.Remark,
-                TrageType = risk.TradeType
+                TrageType = risk.TradeType,
+                Category="预警"
             };
             Insert(message);
             return UpdateField(risk, "ReportPlay") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
@@ -1513,6 +1514,7 @@ namespace KilyCore.Service.ServiceCore
                 TrageType = Key,
                 MsgName = "证件到期提醒",
                 MsgContent = "您的证件日期即将到期，请尽快续期",
+                Category="常规"
             };
             return Insert(message) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
@@ -1641,7 +1643,8 @@ namespace KilyCore.Service.ServiceCore
                 MsgName = Param.Title,
                 ReleaseTime = DateTime.Now,
                 TrageType = govtNet.TradeType,
-                TypePath = govtNet.TypePath
+                TypePath = govtNet.TypePath,
+                Category="通报",
             };
             return Insert(message) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
@@ -2068,6 +2071,7 @@ namespace KilyCore.Service.ServiceCore
             message.MsgContent = notice.Remark;
             message.ReleaseTime = DateTime.Now;
             message.TypePath = GovtInfo().TypePath;
+            message.Category = "常规";
             if (!notice.CompanyType.Contains(","))
             {
                 message.TrageType = notice.CompanyType;
@@ -2159,6 +2163,7 @@ namespace KilyCore.Service.ServiceCore
                 MsgContent = report.InfoContent,
                 ReleaseTime = DateTime.Now,
                 TrageType = report.CompanyType,
+                Category = "常规",
                 TypePath = GovtInfo().TypePath
             };
             return Insert(message) ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
@@ -2255,6 +2260,7 @@ namespace KilyCore.Service.ServiceCore
         {
             GovtComplain complain = Param.MapToEntity<GovtComplain>();
             complain.Status = "待处理";
+            complain.Category = "投诉";
             complain.ComplainTime = DateTime.Now;
             return Insert(complain) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
@@ -2301,7 +2307,8 @@ namespace KilyCore.Service.ServiceCore
                 MsgContent = complain.ComplainContent,
                 ReleaseTime = DateTime.Now,
                 TrageType = complain.CompanyType,
-                TypePath = complain.TypePath
+                TypePath = complain.TypePath,
+                Category="投诉",
             };
             return Insert(message) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }

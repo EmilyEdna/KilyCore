@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "执法类目";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
@@ -95,16 +94,13 @@
         });
     </script>
 }
-@section css{
-
-}
 <div class="container-fluid">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
+        <div class="ibox ibox-c float-e-margins">
+            <div class="ibox-title ibox-title-c">
                 <h5>执法类目</h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="Edit">
                         <div class="col-sm-8 m-b-xs">
@@ -133,10 +129,10 @@
                         </colgroup>
                         <thead>
                             <tr>
-                                <th data-field="CategoryName" data-halign="center" data-align="left" data-valign="middle">类目名称</th>
-                                <th data-field="CategoryType" data-halign="center" data-align="center" data-valign="middle">类目类型</th>
-                                <th data-field="Remark" data-halign="center" data-align="center" data-valign="middle">备注</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th data-field="CategoryName" class="th-center">类目名称</th>
+                                <th data-field="CategoryType" class="th-center">类目类型</th>
+                                <th data-field="Remark" class="th-center">备注</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" class="th-center">操作</th>
                             </tr>
                         </thead>
                     </table>

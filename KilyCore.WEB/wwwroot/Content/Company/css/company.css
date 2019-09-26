@@ -213,13 +213,13 @@
         color: #999
     }
 
-.section4 form {
+.section4 .form {
     width: 380px;
     display: flex;
     justify-content: flex-start
 }
 
-.section4 form input[type=text] {
+.section4 .form input[type=text] {
     width: 290px;
     border: 1px solid #2ca8d1;
     border-radius: 4px 0 0 4px;
@@ -227,7 +227,7 @@
     text-indent: .5em
 }
 
-.section4 form input[type=button] {
+.section4 .form input[type=button] {
     width: 90px;
     border: none;
     background-color: #2ca8d1;

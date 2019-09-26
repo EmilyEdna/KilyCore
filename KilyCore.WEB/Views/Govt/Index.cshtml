@@ -288,9 +288,12 @@
         }
     </script>
 }
-
 @section css{
     <style>
+        .ibox-title h5{
+            border-left: 4px solid #239FE6;
+            padding-left: 8px;
+        }
         .content1 a {
             display: inline-block;
             width: 22%;
@@ -360,12 +363,12 @@
 <div class="wrapper wrapper-content">
     <div class="row">
         <div class="col-sm-3">
-            <div class=" ibox float-e-margins">
-                <div class="ibox-title">
+            <div class=" ibox ibox-c float-e-margins">
+                <div class="ibox-title ibox-title-c">
                     <span class="label label-success pull-right">月</span>
                     <h5>企业入驻</h5>
                 </div>
-                <div class="item">
+                <div class="item ibox-content-c">
                     <div class="left" style="background-color: #1C84C6;"></div>
                     <div class="right">
                         <p>月入驻：<span id="A1"></span></p>
@@ -375,12 +378,12 @@
             </div>
         </div>
         <div class="col-sm-3">
-            <div class=" ibox float-e-margins">
-                <div class="ibox-title">
+            <div class=" ibox ibox-c float-e-margins">
+                <div class="ibox-title ibox-title-c">
                     <span class="label label-info pull-right">月</span>
                     <h5 class="ts">产品数量</h5>
                 </div>
-                <div class="item">
+                <div class="item ibox-content-c">
                     <div class="left" style="background-color: #23C6C8;"></div>
                     <div class="right">
                         <p class="ts">月产品：<span id="A2"></span></p>
@@ -390,12 +393,12 @@
             </div>
         </div>
         <div class="col-sm-3">
-            <div class=" ibox float-e-margins">
-                <div class="ibox-title">
+            <div class=" ibox ibox-c float-e-margins">
+                <div class="ibox-title ibox-title-c">
                     <span class="label label-warning pull-right">月</span>
                     <h5>网上巡查</h5>
                 </div>
-                <div class="item">
+                <div class="item ibox-content-c">
                     <div class="left" style="background-color: #F8AC59;"></div>
                     <div class="right">
                         <p>月巡查：<span id="A3"></span></p>
@@ -405,12 +408,12 @@
             </div>
         </div>
         <div class="col-sm-3">
-            <div class=" ibox float-e-margins">
-                <div class="ibox-title">
+            <div class=" ibox ibox-c float-e-margins">
+                <div class="ibox-title ibox-title-c">
                     <span class="label label-danger pull-right">月</span>
                     <h5 class="tq">群宴报备</h5>
                 </div>
-                <div class="item">
+                <div class="item ibox-content-c">
                     <div class="left" style="background-color: #ED5565;"></div>
                     <div class="right">
                         <p class="tq">月报备：<span id="A4">452,451</span></p>
@@ -422,11 +425,11 @@
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
+            <div class="ibox ibox-c float-e-margins">
+                <div class="ibox-title ibox-title-c">
                     <h5>常用功能</h5>
                 </div>
-                <div class="ibox-content">
+                <div class="ibox-content ibox-content-c">
                     <div class="content content1">
                         <a class="J_menuItem" href="/WebGovtManage/Enterprise/DistributionSupervise">
                             <img src="~/Content/DataView/images/zf_cygn1.png" />
@@ -465,11 +468,11 @@
             </div>
         </div>
         <div class="col-sm-6">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
+            <div class="ibox ibox-c float-e-margins">
+                <div class="ibox-title ibox-title-c">
                     <h5>投诉</h5>
                 </div>
-                <div class="ibox-content">
+                <div class="ibox-content ibox-content-c">
                     <div class="row">
                         <div class="col-sm-9">
                             <div class="flot-chart">
@@ -517,8 +520,8 @@
     </div>
     <div class="row">
         <div class="col-sm-4">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
+            <div class="ibox ibox-c float-e-margins">
+                <div class="ibox-title ibox-title-c">
                     <h5>培训通知</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
@@ -529,7 +532,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="ibox-content" style="min-height:240px;">
+                <div class="ibox-content ibox-content-c" style="min-height:240px;">
                     <div class="row" id="Train">
 
                     </div>
@@ -538,8 +541,8 @@
             </div>
         </div>
         <div class="col-sm-4">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
+            <div class="ibox ibox-c float-e-margins">
+                <div class="ibox-title ibox-title-c">
                     <h5>投诉信息</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
@@ -550,7 +553,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="ibox-content" style="min-height:240px;">
+                <div class="ibox-content ibox-content-c" style="min-height:240px;">
                     <div class="row">
                         <table class="table table-hover no-margins" style="width: 95%; margin: 0 auto !important;">
                             <thead>
@@ -568,8 +571,8 @@
             </div>
         </div>
         <div class="col-sm-4">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
+            <div class="ibox ibox-c float-e-margins">
+                <div class="ibox-title ibox-title-c">
                     <h5>预警信息</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
@@ -580,7 +583,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="ibox-content" style="min-height:240px;">
+                <div class="ibox-content ibox-content-c" style="min-height:240px;">
                     <div class="row" id="Risk">
                     </div>
                     <a class="btn btn-primary btn-block m-t" href="/WebGovtManage/Train/NoticeTrain"><i class="fa fa-arrow-down"></i> 查看更多</a>

@@ -1,9 +1,7 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "生产企业";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
-
 @section script{
     <script src="~/Content/ExportPlugin/Script/xlsx.core.min.js"></script>
     <script src="~/Content/ExportPlugin/Script/tableExport.js"></script>
@@ -78,16 +76,13 @@
         });
     </script>
 }
-@section css{
-
-}
 <div class="container-fluid">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
+        <div class="ibox ibox-c float-e-margins">
+            <div class="ibox-title ibox-title-c">
                 <h5>生产企业</h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="Edit">
                         <div class="col-sm-8 m-b-xs">
@@ -110,12 +105,12 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="CompanyName" data-halign="center" data-align="center" data-valign="middle">企业名称</th>
-                                <th data-field="CompanyTypeName" data-halign="center" data-align="center" data-valign="middle">企业类型</th>
-                                <th data-field="CommunityCode" data-halign="center" data-align="center" data-valign="middle">信用代码</th>
-                                <th data-field="CompanyPhone" data-halign="center" data-align="center" data-valign="middle">企业电话</th>
-                                <th data-field="CompanyAddress" data-halign="center" data-align="center" data-valign="middle">注册地址</th>
-                                <th data-field="Handler" data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th data-field="CompanyName" class="th-center">企业名称</th>
+                                <th data-field="CompanyTypeName" class="th-center">企业类型</th>
+                                <th data-field="CommunityCode" class="th-center">信用代码</th>
+                                <th data-field="CompanyPhone" class="th-center">企业电话</th>
+                                <th data-field="CompanyAddress" class="th-center">注册地址</th>
+                                <th data-field="Handler" data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" class="th-center">操作</th>
                             </tr>
                         </thead>
                     </table>

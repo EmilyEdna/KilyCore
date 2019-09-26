@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "企业详细";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
@@ -7,7 +6,6 @@
     <style>
         .ts{display:none;}
     </style>
-
  }
 @section script{
     <script>
@@ -333,10 +331,10 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="TrueName" data-halign="center" data-align="center" data-valign="middle">姓名</th>
-                                <th data-field="Phone" data-halign="center" data-align="center" data-valign="middle">入职状态</th>
-                                <th data-field="ExpiredTime" data-halign="center" data-align="center" data-valign="middle">有效期</th>
-                                <th data-halign="center" data-align="center" data-valign="middle">健康证</th>
+                                <th data-field="TrueName" class="th-center">姓名</th>
+                                <th data-field="Phone" class="th-center">入职状态</th>
+                                <th data-field="ExpiredTime" class="th-center">有效期</th>
+                                <th class="th-center">健康证</th>
                             </tr>
                         </thead>
                         <tbody id="PersonList">
@@ -350,9 +348,9 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="Theme" data-halign="center" data-align="center" data-valign="middle">台账名称</th>
-                                <th data-field="UpTime" data-halign="center" data-align="center" data-valign="middle">上报时间</th>
-                                <th data-field="Content" data-halign="center" data-align="center" data-valign="middle">凭证</th>
+                                <th data-field="Theme" class="th-center">台账名称</th>
+                                <th data-field="UpTime" class="th-center">上报时间</th>
+                                <th data-field="Content" class="th-center">凭证</th>
                             </tr>
                         </thead>
                         <tbody id="ThingList">
@@ -371,11 +369,11 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="HandleWays" data-halign="center" data-align="center" data-valign="middle">处理方式</th>
-                                <th data-field="Phone" data-halign="center" data-align="center" data-valign="middle">电话</th>
-                                <th data-field="HandleTime" data-halign="center" data-align="center" data-valign="middle">处理时间</th>
-                                <th data-field="HandleUser" data-halign="center" data-align="center" data-valign="middle">操作人</th>
-                                <th data-halign="center" data-align="center" data-valign="middle">现场图片</th>
+                                <th data-field="HandleWays" class="th-center">处理方式</th>
+                                <th data-field="Phone" class="th-center">电话</th>
+                                <th data-field="HandleTime" class="th-center">处理时间</th>
+                                <th data-field="HandleUser" class="th-center">操作人</th>
+                                <th class="th-center">现场图片</th>
                             </tr>
                         </thead>
                         <tbody id="BadList">
@@ -389,11 +387,11 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="DishName" data-halign="center" data-align="center" data-valign="middle">菜品名称</th>
-                                <th data-field="Phone" data-halign="center" data-align="center" data-valign="middle">储藏方式</th>
-                                <th data-field="OperatUser" data-halign="center" data-align="center" data-valign="middle">操作人</th>
-                                <th data-field="SampleTime" data-halign="center" data-align="center" data-valign="middle">留样时间</th>
-                                <th data-halign="center" data-align="center" data-valign="middle">留样图片</th>
+                                <th data-field="DishName" class="th-center">菜品名称</th>
+                                <th data-field="Phone" class="th-center">储藏方式</th>
+                                <th data-field="OperatUser" class="th-center">操作人</th>
+                                <th data-field="SampleTime" class="th-center">留样时间</th>
+                                <th class="th-center">留样图片</th>
                             </tr>
                         </thead>
                         <tbody id="TempList">

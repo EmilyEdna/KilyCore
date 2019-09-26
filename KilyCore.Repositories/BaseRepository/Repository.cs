@@ -22,6 +22,7 @@ using System.Data.SqlClient;
 using System.Data.Common;
 using System.Collections;
 using KilyCore.EntityFrameWork.Attributes;
+using KilyCore.EntityFrameWork.Model.System;
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日12点01分
@@ -43,8 +44,37 @@ namespace KilyCore.Repositories.BaseRepository
             try
             {
                 TEntity Entity = Kily.Set<TEntity>().Where(exp).FirstOrDefault();
+                Type EntityType = Entity.GetType();
+                if (EntityType.GetCustomAttribute(typeof(DescriptionAttribute)) != null)
+                {
+                    string FunctionName = (EntityType.GetCustomAttribute(typeof(DescriptionAttribute)) as DescriptionAttribute).Description;
+                    string ThemeName = EntityType.GetProperties().Where(t => t.GetCustomAttribute(typeof(DescriptionAttribute)) != null).FirstOrDefault().GetValue(Entity).ToString();
+                    SystemLogInfo Log = new SystemLogInfo();
+                    if (UserInfo() != null)
+                        Log.HandlerUser = UserInfo().TrueName;
+                    else if (CompanyInfo() != null)
+                        Log.HandlerUser = CompanyInfo().CompanyName;
+                    else if (CompanyUser() != null)
+                        Log.HandlerUser = CompanyUser().CompanyName;
+                    else if (MerchantInfo() != null)
+                        Log.HandlerUser = MerchantInfo().MerchantName;
+                    else if (MerchantUser() != null)
+                        Log.HandlerUser = MerchantUser().MerchantName;
+                    else if (CookInfo() != null)
+                        Log.HandlerUser = CookInfo().TrueName + "(厨师)";
+                    else if (GovtInfo() != null)
+                        Log.HandlerUser = GovtInfo().TrueName;
+                    else
+                        Log.HandlerUser = null;
+                    Log.HandlerType = "删除内容";
+                    Log.HandlerTime = DateTime.Now;
+                    Log.Id = Guid.NewGuid();
+                    Log.HandlerContent = $"【{Log.HandlerUser}】对【{FunctionName}】中的【{ThemeName}】进行了【{Log.HandlerType}】操作，操作时间【{Log.HandlerTime.Value.ToShortDateString()}】";
+                    Kily.Add(Log);
+                    Kily.SaveChanges();
+                }
                 RemovePath(Entity);
-                List<PropertyInfo> props = Entity.GetType().GetProperties().Where(t => t.Name.Contains("Delete")).ToList();
+                List<PropertyInfo> props = EntityType.GetType().GetProperties().Where(t => t.Name.Contains("Delete")).ToList();
                 if (!string.IsNullOrEmpty(FieldName))
                     Entity.GetType().GetProperties().Where(t => t.Name.Equals(FieldName)).FirstOrDefault().SetValue(Entity, Data);
                 props.Where(t => t.Name.Equals("IsDelete")).FirstOrDefault().SetValue(Entity, true);
@@ -84,7 +114,36 @@ namespace KilyCore.Repositories.BaseRepository
         {
             try
             {
-                List<PropertyInfo> props = Entity.GetType().GetProperties().Where(t => t.Name.Contains("Create")).ToList();
+                Type EntityType = Entity.GetType();
+                if (EntityType.GetCustomAttribute(typeof(DescriptionAttribute)) != null)
+                {
+                    string FunctionName = (EntityType.GetCustomAttribute(typeof(DescriptionAttribute)) as DescriptionAttribute).Description;
+                    string ThemeName = EntityType.GetProperties().Where(t => t.GetCustomAttribute(typeof(DescriptionAttribute)) != null).FirstOrDefault().GetValue(Entity).ToString();
+                    SystemLogInfo Log = new SystemLogInfo();
+                    if (UserInfo() != null)
+                        Log.HandlerUser = UserInfo().TrueName;
+                    else if (CompanyInfo() != null)
+                        Log.HandlerUser = CompanyInfo().CompanyName;
+                    else if (CompanyUser() != null)
+                        Log.HandlerUser = CompanyUser().CompanyName;
+                    else if (MerchantInfo() != null)
+                        Log.HandlerUser = MerchantInfo().MerchantName;
+                    else if (MerchantUser() != null)
+                        Log.HandlerUser = MerchantUser().MerchantName;
+                    else if (CookInfo() != null)
+                        Log.HandlerUser = CookInfo().TrueName + "(厨师)";
+                    else if (GovtInfo() != null)
+                        Log.HandlerUser = GovtInfo().TrueName;
+                    else
+                        Log.HandlerUser = null;
+                    Log.HandlerType = "添加内容";
+                    Log.HandlerTime = DateTime.Now;
+                    Log.Id = Guid.NewGuid();
+                    Log.HandlerContent = $"【{Log.HandlerUser}】对【{FunctionName}】中的【{ThemeName}】进行了【{Log.HandlerType}】操作，操作时间【{Log.HandlerTime.Value.ToShortDateString()}】";
+                    Kily.Add(Log);
+                    Kily.SaveChanges();
+                }
+                List<PropertyInfo> props = EntityType.GetProperties().Where(t => t.Name.Contains("Create")).ToList();
                 Entity.GetType().GetProperty("IsDelete").SetValue(Entity, false);
                 if (PrimaryKey)
                     Entity.GetType().GetProperty("Id").SetValue(Entity, Guid.NewGuid());
@@ -123,10 +182,39 @@ namespace KilyCore.Repositories.BaseRepository
         /// <param name="dto"></param>
         /// <param name="UseUpdate">是否使用忽略更新特性</param>
         /// <returns></returns>
-        public virtual bool Update<TEntity, DEntity>(TEntity Entity, DEntity dto,bool UseUpdate=false) where TEntity : class, new() where DEntity : class, new()
+        public virtual bool Update<TEntity, DEntity>(TEntity Entity, DEntity dto, bool UseUpdate = false) where TEntity : class, new() where DEntity : class, new()
         {
             try
             {
+                Type EntityType = Entity.GetType();
+                if (EntityType.GetCustomAttribute(typeof(DescriptionAttribute)) != null)
+                {
+                    string FunctionName = (EntityType.GetCustomAttribute(typeof(DescriptionAttribute)) as DescriptionAttribute).Description;
+                    string ThemeName = EntityType.GetProperties().Where(t => t.GetCustomAttribute(typeof(DescriptionAttribute)) != null).FirstOrDefault().GetValue(Entity).ToString();
+                    SystemLogInfo Log = new SystemLogInfo();
+                    if (UserInfo() != null)
+                        Log.HandlerUser = UserInfo().TrueName;
+                    else if (CompanyInfo() != null)
+                        Log.HandlerUser = CompanyInfo().CompanyName;
+                    else if (CompanyUser() != null)
+                        Log.HandlerUser = CompanyUser().CompanyName;
+                    else if (MerchantInfo() != null)
+                        Log.HandlerUser = MerchantInfo().MerchantName;
+                    else if (MerchantUser() != null)
+                        Log.HandlerUser = MerchantUser().MerchantName;
+                    else if (CookInfo() != null)
+                        Log.HandlerUser = CookInfo().TrueName + "(厨师)";
+                    else if (GovtInfo() != null)
+                        Log.HandlerUser = GovtInfo().TrueName;
+                    else
+                        Log.HandlerUser = null;
+                    Log.HandlerType = "修改内容";
+                    Log.HandlerTime = DateTime.Now;
+                    Log.Id = Guid.NewGuid();
+                    Log.HandlerContent = $"【{Log.HandlerUser}】对【{FunctionName}】中的【{ThemeName}】进行了【{Log.HandlerType}】操作，操作时间【{Log.HandlerTime.Value.ToShortDateString()}】";
+                    Kily.Add(Log);
+                    Kily.SaveChanges();
+                }
                 List<PropertyInfo> DtoProps = dto.GetType().GetProperties().ToList();
                 List<PropertyInfo> EntityProps = Entity.GetType().GetProperties().ToList();
                 List<PropertyInfo> EntityProp = EntityProps.Where(t => t.Name.Contains("Update")).ToList();
@@ -164,7 +252,8 @@ namespace KilyCore.Repositories.BaseRepository
                                     //需要更新的字段
                                     Kily.Entry<TEntity>(Entity).Property(Prop.Name).IsModified = true;
                             }
-                            else {
+                            else
+                            {
                                 Kily.Entry<TEntity>(Entity).Property(Prop.Name).IsModified = true;
                             }
                         }
@@ -190,6 +279,35 @@ namespace KilyCore.Repositories.BaseRepository
         {
             try
             {
+                Type EntityType = Entity.GetType();
+                if (EntityType.GetCustomAttribute(typeof(DescriptionAttribute)) != null)
+                {
+                    string FunctionName = (EntityType.GetCustomAttribute(typeof(DescriptionAttribute)) as DescriptionAttribute).Description;
+                    string ThemeName = EntityType.GetProperties().Where(t => t.GetCustomAttribute(typeof(DescriptionAttribute)) != null).FirstOrDefault().GetValue(Entity).ToString();
+                    SystemLogInfo Log = new SystemLogInfo();
+                    if (UserInfo() != null)
+                        Log.HandlerUser = UserInfo().TrueName;
+                    else if (CompanyInfo() != null)
+                        Log.HandlerUser = CompanyInfo().CompanyName;
+                    else if (CompanyUser() != null)
+                        Log.HandlerUser = CompanyUser().CompanyName;
+                    else if (MerchantInfo() != null)
+                        Log.HandlerUser = MerchantInfo().MerchantName;
+                    else if (MerchantUser() != null)
+                        Log.HandlerUser = MerchantUser().MerchantName;
+                    else if (CookInfo() != null)
+                        Log.HandlerUser = CookInfo().TrueName + "(厨师)";
+                    else if (GovtInfo() != null)
+                        Log.HandlerUser = GovtInfo().TrueName;
+                    else
+                        Log.HandlerUser = null;
+                    Log.HandlerType = "修改内容";
+                    Log.HandlerTime = DateTime.Now;
+                    Log.Id = Guid.NewGuid();
+                    Log.HandlerContent = $"【{Log.HandlerUser}】对【{FunctionName}】中的【{ThemeName}】进行了【{Log.HandlerType}】操作，操作时间【{Log.HandlerTime.Value.ToShortDateString()}】";
+                    Kily.Add(Log);
+                    Kily.SaveChanges();
+                }
                 if (Fields != null && string.IsNullOrEmpty(Field))
                 {
                     List<PropertyInfo> EntityProps = Entity.GetType().GetProperties().Where(t => t.Name.Contains("Update")).ToList();
@@ -267,6 +385,35 @@ namespace KilyCore.Repositories.BaseRepository
             {
                 Kily.Set<TEntity>().Where(exp).ToList().ForEach(t =>
                 {
+                    Type EntityType = t.GetType();
+                    if (EntityType.GetCustomAttribute(typeof(DescriptionAttribute)) != null)
+                    {
+                        string FunctionName = (EntityType.GetCustomAttribute(typeof(DescriptionAttribute)) as DescriptionAttribute).Description;
+                        string ThemeName = EntityType.GetProperties().Where(x => x.GetCustomAttribute(typeof(DescriptionAttribute)) != null).FirstOrDefault().GetValue(t).ToString();
+                        SystemLogInfo Log = new SystemLogInfo();
+                        if (UserInfo() != null)
+                            Log.HandlerUser = UserInfo().TrueName;
+                        else if (CompanyInfo() != null)
+                            Log.HandlerUser = CompanyInfo().CompanyName;
+                        else if (CompanyUser() != null)
+                            Log.HandlerUser = CompanyUser().CompanyName;
+                        else if (MerchantInfo() != null)
+                            Log.HandlerUser = MerchantInfo().MerchantName;
+                        else if (MerchantUser() != null)
+                            Log.HandlerUser = MerchantUser().MerchantName;
+                        else if (CookInfo() != null)
+                            Log.HandlerUser = CookInfo().TrueName + "(厨师)";
+                        else if (GovtInfo() != null)
+                            Log.HandlerUser = GovtInfo().TrueName;
+                        else
+                            Log.HandlerUser = null;
+                        Log.HandlerType = "删除内容";
+                        Log.HandlerTime = DateTime.Now;
+                        Log.Id = Guid.NewGuid();
+                        Log.HandlerContent = $"【{Log.HandlerUser}】对【{FunctionName}】中的【{ThemeName}】进行了【{Log.HandlerType}】操作，操作时间【{Log.HandlerTime.Value.ToShortDateString()}】";
+                        Kily.Add(Log);
+                        Kily.SaveChanges();
+                    }
                     RemovePath(t);
                     Kily.Set<TEntity>().Remove(t);
                 });
