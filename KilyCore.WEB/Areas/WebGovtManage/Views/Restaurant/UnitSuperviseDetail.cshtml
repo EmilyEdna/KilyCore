@@ -209,6 +209,12 @@ pre{font-family:'微软雅黑'}
             <li>
                 <a data-toggle="tab" href="#tab-10" aria-expanded="false">抽检信息</a>
             </li>
+            <li>
+                <a data-toggle="tab" href="#tab-11" aria-expanded="false">陪餐打卡</a>
+            </li>
+            <li>
+                <a data-toggle="tab" href="#tab-12" aria-expanded="false">自查记录</a>
+            </li>
         </ul>
         <div class="tab-content">
             <div id="tab-1" class="tab-pane active">
@@ -272,16 +278,17 @@ pre{font-family:'微软雅黑'}
                 <div class="ibox-content">
                 </div>
             </div>
+            <!--监控视频-->
             <div id="tab-4" class="tab-pane">
                 <div class="ibox-content">
                     <table style="width:1060px">
                         <tr>
-                            <td style="text-align:center;"><iframe id="play" class="J_iframe" src="" name="iframe" style="width:100%;height:400px;margin:auto auto;" frameborder="0" seamless scrolling="no" align="middle"></iframe></td>
-                            <td style="text-align:center;"><iframe id="play" class="J_iframe" src="" name="iframe" style="width:100%;height:400px;margin:auto auto;" frameborder="0" seamless scrolling="no" align="middle"></iframe></td>
+                            <td style="text-align:center;"><iframe id="play" class="J_iframe" src="" name="iframe" style="width:87%;height:400px;margin:auto auto;" frameborder="0" seamless scrolling="no" align="middle"></iframe></td>
+                            <td style="text-align:center;"><iframe id="play" class="J_iframe" src="" name="iframe" style="width:87%;height:400px;margin:auto auto;" frameborder="0" seamless scrolling="no" align="middle"></iframe></td>
                         </tr>
                         <tr>
-                            <td style="text-align:center;"><iframe id="play" class="J_iframe" src="" name="iframe" style="width:100%;height:400px;margin:auto auto;" frameborder="0" seamless scrolling="no" align="middle"></iframe></td>
-                            <td style="text-align:center;"><iframe id="play" class="J_iframe" src="" name="iframe" style="width:100%;height:400px;margin:auto auto;" frameborder="0" seamless scrolling="no" align="middle"></iframe></td>
+                            <td style="text-align:center;"><iframe id="play" class="J_iframe" src="" name="iframe" style="width:87%;height:400px;margin:auto auto;" frameborder="0" seamless scrolling="no" align="middle"></iframe></td>
+                            <td style="text-align:center;"><iframe id="play" class="J_iframe" src="" name="iframe" style="width:87%;height:400px;margin:auto auto;" frameborder="0" seamless scrolling="no" align="middle"></iframe></td>
                         </tr>
                     </table>
                 </div>
@@ -289,29 +296,89 @@ pre{font-family:'微软雅黑'}
             <!--人员管理-->
             <div id="tab-5" class="tab-pane">
                 <div class="ibox-content">
-                    <div id="CompanyHealth" class="cx_health">
-                    </div>
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="TrueName" data-halign="center" data-align="center" data-valign="middle">姓名</th>
+                                <th data-field="Phone" data-halign="center" data-align="center" data-valign="middle">入职状态</th>
+                                <th data-field="ExpiredTime" data-halign="center" data-align="center" data-valign="middle">有效期</th>
+                                <th data-halign="center" data-align="center" data-valign="middle">健康证</th>
+                            </tr>
+                        </thead>
+                        <tbody id="PersonList">
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <!--食材供应-->
             <div id="tab-6" class="tab-pane">
                 <div class="ibox-content">
-                    <div id="CompanyThing" class="cx_ingredients box"></div>
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="Theme" data-halign="center" data-align="center" data-valign="middle">台账名称</th>
+                                <th data-field="UpTime" data-halign="center" data-align="center" data-valign="middle">上报时间</th>
+                                <th data-field="Content" data-halign="center" data-align="center" data-valign="middle">凭证</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ThingList">
+                        </tbody>
+                    </table>
                 </div>
             </div>
+            <!--主营菜品-->
             <div id="tab-7" class="tab-pane">
                 <div class="ibox-content">
                 </div>
             </div>
+            <!--废物处理-->
             <div id="tab-8" class="tab-pane">
                 <div class="ibox-content">
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="HandleWays" data-halign="center" data-align="center" data-valign="middle">处理方式</th>
+                                <th data-field="Phone" data-halign="center" data-align="center" data-valign="middle">电话</th>
+                                <th data-field="HandleTime" data-halign="center" data-align="center" data-valign="middle">处理时间</th>
+                                <th data-field="HandleUser" data-halign="center" data-align="center" data-valign="middle">操作人</th>
+                                <th data-halign="center" data-align="center" data-valign="middle">现场图片</th>
+                            </tr>
+                        </thead>
+                        <tbody id="BadList">
+                        </tbody>
+                    </table>
                 </div>
             </div>
+            <!--留样管理-->
             <div id="tab-9" class="tab-pane">
+                <div class="ibox-content">
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="DishName" data-halign="center" data-align="center" data-valign="middle">菜品名称</th>
+                                <th data-field="Phone" data-halign="center" data-align="center" data-valign="middle">储藏方式</th>
+                                <th data-field="OperatUser" data-halign="center" data-align="center" data-valign="middle">操作人</th>
+                                <th data-field="SampleTime" data-halign="center" data-align="center" data-valign="middle">留样时间</th>
+                                <th data-halign="center" data-align="center" data-valign="middle">留样图片</th>
+                            </tr>
+                        </thead>
+                        <tbody id="TempList">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--抽检信息-->
+            <div id="tab-10" class="tab-pane">
                 <div class="ibox-content">
                 </div>
             </div>
-            <div id="tab-10" class="tab-pane">
+            <!--陪餐打卡-->
+            <div id="tab-11" class="tab-pane">
+                <div class="ibox-content">
+                </div>
+            </div>
+            <!--企业自查-->
+            <div id="tab-12" class="tab-pane">
                 <div class="ibox-content">
                 </div>
             </div>

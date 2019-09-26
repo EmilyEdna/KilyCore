@@ -43,7 +43,8 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary send"><i class="fa fa-pencil-square-o"></i>推送</button>');
-                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
+                    //action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
+                    action.push('<button class="btn btn-sm btn-primary detail"><i class="fa fa-pencil-square-o"></i>查看</button>');
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
                     return action.join("&nbsp;")
                 },
@@ -71,6 +72,18 @@
                             url: "WebGovtManage/Train/NoticeTrainEdit?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
+                            }
+                        });
+                    },
+                     "click .detail": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: row.TrainTitle,
+                            type: 2,
+                            height: "90%",
+                            width: "80%",  
+                            url: "WebGovtManage/Train/NoticeTrainDetail?Id=" + row.Id,
+                            callBack: function (result) {
+                                controller.Close();
                             }
                         });
                     },

@@ -24,12 +24,12 @@
                     success: function (result) {
                         controller.SetLableValue("#Edit", result.data);
                         options.CompanyID = result.data.CompanyId;
-                        if (result.data.TradeType == "餐饮企业" || result.data.TradeType == "单位食堂") {
+                        if (result.data.TradeType == "餐饮企业" || result.data.TradeType == "单位食堂" || result.data.TradeType.indexOf("教育")>-1) {
                              options.CompanyUrl = "GovtWeb/GetRepastDetail";
                         }
                     }
                 });
-                //取详情
+                //取企业详情
                 controller.ajax({
                     url: options.CompanyUrl,
                     data: { Id: options.CompanyID},
@@ -39,6 +39,7 @@
                         controller.SetLableValue("#Edit", result.data);
                     }
                 });
+                //获取通报记录
             },
             //事件
             InitEvents: function () {

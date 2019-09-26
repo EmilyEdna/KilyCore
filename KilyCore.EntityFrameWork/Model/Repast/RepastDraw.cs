@@ -1,6 +1,7 @@
 ﻿using KilyCore.EntityFrameWork.Model.Base;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 #region << 版 本 注 释 >>
