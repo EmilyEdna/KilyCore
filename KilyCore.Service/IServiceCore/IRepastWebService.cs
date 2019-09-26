@@ -88,6 +88,13 @@ namespace KilyCore.Service.IServiceCore
         PagedResult<ResponseGovtTemplateChild> GetTemplateChild(PageParamList<RequestGovtTemplateChild> pageParam);
         String EditTemplateChild(RequestGovtTemplateChild Param);
         String DeleteTemplate(Guid Id);
+        ResponseGovtTemplateChild GetTemplateChildDetail(Guid Id);
+        #endregion
+        #region 委员
+        PagedResult<ResponseRepastOrg> GetOrgPage(PageParamList<RequestRepastOrg> pageParam);
+        ResponseRepastOrg GetOrgDetail(Guid Id);
+        string EditOrg(RequestRepastOrg Param);
+        string RemoveOrg(Guid Id);
         #endregion
         #endregion
         #region 功能管理

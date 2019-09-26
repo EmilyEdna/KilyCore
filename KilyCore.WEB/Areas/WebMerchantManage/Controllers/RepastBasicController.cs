@@ -97,6 +97,7 @@ namespace KilyCore.WEB.Areas.WebMerchantManage.Controllers
             return View();
         }
         #endregion
+        #region 自查
         public IActionResult MerchantCheck()
         {
             return View();
@@ -105,5 +106,16 @@ namespace KilyCore.WEB.Areas.WebMerchantManage.Controllers
         {
             return View();
         }
+        #endregion
+        #region 委员会
+        public IActionResult MerchantOrg()
+        {
+            return View();
+        }
+        public IActionResult MerchantOrgEdit()
+        {
+            return View();
+        }
+        #endregion
     }
 }

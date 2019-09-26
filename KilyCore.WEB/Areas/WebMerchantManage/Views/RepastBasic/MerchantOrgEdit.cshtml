@@ -1,0 +1,116 @@
+﻿
+@{
+    ViewData["Title"] = "委员会编辑";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var Guid = controller.GetParam("Id");
+                if (controller.CheckFeild(Guid))
+                    options.GetUserDetail(Guid);
+                else
+                    $("#InfoId").val(RepastUser.Id);
+            },
+            //获取详情
+            GetUserDetail: function (Guid) {
+                controller.ajax({
+                    url: "RepastWeb/GetOrgDetail",
+                    data: { Id: Guid },
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        controller.SetCtrlValue("#Edit", result.data);
+                        if (controller.CheckFeild(result.data.IdCard)) {
+                            //身份证
+                            $.each(result.data.HealthCard.split(","), function (i, item) {
+                                $(".image-box").append('<section class="image-section" img-url="' + item + '"><div class="image-shade"></div><div class="image-delete"></div><div class="image-zoom"></div><img class="image-show" src="' + item + '"></section>');
+                            })
+                        }
+                    }
+                });
+            },
+            //事件
+            InitEvents: function () {
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: ".upload-input",
+                    maxNum: 2,
+                    node: '.image-box',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        $("#IdCard").val(result.data);
+                    }
+                });
+                //验证
+                controller.ValidateConfirm("#Edit");
+            }
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="RepastWeb/EditOrg" id="Edit">
+            <input type="hidden" name="Id" />
+            <input type="hidden" name="InfoId" id="InfoId" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">委员姓名<span style="color:red">*</span></label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="TrueName" data-msg-required="请输入委员姓名" />
+                    </td>
+                    <th><label class="control-label">联系电话<span style="color:red">*</span></label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control IsPhone" name="LinkPhone" data-msg-required="请输入联系电话" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">职位<span style="color:red">*</span></label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="Worker" data-msg-required="请输入职位" />
+                    </td>
+                    <th><label class="control-label">身份证号<span style="color:red">*</span></label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control IsIDCard" name="IdCardNo" data-msg-required="请输入身份证号" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">常住地址</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Address" />
+                    </td>
+                    <th><label class="control-label">在职状态</label></th>
+                    <td class="has-warning">
+                        <select type="select" class="form-control" name="IsWork">
+                            <option value="在职">在职</option>
+                            <option value="离职">离职</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">身份证</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                        <input type="hidden" id="IdCard" name="IdCard" />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

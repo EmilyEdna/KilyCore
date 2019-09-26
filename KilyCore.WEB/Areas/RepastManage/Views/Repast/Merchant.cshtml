@@ -80,16 +80,13 @@
             //}
     </script>
 }
-@section css{
-
-}
 <div class="container-fluid">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
+        <div class="ibox ibox-c float-e-margins">
+            <div class="ibox-title ibox-title-c">
                 <h5>商家中心</h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="Merchant">
                         <div class="col-sm-9 m-b-xs">
@@ -117,11 +114,11 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="MerchantName" data-halign="center" data-align="center" data-valign="middle">商家名称</th>
-                                <th data-field="Account" data-halign="center" data-align="center" data-valign="middle">商家账号</th>
-                                <th data-field="DiningTypeName" data-halign="center" data-align="center" data-valign="middle">商家类型</th>
-                                <th data-field="InviteCode" data-halign="center" data-align="center" data-valign="middle">邀请码</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th data-field="MerchantName" class="th-center">商家名称</th>
+                                <th data-field="Account" class="th-center">商家账号</th>
+                                <th data-field="DiningTypeName" class="th-center">商家类型</th>
+                                <th data-field="InviteCode" class="th-center">邀请码</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" class="th-center">操作</th>
                             </tr>
                         </thead>
                     </table>

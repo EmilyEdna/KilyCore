@@ -1,5 +1,6 @@
-﻿@{
-    ViewData["Title"] = "企业自查";
+﻿
+@{
+    ViewData["Title"] = "委员会";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
@@ -20,17 +21,17 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "RepastWeb/GetTemplateChild", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
+                this.$table = controller.Table("#tableList", { url: "RepastWeb/GetOrgPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Admin" });
             },
             //事件
             InitEvents: function () {
                 $("#add").on('click', function () {
                     controller.OpenWindow({
-                        title: "新增自查",
+                        title: "新增委员",
                         type: 2,
                         height: "90%",
                         width: "80%",
-                        url: "WebMerchantManage/RepastBasic/MerchantCheckEdit",
+                        url: "WebMerchantManage/RepastBasic/MerchantOrgEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
                         }
@@ -41,8 +42,8 @@
             action: {
                 TableFormatter: function (val, row, index) {
                     var action = [];
-                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-eye"></i>详情</button>');
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
+                    action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>编辑</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
@@ -50,7 +51,7 @@
                         controller.Confirm("确认删除？", function (bool) {
                             if (bool) {
                                 controller.ajax({
-                                    url: "RepastWeb/DeleteTemplate",
+                                    url: "RepastWeb/RemoveOrg",
                                     data: { Id: row.Id },
                                     type: 'post',
                                     success: function (result) {
@@ -61,16 +62,17 @@
                         });
                     },
                     "click .edit": function (event, val, row, index) {
-                    controller.OpenWindow({
-                        title: "查看自查",
-                        type: 2,
-                        height: "90%",
-                        width: "80%",
-                        url: "WebMerchantManage/RepastBasic/MerchantCheckEdit?Id=" + row.Id,
-                        callBack: function (result) {
-                            result.popClose();
-                        }
-                    })
+                        controller.OpenWindow({
+                            title: "编辑委员",
+                            type: 2,
+                            height: "90%",
+                            width: "80%",
+                            url: "WebMerchantManage/RepastBasic/MerchantOrgEdit?Id=" + row.Id,
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
+
                     }
                 }//表单事件结束
             }//行为结束
@@ -85,20 +87,19 @@
     <div class="col-lg-12">
         <div class="ibox ibox-c float-e-margins">
             <div class="ibox-title ibox-title-c">
-                <h5>商家自查</h5>
+                <h5>委员管理</h5>
             </div>
             <div class="ibox-content ibox-content-c">
                 <div class="row">
-                    <form id="Edit">
+                    <form id="Admin">
                         <div class="col-sm-8 m-b-xs">
                             <div class="input-group">
-                                <button type="button" class="btn btn-sm btn-white" id="add"><i class="fa fa-plus"></i>新增自查</button>
+                                <button type="button" class="btn btn-sm btn-white" id="add"><i class="fa fa-plus"></i>新增</button>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input type="text" placeholder="模板名称" class="input-sm form-control" name="TemplateName">
-                                <span class="input-group-btn">
+                                <input type="text" placeholder="姓名" class="input-sm form-control" name="TrueName"> <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
                                     <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
                                 </span>
@@ -110,11 +111,13 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="TemplateName" class="th-center">模板名称</th>
-                                <th data-field="CompanyName" class="th-center">企业名称</th>
-                                <th data-field="CompanyType" class="th-center">企业类型</th>
-                                <th data-field="CheckUser" class="th-center">自查人</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" class="th-center">操作</th>
+                                <th data-field="TrueName" data-halign="center" data-align="center" data-valign="middle">姓名</th>
+                                <th data-field="Worker" data-halign="center" data-align="center" data-valign="middle">职位</th>
+                                <th data-field="IsWork" data-halign="center" data-align="center" data-valign="middle">是否在职</th>
+                                <th data-field="Address" data-halign="center" data-align="center" data-valign="middle">地址</th>
+                                <th data-field="LinkPhone" data-halign="center" data-align="center" data-valign="middle">电话</th>
+                                <th data-field="IdCardNo" data-halign="center" data-align="center" data-valign="middle">身份证号</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>
                     </table>

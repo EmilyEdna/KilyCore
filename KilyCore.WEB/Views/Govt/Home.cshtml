@@ -95,6 +95,19 @@
             },
             //事件
             InitEvents: function () {
+                   //修改密码
+                $("#EditPwd").click(function () {
+                    controller.OpenWindow({
+                        title: "修改登陆信息",
+                        type: 2,
+                        height: "235px",
+                        width: "650px",
+                        url: "Govt/EditPwd",
+                        callBack: function (result) {
+                            result.$("#Edit").submit();
+                        }
+                    })
+                });
                 if (Govt.IsEdu)
                     $("#IsEdu").attr("href", "/Govt/DataV3");
             },
@@ -125,6 +138,9 @@
                                 </span>
                             </a>
                             <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <li>
+                                    <a href="javascript:void(0);" id="EditPwd">修改密码</a>
+                                </li>
                             </ul>
                         </div>
                         <div class="logo-element">

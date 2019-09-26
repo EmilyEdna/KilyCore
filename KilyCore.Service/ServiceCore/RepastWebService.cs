@@ -1285,6 +1285,15 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
         /// <summary>
+        /// 自查详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseGovtTemplateChild GetTemplateChildDetail(Guid Id)
+        {
+            return Kily.Set<GovtTemplateChild>().Where(t => t.Id == Id).FirstOrDefault().MapToEntity<ResponseGovtTemplateChild>();
+        }
+        /// <summary>
         /// 编辑企业自查信息
         /// </summary>
         /// <param name="Param"></param>
@@ -1302,6 +1311,64 @@ namespace KilyCore.Service.ServiceCore
         public string DeleteTemplate(Guid Id)
         {
             return Remove<GovtTemplateChild>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        #endregion
+        #region 委员
+        /// <summary>
+        /// 委员分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseRepastOrg> GetOrgPage(PageParamList<RequestRepastOrg> pageParam)
+        {
+            IQueryable<RepastOrg> queryable = Kily.Set<RepastOrg>().OrderByDescending(t => t.CreateTime).AsNoTracking();
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id || GetChildIdList(MerchantInfo().Id).Contains(t.InfoId));
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.TrueName))
+                queryable = queryable.Where(t => t.TrueName.Contains(pageParam.QueryParam.TrueName));
+            var data = queryable.Select(t => new ResponseRepastOrg()
+            {
+                Id = t.Id,
+                TrueName = t.TrueName,
+                LinkPhone = t.LinkPhone,
+                IdCardNo = t.IdCardNo,
+                Worker = t.Worker,
+                IsWork = t.IsWork,
+                Address = t.Address
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        /// <summary>
+        /// 委员详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public ResponseRepastOrg GetOrgDetail(Guid Id)
+        {
+            return Kily.Set<RepastOrg>().Where(t => t.Id == Id).FirstOrDefault().MapToEntity<ResponseRepastOrg>();
+        }
+        /// <summary>
+        /// 编辑委员
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditOrg(RequestRepastOrg Param)
+        {
+            RepastOrg Org = Param.MapToEntity<RepastOrg>();
+            if (Org.Id == Guid.Empty)
+                return Insert(Org) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+                return Update(Org, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        /// <summary>
+        /// 删除委员
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public string RemoveOrg(Guid Id) {
+            return Remove<RepastOrg>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
         #endregion
         #endregion
@@ -1410,8 +1477,8 @@ namespace KilyCore.Service.ServiceCore
             var data = Kily.Set<RepastBuybill>().Where(t => t.Id == Id).Select(t => new ResponseRepastBuybill()
             {
                 Id = t.Id,
-                NoExp=t.NoExp,
-                ProTime=t.ProTime,
+                NoExp = t.NoExp,
+                ProTime = t.ProTime,
                 GoodsName = t.GoodsName,
                 GoodsNum = t.GoodsNum,
                 LinkPhone = t.LinkPhone,
@@ -2508,6 +2575,13 @@ namespace KilyCore.Service.ServiceCore
         public string EditNames(RequestRepastTypeName Param)
         {
             RepastTypeName typeName = Param.MapToEntity<RepastTypeName>();
+            IQueryable<RepastTypeName> queryable = Kily.Set<RepastTypeName>();
+            if (MerchantInfo() != null)
+                queryable = queryable.Where(t => t.InfoId == MerchantInfo().Id).Where(t => t.TypeNames.Equals(typeName.TypeNames) && t.Types == 1);
+            else
+                queryable = queryable.Where(t => t.InfoId == MerchantUser().InfoId).Where(t => t.TypeNames.Equals(typeName.TypeNames) && t.Types == 1);
+            if (queryable.AsNoTracking().FirstOrDefault() != null)
+                return "原料名称已经存在请勿重复添加";
             return Insert(typeName) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         /// <summary>
@@ -2537,7 +2611,7 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.InfoId == MerchantUser().Id);
             return queryable.Select(t => new ResponseRepastTypeName()
             {
-                Id=t.Id,
+                Id = t.Id,
                 TypeNames = $"{t.TypeNames}({t.Spec})"
             }).ToList();
         }
@@ -2619,7 +2693,7 @@ namespace KilyCore.Service.ServiceCore
                 InfoId = t.InfoId,
                 InsTheme = t.InsTheme,
                 InsUser = t.InsUser,
-                InsContent=t.InsContent.Replace("/Upload/", "http://system.cfda.vip/Upload/"),
+                InsContent = t.InsContent.Replace("/Upload/", "http://system.cfda.vip/Upload/"),
                 InsTime = t.InsTime
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -2644,7 +2718,7 @@ namespace KilyCore.Service.ServiceCore
             if (Ins.Id == Guid.Empty)
                 return Insert(Ins) ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
             else
-                return Update(Param, Ins) ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
+                return Update(Ins, Param) ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
         }
         /// <summary>
         /// 陪餐记录详情
@@ -2908,7 +2982,8 @@ namespace KilyCore.Service.ServiceCore
         /// 数据统计
         /// </summary>
         /// <returns></returns>
-        public Object GetLineData() {
+        public Object GetLineData()
+        {
             IQueryable<GovtTemplateChild> GovtTemplateChilds = Kily.Set<GovtTemplateChild>().OrderByDescending(t => t.CreateTime);
             IQueryable<RepastUnitIns> RepastUnitInss = Kily.Set<RepastUnitIns>().OrderByDescending(t => t.CreateTime);
             IQueryable<RepastSample> RepastSamples = Kily.Set<RepastSample>().OrderByDescending(t => t.CreateTime);

@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "产品统计";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
@@ -23,27 +22,27 @@
                     success: function (result) {
                         var html = '';
                         $.each(result.data, function (i, data) {
-                            html += '<tr><td align="center" valign="middle">' + data.AreaName + '</td>';
-                            html += '<td align="center" valign="middle">' + data.HistoryFarmer + '</td>';
-                            html += '<td align="center" valign="middle">' + data.NowFarmer + '</td>';
-                            html += '<td align="center" valign="middle">' + data.FarmerSum + '</td>';
-                            html += '<td align="center" valign="middle">' + data.HistoryFood + '</td>';
-                            html += '<td align="center" valign="middle">' + data.NowFood + '</td>';
-                            html += '<td align="center" valign="middle">' + data.FoodSum + '</td>';
-                            html += '<td align="center" valign="middle">' + data.HistoryDrug + '</td>';
-                            html += '<td align="center" valign="middle">' + data.NowDrug + '</td>';
-                            html += '<td align="center" valign="middle">' + data.DrugSum + '</td>';
-                            html += '<td align="center" valign="middle">' + data.HistoryCosplay + '</td>';
-                            html += '<td align="center" valign="middle">' + data.NowCosplay + '</td>';
-                            html += '<td align="center" valign="middle">' + data.CosplaySum + '</td>';
-                            html += '<td align="center" valign="middle">' + data.HistoryMachine + '</td>';
-                            html += '<td align="center" valign="middle">' + data.NowMachine + '</td>';
-                            html += '<td align="center" valign="middle">' + data.MachineSum + '</td>';
-                            html += '<td align="center" valign="middle">' + data.HistoryOhter + '</td>';
-                            html += '<td align="center" valign="middle">' + data.NowOhter + '</td>';
-                            html += '<td align="center" valign="middle">' + data.OhterSum + '</td>';
-                            html += '<td align="center" valign="middle">' + data.MonthSum + '</td>';
-                            html += '<td align="center" valign="middle">' + data.Total + '</td></tr>';
+                            html += '<tr><td class="th-center">' + data.AreaName + '</td>';
+                            html += '<td class="th-center">' + data.HistoryFarmer + '</td>';
+                            html += '<td class="th-center">' + data.NowFarmer + '</td>';
+                            html += '<td class="th-center">' + data.FarmerSum + '</td>';
+                            html += '<td class="th-center">' + data.HistoryFood + '</td>';
+                            html += '<td class="th-center">' + data.NowFood + '</td>';
+                            html += '<td class="th-center">' + data.FoodSum + '</td>';
+                            html += '<td class="th-center">' + data.HistoryDrug + '</td>';
+                            html += '<td class="th-center">' + data.NowDrug + '</td>';
+                            html += '<td class="th-center">' + data.DrugSum + '</td>';
+                            html += '<td class="th-center">' + data.HistoryCosplay + '</td>';
+                            html += '<td class="th-center">' + data.NowCosplay + '</td>';
+                            html += '<td class="th-center">' + data.CosplaySum + '</td>';
+                            html += '<td class="th-center">' + data.HistoryMachine + '</td>';
+                            html += '<td class="th-center">' + data.NowMachine + '</td>';
+                            html += '<td class="th-center">' + data.MachineSum + '</td>';
+                            html += '<td class="th-center">' + data.HistoryOhter + '</td>';
+                            html += '<td class="th-center">' + data.NowOhter + '</td>';
+                            html += '<td class="th-center">' + data.OhterSum + '</td>';
+                            html += '<td class="th-center">' + data.MonthSum + '</td>';
+                            html += '<td class="th-center">' + data.Total + '</td></tr>';
                         });
                         $("tbody").html(html);
                     }
@@ -82,18 +81,10 @@
         });
     </script>
 }
-@section css{
-    <style>
-        th {
-            text-align: center;
-            vertical-align: central;
-        }
-    </style>
-}
 <div class="container-fluid">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
+        <div class="ibox ibox-c float-e-margins">
+            <div class="ibox-title ibox-title-c">
                 <h5>产品统计</h5>
             </div>
             <div class="ibox-content">
@@ -108,39 +99,39 @@
                     </form>
                 </div>
             </div>
-            <div class="table-responsive m-t-sm">
+            <div class="table-responsive m-t-sm ibox-content-c" style="padding: 0 15px;">
                 <table id="tableList" class="table table-bordered table-hover">
                     <thead>
                         <tr>
-                            <th rowspan="2" align="center" valign="middle">区域</th>
-                            <th colspan="3" align="center" valign="middle">农产品</th>
-                            <th colspan="3" align="center" valign="middle">食品</th>
-                            <th colspan="3" align="center" valign="middle">药品</th>
-                            <th colspan="3" align="center" valign="middle">化妆品</th>
-                            <th colspan="3" align="center" valign="middle">医疗器械</th>
-                            <th colspan="3" align="center" valign="middle">其他</th>
-                            <th rowspan="2" align="center" valign="middle">本月新增合计</th>
-                            <th rowspan="2" align="center" valign="middle">总计</th>
+                            <th rowspan="2" class="th-center">区域</th>
+                            <th colspan="3" class="th-center">农产品</th>
+                            <th colspan="3" class="th-center">食品</th>
+                            <th colspan="3" class="th-center">药品</th>
+                            <th colspan="3" class="th-center">化妆品</th>
+                            <th colspan="3" class="th-center">医疗器械</th>
+                            <th colspan="3" class="th-center">其他</th>
+                            <th rowspan="2" class="th-center">本月新增合计</th>
+                            <th rowspan="2" class="th-center">总计</th>
                         </tr>
                         <tr>
-                            <th align="center" valign="middle">历史累计</th>
-                            <th align="center" valign="middle">本月新增</th>
-                            <th align="center" valign="middle">合计</th>
-                            <th align="center" valign="middle">历史累计</th>
-                            <th align="center" valign="middle">本月新增</th>
-                            <th align="center" valign="middle">合计</th>
-                            <th align="center" valign="middle">历史累计</th>
-                            <th align="center" valign="middle">本月新增</th>
-                            <th align="center" valign="middle">合计</th>
-                            <th align="center" valign="middle">历史累计</th>
-                            <th align="center" valign="middle">本月新增</th>
-                            <th align="center" valign="middle">合计</th>
-                            <th align="center" valign="middle">历史累计</th>
-                            <th align="center" valign="middle">本月新增</th>
-                            <th align="center" valign="middle">合计</th>
-                            <th align="center" valign="middle">历史累计</th>
-                            <th align="center" valign="middle">本月新增</th>
-                            <th align="center" valign="middle">合计</th>
+                            <th class="th-center">历史累计</th>
+                            <th class="th-center">本月新增</th>
+                            <th class="th-center">合计</th>
+                            <th class="th-center">历史累计</th>
+                            <th class="th-center">本月新增</th>
+                            <th class="th-center">合计</th>
+                            <th class="th-center">历史累计</th>
+                            <th class="th-center">本月新增</th>
+                            <th class="th-center">合计</th>
+                            <th class="th-center">历史累计</th>
+                            <th class="th-center">本月新增</th>
+                            <th class="th-center">合计</th>
+                            <th class="th-center">历史累计</th>
+                            <th class="th-center">本月新增</th>
+                            <th class="th-center">合计</th>
+                            <th class="th-center">历史累计</th>
+                            <th class="th-center">本月新增</th>
+                            <th class="th-center">合计</th>
                         </tr>
                     </thead>
                     <tbody></tbody>

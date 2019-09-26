@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "入住合同";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
@@ -153,16 +152,14 @@
         });
     </script>
 }
-@section css{
-
 }
 <div class="container-fluid">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
+        <div class="ibox ibox-c float-e-margins">
+            <div class="ibox-title ibox-title-c">
                 <h5>企业入驻</h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="JoinPay">
                         <input type="hidden" name="AuditType" id="AuditType" />
@@ -188,20 +185,20 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="CompanyName" data-halign="center" data-align="center" data-valign="middle">企业名称</th>
-                                <th data-field="StayTime" data-halign="center" data-align="center" data-valign="middle">入住时间</th>
-                                <th data-field="EndTime" data-halign="center" data-align="center" data-valign="middle">到期时间</th>
-                                <th data-field="ContractTypeName" data-halign="center" data-align="center" data-valign="middle">合同模式</th>
-                                <th data-field="Payment" data-halign="center" data-align="center" data-valign="middle">缴费状态</th>
-                                <th data-field="VersionTypeName" data-halign="center" data-align="center" data-valign="middle">版本</th>
-                                <th data-field="PayTypeName" data-halign="center" data-align="center" data-valign="middle">支付方式</th>
-                                <th data-field="TotalPrice" data-halign="center" data-align="center" data-valign="middle">合同金额</th>
-                                <th data-field="ActualPrice" data-halign="center" data-align="center" data-valign="middle">实际金额</th>
-                                <th data-field="TryOut" data-halign="center" data-align="center" data-valign="middle">试用(天)</th>
-                                <th data-field="Lv" data-halign="center" data-align="center" data-valign="middle">有无升级</th>
-                                <th data-field="AuditTypeName" data-halign="center" data-align="center" data-valign="middle">审核状态</th>
-                                <th data-formatter="options.action.ImgFormatter" data-events="options.action.ImgEvents" data-halign="center" data-align="center" data-valign="middle">缴费凭证</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th data-field="CompanyName" class="th-center">企业名称</th>
+                                <th data-field="StayTime" class="th-center">入住时间</th>
+                                <th data-field="EndTime" class="th-center">到期时间</th>
+                                <th data-field="ContractTypeName" class="th-center">合同模式</th>
+                                <th data-field="Payment" class="th-center">缴费状态</th>
+                                <th data-field="VersionTypeName" class="th-center">版本</th>
+                                <th data-field="PayTypeName" class="th-center">支付方式</th>
+                                <th data-field="TotalPrice" class="th-center">合同金额</th>
+                                <th data-field="ActualPrice" class="th-center">实际金额</th>
+                                <th data-field="TryOut" class="th-center">试用(天)</th>
+                                <th data-field="Lv" class="th-center">有无升级</th>
+                                <th data-field="AuditTypeName" class="th-center">审核状态</th>
+                                <th data-formatter="options.action.ImgFormatter" data-events="options.action.ImgEvents" class="th-center">缴费凭证</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" class="th-center">操作</th>
                             </tr>
                         </thead>
                     </table>
