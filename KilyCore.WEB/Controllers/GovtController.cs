@@ -36,5 +36,9 @@ namespace KilyCore.WEB.Controllers
         {
             return View();
         }
+        public IActionResult EditPwd()
+        {
+            return View();
+        }
     }
 }
