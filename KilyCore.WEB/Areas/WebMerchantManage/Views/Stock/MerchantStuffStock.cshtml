@@ -108,7 +108,7 @@
                         action.push('<button class="btn btn-sm btn-primary out"><i class="fa fa-pencil-square-o"></i>出库</button>');
                         action.push('<button class="btn btn-sm btn-primary detail"><i class="fa fa-pencil-square-o"></i>详情</button>');
                     }
-                    action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
+                   // action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
                     return action.join("&nbsp;");
                 },
                 TableEvents: {
@@ -174,22 +174,15 @@
         });
     </script>
 }
-@section css{
-    <style>
-        .ibox-content {
-            border-top-style: none;
-        }
-    </style>
-}
 <form method="post" action="/File/ExportExcel" id="Excel">
     <input type="hidden" name="Ids" id="Ids" />
     <input type="hidden" name="ApiUrl" id="ApiUrl" />
 </form>
 <!--导航-->
-<div class="tabs-container" style="margin-top:10px;">
-    <ul class="nav nav-tabs">
+<div class="tabs-container" style="padding: 15px; background: #f5f5f5;">
+    <ul class="nav nav-tabs" style="border-radius: 8px 8px 0 0; box-shadow: 0px -2px 16px 0px rgba(47,64,80,0.16);">
         <li class="active">
-            <a data-toggle="tab" href="#tab-1" aria-expanded="true"> 入库清单</a>
+            <a data-toggle="tab" href="#tab-1" aria-expanded="true" style="border-left: #fff;"> 入库清单</a>
         </li>
         <li>
             <a data-toggle="tab" href="#tab-2" aria-expanded="false">出库清单</a>
@@ -197,7 +190,7 @@
     </ul>
     <div class="tab-content">
         <div id="tab-1" class="tab-pane active">
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="InStock">
                         <div class="col-sm-8 m-b-xs">
@@ -221,14 +214,14 @@
                     <table id="tableListSet" class="table">
                         <thead>
                             <tr>
-                                <th data-field="Stutas" data-checkbox="true" data-halign="center" data-align="center" data-valign="middle" data-formatter="options.action.CheckInFormatter"></th>
-                                <th data-field="BatchNo" data-halign="center" data-align="center" data-valign="middle">批次号</th>
-                                <th data-field="IngredientName" data-halign="center" data-align="center" data-valign="middle">食材名称</th>
-                                <th data-field="InStorageNum" data-halign="center" data-align="center" data-valign="middle">数量</th>
-                                <th data-field="Supplier" data-halign="center" data-align="center" data-valign="middle">供应商</th>
-                                <th data-field="BuyUser" data-halign="center" data-align="center" data-valign="middle">负责人</th>
-                                <th data-field="StockMsg" data-halign="center" data-align="center" data-valign="middle">库存状况</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th data-field="Stutas" data-checkbox="true" class="th-center" data-formatter="options.action.CheckInFormatter"></th>
+                                <th data-field="BatchNo" class="th-center">批次号</th>
+                                <th data-field="IngredientName" class="th-center">食材名称</th>
+                                <th data-field="InStorageNum" class="th-center">数量</th>
+                                <th data-field="Supplier" class="th-center">供应商</th>
+                                <th data-field="BuyUser" class="th-center">负责人</th>
+                                <th data-field="StockMsg" class="th-center">库存状况</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" class="th-center">操作</th>
                             </tr>
                         </thead>
                     </table>
@@ -236,7 +229,7 @@
             </div>
         </div>
         <div id="tab-2" class="tab-pane">
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="OutStock">
                         <div class="col-sm-8 m-b-xs">
@@ -257,15 +250,15 @@
                     <table id="tableListOut" class="table">
                         <thead>
                             <tr>
-                                <th data-field="Stutas" data-checkbox="true" data-halign="center" data-align="center" data-valign="middle" data-formatter="options.action.CheckOutFormatter"></th>
-                                <th data-field="InBatchNo" data-halign="center" data-align="center" data-valign="middle">入库批次</th>
-                                <th data-field="BatchNo" data-halign="center" data-align="center" data-valign="middle">出库批次</th>
-                                <th data-field="IngredientName" data-halign="center" data-align="center" data-valign="middle">食材名称</th>
-                                <th data-field="OutStorageNum" data-halign="center" data-align="center" data-valign="middle">出库数量</th>
-                                <th data-field="InStorageEx" data-halign="center" data-align="center" data-valign="middle">库存</th>
-                                <th data-field="OutStorageTime" data-halign="center" data-align="center" data-valign="middle">出库时间</th>
-                                <th data-field="OutUser" data-halign="center" data-align="center" data-valign="middle">负责人</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th data-field="Stutas" data-checkbox="true" class="th-center" data-formatter="options.action.CheckOutFormatter"></th>
+                                <th data-field="InBatchNo" class="th-center">入库批次</th>
+                                <th data-field="BatchNo" class="th-center">出库批次</th>
+                                <th data-field="IngredientName" class="th-center">食材名称</th>
+                                <th data-field="OutStorageNum" class="th-center">出库数量</th>
+                                <th data-field="InStorageEx" class="th-center">库存</th>
+                                <th data-field="OutStorageTime" class="th-center">出库时间</th>
+                                <th data-field="OutUser" class="th-center">负责人</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" class="th-center">操作</th>
                             </tr>
                         </thead>
                     </table>

@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "留样管理";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
@@ -88,16 +87,13 @@
         options.Init();
     });
 </script>
-@section css{
-
-}
 <div class="container-fluid">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
+        <div class="ibox ibox-c float-e-margins">
+            <div class="ibox-title ibox-title-c">
                 <h5>留样管理</h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="Edit">
                         <div class="col-sm-8 m-b-xs">
@@ -120,12 +116,12 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="DishName" data-halign="center" data-align="center" data-valign="middle">菜品名称</th>
-                                <th data-field="Phone" data-halign="center" data-align="center" data-valign="middle">电话</th>
-                                <th data-field="SampleTime" data-halign="center" data-align="center" data-valign="middle">留样时间</th>
-                                <th data-field="OperatUser" data-halign="center" data-align="center" data-valign="middle">操作人</th>
-                                <th data-formatter="options.action.ImgFormatter" data-events="options.action.ImgEvents" data-halign="center" data-align="center" data-valign="middle">留样图片</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th data-field="DishName" class="th-center">菜品名称</th>
+                                <th data-field="Phone" class="th-center">电话</th>
+                                <th data-field="SampleTime" class="th-center">留样时间</th>
+                                <th data-field="OperatUser" class="th-center">操作人</th>
+                                <th data-formatter="options.action.ImgFormatter" data-events="options.action.ImgEvents" class="th-center">留样图片</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" class="th-center">操作</th>
                             </tr>
                         </thead>
                     </table>

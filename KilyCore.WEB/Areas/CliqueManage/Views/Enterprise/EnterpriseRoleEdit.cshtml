@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "分配菜单";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
@@ -86,17 +85,10 @@
         });
     </script>
 }
-@section css{
-    <style>
-        .ibox-content {
-            border-top-style: none;
-        }
-    </style>
-}
-<div class="tabs-container">
-    <ul class="nav nav-tabs">
+<div class="tabs-container" style="padding: 15px; background: #f5f5f5;">
+    <ul class="nav nav-tabs" style="border-radius: 8px 8px 0 0; box-shadow: 0px -2px 16px 0px rgba(47,64,80,0.16);">
         <li class="active">
-            <a data-toggle="tab" href="#tab-1" aria-expanded="true"> 角色列表</a>
+            <a data-toggle="tab" href="#tab-1" aria-expanded="true" style="border-left: #fff;"> 角色列表</a>
         </li>
         <li>
             <a data-toggle="tab" href="#tab-2" aria-expanded="false">分配角色</a>
@@ -104,7 +96,7 @@
     </ul>
     <div class="tab-content">
         <div id="tab-1" class="tab-pane active">
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="Author">
                         <div class="col-sm-9 m-b-xs">
@@ -134,7 +126,7 @@
             </div>
         </div>
         <div id="tab-2" class="tab-pane">
-            <div class="panel-body">
+            <div class="panel-body ibox-content-c">
                 <form class="form-horizontal" method="post" action="Enterprise/DistributionRole" id="Send">
                     <input type="hidden" id="CompanyId" name="Id" />
                     <input  type="hidden" id="EnterpriseRoleName" name="EnterpriseRoleName"/>
@@ -154,8 +146,8 @@
                         <tfoot>
                             <tr>
                                 <td colspan="4" valign="middle" align="center">
-                                        <button class="btn btn-primary" type="button" id="save">保存内容</button>
-                                        <button class="btn btn-white" type="button">取消</button>
+                                    <button class="btn btn-primary" type="button" id="save">保存内容</button>
+                                    <button class="btn btn-white" type="button">取消</button>
                                 </td>
                             </tr>
                         </tfoot>

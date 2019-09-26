@@ -1,0 +1,540 @@
+﻿@{
+    ViewData["Title"] = "Index2";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script src="~/Content/Tabs/contabsiframe.js"></script>
+    <script>
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            InitDom: function () {
+                //板块占比
+                controller.ajax({
+                    url: "GovtWeb/GetComDataRatio",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        $("#A1").html(result.data.CMSum);
+                        $("#A2").html(result.data.CGSum);
+                        $("#A3").html(result.data.CPSum);
+                        $("#A4").html(result.data.CBSum);
+                        $("#B1").prepend(result.data.CMTotal + "%");
+                        $("#B2").prepend(result.data.CGTotal + "%");
+                        $("#B3").prepend(result.data.CPTotal + "%");
+                        $("#B4").prepend(result.data.CBTotal + "%");
+
+                    }
+                });
+                //投诉占比
+                controller.ajax({
+                    url: "GovtWeb/GetComplainDataRatio",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        $("#Total").html(result.data.Total);
+                        $("#WG").html(result.data.WG);
+                        $("#MG").html(result.data.MG);
+                        $("#Sum").prepend(result.data.Sum + "%");
+                        $("#Sum").next("div").find("div").css("width", result.data.Sum)
+                        $("#WGSum").prepend(result.data.WGSum + "%");
+                        $("#WGSum").next("div").find("div").css("width", result.data.WGSum)
+                        $("#MGSum").prepend(result.data.MGSum + "%");
+                        $("#MGSum").next("div").find("div").css("width", result.data.MGSum)
+                    }
+                });
+                //培训通知
+                controller.ajax({
+                    url: "GovtWeb/GetTrainNoticePage",
+                    data: { pageSize: 10, pageNumber: 1 },
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        var html = "";
+                        $.each(result.data.rows, function (i, obj) {
+                            html += '<div class="col-sm-12 search-result"><a href="/WebGovtManage/Train/NoticeTrain">'
+                                + '<h3><strong>' + obj.TrainTitle + '</strong></h3>'
+                                + '<p><i class="fa fa-map-marker"></i> ' + obj.TrainPlace + '</p>'
+                                + '</a><address>'
+                                + obj.TrainTime
+                                + '<p>' + obj.Desc.substr(0, 92) + '...</p>'
+                                + '</address>'
+                                + '</div>';
+                        });
+                        $("#Train").html(html);
+                    }
+                });
+                //投诉通知
+                controller.ajax({
+                    url: "GovtWeb/GetComplainPage",
+                    data: { pageSize: 10, pageNumber: 1 },
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        var html = "";
+                        $.each(result.data.rows, function (i, obj) {
+                            html += '<tr><td>' + obj.CompanyName + '</td>';
+                            html += '<td>' + obj.ProductName + '</td>';
+                            html += '<td>' + obj.ComplainUser + '</td>';
+                            html += '<td class="text-warning">' + obj.Status + '</td></tr >';
+                        });
+                        $("#Complain").html(html);
+                    }
+                });
+                //风险预警
+                controller.ajax({
+                    url: "GovtWeb/GetWaringRiskPage",
+                    data: { pageSize: 10, pageNumber: 1 },
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        var html = "";
+                        $.each(result.data.rows, function (i, obj) {
+                            var Area = "";
+                            controller.ajax({
+                                url: "system/GetAreaWithChinese",
+                                data: { Id: obj.TypePath },
+                                async: false,
+                                type: "post",
+                                success: function (res) {
+                                    Area = res.data;
+                                }
+                            });
+                            html += '<div class="col-sm-12 search-result"><a href="/WebGovtManage/Train/NoticeTrain">'
+                                + '<h3><strong>' + obj.EventName + '</strong><span style="color:red;">(' + obj.WaringLv + ')</span></h3>'
+                                + '<p><i class="fa fa-map-marker"></i> ' + Area + '</p>'
+                                + '</a><address>'
+                                + obj.ReleaseTime
+                                + '<p>' + obj.Desc.substr(0, 92) + '...</p>'
+                                + '</address>'
+                                + '</div>';
+                        });
+                        $("#Risk").html(html);
+                    }
+                });
+            },
+            InitEvents: function () {
+                //投诉率
+                controller.ajax({
+                    url: "GovtWeb/GetComplainLine",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        OptionLine = {
+                            tooltip: {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'cross',
+                                    label: {
+                                        backgroundColor: '#6a7985'
+                                    }
+                                }
+                            },
+                            legend: {
+                                textStyle: { color: "#000000" },
+                                data:  ['学前教育', '义务教育', '高中教育', '高等教育', '职业教育']
+                            },
+                            grid: {
+                                left: '3%',
+                                right: '4%',
+                                bottom: '3%',
+                                containLabel: true
+                            },
+                            xAxis: [
+                                {
+                                    type: 'category',
+                                    boundaryGap: false,
+                                    data: ['近3天', '', '近7天', '近15天', '近30天', '近180天', '近365天'],
+                                    axisLine: {
+                                        lineStyle: {
+                                            color: '#000'
+                                        }
+                                    }
+                                }
+                            ],
+                            yAxis: [
+                                {
+                                    type: 'value',
+                                    minInterval: 1,
+                                    axisLine: {
+                                        lineStyle: {
+                                            color: '#000'
+                                        }
+                                    }
+                                }
+                            ],
+                            series: [
+                                {
+                                    name: '学前教育',
+                                    type: 'line',
+                                    stack: '总量',
+                                    areaStyle: {},
+                                    data: result.data.ZCom
+                                },
+                                {
+                                    name: '义务教育',
+                                    type: 'line',
+                                    stack: '总量',
+                                    areaStyle: {},
+                                    data: result.data.YCom
+                                },
+                                {
+                                    name: '高中教育',
+                                    type: 'line',
+                                    stack: '总量',
+                                    areaStyle: {},
+                                    data: result.data.SCom
+                                },
+                                {
+                                    name: '高等教育',
+                                    type: 'line',
+                                    stack: '总量',
+                                    areaStyle: { normal: {} },
+                                    data: result.data.LCom
+                                },
+                                {
+                                    name: '职业教育',
+                                    type: 'line',
+                                    stack: '总量',
+                                    areaStyle: { normal: {} },
+                                    data: result.data.ZYJYS
+                                }
+                            ],
+                            backgroundColor: 'rgba(7,31,65,0)',
+                            color: ["#fc97af", "#87f7cf", '#f7f494', '#72ccff', '#f7c5a0', '#d4a4eb', '#d2f5a6', '#76f2f2']
+                        };
+                       
+                        echarts.init($("#echarts-Line-chart")[0]).setOption(OptionLine);
+                    }
+                });
+                //显示或隐藏
+                $(".collapse-link").on('click', function () {
+                    var ibox = $(this.closest('div.ibox'));
+                    var i = $(this).find("i");
+                    var content = ibox.find("div.ibox-content");
+                    content.slideToggle(200);
+                    i.toggleClass("fa-chevron-up").toggleClass("fa-chevron-down");
+                    ibox.toggleClass("").toggleClass("border-bottom");
+                    setTimeout(function () {
+                        ibox.resize();
+                        ibox.find("[id^=map-]").resize();
+                    }, 50);
+                });
+                //关闭
+                $(".close-link").click(function () {
+                    var ibox = $(this).closest("div.ibox");
+                    ibox.hide()
+                });
+            }
+        }
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+
+@section css{
+    <style>
+        .content1 a {
+            display: inline-block;
+            width: 22%;
+            height: 100px;
+            margin-right: 2%;
+            text-align: center;
+            font-size: 16px;
+            color: #404040;
+        }
+
+            .content1 a img {
+                width: 50px;
+                height: 50px;
+                margin: 10px 0;
+            }
+
+        .item {
+            border-top: 1px solid #E7EAEC;
+            background: #fff;
+            padding: 15px;
+            height: 110px;
+            display: flex;
+            align-items: center;
+        }
+
+            .item .left {
+                margin-right: 20px;
+                width: 56px;
+                height: 56px;
+                border-radius: 28px;
+                background: url("/Content/Company/images/firm_index.png") center center no-repeat;
+            }
+
+            .item .right {
+                min-width: 62%;
+            }
+
+                .item .right p {
+                    font-size: 16px;
+                    line-height: 24px;
+                }
+
+                    .item .right p:last-child {
+                        margin-bottom: 0;
+                    }
+
+                    .item .right p span {
+                        color: #000;
+                        font-weight: bold;
+                    }
+
+        .table thead {
+            color: #fff;
+            background-color: #0084B4;
+        }
+
+        #Complain tr:nth-child(2n+1) {
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+        #Complain tr:nth-child(2n) {
+            color: #fff;
+            background-color: #169FE6;
+        }
+    </style>
+}
+<div class="wrapper wrapper-content">
+    <div class="row">
+        <div class="col-sm-3">
+            <div class=" ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-success pull-right">月</span>
+                    <h5>入驻</h5>
+                </div>
+                <div class="item">
+                    <div class="left" style="background-color: #1C84C6;"></div>
+                    <div class="right">
+                        <p>月入驻：<span id="A1"></span></p>
+                        <p>增长比：<span id="B1">&emsp;<i class="fa fa-bolt" style="color: #1C84C6;"></i></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class=" ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-info pull-right">月</span>
+                    <h5 class="ts">从业人员</h5>
+                </div>
+                <div class="item">
+                    <div class="left" style="background-color: #23C6C8;"></div>
+                    <div class="right">
+                        <p class="ts">人员：<span id="A2"></span></p>
+                        <p>增长比：<span id="B2">&emsp;<i class="fa fa-level-up" style="color: #23C6C8;"></i></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class=" ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-warning pull-right">月</span>
+                    <h5>抽查</h5>
+                </div>
+                <div class="item">
+                    <div class="left" style="background-color: #F8AC59;"></div>
+                    <div class="right">
+                        <p>月抽查：<span id="A3"></span></p>
+                        <p>增长比：<span id="B3">&emsp;<i class="fa fa-level-up" style="color: #F8AC59;"></i></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class=" ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-danger pull-right">月</span>
+                    <h5 class="tq">预警</h5>
+                </div>
+                <div class="item">
+                    <div class="left" style="background-color: #ED5565;"></div>
+                    <div class="right">
+                        <p class="tq">月预警：<span id="A4">452,451</span></p>
+                        <p>增长比：<span id="B4">&emsp;<i class="fa fa-level-up" style="color: #ED5565;"></i></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>常用功能</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="content content1">
+                        <a class="J_menuItem" href="/WebGovtManage/Enterprise/DistributionSupervise">
+                            <img src="~/Content/DataView/images/zf_cygn1.png" />
+                            <p><span class="tk">学校</span>分布</p>
+                        </a>
+                        <a class="J_menuItem" href="/WebGovtManage/Risk/EventRisk">
+                            <img src="~/Content/DataView/images/zf_cygn2.png" />
+                            <p>事件分布图</p>
+                        </a>
+                        <a class="J_menuItem" href="/WebGovtManage/Risk/WaringRisk">
+                            <img src="~/Content/DataView/images/zf_cygn3.png" />
+                            <p>预警信息</p>
+                        </a>
+                        <a class="J_menuItem" href="/WebGovtManage/Risk/CertificateRisk">
+                            <img src="~/Content/DataView/images/zf_cygn4.png" />
+                            <p>证件到期</p>
+                        </a>
+                        <a class="J_menuItem" href="/WebGovtManage/Inspect/NetPatrol">
+                            <img src="~/Content/DataView/images/zf_cygn5.png" />
+                            <p>网上巡查</p>
+                        </a>
+                        <a class="J_menuItem" href="/WebGovtManage/Department/InstitutionDepartment">
+                            <img src="~/Content/DataView/images/zf_cygn6.png" />
+                            <p>机构管理</p>
+                        </a>
+                        <a class="J_menuItem" href="/WebGovtManage/Department/UserDepartment">
+                            <img src="~/Content/DataView/images/zf_cygn7.png" />
+                            <p>用户管理</p>
+                        </a>
+                        <a class="J_menuItem" href="/WebGovtManage/Complain/InfoComplain">
+                            <img src="~/Content/DataView/images/zf_cygn8.png" />
+                            <p>投诉信息</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>投诉</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <div class="flot-chart">
+                                <div style="height:200px;" id="echarts-Line-chart"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <ul class="stat-list">
+                                <li>
+                                    <h2 class="no-margins" id="Total"></h2>
+                                    <small>投诉总数</small>
+                                    <div class="stat-percent" id="Sum">
+                                        <i class="fa fa-bolt text-navy"></i>
+                                    </div>
+                                    <div class="progress progress-mini">
+                                        <div style="width: 48%;" class="progress-bar"></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <h2 class="no-margins" id="WG"></h2>
+                                    <small>周投诉</small>
+                                    <div class="stat-percent" id="WGSum">
+                                        <i class="fa fa-bolt text-navy"></i>
+                                    </div>
+                                    <div class="progress progress-mini">
+                                        <div style="width: 60%;" class="progress-bar"></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <h2 class="no-margins " id="MG"></h2>
+                                    <small>月投诉</small>
+                                    <div class="stat-percent" id="MGSum">
+                                        <i class="fa fa-bolt text-navy"></i>
+                                    </div>
+                                    <div class="progress progress-mini">
+                                        <div style="width: 22%;" class="progress-bar"></div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>培训通知</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content" style="min-height:240px;">
+                    <div class="row" id="Train">
+
+                    </div>
+                    <a class="btn btn-primary btn-block m-t" href="/WebGovtManage/Train/NoticeTrain"><i class="fa fa-arrow-down"></i> 查看更多</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>投诉信息</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content" style="min-height:240px;">
+                    <div class="row">
+                        <table class="table table-hover no-margins" style="width: 95%; margin: 0 auto !important;">
+                            <thead>
+                                <tr>
+                                    <th>被投诉学校</th>
+                                    <th>被投诉原因</th>
+                                    <th>投诉人</th>
+                                    <th>处理状态</th>
+                                </tr>
+                            </thead>
+                            <tbody id="Complain"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>预警信息</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content" style="min-height:240px;">
+                    <div class="row" id="Risk">
+                    </div>
+                    <a class="btn btn-primary btn-block m-t" href="/WebGovtManage/Train/NoticeTrain"><i class="fa fa-arrow-down"></i> 查看更多</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

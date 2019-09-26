@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "消息中心";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
@@ -58,17 +57,13 @@
         });
     </script>
 }
-@section css{
-
-}
-
 <div class="container-fluid">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
+        <div class="ibox ibox-c float-e-margins">
+            <div class="ibox-title ibox-title-c">
                 <h5>消息中心</h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="Edit">
                         <div class="col-sm-11 m-b-xs">
@@ -89,9 +84,9 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="MsgName" data-halign="center" data-align="center" data-valign="middle">标题</th>
-                                <th data-field="MsgContent" data-halign="center" data-align="center" data-valign="middle">内容</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th data-field="MsgName" class="th-center">标题</th>
+                                <th data-field="MsgContent" class="th-center">内容</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" class="th-center">操作</th>
                             </tr>
                         </thead>
                     </table>

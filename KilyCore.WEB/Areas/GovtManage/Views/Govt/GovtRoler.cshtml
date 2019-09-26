@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "政府角色";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
@@ -70,17 +69,10 @@
         });
     </script>
 }
-@section css{
-    <style>
-        .ibox-content {
-            border-top-style: none;
-        }
-    </style>
-}
-<div class="tabs-container" style="margin-top:10px;">
-    <ul class="nav nav-tabs">
+<div class="tabs-container" style="padding: 15px; background: #f5f5f5;">
+    <ul class="nav nav-tabs" style="border-radius: 8px 8px 0 0; box-shadow: 0px -2px 16px 0px rgba(47,64,80,0.16);">
         <li class="active">
-            <a data-toggle="tab" href="#tab-1" aria-expanded="true"> 权限列表</a>
+            <a data-toggle="tab" href="#tab-1" aria-expanded="true" style="border-left: #fff;"> 权限列表</a>
         </li>
         <li>
             <a data-toggle="tab" href="#tab-2" aria-expanded="false">基本信息</a>
@@ -88,7 +80,7 @@
     </ul>
     <div class="tab-content">
         <div id="tab-1" class="tab-pane active">
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="Role">
                         <div class="col-sm-8 m-b-xs">
@@ -108,9 +100,9 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="AuthorName" data-halign="center" data-align="center" data-valign="middle">角色名称</th>
-                                <th data-field="AuthorCount" data-halign="center" data-align="center" data-valign="middle">菜单总数</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th data-field="AuthorName" class="th-center">角色名称</th>
+                                <th data-field="AuthorCount" class="th-center">菜单总数</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" class="th-center">操作</th>
                             </tr>
                         </thead>
                     </table>
@@ -118,7 +110,7 @@
             </div>
         </div>
         <div id="tab-2" class="tab-pane">
-            <div class="panel-body">
+            <div class="panel-body ibox-content-c">
                 <form method="post" class="form-horizontal" action="Govt/EditAuthor" id="Edit">
                     <!--名称-->
                     <div class="form-group">

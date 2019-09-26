@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "线下销售人员列表";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
@@ -55,15 +54,13 @@
         });
     </script>
 }
-@section css{
-}
 <div class="container-fluid">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
+        <div class="ibox ibox-c float-e-margins">
+            <div class="ibox-title ibox-title-c">
                 <h5>线下销售人员列表</h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="Edit">
                         <div class="col-sm-9 m-b-xs">
@@ -85,13 +82,13 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="UserNo" data-halign="center" data-align="center" data-valign="middle">人员编号</th>
-                                <th data-field="TrueName" data-halign="center" data-align="center" data-valign="middle">真是姓名</th>
-                                <th data-field="Gender" data-halign="center" data-align="center" data-valign="middle">性别</th>
-                                <th data-field="Phone" data-halign="center" data-align="center" data-valign="middle">手机</th>
-                                <th data-field="Status" data-halign="center" data-align="center" data-valign="middle">状态</th>
-                                <th data-field="PayInfo" data-halign="center" data-align="center" data-valign="middle">支付信息</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th data-field="UserNo" class="th-center">人员编号</th>
+                                <th data-field="TrueName" class="th-center">真是姓名</th>
+                                <th data-field="Gender" class="th-center">性别</th>
+                                <th data-field="Phone" class="th-center">手机</th>
+                                <th data-field="Status" class="th-center">状态</th>
+                                <th data-field="PayInfo" class="th-center">支付信息</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" class="th-center">操作</th>
                             </tr>
                         </thead>
                     </table>

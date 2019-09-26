@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "任务调度";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
@@ -117,17 +116,13 @@
         });
     </script>
 }
-@section css{
-
-}
-
 <div class="container-fluid">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
+        <div class="ibox ibox-c float-e-margins">
+            <div class="ibox-title ibox-title-c">
                 <h5>任务作业</h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="Menu">
                         <div class="col-sm-9 m-b-xs">
@@ -149,16 +144,16 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="JobGroup" data-halign="center" data-align="center" data-valign="middle">任务组别</th>
-                                <th data-field="JobName" data-halign="center" data-align="center" data-valign="middle">任务名称</th>
-                                <th data-field="StartTime" data-halign="center" data-align="center" data-valign="middle">开始时间</th>
-                                <th data-field="EndTime" data-halign="center" data-align="center" data-valign="middle">结束时间</th>
-                                <th data-field="RunTimes" data-halign="center" data-align="center" data-valign="middle">执行次数</th>
-                                <th data-field="IntervalSecond" data-halign="center" data-align="center" data-valign="middle">执行周期</th>
-                                <th data-field="JobDetail" data-halign="center" data-align="center" data-valign="middle">任务描述</th>
-                                <th data-field="Cron" data-halign="center" data-align="center" data-valign="middle">时间表达式</th>
-                                <th data-field="JobState" data-halign="center" data-align="center" data-valign="middle">任务状态</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th data-field="JobGroup" class="th-center">任务组别</th>
+                                <th data-field="JobName" class="th-center">任务名称</th>
+                                <th data-field="StartTime" class="th-center">开始时间</th>
+                                <th data-field="EndTime" class="th-center">结束时间</th>
+                                <th data-field="RunTimes" class="th-center">执行次数</th>
+                                <th data-field="IntervalSecond" class="th-center">执行周期</th>
+                                <th data-field="JobDetail" class="th-center">任务描述</th>
+                                <th data-field="Cron" class="th-center">时间表达式</th>
+                                <th data-field="JobState" class="th-center">任务状态</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" class="th-center">操作</th>
                             </tr>
                         </thead>
                     </table>

@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "餐饮认证";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
@@ -85,16 +84,13 @@
         });
     </script>
 }
-@section css{
-
-}
 <div class="container-fluid">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
+        <div class="ibox ibox-c float-e-margins">
+            <div class="ibox-title ibox-title-c">
                 <h5>餐饮认证</h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="IdentPay">
                         <div class="col-sm-8 m-b-xs">
@@ -116,14 +112,14 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="IdentNo" data-halign="center" data-align="center" data-valign="middle">认证编号</th>
-                                <th data-field="MerchantName" data-halign="center" data-align="center" data-valign="middle">商家名称</th>
-                                <th data-field="IdentStarName" data-halign="center" data-align="center" data-valign="middle">认证星级</th>
-                                <th data-field="LinkPhone" data-halign="center" data-align="center" data-valign="middle">联系电话</th>
-                                <th data-field="IdentStartTime" data-halign="center" data-align="center" data-valign="middle">开始时间</th>
-                                <th data-field="IdentEndTime" data-halign="center" data-align="center" data-valign="middle">截止时间</th>
-                                <th data-field="AuditTypeName" data-halign="center" data-align="center" data-valign="middle">审核状态</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th data-field="IdentNo" class="th-center">认证编号</th>
+                                <th data-field="MerchantName" class="th-center">商家名称</th>
+                                <th data-field="IdentStarName" class="th-center">认证星级</th>
+                                <th data-field="LinkPhone" class="th-center">联系电话</th>
+                                <th data-field="IdentStartTime" class="th-center">开始时间</th>
+                                <th data-field="IdentEndTime" class="th-center">截止时间</th>
+                                <th data-field="AuditTypeName" class="th-center">审核状态</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" class="th-center">操作</th>
                             </tr>
                         </thead>
                     </table>

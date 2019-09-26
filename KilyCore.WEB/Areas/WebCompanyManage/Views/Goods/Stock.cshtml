@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "产品仓库";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
@@ -237,13 +236,6 @@
             options.Init();
         });
     </script>
-}
-@section css{
-    <style>
-        .ibox-content {
-            border-top-style: none;
-        }
-    </style>
 }
 <form method="post" action="/File/ExportExcel" id="Excel">
     <input type="hidden" name="Ids" id="Ids" />

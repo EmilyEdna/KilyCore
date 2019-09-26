@@ -1371,7 +1371,7 @@ table.dataTable thead .sorting:after {
 	background-color:#FFF;
 	background-image:none;
 	border:1px solid #e5e6e7;
-	border-radius:1px;
+	border-radius:5px 5px;
 	color:inherit;
 	display:block;
 	padding:6px 12px;
@@ -2371,7 +2371,7 @@ a:focus,a:hover {
 	border-right:1px solid #e7eaec
 }
 .hr-line-dashed {
-	border-top:1px dashed #e7eaec;
+	border-top:1px dotted #e7eaec;
 	color:#fff;
 	background-color:#fff;
 	height:1px;

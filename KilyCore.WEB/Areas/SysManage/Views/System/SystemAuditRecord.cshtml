@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "审核记录";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
@@ -58,24 +57,21 @@
         });
     </script>
 }
-@section css{
-
-}
 <div class="container-fluid">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
+        <div class="ibox ibox-c float-e-margins">
+            <div class="ibox-title ibox-title-c">
                 <h5>审核记录</h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="table-responsive">
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="AuditName" data-halign="center" data-align="center" data-valign="middle">审核人</th>
-                                <th data-field="AuditTypeName" data-halign="center" data-align="center" data-valign="middle">审核状态</th>
-                                <th data-field="CreateTime" data-halign="center" data-align="center" data-valign="middle">审核时间</th>
-                                <th data-field="AuditSuggestion" data-halign="center" data-align="center" data-valign="middle">审核意见</th>
+                                <th data-field="AuditName" class="th-center">审核人</th>
+                                <th data-field="AuditTypeName" class="th-center">审核状态</th>
+                                <th data-field="CreateTime" class="th-center">审核时间</th>
+                                <th data-field="AuditSuggestion" class="th-center">审核意见</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents">操作</th>
                             </tr>
                         </thead>

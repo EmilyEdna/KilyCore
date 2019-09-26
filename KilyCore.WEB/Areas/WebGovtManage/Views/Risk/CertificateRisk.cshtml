@@ -28,6 +28,18 @@
             },
             //行为
             action: {
+                 ExpiredTimeFormatter: function (val, row, index) {
+                    var action = [];
+                    debugger;
+                    if (DateCompare(row.CardExpiredDate)) {
+                        action.push('<span style="color:red;">' + new Date(row.CardExpiredDate).Format("yyyy年MM月dd日") + '</span>');
+                    }
+                    else
+                    {
+                        action.push('<span>' + new Date(row.CardExpiredDate).Format("yyyy年MM月dd日") + '(<span style="color:red;">即将到期</span>)</span>');
+                    }
+                    return action.join("&nbsp;");
+                },
                  ImgFormatter: function (val, row, index) {
                     var action = [];
                     if (row.CardImg != null) {
@@ -76,6 +88,41 @@
         $(document).ready(function () {
             options.Init();
         });
+         function DateCompare(TimeLength) {
+            // 获取当前日期
+            let currentDate = new Date();
+            let str = "" + currentDate.getFullYear() + "-";
+            str += (currentDate.getMonth() + 1) + "-";
+            str += currentDate.getDate();
+            let today = new Date(str.replace("-", "/").replace("-", "/"));
+        
+            let fulfill_appointment_time = new Date(TimeLength.replace("年", "/").replace("月", "/").replace("日", ""));
+            if (fulfill_appointment_time < today) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        // 对Date的扩展，将 Date 转化为指定格式的String
+        // 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符， 
+        // 年(y)可以用 1-4 个占位符，毫秒(S)只能用 1 个占位符(是 1-3 位的数字) 
+        Date.prototype.Format = function (fmt) { //author: meizz 
+            var o = {
+                "M+": this.getMonth() + 1, //月份 
+                "d+": this.getDate(), //日 
+                "H+": this.getHours(), //小时 
+                "m+": this.getMinutes(), //分 
+                "s+": this.getSeconds(), //秒 
+                "q+": Math.floor((this.getMonth() + 3) / 3), //季度 
+                "S": this.getMilliseconds() //毫秒 
+            };
+            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+            for (var k in o)
+                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+            return fmt;
+        }
+
     </script>
 }
 @section css{
@@ -113,7 +160,7 @@
                                 <th data-field="CompanyType" data-halign="center" data-align="center" data-valign="middle">所属行业</th>
                                 <th data-field="CardType" data-halign="center" data-align="center" data-valign="middle">证件类型</th>
                                 <th data-formatter="options.action.ImgFormatter" data-events="options.action.ImgEvents" data-halign="center" data-align="center" data-valign="middle">证件图片</th>
-                                <th data-field="CardExpiredDate" data-halign="center" data-align="center" data-valign="middle">到期日期</th>
+                                <th data-field="CardExpiredDate"  data-formatter="options.action.ExpiredTimeFormatter" data-halign="center" data-align="center" data-valign="middle">到期日期</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
                             </tr>
                         </thead>

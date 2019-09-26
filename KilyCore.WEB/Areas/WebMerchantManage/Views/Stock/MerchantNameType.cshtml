@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "名称类型";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
@@ -27,10 +26,10 @@
             InitEvents: function () {
                 $("#add").on('click', function () {
                     controller.OpenWindow({
-                        title: "新增类型名称",
+                        title: "新增原料/产品",
                         type: 2,
-                        height: "90%",
-                        width: "80%",  
+                        height: "50%",
+                        width: "60%",  
                         url: "WebMerchantManage/Stock/MerchantNameTypeEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
@@ -70,16 +69,13 @@
         });
     </script>
 }
-@section css{
-
-}
 <div class="container-fluid">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
+        <div class="ibox ibox-c float-e-margins">
+            <div class="ibox-title ibox-title-c">
                 <h5>名称类型</h5>
             </div>
-            <div class="ibox-content">
+            <div class="ibox-content ibox-content-c">
                 <div class="row">
                     <form id="Edit">
                         <div class="col-sm-8 m-b-xs">
@@ -102,10 +98,10 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="TypeNames" data-halign="center" data-align="center" data-valign="middle">名称</th>
-                                <th data-field="Type" data-halign="center" data-align="center" data-valign="middle">类型</th>
-                                <th data-field="Spec" data-halign="center" data-align="center" data-valign="middle">规格</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th data-field="TypeNames" class="th-center">名称</th>
+                                <th data-field="Type" class="th-center">类型</th>
+                                <th data-field="Spec" class="th-center">规格</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" class="th-center">操作</th>
                             </tr>
                         </thead>
                     </table>
