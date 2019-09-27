@@ -607,7 +607,8 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetNetPatrolLogs")]
-        public ObjectResultEx GetNetPatrolLogs() {
+        public ObjectResultEx GetNetPatrolLogs()
+        {
             return ObjectResultEx.Instance(GovtWebService.GetNetPatrolLogs(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
@@ -1177,6 +1178,18 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx RemoveAgree(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(GovtWebService.RemoveAgree(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+
+        #region 操作日志
+        /// <summary>
+        /// 获取操作日志
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetLogInfos")]
+        public ObjectResultEx GetLogInfos()
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetLogInfos(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

@@ -204,6 +204,10 @@ namespace KilyCore.Service.IServiceCore
         String RemoveAgree(Guid Id);
         #endregion
 
+        #region 操作日志
+        List<ResponseSystemLogInfo> GetLogInfos();
+        #endregion
+
         #region 手机APP
         Object GetAppTodayCount();
         #endregion

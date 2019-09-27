@@ -3614,5 +3614,42 @@ namespace KilyCore.Service.ServiceCore
 
         #endregion
 
+        #region 操作日志
+        /// <summary>
+        /// 获取操作日志
+        /// </summary>
+        /// <returns></returns>
+        public List<ResponseSystemLogInfo> GetLogInfos()
+        {
+            IQueryable<SystemLogInfo> queryable = Kily.Set<SystemLogInfo>();
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
+            else
+            {
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                    {
+                        Expression<Func<SystemLogInfo, bool>> exp_1 = null;
+                        for (int i = 0; i < Areas.Count; i++)
+                        {
+                            if (i == 0)
+                                exp_1 = ExpressionExtension.GetExpression<SystemLogInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                            else
+                                exp_1 = exp_1.Or(ExpressionExtension.GetExpression<SystemLogInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                        }
+                        queryable = queryable.Where(exp_1);
+                    }
+                    else
+                        queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            }
+            var today =  DateTime.Parse(DateTime.Now.ToShortDateString());
+            return queryable.Where(t=>t.HandlerTime>= today).ToList().MapToList<SystemLogInfo, ResponseSystemLogInfo>();
+        }
+        #endregion
     }
 }

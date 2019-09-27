@@ -50,22 +50,31 @@ namespace KilyCore.Repositories.BaseRepository
                     string FunctionName = (EntityType.GetCustomAttribute(typeof(DescriptionAttribute)) as DescriptionAttribute).Description;
                     string ThemeName = EntityType.GetProperties().Where(t => t.GetCustomAttribute(typeof(DescriptionAttribute)) != null).FirstOrDefault().GetValue(Entity).ToString();
                     SystemLogInfo Log = new SystemLogInfo();
-                    if (UserInfo() != null)
-                        Log.HandlerUser = UserInfo().TrueName;
-                    else if (CompanyInfo() != null)
+                    if (CompanyInfo() != null)
+                    {
                         Log.HandlerUser = CompanyInfo().CompanyName;
+                        Log.TypePath = CompanyInfo().TypePath;
+                    }
                     else if (CompanyUser() != null)
+                    {
                         Log.HandlerUser = CompanyUser().CompanyName;
+                        Log.TypePath = CompanyUser().TypePath;
+                    }
                     else if (MerchantInfo() != null)
+                    {
                         Log.HandlerUser = MerchantInfo().MerchantName;
+                        Log.TypePath = MerchantInfo().TypePath;
+                    }
                     else if (MerchantUser() != null)
+                    {
                         Log.HandlerUser = MerchantUser().MerchantName;
+                        Log.TypePath = MerchantUser().TypePath;
+                    }
                     else if (CookInfo() != null)
+                    {
                         Log.HandlerUser = CookInfo().TrueName + "(厨师)";
-                    else if (GovtInfo() != null)
-                        Log.HandlerUser = GovtInfo().TrueName;
-                    else
-                        Log.HandlerUser = null;
+                        Log.TypePath = CookInfo().TypePath;
+                    }
                     Log.HandlerType = "删除内容";
                     Log.HandlerTime = DateTime.Now;
                     Log.Id = Guid.NewGuid();
@@ -120,22 +129,31 @@ namespace KilyCore.Repositories.BaseRepository
                     string FunctionName = (EntityType.GetCustomAttribute(typeof(DescriptionAttribute)) as DescriptionAttribute).Description;
                     string ThemeName = EntityType.GetProperties().Where(t => t.GetCustomAttribute(typeof(DescriptionAttribute)) != null).FirstOrDefault().GetValue(Entity).ToString();
                     SystemLogInfo Log = new SystemLogInfo();
-                    if (UserInfo() != null)
-                        Log.HandlerUser = UserInfo().TrueName;
-                    else if (CompanyInfo() != null)
+                    if (CompanyInfo() != null)
+                    {
                         Log.HandlerUser = CompanyInfo().CompanyName;
+                        Log.TypePath = CompanyInfo().TypePath;
+                    }
                     else if (CompanyUser() != null)
+                    {
                         Log.HandlerUser = CompanyUser().CompanyName;
+                        Log.TypePath = CompanyUser().TypePath;
+                    }
                     else if (MerchantInfo() != null)
+                    {
                         Log.HandlerUser = MerchantInfo().MerchantName;
+                        Log.TypePath = MerchantInfo().TypePath;
+                    }
                     else if (MerchantUser() != null)
+                    {
                         Log.HandlerUser = MerchantUser().MerchantName;
+                        Log.TypePath = MerchantUser().TypePath;
+                    }
                     else if (CookInfo() != null)
+                    {
                         Log.HandlerUser = CookInfo().TrueName + "(厨师)";
-                    else if (GovtInfo() != null)
-                        Log.HandlerUser = GovtInfo().TrueName;
-                    else
-                        Log.HandlerUser = null;
+                        Log.TypePath = CookInfo().TypePath;
+                    }
                     Log.HandlerType = "添加内容";
                     Log.HandlerTime = DateTime.Now;
                     Log.Id = Guid.NewGuid();
@@ -192,22 +210,31 @@ namespace KilyCore.Repositories.BaseRepository
                     string FunctionName = (EntityType.GetCustomAttribute(typeof(DescriptionAttribute)) as DescriptionAttribute).Description;
                     string ThemeName = EntityType.GetProperties().Where(t => t.GetCustomAttribute(typeof(DescriptionAttribute)) != null).FirstOrDefault().GetValue(Entity).ToString();
                     SystemLogInfo Log = new SystemLogInfo();
-                    if (UserInfo() != null)
-                        Log.HandlerUser = UserInfo().TrueName;
-                    else if (CompanyInfo() != null)
+                    if (CompanyInfo() != null)
+                    {
                         Log.HandlerUser = CompanyInfo().CompanyName;
+                        Log.TypePath = CompanyInfo().TypePath;
+                    }
                     else if (CompanyUser() != null)
+                    {
                         Log.HandlerUser = CompanyUser().CompanyName;
+                        Log.TypePath = CompanyUser().TypePath;
+                    }
                     else if (MerchantInfo() != null)
+                    {
                         Log.HandlerUser = MerchantInfo().MerchantName;
+                        Log.TypePath = MerchantInfo().TypePath;
+                    }
                     else if (MerchantUser() != null)
+                    {
                         Log.HandlerUser = MerchantUser().MerchantName;
+                        Log.TypePath = MerchantUser().TypePath;
+                    }
                     else if (CookInfo() != null)
+                    {
                         Log.HandlerUser = CookInfo().TrueName + "(厨师)";
-                    else if (GovtInfo() != null)
-                        Log.HandlerUser = GovtInfo().TrueName;
-                    else
-                        Log.HandlerUser = null;
+                        Log.TypePath = CookInfo().TypePath;
+                    }
                     Log.HandlerType = "修改内容";
                     Log.HandlerTime = DateTime.Now;
                     Log.Id = Guid.NewGuid();
@@ -285,22 +312,31 @@ namespace KilyCore.Repositories.BaseRepository
                     string FunctionName = (EntityType.GetCustomAttribute(typeof(DescriptionAttribute)) as DescriptionAttribute).Description;
                     string ThemeName = EntityType.GetProperties().Where(t => t.GetCustomAttribute(typeof(DescriptionAttribute)) != null).FirstOrDefault().GetValue(Entity).ToString();
                     SystemLogInfo Log = new SystemLogInfo();
-                    if (UserInfo() != null)
-                        Log.HandlerUser = UserInfo().TrueName;
-                    else if (CompanyInfo() != null)
+                    if (CompanyInfo() != null)
+                    {
                         Log.HandlerUser = CompanyInfo().CompanyName;
+                        Log.TypePath = CompanyInfo().TypePath;
+                    }
                     else if (CompanyUser() != null)
+                    {
                         Log.HandlerUser = CompanyUser().CompanyName;
+                        Log.TypePath = CompanyUser().TypePath;
+                    }
                     else if (MerchantInfo() != null)
+                    {
                         Log.HandlerUser = MerchantInfo().MerchantName;
+                        Log.TypePath = MerchantInfo().TypePath;
+                    }
                     else if (MerchantUser() != null)
+                    {
                         Log.HandlerUser = MerchantUser().MerchantName;
+                        Log.TypePath = MerchantUser().TypePath;
+                    }
                     else if (CookInfo() != null)
+                    {
                         Log.HandlerUser = CookInfo().TrueName + "(厨师)";
-                    else if (GovtInfo() != null)
-                        Log.HandlerUser = GovtInfo().TrueName;
-                    else
-                        Log.HandlerUser = null;
+                        Log.TypePath = CookInfo().TypePath;
+                    }
                     Log.HandlerType = "修改内容";
                     Log.HandlerTime = DateTime.Now;
                     Log.Id = Guid.NewGuid();
@@ -391,22 +427,31 @@ namespace KilyCore.Repositories.BaseRepository
                         string FunctionName = (EntityType.GetCustomAttribute(typeof(DescriptionAttribute)) as DescriptionAttribute).Description;
                         string ThemeName = EntityType.GetProperties().Where(x => x.GetCustomAttribute(typeof(DescriptionAttribute)) != null).FirstOrDefault().GetValue(t).ToString();
                         SystemLogInfo Log = new SystemLogInfo();
-                        if (UserInfo() != null)
-                            Log.HandlerUser = UserInfo().TrueName;
-                        else if (CompanyInfo() != null)
+                        if (CompanyInfo() != null)
+                        {
                             Log.HandlerUser = CompanyInfo().CompanyName;
+                            Log.TypePath = CompanyInfo().TypePath;
+                        }
                         else if (CompanyUser() != null)
+                        {
                             Log.HandlerUser = CompanyUser().CompanyName;
+                            Log.TypePath = CompanyUser().TypePath;
+                        }
                         else if (MerchantInfo() != null)
+                        {
                             Log.HandlerUser = MerchantInfo().MerchantName;
+                            Log.TypePath = MerchantInfo().TypePath;
+                        }
                         else if (MerchantUser() != null)
+                        {
                             Log.HandlerUser = MerchantUser().MerchantName;
+                            Log.TypePath = MerchantUser().TypePath;
+                        }
                         else if (CookInfo() != null)
+                        {
                             Log.HandlerUser = CookInfo().TrueName + "(厨师)";
-                        else if (GovtInfo() != null)
-                            Log.HandlerUser = GovtInfo().TrueName;
-                        else
-                            Log.HandlerUser = null;
+                            Log.TypePath = CookInfo().TypePath;
+                        }
                         Log.HandlerType = "删除内容";
                         Log.HandlerTime = DateTime.Now;
                         Log.Id = Guid.NewGuid();

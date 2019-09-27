@@ -15,5 +15,6 @@ namespace KilyCore.EntityFrameWork.Model.System
         public virtual string HandlerType { get; set; }
         public virtual DateTime? HandlerTime { get; set; }
         public virtual string HandlerContent { get; set; }
+        public virtual string TypePath { get; set; }
     }
 }
