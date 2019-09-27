@@ -1614,7 +1614,7 @@ namespace KilyCore.Service.ServiceCore
                 CompanyId = Param.CompanyId,
                 CompanyName = Param.CompanyName,
                 RecordTime = DateTime.Now,
-                GovtId = Param.GovtId,
+                GovtId = Info.Id,
                 RocordUser = $"{Info.TrueName}({Info.DepartName})"
             };
             if (patrol == null)
