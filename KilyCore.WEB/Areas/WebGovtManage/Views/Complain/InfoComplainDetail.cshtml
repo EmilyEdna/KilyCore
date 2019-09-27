@@ -1,0 +1,115 @@
+﻿
+@{
+    ViewData["Title"] = "InfoComplainDetail";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#GovtId").val(GovtInfo.Id);
+                var Id = controller.GetParam("Id");
+                if (Id != null && Id != undefined && Id != "")
+                    debugger;
+                    controller.ajax({
+                        url: "GovtWeb/GetComplainDetail",
+                        data: { Id: Id },
+                        async: false,
+                        type: "post",
+                        success: function (result) {
+                            controller.SetLableValue("#Edit", result.data);
+                            if (result.data.Status != "已处理") {
+                                $("lable[name=Status]").html("<span style='color:red;'>" + result.data.Status + "</span>");
+                                $("lable[name=HandlerContent]").parent("tr").hide();
+                                $("lable[name=HandlerTime]").parent("tr").hide();
+                            }
+                        }
+                    });
+            },
+            //事件
+            InitEvents: function () {
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" id="Edit">
+            <table class="table table-hover table-bordered">
+                <colgroup>
+                    <col width="10%" />
+                    <col width="40%" />
+                    <col width="10%" />
+                    <col width="40%" />
+                </colgroup>
+                <tr>
+                    <th style="text-align:center"><label class="control-label">企业名称</label></th>
+                    <td class="has-warning">
+                        <label type="txt" name="CompanyName"></label>
+                    </td>
+
+                    <th style="text-align:center"><label class="control-label">产品名称</label></th>
+                    <td class="has-warning">
+                        <label type="txt" name="ProductName"></label>
+                    </td>
+                </tr>
+                <tr>
+
+                    <th style="text-align:center"><label class="control-label">投诉人</label></th>
+                    <td class="has-warning">
+                        <label type="txt" name="ComplainUser"></label>
+                    </td>
+                    <th style="text-align:center"><label class="control-label">联系电话</label></th>
+                    <td class="has-warning">
+                        <label type="txt" name="ComplainUserPhone"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center"><label class="control-label">投诉内容</label></th>
+                    <td class="has-warning" colspan="3">
+                        <label type="txt" name="ComplainContent"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center"><label class="control-label">投诉时间</label></th>
+                    <td colspan="3">
+                        <label type="txt" name="ComplainTime"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center"><label class="control-label">处理状态</label></th>
+                    <td colspan="3">
+                        <label type="txt" name="Status"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center"><label class="control-label">处理时间</label></th>
+                    <td colspan="3">
+                        <label type="txt" name="HandlerTime"></label>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th style="text-align:center"><label class="control-label">处理结果</label></th>
+                    <td colspan="3">
+                        <label type="txt" name="HandlerContent"></label>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

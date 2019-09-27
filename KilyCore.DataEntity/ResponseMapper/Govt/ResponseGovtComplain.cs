@@ -59,6 +59,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Govt
         /// </summary>
         public string HandlerContent { get; set; }
         /// <summary>
+        /// 处理时间
+        /// </summary>
+        public string HandlerTime { set; get; }
+        /// <summary>
         /// 状态
         /// </summary>
         public string Status { get; set; }

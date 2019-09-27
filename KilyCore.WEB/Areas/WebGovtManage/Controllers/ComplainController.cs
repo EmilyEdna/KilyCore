@@ -13,5 +13,9 @@ namespace KilyCore.WEB.Areas.WebGovtManage.Controllers
         {
             return View();
         }
+        public IActionResult InfoComplainDetail()
+        {
+            return View();
+        }
     }
 }

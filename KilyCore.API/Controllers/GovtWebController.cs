@@ -968,6 +968,16 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.ReportComplainInfo(Key.Id, Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 投诉详情
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetComplainDetail")]
+        public ObjectResultEx GetComplainDetail(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetComplainDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
 
         #region 数据统计

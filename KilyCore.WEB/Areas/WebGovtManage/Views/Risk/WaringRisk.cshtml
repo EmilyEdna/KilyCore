@@ -42,6 +42,7 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>广播</button>');
+                     action.push('<button class="btn btn-sm btn-primary detail"><i class="fa fa-pencil-square-o"></i>查看</button>');
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
                     return action.join("&nbsp;")
                 },
@@ -57,6 +58,19 @@
                                         options.$table.refresh();
                                     }
                                 });
+                            }
+                        });
+                    },
+                    "click .detail": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: row.EventName,
+                            type: 2,
+                            height: "80%",
+                            width: "72%", 
+                            btn:["关闭"],
+                            url: "WebGovtManage/Risk/WaringRiskDetail?Id=" + row.Id,
+                            callBack: function (result) {
+                                controller.Close();
                             }
                         });
                     },

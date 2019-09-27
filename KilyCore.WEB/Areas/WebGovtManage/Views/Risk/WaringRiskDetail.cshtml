@@ -1,0 +1,89 @@
+﻿
+@{
+    ViewData["Title"] = "WaringRiskDetail";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#GovtId").val(GovtInfo.Id);
+                var Id = controller.GetParam("Id");
+                if (Id != null && Id != undefined && Id != "")
+                    controller.ajax({
+                        url: "GovtWeb/GetWaringDetail",
+                        data: { Id: Id },
+                        async: false,
+                        type: "post",
+                        success: function (result) {
+                            controller.SetLableValue("#Edit", result.data);
+                        }
+                    });
+            },
+            //事件
+            InitEvents: function () {
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" id="Edit">
+            <table class="table table-hover table-bordered">
+                <colgroup>
+                    <col width="10%" />
+                    <col width="40%" />
+                    <col width="10%" />
+                    <col width="40%" />
+                </colgroup>
+                <tr>
+                    <th style="text-align:center"><label class="control-label">事件名称</label></th>
+                    <td class="has-warning">
+                        <label type="txt" name="EventName"></label>
+                        
+                    </td>
+                    <th  style="text-align:center"><label class="control-label">风险等级</label></th>
+                    <td class="has-warning">
+                        <label type="txt" name="WaringLv"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <th  style="text-align:center"><label class="control-label">发布时间</label></th>
+                    <td class="has-warning">
+                        <label type="txt" name="ReleaseTime"></label>
+                    </td>
+                    <th  style="text-align:center"><label class="control-label">所属行业</label></th>
+                    <td class="has-warning">
+                        <label type="txt" name="TradeType"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <th  style="text-align:center"><label class="control-label">所属区域</label></th>
+                    <td colspan="3">
+                        <label type="txt" name=""></label>
+                    </td>
+                </tr>
+                <tr>
+                    <th  style="text-align:center"><label class="control-label">预警内容</label></th>
+                    <td class="has-warning" colspan="3">
+                        <label type="txt" name="Remark"></label>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
