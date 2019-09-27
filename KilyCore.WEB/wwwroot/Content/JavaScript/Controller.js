@@ -951,7 +951,7 @@ controller.Editor = function (element, option) {
     return $(element).summernote(options);
     function SendImg(formData) {
         $.ajax({
-            url: WebUrl + "/File/UploadImg",
+            url: WebUrl + "File/UploadImg",
             type: "post",
             data: formData,
             cache: false,
