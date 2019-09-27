@@ -57,5 +57,13 @@ namespace KilyCore.DataEntity.ResponseMapper.System
         /// 类别
         /// </summary>
         public string Category { get; set; }
+        /// <summary>
+        /// 处理时间
+        /// </summary>
+        public DateTime? HandleTime { get; set; }
+        /// <summary>
+        /// 处理内容
+        /// </summary>
+        public string HandleContent { get; set; }
     }
 }
