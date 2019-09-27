@@ -1306,7 +1306,7 @@ namespace KilyCore.Service.ServiceCore
                 MsgName = risk.EventName,
                 MsgContent = risk.Remark,
                 TrageType = risk.TradeType,
-                Category="预警"
+                Category = "预警"
             };
             Insert(message);
             return UpdateField(risk, "ReportPlay") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
@@ -1344,28 +1344,53 @@ namespace KilyCore.Service.ServiceCore
         /// 获取事件数
         /// </summary>
         /// <returns></returns>
-        public int GetRiskCount()
+        public List<int> GetRiskCount()
         {
             IQueryable<GovtRisk> queryable = Kily.Set<GovtRisk>().Where(t => t.ReportPlay == true);
+            IQueryable<GovtComplain> complains = Kily.Set<GovtComplain>().Where(t => t.Status == "待处理");
             if (GovtInfo() != null)
             {
                 if (GovtInfo().AccountType <= GovtAccountEnum.City)
+                {
                     queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
+                    complains = complains.Where(t => t.TypePath.Contains(GovtInfo().City));
+                }
                 IList<string> Areas = GetDepartArea();
                 if (Areas != null)
                 {
                     if (Areas.Count > 1)
-                        foreach (var item in Areas)
+                    {
+                        Expression<Func<GovtRisk, bool>> exp_1 = null;
+                        Expression<Func<GovtComplain, bool>> exp_2 = null;
+                        for (int i = 0; i < Areas.Count; i++)
                         {
-                            queryable = queryable.Where(t => t.TypePath.Contains(item));
+                            if (i == 0)
+                            {
+                                exp_1 = ExpressionExtension.GetExpression<GovtRisk>("TypePath", Areas[i], ExpressionEnum.Like);
+                                exp_2 = ExpressionExtension.GetExpression<GovtComplain>("TypePath", Areas[i], ExpressionEnum.Like);
+                            }
+                            else
+                            {
+                                exp_1 = exp_1.Or(ExpressionExtension.GetExpression<GovtRisk>("TypePath", Areas[i], ExpressionEnum.Like));
+                                exp_2 = exp_2.Or(ExpressionExtension.GetExpression<GovtComplain>("TypePath", Areas[i], ExpressionEnum.Like));
+                            }
                         }
+                        queryable = queryable.Where(exp_1);
+                        complains = complains.Where(exp_2);
+                    }
                     else
+                    {
                         queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                        complains = complains.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    }
                 }
                 else
+                {
                     queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                    complains = complains.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                }
             }
-            return queryable.Count();
+            return new List<int> { queryable.Count(), complains.Count() }; ;
         }
         /// <summary>
         /// 获取市名称
@@ -1514,7 +1539,7 @@ namespace KilyCore.Service.ServiceCore
                 TrageType = Key,
                 MsgName = "证件到期提醒",
                 MsgContent = "您的证件日期即将到期，请尽快续期",
-                Category="常规"
+                Category = "常规"
             };
             return Insert(message) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
@@ -1644,7 +1669,7 @@ namespace KilyCore.Service.ServiceCore
                 ReleaseTime = DateTime.Now,
                 TrageType = govtNet.TradeType,
                 TypePath = govtNet.TypePath,
-                Category="通报",
+                Category = "通报",
             };
             return Insert(message) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
@@ -2104,7 +2129,7 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 InfoTitle = t.InfoTitle,
                 CompanyType = t.CompanyType,
-                CreateTime=t.CreateTime.Value.ToString("yyyy年MM月dd日 HH:mm"),
+                CreateTime = t.CreateTime.Value.ToString("yyyy年MM月dd日 HH:mm"),
                 InfoContent = t.InfoContent
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -2144,7 +2169,7 @@ namespace KilyCore.Service.ServiceCore
                 GovtId = t.GovtId,
                 CompanyType = t.CompanyType,
                 InfoContent = t.InfoContent,
-                CreateTime=t.CreateTime.Value.ToString("yyyy年MM月dd日"),
+                CreateTime = t.CreateTime.Value.ToString("yyyy年MM月dd日"),
                 InfoTitle = t.InfoTitle
             }).FirstOrDefault();
             return data;
@@ -2282,7 +2307,7 @@ namespace KilyCore.Service.ServiceCore
                 ReleaseTime = DateTime.Now,
                 TrageType = complain.CompanyType,
                 TypePath = complain.TypePath,
-                Category="投诉",
+                Category = "投诉",
             };
             return Insert(message) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }

@@ -106,7 +106,7 @@
                 map.addOverlay(label);
 
                 //添加多边形层并显示
-                var ply = new BMap.Polygon(blist[i].points, { strokeWeight:2, strokeColor: "#FF0000", fillOpacity: 0.01, fillColor: " #FFFFFF" }); //建立多边形覆盖物
+                var ply = new BMap.Polygon(blist[i].points, { strokeWeight: 2, strokeColor: "#FF0000", fillOpacity: 0.01, fillColor: " #FFFFFF" }); //建立多边形覆盖物
                 ply.name = blist[i].name;
                 ply.label = label;
                 ply.addEventListener("click", click);
@@ -163,14 +163,17 @@
                     dataType: "jsonp",
                     success: function (result) {
                         options.marker = new BMap.Marker(new BMap.Point(result.result.location.lng, result.result.location.lat));
-                        options.Map.addOverlay(options.marker);               // 将标注添加到地图中
+                        options.markers = new BMap.Marker(new BMap.Point(result.result.location.lng, result.result.location.lat));
+                        options.Map.addOverlay(options.marker);   // 将标注添加到地图中            
+                        options.Map.addOverlay(options.markers);               
                         controller.ajax({
                             url: "GovtWeb/GetRiskCount",
                             data: {},
                             async: false,
                             type: "post",
                             success: function (result) {
-                                var label = new BMap.Label(options.Name + "(" + result.data + "条)", { offset: new BMap.Size(20, -15) });
+                                var label = new BMap.Label("风险预警(" + result.data[0] + "条)", { offset: new BMap.Size(20, -20) });
+                                var labels = new BMap.Label("意见投诉(" + result.data[1] + "条)", { offset: new BMap.Size(20, 20) });
                                 label.setStyle({
                                     width: "80px",
                                     background: '#ff8355',
@@ -180,7 +183,18 @@
                                     height: "26px",
                                     lineHeight: "26px"
                                 });
+                                labels.setStyle({
+                                    width: "80px",
+                                    background: '#3ce7f6',
+                                    border: '1px solid "#3ce7f6"',
+                                    zIndex:999,
+                                    borderRadius: "5px",
+                                    textAlign: "center",
+                                    height: "26px",
+                                    lineHeight: "26px"
+                                });
                                 options.marker.setLabel(label);
+                                options.markers.setLabel(labels);
                             }
                         });
                     }
