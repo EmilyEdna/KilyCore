@@ -60,5 +60,13 @@ namespace KilyCore.EntityFrameWork.Model.System
         /// 类别
         /// </summary>
         public virtual string Category { get; set; }
+        /// <summary>
+        /// 处理时间
+        /// </summary>
+        public virtual DateTime? HandleTime { get; set; }
+        /// <summary>
+        /// 处理内容
+        /// </summary>
+        public virtual string HandleContent { get; set; }
     }
 }

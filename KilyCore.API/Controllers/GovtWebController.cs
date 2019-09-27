@@ -593,6 +593,23 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.EditNetPatrol(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 获取巡查处理内容
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetMsgList")]
+        public ObjectResultEx GetMsgList()
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetMsgList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 巡查记录日志
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetNetPatrolLogs")]
+        public ObjectResultEx GetNetPatrolLogs() {
+            return ObjectResultEx.Instance(GovtWebService.GetNetPatrolLogs(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
 
         #region 执法类目

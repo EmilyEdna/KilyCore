@@ -1608,14 +1608,25 @@ namespace KilyCore.Service.ServiceCore
                  .Where(t => t.CompanyName.Equals(Param.CompanyName))
                  .AsNoTracking().FirstOrDefault();
             GovtNetPatrol govtNet = Param.MapToEntity<GovtNetPatrol>();
+            var Info = GovtInfo();
+            GovtNetPatrolLog Log = new GovtNetPatrolLog
+            {
+                CompanyId = Param.CompanyId,
+                CompanyName = Param.CompanyName,
+                RecordTime = DateTime.Now,
+                GovtId = Param.GovtId,
+                RocordUser = $"{Info.TrueName}({Info.DepartName})"
+            };
             if (patrol == null)
             {
                 govtNet.PotrolNum = 1;
+                Insert(Log);
                 return Insert(govtNet) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
             }
             else
             {
                 patrol.PotrolNum += 1;
+                Insert(Log);
                 return UpdateField(patrol, "PotrolNum") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
             }
         }
@@ -1672,6 +1683,54 @@ namespace KilyCore.Service.ServiceCore
                 Category = "通报",
             };
             return Insert(message) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+        /// <summary>
+        /// 获取巡查处理内容
+        /// </summary>
+        /// <returns></returns>
+        public List<ResponseSystemMessage> GetMsgList()
+        {
+            IQueryable<SystemMessage> queryable = Kily.Set<SystemMessage>().Where(t => t.Status == "已处理");
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
+            else
+            {
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                    {
+                        Expression<Func<SystemMessage, bool>> exp_1 = null;
+                        for (int i = 0; i < Areas.Count; i++)
+                        {
+                            if (i == 0)
+                                exp_1 = ExpressionExtension.GetExpression<SystemMessage>("TypePath", Areas[i], ExpressionEnum.Like);
+                            else
+                                exp_1 = exp_1.Or(ExpressionExtension.GetExpression<SystemMessage>("TypePath", Areas[i], ExpressionEnum.Like));
+                        }
+                        queryable = queryable.Where(exp_1);
+                    }
+                    else
+                        queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            }
+            return queryable.Where(t => t.Category == "通报").Select(t => new ResponseSystemMessage
+            {
+                Id = t.Id,
+                CompanyId = t.CompanyId,
+                HandleTime = t.HandleTime,
+                HandleContent = t.HandleContent
+            }).ToList();
+        }
+        /// <summary>
+        /// 巡查记录日志
+        /// </summary>
+        /// <returns></returns>
+        public List<ResponseGovtNetPatrolLog> GetNetPatrolLogs()
+        {
+            return Kily.Set<GovtNetPatrolLog>().Where(t => t.GovtId == GovtInfo().Id).AsNoTracking().ToList().MapToList<GovtNetPatrolLog, ResponseGovtNetPatrolLog>();
         }
         #endregion
         #region 执法类目
@@ -2297,9 +2356,9 @@ namespace KilyCore.Service.ServiceCore
         public ResponseGovtComplain GetComplainDetail(Guid Id)
         {
             var queryable = Kily.Set<GovtComplain>().Where(t => t.Id == Id);
-            var data= queryable.Select(t => new ResponseGovtComplain
+            var data = queryable.Select(t => new ResponseGovtComplain
             {
-                Id = t.Id, 
+                Id = t.Id,
                 CompanyId = t.CompanyId,
                 CompanyName = t.CompanyName,
                 Status = t.Status,
@@ -2307,7 +2366,7 @@ namespace KilyCore.Service.ServiceCore
                 ComplainContent = t.ComplainContent,
                 ComplainTime = t.ComplainTime,
                 ComplainUserPhone = t.ComplainUserPhone,
-                HandlerTime= t.UpdateTime.Value.ToString("yyyy年MM月dd日 HH:mm"),
+                HandlerTime = t.UpdateTime.Value.ToString("yyyy年MM月dd日 HH:mm"),
                 ProductName = t.ProductName,
                 ComplainUser = t.ComplainUser,
                 HandlerContent = t.HandlerContent,
@@ -2356,6 +2415,8 @@ namespace KilyCore.Service.ServiceCore
             }
             else
             {
+                message.HandleTime = DateTime.Now;
+                message.HandleContent = Param;
                 message.Status = "已处理";
                 return UpdateField(message, "Status") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
             }
@@ -3548,7 +3609,7 @@ namespace KilyCore.Service.ServiceCore
             return new { RiskCount = RiskCount, ComplainCount = ComplainCount, SelfCount = SelfCount, PatrolsCount = PatrolsCount, BadCount = BadCount, PartyCounts = PartyCounts, Percents = (BadCount * 100 / (PatrolsCount == 0 ? 1 : PatrolsCount)) + "%" };
         }
 
-        
+
 
 
         #endregion

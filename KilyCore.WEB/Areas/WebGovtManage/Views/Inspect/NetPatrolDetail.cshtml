@@ -38,6 +38,25 @@
                     }
                 });
                 //获取通报记录
+                controller.ajax({
+                     url: "GovtWeb/GetMsgList",
+                    data: { },
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        
+                    }
+                });
+                //巡查记录
+                controller.ajax({
+                     url: "GovtWeb/GetNetPatrolLogs",
+                    data: { },
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        
+                    }
+                });
             },
             //事件
             InitEvents: function () {

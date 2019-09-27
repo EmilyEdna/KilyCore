@@ -28,6 +28,7 @@ namespace KilyCore.EntityFrameWork.EntityMapping.System
             builder.ToTable(typeof(SystemMessage).Name);
             builder.HasKey(t => t.Id);
             builder.Property(t => t.ReleaseTime).HasColumnType(typeof(DateTime).Name);
+            builder.Property(t => t.HandleTime).HasColumnType(typeof(DateTime).Name);
         }
     }
 }
