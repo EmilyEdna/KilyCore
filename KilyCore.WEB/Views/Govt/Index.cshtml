@@ -83,7 +83,7 @@
                     success: function (result) {
                         var html = "";
                         $.each(result.data.rows, function (i, obj) {
-                            html += '<tr><td>' + obj.CompanyName + '</td>';
+                            html += `<tr onclick="javascript:ShowModelDetail('WebGovtManage/Complain/InfoComplainDetail?Id=${obj.Id}','${obj.CompanyName}');"><td>${obj.CompanyName}</td>`;
                             html += '<td>' + obj.ProductName + '</td>';
                             html += '<td>' + obj.ComplainUser + '</td>';
                             html += '<td class="text-warning">' + obj.Status + '</td></tr >';

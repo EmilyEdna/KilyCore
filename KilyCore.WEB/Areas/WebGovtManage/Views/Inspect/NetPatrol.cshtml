@@ -31,7 +31,7 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>通报</button>');
-                    action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
+                    //action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
                     action.push('<button class="btn btn-sm btn-primary detail"><i class="fa fa-pencil-square-o"></i>巡查记录</button>');
                     return action.join("&nbsp;")
                 },
@@ -40,8 +40,8 @@
                         controller.OpenWindow({
                             title: "通报批评",
                             type: 2,
-                            height: "90%",
-                            width: "80%",  
+                            height: "50%",
+                            width: "60%",  
                             url: "WebGovtManage/Inspect/NetPatrolEdit?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
@@ -69,8 +69,9 @@
                             height: "90%",
                             width: "80%",  
                             url: "WebGovtManage/Inspect/NetPatrolDetail?Id=" + row.Id,
+                            btn:["关闭"],
                             callBack: function (result) {
-                                result.$("#Edit").submit();
+                                controller.Close();
                             }
                         })
                     }

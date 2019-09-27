@@ -1992,6 +1992,7 @@ namespace KilyCore.Service.ServiceCore
                 CompanyName = t.CompanyName,
                 CompanyType = t.CompanyType,
                 TemplateName = t.TemplateName,
+                CheckTime=t.CreateTime.Value.ToString("yyyy年MM月dd日"),
                 CheckUser = t.CheckUser
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
