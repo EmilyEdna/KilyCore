@@ -261,7 +261,7 @@
                             var CompanyHtml = '<li>'
                                 + '<img src="' + obj.CompanyImg + '">'
                                 + '<div>'
-                                + '<h4>' + obj.Name + '</h4>'
+                                + '<h4><a href="javascript:">' + obj.Name + '</a></h4>'
                                 + '<p>负责人：<span>' + obj.CompanyUser + '</span></p>'
                                 + '<p>社会统一代码：<span>' + obj.CompanyCode + '</span></p>'
                                 + '<p>联系地址：<span>' + obj.Address + '</span></p>'
@@ -469,6 +469,20 @@
             //添加遮蔽层
             var plyall = new BMap.Polygon(pArray, { strokeOpacity: 0.0000001, strokeColor: "#000000", strokeWeight: 0.00001, fillColor: "#000000", fillOpacity: 0.4 }); //建立多边形覆盖物
             map.addOverlay(plyall);
+        }
+         //展示
+        function ShowModelDetail(Url,Title) {
+             controller.OpenWindow({
+                    title:Title,
+                    type: 2,
+                    height: "80%",
+                    width: "60%",  
+                 url: Url,
+                    btn:["关闭"],
+                    callBack: function (result) {
+                        controller.Close();
+                    }
+                });
         }
     </script>
 }
