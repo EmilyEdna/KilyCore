@@ -68,5 +68,9 @@ namespace KilyCore.DataEntity.ResponseMapper.Govt
         /// 模板内容
         /// </summary>
         public string TemplateContent { get; set; }
+        /// <summary>
+        /// 自查日期
+        /// </summary>
+        public string CheckTime { set; get; }
     }
 }

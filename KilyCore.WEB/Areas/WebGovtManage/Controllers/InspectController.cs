@@ -52,6 +52,10 @@ namespace KilyCore.WEB.Areas.WebGovtManage.Controllers
         public IActionResult CompanyPatrolEdit() {
             return View();
         }
+        public IActionResult CompanyPatrolDetail()
+        {
+            return View();
+        }
         public IActionResult CompanyPatrolAttachEdit()
         {
             return View();

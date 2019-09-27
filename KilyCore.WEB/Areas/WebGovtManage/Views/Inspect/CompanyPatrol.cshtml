@@ -53,19 +53,19 @@
             action: {
                 TableFormatter: function (val, row, index) {
                     var action = [];
-                    action.push('<button class="btn btn-sm btn-primary detail"><i class="fa fa-pencil-square-o"></i>详情</button>');
+                    action.push('<button class="btn btn-sm btn-primary detail"><i class="fa fa-pencil-square-o"></i>查看</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
                     "click .detail": function (event, val, row, index) {
                         controller.OpenWindow({
-                            title: "自查详情",
+                            title: row.CompanyName+"-自查记录",
                             type: 2,
                             height: "90%",
                             width: "80%",
-                            url: "WebGovtManage/Inspect/CompanyPatrolEdit?Id=" + row.Id,
+                            url: "WebGovtManage/Inspect/CompanyPatrolDetail?Id=" + row.Id,
                             callBack: function (result) {
-                                result.popClose();
+                                controller.Close();
                             }
                         })
                     }
@@ -108,10 +108,12 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="TemplateName" class="th-center">模板名称</th>
+
                                 <th data-field="CompanyName" class="th-center">企业名称</th>
                                 <th data-field="CompanyType" class="th-center">企业类型</th>
+                                <th data-field="TemplateName" class="th-center">模板名称</th>
                                 <th data-field="CheckUser" class="th-center">自查人</th>
+                                <th data-field="CheckTime" class="th-center">自查日期</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" class="th-center">操作</th>
                             </tr>
                         </thead>

@@ -1,0 +1,85 @@
+﻿@{
+    ViewData["Title"] = "企业自查模板";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                var Editor = controller.Editor(".summernote");
+                var Id = controller.GetParam("Id");
+                if (controller.CheckFeild(Id)) {
+                    controller.ajax({
+                        url: "GovtWeb/GetTemplateChildDetail",
+                        data: { Id: Id },
+                        type: "post",
+                        async: false,
+                        success: function (result) {
+                            controller.SetLableValue("#Edit", result.data);
+                        }
+                    });
+                }
+            },
+            //事件
+            InitEvents: function () {
+
+            },
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" id="Edit">
+            <table class="table table-hover table-bordered">
+                <colgroup>
+                    <col width="10%" />
+                    <col width="40%" />
+                    <col width="10%" />
+                    <col width="40%" />
+                </colgroup>
+                <tr>
+                    <th><label class="control-label">企业名称</label></th>
+                    <td class="has-warning">
+                        <label type="txt" name="CompanyName"></label>
+                    </td>
+                    <th><label class="control-label">企业类型</label></th>
+                    <td class="has-warning">
+                        <label type="txt" name="CompanyType"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">模板名称</label></th>
+                    <td class="has-warning">
+                        <label type="txt" name="TemplateName"></label>
+                    </td>
+                    <th><label class="control-label">自查人</label></th>
+                    <td class="has-warning">
+                        <label type="txt" name="CheckUser"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">自查日期</label></th>
+                    <td class="has-warning" colspan="3">
+                        <label type="txt" name="CheckTime"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">自查结果</label></th>
+                    <td class="has-warning" colspan="3">
+                        <label type="txt" name="TemplateContent"></label>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
