@@ -480,7 +480,7 @@ namespace KilyCore.API.Controllers
         [AllowAnonymous]
         public ObjectResultEx GetOrgInfo(SimpleParam<String> Param,SimpleParam<String> Codes) 
         {
-           string  Code = CacheFactory.Cache().GetCache<string>("ValidateCode").Trim();
+           string  Code = CacheFactory.Cache().GetCache<string>("PhoneCode").Trim();
             if(Codes.Parameter!=Code)
                 return ObjectResultEx.Instance("请输入正确验证码", 1, RetrunMessge.SUCCESS, HttpCode.Success);
             return ObjectResultEx.Instance(RepastWebService.GetOrgInfo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
