@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KilyCore.Cache;
 using KilyCore.DataEntity.RequestMapper.Function;
 using KilyCore.DataEntity.RequestMapper.Govt;
 using KilyCore.DataEntity.RequestMapper.Repast;
@@ -476,7 +477,12 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetOrgInfo")]
-        public ObjectResultEx GetOrgInfo(SimpleParam<String> Param) {
+        [AllowAnonymous]
+        public ObjectResultEx GetOrgInfo(SimpleParam<String> Param,SimpleParam<String> Codes) 
+        {
+           string  Code = CacheFactory.Cache().GetCache<string>("ValidateCode").Trim();
+            if(Codes.Parameter!=Code)
+                return ObjectResultEx.Instance("请输入正确验证码", 1, RetrunMessge.SUCCESS, HttpCode.Success);
             return ObjectResultEx.Instance(RepastWebService.GetOrgInfo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
