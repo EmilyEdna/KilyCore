@@ -1456,7 +1456,7 @@ namespace KilyCore.Service.ServiceCore
                         queryable = queryable.Where(exp_1);
                         queryables = queryables.Where(exp_2);
                         users = users.Where(exp_3);
-                        complain == complain.Where(exp_4);
+                        complain = complain.Where(exp_4);
                     }
                     else
                     {
