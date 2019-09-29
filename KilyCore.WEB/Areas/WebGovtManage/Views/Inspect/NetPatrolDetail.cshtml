@@ -44,7 +44,9 @@
                     async: false,
                     type: "post",
                     success: function (result) {
-                        debugger;
+                        $.each(result.data, function (i, item) {
+                            $("#AdList").append()
+                        });
                     }
                 });
                 //巡查记录
@@ -54,7 +56,11 @@
                     async: false,
                     type: "post",
                     success: function (result) {
-                        debugger;
+                        if(result.data!=null)
+                        $("label[name=PotrolNum]").html(result.data.length);
+                        $.each(result.data, function (i, item) {
+                            $("#CheckList").append(`<tr><td  style="text-align:center;width:96px;">${i+1}</td><td>${item.RocordUser}</td><td  style="text-align:center;">${item.RecordTime}</td></tr>`);
+                        });
                     }
                 });
             },
@@ -85,7 +91,7 @@
             </li>
         </ul>
         <div class="tab-content" id="Edit">
-            <div id="tab-1" class="tab-pane active" >
+            <div id="tab-1" class="tab-pane active">
                 <table class="table table-hover table-bordered m-t-sm">
                     <colgroup>
                         <col width="120" align="center" />
@@ -137,15 +143,22 @@
                         <td class="has-warning">
                             <label type="txt" name="PotrolNum"></label>
                         </td>
-                        <th style="text-align:center"><label class="control-label">最近抽查日期</label></th>
+                        <th style="text-align:center"><label class="control-label">抽查日期</label></th>
                         <td class="has-warning">
                             <label type="txt" name="CheckTime"></label>
                         </td>
                     </tr>
                 </table>
+                <table class="table table-hover table-bordered m-t-sm">
+                    <tr><th colspan="3" style="text-align:center;font-size:16px;">巡查记录</th></tr>
+                    <tr><th style="text-align:center;">序号</th><th style="text-align:center;">巡查人</th><th style="text-align:center;">巡查时间</th></tr>
+                    <tbody id="CheckList">
+
+                    </tbody>
+                </table>
             </div>
             <div id="tab-2" class="tab-pane">
-                <div class="ibox-content">
+                <div class="ibox-content" id="AdList">
                    
                 </div>
             </div>

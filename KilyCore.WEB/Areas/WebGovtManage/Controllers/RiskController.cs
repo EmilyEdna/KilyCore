@@ -21,6 +21,10 @@ namespace KilyCore.WEB.Areas.WebGovtManage.Controllers
         {
             return View();
         }
+        public IActionResult CertificateRiskDetail()
+        {
+            return View();
+        }
         public IActionResult WaringRiskEdit()
         {
             return View();
