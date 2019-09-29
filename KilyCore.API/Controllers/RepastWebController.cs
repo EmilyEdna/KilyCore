@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KilyCore.Cache;
 using KilyCore.DataEntity.RequestMapper.Function;
 using KilyCore.DataEntity.RequestMapper.Govt;
 using KilyCore.DataEntity.RequestMapper.Repast;
@@ -469,6 +470,20 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx RemoveOrg(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(RepastWebService.RemoveOrg(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 判断是否存在家委会
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("GetOrgInfo")]
+        [AllowAnonymous]
+        public ObjectResultEx GetOrgInfo(SimpleParam<String> Param,SimpleParam<String> Codes) 
+        {
+           string  Code = CacheFactory.Cache().GetCache<string>("ValidateCode").Trim();
+            if(Codes.Parameter!=Code)
+                return ObjectResultEx.Instance("请输入正确验证码", 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(RepastWebService.GetOrgInfo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         #endregion
