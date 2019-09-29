@@ -157,7 +157,7 @@ namespace KilyCore.Repositories.BaseRepository
                     Log.HandlerType = "添加内容";
                     Log.HandlerTime = DateTime.Now;
                     Log.Id = Guid.NewGuid();
-                    Log.HandlerContent = $"【{Log.HandlerUser}】对【{FunctionName}】中的【{ThemeName}】进行了【{Log.HandlerType}】操作，操作时间【{Log.HandlerTime.Value.ToShortDateString()}】";
+                    Log.HandlerContent = $"【{Log.HandlerUser}】对{FunctionName}中的({ThemeName})进行了\"{Log.HandlerType}\"操作，操作时间【{Log.HandlerTime.Value.ToShortDateString()}】";
                     Kily.Add(Log);
                     Kily.SaveChanges();
                 }
