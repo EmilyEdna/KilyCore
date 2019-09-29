@@ -1411,6 +1411,7 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
             IQueryable<RepastInfo> queryables = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
             IQueryable<RepastInfoUser> users = Kily.Set<RepastInfoUser>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<GovtComplain> complain = Kily.Set<GovtComplain>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.CompanyName))
             {
                 queryable = queryable.Where(t => t.CompanyName.Contains(pageParam.QueryParam.CompanyName));
@@ -1422,6 +1423,7 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
                 queryables = queryables.Where(t => t.TypePath.Contains(GovtInfo().City));
                 users = users.Where(t => t.TypePath.Contains(GovtInfo().City));
+                complain = complain.Where(t => t.TypePath.Contains(GovtInfo().City));
             }
             else
             {
@@ -1433,6 +1435,7 @@ namespace KilyCore.Service.ServiceCore
                         Expression<Func<EnterpriseInfo, bool>> exp_1 = null;
                         Expression<Func<RepastInfo, bool>> exp_2 = null;
                         Expression<Func<RepastInfoUser, bool>> exp_3 = null;
+                        Expression<Func<GovtComplain, bool>> exp_4 = null;
                         for (int i = 0; i < Areas.Count; i++)
                         {
                             if (i == 0)
@@ -1440,23 +1443,27 @@ namespace KilyCore.Service.ServiceCore
                                 exp_1 = ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like);
                                 exp_2 = ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like);
                                 exp_3 = ExpressionExtension.GetExpression<RepastInfoUser>("TypePath", Areas[i], ExpressionEnum.Like);
+                                exp_4 = ExpressionExtension.GetExpression<GovtComplain>("TypePath", Areas[i], ExpressionEnum.Like);
                             }
                             else
                             {
                                 exp_1 = exp_1.Or(ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like));
                                 exp_2 = exp_2.Or(ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like));
                                 exp_3 = exp_3.Or(ExpressionExtension.GetExpression<RepastInfoUser>("TypePath", Areas[i], ExpressionEnum.Like));
+                                exp_4 = exp_4.Or(ExpressionExtension.GetExpression<GovtComplain>("TypePath", Areas[i], ExpressionEnum.Like));
                             }
                         }
                         queryable = queryable.Where(exp_1);
                         queryables = queryables.Where(exp_2);
                         users = users.Where(exp_3);
+                        complain == complain.Where(exp_4);
                     }
                     else
                     {
                         queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                         queryables = queryables.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                         users = users.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                        complain = complain.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                     }
                 }
                 else
@@ -1464,6 +1471,7 @@ namespace KilyCore.Service.ServiceCore
                     queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
                     queryables = queryables.Where(t => t.TypePath.Contains(GovtInfo().Area));
                     users = users.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                    complain = complain.Where(t => t.TypePath.Contains(GovtInfo().Area));
                 }
             }
             if (!GovtInfo().IsEdu.Value)
@@ -1520,7 +1528,17 @@ namespace KilyCore.Service.ServiceCore
                     CardImg = t.HealthCard,
                     CardExpiredDate = t.ExpiredTime
                 }).ToList();
+                var complains = complain.Where(t => t.CompanyType=="单位食堂").Select(t => new
+                {
+                    t.Id,
+                    Name =t.CompanyName,
+                    CardType = "投诉",
+                    CompanyType = queryables.Where(x => x.Id == t.CompanyId).Select(x => x.AllowUnit).FirstOrDefault(),
+                    CardImg = t.ComplainContent,
+                    CardExpiredDate = t.ComplainTime
+                }).ToList();
                 Repast.AddRange(MerUser);
+                Repast.AddRange(complains);
                 return Repast.Where(t => t.CardExpiredDate.Value <= DateTime.Now.AddDays(20)).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             }
         }

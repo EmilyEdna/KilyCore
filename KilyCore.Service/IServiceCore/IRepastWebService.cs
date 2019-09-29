@@ -95,6 +95,7 @@ namespace KilyCore.Service.IServiceCore
         ResponseRepastOrg GetOrgDetail(Guid Id);
         string EditOrg(RequestRepastOrg Param);
         string RemoveOrg(Guid Id);
+        string GetOrgInfo(String Phone);
         #endregion
         #endregion
         #region 功能管理

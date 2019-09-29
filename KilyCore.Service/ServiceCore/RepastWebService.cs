@@ -316,7 +316,7 @@ namespace KilyCore.Service.ServiceCore
                         return "对不起，您录入的企业名称和社会统一代码不一致！";
                     //正确才审核和提交合同
                     Info.AuditType = AuditEnum.AuditSuccess;
-                    if(Kily.Set<SystemStayContract>().Where(t => t.CompanyId == Info.Id).FirstOrDefault() == null)
+                    if (Kily.Set<SystemStayContract>().Where(t => t.CompanyId == Info.Id).FirstOrDefault() == null)
                     {
                         RequestStayContract contract = new RequestStayContract()
                         {
@@ -1370,8 +1370,22 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public string RemoveOrg(Guid Id) {
+        public string RemoveOrg(Guid Id)
+        {
             return Remove<RepastOrg>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
+        }
+        /// <summary>
+        /// 判断是否存在家委会
+        /// </summary>
+        /// <param name="Phone"></param>
+        /// <returns></returns>
+        public string GetOrgInfo(String Phone)
+        {
+            RepastOrg repast = Kily.Set<RepastOrg>().Where(t => t.LinkPhone.Equals(Phone)).AsNoTracking().FirstOrDefault();
+            if (repast == null)
+                return "不存在";
+            else
+                return repast.InfoId.ToString();
         }
         #endregion
         #endregion
