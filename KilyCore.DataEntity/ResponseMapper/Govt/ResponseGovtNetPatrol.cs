@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KilyCore.DataEntity.ResponseMapper.System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -50,5 +51,9 @@ namespace KilyCore.DataEntity.ResponseMapper.Govt
         /// 最后一次抽查时间
         /// </summary>
         public string CheckTime { set; get; }
+        /// <summary>
+        /// 通报记录
+        /// </summary>
+        public List<ResponseSystemMessage> MsgList { set; get; }
     }
 }

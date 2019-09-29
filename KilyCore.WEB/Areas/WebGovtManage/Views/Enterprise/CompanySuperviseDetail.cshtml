@@ -126,157 +126,165 @@
 }
 <form class="form-horizontal" method="post" id="Edit">
     <div class="tabs-container">
-        <ul class="nav nav-tabs">
-            <li class="active">
-                <a data-toggle="tab" href="#tab-1" aria-expanded="true"> 基本信息</a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#tab-2" aria-expanded="false">营业执照</a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#tab-3" aria-expanded="false">荣誉证书</a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#tab-4" aria-expanded="false" id="four">视频监控</a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#tab-5" aria-expanded="false" id="five">供应商</a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#tab-6" aria-expanded="false" id="six">分销商</a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#tab-7" aria-expanded="false" id="senven">主要产品</a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#tab-8" aria-expanded="false" id="eight">进销台账</a>
-            </li>
-        </ul>
-        <div class="tab-content">
-            <div id="tab-1" class="tab-pane active">
-                <table class="table table-hover table-bordered m-t-sm">
-                    <colgroup>
-                        <col width="120" align="center" />
-                        <col width="40%" />
-                        <col width="120" />
-                    </colgroup>
-                    <tr>
-                        <th style="text-align:center"><label class="control-label">企业名称</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="CompanyName"></label>
-                        </td>
-                        <th style="text-align:center"><label class="control-label">所属行业</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="CompanyTypeName"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style="text-align:center"><label class="control-label">企业性质</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="NatureName"></label>
-                        </td>
-                        <th style="text-align:center"><label class="control-label">信用代码</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="CommunityCode"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style="text-align:center"><label class="control-label">企业电话</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="CompanyPhone"></label>
-                        </td>
-                        <th style="text-align:center"><label class="control-label">企业地址</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="CompanyAddress"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style="text-align:center"><label class="control-label">工商地址</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="SellerAddress"></label>
-                        </td>
-                        <th style="text-align:center"><label class="control-label">生产地址</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="ProductionAddress"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style="text-align:center"><label class="control-label">视频地址</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="VideoAddress"></label>
-                        </td>
-                        <th style="text-align:center"><label class="control-label">网站地址</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="NetAddress"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style="text-align:center"><label class="control-label">经营范围</label></th>
-                        <td class="has-warning" colspan="3">
-                            <label type="txt" name="Scope"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style="text-align:center"><label class="control-label">企业介绍</label></th>
-                        <td class="has-warning" colspan="3">
-                            <label type="txt" name="Discription" style="font-weight:normal;font-size:15px;"></label>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div id="tab-2" class="tab-pane">
-                <div class="ibox-content">
-                    <label type="img" name="Certification"></label>
+        <div class="ibox-content">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a data-toggle="tab" href="#tab-1" aria-expanded="true"> 基本信息</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-2" aria-expanded="false">营业执照</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-3" aria-expanded="false">荣誉证书</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-4" aria-expanded="false" id="four">视频监控</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-5" aria-expanded="false" id="five">供应商</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-6" aria-expanded="false" id="six">分销商</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-7" aria-expanded="false" id="senven">主要产品</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-8" aria-expanded="false" id="eight">进销台账</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="tab-1" class="tab-pane active">
+                    <div>
+                        <table class="table table-bordered m-t-sm">
+                            <colgroup>
+                                <col width="120" align="center" />
+                                <col width="40%" />
+                                <col width="120" />
+                            </colgroup>
+                            <tr>
+                                <th style="text-align:center"><label class="control-label">企业名称</label></th>
+                                <td class="has-warning">
+                                    <label type="txt" name="CompanyName"></label>
+                                </td>
+                                <th style="text-align:center"><label class="control-label">所属行业</label></th>
+                                <td class="has-warning">
+                                    <label type="txt" name="CompanyTypeName"></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="text-align:center"><label class="control-label">企业性质</label></th>
+                                <td class="has-warning">
+                                    <label type="txt" name="NatureName"></label>
+                                </td>
+                                <th style="text-align:center"><label class="control-label">信用代码</label></th>
+                                <td class="has-warning">
+                                    <label type="txt" name="CommunityCode"></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="text-align:center"><label class="control-label">企业电话</label></th>
+                                <td class="has-warning">
+                                    <label type="txt" name="CompanyPhone"></label>
+                                </td>
+                                <th style="text-align:center"><label class="control-label">企业地址</label></th>
+                                <td class="has-warning">
+                                    <label type="txt" name="CompanyAddress"></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="text-align:center"><label class="control-label">工商地址</label></th>
+                                <td class="has-warning">
+                                    <label type="txt" name="SellerAddress"></label>
+                                </td>
+                                <th style="text-align:center"><label class="control-label">生产地址</label></th>
+                                <td class="has-warning">
+                                    <label type="txt" name="ProductionAddress"></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="text-align:center"><label class="control-label">视频地址</label></th>
+                                <td class="has-warning">
+                                    <label type="txt" name="VideoAddress"></label>
+                                </td>
+                                <th style="text-align:center"><label class="control-label">网站地址</label></th>
+                                <td class="has-warning">
+                                    <label type="txt" name="NetAddress"></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="text-align:center"><label class="control-label">经营范围</label></th>
+                                <td class="has-warning" colspan="3">
+                                    <label type="txt" name="Scope"></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th style="text-align:center"><label class="control-label">企业介绍</label></th>
+                                <td class="has-warning" colspan="3">
+                                    <label type="txt" name="Discription" style="font-weight:normal;font-size:15px;"></label>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            <div id="tab-3" class="tab-pane">
-                <div class="ibox-content article">
+                <div id="tab-2" class="tab-pane">
+                    <div class="ibox-content">
+                        <label type="img" name="Certification"></label>
+                    </div>
                 </div>
-            </div>
-            <div id="tab-4" class="tab-pane">
-                <div class="ibox-content">
-                    <iframe class="J_iframe" src="" name="iframe" style="width:472px;height:400px" frameborder="0" seamless scrolling="no" align="middle"></iframe>
-                    <iframe class="J_iframe" src="" name="iframe" style="width:472px;height:400px" frameborder="0" seamless scrolling="no" align="middle"></iframe>
-                    <iframe class="J_iframe" src="" name="iframe" style="width:472px;height:400px" frameborder="0" seamless scrolling="no" align="middle"></iframe>
-                    <iframe class="J_iframe" src="" name="iframe" style="width:472px;height:400px" frameborder="0" seamless scrolling="no" align="middle"></iframe>
+                <div id="tab-3" class="tab-pane">
+                    <div class="ibox-content article">
+                    </div>
                 </div>
-            </div>
-            <div id="tab-5" class="tab-pane">
-                <div class="ibox-content table-responsive">
-                    <table class="table">
-                        <tr>
-                            <th>供应商名称</th>
-                            <th>社会信用代码</th>
-                            <th>负责人</th>
-                            <th>联系方式</th>
-                            <th>营业资质</th>
-                        </tr>
-                        <tbody id="CompanyApply">
-                        </tbody>
-                    </table>
+                <div id="tab-4" class="tab-pane">
+                    <div class="ibox-content">
+                        <iframe class="J_iframe" src="" name="iframe" style="width:472px;height:400px" frameborder="0" seamless scrolling="no" align="middle"></iframe>
+                        <iframe class="J_iframe" src="" name="iframe" style="width:472px;height:400px" frameborder="0" seamless scrolling="no" align="middle"></iframe>
+                        <iframe class="J_iframe" src="" name="iframe" style="width:472px;height:400px" frameborder="0" seamless scrolling="no" align="middle"></iframe>
+                        <iframe class="J_iframe" src="" name="iframe" style="width:472px;height:400px" frameborder="0" seamless scrolling="no" align="middle"></iframe>
+                    </div>
                 </div>
-            </div>
-            <div id="tab-6" class="tab-pane">
-                <div class="ibox-content">
-                    <table class="table">
-                        <tr>
-                            <th>分销商名称</th>
-                            <th>社会信用代码</th>
-                            <th>负责人</th>
-                            <th>联系方式</th>
-                            <th>营业资质</th>
-                        </tr>
-                        <tbody id="CompanySell">
-                        </tbody>
-                    </table>
+                <div id="tab-5" class="tab-pane">
+                    <div style="padding-top:12px;">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="th-center">供应商名称</th>
+                                    <th class="th-center">社会信用代码</th>
+                                    <th class="th-center">负责人</th>
+                                    <th class="th-center">联系方式</th>
+                                    <th class="th-center">营业资质</th>
+                                </tr>
+                            </thead>
+                            <tbody id="CompanyApply">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            <div id="tab-7" class="tab-pane">
-                <div class="ibox-content" id="CompanyProduct">
+                <div id="tab-6" class="tab-pane">
+                    <div  style="padding-top:12px;">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="th-center">分销商名称</th>
+                                    <th class="th-center">社会信用代码</th>
+                                    <th class="th-center">负责人</th>
+                                    <th class="th-center">联系方式</th>
+                                    <th class="th-center">营业资质</th>
+                                </tr>
+                            </thead>
+                            <tbody id="CompanySell">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            <div id="tab-8" class="tab-pane">
-                <div class="ibox-content" id="CompanyBook">
+                <div id="tab-7" class="tab-pane">
+                    <div class="ibox-content" id="CompanyProduct">
+                    </div>
+                </div>
+                <div id="tab-8" class="tab-pane">
+                    <div class="ibox-content" id="CompanyBook">
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,6 +1,7 @@
 ﻿using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.Repast;
 using KilyCore.EntityFrameWork.Model.Enterprise;
+using KilyCore.EntityFrameWork.Model.Govt;
 using KilyCore.EntityFrameWork.Model.Repast;
 using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
@@ -155,6 +156,38 @@ namespace KilyCore.Service.ServiceCore
                 Person = t.DrawUser,
                 Remark = t.Remark.Replace("/upload/", "http://system.cfda.vip/upload/").Replace("/editor/", "http://system.cfda.vip/editor/"),
                 DateTime = t.DrawTime.Value
+            }).Take(9).ToList();
+        }
+        /// <summary>
+        /// 陪餐打卡
+        /// </summary>
+        /// <param name="CompanyId"></param>
+        /// <returns></returns>
+        [Obsolete]
+        public object RepastMarket(Guid CompanyId)
+        {
+            return Kily.Set<RepastUnitInsRecord>().Where(t => t.InfoId == CompanyId && t.IsDelete == false).OrderByDescending(o => o.InsTime).Select(t => new
+            {
+                Title = t.InsTheme,
+                Person = t.InsUser,
+                Remark = t.InsContent.Replace("/upload/", "http://system.cfda.vip/upload/").Replace("/editor/", "http://system.cfda.vip/editor/"),
+                DateTime = t.InsTime.Value
+            }).Take(9).ToList();
+        }
+        /// <summary>
+        /// 商家自查
+        /// </summary>
+        /// <param name="CompanyId"></param>
+        /// <returns></returns>
+        [Obsolete]
+        public object RepastSelfCheck(Guid CompanyId)
+        {
+            return Kily.Set<GovtTemplateChild>().Where(t => t.Id == CompanyId && t.IsDelete == false).OrderByDescending(o => o.CreateTime).Select(t => new
+            {
+                Title = t.TemplateName,
+                Person = t.UpdateUser,
+                Remark = t.TemplateContent.Replace("/upload/", "http://system.cfda.vip/upload/").Replace("/editor/", "http://system.cfda.vip/editor/"),
+                DateTime = t.CreateTime.Value
             }).Take(9).ToList();
         }
         /// <summary>

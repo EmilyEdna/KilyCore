@@ -323,10 +323,14 @@
                 success: function (result) {
                     let listStr = '';
                     for (index in result.data.rows) {
+                        var showName = result.data.rows[index].Name;
+                        if (result.data.rows[index].CardType == "健康证") {
+                            showName=`${result.data.rows[index].PersonName}(${result.data.rows[index].Name})`;
+                        }
                         listStr += `
-                            <li class="clearfix">
+                            <li class="clearfix" data-id="${result.data.rows[index].Id}" data-title="${result.data.rows[index].Name}" data-content='${result.data.rows[index].Remark}' data-name='${result.data.rows[index].PersonName}' data-type="${result.data.rows[index].CardType}" data-time="${result.data.rows[index].CardExpiredDate.split(" ")[0]}" data-img="${result.data.rows[index].CardImg}">
                                 <div class="hidden">${result.data.rows[index].Id}</div>
-                                <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" title="${result.data.rows[index].Name}">${result.data.rows[index].Name}</div>
+                                <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" title="${result.data.rows[index].Name}">${showName}</div>
                                 <div>${result.data.rows[index].CompanyType}</div>
                                 <div>${result.data.rows[index].CardType}</div>
                                 <div>${result.data.rows[index].CardExpiredDate.split(" ")[0]}</div>
@@ -452,7 +456,24 @@
             }, 50);
             //证件到期提醒 详情页跳转
             $(".cardexpire .bd ul li").click(function () {
-                window.open("/WebGovtManage/Risk/CertificateRisk", "_black");
+                var Type = $(this).attr("data-type");
+                var CompanyName = $(this).attr("data-title");
+                var PersonName = $(this).attr("data-name");
+                var CardType = $(this).attr("data-type");
+                var CardImg = $(this).attr("data-img");
+                var CardImg = $(this).attr("data-img");
+                var ExpiredDate = $(this).attr("data-time");
+                var Remark=$(this).attr("data-content");
+                if (Type == "健康证") {
+                    ShowModelDetail("WebGovtManage/Risk/CertificateRiskDetail?Name=" + CompanyName+"&PersonName="+PersonName+"&CardType="+CardType+"&CardExpiredDate="+ExpiredDate+"&CardImg="+CardImg+"&Remark="+Remark);
+                }
+                else if (Type == "营业执照") {
+                   ShowModelDetail("WebGovtManage/Risk/CertificateRiskDetail?Name=" + CompanyName+"&PersonName="+PersonName+"&CardType="+CardType+"&CardExpiredDate="+ExpiredDate+"&CardImg="+CardImg+"&Remark="+Remark);
+                }
+                else {//投诉
+                    ShowModelDetail("WebGovtManage/Complain/InfoComplainDetail?Id=" + row.Id);
+                }
+                
             });
             //定时器，每一秒调用一次时间函数
             setInterval(this.GetNowDate, 1000);
@@ -515,6 +536,20 @@
         }
         return m;
     }
+     //展示
+     function ShowModelDetail(Url,Title) {
+             controller.OpenWindow({
+                    title:Title,
+                    type: 2,
+                    height: "50%",
+                    width: "40%",  
+                 url: Url,
+                    btn:["关闭"],
+                    callBack: function (result) {
+                        controller.Close();
+                    }
+                });
+        }
 </script>
 }
 <body>

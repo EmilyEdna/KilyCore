@@ -607,9 +607,9 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetNetPatrolLogs")]
-        public ObjectResultEx GetNetPatrolLogs()
+        public ObjectResultEx GetNetPatrolLogs(SimpleParam<Guid> Param)
         {
-            return ObjectResultEx.Instance(GovtWebService.GetNetPatrolLogs(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(GovtWebService.GetNetPatrolLogs(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
 

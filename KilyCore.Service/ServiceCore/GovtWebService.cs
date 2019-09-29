@@ -896,7 +896,7 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 ProductName = t.ProductName,
                 ProductType = t.ProductType,
-                ExpiredDate = t.ExpiredDate,
+                ExpiredDate = t.ExpiredDate+"天",
                 Spec = t.Spec,
                 Unit = x.ProductionAddress,
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -1484,8 +1484,10 @@ namespace KilyCore.Service.ServiceCore
                     t.Id,
                     Name = t.CompanyName,
                     CardType = "营业执照",
+                    PersonName = "",
                     CompanyType = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
                     CardImg = t.Certification,
+                    Remark = t.CompanyName + "营业执照于" + (t.CardExpiredDate.HasValue ? t.CardExpiredDate.Value.ToString("yyyy年MM月dd日"):"-") + "到期.",
                     t.CardExpiredDate
                 }).ToList();
                 var Repast = queryables.Select(t => new
@@ -1493,17 +1495,21 @@ namespace KilyCore.Service.ServiceCore
                     t.Id,
                     Name = t.MerchantName,
                     CardType = "营业执照",
+                    PersonName = "",
                     CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
                     CardImg = t.Certification,
+                    Remark = t.MerchantName + "营业执照于" + (t.CardExpiredDate.HasValue?t.CardExpiredDate.Value.ToString("yyyy年MM月dd日"):"-") + "到期.",
                     t.CardExpiredDate
                 }).ToList();
                 var MerUser = users.Select(t => new
                 {
                     t.Id,
-                    Name = t.TrueName + "(" + t.MerchantName + ")",
+                    Name = t.MerchantName,
                     CardType = "健康证",
+                    PersonName = t.TrueName,
                     CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
                     CardImg = t.HealthCard,
+                    Remark = t.MerchantName + "人员：" + t.TrueName + "健康证于" + t.ExpiredTime.Value.ToString("yyyy年MM月dd日") + "到期.",
                     CardExpiredDate = t.ExpiredTime
                 }).ToList();
                 Enterprise.AddRange(Repast);
@@ -1518,27 +1524,33 @@ namespace KilyCore.Service.ServiceCore
                     t.Id,
                     Name = t.MerchantName,
                     CardType = "营业执照",
+                    PersonName="",
                     CompanyType = t.AllowUnit,
                     CardImg = t.Certification,
-                    t.CardExpiredDate
+                    t.CardExpiredDate,
+                    Remark= t.MerchantName+"营业执照于"+(t.CardExpiredDate.HasValue?t.CardExpiredDate.Value.ToString("yyyy年MM月dd日"):"-")+"到期."
                 }).ToList();
                 var MerUser = users.Where(t => t.DiningType == MerchantEnum.UnitCanteen).Select(t => new
                 {
                     t.Id,
-                    Name = t.TrueName + "(" + t.MerchantName + ")",
+                    Name =   t.MerchantName,
                     CardType = "健康证",
+                    PersonName = t.TrueName,
                     CompanyType = Repast.Where(x => x.Id == t.InfoId).Select(x => x.CompanyType).FirstOrDefault(),
                     CardImg = t.HealthCard,
-                    CardExpiredDate = t.ExpiredTime
+                    CardExpiredDate = t.ExpiredTime,
+                    Remark = t.MerchantName +"人员："+ t.TrueName+"健康证于" + t.ExpiredTime.Value.ToString("yyyy年MM月dd日") + "到期."
                 }).ToList();
                 var complains = complain.Where(t => t.CompanyType=="单位食堂").Select(t => new
                 {
                     t.Id,
                     Name =t.CompanyName,
                     CardType = "投诉",
+                    PersonName = "",
                     CompanyType = queryables.Where(x => x.Id == t.CompanyId).Select(x => x.AllowUnit).FirstOrDefault(),
                     CardImg = t.ComplainContent,
-                    CardExpiredDate = t.ComplainTime
+                    CardExpiredDate = t.ComplainTime,
+                    Remark = t.ComplainContent
                 }).ToList();
                 Repast.AddRange(MerUser);
                 Repast.AddRange(complains);
@@ -1677,8 +1689,17 @@ namespace KilyCore.Service.ServiceCore
                 PotrolNum = t.PotrolNum,
                 QualifiedNum = t.QualifiedNum,
                 TradeType = t.TradeType,
-                CheckTime = t.CreateTime.Value.ToString("yyyy年MM月dd日 HH:mm")
+                CheckTime = t.CreateTime.Value.ToString("yyyy年MM月dd日 HH:mm"),
             }).FirstOrDefault();
+            //通报记录
+            data.MsgList = Kily.Set<SystemMessage>().Where(t => t.CompanyId == data.CompanyId&&t.Category=="通报").Select(t=>new ResponseSystemMessage() {
+                MsgContent = t.MsgContent,
+                MsgName = t.MsgName,
+                HandleContent=t.HandleContent,
+                HandleTime=t.HandleTime,
+                ReleaseTime=t.ReleaseTime,
+                Status=t.Status??"待处理",
+            }).ToList();
             return data;
         }
         /// <summary>
@@ -1711,7 +1732,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public List<ResponseSystemMessage> GetMsgList()
         {
-            IQueryable<SystemMessage> queryable = Kily.Set<SystemMessage>().Where(t => t.Status == "已处理");
+            IQueryable<SystemMessage> queryable = Kily.Set<SystemMessage>();//.Where(t => t.Status == "已处理")
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
             else
@@ -1749,9 +1770,9 @@ namespace KilyCore.Service.ServiceCore
         /// 巡查记录日志
         /// </summary>
         /// <returns></returns>
-        public List<ResponseGovtNetPatrolLog> GetNetPatrolLogs()
+        public List<ResponseGovtNetPatrolLog> GetNetPatrolLogs(Guid Id)
         {
-            return Kily.Set<GovtNetPatrolLog>().Where(t => t.GovtId == GovtInfo().Id).AsNoTracking().ToList().MapToList<GovtNetPatrolLog, ResponseGovtNetPatrolLog>();
+            return Kily.Set<GovtNetPatrolLog>().Where(t => t.GovtId == GovtInfo().Id&&t.CompanyId==Id).AsNoTracking().ToList().MapToList<GovtNetPatrolLog, ResponseGovtNetPatrolLog>();
         }
         #endregion
         #region 执法类目
@@ -2013,7 +2034,7 @@ namespace KilyCore.Service.ServiceCore
                 CompanyName = t.CompanyName,
                 CompanyType = t.CompanyType,
                 TemplateName = t.TemplateName,
-                CheckTime=t.CreateTime.Value.ToString("yyyy年MM月dd日"),
+                CreateTime=t.CreateTime.Value.ToString("yyyy年MM月dd日"),
                 CheckUser = t.CheckUser
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;

@@ -62,7 +62,28 @@
                     },
                     crossDomain: true,
                     success: function (result) {
-                        debugger;
+                        $("#MsgNum").html(result.data.length);
+                        $.each(result.data, function (i, item) {
+                            if (i < 10) {
+                                $(".dropdown-messages").append(`<li>
+                                    <div class="dropdown-messages-box">
+                                        <div class="media-body ">
+                                            ${item.HandlerContent}
+                                            <br>
+                                            <small class="pull-right text-navy">${item.HandlerTime}</small>                                          
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="divider"></li>`);
+                            }
+                        });
+                        $(".dropdown-messages").append(`<li>
+                                    <div class="text-center link-block">
+                                        <a class="J_menuItem" href="/">
+                                            <i class="fa fa-envelope"></i> <strong> 查看所有消息</strong>
+                                        </a>
+                                    </div>
+                                </li>`);
                     }
                 });
             },
@@ -177,10 +198,10 @@
                     <ul class="nav navbar-top-links navbar-right">
                         <li class="dropdown">
                             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                <i class="fa fa-envelope"></i> <span class="label label-warning">16</span>
+                                <i class="fa fa-envelope"></i> <span class="label label-warning" id="MsgNum">16</span>
                             </a>
                             <ul class="dropdown-menu dropdown-messages">
-                                <li class="m-t-xs">
+                                @*<li class="m-t-xs">
                                     <div class="dropdown-messages-box">
                                         <div class="media-body">
                                             <small class="pull-right">46小时前</small>
@@ -189,37 +210,9 @@
                                             <small class="text-muted">3天前 2014.11.8</small>
                                         </div>
                                     </div>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="dropdown-messages-box">
-                                        <div class="media-body ">
-                                            <small class="pull-right text-navy">25小时前</small>
-                                            <strong>国民岳父</strong> 如何看待“男子不满自己爱犬被称为狗，刺伤路人”？——这人比犬还凶
-                                            <br>
-                                            <small class="text-muted">昨天</small>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="dropdown-messages-box">
-                                        <div class="media-body ">
-                                            <small class="pull-right text-navy">25小时前</small>
-                                            <strong>国民岳父</strong> 如何看待“男子不满自己爱犬被称为狗，刺伤路人”？——这人比犬还凶
-                                            <br>
-                                            <small class="text-muted">昨天</small>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="text-center link-block">
-                                        <a class="J_menuItem" href="mailbox.html">
-                                            <i class="fa fa-envelope"></i> <strong> 查看所有消息</strong>
-                                        </a>
-                                    </div>
-                                </li>
+                                </li>*@
+                               
+                                @**@
                             </ul>
                         </li>
                         <li class="dropdown">

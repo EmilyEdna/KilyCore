@@ -25,8 +25,26 @@
                         if (result.data.TradeType == "餐饮企业" || result.data.TradeType == "单位食堂" || result.data.TradeType.indexOf("教育")>-1) {
                              options.CompanyUrl = "GovtWeb/GetRepastDetail";
                         }
+                        $.each(result.data.MsgList, function (i, item) {
+                            var ResultHtml = "";
+                            if (item.Status == "待处理") {
+                                item.Status = "<span style='color:red;'>" + item.Status + "</span>";
+                            }
+                            else {
+                                ResultHtml = `  <tr><td  style="text-align:center;width:96px;">处理时间：</td><td>${item.HandleTime}</td></tr>
+                                                <tr><td  style="text-align:center;width:96px;">处理结果：</td><td>${item.HandleContent}</td></tr>`;
+                                                
+                            }
+                            $("#AdList").append(`<table class="table table-hover table-bordered m-t-sm" style="margin-bottom:12px;">
+                                                 <tr><td  style="text-align:center;width:96px;">整改原因：</td><td>${item.MsgName}</td></tr>
+                                                 <tr><td style="text-align:center;width:96px;">整改意见：</td><td>${item.MsgContent}</td></tr>
+                                                 <tr><td  style="text-align:center;width:96px;">发布日期：</td><td>${item.ReleaseTime}</td></tr>
+                                                 <tr><td  style="text-align:center;width:96px;">处理状态：</td><td>${item.Status}</td></tr>
+                                            </table>`);
+                        });
                     }
-                });
+                 });
+               
                 //取企业详情
                 controller.ajax({
                     url: options.CompanyUrl,
@@ -35,24 +53,14 @@
                     type: "post",
                     success: function (result) {
                         controller.SetLableValue("#Edit", result.data);
+                        companyID = result.Data.CompanyId;
                     }
                 });
-                //获取通报记录
-                controller.ajax({
-                     url: "GovtWeb/GetMsgList",
-                    data: { },
-                    async: false,
-                    type: "post",
-                    success: function (result) {
-                        $.each(result.data, function (i, item) {
-                            $("#AdList").append()
-                        });
-                    }
-                });
+               
                 //巡查记录
                 controller.ajax({
                      url: "GovtWeb/GetNetPatrolLogs",
-                    data: { },
+                    data: {Id: options.CompanyID},
                     async: false,
                     type: "post",
                     success: function (result) {
@@ -92,78 +100,79 @@
         </ul>
         <div class="tab-content" id="Edit">
             <div id="tab-1" class="tab-pane active">
-                <table class="table table-hover table-bordered m-t-sm">
-                    <colgroup>
-                        <col width="120" align="center" />
-                        <col width="40%" />
-                        <col width="120" />
-                    </colgroup>
-                    <tr>
-                        <th style="text-align:center"><label class="control-label">企业名称</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="CompanyName"></label>
-                        </td>
-                        <th style="text-align:center"><label class="control-label">所属行业</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="CompanyTypeName"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style="text-align:center"><label class="control-label">企业性质</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="NatureName"></label>
-                        </td>
-                        <th style="text-align:center"><label class="control-label">信用代码</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="CommunityCode"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style="text-align:center"><label class="control-label">企业电话</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="CompanyPhone"></label>
-                        </td>
-                        <th style="text-align:center"><label class="control-label">企业地址</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="CompanyAddress"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style="text-align:center"><label class="control-label">工商地址</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="SellerAddress"></label>
-                        </td>
-                        <th style="text-align:center"><label class="control-label">生产地址</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="ProductionAddress"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style="text-align:center"><label class="control-label">抽查次数</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="PotrolNum"></label>
-                        </td>
-                        <th style="text-align:center"><label class="control-label">抽查日期</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="CheckTime"></label>
-                        </td>
-                    </tr>
-                </table>
-                <table class="table table-hover table-bordered m-t-sm">
-                    <tr><th colspan="3" style="text-align:center;font-size:16px;">巡查记录</th></tr>
-                    <tr><th style="text-align:center;">序号</th><th style="text-align:center;">巡查人</th><th style="text-align:center;">巡查时间</th></tr>
-                    <tbody id="CheckList">
-
-                    </tbody>
-                </table>
-            </div>
-            <div id="tab-2" class="tab-pane">
-                <div class="ibox-content" id="AdList">
-                   
+                <div class="ibox-content">
+                    <table class="table table-bordered m-t-sm">
+                        <colgroup>
+                            <col width="120" align="center" />
+                            <col width="40%" />
+                            <col width="120" />
+                        </colgroup>
+                        <tr>
+                            <th style="text-align:center"><label class="control-label">企业名称</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="CompanyName"></label>
+                            </td>
+                            <th style="text-align:center"><label class="control-label">所属行业</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="CompanyTypeName"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="text-align:center"><label class="control-label">企业性质</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="NatureName"></label>
+                            </td>
+                            <th style="text-align:center"><label class="control-label">信用代码</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="CommunityCode"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="text-align:center"><label class="control-label">企业电话</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="CompanyPhone"></label>
+                            </td>
+                            <th style="text-align:center"><label class="control-label">企业地址</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="CompanyAddress"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="text-align:center"><label class="control-label">工商地址</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="SellerAddress"></label>
+                            </td>
+                            <th style="text-align:center"><label class="control-label">生产地址</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="ProductionAddress"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="text-align:center"><label class="control-label">巡查次数</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="PotrolNum"></label>次
+                            </td>
+                            <th style="text-align:center"><label class="control-label">巡查日期</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="CheckTime"></label>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table table-hover table-bordered m-t-sm">
+                        <tr><th colspan="3" style="text-align:center;font-size:16px;">巡查记录</th></tr>
+                        <tr><th style="text-align:center;">序号</th><th style="text-align:center;">巡查人</th><th style="text-align:center;">巡查时间</th></tr>
+                        <tbody id="CheckList">
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            
-        </div>
+                <div id="tab-2" class="tab-pane">
+                    <div class="ibox-content" id="AdList">
+
+                    </div>
+                </div>
+
+            </div>
     </div>
 </form>
 

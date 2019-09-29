@@ -115,7 +115,7 @@ namespace KilyCore.Service.IServiceCore
         ResponseGovtNetPatrol GetNetPatrolDetail(Guid Id);
         String EditNetPatrol(RequestGovtMsg Param);
         List<ResponseSystemMessage> GetMsgList();
-        List<ResponseGovtNetPatrolLog> GetNetPatrolLogs();
+        List<ResponseGovtNetPatrolLog> GetNetPatrolLogs(Guid Id);
         #endregion
         #region 执法类目
         PagedResult<ResponseGovtPatrolCategory> GetCategoryPage(PageParamList<RequestGovtPatrolCategory> pageParam);

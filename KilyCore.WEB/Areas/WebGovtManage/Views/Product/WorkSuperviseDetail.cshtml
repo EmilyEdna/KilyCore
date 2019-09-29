@@ -48,206 +48,208 @@
 }
 <form class="form-horizontal" method="post" id="Edit">
     <div class="tabs-container">
-        <ul class="nav nav-tabs">
-            <li class="active">
-                <a data-toggle="tab" href="#tab-1" aria-expanded="true"> 基本信息</a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#tab-2" aria-expanded="false">原料信息</a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#tab-3" aria-expanded="false">产品质检</a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#tab-4" aria-expanded="false">原料质检</a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#tab-5" aria-expanded="false">库存信息</a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#tab-6" aria-expanded="false">仓库信息</a>
-            </li>
-        </ul>
-        <div class="tab-content">
-            <div id="tab-1" class="tab-pane active">
-                <table class="table table-hover table-bordered m-t-sm">
-                    <tr>
-                        <th><label class="control-label">产品名称</label></th>
-                        <td class="has-warning">
-                            <label name="GoodsName"></label>
-                        </td>
-                        <th><label class="control-label">保质期</label></th>
-                        <td class="has-warning">
-                            <label name="ExpiredDay"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><label class="control-label">规格</label></th>
-                        <td class="has-warning">
-                            <label name="Spec"></label>
-                        </td>
-                        <th><label class="control-label">执行标准</label></th>
-                        <td class="has-warning">
-                            <label name="Standard"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><label class="control-label">生产设备</label></th>
-                        <td class="has-warning">
-                            <label name="DeviceName"></label>
-                        </td>
-                        <th><label class="control-label">产品类型</label></th>
-                        <td class="has-warning">
-                            <label name="ProductType"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><label class="control-label">产品简介</label></th>
-                        <td class="has-warning" colspan="3">
-                            <label name="ProductType"></label>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div id="tab-2" class="tab-pane">
-                <table class="table table-hover table-bordered m-t-sm">
-                    <tr>
-                        <th><label class="control-label">原料名称</label></th>
-                        <td class="has-warning">
-                            <label name="MaterName"></label>
-                        </td>
-                        <th><label class="control-label">原料类型</label></th>
-                        <td class="has-warning">
-                            <label name="MaterType"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><label class="control-label">供应商</label></th>
-                        <td class="has-warning">
-                            <label name="Supplier"></label>
-                        </td>
-                        <th><label class="control-label">生产时间</label></th>
-                        <td class="has-warning">
-                            <label name="MaterialProductTime"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><label class="control-label">保质期</label></th>
-                        <td class="has-warning">
-                            <label name="MaterialExpiredDay"></label>
-                        </td>
-                        <th><label class="control-label">产地</label></th>
-                        <td class="has-warning">
-                            <label name="MaterialAddress"></label>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div id="tab-3" class="tab-pane">
-                <table class="table table-hover table-bordered m-t-sm">
-                    <tr>
-                        <th><label class="control-label">质检单位</label></th>
-                        <td class="has-warning">
-                            <label name="GoodCheckUint"></label>
-                        </td>
-                        <th><label class="control-label">质检人</label></th>
-                        <td class="has-warning">
-                            <label name="GoodCheckUser"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><label class="control-label">质检结果</label></th>
-                        <td class="has-warning" colspan="3">
-                            <label name="GoodCheckResult"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><label class="control-label">质检报告</label></th>
-                        <td class="has-warning" colspan="3">
-                            <img class="img-preview" src="" type="image" name="GoodCheckReport" style="display:block;margin:auto" title="点击放大" />
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div id="tab-4" class="tab-pane">
-                <table class="table table-hover table-bordered m-t-sm">
-                    <tr>
-                        <th><label class="control-label">质检单位</label></th>
-                        <td class="has-warning">
-                            <label name="MaterialCheckUint"></label>
-                        </td>
-                        <th><label class="control-label">质检人</label></th>
-                        <td class="has-warning">
-                            <label name="MaterialCheckUser"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><label class="control-label">质检结果</label></th>
-                        <td class="has-warning" colspan="3">
-                            <label name="MaterialCheckResult"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><label class="control-label">质检报告</label></th>
-                        <td class="has-warning" colspan="3">
-                            <img class="img-preview" src="" type="image" name="MaterialCheckReport" style="display:block;margin:auto" title="点击放大" />
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div id="tab-5" class="tab-pane">
-                <table class="table table-hover table-bordered m-t-sm">
-                    <tr>
-                        <th><label class="control-label">入库批次</label></th>
-                        <td class="has-warning">
-                            <label name="InNo"></label>
-                        </td>
-                        <th><label class="control-label">出库批次</label></th>
-                        <td class="has-warning">
-                            <label name="OutNo"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><label class="control-label">生产时间</label></th>
-                        <td class="has-warning">
-                            <label name="GoodProductTime"></label>
-                        </td>
-                        <th><label class="control-label">入库管理员</label></th>
-                        <td class="has-warning">
-                            <label name="Manager"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><label class="control-label">出库管理员</label></th>
-                        <td class="has-warning" colspan="3">
-                            <label name="OutStockUser"></label>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div id="tab-6" class="tab-pane">
-                <table class="table table-hover table-bordered m-t-sm">
-                    <tr>
-                        <th><label class="control-label">仓库名称</label></th>
-                        <td class="has-warning">
-                            <label name="StockName"></label>
-                        </td>
-                        <th><label class="control-label">贮藏方式</label></th>
-                        <td class="has-warning">
-                            <label name="SaveType"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th><label class="control-label">贮藏湿度</label></th>
-                        <td class="has-warning">
-                            <label name="SaveH2"></label>
-                        </td>
-                        <th><label class="control-label">贮藏温度</label></th>
-                        <td class="has-warning">
-                            <label name="SaveTemp"></label>
-                        </td>
-                    </tr>
-                </table>
+        <div class="ibox-content">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a data-toggle="tab" href="#tab-1" aria-expanded="true"> 基本信息</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-2" aria-expanded="false">原料信息</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-3" aria-expanded="false">产品质检</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-4" aria-expanded="false">原料质检</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-5" aria-expanded="false">库存信息</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-6" aria-expanded="false">仓库信息</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="tab-1" class="tab-pane active">
+                    <table class="table table-hover table-bordered m-t-sm">
+                        <tr>
+                            <th><label class="control-label">产品名称</label></th>
+                            <td class="has-warning">
+                                <label name="GoodsName"></label>
+                            </td>
+                            <th><label class="control-label">保质期</label></th>
+                            <td class="has-warning">
+                                <label name="ExpiredDay"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label class="control-label">规格</label></th>
+                            <td class="has-warning">
+                                <label name="Spec"></label>
+                            </td>
+                            <th><label class="control-label">执行标准</label></th>
+                            <td class="has-warning">
+                                <label name="Standard"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label class="control-label">生产设备</label></th>
+                            <td class="has-warning">
+                                <label name="DeviceName"></label>
+                            </td>
+                            <th><label class="control-label">产品类型</label></th>
+                            <td class="has-warning">
+                                <label name="ProductType"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label class="control-label">产品简介</label></th>
+                            <td class="has-warning" colspan="3">
+                                <label name="ProductType"></label>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="tab-2" class="tab-pane">
+                    <table class="table table-hover table-bordered m-t-sm">
+                        <tr>
+                            <th><label class="control-label">原料名称</label></th>
+                            <td class="has-warning">
+                                <label name="MaterName"></label>
+                            </td>
+                            <th><label class="control-label">原料类型</label></th>
+                            <td class="has-warning">
+                                <label name="MaterType"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label class="control-label">供应商</label></th>
+                            <td class="has-warning">
+                                <label name="Supplier"></label>
+                            </td>
+                            <th><label class="control-label">生产时间</label></th>
+                            <td class="has-warning">
+                                <label name="MaterialProductTime"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label class="control-label">保质期</label></th>
+                            <td class="has-warning">
+                                <label name="MaterialExpiredDay"></label>
+                            </td>
+                            <th><label class="control-label">产地</label></th>
+                            <td class="has-warning">
+                                <label name="MaterialAddress"></label>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="tab-3" class="tab-pane">
+                    <table class="table table-hover table-bordered m-t-sm">
+                        <tr>
+                            <th><label class="control-label">质检单位</label></th>
+                            <td class="has-warning">
+                                <label name="GoodCheckUint"></label>
+                            </td>
+                            <th><label class="control-label">质检人</label></th>
+                            <td class="has-warning">
+                                <label name="GoodCheckUser"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label class="control-label">质检结果</label></th>
+                            <td class="has-warning" colspan="3">
+                                <label name="GoodCheckResult"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label class="control-label">质检报告</label></th>
+                            <td class="has-warning" colspan="3">
+                                <img class="img-preview" src="" type="image" name="GoodCheckReport" style="display:block;margin:auto" title="点击放大" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="tab-4" class="tab-pane">
+                    <table class="table table-hover table-bordered m-t-sm">
+                        <tr>
+                            <th><label class="control-label">质检单位</label></th>
+                            <td class="has-warning">
+                                <label name="MaterialCheckUint"></label>
+                            </td>
+                            <th><label class="control-label">质检人</label></th>
+                            <td class="has-warning">
+                                <label name="MaterialCheckUser"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label class="control-label">质检结果</label></th>
+                            <td class="has-warning" colspan="3">
+                                <label name="MaterialCheckResult"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label class="control-label">质检报告</label></th>
+                            <td class="has-warning" colspan="3">
+                                <img class="img-preview" src="" type="image" name="MaterialCheckReport" style="display:block;margin:auto" title="点击放大" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="tab-5" class="tab-pane">
+                    <table class="table table-hover table-bordered m-t-sm">
+                        <tr>
+                            <th><label class="control-label">入库批次</label></th>
+                            <td class="has-warning">
+                                <label name="InNo"></label>
+                            </td>
+                            <th><label class="control-label">出库批次</label></th>
+                            <td class="has-warning">
+                                <label name="OutNo"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label class="control-label">生产时间</label></th>
+                            <td class="has-warning">
+                                <label name="GoodProductTime"></label>
+                            </td>
+                            <th><label class="control-label">入库管理员</label></th>
+                            <td class="has-warning">
+                                <label name="Manager"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label class="control-label">出库管理员</label></th>
+                            <td class="has-warning" colspan="3">
+                                <label name="OutStockUser"></label>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="tab-6" class="tab-pane">
+                    <table class="table table-hover table-bordered m-t-sm">
+                        <tr>
+                            <th><label class="control-label">仓库名称</label></th>
+                            <td class="has-warning">
+                                <label name="StockName"></label>
+                            </td>
+                            <th><label class="control-label">贮藏方式</label></th>
+                            <td class="has-warning">
+                                <label name="SaveType"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th><label class="control-label">贮藏湿度</label></th>
+                            <td class="has-warning">
+                                <label name="SaveH2"></label>
+                            </td>
+                            <th><label class="control-label">贮藏温度</label></th>
+                            <td class="has-warning">
+                                <label name="SaveTemp"></label>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
