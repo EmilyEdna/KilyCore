@@ -62,6 +62,7 @@
                 TableFormatter: function (val, row, index) {
                     var action = [];
                     action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>提醒</button>');
+                    action.push('<button class="btn btn-sm btn-primary detail"><i class="fa fa-pencil-square-o"></i>查看</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
@@ -79,6 +80,19 @@
                             }
                         });
                     },
+                     "click .detail": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: row.Name,
+                            type: 2,
+                            height: "80%",
+                            width: "72%", 
+                            btn:["关闭"],
+                            url: "WebGovtManage/Risk/CertificateRiskDetail?Id=" + row.Name+"&Name="+row.Name+"&CardType="+row.CardType+"&CardExpiredDate="+row.CardExpiredDate+"&CardImg="+row.CardImg,
+                            callBack: function (result) {
+                                controller.Close();
+                            }
+                        });
+                    }
                 }//表单事件结束
             }//行为结束
         };

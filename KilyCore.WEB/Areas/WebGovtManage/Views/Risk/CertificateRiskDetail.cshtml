@@ -1,0 +1,84 @@
+﻿
+@{
+    ViewData["Title"] = "CertificateRiskDetail";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section css{
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#GovtId").val(GovtInfo.Id);
+                $("label[name=Name]").html(controller.GetParam("Name"));
+                $("label[name=CardType]").html(controller.GetParam("CardType"));
+                $("label[name=CardExpiredDate]").html(controller.GetParam("CardExpiredDate"));
+                $("label[name=Name]").html(controller.GetParam("Name"));
+                $("label[name=Name]").html(controller.GetParam("Name"));
+                   
+            },
+            //事件
+            InitEvents: function () {
+            },
+            //行为
+            action: {}
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" id="Edit">
+            <table class="table table-hover table-bordered">
+                <colgroup>
+                    <col width="10%" />
+                    <col width="40%" />
+                    <col width="10%" />
+                    <col width="40%" />
+                </colgroup>
+                <tr>
+                    <th style="text-align:center"><label class="control-label">企业名称</label></th>
+                    <td class="has-warning">
+                        <label type="txt" name="Name"></label>
+
+                    </td>
+                    <th style="text-align:center"><label class="control-label">预警类型</label></th>
+                    <td class="has-warning">
+                        <label type="txt" name="CardType"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center"><label class="control-label">预警日期</label></th>
+                    <td class="has-warning">
+                        <label type="txt" name="CardExpiredDate"></label>
+                    </td>
+                    <th style="text-align:center"><label class="control-label">所属行业</label></th>
+                    <td class="has-warning">
+                        <label type="txt" name="TradeType"></label>
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center"><label class="control-label">预警描述</label></th>
+                    <td colspan="3">
+                        <label type="txt" name=""></label>
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center"><label class="control-label">预警图片</label></th>
+                    <td class="has-warning" colspan="3">
+                        <label type="txt" name="Remark"></label>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>

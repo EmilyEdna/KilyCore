@@ -956,19 +956,20 @@ namespace KilyCore.Service.ServiceCore
                 t.l.SaveH2,
                 t.l.SaveTemp
             }).FirstOrDefault();
-            var MaterialData = MaterialsData.Where(t => GoodData.MaterialId.Contains(t.e.d.Id.ToString())).Select(t => new
-            {
-                t.f.FirstOrDefault().CheckUint,
-                t.f.FirstOrDefault().CheckUser,
-                t.f.FirstOrDefault().CheckResult,
-                t.f.FirstOrDefault().CheckReport,
-                t.e.d.Address,
-                t.e.d.ExpiredDay,
-                t.e.d.MaterName,
-                t.e.d.MaterType,
-                t.e.d.Supplier,
-                t.e.c.b.ProductTime
-            }).FirstOrDefault();
+             var MaterialData = MaterialsData.Where(t => GoodData.MaterialId.Contains(t.e.d.Id.ToString())).Select(t => new
+                {
+                    t.f.FirstOrDefault().CheckUint,
+                    t.f.FirstOrDefault().CheckUser,
+                    t.f.FirstOrDefault().CheckResult,
+                    t.f.FirstOrDefault().CheckReport,
+                    t.e.d.Address,
+                    t.e.d.ExpiredDay,
+                    t.e.d.MaterName,
+                    t.e.d.MaterType,
+                    t.e.d.Supplier,
+                    t.e.c.b.ProductTime
+                }).FirstOrDefault();
+          
             return new
             {
                 GoodData.StockName,
@@ -1090,6 +1091,8 @@ namespace KilyCore.Service.ServiceCore
                 t.g.f.SaveH2,
                 t.g.f.SaveTemp,
                 t.g.e.d.ExpiredDate,
+                t.g.e.d.Image,
+                Content=t.g.e.d.Remark,
                 t.g.e.d.ProductName,
                 t.g.e.d.ProductType,
                 t.g.e.d.Spec,
@@ -1656,7 +1659,7 @@ namespace KilyCore.Service.ServiceCore
                 PotrolNum = t.PotrolNum,
                 QualifiedNum = t.QualifiedNum,
                 TradeType = t.TradeType,
-                CheckTime = t.UpdateTime.Value.ToString("yyyy年MM月dd日 HH:mm")
+                CheckTime = t.CreateTime.Value.ToString("yyyy年MM月dd日 HH:mm")
             }).FirstOrDefault();
             return data;
         }
