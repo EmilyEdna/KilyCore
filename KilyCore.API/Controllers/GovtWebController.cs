@@ -8,6 +8,7 @@ using KilyCore.DataEntity.RequestMapper.Cook;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.Govt;
 using KilyCore.DataEntity.RequestMapper.Repast;
+using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.Extension.ResultExtension;
 using KilyCore.Extension.SessionExtension;
 using KilyCore.Extension.Token;
@@ -1190,6 +1191,16 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetLogInfos()
         {
             return ObjectResultEx.Instance(GovtWebService.GetLogInfos(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 日志列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetHandlerLogPage")]
+        public ObjectResultEx GetHandlerLogPage(PageParamList<RequestSystemLogInfo> pageParam)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetHandlerLogPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

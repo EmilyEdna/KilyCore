@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewData["Title"] = "操作日志";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+            },
+            //元素
+            InitDom: function () {
+                //恢复高度
+                $(window).resize(function (e) {
+                    window.setTimeout(function () {
+                        options.$table.bootstrapTable("resetView", { height: $(window).height() - 150 });
+                    }, 200);
+                    e.stopPropagation();
+                });
+                //设置表单
+                this.$table = controller.Table("#tableList", { url: "GovtWeb/GetHandlerLogPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
+            }
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="container-fluid">
+    <div class="col-lg-12">
+        <div class="ibox ibox-c float-e-margins">
+            <div class="ibox-title ibox-title-c">
+                <h5>操作日志</h5>
+            </div>
+            <div class="ibox-content ibox-content-c">
+                <div class="row">
+                    <form id="Edit">
+                        <div class="col-sm-8 m-b-xs">
+                            <div class="input-group">
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" placeholder="操作类型-添加或删除或修改" class="input-sm form-control" name="HandlerType">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
+                                    <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive">
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th data-field="HandlerUser" class="th-center">操作人</th>
+                                <th data-field="HandlerType" class="th-center">操作类型</th>
+                                <th data-field="HandlerTime" class="th-center">操作时间</th>
+                                <th data-field="HandlerContent" class="th-center">操作详情</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

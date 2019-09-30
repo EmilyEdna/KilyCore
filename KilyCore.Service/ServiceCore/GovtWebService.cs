@@ -2,6 +2,7 @@
 using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.Govt;
 using KilyCore.DataEntity.RequestMapper.Repast;
+using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Cook;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.Function;
@@ -896,7 +897,7 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 ProductName = t.ProductName,
                 ProductType = t.ProductType,
-                ExpiredDate = t.ExpiredDate+"天",
+                ExpiredDate = t.ExpiredDate + "天",
                 Spec = t.Spec,
                 Unit = x.ProductionAddress,
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
@@ -956,20 +957,20 @@ namespace KilyCore.Service.ServiceCore
                 t.l.SaveH2,
                 t.l.SaveTemp
             }).FirstOrDefault();
-             var MaterialData = MaterialsData.Where(t => GoodData.MaterialId.Contains(t.e.d.Id.ToString())).Select(t => new
-                {
-                    t.f.FirstOrDefault().CheckUint,
-                    t.f.FirstOrDefault().CheckUser,
-                    t.f.FirstOrDefault().CheckResult,
-                    t.f.FirstOrDefault().CheckReport,
-                    t.e.d.Address,
-                    t.e.d.ExpiredDay,
-                    t.e.d.MaterName,
-                    t.e.d.MaterType,
-                    t.e.d.Supplier,
-                    t.e.c.b.ProductTime
-                }).FirstOrDefault();
-          
+            var MaterialData = MaterialsData.Where(t => GoodData.MaterialId.Contains(t.e.d.Id.ToString())).Select(t => new
+            {
+                t.f.FirstOrDefault().CheckUint,
+                t.f.FirstOrDefault().CheckUser,
+                t.f.FirstOrDefault().CheckResult,
+                t.f.FirstOrDefault().CheckReport,
+                t.e.d.Address,
+                t.e.d.ExpiredDay,
+                t.e.d.MaterName,
+                t.e.d.MaterType,
+                t.e.d.Supplier,
+                t.e.c.b.ProductTime
+            }).FirstOrDefault();
+
             return new
             {
                 GoodData.StockName,
@@ -1092,7 +1093,7 @@ namespace KilyCore.Service.ServiceCore
                 t.g.f.SaveTemp,
                 t.g.e.d.ExpiredDate,
                 t.g.e.d.Image,
-                Content=t.g.e.d.Remark,
+                Content = t.g.e.d.Remark,
                 t.g.e.d.ProductName,
                 t.g.e.d.ProductType,
                 t.g.e.d.Spec,
@@ -1487,7 +1488,7 @@ namespace KilyCore.Service.ServiceCore
                     PersonName = "",
                     CompanyType = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
                     CardImg = t.Certification,
-                    Remark = t.CompanyName + "营业执照于" + (t.CardExpiredDate.HasValue ? t.CardExpiredDate.Value.ToString("yyyy年MM月dd日"):"-") + "到期.",
+                    Remark = t.CompanyName + "营业执照于" + (t.CardExpiredDate.HasValue ? t.CardExpiredDate.Value.ToString("yyyy年MM月dd日") : "-") + "到期.",
                     t.CardExpiredDate
                 }).ToList();
                 var Repast = queryables.Select(t => new
@@ -1498,7 +1499,7 @@ namespace KilyCore.Service.ServiceCore
                     PersonName = "",
                     CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
                     CardImg = t.Certification,
-                    Remark = t.MerchantName + "营业执照于" + (t.CardExpiredDate.HasValue?t.CardExpiredDate.Value.ToString("yyyy年MM月dd日"):"-") + "到期.",
+                    Remark = t.MerchantName + "营业执照于" + (t.CardExpiredDate.HasValue ? t.CardExpiredDate.Value.ToString("yyyy年MM月dd日") : "-") + "到期.",
                     t.CardExpiredDate
                 }).ToList();
                 var MerUser = users.Select(t => new
@@ -1524,27 +1525,27 @@ namespace KilyCore.Service.ServiceCore
                     t.Id,
                     Name = t.MerchantName,
                     CardType = "营业执照",
-                    PersonName="",
+                    PersonName = "",
                     CompanyType = t.AllowUnit,
                     CardImg = t.Certification,
                     t.CardExpiredDate,
-                    Remark= t.MerchantName+"营业执照于"+(t.CardExpiredDate.HasValue?t.CardExpiredDate.Value.ToString("yyyy年MM月dd日"):"-")+"到期."
+                    Remark = t.MerchantName + "营业执照于" + (t.CardExpiredDate.HasValue ? t.CardExpiredDate.Value.ToString("yyyy年MM月dd日") : "-") + "到期."
                 }).ToList();
                 var MerUser = users.Where(t => t.DiningType == MerchantEnum.UnitCanteen).Select(t => new
                 {
                     t.Id,
-                    Name =   t.MerchantName,
+                    Name = t.MerchantName,
                     CardType = "健康证",
                     PersonName = t.TrueName,
                     CompanyType = Repast.Where(x => x.Id == t.InfoId).Select(x => x.CompanyType).FirstOrDefault(),
                     CardImg = t.HealthCard,
                     CardExpiredDate = t.ExpiredTime,
-                    Remark = t.MerchantName +"人员："+ t.TrueName+"健康证于" + t.ExpiredTime.Value.ToString("yyyy年MM月dd日") + "到期."
+                    Remark = t.MerchantName + "人员：" + t.TrueName + "健康证于" + t.ExpiredTime.Value.ToString("yyyy年MM月dd日") + "到期."
                 }).ToList();
-                var complains = complain.Where(t => t.CompanyType=="单位食堂").Select(t => new
+                var complains = complain.Where(t => t.CompanyType == "单位食堂").Select(t => new
                 {
                     t.Id,
-                    Name =t.CompanyName,
+                    Name = t.CompanyName,
                     CardType = "投诉",
                     PersonName = "",
                     CompanyType = queryables.Where(x => x.Id == t.CompanyId).Select(x => x.AllowUnit).FirstOrDefault(),
@@ -1692,13 +1693,14 @@ namespace KilyCore.Service.ServiceCore
                 CheckTime = t.CreateTime.Value.ToString("yyyy年MM月dd日 HH:mm"),
             }).FirstOrDefault();
             //通报记录
-            data.MsgList = Kily.Set<SystemMessage>().Where(t => t.CompanyId == data.CompanyId&&t.Category=="通报").Select(t=>new ResponseSystemMessage() {
+            data.MsgList = Kily.Set<SystemMessage>().Where(t => t.CompanyId == data.CompanyId && t.Category == "通报").Select(t => new ResponseSystemMessage()
+            {
                 MsgContent = t.MsgContent,
                 MsgName = t.MsgName,
-                HandleContent=t.HandleContent,
-                HandleTime=t.HandleTime,
-                ReleaseTime=t.ReleaseTime,
-                Status=t.Status??"待处理",
+                HandleContent = t.HandleContent,
+                HandleTime = t.HandleTime,
+                ReleaseTime = t.ReleaseTime,
+                Status = t.Status ?? "待处理",
             }).ToList();
             return data;
         }
@@ -1772,7 +1774,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public List<ResponseGovtNetPatrolLog> GetNetPatrolLogs(Guid Id)
         {
-            return Kily.Set<GovtNetPatrolLog>().Where(t => t.GovtId == GovtInfo().Id&&t.CompanyId==Id).AsNoTracking().ToList().MapToList<GovtNetPatrolLog, ResponseGovtNetPatrolLog>();
+            return Kily.Set<GovtNetPatrolLog>().Where(t => t.GovtId == GovtInfo().Id && t.CompanyId == Id).AsNoTracking().ToList().MapToList<GovtNetPatrolLog, ResponseGovtNetPatrolLog>();
         }
         #endregion
         #region 执法类目
@@ -2034,7 +2036,7 @@ namespace KilyCore.Service.ServiceCore
                 CompanyName = t.CompanyName,
                 CompanyType = t.CompanyType,
                 TemplateName = t.TemplateName,
-                CreateTime=t.CreateTime.Value.ToString("yyyy年MM月dd日"),
+                CreateTime = t.CreateTime.Value.ToString("yyyy年MM月dd日"),
                 CheckUser = t.CheckUser
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -3690,8 +3692,46 @@ namespace KilyCore.Service.ServiceCore
                 else
                     queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
             }
-            var today =  DateTime.Parse(DateTime.Now.ToShortDateString());
-            return queryable.Where(t=>t.HandlerTime>= today).ToList().MapToList<SystemLogInfo, ResponseSystemLogInfo>();
+            var today = DateTime.Parse(DateTime.Now.ToShortDateString());
+            return queryable.Where(t => t.HandlerTime >= today).ToList().MapToList<SystemLogInfo, ResponseSystemLogInfo>();
+        }
+        /// <summary>
+        /// 日志列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public PagedResult<ResponseSystemLogInfo> GetHandlerLogPage(PageParamList<RequestSystemLogInfo> pageParam)
+        {
+            IQueryable<SystemLogInfo> queryable = Kily.Set<SystemLogInfo>();
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
+            else
+            {
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                    {
+                        Expression<Func<SystemLogInfo, bool>> exp_1 = null;
+                        for (int i = 0; i < Areas.Count; i++)
+                        {
+                            if (i == 0)
+                                exp_1 = ExpressionExtension.GetExpression<SystemLogInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                            else
+                                exp_1 = exp_1.Or(ExpressionExtension.GetExpression<SystemLogInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                        }
+                        queryable = queryable.Where(exp_1);
+                    }
+                    else
+                        queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                }
+                else
+                    queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            }
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.HandlerType))
+                queryable = queryable.Where(t => t.HandlerType.Contains(pageParam.QueryParam.HandlerType));
+            var data = queryable.MapToList<SystemLogInfo, ResponseSystemLogInfo>().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
         }
         #endregion
     }
