@@ -121,7 +121,7 @@
                                 + '<td>' + item.PersonName + '</td>'
                                 + '<td>' + item.JobStatus + '</td>'
                                 + '<td style="'+Color+'">' + item.TimeLength + '</td>'
-                                + '<td><img src="' + item.HealthImg + '" style="height:24px;" alt="" class="img-preview-sm" title="点击查看"/></td>'
+                                + '<td><img src="' + item.HealthImg + '" style="height:32px;" alt="" title="点击查看"/></td>'
                                
                                 + '</tr>';
                         });
@@ -207,6 +207,7 @@
                     success: function (result) {
                          var TempHTML = "";
                         $.each(result.data, function (i, item) {
+                            if (item.Remark == null) item.Remark = "冷藏";
                             TempHTML += '<tr>'
                                 + '<td>' + item.FoodsName + '</td>'
                                 + '<td>' + item.Remark + '</td>'
