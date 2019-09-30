@@ -1051,9 +1051,9 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetNewVedioToday")]
-        public ObjectResultEx GetNewVedioToday()
+        public ObjectResultEx GetNewVedioToday(SimpleParam<Guid?> Param)
         {
-            return ObjectResultEx.Instance(GovtWebService.GetNewVedioToday(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(GovtWebService.GetNewVedioToday(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         /// <summary>

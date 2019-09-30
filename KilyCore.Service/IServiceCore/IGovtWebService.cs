@@ -184,7 +184,7 @@ namespace KilyCore.Service.IServiceCore
         String GetTodayNow();
         IList<DataBar> GetNewWeekRiskAndComplainCount();
         IList<DataLine> GetNewNetCheckCount();
-        Object GetNewVedioToday();
+        Object GetNewVedioToday(Guid? Id);
         #endregion
         #region 旧大屏
         Object GetLawRank();

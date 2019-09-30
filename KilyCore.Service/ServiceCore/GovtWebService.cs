@@ -2971,16 +2971,14 @@ namespace KilyCore.Service.ServiceCore
         /// 获取最新视频
         /// </summary>
         /// <returns></returns>
-        public Object GetNewVedioToday()
+        public Object GetNewVedioToday(Guid? Id)
         {
             IQueryable<EnterpriseVedio> vedios = Kily.Set<EnterpriseVedio>().Where(t => t.IsIndex).OrderByDescending(t => t.CreateTime);
             IQueryable<RepastVideo> videos = Kily.Set<RepastVideo>().Where(t => t.IsIndex).OrderByDescending(t => t.CreateTime);
-            IQueryable<RepastInfo> queryable = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false);
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
             {
                 vedios = vedios.Where(t => t.TypePath.Contains(GovtInfo().City));
                 videos = videos.Where(t => t.TypePath.Contains(GovtInfo().City));
-                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
             }
             else
             {
@@ -2991,42 +2989,48 @@ namespace KilyCore.Service.ServiceCore
                     {
                         Expression<Func<EnterpriseVedio, bool>> exp_1 = null;
                         Expression<Func<RepastVideo, bool>> exp_2 = null;
-                        Expression<Func<RepastInfo, bool>> exp_3 = null;
                         for (int i = 0; i < Areas.Count; i++)
                         {
                             if (i == 0)
                             {
                                 exp_1 = ExpressionExtension.GetExpression<EnterpriseVedio>("TypePath", Areas[i], ExpressionEnum.Like);
                                 exp_2 = ExpressionExtension.GetExpression<RepastVideo>("TypePath", Areas[i], ExpressionEnum.Like);
-                                exp_3 = ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like);
                             }
                             else
                             {
                                 exp_1 = exp_1.Or(ExpressionExtension.GetExpression<EnterpriseVedio>("TypePath", Areas[i], ExpressionEnum.Like));
                                 exp_2 = exp_2.Or(ExpressionExtension.GetExpression<RepastVideo>("TypePath", Areas[i], ExpressionEnum.Like));
-                                exp_3 = exp_3.Or(ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like));
                             }
                         }
                         vedios = vedios.Where(exp_1);
                         videos = videos.Where(exp_2);
-                        queryable = queryable.Where(exp_3);
                     }
                     else
                     {
                         vedios = vedios.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                         videos = videos.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
-                        queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                     }
                 }
                 else
                 {
                     vedios = vedios.Where(t => t.TypePath.Contains(GovtInfo().Area));
                     videos = videos.Where(t => t.TypePath.Contains(GovtInfo().Area));
-                    queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
                 }
             }
-            int CompanyVedio = vedios.Where(t => t.CreateTime.Value >= DateTime.Parse(DateTime.Now.ToShortDateString()) && t.CreateTime.Value <= DateTime.Parse(DateTime.Now.ToShortDateString())).Count();
-            int MerchantVedio = videos.Where(t => t.CreateTime.Value >= DateTime.Parse(DateTime.Now.ToShortDateString()) && t.CreateTime.Value <= DateTime.Parse(DateTime.Now.ToShortDateString())).Count();
+            int CompanyVedio = 0;
+            int MerchantVedio = 0;
+            if (Id.HasValue)
+            {
+                vedios = vedios.Where(t => t.CompanyId == Id.Value);
+                videos = videos.Where(t => t.InfoId == Id.Value);
+                CompanyVedio = vedios.Count();
+                MerchantVedio = videos.Count();
+            }
+            else
+            {
+                 CompanyVedio = vedios.Where(t => t.CreateTime.Value >= DateTime.Parse(DateTime.Now.ToShortDateString()) && t.CreateTime.Value <= DateTime.Parse(DateTime.Now.ToShortDateString())).Count();
+                 MerchantVedio = videos.Where(t => t.CreateTime.Value >= DateTime.Parse(DateTime.Now.ToShortDateString()) && t.CreateTime.Value <= DateTime.Parse(DateTime.Now.ToShortDateString())).Count();
+            }
             if (!GovtInfo().IsEdu.Value)
             {
                 var data = vedios.Select(t => new
