@@ -69,7 +69,12 @@
                         })                       
                         options.BindHonor(result.data.HonorCertification);
                         options.BindHealth(result.data.Id);
+                        options.BindWeek(result.data.Id);
                         options.BindThing(result.data.Id);
+                        options.InitBad(result.data.Id);
+                        options.InitTemp(result.data.Id);
+                        options.InitCheck(result.data.Id);
+                        options.InitSelfCheck(result.data.Id);
                     }
                 });
                 //查看大图
@@ -105,59 +110,181 @@
                     data: { Id: data},
                     async: false,
                     success: function (res) {
-                        var HealthHTML = "";
+                        var PersonHTML = "";
                         $.each(res.data, function (i, item) {
-                            HealthHTML += '<div class="imgbox">'
-                                + '<ul>'
-                                + '<li><img src="http://system.cfda.vip'+ item.HealthImg + '" class="smallimgo" alt=""></li>'
-                                + ' </ul>'
-                                + '<ul>'
-                                + ' <li style="margin-top:6px;">'
-                                + '<lable>' + item.PersonName + '</lable>'
-                                + ' <span>' + item.JobStatus + '</span>'
-                                + ' </li>'
-                                + '</ul>'
-                                + '<ul>'
-                                + ' <li>'
-                                + '<span>有效期: ' + item.TimeLength + '</span>'
-                                + '</li>'
-                                + '</ul>'
-                                + '</div>';
+                            var Color = "";
+                            if (DateCompare(item.TimeLength)) {
+                                var Color = "color:red;";
+                            }
 
+                            PersonHTML += '<tr>'
+                                + '<td>' + item.PersonName + '</td>'
+                                + '<td>' + item.JobStatus + '</td>'
+                                + '<td style="'+Color+'">' + item.TimeLength + '</td>'
+                                + '<td><img src="' + item.HealthImg + '" style="height:24px;" alt="" class="img-preview-sm" title="点击查看"/></td>'
+                               
+                                + '</tr>';
                         });
-                        $("#CompanyHealth").append(HealthHTML);
+                        debugger;
+                        $("#PersonList").append(PersonHTML);
                     }
                 });
             },
             //食材供应
             BindThing: function (data) {
+                //取详情
                 controller.ajax({
                     url: "Temp/RepastThing",
-                    data: { Id: data},
+                    data: { Id: data },
                     async: false,
-                    success: function (res) {
-                       var ThingHTML = "";
-                        $.each(res.data, function (i, item) {
-                            ThingHTML += '<div class="cx_ingredients2">'
-                                + '<div>'
-                                + ' <div>'
-                                + ' <ul>'
-                                + ' <li><img src="http://www.cfda.vip/web/images/fgsag12f.png" alt="" /></li>'
-                                + ' <li>' + item.ThingName + '</li>'
-                                + '</ul>'
-                                + ' </div>'
-                                + '<div>'
-                                + ' <div class="imgbox" style="width:100%;float:none;">'
-                                + ' <ul>'
-                                + '<li>' + item.Remark.replace("<img", "<img class='smallimg'") + '</li>'
-                                + '</ul>'
-                                + '</div>'
-                                + '</div>'
-                                + '</div>'
-                                + '</div>';
-
+                    type: "get",
+                    success: function (result) {
+                         var ThingHTML = "";
+                        $.each(result.data, function (i, item) {
+                            ThingHTML += '<tr>'
+                                + '<td>' + item.ThingName + '</td>'
+                                + '<td>' + item.BuyTime + '</td>'
+                                + '<td>' + item.Remark.replace(new RegExp("<img ", 'g'), "<img class='photo' style='max-height:36px;width:auto'").replace(new RegExp("<p", 'g'),"<p style='display:inline-block;' ") + '</td>'
+                                + '</tr>';
                         });
-                        $("#CompanyThing").append(ThingHTML);
+                        $("#ThingList").append(ThingHTML);
+                    }
+                });
+            },
+             //周菜谱
+            BindWeek: function (data) {
+                //取详情
+                controller.ajax({
+                    url: "Temp/RepastWeek",
+                    data: { Id: data },
+                    async: false,
+                    type: "get",
+                    success: function (result) {
+                        var WeekHTML = "";
+                        $.each(result.data, function (i, item) {
+                            WeekHTML += '<tr>'
+                                + '<td>' + item.Title + '</td>'
+                                + '<td>' + item.DateTime + '</td>'
+                                + '<td>' + item.Content.replace(new RegExp("<img ", 'g'), "<img class='photo' style='max-height:36px;width:auto'").replace(new RegExp("<p", 'g'),"<p style='display:inline-block;' ") + '</td>'
+                                + '</tr>';
+                        });
+                        $("#WeekList").append(WeekHTML);
+                    }
+                });
+            },
+             //废物处理
+            InitBad: function () {
+                //取详情
+                controller.ajax({
+                    url: "Temp/RepastDuck",
+                    data: { Id: controller.GetParam("Id") },
+                    async: false,
+                    type: "get",
+                    success: function (result) {
+                         var BadHTML = "";
+                        $.each(result.data, function (i, item) {
+                            if (item.BadRemark == null) item.BadRemark = "";
+                            BadHTML += '<tr>'
+                                + '<td>' + item.BadType + '</td>'
+                                + '<td>' + item.BadPhone + '</td>'
+                                + '<td>' + item.BadTime + '</td>'
+                                 + '<td>' + item.BadPerson + '</td>'
+                                + '<td>' + item.BadRemark.replace(new RegExp("<img ", 'g'), "<img class='photo' style='max-height:36px;width:auto'").replace(new RegExp("<p", 'g'),"<p style='display:inline-block;' ") + '</td>'
+                                + '</tr>';
+                        });
+                        $("#BadList").append(BadHTML);
+                    }
+                });
+            },
+             //留样
+            InitTemp: function () {
+                //取详情
+                controller.ajax({
+                    url: "Temp/GetAllSample",
+                    data: { Id: controller.GetParam("Id") },
+                    async: false,
+                    type: "get",
+                    success: function (result) {
+                         var TempHTML = "";
+                        $.each(result.data, function (i, item) {
+                            TempHTML += '<tr>'
+                                + '<td>' + item.FoodsName + '</td>'
+                                + '<td>' + item.Remark + '</td>'
+                                + '<td>' + item.SavePerson + '</td>'
+                                + '<td>' + item.SaveTime + '</td>'
+                                 + '<td><img src="' + item.ReportImg + '" alt="" class="img-preview-sm" title="点击查看"/></td>'
+                                + '</tr>';
+                        });
+                        $("#TempList").append(TempHTML);
+                    }
+                });
+            },
+             //抽检记录
+            InitCheck: function () {
+                //取详情
+                controller.ajax({
+                    url: "Temp/RepastCheck",
+                    data: { Id: controller.GetParam("Id") },
+                    async: false,
+                    type: "get",
+                    success: function (result) {
+                         var CheckHTML = "";
+                        $.each(result.data, function (i, item) {
+                            CheckHTML += '<tr>'
+                                + '<td>' + item.Title + '</td>'
+                                 + '<td>' + item.DateTime + '</td>'
+                                + '<td>' + item.Person + '</td>'
+                                + '<td>' + item.Remark + '</td>'
+                               
+                                + '</tr>';
+                        });
+                        $("#CheckList").append(CheckHTML);
+                    }
+                });
+            },
+            //陪餐记录
+            InitMarket: function () {
+                //取详情
+                controller.ajax({
+                    url: "Temp/RepastMarket",
+                    data: { Id: controller.GetParam("Id") },
+                    async: false,
+                    type: "get",
+                    success: function (result) {
+                         var MarketHTML = "";
+                        $.each(result.data, function (i, item) {
+                            MarketHTML += '<tr>'
+                                + '<td>' + item.Title + '</td>'
+                                 + '<td>' + item.DateTime + '</td>'
+                                + '<td>' + item.Person + '</td>'
+                                + '<td>' + item.Remark + '</td>'
+                               
+                                + '</tr>';
+                        });
+                        $("#MarketList").append(MarketHTML);
+                    }
+                });
+            },
+            //自查记录
+            InitSelfCheck: function () {
+                //取详情
+                controller.ajax({
+                    url: "Temp/RepastSelfCheck",
+                    data: { Id: controller.GetParam("Id") },
+                    async: false,
+                    type: "get",
+                    success: function (result) {
+                         var SelfCheckHTML = "";
+                        $.each(result.data, function (i, item) {
+                            SelfCheckHTML += '<tr>'
+                                + '<td>' + item.Title + '</td>'
+                                 + '<td>' + item.DateTime + '</td>'
+                                + '<td>' + item.Person + '</td>'
+                                + '<td>' + item.Remark + '</td>'
+                               
+                                + '</tr>';
+                        });
+                        $("#SelfCheckList").append(SelfCheckHTML);
                     }
                 });
             },
@@ -172,214 +299,279 @@
         $(document).ready(function () {
             options.Init();
         });
-
+         function DateCompare(TimeLength) {
+            // 获取当前日期
+            let currentDate = new Date();
+            let str = "" + currentDate.getFullYear() + "-";
+            str += (currentDate.getMonth() + 1) + "-";
+            str += currentDate.getDate();
+            let today = new Date(str.replace("-", "/").replace("-", "/"));
+        
+            let fulfill_appointment_time = new Date(TimeLength.replace("年", "/").replace("月", "/").replace("日", ""));
+            if (fulfill_appointment_time < today) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
     </script>
 }
 <form class="form-horizontal" method="post" id="Edit">
     <div class="tabs-container">
-        <ul class="nav nav-tabs" style="margin-top:12px;">
-            <li class="active">
-                <a data-toggle="tab" href="#tab-1" aria-expanded="true"> 基本信息</a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#tab-2" aria-expanded="false">营业执照</a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#tab-3" aria-expanded="false">荣誉证书</a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#tab-4" aria-expanded="false" id="four">视频监控</a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#tab-5" aria-expanded="false">人员管理</a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#tab-6" aria-expanded="false">食材供应</a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#tab-7" aria-expanded="false">周菜谱</a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#tab-8" aria-expanded="false">废物处理</a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#tab-9" aria-expanded="false">留样管理</a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#tab-10" aria-expanded="false">抽检信息</a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#tab-11" aria-expanded="false">陪餐打卡</a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#tab-12" aria-expanded="false">自查记录</a>
-            </li>
-        </ul>
-        <div class="tab-content">
-            <div id="tab-1" class="tab-pane active">
-                <table class="table table-hover table-bordered m-t-sm">
-                    <colgroup>
-                        <col width="120" />
-                        <col width="40%" />
-                        <col width="120" />
-                        <col />
-                    </colgroup>
-                    <tr>
-                        <th style="text-align:center"><label class="control-label">单位名称</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="MerchantName"></label>
-                        </td>
-                        <th style="text-align:center"><label class="control-label">所属行业</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="DiningTypeName"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style="text-align:center"><label class="control-label">单位邮箱</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="Email"></label>
-                        </td>
-                        <th style="text-align:center"><label class="control-label">信用代码</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="CommunityCode"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style="text-align:center"><label class="control-label">单位电话</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="Phone"></label>
-                        </td>
-                        <th style="text-align:center"><label class="control-label">所属单位</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="AllowUnit"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style="text-align:center"><label class="control-label">单位地址</label></th>
-                        <td class="has-warning" colspan="3">
-                            <label type="txt" name="Address"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th style="text-align:center"><label class="control-label">单位介绍</label></th>
-                        <td class="has-warning" colspan="3">
-                            <label type="txt" name="Remark"></label>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div id="tab-2" class="tab-pane">
-                <div class="ibox-content">
-                    <img class="img-preview" src="" type="image" name="Certification" style="display:block;margin:auto" title="点击放大" />
-                </div>
-            </div>
-            <div id="tab-3" class="tab-pane">
-                <div class="ibox-content">
-                </div>
-            </div>
-            <!--监控视频-->
-            <div id="tab-4" class="tab-pane">
-                <div class="ibox-content">
-                    <table style="width:1060px">
+        <div class="ibox-content">
+            <ul class="nav nav-tabs" style="margin-top:12px;">
+                <li class="active">
+                    <a data-toggle="tab" href="#tab-1" aria-expanded="true"> 基本信息</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-2" aria-expanded="false">营业执照</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-3" aria-expanded="false">荣誉证书</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-4" aria-expanded="false" id="four">视频监控</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-5" aria-expanded="false">人员管理</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-6" aria-expanded="false">食材供应</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-7" aria-expanded="false">周菜谱</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-8" aria-expanded="false">废物处理</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-9" aria-expanded="false">留样管理</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-10" aria-expanded="false">抽检信息</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-11" aria-expanded="false">陪餐打卡</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-12" aria-expanded="false">自查记录</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="tab-1" class="tab-pane active">
+                    <table class="table table-hover table-bordered m-t-sm">
+                        <colgroup>
+                            <col width="120" />
+                            <col width="40%" />
+                            <col width="120" />
+                            <col />
+                        </colgroup>
                         <tr>
-                            <td style="text-align:center;"><iframe id="play" class="J_iframe" src="" name="iframe" style="width:87%;height:400px;margin:auto auto;" frameborder="0" seamless scrolling="no" align="middle"></iframe></td>
-                            <td style="text-align:center;"><iframe id="play" class="J_iframe" src="" name="iframe" style="width:87%;height:400px;margin:auto auto;" frameborder="0" seamless scrolling="no" align="middle"></iframe></td>
+                            <th style="text-align:center"><label class="control-label">单位名称</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="MerchantName"></label>
+                            </td>
+                            <th style="text-align:center"><label class="control-label">所属行业</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="DiningTypeName"></label>
+                            </td>
                         </tr>
                         <tr>
-                            <td style="text-align:center;"><iframe id="play" class="J_iframe" src="" name="iframe" style="width:87%;height:400px;margin:auto auto;" frameborder="0" seamless scrolling="no" align="middle"></iframe></td>
-                            <td style="text-align:center;"><iframe id="play" class="J_iframe" src="" name="iframe" style="width:87%;height:400px;margin:auto auto;" frameborder="0" seamless scrolling="no" align="middle"></iframe></td>
+                            <th style="text-align:center"><label class="control-label">单位邮箱</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="Email"></label>
+                            </td>
+                            <th style="text-align:center"><label class="control-label">信用代码</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="CommunityCode"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="text-align:center"><label class="control-label">单位电话</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="Phone"></label>
+                            </td>
+                            <th style="text-align:center"><label class="control-label">所属单位</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="AllowUnit"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="text-align:center"><label class="control-label">单位地址</label></th>
+                            <td class="has-warning" colspan="3">
+                                <label type="txt" name="Address"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="text-align:center"><label class="control-label">单位介绍</label></th>
+                            <td class="has-warning" colspan="3">
+                                <label type="txt" name="Remark"></label>
+                            </td>
                         </tr>
                     </table>
                 </div>
-            </div>
-            <!--人员管理-->
-            <div id="tab-5" class="tab-pane">
-                <div class="ibox-content">
-                    <table id="tableList" class="table">
-                        <thead>
+                <div id="tab-2" class="tab-pane">
+                    <div style="padding-top:12px;">
+                        <img class="img-preview" src="" type="image" name="Certification" style="display:block;margin:auto" title="点击放大" />
+                    </div>
+                </div>
+                <div id="tab-3" class="tab-pane">
+                    <div style="padding-top:12px;">
+                    </div>
+                </div>
+                <!--监控视频-->
+                <div id="tab-4" class="tab-pane">
+                    <div style="padding-top:12px;">
+                        <table style="width:100%">
                             <tr>
-                                <th data-field="TrueName" class="th-center">姓名</th>
-                                <th data-field="Phone" class="th-center">入职状态</th>
-                                <th data-field="ExpiredTime" class="th-center">有效期</th>
-                                <th class="th-center">健康证</th>
+                                <td style="text-align:center;"><iframe id="play" class="J_iframe" src="" name="iframe" style="width:87%;height:400px;margin:auto auto;" frameborder="0" seamless scrolling="no" align="middle"></iframe></td>
+                                <td style="text-align:center;"><iframe id="play" class="J_iframe" src="" name="iframe" style="width:87%;height:400px;margin:auto auto;" frameborder="0" seamless scrolling="no" align="middle"></iframe></td>
                             </tr>
-                        </thead>
-                        <tbody id="PersonList">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <!--食材供应-->
-            <div id="tab-6" class="tab-pane">
-                <div class="ibox-content">
-                    <table id="tableList" class="table">
-                        <thead>
                             <tr>
-                                <th data-field="Theme" class="th-center">台账名称</th>
-                                <th data-field="UpTime" class="th-center">上报时间</th>
-                                <th data-field="Content" class="th-center">凭证</th>
+                                <td style="text-align:center;"><iframe id="play" class="J_iframe" src="" name="iframe" style="width:87%;height:400px;margin:auto auto;" frameborder="0" seamless scrolling="no" align="middle"></iframe></td>
+                                <td style="text-align:center;"><iframe id="play" class="J_iframe" src="" name="iframe" style="width:87%;height:400px;margin:auto auto;" frameborder="0" seamless scrolling="no" align="middle"></iframe></td>
                             </tr>
-                        </thead>
-                        <tbody id="ThingList">
-                        </tbody>
-                    </table>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            <!--主营菜品-->
-            <div id="tab-7" class="tab-pane">
-                <div class="ibox-content">
+                <!--人员管理-->
+                <div id="tab-5" class="tab-pane">
+                    <div style="padding-top:12px;">
+                        <table id="tableList" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th data-field="TrueName" class="th-center">姓名</th>
+                                    <th data-field="Phone" class="th-center">入职状态</th>
+                                    <th data-field="ExpiredTime" class="th-center">有效期</th>
+                                    <th class="th-center">健康证</th>
+                                </tr>
+                            </thead>
+                            <tbody id="PersonList">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            <!--废物处理-->
-            <div id="tab-8" class="tab-pane">
-                <div class="ibox-content">
-                    <table id="tableList" class="table">
-                        <thead>
-                            <tr>
-                                <th data-field="HandleWays" class="th-center">处理方式</th>
-                                <th data-field="Phone" class="th-center">电话</th>
-                                <th data-field="HandleTime" class="th-center">处理时间</th>
-                                <th data-field="HandleUser" class="th-center">操作人</th>
-                                <th class="th-center">现场图片</th>
-                            </tr>
-                        </thead>
-                        <tbody id="BadList">
-                        </tbody>
-                    </table>
+                <!--食材供应-->
+                <div id="tab-6" class="tab-pane">
+                    <div style="padding-top:12px;">
+                        <table id="tableList" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th data-field="Theme" class="th-center">台账名称</th>
+                                    <th data-field="UpTime" class="th-center">上报时间</th>
+                                    <th data-field="Content" class="th-center">凭证</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ThingList">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            <!--留样管理-->
-            <div id="tab-9" class="tab-pane">
-                <div class="ibox-content">
-                    <table id="tableList" class="table">
-                        <thead>
-                            <tr>
-                                <th data-field="DishName" class="th-center">菜品名称</th>
-                                <th data-field="Phone" class="th-center">储藏方式</th>
-                                <th data-field="OperatUser" class="th-center">操作人</th>
-                                <th data-field="SampleTime" class="th-center">留样时间</th>
-                                <th class="th-center">留样图片</th>
-                            </tr>
-                        </thead>
-                        <tbody id="TempList">
-                        </tbody>
-                    </table>
+                <!--周菜谱-->
+                <div id="tab-7" class="tab-pane">
+                    <div style="padding-top:12px;">
+                        <table id="tableList" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th data-field="Theme" class="th-center">菜谱名称</th>
+                                    <th data-field="UpTime" class="th-center">上报时间</th>
+                                    <th data-field="Content" class="th-center">菜谱内容</th>
+                                </tr>
+                            </thead>
+                            <tbody id="WeekList">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            <!--抽检信息-->
-            <div id="tab-10" class="tab-pane">
-                <div class="ibox-content">
+                <!--废物处理-->
+                <div id="tab-8" class="tab-pane">
+                    <div style="padding-top:12px;">
+                        <table id="tableList" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th data-field="HandleWays" class="th-center">处理方式</th>
+                                    <th data-field="Phone" class="th-center">电话</th>
+                                    <th data-field="HandleTime" class="th-center">处理时间</th>
+                                    <th data-field="HandleUser" class="th-center">操作人</th>
+                                    <th class="th-center">现场图片</th>
+                                </tr>
+                            </thead>
+                            <tbody id="BadList">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            <!--陪餐打卡-->
-            <div id="tab-11" class="tab-pane">
-                <div class="ibox-content">
+                <!--留样管理-->
+                <div id="tab-9" class="tab-pane">
+                    <div style="padding-top:12px;">
+                        <table id="tableList" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th data-field="DishName" class="th-center">菜品名称</th>
+                                    <th data-field="Phone" class="th-center">储藏方式</th>
+                                    <th data-field="OperatUser" class="th-center">操作人</th>
+                                    <th data-field="SampleTime" class="th-center">留样时间</th>
+                                    <th class="th-center">留样图片</th>
+                                </tr>
+                            </thead>
+                            <tbody id="TempList">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            <!--企业自查-->
-            <div id="tab-12" class="tab-pane">
-                <div class="ibox-content">
+                <!--抽检信息-->
+                <div id="tab-10" class="tab-pane">
+                    <div style="padding-top:12px;">
+                        <table id="tableList" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th data-field="DishName" class="th-center">抽检单位</th>
+                                    <th data-field="Phone" class="th-center">抽检时间</th>
+                                    <th data-field="OperatUser" class="th-center">操作人</th>
+                                    <th class="th-center">抽检记录</th>
+                                </tr>
+                            </thead>
+                            <tbody id="CheckList">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--陪餐打卡-->
+                <div id="tab-11" class="tab-pane">
+                    <div style="padding-top:12px;">
+                        <table id="tableList" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th data-field="DishName" class="th-center">陪餐记录</th>
+                                    <th data-field="Phone" class="th-center">发布日期</th>
+                                    <th data-field="OperatUser" class="th-center">操作人</th>
+                                    <th class="th-center">陪餐内容</th>
+                                </tr>
+                            </thead>
+                            <tbody id="MarketList">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--企业自查-->
+                <div id="tab-12" class="tab-pane">
+                    <div style="padding-top:12px;">
+                        <table id="tableList" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th data-field="DishName" class="th-center">自查主题</th>
+                                    <th data-field="Phone" class="th-center">发布日期</th>
+                                    <th data-field="OperatUser" class="th-center">操作人</th>
+                                    <th class="th-center">自查内容</th>
+                                </tr>
+                            </thead>
+                            <tbody id="SelfCheckList">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    </form>

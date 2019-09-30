@@ -71,6 +71,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Govt
         /// <summary>
         /// 自查日期
         /// </summary>
-        public string CheckTime { set; get; }
+        public string CreateTime { set; get; }
     }
 }

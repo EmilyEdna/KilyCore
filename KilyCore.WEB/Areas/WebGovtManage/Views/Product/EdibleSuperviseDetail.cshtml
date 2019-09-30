@@ -48,148 +48,150 @@
 }
 <form class="form-horizontal" method="post" id="Edit">
     <div class="tabs-container">
-        <ul class="nav nav-tabs">
-            <li class="active">
-                <a data-toggle="tab" href="#tab-1" aria-expanded="true"> 基本信息</a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#tab-2" aria-expanded="false">产品质检</a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#tab-3" aria-expanded="false">库存信息</a>
-            </li>
-            <li>
-                <a data-toggle="tab" href="#tab-4" aria-expanded="false">仓库信息</a>
-            </li>
-        </ul>
-        <div class="tab-content">
-            <div id="tab-1" class="tab-pane active">
-                <table class="table table-hover table-bordered m-t-sm">
-                    <colgroup>
-                        <col width="120" />
-                        <col width="40%" />
-                        <col width="120" />
-                        <col />
-                    </colgroup>
-                    <tr>
-                        <th  style="text-align:center"><label class="control-label">产品名称</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="ProductName"></label>
-                        </td>
-                        <th  style="text-align:center"><label class="control-label">保质期</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="ExpiredDate"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th  style="text-align:center"><label class="control-label">规格</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="Spec"></label>
-                        </td>
-                        <th  style="text-align:center"><label class="control-label">产品类型</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="ProductType"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th  style="text-align:center"><label class="control-label">产品描述</label></th>
-                        <td class="has-warning" colspan="3">
-                            <label type="txt" name="Content"></label>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div id="tab-2" class="tab-pane">
-                <table class="table table-hover table-bordered m-t-sm">
-                    <colgroup>
-                        <col width="120" />
-                        <col width="40%" />
-                        <col width="120" />
-                        <col />
-                    </colgroup>
-                    <tr>
-                        <th  style="text-align:center"><label class="control-label">质检单位</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="CheckUint"></label>
-                        </td>
-                        <th  style="text-align:center"><label class="control-label">质检人</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="CheckUser"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th  style="text-align:center"><label class="control-label">质检结果</label></th>
-                        <td class="has-warning" colspan="3">
-                            <label type="txt" name="CheckResult"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th  style="text-align:center"><label class="control-label">质检报告</label></th>
-                        <td class="has-warning" colspan="3">
-                            <label type="img" name="CheckReport"></label>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div id="tab-3" class="tab-pane">
-                <table class="table table-hover table-bordered m-t-sm">
-                    <colgroup>
-                        <col width="120" />
-                        <col width="40%" />
-                        <col width="120" />
-                        <col />
-                    </colgroup>
-                    <tr>
-                        <th  style="text-align:center"><label class="control-label">入库时间</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="ProductTime"></label>
-                        </td>
-                        <th  style="text-align:center"><label class="control-label">入库管理员</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="Manager"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th  style="text-align:center"><label class="control-label">出库时间</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="OutStockTime"></label>
-                        </td>
-                        <th  style="text-align:center"><label class="control-label">出库管理员</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="OutStockUser"></label>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div id="tab-4" class="tab-pane">
-                <table class="table table-hover table-bordered m-t-sm">
-                    <colgroup>
-                        <col width="120" />
-                        <col width="40%" />
-                        <col width="120" />
-                        <col />
-                    </colgroup>
-                    <tr>
-                        <th  style="text-align:center"><label class="control-label">仓库名称</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="StockName"></label>
-                        </td>
-                        <th  style="text-align:center"><label class="control-label">贮藏方式</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="SaveType"></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th  style="text-align:center"><label class="control-label">贮藏湿度</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="SaveH2"></label>
-                        </td>
-                        <th  style="text-align:center"><label class="control-label">贮藏温度</label></th>
-                        <td class="has-warning">
-                            <label type="txt" name="SaveTemp"></label>
-                        </td>
-                    </tr>
-                </table>
+        <div class="ibox-content">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a data-toggle="tab" href="#tab-1" aria-expanded="true"> 基本信息</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-2" aria-expanded="false">产品质检</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-3" aria-expanded="false">库存信息</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-4" aria-expanded="false">仓库信息</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="tab-1" class="tab-pane active">
+                    <table class="table table-hover table-bordered m-t-sm">
+                        <colgroup>
+                            <col width="120" />
+                            <col width="40%" />
+                            <col width="120" />
+                            <col />
+                        </colgroup>
+                        <tr>
+                            <th style="text-align:center"><label class="control-label">产品名称</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="ProductName"></label>
+                            </td>
+                            <th style="text-align:center"><label class="control-label">保质期</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="ExpiredDate"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="text-align:center"><label class="control-label">规格</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="Spec"></label>
+                            </td>
+                            <th style="text-align:center"><label class="control-label">产品类型</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="ProductType"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="text-align:center"><label class="control-label">产品描述</label></th>
+                            <td class="has-warning" colspan="3">
+                                <label type="txt" name="Content"></label>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="tab-2" class="tab-pane">
+                    <table class="table table-hover table-bordered m-t-sm">
+                        <colgroup>
+                            <col width="120" />
+                            <col width="40%" />
+                            <col width="120" />
+                            <col />
+                        </colgroup>
+                        <tr>
+                            <th style="text-align:center"><label class="control-label">质检单位</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="CheckUint"></label>
+                            </td>
+                            <th style="text-align:center"><label class="control-label">质检人</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="CheckUser"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="text-align:center"><label class="control-label">质检结果</label></th>
+                            <td class="has-warning" colspan="3">
+                                <label type="txt" name="CheckResult"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="text-align:center"><label class="control-label">质检报告</label></th>
+                            <td class="has-warning" colspan="3">
+                                <label type="img" name="CheckReport"></label>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="tab-3" class="tab-pane">
+                    <table class="table table-hover table-bordered m-t-sm">
+                        <colgroup>
+                            <col width="120" />
+                            <col width="40%" />
+                            <col width="120" />
+                            <col />
+                        </colgroup>
+                        <tr>
+                            <th style="text-align:center"><label class="control-label">入库时间</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="ProductTime"></label>
+                            </td>
+                            <th style="text-align:center"><label class="control-label">入库管理员</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="Manager"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="text-align:center"><label class="control-label">出库时间</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="OutStockTime"></label>
+                            </td>
+                            <th style="text-align:center"><label class="control-label">出库管理员</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="OutStockUser"></label>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="tab-4" class="tab-pane">
+                    <table class="table table-hover table-bordered m-t-sm">
+                        <colgroup>
+                            <col width="120" />
+                            <col width="40%" />
+                            <col width="120" />
+                            <col />
+                        </colgroup>
+                        <tr>
+                            <th style="text-align:center"><label class="control-label">仓库名称</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="StockName"></label>
+                            </td>
+                            <th style="text-align:center"><label class="control-label">贮藏方式</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="SaveType"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="text-align:center"><label class="control-label">贮藏湿度</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="SaveH2"></label>
+                            </td>
+                            <th style="text-align:center"><label class="control-label">贮藏温度</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="SaveTemp"></label>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

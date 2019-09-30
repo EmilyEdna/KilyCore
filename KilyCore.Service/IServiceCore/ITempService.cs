@@ -16,7 +16,9 @@ namespace KilyCore.Service.IServiceCore
         object GetInviteCode(string Area);
         object RepastThing(Guid id);
         object RepastWeek(Guid id);
+        object RepastMarket(Guid id);
         object RepastCheck(Guid id);
+        object RepastSelfCheck(Guid id);
         object RepastProduct(Guid CompanyId);
     }
 }

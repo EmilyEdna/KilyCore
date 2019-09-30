@@ -87,7 +87,7 @@
                             height: "80%",
                             width: "72%", 
                             btn:["关闭"],
-                            url: "WebGovtManage/Risk/CertificateRiskDetail?Id=" + row.Name+"&Name="+row.Name+"&CardType="+row.CardType+"&CardExpiredDate="+row.CardExpiredDate+"&CardImg="+row.CardImg,
+                            url: "WebGovtManage/Risk/CertificateRiskDetail?Name=" + row.Name+"&PersonName="+row.PersonName+"&CardType="+row.CardType+"&CardExpiredDate="+row.CardExpiredDate+"&CardImg="+row.CardImg+"&Remark="+row.Remark,
                             callBack: function (result) {
                                 controller.Close();
                             }

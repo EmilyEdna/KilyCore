@@ -3,6 +3,7 @@ using KilyCore.DataEntity.RequestMapper.Cook;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.Govt;
 using KilyCore.DataEntity.RequestMapper.Repast;
+using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Cook;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.Function;
@@ -115,7 +116,7 @@ namespace KilyCore.Service.IServiceCore
         ResponseGovtNetPatrol GetNetPatrolDetail(Guid Id);
         String EditNetPatrol(RequestGovtMsg Param);
         List<ResponseSystemMessage> GetMsgList();
-        List<ResponseGovtNetPatrolLog> GetNetPatrolLogs();
+        List<ResponseGovtNetPatrolLog> GetNetPatrolLogs(Guid Id);
         #endregion
         #region 执法类目
         PagedResult<ResponseGovtPatrolCategory> GetCategoryPage(PageParamList<RequestGovtPatrolCategory> pageParam);
@@ -183,7 +184,7 @@ namespace KilyCore.Service.IServiceCore
         String GetTodayNow();
         IList<DataBar> GetNewWeekRiskAndComplainCount();
         IList<DataLine> GetNewNetCheckCount();
-        Object GetNewVedioToday();
+        Object GetNewVedioToday(Guid? Id);
         #endregion
         #region 旧大屏
         Object GetLawRank();
@@ -206,6 +207,7 @@ namespace KilyCore.Service.IServiceCore
 
         #region 操作日志
         List<ResponseSystemLogInfo> GetLogInfos();
+        PagedResult<ResponseSystemLogInfo> GetHandlerLogPage(PageParamList<RequestSystemLogInfo> pageParam);
         #endregion
 
         #region 手机APP

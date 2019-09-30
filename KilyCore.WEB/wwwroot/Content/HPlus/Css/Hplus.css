@@ -2843,7 +2843,7 @@ code {
     -o-border-image: none;
     border-image: none;
     border-style: solid solid none;
-    border-width: 1px 0
+    border-width: 0px 0
 }
 .ibox-content-c {
     border-radius: 0 0 8px 8px;

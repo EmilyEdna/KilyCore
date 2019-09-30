@@ -8,6 +8,7 @@ using KilyCore.DataEntity.RequestMapper.Cook;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.Govt;
 using KilyCore.DataEntity.RequestMapper.Repast;
+using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.Extension.ResultExtension;
 using KilyCore.Extension.SessionExtension;
 using KilyCore.Extension.Token;
@@ -607,9 +608,9 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetNetPatrolLogs")]
-        public ObjectResultEx GetNetPatrolLogs()
+        public ObjectResultEx GetNetPatrolLogs(SimpleParam<Guid> Param)
         {
-            return ObjectResultEx.Instance(GovtWebService.GetNetPatrolLogs(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(GovtWebService.GetNetPatrolLogs(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
 
@@ -1050,9 +1051,9 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("GetNewVedioToday")]
-        public ObjectResultEx GetNewVedioToday()
+        public ObjectResultEx GetNewVedioToday(SimpleParam<Guid?> Param)
         {
-            return ObjectResultEx.Instance(GovtWebService.GetNewVedioToday(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(GovtWebService.GetNewVedioToday(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
         /// <summary>
@@ -1190,6 +1191,16 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetLogInfos()
         {
             return ObjectResultEx.Instance(GovtWebService.GetLogInfos(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 日志列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetHandlerLogPage")]
+        public ObjectResultEx GetHandlerLogPage(PageParamList<RequestSystemLogInfo> pageParam)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetHandlerLogPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }

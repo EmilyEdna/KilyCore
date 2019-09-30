@@ -19,8 +19,9 @@
                 $("label[name=Name]").html(controller.GetParam("Name"));
                 $("label[name=CardType]").html(controller.GetParam("CardType"));
                 $("label[name=CardExpiredDate]").html(controller.GetParam("CardExpiredDate"));
-                $("label[name=Name]").html(controller.GetParam("Name"));
-                $("label[name=Name]").html(controller.GetParam("Name"));
+                $("label[name=CardImg]").html("<img scr='"+controller.GetParam("CardImg")+"' style='width:256px;'/>");
+                $("label[name=PersonName]").html(controller.GetParam("PersonName"));
+                 $("label[name=Remark]").html(controller.GetParam("Remark"));
                    
             },
             //事件
@@ -61,21 +62,21 @@
                     <td class="has-warning">
                         <label type="txt" name="CardExpiredDate"></label>
                     </td>
-                    <th style="text-align:center"><label class="control-label">所属行业</label></th>
+                    <th style="text-align:center"><label class="control-label">姓名</label></th>
                     <td class="has-warning">
-                        <label type="txt" name="TradeType"></label>
+                        <label type="txt" name="PersonName"></label>
                     </td>
                 </tr>
                 <tr>
                     <th style="text-align:center"><label class="control-label">预警描述</label></th>
                     <td colspan="3">
-                        <label type="txt" name=""></label>
+                        <label type="txt" name="Remark"></label>
                     </td>
                 </tr>
                 <tr>
                     <th style="text-align:center"><label class="control-label">预警图片</label></th>
                     <td class="has-warning" colspan="3">
-                        <label type="txt" name="Remark"></label>
+                        <label type="txt" name="CardImg"></label>
                     </td>
                 </tr>
             </table>
