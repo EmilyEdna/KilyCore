@@ -273,23 +273,28 @@ a { /*设置a标签无下划线 设置a标签颜色*/
 
 .supervisoryvideo { /*监管视频 大盒子样式*/
     width: 100%;
-    height: 33.5%;
+    height: 100%;
     border-radius: 2px;
+    position: relative;
+    z-index: 10;
 }
 
     .supervisoryvideo .videoitem {
-        width: 47%;
-        height: 47%;
+        width: 45%;
+        height: 45%;
         margin-top: 1.5%;
-        margin-right: 2%;
+        margin-right: 3.2%;
     }
+        .supervisoryvideo .videoitem:nth-child(1), .supervisoryvideo .videoitem:nth-child(2) {
+            margin-top: 4.5%;
+        }
 
         .supervisoryvideo .videoitem:nth-child(2n-1) {
-            margin-left: 2%;
+            margin-left:3.2%;
         }
 
         .supervisoryvideo .videoitem p {
-            margin-top: 2%;
+            margin: 4% auto;
             white-space: nowrap; /*溢出显示...*/
             overflow: hidden;
             text-overflow: ellipsis;
@@ -297,11 +302,13 @@ a { /*设置a标签无下划线 设置a标签颜色*/
 
         .supervisoryvideo .videoitem .video-js {
             width: 100% !important;
-            height: 88% !important;
+            height: 80% !important;
             border: 1px solid transparent;
             box-shadow: 0 0 3px rgba(135, 234, 246,.5);
         }
-
+            .supervisoryvideo .videoitem .video-js .vjs-control-bar{
+                height: 2.5em;
+            }
             .supervisoryvideo .videoitem .video-js .vjs-big-play-button {
                 font-size: 1em;
             }

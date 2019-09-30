@@ -75,18 +75,40 @@
                     }
                 });
                 //投诉通知
-                controller.ajax({
-                    url: "GovtWeb/GetComplainPage",
+                //controller.ajax({
+                //    url: "GovtWeb/GetComplainPage",
+                //    data: { pageSize: 10, pageNumber: 1 },
+                //    async: false,
+                //    type: "post",
+                //    success: function (result) {
+                //        var html = "";
+                //        $.each(result.data.rows, function (i, obj) {
+                //            html += `<tr onclick="javascript:ShowModelDetail('WebGovtManage/Complain/InfoComplainDetail?Id=${obj.Id}','${obj.CompanyName}');"><td>${obj.CompanyName}</td>`;
+                //            html += '<td>' + obj.ProductName + '</td>';
+                //            html += '<td>' + obj.ComplainUser + '</td>';
+                //            html += '<td class="text-warning">' + obj.Status + '</td></tr >';
+                //        });
+                //        $("#Complain").html(html);
+                //    }
+                //});
+                //预警提示
+                 controller.ajax({
+                    url: "GovtWeb/GetCardPage",
                     data: { pageSize: 10, pageNumber: 1 },
                     async: false,
                     type: "post",
-                    success: function (result) {
+                     success: function (result) {
+                       
                         var html = "";
-                        $.each(result.data.rows, function (i, obj) {
-                            html += `<tr onclick="javascript:ShowModelDetail('WebGovtManage/Complain/InfoComplainDetail?Id=${obj.Id}','${obj.CompanyName}');"><td>${obj.CompanyName}</td>`;
-                            html += '<td>' + obj.ProductName + '</td>';
-                            html += '<td>' + obj.ComplainUser + '</td>';
-                            html += '<td class="text-warning">' + obj.Status + '</td></tr >';
+                         $.each(result.data.rows, function (index, obj) {
+                             var showName = result.data.rows[index].Name;
+                            if (result.data.rows[index].CardType == "健康证") {
+                                showName=`${result.data.rows[index].PersonName}(${result.data.rows[index].Name})`;
+                            }
+                            html += `<tr class="CardTR" data-id="${result.data.rows[index].Id}" data-title="${result.data.rows[index].Name}" data-content='${result.data.rows[index].Remark}' data-name='${result.data.rows[index].PersonName}' data-type="${result.data.rows[index].CardType}" data-time="${result.data.rows[index].CardExpiredDate.split(" ")[0]}" data-img="${result.data.rows[index].CardImg}"><td>${showName}</td>`;
+                            html += `<td> ${result.data.rows[index].CompanyType}</td>`;
+                            html += `<td>${result.data.rows[index].CardType}</td>`;
+                            html += `<td class="text-warning">${result.data.rows[index].CardExpiredDate.split(" ")[0]}</td></tr >`;
                         });
                         $("#Complain").html(html);
                     }
@@ -272,6 +294,25 @@
         }
         $(document).ready(function () {
             options.Init();
+            $(".CardTR").click(function () {
+                var Type = $(this).attr("data-type");
+                var CompanyName = $(this).attr("data-title");
+                var PersonName = $(this).attr("data-name");
+                var CardType = $(this).attr("data-type");
+                var CardImg = $(this).attr("data-img");
+                var CardImg = $(this).attr("data-img");
+                var ExpiredDate = $(this).attr("data-time");
+                var Remark=$(this).attr("data-content");
+                if (Type == "健康证") {
+                    ShowModelDetail("WebGovtManage/Risk/CertificateRiskDetail?Name=" + CompanyName+"&PersonName="+PersonName+"&CardType="+CardType+"&CardExpiredDate="+ExpiredDate+"&CardImg="+CardImg+"&Remark="+Remark);
+                }
+                else if (Type == "营业执照") {
+                   ShowModelDetail("WebGovtManage/Risk/CertificateRiskDetail?Name=" + CompanyName+"&PersonName="+PersonName+"&CardType="+CardType+"&CardExpiredDate="+ExpiredDate+"&CardImg="+CardImg+"&Remark="+Remark);
+                }
+                else {//投诉
+                    ShowModelDetail("WebGovtManage/Complain/InfoComplainDetail?Id=" + row.Id);
+                }
+            });
         });
         //展示
         function ShowModelDetail(Url,Title) {
@@ -417,7 +458,7 @@
                 <div class="item ibox-content-c">
                     <div class="left" style="background-color: #ED5565;"></div>
                     <div class="right">
-                        <p class="tq">月报备：<span id="A4">452,451</span></p>
+                        <p class="tq">月报备：<span id="A4"></span></p>
                         <p>增长比：<span id="B4">&emsp;<i class="fa fa-level-up" style="color: #ED5565;"></i></span></p>
                     </div>
                 </div>
@@ -438,32 +479,52 @@
                         </a>
                         <a class="J_menuItem" href="/WebGovtManage/Risk/EventRisk">
                             <img src="~/Content/DataView/images/zf_cygn2.png" />
-                            <p>事件分布图</p>
+                            <p>预警分布</p>
                         </a>
-                        <a class="J_menuItem" href="/WebGovtManage/Risk/WaringRisk">
-                            <img src="~/Content/DataView/images/zf_cygn3.png" />
-                            <p>预警信息</p>
+                        <a class="J_menuItem" href="/WebGovtManage/Enterprise/PlantSupervise">
+                            <img src="~/Content/DataView/images/zf_cygn11.png" />
+                            <p>企业监管</p>
                         </a>
-                        <a class="J_menuItem" href="/WebGovtManage/Risk/CertificateRisk">
+                        <a class="J_menuItem" href="/WebGovtManage/Product/EdibleSupervise">
+                            <img src="~/Content/DataView/images/zf_cygn12.png" />
+                            <p>产品监管</p>
+                        </a>
+                        @*<a class="J_menuItem" href="/WebGovtManage/Risk/WaringRisk">
+            <img src="~/Content/DataView/images/zf_cygn3.png" />
+            <p>预警信息</p>
+        </a>*@
+                        @*<a class="J_menuItem" href="/WebGovtManage/Risk/CertificateRisk">
                             <img src="~/Content/DataView/images/zf_cygn4.png" />
                             <p>证件到期</p>
-                        </a>
+                        </a>*@
                         <a class="J_menuItem" href="/WebGovtManage/Inspect/NetPatrol">
-                            <img src="~/Content/DataView/images/zf_cygn5.png" />
+                            <img src="~/Content/DataView/images/zf_cygn13.png" />
                             <p>网上巡查</p>
                         </a>
-                        <a class="J_menuItem" href="/WebGovtManage/Department/InstitutionDepartment">
-                            <img src="~/Content/DataView/images/zf_cygn6.png" />
-                            <p>机构管理</p>
+                        <a class="J_menuItem" href="/WebGovtManage/Inspect/MovePatrol">
+                            <img src="~/Content/DataView/images/zf_cygn14.png" />
+                            <p>移动执法</p>
                         </a>
-                        <a class="J_menuItem" href="/WebGovtManage/Department/UserDepartment">
-                            <img src="~/Content/DataView/images/zf_cygn7.png" />
-                            <p>用户管理</p>
+                        @*<a class="J_menuItem" href="/WebGovtManage/Department/InstitutionDepartment">
+            <img src="~/Content/DataView/images/zf_cygn6.png" />
+            <p>机构管理</p>
+        </a>
+        <a class="J_menuItem" href="/WebGovtManage/Department/UserDepartment">
+            <img src="~/Content/DataView/images/zf_cygn7.png" />
+            <p>用户管理</p>
+        </a>*@
+                        <a class="J_menuItem" href="/WebGovtManage/Inspect/CompanyPatrol">
+                            <img src="~/Content/DataView/images/zf_cygn15.png" />
+                            <p>企业自查</p>
                         </a>
-                        <a class="J_menuItem" href="/WebGovtManage/Complain/InfoComplain">
+                        <a class="J_menuItem" href="/WebGovtManage/Train/NoticeTrain">
+                            <img src="~/Content/DataView/images/zf_cygn16.png" />
+                            <p>安全培训</p>
+                        </a>
+                        @*<a class="J_menuItem" href="/WebGovtManage/Complain/InfoComplain">
                             <img src="~/Content/DataView/images/zf_cygn8.png" />
                             <p>投诉信息</p>
-                        </a>
+                        </a>*@
                     </div>
                 </div>
             </div>
@@ -544,7 +605,7 @@
         <div class="col-sm-4">
             <div class="ibox ibox-c float-e-margins">
                 <div class="ibox-title ibox-title-c">
-                    <h5>投诉信息</h5>
+                    <h5>预警提示</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -559,10 +620,10 @@
                         <table class="table table-hover no-margins" style="width: 95%; margin: 0 auto !important;">
                             <thead>
                                 <tr>
-                                    <th>被投诉公司</th>
-                                    <th>被投诉产品</th>
-                                    <th>投诉人</th>
-                                    <th>处理状态</th>
+                                    <th>企业名称</th>
+                                    <th>企业类型</th>
+                                    <th>预警类型</th>
+                                    <th>预警时间</th>
                                 </tr>
                             </thead>
                             <tbody id="Complain"></tbody>

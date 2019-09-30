@@ -293,6 +293,10 @@
                 $("#four").click(function () {
                     $("#play").contents().find(".vcp-player").css("margin", "0 auto");
                 });
+                $(".table-bordered img").each(function (i) {
+                    var img = $(this);
+                    $(this).wrap("<a href='" + $(this).attr("src") + "' target='_blank'></a>");
+                });
             },
         };
         //初始化

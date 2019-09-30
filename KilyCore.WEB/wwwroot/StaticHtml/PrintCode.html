@@ -42,27 +42,27 @@
                                 flag = false;
                             }
                         });
-                    var html = '<div class="wrap1" id="page'+i+'">'
-                        +'<div class="left">'
-                            +'<p>产品名称：<span>'+option.ProName+'</span></p>'
-                            +'<p>入库批次：<span>'+option.n+'</span></p>'
-                            +'<p>等&emsp;&emsp;级：<span>'+option.LvName+'</span></p>'
-                            +'<p>保&nbsp;质&nbsp;期 ：<span>'+option.Ex+'</span></p>'
-                            +'<p>储藏条件：<span>'+option.Type+'</span></p>'
-                            +'<p>生产时间：<span>'+option.Time+'</span></p>'
-                            +'<p>产&emsp;&emsp;地：<span>'+$.parseJSON(localStorage.CompanyUser).CompanyAddress+'</span></p>'
-                        +'</div>'
-                        +'<div class="right">'
-                            +'<img src="StaticImg/TagFlag.png" width="160" height="160">'
-                            +'<div id="code_'+i+'" width="160" height="160" style="margin-top: 10px"></div>'
-                            +'<p>溯源编码：<span>'+FullCode+'</span></p>'
-                        +'</div>'
-                    +'</div>'
+                    var html = '<div class="wrap1" id="page' + i + '">'
+                        + '<div class="left">'
+                        + '<p>产品名称：<span>' + option.ProName + '</span></p>'
+                        + '<p>入库批次：<span>' + option.n + '</span></p>'
+                        + '<p>等&emsp;&emsp;级：<span>' + option.LvName + '</span></p>'
+                        + '<p>保&nbsp;质&nbsp;期 ：<span>' + option.Ex + '</span></p>'
+                        + '<p>储藏条件：<span>' + option.Type + '</span></p>'
+                        + '<p>生产时间：<span>' + option.Time + '</span></p>'
+                        + '<p>产&emsp;&emsp;地：<span>' + $.parseJSON(localStorage.CompanyUser).CompanyAddress + '</span></p>'
+                        + '</div>'
+                        + '<div class="right">'
+                        + '<img src="StaticImg/TagFlag.png" width="40" height="40">'
+                        + '<div id="code_' + i + '" width="40" height="40" style="margin-top: 10px"></div>'
+                        + '</div>'
+                        + '<p style="font-size:8px;text-align:right;">溯源编码：<span>' + FullCode + '</span></p>'
+                        + '</div>';
                     $("body").append(html);
                     controller.QRCode("#code_" + i, {
                         text: "http://phone.cfda.vip/newphone/codeindex.html?id=&Code=" + FullCode,
-                        height: 160,
-                        width: 160
+                        height: 40,
+                        width: 40
                     });
                 }
             },
@@ -93,38 +93,39 @@
         * {
             padding: 0;
             margin: 0;
+            font-family:"Microsoft YaHei"
         }
 
         .wrap1 {
-            width: 708px;
-            height: 472px;
-            margin: 0 auto 50px;
+            width: 236px;
+            height: 156px;
+            margin: 0 auto 0px;
             box-sizing: border-box;
-            padding: 25px;
+            padding: 2px;
             overflow: hidden;
             border: 1px solid #f1f1f1;
             position: relative;
         }
 
         .left p {
-            font-size: 20px;
-            line-height: 20px;
+            font-size: 8px;
+            line-height: 10px;
         }
 
             .left p:not(:first-child) {
-                margin-top: 36px;
+                margin-top: 6px;
             }
 
         .right {
-            width: 270px;
+            width:40px;
             position: absolute;
-            right: 25px;
-            top: 25px;
+            right: 6px;
+            top: 6px;
             text-align: right;
         }
 
             .right p {
-                font-size: 15px;
+                font-size: 8px;
                 line-height: 20px;
                 margin-top: 10px;
             }
