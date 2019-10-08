@@ -73,8 +73,9 @@
             }
 
             .section1 .item1 .right p span {
-                color: #000;
+                color: #404040;
                 font-weight: bold;
+                margin: 0 10px 0 0;
             }
 /*第二个区域样式*/
 .section2 .item2 {
