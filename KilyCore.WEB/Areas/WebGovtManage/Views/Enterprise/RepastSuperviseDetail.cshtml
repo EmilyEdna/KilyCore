@@ -122,6 +122,7 @@
                     success: function (result) {
                         var BadHTML = "";
                         $.each(result.data, function (i, item) {
+                            if (item.BadRemark == null) item.BadRemark = "";
                             BadHTML += '<tr>'
                                 + '<td>' + item.BadType + '</td>'
                                 + '<td>' + item.BadPhone + '</td>'
@@ -145,6 +146,7 @@
                     success: function (result) {
                         var TempHTML = "";
                         $.each(result.data, function (i, item) {
+                            if (item.Remark == null) item.Remark = "冷藏";
                             TempHTML += '<tr>'
                                 + '<td>' + item.FoodsName + '</td>'
                                 + '<td>' + item.Remark + '</td>'
@@ -353,7 +355,7 @@
                 <!--营业执照-->
                 <div id="tab-2" class="tab-pane">
                     <div class="ibox-content">
-                        <img class="img-preview" src="" type="image" id="Certification" style="display:block;margin:auto" title="点击放大" />
+                        <img class="img-preview" src="" type="image" id="Certification" style="display:block;margin:auto;width:456px;" title="点击放大" />
                     </div>
                 </div>
                 <!--荣誉资质-->

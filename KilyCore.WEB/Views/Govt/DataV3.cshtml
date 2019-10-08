@@ -6,12 +6,16 @@
 @section css{
     @* 当前页面样式表 *@
     <link href="~/Content/DataView/Css/DAtaV.css" rel="stylesheet" />
+    @*自动检索css*@
+    <link href="~/Content/DataView/JS/jquery.searchableSelect.css" rel="stylesheet" />
     @* 视频美化插件css *@
     <link href="~/Content/DataView/Css/video-js.min.css.css" rel="stylesheet" />
 }
 @section script{
     @* echarts主题样式 *@
     <script src="~/Content/DataView/JS/shine.js"></script>
+    @*自动检索Js*@
+    <script src="~/Content/DataView/JS/jquery.searchableSelect.js"></script>
     @* 视频美化插件js *@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/7.6.0/video.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.15.0/videojs-contrib-hls.js"></script>
@@ -23,6 +27,7 @@
                 this.InitMap();
                 this.InitDom();
                 this.InitEvent();
+                this.InitSeachVoide();
                 $("body").GetGovtInfo();
                 $("#DepartName").html(Govt.DepartName);
                 $(document).attr("title", Govt.DepartName + "可视化平台");
@@ -324,11 +329,11 @@
                         let listStr = '';
                         for (index in result.data.rows) {
                             listStr += `<li class="clearfix">
-                                                            <div class="hidden">${result.data.rows[index].Id}</div>
-                                                            <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" title="${result.data.rows[index].Name}">${result.data.rows[index].Name}</div>
-                                                            <div>${result.data.rows[index].CompanyType}</div>
-                                                            <div>${result.data.rows[index].CardType}</div>
-                                                            <div>${result.data.rows[index].CardExpiredDate}</div></li>`;
+                                                                    <div class="hidden">${result.data.rows[index].Id}</div>
+                                                                    <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" title="${result.data.rows[index].Name}">${result.data.rows[index].Name}</div>
+                                                                    <div>${result.data.rows[index].CompanyType}</div>
+                                                                    <div>${result.data.rows[index].CardType}</div>
+                                                                    <div>${result.data.rows[index].CardExpiredDate}</div></li>`;
                         }
                         $(".cardexpire .bd ul").html(listStr);
                     }
@@ -433,136 +438,135 @@
                     }
                 });
                 //视频在线
-               
-                    options.VoideStatus = echarts.init($("#VoideCharts")[0], "shine");
-                    var dataStyle = {
-                        normal: {
+                options.VoideStatus = echarts.init($("#VoideCharts")[0], "shine");
+                var dataStyle = {
+                    normal: {
+                        label: {
+                            show: false
+                        },
+                        labelLine: {
+                            show: false
+                        },
+                        shadowBlur: 0,
+                        shadowColor: '#203665'
+                    }
+                };
+                options.VoideStatus.setOption({
+                    backgroundColor: "#20263f",
+                    series: [{
+                        name: '在线视频',
+                        type: 'pie',
+                        clockWise: false,
+                        radius: [40, 50],
+                        itemStyle: dataStyle,
+                        hoverAnimation: false,
+                        center: ['25%', '50%'],
+                        data: [{
+                            value: 0,
                             label: {
-                                show: false
-                            },
-                            labelLine: {
-                                show: false
-                            },
-                            shadowBlur: 0,
-                            shadowColor: '#203665'
-                        }
-                    };
-                    options.VoideStatus.setOption({
-                        backgroundColor: "#20263f",
-                        series: [{
-                            name: '在线视频',
-                            type: 'pie',
-                            clockWise: false,
-                            radius: [40, 50],
-                            itemStyle: dataStyle,
-                            hoverAnimation: false,
-                            center: ['25%', '50%'],
-                            data: [{
-                                value: 120,
-                                label: {
-                                    normal: {
-                                        rich: {
-                                            a: {
-                                                color: '#3a7ad5',
-                                                align: 'center',
-                                                fontSize: 18,
-                                                fontWeight: "bold"
-                                            },
-                                            b: {
-                                                color: '#fff',
-                                                align: 'center',
-                                                fontSize: 14
-                                            }
+                                normal: {
+                                    rich: {
+                                        a: {
+                                            color: '#3a7ad5',
+                                            align: 'center',
+                                            fontSize: 18,
+                                            fontWeight: "bold"
                                         },
-                                        formatter: function (params) {
-                                            return "{b|在线统计}\n\n" + "{a|" + params.value + "个}";
-                                        },
-                                        position: 'center',
-                                        show: true,
-                                        textStyle: {
-                                            fontSize: '12',
-                                            fontWeight: 'normal',
-                                            color: '#fff'
+                                        b: {
+                                            color: '#fff',
+                                            align: 'center',
+                                            fontSize: 14
                                         }
-                                    }
-                                },
-                                itemStyle: {
-                                    normal: {
-                                        color: '#2c6cc4',
-                                        shadowColor: '#2c6cc4',
-                                        shadowBlur: 0
-                                    }
-                                }
-                            }, {
-                                value: 80,
-                                name: 'invisible',
-                                itemStyle: {
-                                    normal: {
-                                        color: '#24375c'
                                     },
-                                    emphasis: {
-                                        color: '#24375c'
+                                    formatter: function (params) {
+                                        return "{b|在线统计}\n\n" + "{a|" + params.value + "个}";
+                                    },
+                                    position: 'center',
+                                    show: true,
+                                    textStyle: {
+                                        fontSize: '12',
+                                        fontWeight: 'normal',
+                                        color: '#fff'
                                     }
                                 }
-                            }]
+                            },
+                            itemStyle: {
+                                normal: {
+                                    color: '#2c6cc4',
+                                    shadowColor: '#2c6cc4',
+                                    shadowBlur: 0
+                                }
+                            }
                         }, {
-                            name: '离线视频',
-                            type: 'pie',
-                            clockWise: false,
-                            radius: [40, 50],
-                            itemStyle: dataStyle,
-                            hoverAnimation: false,
-                            center: ['70%', '50%'],
-                            data: [{
-                                value: 80,
-                                label: {
-                                    normal: {
-                                        rich: {
-                                            a: {
-                                                color: '#d03e93',
-                                                align: 'center',
-                                                fontSize: 18,
-                                                fontWeight: "bold"
-                                            },
-                                            b: {
-                                                color: '#fff',
-                                                align: 'center',
-                                                fontSize: 14
-                                            }
-                                        },
-                                        formatter: function (params) {
-                                            return "{b|\n\n离线统计}\n\n" + "{a|" + params.value + "个}";
-                                        },
-                                        position: 'center',
-                                        show: true,
-                                        textStyle: {
-                                            fontSize: '13',
-                                            fontWeight: 'normal',
-                                            color: '#fff'
-                                        }
-                                    }
+                            value: 0,
+                            name: 'invisible',
+                            itemStyle: {
+                                normal: {
+                                    color: '#24375c'
                                 },
-                                itemStyle: {
-                                    normal: {
-                                        color: '#ef45ac',
-                                        shadowColor: '#ef45ac',
-                                        shadowBlur: 0
-                                    }
+                                emphasis: {
+                                    color: '#24375c'
                                 }
-                            }, {
-                                value: 120,
-                                name: 'invisible',
-                                itemStyle: {
-                                    normal: {
-                                        color: '#412a4e'
-                                    },
-                                    emphasis: {
-                                        color: '#412a4e'
-                                    }
-                                }
-                            }]
+                            }
                         }]
-                    });
+                    }, {
+                        name: '离线视频',
+                        type: 'pie',
+                        clockWise: false,
+                        radius: [40, 50],
+                        itemStyle: dataStyle,
+                        hoverAnimation: false,
+                        center: ['70%', '50%'],
+                        data: [{
+                            value: 0,
+                            label: {
+                                normal: {
+                                    rich: {
+                                        a: {
+                                            color: '#d03e93',
+                                            align: 'center',
+                                            fontSize: 18,
+                                            fontWeight: "bold"
+                                        },
+                                        b: {
+                                            color: '#fff',
+                                            align: 'center',
+                                            fontSize: 14
+                                        }
+                                    },
+                                    formatter: function (params) {
+                                        return "{b|\n\n离线统计}\n\n" + "{a|" + params.value + "个}";
+                                    },
+                                    position: 'center',
+                                    show: true,
+                                    textStyle: {
+                                        fontSize: '13',
+                                        fontWeight: 'normal',
+                                        color: '#fff'
+                                    }
+                                }
+                            },
+                            itemStyle: {
+                                normal: {
+                                    color: '#ef45ac',
+                                    shadowColor: '#ef45ac',
+                                    shadowBlur: 0
+                                }
+                            }
+                        }, {
+                            value: 0,
+                            name: 'invisible',
+                            itemStyle: {
+                                normal: {
+                                    color: '#412a4e'
+                                },
+                                emphasis: {
+                                    color: '#412a4e'
+                                }
+                            }
+                        }]
+                    }]
+                });
             },
             //其他事件注册
             InitEvent: function () {
@@ -603,6 +607,10 @@
                         rollTop();
                     }
                 });
+                //监管视频搜索
+                $("#search").on("click", function () {
+                    $("#inputBox").slideToggle();
+                });
             },
             //获取当前时间
             GetNowDate: function () {
@@ -620,6 +628,91 @@
                 if (minutes < 10) { minutes = "0" + minutes }
                 if (seconds < 10) { seconds = "0" + seconds }
                 $("#CurrentTime").html(year + " 年 " + month + " 月 " + day + " 日 " + hours + ":" + minutes + ":" + seconds);
+            },
+            //视频检索
+            InitSeachVoide: function () {
+                var Keywords = $("#searchInput").val();
+                controller.ajax({
+                    url: "GovtWeb/GetDistributArea",
+                    data: {},
+                    type: "post",
+                    async: false,
+                    success: function (result) {
+                        $.each(result.data, function (i, item) {
+                            $("#SelectCompany").append(`<option value="${item.Id}">${item.Name}</option>`);
+                        });
+                        $("#SelectCompany").searchableSelect({
+                            afterSelectItem: function () {
+                                var resultData = this.holder;
+
+                                console.log(this.holder.text());
+                                console.log(this.holder.data("value"));
+                                if (this.holder.data("value") == "") {
+
+                                } else {
+                                    $("#inputBox").slideToggle();
+                                    $(".videoitem").hide();
+                                    //获取企业视频
+                                    controller.ajax({
+                                        url: "GovtWeb/GetAllVideo",
+                                        data: { Id: this.holder.data("value"), Parameter: 10 },
+                                        async: false,
+                                        type: "get",
+                                        success: function (res) {
+                                            //加载视频
+                                            $.each(res.data, function (index, obj) {
+                                                $(".videoitem").eq(index).show();
+                                                let type = ((obj.VideoAddress.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
+                                                $($(".videoitem").find("p")[index]).before(`<video id="vedio_${index}" poster="${obj.CoverPhoto}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${obj.VideoAddress}" type="${type}"></video > `);
+                                                $($(".videoitem").find("p")[index]).find("span").text(obj.MonitorAddress);
+                                            });
+                                        }
+                                    });
+                                    controller.ajax({
+                                        url: "GovtWeb/GetAllVideo",
+                                        data: { Id: this.holder.data("value"), Parameter: 20 },
+                                        async: false,
+                                        type: "get",
+                                        success: function (res) {
+                                            //加载视频
+                                            $.each(res.data, function (index, obj) {
+                                                $(".videoitem").eq(index).show();
+                                                let type = ((obj.VideoAddress.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
+                                                $($(".videoitem").find("p")[index]).before(`<video id="vedio_${index}" poster="${obj.CoverPhoto}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${obj.VideoAddress}" type="${type}"></video > `);
+                                                $($(".videoitem").find("p")[index]).find("span").text(obj.MonitorAddress);
+                                            });
+                                        }
+                                    });
+                                    videojs('vedio_0', {
+                                        autoplay: false,
+                                        controls: true,
+                                        width: 216,
+                                        height: 120
+                                    });
+                                    videojs('vedio_1', {
+                                        autoplay: false,
+                                        controls: true,
+                                        width: 216,
+                                        height: 100
+                                    });
+                                    videojs('vedio_2', {
+                                        autoplay: false,
+                                        controls: true,
+                                        width: 216,
+                                        height: 100
+                                    });
+                                    videojs('vedio_3', {
+                                        autoplay: false,
+                                        controls: true,
+                                        width: 216,
+                                        height: 100
+                                    });
+                                }
+
+                            }
+                        });
+                    }
+                });
             },
         };
         //页面初始化
@@ -646,6 +739,7 @@
             }
             return m;
         }
+
     </script>
 }
 <body>
@@ -728,25 +822,38 @@
             <div class="tittle mt">网上巡查</div>
             <div class="onlineinspection boxs"></div>
             <!-- 监管视频 -->
-            <div class="tittle mt">监管视频</div>
-            <div class="supervisoryvideo boxs">
-                <div class="videoitem fl">
-                    <p><span></span></p>
+            <div class="tittle mt" style="position: relative;">
+                监管视频
+                <img id="search" style="position: absolute; right: 10px; top: 20%;" width="20" height="20" src="~/Content/DataView/images/search.png" />
+            </div>
+            <div style="position: relative; width: 100%; height: 33.5%;z-index: 10;">
+                <div class="supervisoryvideo boxs" style="height:100%;">
+                    <div class="videoitem fl">
+                        <p><span></span></p>
+                    </div>
+                    <div class="videoitem fl">
+                        <p><span></span></p>
+                    </div>
+                    <div class="videoitem fl">
+                        <p><span></span></p>
+                    </div>
+                    <div class="videoitem fl">
+                        <p><span></span></p>
+                    </div>
                 </div>
-                <div class="videoitem fl">
-                    <p><span></span></p>
-                </div>
-                <div class="videoitem fl">
-                    <p><span></span></p>
-                </div>
-                <div class="videoitem fl">
-                    <p><span></span></p>
+                <div id="inputBox" style="width: 100%; height: 100%;display:none; border-radius: 2px; z-index: 20;position: absolute; top: 0;left: 0; background-color: rgba(0,0,0,.7)">
+                    <div style="position:relative;width:100%;">
+                        @*<input id="searchInput" style="background-color:#1e266e;border:1px solid #08453f;border-radius:6px 6px;height:36px;line-height:36px;padding:4px 12px;width:100%;" />*@
+                        <select id="SelectCompany">
+                            <option value="">搜索学校名称</option>
+                        </select>
+                    </div>
                 </div>
             </div>
             <!-- 今日视频 -->
             <div class="tittle mt">在线视频</div>
             <div class="todayvideo boxs" id="VoideCharts">
-                
+
             </div>
         </div>
     </div>
