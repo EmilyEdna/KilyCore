@@ -215,6 +215,18 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(ProductSearch.GetProDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 安全标准
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        [HttpGet("GetTargetDb")]
+        [AllowAnonymous]
+        public ObjectResultEx GetTargetDb(SimpleParam<String> key, SimpleParam<String> value)
+        {
+            return ObjectResultEx.Instance(ProTarget.GetTargetDb(key.Id, value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion
     }
 }
