@@ -323,6 +323,4 @@ namespace KilyCore.Extension.UtilExtension
         #endregion
     }
     #endregion
-
-
 }
