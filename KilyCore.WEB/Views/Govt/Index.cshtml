@@ -74,23 +74,6 @@
                         $("#Train").html(html);
                     }
                 });
-                //投诉通知
-                //controller.ajax({
-                //    url: "GovtWeb/GetComplainPage",
-                //    data: { pageSize: 10, pageNumber: 1 },
-                //    async: false,
-                //    type: "post",
-                //    success: function (result) {
-                //        var html = "";
-                //        $.each(result.data.rows, function (i, obj) {
-                //            html += `<tr onclick="javascript:ShowModelDetail('WebGovtManage/Complain/InfoComplainDetail?Id=${obj.Id}','${obj.CompanyName}');"><td>${obj.CompanyName}</td>`;
-                //            html += '<td>' + obj.ProductName + '</td>';
-                //            html += '<td>' + obj.ComplainUser + '</td>';
-                //            html += '<td class="text-warning">' + obj.Status + '</td></tr >';
-                //        });
-                //        $("#Complain").html(html);
-                //    }
-                //});
                 //预警提示
                  controller.ajax({
                     url: "GovtWeb/GetCardPage",
@@ -410,7 +393,8 @@
                     <span class="label label-success pull-right">月</span>
                     <h5>企业入驻</h5>
                 </div>
-                <a class="item ibox-content-c" href="/WebGovtManage/Enterprise/PlantSupervise">
+                <a class="item ibox-content-c J_menuItem" href="/WebGovtManage/Report/AreaBill">
+                    <span style="display:none;">企业统计</span>
                     <div class="left" style="background-color: #1C84C6;"></div>
                     <div class="right">
                         <p>月入驻：<span id="A1"></span></p>
@@ -425,7 +409,8 @@
                     <span class="label label-info pull-right">月</span>
                     <h5 class="ts">产品数量</h5>
                 </div>
-                <a class="item ibox-content-c" href="/WebGovtManage/Product/EdibleSupervise">
+                <a class="item ibox-content-c J_menuItem" href="/WebGovtManage/Report/ProductBill">
+                    <span style="display:none;">产品统计</span>
                     <div class="left" style="background-color: #23C6C8;"></div>
                     <div class="right">
                         <p class="ts">月产品：<span id="A2"></span></p>
@@ -440,7 +425,8 @@
                     <span class="label label-warning pull-right">月</span>
                     <h5>网上巡查</h5>
                 </div>
-                <a class="item ibox-content-c" href="/WebGovtManage/Inspect/NetPatrol">
+                <a class="item ibox-content-c J_menuItem" href="/WebGovtManage/Report/CompanyBill">
+                    <span style="display:none;">网上巡查</span>
                     <div class="left" style="background-color: #F8AC59;"></div>
                     <div class="right">
                         <p>月巡查：<span id="A3"></span></p>
@@ -455,7 +441,8 @@
                     <span class="label label-danger pull-right">月</span>
                     <h5 class="tq">群宴报备</h5>
                 </div>
-                <a class="item ibox-content-c" href="/WebGovtManage/Restaurant/BanquetSupervise">
+                <a class="item ibox-content-c J_menuItem" href="/WebGovtManage/Restaurant/BanquetSupervise">
+                    <span style="display:none;">群宴报备</span>
                     <div class="left" style="background-color: #ED5565;"></div>
                     <div class="right">
                         <p class="tq">月报备：<span id="A4"></span></p>
@@ -598,7 +585,7 @@
                     <div class="row" id="Train">
 
                     </div>
-                    <a class="btn btn-primary btn-block m-t J_menuItem" href="/WebGovtManage/Train/NoticeTrain"><i class="fa fa-arrow-down"></i> 查看更多</a>
+                    <a class="btn btn-primary btn-block m-t J_menuItem" href="/WebGovtManage/Train/NoticeTrain"><span style="display:none;">培训通知</span><i class="fa fa-arrow-down"></i> 查看更多</a>
                 </div>
             </div>
         </div>
@@ -648,7 +635,7 @@
                 <div class="ibox-content ibox-content-c" style="min-height:240px;">
                     <div class="row" id="Risk">
                     </div>
-                    <a class="btn btn-primary btn-block m-t J_menuItem" href="/WebGovtManage/Risk/WaringRisk"><i class="fa fa-arrow-down"></i> 查看更多</a>
+                    <a class="btn btn-primary btn-block m-t J_menuItem" href="/WebGovtManage/Risk/WaringRisk"><span style="display:none;">预警信息</span><i class="fa fa-arrow-down"></i> 查看更多</a>
                 </div>
             </div>
         </div>

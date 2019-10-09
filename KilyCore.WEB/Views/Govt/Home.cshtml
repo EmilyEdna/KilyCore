@@ -67,7 +67,7 @@
                             $("#MsgNum").html(result.data.length);
                             $.each(result.data, function (i, item) {
                                 if (i < 10) {
-                                    $(".dropdown-messages").append(`<li>
+                                    $(".dropdown-messages").prepend(`<li>
                                     <div class="dropdown-messages-box">
                                         <div class="media-body ">
                                             ${item.HandlerContent}
@@ -82,7 +82,7 @@
                             $(".dropdown-messages").append(`<li>
                                     <div class="text-center link-block">
                                         <a class="J_menuItem" href="/WebGovtManage/Inspect/HandlerLog">
-                                            <i class="fa fa-envelope"></i> <strong> 查看所有消息</strong>
+                                            <span style="display:none;">操作日志</span><i class="fa fa-envelope"></i> <strong> 查看所有消息</strong>
                                         </a>
                                     </div>
                                 </li>`);
@@ -201,21 +201,16 @@
                     <ul class="nav navbar-top-links navbar-right">
                         <li class="dropdown">
                             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                <i class="fa fa-envelope"></i> <span class="label label-warning" id="MsgNum">16</span>
+                                <i class="fa fa-envelope"></i> <span class="label label-warning" id="MsgNum">0</span>
                             </a>
                             <ul class="dropdown-menu dropdown-messages">
-                                @*<li class="m-t-xs">
-                                    <div class="dropdown-messages-box">
-                                        <div class="media-body">
-                                            <small class="pull-right">46小时前</small>
-                                            <strong>小四</strong> 这个在日本投降书上签字的军官，建国后一定是个不小的干部吧？
-                                            <br>
-                                            <small class="text-muted">3天前 2014.11.8</small>
-                                        </div>
+                                <li>
+                                    <div class="text-center link-block">
+                                        <a class="J_menuItem" href="/WebGovtManage/Inspect/HandlerLog">
+                                            <span style="display:none;">操作日志</span><i class="fa fa-envelope"></i> <strong> 查看所有消息</strong>
+                                        </a>
                                     </div>
-                                </li>*@
-                               
-                                @**@
+                                </li>
                             </ul>
                         </li>
                         <li class="dropdown">

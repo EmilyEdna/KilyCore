@@ -348,7 +348,10 @@ namespace KilyCore.Service.ServiceCore
                 CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
                 Scope = t.Scope,
                 VideoAddress = t.VideoAddress,
+                CardExpiredDate = t.CardExpiredDate,
                 ProductionAddress = t.ProductionAddress,
+                OfferLv = t.OfferLv,
+                SafeOffer = t.SafeOffer,
                 SellerAddress = t.SellerAddress,
                 NatureAgent = t.NatureAgent,
                 NetAddress = t.NetAddress,
@@ -1701,7 +1704,7 @@ namespace KilyCore.Service.ServiceCore
                 HandleTime = t.HandleTime,
                 ReleaseTime = t.ReleaseTime,
                 Status = t.Status ?? "待处理",
-            }).ToList();
+            }).OrderByDescending(o=>o.ReleaseTime).ToList();
             return data;
         }
         /// <summary>
@@ -1712,6 +1715,10 @@ namespace KilyCore.Service.ServiceCore
         public string EditNetPatrol(RequestGovtMsg Param)
         {
             GovtNetPatrol govtNet = Kily.Set<GovtNetPatrol>().Where(t => t.Id == Param.Id).AsNoTracking().FirstOrDefault();
+            if(govtNet==null)//详情通报
+            {
+                govtNet= Kily.Set<GovtNetPatrol>().Where(t => t.CompanyId == Param.Id).AsNoTracking().FirstOrDefault();
+            }
             govtNet.BulletinNum += 1;
             govtNet.QualifiedNum = (((govtNet.PotrolNum - govtNet.BulletinNum) * 100) / govtNet.PotrolNum).ToString() + "%";
             List<String> Fields = new List<String> { "BulletinNum", "QualifiedNum" };
@@ -1774,7 +1781,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public List<ResponseGovtNetPatrolLog> GetNetPatrolLogs(Guid Id)
         {
-            return Kily.Set<GovtNetPatrolLog>().Where(t => t.GovtId == GovtInfo().Id && t.CompanyId == Id).AsNoTracking().ToList().MapToList<GovtNetPatrolLog, ResponseGovtNetPatrolLog>();
+            return Kily.Set<GovtNetPatrolLog>().Where(t => t.GovtId == GovtInfo().Id && t.CompanyId == Id).OrderByDescending(t => t.CreateTime).AsNoTracking().ToList().MapToList<GovtNetPatrolLog, ResponseGovtNetPatrolLog>();
         }
         #endregion
         #region 执法类目
@@ -1953,8 +1960,8 @@ namespace KilyCore.Service.ServiceCore
                 GovtPatrolCategory category = Kily.Set<GovtPatrolCategory>().Where(t => t.Id == Param.CategoryId).FirstOrDefault();
                 StringBuilder Sb = new StringBuilder();
                 Sb.Append($@"<center>{category.Grade}</center>");
-                Sb.Append(@"<table cellpadding='2' width='98%' cellspacing='0' border='1' bordercolor='#000000'>");
-                Sb.Append(@"<tr style='text-align:center;line-height:28px;font-size:15px;'><th>序号</th><th>检查项</th><th>结果</th><th>分值</th></tr>");
+                Sb.Append(@"<table cellpadding='4' width='98%' cellspacing='0' border='1' bordercolor='#000000'>");
+                Sb.Append(@"<tr style='text-align:center;line-height:28px;font-size:15px;'><th align='center'>序号</th><th align='center'>检查项</th><th align='center'>结果</th><th align='center'>分值</th></tr>");
                 double TotalScore = 0;
                 int EleIndex = 0;
                 Param.AnswerList.Split(",").ToList().ForEach(t =>
