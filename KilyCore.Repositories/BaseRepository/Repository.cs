@@ -83,7 +83,7 @@ namespace KilyCore.Repositories.BaseRepository
                     Kily.SaveChanges();
                 }
                 RemovePath(Entity);
-                List<PropertyInfo> props = EntityType.GetType().GetProperties().Where(t => t.Name.Contains("Delete")).ToList();
+                List<PropertyInfo> props = EntityType.GetProperties().Where(t => t.Name.Contains("Delete")).ToList();
                 if (!string.IsNullOrEmpty(FieldName))
                     Entity.GetType().GetProperties().Where(t => t.Name.Equals(FieldName)).FirstOrDefault().SetValue(Entity, Data);
                 props.Where(t => t.Name.Equals("IsDelete")).FirstOrDefault().SetValue(Entity, true);

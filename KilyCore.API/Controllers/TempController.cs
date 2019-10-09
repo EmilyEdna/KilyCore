@@ -10,6 +10,7 @@ using KilyCore.Cache;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.Extension.HttpClientFactory;
 using Newtonsoft.Json.Linq;
+using KilyCore.Extension.OutSideService;
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点13分
@@ -183,11 +184,48 @@ namespace KilyCore.API.Controllers
                     }
                 };
             var res = CacheFactory.Cache().GetCache<List<ResponseEnterpriseEnv>>(Param.Flag);
-            if (res != null) {
+            if (res != null)
+            {
                 env.AddRange(res);
             }
             CacheFactory.Cache().WriteCache(env, Param.Flag, 24);
             return ObjectResultEx.Instance(env, 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
+        #region 爬虫
+        /// <summary>
+        /// QS列表
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpGet("GetProList")]
+        [AllowAnonymous]
+        public ObjectResultEx GetProList(SimpleParam<String> Param)
+        {
+            return ObjectResultEx.Instance(ProductSearch.GetProList(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// QS详情
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpGet("GetProDetail")]
+        [AllowAnonymous]
+        public ObjectResultEx GetProDetail(SimpleParam<String> Param)
+        {
+            return ObjectResultEx.Instance(ProductSearch.GetProDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 安全标准
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        [HttpGet("GetTargetDb")]
+        [AllowAnonymous]
+        public ObjectResultEx GetTargetDb(SimpleParam<String> key, SimpleParam<String> value)
+        {
+            return ObjectResultEx.Instance(ProTarget.GetTargetDb(key.Id, value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion
     }
