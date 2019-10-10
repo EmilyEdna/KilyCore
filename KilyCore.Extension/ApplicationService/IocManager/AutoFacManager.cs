@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using System;
-using System.Collections.Generic;
-using System.Text;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点29分
@@ -16,14 +15,17 @@ namespace KilyCore.Extension.ApplicationService.IocManager
         public static readonly Lazy<AutoFacManager> lazy = new Lazy<AutoFacManager>(() => new AutoFacManager());
         public static AutoFacManager IocInstance => lazy.Value;
         public ContainerBuilder Builder = null;
+
         public AutoFacManager()
         {
             Builder = new ContainerBuilder();
         }
+
         /// <summary>
         /// 取得容器
         /// </summary>
         public IContainer Container { get; set; }
+
         /// <summary>
         /// 取出实例
         /// </summary>
@@ -33,6 +35,7 @@ namespace KilyCore.Extension.ApplicationService.IocManager
         {
             return Container == null ? default(T) : Container.Resolve<T>();
         }
+
         /// <summary>
         /// 完成注册
         /// </summary>

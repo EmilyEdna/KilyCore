@@ -2,9 +2,8 @@
 using KilyCore.Configure;
 using KilyCore.Extension.RSACryption;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点51分
@@ -32,6 +31,7 @@ namespace KilyCore.Extension.Token
             ResponseCookieInfo.RSAApiKey = Cookie.ApiKey;
             ResponseCookieInfo.RSASysKey = RSACryptionExtension.RSAEncrypt(Cookie.SysKey);
         }
+
         /// <summary>
         /// 验证登录
         /// </summary>
@@ -42,9 +42,10 @@ namespace KilyCore.Extension.Token
                 return null;
             String Token = RSACryptionExtension.RSADecrypt(Configer.HttpContext.Request.Headers["Token"].ToString());
             CookieInfo Cookie = CacheFactory.Cache().GetCache<CookieInfo>(Token);
-            SystemInfoKey.PrivateKey = Cookie==null?null:Cookie.SysKey;
+            SystemInfoKey.PrivateKey = Cookie == null ? null : Cookie.SysKey;
             return Cookie;
         }
+
         /// <summary>
         /// 退出登录
         /// </summary>
@@ -59,6 +60,7 @@ namespace KilyCore.Extension.Token
             CacheFactory.Cache().RemoveCache(SysKey);
             return "退出成功!";
         }
+
         /// <summary>
         /// 验证超时
         /// </summary>

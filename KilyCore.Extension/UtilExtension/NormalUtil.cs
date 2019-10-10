@@ -1,10 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Web;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点51分
@@ -28,6 +26,7 @@ namespace KilyCore.Extension.UtilExtension
             int Result = Rd.Next(StarNo, EndNo);
             return Result.ToString();
         }
+
         /// <summary>
         /// 判断是否为汉字
         /// </summary>
@@ -47,7 +46,9 @@ namespace KilyCore.Extension.UtilExtension
             return result;
         }
     }
-    public static class RegexExtension {
+
+    public static class RegexExtension
+    {
         public static List<string> ToList(this MatchCollection collection)
         {
             List<string> TempList = new List<string>();
@@ -58,13 +59,16 @@ namespace KilyCore.Extension.UtilExtension
             return TempList;
         }
     }
+
     #region 截取字符串 20190820
+
     /// <summary>
     /// 字符串扩展
     /// </summary>
     public static class Extensions
     {
         #region PinYin(获取汉字的拼音简码)
+
         /// <summary>
         /// 获取汉字的拼音简码，即首字母缩写,范例：中国,返回zg
         /// </summary>
@@ -163,9 +167,10 @@ namespace KilyCore.Extension.UtilExtension
             return string.Empty;
         }
 
-        #endregion
+        #endregion PinYin(获取汉字的拼音简码)
 
         #region 删除最后结尾的指定字符后的字符
+
         /// <summary>
         /// 删除最后结尾的指定字符后的字符
         /// </summary>
@@ -179,9 +184,11 @@ namespace KilyCore.Extension.UtilExtension
             }
             return str;
         }
-        #endregion
+
+        #endregion 删除最后结尾的指定字符后的字符
 
         #region 去除HTML标记
+
         /// <summary>
         /// 去除HTML标记
         /// </summary>
@@ -230,9 +237,11 @@ namespace KilyCore.Extension.UtilExtension
                 return str;
             return str.NoHtml().CutString(len, lastStr);
         }
-        #endregion
+
+        #endregion 去除HTML标记
 
         #region 截取字符长度
+
         /// <summary>
         /// 截取字符长度
         /// </summary>
@@ -278,9 +287,11 @@ namespace KilyCore.Extension.UtilExtension
                 tempString += lastStr;
             return tempString;
         }
-        #endregion
+
+        #endregion 截取字符长度
 
         #region TXT代码转换成HTML格式
+
         /// <summary>
         /// 把TXT代码转换成HTML格式
         /// </summary>
@@ -299,9 +310,11 @@ namespace KilyCore.Extension.UtilExtension
             //sb.Replace(" ", "&nbsp;");
             return sb.ToString();
         }
-        #endregion
+
+        #endregion TXT代码转换成HTML格式
 
         #region HTML代码转换成TXT格式
+
         /// <summary>
         /// 把HTML代码转换成TXT格式
         /// </summary>
@@ -320,7 +333,9 @@ namespace KilyCore.Extension.UtilExtension
             sb.Replace("&amp;", "&");
             return sb.ToString();
         }
-        #endregion
+
+        #endregion HTML代码转换成TXT格式
     }
-    #endregion
+
+    #endregion 截取字符串 20190820
 }

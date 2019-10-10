@@ -4,7 +4,6 @@ using KilyCore.EntityFrameWork.Model.Enterprise;
 using KilyCore.EntityFrameWork.Model.Govt;
 using KilyCore.EntityFrameWork.Model.Repast;
 using KilyCore.EntityFrameWork.Model.System;
-using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AutoMapperExtension;
 using KilyCore.Extension.ValidateExtension;
 using KilyCore.Repositories.BaseRepository;
@@ -20,6 +19,7 @@ namespace KilyCore.Service.ServiceCore
     public class TempService : Repository, ITempService
     {
         #region 弃用-中间系统
+
         /// <summary>
         /// 查询所有人员
         /// </summary>
@@ -45,6 +45,7 @@ namespace KilyCore.Service.ServiceCore
             Euser.AddRange(Ruser);
             return Euser;
         }
+
         /// <summary>
         /// 获取所有供应商
         /// </summary>
@@ -77,6 +78,7 @@ namespace KilyCore.Service.ServiceCore
             Esupper.AddRange(Rsupper);
             return Esupper;
         }
+
         /// <summary>
         /// 获取留样
         /// </summary>
@@ -94,6 +96,7 @@ namespace KilyCore.Service.ServiceCore
                 t.Remark
             }).Take(12).ToList();
         }
+
         /// <summary>
         /// 废物处理
         /// </summary>
@@ -112,6 +115,7 @@ namespace KilyCore.Service.ServiceCore
                 BadPerson = t.HandleUser
             }).Take(12).ToList();
         }
+
         /// <summary>
         /// 食材供应
         /// </summary>
@@ -127,6 +131,7 @@ namespace KilyCore.Service.ServiceCore
                 BuyTime = t.UpTime.Value
             }).Take(9).ToList();
         }
+
         /// <summary>
         /// 周菜谱
         /// </summary>
@@ -142,6 +147,7 @@ namespace KilyCore.Service.ServiceCore
                 DateTime = t.UpTime.Value
             }).Take(9).ToList();
         }
+
         /// <summary>
         /// 抽检信息
         /// </summary>
@@ -150,7 +156,7 @@ namespace KilyCore.Service.ServiceCore
         [Obsolete]
         public object RepastCheck(Guid CompanyId)
         {
-            return Kily.Set<RepastDraw>().Where(t => t.InfoId == CompanyId&&t.IsDelete==false).OrderByDescending(o => o.DrawTime).Select(t => new
+            return Kily.Set<RepastDraw>().Where(t => t.InfoId == CompanyId && t.IsDelete == false).OrderByDescending(o => o.DrawTime).Select(t => new
             {
                 Title = t.DrawUnit,
                 Person = t.DrawUser,
@@ -158,6 +164,7 @@ namespace KilyCore.Service.ServiceCore
                 DateTime = t.DrawTime.Value
             }).Take(9).ToList();
         }
+
         /// <summary>
         /// 陪餐打卡
         /// </summary>
@@ -174,6 +181,7 @@ namespace KilyCore.Service.ServiceCore
                 DateTime = t.InsTime.Value
             }).Take(9).ToList();
         }
+
         /// <summary>
         /// 商家自查
         /// </summary>
@@ -190,6 +198,7 @@ namespace KilyCore.Service.ServiceCore
                 DateTime = t.CreateTime.Value
             }).Take(9).ToList();
         }
+
         /// <summary>
         /// 产品信息
         /// </summary>
@@ -208,9 +217,11 @@ namespace KilyCore.Service.ServiceCore
                        Remark = t.t.Remark
                    }).ToList();
         }
-        #endregion
+
+        #endregion 弃用-中间系统
 
         #region 推广活动
+
         /// <summary>
         /// 微信推广注册
         /// </summary>
@@ -229,6 +240,7 @@ namespace KilyCore.Service.ServiceCore
             EnterpriseInfo Info = Param.MapToEntity<EnterpriseInfo>();
             return Insert(Info) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
+
         /// <summary>
         /// 获取邀请码
         /// </summary>
@@ -245,9 +257,11 @@ namespace KilyCore.Service.ServiceCore
             UpdateField<EnterpriseInviteCode>(InviteCode, "IsDelete");
             return Convert.ToBase64String(Encoding.Default.GetBytes(InviteCode.InviteCode));
         }
-        #endregion
+
+        #endregion 推广活动
 
         #region 生成活动码
+
         public string CreateInviteCode()
         {
             EnterpriseInviteCode code = new EnterpriseInviteCode();
@@ -262,6 +276,7 @@ namespace KilyCore.Service.ServiceCore
             }
             return ServiceMessage.INSERTSUCCESS;
         }
-        #endregion
+
+        #endregion 生成活动码
     }
 }

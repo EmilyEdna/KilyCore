@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点51分
@@ -11,9 +9,12 @@ namespace KilyCore.Extension.ResultExtension
     /// <summary>
     /// JsonResult结果封装
     /// </summary>
-    public class JsonResultEx: JsonResult
+    public class JsonResultEx : JsonResult
     {
-        public JsonResultEx(object obj) : base(obj) { }
+        public JsonResultEx(object obj) : base(obj)
+        {
+        }
+
         public int Flag { get; set; }
 
         public string Messege { get; set; }

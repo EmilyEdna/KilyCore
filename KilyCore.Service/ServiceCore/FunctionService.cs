@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日12点01分
@@ -27,6 +27,7 @@ namespace KilyCore.Service.ServiceCore
     public class FunctionService : Repository, IFunctionService
     {
         #region 区域价目
+
         /// <summary>
         /// 区域价目分页列表
         /// </summary>
@@ -101,6 +102,7 @@ namespace KilyCore.Service.ServiceCore
             var data = queryables.ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 获取价目详情
         /// </summary>
@@ -125,6 +127,7 @@ namespace KilyCore.Service.ServiceCore
                 }).FirstOrDefault();
             return data;
         }
+
         /// <summary>
         ///  编辑区域价目
         /// </summary>
@@ -184,6 +187,7 @@ namespace KilyCore.Service.ServiceCore
                     return ServiceMessage.INSERTFAIL;
             }
         }
+
         /// <summary>
         /// 删除价目表
         /// </summary>
@@ -196,6 +200,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.REMOVEFAIL;
         }
+
         /// <summary>
         /// 获取区域列表
         /// </summary>
@@ -236,8 +241,11 @@ namespace KilyCore.Service.ServiceCore
                 }).ToList();
             return queryable;
         }
-        #endregion
+
+        #endregion 区域价目
+
         #region 纹理二维码
+
         /// <summary>
         /// 纹理二维码分页
         /// </summary>
@@ -280,6 +288,7 @@ namespace KilyCore.Service.ServiceCore
                 return data;
             }
         }
+
         /// <summary>
         /// 查看分配企业标签
         /// </summary>
@@ -301,6 +310,7 @@ namespace KilyCore.Service.ServiceCore
                .ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 查看分配营运中心标签
         /// </summary>
@@ -321,6 +331,7 @@ namespace KilyCore.Service.ServiceCore
                 }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 录入标签
         /// </summary>
@@ -332,6 +343,7 @@ namespace KilyCore.Service.ServiceCore
             FunctionVeinTag VeinTag = Param.MapToEntity<FunctionVeinTag>();
             return Insert<FunctionVeinTag>(VeinTag) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
+
         /// <summary>
         /// 分配标签
         /// </summary>
@@ -391,6 +403,7 @@ namespace KilyCore.Service.ServiceCore
                     return Insert<FunctionVeinTagAttach>(Attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
             }
         }
+
         /// <summary>
         /// 删除二维码
         /// </summary>
@@ -403,6 +416,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.REMOVEFAIL;
         }
+
         /// <summary>
         /// 根据接收类型选取接受人
         /// </summary>
@@ -444,6 +458,7 @@ namespace KilyCore.Service.ServiceCore
                 }).ToList();
             }
         }
+
         /// <summary>
         /// 获取批次列表
         /// </summary>
@@ -453,17 +468,18 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<FunctionVeinTag> queryable = Kily.Set<FunctionVeinTag>().AsNoTracking().OrderByDescending(t => t.CreateTime).Where(t => t.IsDelete == false);
             IQueryable<FunctionVeinTagAttach> queryables = Kily.Set<FunctionVeinTagAttach>().AsNoTracking().OrderByDescending(t => t.CreateTime).Where(t => t.IsDelete == false);
             if (UserInfo().AccountType == AccountEnum.Admin || UserInfo().AccountType == AccountEnum.Country)
-                return queryable.Where(t=>t.TotalNo- t.AllotNum > 0).Select(t => new ResponseVeinTag()
+                return queryable.Where(t => t.TotalNo - t.AllotNum > 0).Select(t => new ResponseVeinTag()
                 {
                     BatchNo = t.BatchNo,
-                    TotalNo=t.TotalNo-t.AllotNum
+                    TotalNo = t.TotalNo - t.AllotNum
                 }).ToList();
-            return queryables.Where(t => t.TotalNo-t.AllotNum>0).Where(t => t.AcceptUser.Contains(UserInfo().Id.ToString())).Select(t => new ResponseVeinTag()
+            return queryables.Where(t => t.TotalNo - t.AllotNum > 0).Where(t => t.AcceptUser.Contains(UserInfo().Id.ToString())).Select(t => new ResponseVeinTag()
             {
                 SingleBatchNo = t.SingleBatchNo,
                 TotalNo = t.TotalNo - t.AllotNum
             }).ToList();
         }
+
         /// <summary>
         /// 签收
         /// </summary>
@@ -479,13 +495,17 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.UPDATEFAIL;
         }
+
         public bool IsVenTag(int Param)
         {
             var data = Kily.Set<EnterpriseTagAttach>().Where(t => t.StarSerialNo <= Param && t.EndSerialNo >= Param).FirstOrDefault();
             return data == null ? false : true;
         }
-        #endregion
+
+        #endregion 纹理二维码
+
         #region 系统字典
+
         /// <summary>
         /// 获取系统字典分页
         /// </summary>
@@ -504,6 +524,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 获取字典详情
         /// </summary>
@@ -521,6 +542,7 @@ namespace KilyCore.Service.ServiceCore
             }).FirstOrDefault();
             return data;
         }
+
         /// <summary>
         /// 编辑系统字典
         /// </summary>
@@ -534,6 +556,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return Update<FunctionDictionary, RequestDictionary>(Dic, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
+
         /// <summary>
         /// 删除字典
         /// </summary>
@@ -543,8 +566,11 @@ namespace KilyCore.Service.ServiceCore
         {
             return Remove<FunctionDictionary>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
-        #endregion
+
+        #endregion 系统字典
+
         #region 区域码表
+
         /// <summary>
         /// 区域码表分页
         /// </summary>
@@ -571,6 +597,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 分配区域码表
         /// </summary>
@@ -584,6 +611,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return Update<FunctionAreaDictionary, RequestAreaDictionary>(dictionary, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
+
         /// <summary>
         /// 启用或禁用
         /// </summary>
@@ -603,6 +631,7 @@ namespace KilyCore.Service.ServiceCore
                 return Remove<FunctionDisDictionary>(t => t.AreaDicId == Param.AreaDicId && t.ProvinceId == Param.ProvinceId) ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
             }
         }
+
         /// <summary>
         /// 获取版本码表
         /// </summary>
@@ -655,6 +684,7 @@ namespace KilyCore.Service.ServiceCore
                   }).ToList().Where(t => t.IsEnable == false).ToList();
             return data;
         }
+
         /// <summary>
         /// 获取功能描述
         /// </summary>
@@ -664,6 +694,7 @@ namespace KilyCore.Service.ServiceCore
         {
             return Kily.Set<FunctionDictionary>().Where(t => t.Id == Id).Select(t => t.DicDescript).FirstOrDefault();
         }
+
         /// <summary>
         /// 获取分配详情
         /// </summary>
@@ -679,8 +710,11 @@ namespace KilyCore.Service.ServiceCore
                 DictionaryId = t.DictionaryId,
             }).FirstOrDefault();
         }
-        #endregion
+
+        #endregion 区域码表
+
         #region 数据统计
+
         /// <summary>
         /// 饼状统计图
         /// </summary>
@@ -692,7 +726,7 @@ namespace KilyCore.Service.ServiceCore
             //第二步判断所在区域
             //第三步根据类型分组
             //审核通过
-            List<EnterpriseInfo> enterprises = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).Where(t=>!string.IsNullOrEmpty(t.TypePath)).ToList();
+            List<EnterpriseInfo> enterprises = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).Where(t => !string.IsNullOrEmpty(t.TypePath)).ToList();
             List<RepastInfo> repasts = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).Where(t => !string.IsNullOrEmpty(t.TypePath)).ToList();
             //不等于审核通过
             List<EnterpriseInfo> enterprise = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).Where(t => !string.IsNullOrEmpty(t.TypePath)).ToList();
@@ -802,6 +836,7 @@ namespace KilyCore.Service.ServiceCore
             };
             return dataCount;
         }
+
         /// <summary>
         /// 柱状统计图
         /// </summary>
@@ -855,13 +890,14 @@ namespace KilyCore.Service.ServiceCore
             };
             return dataCount;
         }
+
         /// <summary>
         /// 获取首页企业统计
         /// </summary>
         /// <returns></returns>
         public Object GetStatistics()
         {
-            List<EnterpriseInfo> enterprises = Kily.Set<EnterpriseInfo>().Where(t=>!string.IsNullOrEmpty(t.TypePath)).Where(t => t.IsDelete == false && t.AuditType == AuditEnum.AuditSuccess).ToList();
+            List<EnterpriseInfo> enterprises = Kily.Set<EnterpriseInfo>().Where(t => !string.IsNullOrEmpty(t.TypePath)).Where(t => t.IsDelete == false && t.AuditType == AuditEnum.AuditSuccess).ToList();
             List<RepastInfo> repasts = Kily.Set<RepastInfo>().Where(t => !string.IsNullOrEmpty(t.TypePath)).Where(t => t.IsDelete == false && t.AuditType == AuditEnum.AuditSuccess).ToList();
             List<ResponseProvince> Temp = null;
             List<int> PlantCount = new List<int>();
@@ -917,6 +953,7 @@ namespace KilyCore.Service.ServiceCore
             Object obj = new { Temp, PlantCount, ProCount, MoveCount, FoodCount, UnitCount, SmallCount };
             return obj;
         }
+
         /// <summary>
         /// 获取生成的二维码
         /// </summary>
@@ -936,8 +973,11 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
             return data;
         }
-        #endregion
+
+        #endregion 数据统计
+
         #region 系统消息
+
         /// <summary>
         /// 消息中心
         /// </summary>
@@ -960,6 +1000,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 删除消息
         /// </summary>
@@ -969,8 +1010,11 @@ namespace KilyCore.Service.ServiceCore
         {
             return Remove<SystemMessage>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
-        #endregion
+
+        #endregion 系统消息
+
         #region 定时提醒合同
+
         /// <summary>
         /// 合同提醒
         /// </summary>
@@ -990,6 +1034,7 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.EndTime.Month - DateTime.Now.Month <= 1).Where(t => t.EndTime.Month - DateTime.Now.Month > 0).Where(t => t.TypePath.Contains(UserInfo().Town));
             return string.Join(",", queryable.Select(t => t.CompanyId).ToList());
         }
+
         /// <summary>
         /// 合同导出
         /// </summary>
@@ -998,7 +1043,8 @@ namespace KilyCore.Service.ServiceCore
         public Object NofityCompany(string Id)
         {
             var data = Kily.Set<EnterpriseInfo>().Where(t => Id.Contains(t.Id.ToString())).Where(t => t.AuditType == AuditEnum.AuditSuccess)
-                .Select(t => new {
+                .Select(t => new
+                {
                     t.CompanyName,
                     t.CompanyPhone,
                     t.SafeOffer,
@@ -1006,6 +1052,7 @@ namespace KilyCore.Service.ServiceCore
                 }).ToList();
             return data;
         }
-        #endregion
+
+        #endregion 定时提醒合同
     }
 }

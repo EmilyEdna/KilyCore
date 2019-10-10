@@ -2,13 +2,12 @@
 using KilyCore.Configure;
 using KilyCore.Extension.ResultExtension;
 using KilyCore.Extension.RSACryption;
-using KilyCore.Extension.SessionExtension;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Filters;
-using KilyCore.Extension.UtilExtension;
 using System;
 using System.Linq;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点51分
@@ -36,6 +35,7 @@ namespace KilyCore.Extension.FilterGroup
             //    new CookieOptions() { HttpOnly = false, Expires = DateTimeOffset.Now.Add(TimeSpan.FromHours(12)), Domain = "localhost", Path = "/", SameSite = SameSiteMode.None }
             //    );//有效期12小时
         }
+
         /// <summary>
         /// 第三执行
         /// </summary>
@@ -46,7 +46,7 @@ namespace KilyCore.Extension.FilterGroup
             var RequestPath = request.Path.ToString();
             if (RequestPath.Contains("Regist"))
             {
-               var PhoneCode = request.Form["Parameter[PhoneCode]"].ToString();
+                var PhoneCode = request.Form["Parameter[PhoneCode]"].ToString();
                 var SessionCode = CacheFactory.Cache().GetCache<string>("PhoneCode").Trim();
                 if (string.IsNullOrEmpty(SessionCode))
                     context.Result = ObjectResultEx.Instance("请输入验证码", 1, RetrunMessge.SUCCESS, HttpCode.FAIL);

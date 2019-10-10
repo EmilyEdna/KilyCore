@@ -21,8 +21,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Linq;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日12点01分
@@ -32,7 +32,9 @@ namespace KilyCore.Service.ServiceCore
     public class SystemServcie : Repository, ISystemService
     {
         #region 菜单管理
+
         #region 系统菜单查询
+
         /// <summary>
         /// 菜单分页
         /// </summary>
@@ -53,6 +55,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 获取左侧菜单列表
         /// </summary>
@@ -124,6 +127,7 @@ namespace KilyCore.Service.ServiceCore
                 return data;
             }
         }
+
         /// <summary>
         /// 获取父级菜单
         /// </summary>
@@ -138,6 +142,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
             return data;
         }
+
         /// <summary>
         /// 获取菜单详情
         /// </summary>
@@ -157,9 +162,11 @@ namespace KilyCore.Service.ServiceCore
             }).FirstOrDefault();
             return data;
         }
-        #endregion
+
+        #endregion 系统菜单查询
 
         #region 系统菜单增删改
+
         /// <summary>
         /// 删除菜单
         /// </summary>
@@ -171,6 +178,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.REMOVEFAIL;
         }
+
         /// <summary>
         /// 新增菜单
         /// </summary>
@@ -208,10 +216,13 @@ namespace KilyCore.Service.ServiceCore
                     return ServiceMessage.INSERTFAIL;
             }
         }
-        #endregion
-        #endregion
+
+        #endregion 系统菜单增删改
+
+        #endregion 菜单管理
 
         #region 用户管理
+
         /// <summary>
         /// 中间系统调用
         /// </summary>
@@ -226,6 +237,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.INSERTFAIL;
         }
+
         /// <summary>
         /// 编辑用户
         /// </summary>
@@ -243,18 +255,23 @@ namespace KilyCore.Service.ServiceCore
                 case RoleEnum.LV1:
                     Param.AccountType = AccountEnum.Admin;
                     break;
+
                 case RoleEnum.LV2:
                     Param.AccountType = AccountEnum.Country;
                     break;
+
                 case RoleEnum.LV3:
                     Param.AccountType = AccountEnum.Province;
                     break;
+
                 case RoleEnum.LV4:
                     Param.AccountType = AccountEnum.City;
                     break;
+
                 case RoleEnum.LV5:
                     Param.AccountType = AccountEnum.Area;
                     break;
+
                 case RoleEnum.LV6:
                     Param.AccountType = AccountEnum.Village;
                     break;
@@ -284,6 +301,7 @@ namespace KilyCore.Service.ServiceCore
                     return ServiceMessage.INSERTFAIL;
             }
         }
+
         /// <summary>
         /// 用户分页
         /// </summary>
@@ -321,6 +339,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 删除用户
         /// </summary>
@@ -333,6 +352,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.REMOVEFAIL;
         }
+
         /// <summary>
         /// 启用账户
         /// </summary>
@@ -344,6 +364,7 @@ namespace KilyCore.Service.ServiceCore
             Admin.IsDelete = false;
             return UpdateField(Admin, "IsDelete") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
+
         /// <summary>
         /// 获取用户详情
         /// </summary>
@@ -372,6 +393,7 @@ namespace KilyCore.Service.ServiceCore
                      Address = t.Address
                  }).FirstOrDefault();
         }
+
         /// <summary>
         /// 回收或开启网签
         /// </summary>
@@ -388,6 +410,7 @@ namespace KilyCore.Service.ServiceCore
                         return "只可为下级开启，不可为自己开启，如要开启请联系上级。";
             return UpdateField(Admin, "OpenNet") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
+
         /// <summary>
         /// 获取可以签到合同的代理商
         /// </summary>
@@ -408,6 +431,7 @@ namespace KilyCore.Service.ServiceCore
                 }).ToList();
             return admin;
         }
+
         /// <summary>
         /// 获取银行账户信息
         /// </summary>
@@ -448,10 +472,13 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
             return data;
         }
-        #endregion
+
+        #endregion 用户管理
 
         #region 角色权限
+
         #region 角色等级查询
+
         /// <summary>
         /// 异步获取权限等级
         /// </summary>
@@ -477,9 +504,11 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
             return data;
         }
-        #endregion
+
+        #endregion 角色等级查询
 
         #region 角色列表分页
+
         /// <summary>
         /// 获取角色权限列表
         /// </summary>
@@ -513,9 +542,11 @@ namespace KilyCore.Service.ServiceCore
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
-        #endregion
+
+        #endregion 角色列表分页
 
         #region 角色添加删除
+
         /// <summary>
         /// 添加角色
         /// </summary>
@@ -535,6 +566,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return Update<SystemRoleAuthor, RequestAuthorRole>(Author, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
+
         /// <summary>
         /// 删除角色
         /// </summary>
@@ -544,9 +576,11 @@ namespace KilyCore.Service.ServiceCore
         {
             return Remove<SystemRoleAuthor>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
-        #endregion
+
+        #endregion 角色添加删除
 
         #region 获取权限列表
+
         /// <summary>
         /// 获取权限下拉列表
         /// </summary>
@@ -574,10 +608,13 @@ namespace KilyCore.Service.ServiceCore
                 return data;
             }
         }
-        #endregion
-        #endregion
+
+        #endregion 获取权限列表
+
+        #endregion 角色权限
 
         #region 用户登陆
+
         /// <summary>
         /// 用户登陆
         /// </summary>
@@ -605,9 +642,11 @@ namespace KilyCore.Service.ServiceCore
            }).FirstOrDefault();
             return Admin ?? null;
         }
-        #endregion
+
+        #endregion 用户登陆
 
         #region 区域树
+
         /// <summary>
         /// 获取完整省市区县区域树速度慢
         /// </summary>
@@ -661,6 +700,7 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.ToList();
             return data;
         }
+
         /// <summary>
         /// 获取完整省市区区域树速度快
         /// </summary>
@@ -703,9 +743,11 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.ToList();
             return data;
         }
-        #endregion
+
+        #endregion 区域树
 
         #region 权限菜单树
+
         /// <summary>
         /// 获取权限菜单树
         /// </summary>
@@ -774,9 +816,11 @@ namespace KilyCore.Service.ServiceCore
                 return data;
             }
         }
-        #endregion
+
+        #endregion 权限菜单树
 
         #region 省市区乡
+
         /// <summary>
         /// 获取省份
         /// </summary>
@@ -792,6 +836,7 @@ namespace KilyCore.Service.ServiceCore
                 }).OrderBy(t => t.ProvinceId).ToList();
             return data;
         }
+
         /// <summary>
         /// 获取省份下的城市
         /// </summary>
@@ -808,6 +853,7 @@ namespace KilyCore.Service.ServiceCore
                 }).OrderBy(t => t.CityId).ToList();
             return data;
         }
+
         /// <summary>
         /// 获取城市下的区县
         /// </summary>
@@ -824,6 +870,7 @@ namespace KilyCore.Service.ServiceCore
                 }).OrderBy(t => t.AreaId).ToList();
             return data;
         }
+
         /// <summary>
         /// 获取区域下的乡镇
         /// </summary>
@@ -840,6 +887,7 @@ namespace KilyCore.Service.ServiceCore
               }).OrderBy(t => t.TownId).ToList();
             return data;
         }
+
         /// <summary>
         /// 获取中文区域
         /// </summary>
@@ -859,9 +907,11 @@ namespace KilyCore.Service.ServiceCore
             }
             return $"{ProvinceName},{CityName},{AreaName},{TownName}";
         }
-        #endregion
+
+        #endregion 省市区乡
 
         #region 任务调度
+
         /// <summary>
         /// 添加任务
         /// </summary>
@@ -875,6 +925,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.INSERTFAIL;
         }
+
         /// <summary>
         /// 任务调度分页列表
         /// </summary>
@@ -900,6 +951,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 执行任务
         /// </summary>
@@ -919,6 +971,7 @@ namespace KilyCore.Service.ServiceCore
                 throw ex;
             }
         }
+
         /// <summary>
         /// 停止任务
         /// </summary>
@@ -934,6 +987,7 @@ namespace KilyCore.Service.ServiceCore
                 throw ex;
             }
         }
+
         /// <summary>
         /// 恢复暂停任务
         /// </summary>
@@ -956,6 +1010,7 @@ namespace KilyCore.Service.ServiceCore
                 throw ex;
             }
         }
+
         /// <summary>
         /// 暂停指定任务
         /// </summary>
@@ -978,6 +1033,7 @@ namespace KilyCore.Service.ServiceCore
                 throw ex;
             }
         }
+
         /// <summary>
         /// 删除任务
         /// </summary>
@@ -1000,9 +1056,11 @@ namespace KilyCore.Service.ServiceCore
                 throw ex;
             }
         }
-        #endregion
+
+        #endregion 任务调度
 
         #region 人员归档
+
         /// <summary>
         /// 人员分页
         /// </summary>
@@ -1032,6 +1090,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 获取人员详情
         /// </summary>
@@ -1049,6 +1108,7 @@ namespace KilyCore.Service.ServiceCore
             }).FirstOrDefault();
             return data;
         }
+
         /// <summary>
         /// 首页人员查询
         /// </summary>
@@ -1066,6 +1126,7 @@ namespace KilyCore.Service.ServiceCore
             }).FirstOrDefault();
             return data;
         }
+
         /// <summary>
         /// 编辑人员
         /// </summary>
@@ -1158,8 +1219,8 @@ namespace KilyCore.Service.ServiceCore
                 else
                     return ServiceMessage.INSERTFAIL;
             }
-
         }
+
         /// <summary>
         /// 删除人员
         /// </summary>
@@ -1172,9 +1233,11 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.REMOVEFAIL;
         }
-        #endregion
+
+        #endregion 人员归档
 
         #region 入住合同
+
         /// <summary>
         /// 入住合同
         /// </summary>
@@ -1218,6 +1281,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 确认缴费
         /// </summary>
@@ -1232,6 +1296,7 @@ namespace KilyCore.Service.ServiceCore
             List<String> Fieds = new List<string> { "IsPay", "TryOut", "ActualPrice" };
             return UpdateField<SystemStayContract>(Contract, null, Fieds) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
+
         /// <summary>
         /// 审核合同
         /// </summary>
@@ -1253,6 +1318,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.INSERTFAIL;
         }
+
         /// <summary>
         /// 获取审核记录
         /// </summary>
@@ -1272,6 +1338,7 @@ namespace KilyCore.Service.ServiceCore
                  }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 删除记录
         /// </summary>
@@ -1284,9 +1351,11 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.REMOVEFAIL;
         }
-        #endregion
+
+        #endregion 入住合同
 
         #region 支付宝微信银行支付
+
         /// <summary>
         /// 支付宝
         /// </summary>
@@ -1301,6 +1370,7 @@ namespace KilyCore.Service.ServiceCore
             };
             return AliPayCore.Instance.WebPay(AliPayModel);
         }
+
         /// <summary>
         /// 微信
         /// </summary>
@@ -1315,6 +1385,7 @@ namespace KilyCore.Service.ServiceCore
             };
             return WxPayCore.Instance.WebPay(WxPayModel);
         }
+
         /// <summary>
         /// 查询支付宝支付
         /// </summary>
@@ -1375,6 +1446,7 @@ namespace KilyCore.Service.ServiceCore
             }
             return null;
         }
+
         /// <summary>
         /// 更新支付
         /// </summary>
@@ -1388,9 +1460,11 @@ namespace KilyCore.Service.ServiceCore
             List<String> Fields = new List<String>() { "PayTicket", "PayType" };
             return UpdateField(contract, null, Fields) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
-        #endregion
+
+        #endregion 支付宝微信银行支付
 
         #region 消息盒子
+
         /// <summary>
         /// 消息盒子
         /// </summary>
@@ -1417,15 +1491,17 @@ namespace KilyCore.Service.ServiceCore
                 MsgName = t.MsgName,
                 MsgContent = t.MsgContent,
                 ReleaseTime = t.ReleaseTime,
-                Category=t.Category,
+                Category = t.Category,
                 ComplainId = (t.ComplainId == Guid.Empty ? t.CompanyId.Value : t.ComplainId),
                 Status = string.IsNullOrEmpty(x.FirstOrDefault().Status) ? t.Status : x.FirstOrDefault().Status
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
-        #endregion
+
+        #endregion 消息盒子
 
         #region 新闻资讯
+
         /// <summary>
         /// 新闻分页
         /// </summary>
@@ -1451,6 +1527,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 编辑新闻
         /// </summary>
@@ -1464,6 +1541,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return Update(news, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
+
         /// <summary>
         /// 新闻详情
         /// </summary>
@@ -1483,6 +1561,7 @@ namespace KilyCore.Service.ServiceCore
             }).FirstOrDefault();
             return data;
         }
+
         /// <summary>
         /// 删除新闻
         /// </summary>
@@ -1492,9 +1571,11 @@ namespace KilyCore.Service.ServiceCore
         {
             return Remove<SystemNews>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
-        #endregion
+
+        #endregion 新闻资讯
 
         #region 数据报表
+
         /// <summary>
         /// 二维码统计
         /// </summary>
@@ -1558,6 +1639,7 @@ namespace KilyCore.Service.ServiceCore
             });
             return CodeCountList;
         }
+
         /// <summary>
         /// 入住企业统计
         /// </summary>
@@ -1638,6 +1720,7 @@ namespace KilyCore.Service.ServiceCore
             });
             return CompanyCountList;
         }
+
         /// <summary>
         /// 产品统计
         /// </summary>
@@ -1703,6 +1786,7 @@ namespace KilyCore.Service.ServiceCore
             });
             return ProductCountList;
         }
+
         /// <summary>
         /// 合同统计
         /// </summary>
@@ -1778,7 +1862,7 @@ namespace KilyCore.Service.ServiceCore
                 AlipaySum = TotalContract.Sum(t => t.Alipay),
                 WxPaySum = TotalContract.Sum(t => t.WxPay),
                 UnionPaySum = TotalContract.Sum(t => t.UnionPay),
-                AgentPaySum= TotalContract.Sum(t => t.AgentPay),
+                AgentPaySum = TotalContract.Sum(t => t.AgentPay),
                 TestSum = TotalContract.Sum(t => t.Test),
                 BaseSum = TotalContract.Sum(t => t.Base),
                 LvSum = TotalContract.Sum(t => t.Lv),
@@ -1791,10 +1875,13 @@ namespace KilyCore.Service.ServiceCore
             };
             return Temp;
         }
-        #endregion
+
+        #endregion 数据报表
 
         #region 订单管理
+
         #region 订单中心
+
         /// <summary>
         /// 订单分页
         /// </summary>
@@ -1833,6 +1920,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 下单
         /// </summary>
@@ -1847,6 +1935,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return Update(Order, Param, true) ? "改单成功" : "改单失败";
         }
+
         /// <summary>
         /// 订单详情
         /// </summary>
@@ -1856,6 +1945,7 @@ namespace KilyCore.Service.ServiceCore
         {
             return Kily.Set<SystemOrder>().Where(t => t.Id == Id).FirstOrDefault().MapToEntity<ResponseSystemOrder>();
         }
+
         /// <summary>
         /// 订单状态
         /// </summary>
@@ -1885,26 +1975,32 @@ namespace KilyCore.Service.ServiceCore
                     Order.OrderStatus = OrderEnum.NoAudit;
                     Log.LogType = "审核";
                     break;
+
                 case OrderEnum.AuditSuccess:
                     Order.OrderStatus = OrderEnum.AuditSuccess;
                     Log.LogType = "审核";
                     break;
+
                 case OrderEnum.Dispatch:
                     Order.OrderStatus = OrderEnum.Dispatch;
                     Log.LogType = "派单";
                     break;
+
                 case OrderEnum.AcceptOrder:
                     Order.OrderStatus = OrderEnum.AcceptOrder;
                     Log.LogType = "接单";
                     break;
+
                 case OrderEnum.Complete:
                     Order.OrderStatus = OrderEnum.Complete;
                     Log.LogType = "完成";
                     break;
+
                 case OrderEnum.End:
                     Order.OrderStatus = OrderEnum.End;
                     Log.LogType = "归档";
                     break;
+
                 default:
                     Order.OrderStatus = Order.OrderStatus;
                     break;
@@ -1912,8 +2008,11 @@ namespace KilyCore.Service.ServiceCore
             EditOrderLog(Log);
             return UpdateField(Order, "OrderStatus") ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
         }
-        #endregion
+
+        #endregion 订单中心
+
         #region 订单日志
+
         /// <summary>
         /// 日志分页
         /// </summary>
@@ -1939,6 +2038,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 添加日志
         /// </summary>
@@ -1949,6 +2049,7 @@ namespace KilyCore.Service.ServiceCore
             SystemOrderLog Log = Param.MapToEntity<SystemOrderLog>();
             return Insert(Log) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
+
         /// <summary>
         /// 删除日志
         /// </summary>
@@ -1958,6 +2059,7 @@ namespace KilyCore.Service.ServiceCore
         {
             return Remove<SystemOrderLog>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
+
         /// <summary>
         /// 日志详情
         /// </summary>
@@ -1967,8 +2069,11 @@ namespace KilyCore.Service.ServiceCore
         {
             return Kily.Set<SystemOrderLog>().Where(t => t.Id == Id).FirstOrDefault().MapToEntity<ResponseSystemOrderLog>();
         }
-        #endregion
+
+        #endregion 订单日志
+
         #region 评分记录
+
         /// <summary>
         /// 评分列表
         /// </summary>
@@ -1995,6 +2100,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 新增评分记录
         /// </summary>
@@ -2017,6 +2123,7 @@ namespace KilyCore.Service.ServiceCore
             UpdateField(Order, "OrderStatus");
             return Insert(Score) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
+
         /// <summary>
         /// 评分详情
         /// </summary>
@@ -2026,8 +2133,11 @@ namespace KilyCore.Service.ServiceCore
         {
             return Kily.Set<SystemOrderScore>().Where(t => t.Id == Id).FirstOrDefault().MapToEntity<ResponseSystemOrderScore>();
         }
-        #endregion
+
+        #endregion 评分记录
+
         #region 线下人员
+
         /// <summary>
         /// 线下人员分页
         /// </summary>
@@ -2050,6 +2160,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 人员详情
         /// </summary>
@@ -2059,7 +2170,9 @@ namespace KilyCore.Service.ServiceCore
         {
             return Kily.Set<SystemPersonOff>().Where(t => t.Id == Id).FirstOrDefault().MapToEntity<ResponseSystemPersonOff>();
         }
-        #endregion
-        #endregion
+
+        #endregion 线下人员
+
+        #endregion 订单管理
     }
 }

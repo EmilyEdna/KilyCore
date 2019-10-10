@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日12点01分
@@ -25,7 +25,6 @@ namespace KilyCore.Service.QueryExtend
         /// <returns></returns>
         public static PagedResult<T> ToPagedResult<T>(this IQueryable<T> query, int pageIndex, int pageSize)
         {
-
             PagedResult<T> pagedResult = new PagedResult<T>();
             pagedResult.Index = pageIndex;
             pagedResult.PageSize = pageSize;
@@ -34,6 +33,7 @@ namespace KilyCore.Service.QueryExtend
                 pagedResult.List.AddRange(query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList());
             return pagedResult;
         }
+
         /// <summary>
         /// 分页
         /// </summary>
@@ -52,6 +52,7 @@ namespace KilyCore.Service.QueryExtend
                 pagedResult.List.AddRange(query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList());
             return pagedResult;
         }
+
         /// <summary>
         /// 分页
         /// </summary>
@@ -70,6 +71,7 @@ namespace KilyCore.Service.QueryExtend
                 pagedResult.List.AddRange(query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList());
             return pagedResult;
         }
+
         /// <summary>
         /// 分页
         /// </summary>
@@ -82,7 +84,6 @@ namespace KilyCore.Service.QueryExtend
         /// <returns></returns>
         public static PagedResult<T> ToPagedResult<T>(this IQueryable<T> query, int pageIndex, int pageSize, string sortName, string sortDirection)
         {
-
             PagedResult<T> pagedResult = new PagedResult<T>();
             pagedResult.Index = pageIndex;
             pagedResult.PageSize = pageSize;
@@ -108,6 +109,7 @@ namespace KilyCore.Service.QueryExtend
 
             return pagedResult;
         }
+
         /// <summary>
         /// BetweenAnd扩展查询
         /// </summary>

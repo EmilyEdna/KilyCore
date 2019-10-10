@@ -4,15 +4,14 @@ using PaySharp.Alipay;
 using PaySharp.Alipay.Domain;
 using PaySharp.Alipay.Request;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 #region << 版 本 注 释 >>
+
 /*----------------------------------------------------------------
 * 类 名 称 ：Class1
 * 类 描 述 ：
 * 命名空间 ：KilyCore.Extension.PayCore.AliPay
-* 机器名称 ：DESKTOP-QPIVQ28 
+* 机器名称 ：DESKTOP-QPIVQ28
 * CLR 版本 ：4.0.30319.42000
 * 作    者 ：刘泽华
 * 创建时间 ：2018/7/24 15:49:45
@@ -20,7 +19,9 @@ using System.Text;
 * Copyright @ 刘泽华 2018. All rights reserved.
 *******************************************************************
 //----------------------------------------------------------------*/
-#endregion
+
+#endregion << 版 本 注 释 >>
+
 namespace KilyCore.Extension.PayCore.AliPay
 {
     /// <summary>
@@ -45,6 +46,7 @@ namespace KilyCore.Extension.PayCore.AliPay
                 NotifyUrl = null, //AliPayModel.NotifyUrl
             };
         }
+
         /// <summary>
         /// 网关数据
         /// </summary>
@@ -56,6 +58,7 @@ namespace KilyCore.Extension.PayCore.AliPay
                 GatewayUrl = AliPayModel.GatewayUrl
             };
         }
+
         /// <summary>
         /// 初始化支付宝请求
         /// </summary>
@@ -72,6 +75,7 @@ namespace KilyCore.Extension.PayCore.AliPay
             });
             return Request;
         }
+
         /// <summary>
         /// 支付宝PC端支付
         /// </summary>
@@ -85,6 +89,7 @@ namespace KilyCore.Extension.PayCore.AliPay
             };
             return JsonConvert.SerializeObject(Model);
         }
+
         /// <summary>
         /// 获取订单号
         /// </summary>
@@ -93,6 +98,7 @@ namespace KilyCore.Extension.PayCore.AliPay
         {
             return AliPayModel.OutTradeNo;
         }
+
         /// <summary>
         /// 查询订单
         /// </summary>

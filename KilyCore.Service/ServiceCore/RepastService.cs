@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日12点01分
@@ -27,6 +27,7 @@ namespace KilyCore.Service.ServiceCore
     public class RepastService : Repository, IRepastService
     {
         #region 商家资料
+
         /// <summary>
         /// 商家分页列表
         /// </summary>
@@ -61,11 +62,12 @@ namespace KilyCore.Service.ServiceCore
                 Phone = t.Phone,
                 Email = t.Email,
                 TypePath = t.TypePath,
-                InviteCode=t.InviteCode??"-",
+                InviteCode = t.InviteCode ?? "-",
                 TableName = t.GetType().Name
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 获取商家详情
         /// </summary>
@@ -110,6 +112,7 @@ namespace KilyCore.Service.ServiceCore
             }).FirstOrDefault();
             return data;
         }
+
         /// <summary>
         /// 审核商家资料
         /// </summary>
@@ -131,9 +134,11 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.INSERTFAIL;
         }
-        #endregion
+
+        #endregion 商家资料
 
         #region 餐饮菜单
+
         /// <summary>
         /// 菜单分页列表
         /// </summary>
@@ -154,6 +159,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 编辑菜单
         /// </summary>
@@ -191,6 +197,7 @@ namespace KilyCore.Service.ServiceCore
                     return ServiceMessage.INSERTFAIL;
             }
         }
+
         /// <summary>
         /// 删除菜单
         /// </summary>
@@ -203,6 +210,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.REMOVEFAIL;
         }
+
         /// <summary>
         /// 菜单详情
         /// </summary>
@@ -222,6 +230,7 @@ namespace KilyCore.Service.ServiceCore
             }).FirstOrDefault();
             return data;
         }
+
         /// <summary>
         /// 父级菜单
         /// </summary>
@@ -236,9 +245,11 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
             return data;
         }
-        #endregion
+
+        #endregion 餐饮菜单
 
         #region 餐饮权限菜单树
+
         /// <summary>
         /// 餐饮权限菜单树
         /// </summary>
@@ -274,9 +285,11 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.ToList();
             return data;
         }
-        #endregion
+
+        #endregion 餐饮权限菜单树
 
         #region 餐饮权限
+
         /// <summary>
         ///编辑角色
         /// </summary>
@@ -294,6 +307,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return Update(Author, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
+
         /// <summary>
         /// 角色权限列表分页
         /// </summary>
@@ -316,6 +330,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 权限分页
         /// </summary>
@@ -334,6 +349,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 删除角色
         /// </summary>
@@ -346,6 +362,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.REMOVEFAIL;
         }
+
         /// <summary>
         /// 角色分页列表
         /// </summary>
@@ -364,6 +381,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 获取角色列表
         /// </summary>
@@ -377,6 +395,7 @@ namespace KilyCore.Service.ServiceCore
                 MerchantRoleName = t.AuthorName
             }).ToList();
         }
+
         /// <summary>
         /// 分配角色
         /// </summary>
@@ -406,6 +425,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.HANDLEFAIL;
         }
+
         /// <summary>
         /// 角色详情
         /// </summary>
@@ -420,9 +440,11 @@ namespace KilyCore.Service.ServiceCore
                 AuthorMenuPath = t.AuthorMenuPath
             }).AsNoTracking().FirstOrDefault();
         }
-        #endregion
+
+        #endregion 餐饮权限
 
         #region 认证审核
+
         /// <summary>
         /// 商家认证分页列表
         /// </summary>
@@ -462,6 +484,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 获取认证详情
         /// </summary>
@@ -505,6 +528,7 @@ namespace KilyCore.Service.ServiceCore
             }).FirstOrDefault();
             return data;
         }
+
         /// <summary>
         /// 审核认证
         /// </summary>
@@ -526,6 +550,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.INSERTFAIL;
         }
+
         /// <summary>
         /// 认证缴费
         /// </summary>
@@ -538,9 +563,11 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.INSERTFAIL;
         }
-        #endregion
+
+        #endregion 认证审核
 
         #region 登录注册
+
         /// <summary>
         /// 餐饮系统注册
         /// </summary>
@@ -570,6 +597,7 @@ namespace KilyCore.Service.ServiceCore
                 return "账号不能包含中文和特殊字符";
             }
         }
+
         /// <summary>
         /// 餐饮商家登录
         /// </summary>
@@ -578,6 +606,7 @@ namespace KilyCore.Service.ServiceCore
         public Object MerchantLogin(RequestValidate LoginValidate)
         {
             #region 餐饮企业登录
+
             IQueryable<RepastInfo> queryable = Kily.Set<RepastInfo>()
                .Where(t => t.Account.Equals(LoginValidate.Account) || t.Phone.Equals(LoginValidate.Account))
                .Where(t => t.PassWord.Equals(LoginValidate.PassWord))
@@ -593,19 +622,22 @@ namespace KilyCore.Service.ServiceCore
                 VersionType = t.VersionType,
                 VersionTypeName = AttrExtension.GetSingleDescription<SystemVersionEnum, DescriptionAttribute>(t.VersionType),
                 DiningTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
-                MerchantImage=t.MerchantImage,
+                MerchantImage = t.MerchantImage,
                 AuditType = t.AuditType,
                 AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
                 DingRoleId = t.DingRoleId,
                 TypePath = t.TypePath,
-                Address=t.Address,
+                Address = t.Address,
                 Certification = t.Certification,
                 Email = t.Email,
                 ImplUser = t.ImplUser,
                 TableName = typeof(ResponseMerchant).Name
             }).FirstOrDefault();
-            #endregion
+
+            #endregion 餐饮企业登录
+
             #region 非企业登录
+
             IQueryable<RepastInfoUser> queryables = Kily.Set<RepastInfoUser>()
               .Where(t => t.Account.Equals(LoginValidate.Account) || t.Phone.Equals(LoginValidate.Account))
               .Where(t => t.PassWord.Equals(LoginValidate.PassWord))
@@ -627,13 +659,16 @@ namespace KilyCore.Service.ServiceCore
                 DiningTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
                 TableName = typeof(ResponseMerchantUser).Name
             }).FirstOrDefault();
-            #endregion
+
+            #endregion 非企业登录
+
             if (Info != null)
                 return Info;
             else if (User != null)
                 return User;
             else return null;
         }
-        #endregion
+
+        #endregion 登录注册
     }
 }

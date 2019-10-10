@@ -6,14 +6,14 @@ using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.Service.QueryExtend;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 #region << 版 本 注 释 >>
+
 /*----------------------------------------------------------------
 * 类 名 称 ：ICookServiceWeb
 * 类 描 述 ：
 * 命名空间 ：KilyCore.Service.IServiceCore
-* 机器名称 ：EMILY 
+* 机器名称 ：EMILY
 * CLR 版本 ：4.0.30319.42000
 * 作    者 ：$刘泽华$
 * 创建时间 ：2018/8/24 15:07:29
@@ -21,7 +21,9 @@ using System.Text;
 * Copyright @ $刘泽华$ 2018. All rights reserved.
 *******************************************************************
 //----------------------------------------------------------------*/
-#endregion
+
+#endregion << 版 本 注 释 >>
+
 namespace KilyCore.Service.IServiceCore
 {
     /// <summary>
@@ -30,53 +32,85 @@ namespace KilyCore.Service.IServiceCore
     public interface ICookWebService : IService
     {
         #region 登录注册
+
         String RegistCookAccount(RequestCookInfo Param);
+
         ResponseCookInfo CookLogin(RequestValidate LoginValidate);
-        #endregion
+
+        #endregion 登录注册
 
         #region 全局菜单
+
         IList<ResponseCookMenu> GetCookMenu();
-        #endregion
+
+        #endregion 全局菜单
 
         #region 账号管理
+
         PagedResult<ResponseCookInfo> GetCookVipPage(PageParamList<RequestCookInfo> pageParam);
+
         ResponseCookInfo GetCookVipDetail(Guid Id);
+
         String EditCookVip(RequestCookInfo Param);
+
         ResponseStayContract OpenService(RequestStayContract Param);
-        #endregion
+
+        #endregion 账号管理
 
         #region 厨师信息
+
         ResponseCookInfo GetCookInfoDetail();
+
         String EditCookInfo(RequestCookInfo Param);
-        #endregion
+
+        #endregion 厨师信息
 
         #region 办宴报备
+
         PagedResult<ResponseCookBanquet> GetBanquetPage(PageParamList<RequestCookBanquet> pageParam);
+
         String EditBanquet(RequestCookBanquet Param);
+
         ResponseCookBanquet GetBanquetDetail(Guid Id);
+
         String RemoveBanquet(Guid Id);
-        #endregion
+
+        #endregion 办宴报备
 
         #region 帮厨管理
+
         PagedResult<ResponseCookHelper> GetHelperPage(PageParamList<RequestCookHelper> pageParam);
+
         String EditHelper(RequestCookHelper Param);
+
         String RemoveHelper(Guid Id);
+
         IList<ResponseCookHelper> GetHelperList();
-        #endregion
+
+        #endregion 帮厨管理
 
         #region 食材信息
+
         PagedResult<ResponseCookFood> GetFoodPage(PageParamList<RequestCookFood> pageParam);
+
         String RemoveFood(Guid Id);
+
         String EditFood(RequestCookFood Param);
+
         IList<ResponseCookFood> GetFoodList(Guid Param);
-        #endregion
+
+        #endregion 食材信息
 
         #region 数据统计
+
         Object GetDataCount();
-        #endregion
+
+        #endregion 数据统计
 
         #region 微信支付
+
         String WxQueryPay(Guid Param);
-        #endregion
+
+        #endregion 微信支付
     }
 }

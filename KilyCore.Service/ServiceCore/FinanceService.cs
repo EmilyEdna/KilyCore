@@ -1,10 +1,11 @@
-﻿using KilyCore.DataEntity.RequestMapper.Repast;
-using KilyCore.DataEntity.RequestMapper.Enterprise;
+﻿using KilyCore.DataEntity.RequestMapper.Enterprise;
+using KilyCore.DataEntity.RequestMapper.Repast;
 using KilyCore.DataEntity.RequestMapper.System;
-using KilyCore.DataEntity.ResponseMapper.Repast;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
+using KilyCore.DataEntity.ResponseMapper.Repast;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.EntityFrameWork.Model.Enterprise;
+using KilyCore.EntityFrameWork.Model.Repast;
 using KilyCore.EntityFrameWork.Model.System;
 using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AttributeExtension;
@@ -19,8 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using KilyCore.EntityFrameWork.Model.Repast;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日12点01分
@@ -30,6 +30,7 @@ namespace KilyCore.Service.ServiceCore
     public class FinanceService : Repository, IFinanceService
     {
         #region 加盟缴费-财务
+
         /// <summary>
         /// 加盟缴费分页
         /// </summary>
@@ -60,6 +61,7 @@ namespace KilyCore.Service.ServiceCore
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 启用
         /// </summary>
@@ -74,6 +76,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.UPDATEFAIL;
         }
+
         /// <summary>
         /// 停用
         /// </summary>
@@ -86,6 +89,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.UPDATEFAIL;
         }
+
         /// <summary>
         /// 加盟归档
         /// </summary>
@@ -99,6 +103,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.INSERTFAIL;
         }
+
         /// <summary>
         /// 发送邮件
         /// </summary>
@@ -111,9 +116,11 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.HANDLEFAIL;
         }
-        #endregion
+
+        #endregion 加盟缴费-财务
 
         #region 企业认证-财务
+
         /// <summary>
         /// 企业认证
         /// </summary>
@@ -140,6 +147,7 @@ namespace KilyCore.Service.ServiceCore
                 }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 是否通过终审
         /// </summary>
@@ -158,9 +166,11 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.HANDLEFAIL;
         }
-        #endregion
+
+        #endregion 企业认证-财务
 
         #region 餐饮认证-财务
+
         /// <summary>
         /// 餐饮认证
         /// </summary>
@@ -186,6 +196,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 是否通过终审
         /// </summary>
@@ -204,9 +215,11 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.HANDLEFAIL;
         }
-        #endregion
+
+        #endregion 餐饮认证-财务
 
         #region 缴费凭证-财务
+
         /// <summary>
         /// 查看缴费凭证
         /// </summary>
@@ -229,9 +242,11 @@ namespace KilyCore.Service.ServiceCore
                 }).AsNoTracking().FirstOrDefault();
             return data;
         }
-        #endregion
+
+        #endregion 缴费凭证-财务
 
         #region 物码缴费-财务
+
         /// <summary>
         /// 物码缴费
         /// </summary>
@@ -260,6 +275,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 审核标签
         /// </summary>
@@ -283,6 +299,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.INSERTFAIL;
         }
-        #endregion
+
+        #endregion 物码缴费-财务
     }
 }

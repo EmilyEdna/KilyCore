@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点51分
@@ -24,7 +23,7 @@ namespace KilyCore.Extension.ValidateExtension
                 'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
             };
             string randomNum = "";
-            int flag = -1;//记录上次随机数的数值，尽量避免产生几个相同的随机数 
+            int flag = -1;//记录上次随机数的数值，尽量避免产生几个相同的随机数
             Random rand = new Random();
             for (int i = 0; i < 4; i++)
             {
@@ -42,10 +41,12 @@ namespace KilyCore.Extension.ValidateExtension
             }
             return randomNum;
         }
-        public static string CreateCode() {
-            char[] CharArray ={'1','2','3','4','5','6','7','8','9'};
+
+        public static string CreateCode()
+        {
+            char[] CharArray = { '1', '2', '3', '4', '5', '6', '7', '8', '9' };
             string randomNum = "";
-            int flag = -1;//记录上次随机数的数值，尽量避免产生几个相同的随机数 
+            int flag = -1;//记录上次随机数的数值，尽量避免产生几个相同的随机数
             Random rand = new Random();
             for (int i = 0; i < 6; i++)
             {
