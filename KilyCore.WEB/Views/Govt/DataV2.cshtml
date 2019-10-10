@@ -464,6 +464,7 @@
                 }, 50);
                 //证件到期提醒 详情页跳转
                 $(".cardexpire .bd ul li").click(function () {
+                    var Id = $(this).attr("data-id");
                     var Type = $(this).attr("data-type");
                     var CompanyName = $(this).attr("data-title");
                     var PersonName = $(this).attr("data-name");
@@ -473,13 +474,16 @@
                     var ExpiredDate = $(this).attr("data-time");
                     var Remark = $(this).attr("data-content");
                     if (Type == "健康证") {
-                        ShowModelDetail("WebGovtManage/Risk/CertificateRiskDetail?Name=" + CompanyName + "&PersonName=" + PersonName + "&CardType=" + CardType + "&CardExpiredDate=" + ExpiredDate + "&CardImg=" + CardImg + "&Remark=" + Remark);
+                        var Content = PersonName + "健康证于" + ExpiredDate + "到期.";
+                        ShowModelDetail("WebGovtManage/Risk/CertificateRiskDetail?Name=" + CompanyName + "&PersonName=" + PersonName + "&CardType=" + CardType + "&CardExpiredDate=" + ExpiredDate + "&CardImg=" + CardImg + "&Remark=" + Remark, "预警提示",Id,Type, Content);
                     }
                     else if (Type == "营业执照") {
-                        ShowModelDetail("WebGovtManage/Risk/CertificateRiskDetail?Name=" + CompanyName + "&PersonName=" + PersonName + "&CardType=" + CardType + "&CardExpiredDate=" + ExpiredDate + "&CardImg=" + CardImg + "&Remark=" + Remark);
+                         var Content = "营业执照于" + ExpiredDate+"到期.";
+                        ShowModelDetail("WebGovtManage/Risk/CertificateRiskDetail?Name=" + CompanyName + "&PersonName=" + PersonName + "&CardType=" + CardType + "&CardExpiredDate=" + ExpiredDate + "&CardImg=" + CardImg + "&Remark=" + Remark,"预警提示",Id,Type,Content);
                     }
                     else {//投诉
-                        ShowModelDetail("WebGovtManage/Complain/InfoComplainDetail?Id=" + row.Id);
+                        var Content = "投诉信息："+ Remark;
+                        ShowModelDetail("WebGovtManage/Complain/InfoComplainDetail?Id=" + row.Id,"预警提示",Content);
                     }
 
                 });
@@ -634,16 +638,27 @@
             return m;
         }
         //展示
-        function ShowModelDetail(Url, Title) {
+        function ShowModelDetail(Url, Title,ID,Type,Content) {
             controller.OpenWindow({
                 title: Title,
                 type: 2,
                 height: "50%",
                 width: "40%",
                 url: Url,
-                btn: ["关闭"],
-                callBack: function (result) {
-                    controller.Close();
+                btn: ["提醒","关闭"],
+                callBack: function (result) {//提醒企业
+                   controller.ajax({
+                        url: "GovtWeb/ReportCardWaring",
+                        data: { Id: ID, Parameter:Type },
+                        type: 'post',
+                       success: function (result) {
+                           if (result.HttpCode == 10) {
+                               controller.Msg("提醒成功");
+                               controller.Close();
+                           }
+                        }
+                    });
+                    
                 }
             });
         }
@@ -669,21 +684,21 @@
                 <div class="dataitem fl">
                     <p>
                         <img src="~/Content/DataView/images/firm_ksh.png" />
-                        <span id="FirmNum">23</span>
+                        <span id="FirmNum"></span>
                     </p>
                     <p>企业入驻量</p>
                 </div>
                 <div class="dataitem fl">
                     <p>
                         <img src="~/Content/DataView/images/product_ksh.png" />
-                        <span id="ProductNum">53</span>
+                        <span id="ProductNum"></span>
                     </p>
                     <p>产品入驻量</p>
                 </div>
                 <div class="dataitem fr">
                     <p>
                         <img src="~/Content/DataView/images/code_ksh.png" />
-                        <span id="CodeNum">16</span>
+                        <span id="CodeNum"></span>
                     </p>
                     <p>扫码量</p>
                 </div>

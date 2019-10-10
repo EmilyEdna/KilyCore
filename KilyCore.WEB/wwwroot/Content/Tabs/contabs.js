@@ -119,6 +119,9 @@ $(function () {
             }
         });
         if (k) {
+            if (l.length > 4) {
+                l = l.substr(0, 4);
+            }
             var p = '<a href="javascript:void(0);" class="active J_menuTab" data-id="' + o + '">' + l + ' <i class="fa fa-times-circle"></i></a>';
             $(".J_menuTab").removeClass("active");
             var n = '<iframe class="J_iframe" name="iframe' + m + '" width="100%" height="100%" src="' + o + '" frameborder="0" data-id="' + o + '" seamless></iframe>';

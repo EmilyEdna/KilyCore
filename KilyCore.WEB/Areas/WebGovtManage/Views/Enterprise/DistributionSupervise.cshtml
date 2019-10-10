@@ -485,9 +485,19 @@
                         type: 2,
                         height: "90%",
                         width: "80%",
+                         btn:["通报","关闭"],
                         url: "WebGovtManage/Enterprise/RepastSuperviseDetail?Id=" + id,
                         callBack: function (result) {
-                            result.$("#Edit").submit();
+                             controller.OpenWindow({
+                                title: "通报批评-"+ names,
+                                type: 2,
+                                height: "50%",
+                                width: "60%",  
+                                url: "WebGovtManage/Inspect/NetPatrolEdit?Id=" + id,
+                                callBack: function (res) {
+                                    res.$("#Edit").submit();
+                                }
+                            })
                         }
                     })
                 }
