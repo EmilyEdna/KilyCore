@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using KilyCore.Cache;
+﻿using KilyCore.Cache;
 using KilyCore.Configure;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.Extension.ResultExtension;
 using KilyCore.Extension.SendMessage;
-using KilyCore.Extension.SessionExtension;
 using KilyCore.Extension.Token;
 using KilyCore.Extension.ValidateExtension;
 using KilyCore.Service.QueryExtend;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
+using System;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点13分
@@ -28,6 +24,7 @@ namespace KilyCore.API.Controllers
     public class SystemController : BaseController
     {
         #region 系统菜单
+
         /// <summary>
         /// 获取菜单
         /// </summary>
@@ -37,6 +34,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetSystemMenu(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取父节菜单
         /// </summary>
@@ -46,6 +44,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.AddSystemParentMenu(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 菜单分页
         /// </summary>
@@ -56,6 +55,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetMenuPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 删除菜单
         /// </summary>
@@ -66,6 +66,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.RemoveMenu(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 修改新增菜单
         /// </summary>
@@ -76,6 +77,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.EditMenu(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取菜单详情
         /// </summary>
@@ -86,8 +88,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetMenuDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 系统菜单
+
         #region 角色权限
+
         /// <summary>
         /// 权限等级
         /// </summary>
@@ -97,6 +102,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetRoleLv(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 添加角色
         /// </summary>
@@ -106,6 +112,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.EditRole(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取权限列表
         /// </summary>
@@ -116,6 +123,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetAuthorPage(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 移除权限
         /// </summary>
@@ -126,6 +134,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.RemoveAuthorRole(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 下拉权限列表
         /// </summary>
@@ -135,8 +144,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetAuthorRole(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 角色权限
+
         #region 用户登录退出
+
         /// <summary>
         /// 登录
         /// </summary>
@@ -183,6 +195,7 @@ namespace KilyCore.API.Controllers
                 return ObjectResultEx.Instance(null, -1, "请输入验证码", HttpCode.FAIL);
             }
         }
+
         /// <summary>
         /// 获取验证码
         /// </summary>
@@ -195,12 +208,13 @@ namespace KilyCore.API.Controllers
             CacheFactory.Cache().WriteCaches(Code, "ValidateCode", 2);
             return ObjectResultEx.Instance(Code, 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取手机短信验证码
         /// </summary>
-        ///  
-        ///  
-        /// 
+        ///
+        ///
+        ///
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpGet("GetPhoneCode")]
@@ -213,6 +227,7 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(PhoneSMS.SendPhoneMsg(Param.Parameter, Contents), 1, RetrunMessge.SUCCESS, HttpCode.Success);
             //return ObjectResultEx.Instance(Code, 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 发送短信
         /// </summary>
@@ -220,11 +235,12 @@ namespace KilyCore.API.Controllers
         /// <returns></returns>
         [HttpGet("SendPhoneMsg")]
         [AllowAnonymous]
-        public ObjectResultEx SendPhoneMsg(SimpleParam<String> Phone,SimpleParam<String> Msg)
+        public ObjectResultEx SendPhoneMsg(SimpleParam<String> Phone, SimpleParam<String> Msg)
         {
             return ObjectResultEx.Instance(PhoneSMS.SendPhoneMsg(Phone.Id, Msg.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
             //return ObjectResultEx.Instance(Code, 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 安全退出
         /// </summary>
@@ -234,8 +250,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(VerificationExtension.LoginOut(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 用户登录退出
+
         #region 区域树
+
         /// <summary>
         /// 显示区域树
         /// </summary>
@@ -245,6 +264,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetSystemAreaTree(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 显示完整区域树
         /// </summary>
@@ -254,8 +274,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetSystemAreaTrees(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 区域树
+
         #region 权限菜单树
+
         /// <summary>
         /// 权限区域树
         /// </summary>
@@ -265,8 +288,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetSystemAdminTree(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 权限菜单树
+
         #region 用户管理
+
         /// <summary>
         /// 中间系统调用
         /// </summary>
@@ -278,6 +304,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.InsertAdmin(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 编辑用户
         /// </summary>
@@ -288,6 +315,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.EditAdmin(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取用户分页
         /// </summary>
@@ -298,6 +326,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetAdminPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 删除用户
         /// </summary>
@@ -308,6 +337,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.RemoveAdmin(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 启用账户
         /// </summary>
@@ -318,6 +348,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.OpenAdmin(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取用户详情
         /// </summary>
@@ -328,6 +359,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetAdminDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取银行卡信息
         /// </summary>
@@ -337,6 +369,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetBankInfo(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 回收或开启网签
         /// </summary>
@@ -348,6 +381,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.CG(key.Id, Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取可以签到合同的代理商
         /// </summary>
@@ -358,8 +392,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetAuthorAdmin(Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 用户管理
+
         #region 省市区乡
+
         /// <summary>
         /// 获取省份
         /// </summary>
@@ -370,6 +407,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetProvince(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取城市
         /// </summary>
@@ -380,6 +418,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetCity(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取区县
         /// </summary>
@@ -390,6 +429,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetArea(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取乡镇
         /// </summary>
@@ -401,6 +441,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetTown(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取中文区域
         /// </summary>
@@ -412,8 +453,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetAreaWithChinese(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 省市区乡
+
         #region 任务调度
+
         /// <summary>
         /// 添加任务
         /// </summary>
@@ -424,6 +468,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.AddJob(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 任务分页列表
         /// </summary>
@@ -434,6 +479,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetJobPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         ///  执行任务
         /// </summary>
@@ -444,6 +490,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.ExcuteJob(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 停止所有任务
         /// </summary>
@@ -453,6 +500,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.StopJob(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 恢复暂停任务
         /// </summary>
@@ -463,6 +511,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.RecoverPauseJob(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 暂停指定任务
         /// </summary>
@@ -473,6 +522,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.PauseAppointJob(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 删除任务
         /// </summary>
@@ -483,8 +533,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.RemoveJob(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 任务调度
+
         #region 人员归档
+
         /// <summary>
         /// 人员分页列表
         /// </summary>
@@ -495,6 +548,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetPresonPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 编辑人员
         /// </summary>
@@ -505,6 +559,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.PresonEdit(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 删除人员
         /// </summary>
@@ -515,6 +570,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.RemovePreson(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取详情
         /// </summary>
@@ -525,6 +581,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetPresonDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 首页人员查询
         /// </summary>
@@ -536,8 +593,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetPresonDetailWeb(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 人员归档
+
         #region 入住合同
+
         /// <summary>
         /// 入住合同分页列表
         /// </summary>
@@ -548,6 +608,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetStayContractPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 审核合同
         /// </summary>
@@ -558,6 +619,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.AuditContract(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 取审核记录
         /// </summary>
@@ -568,6 +630,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetContractRecord(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 删除记录
         /// </summary>
@@ -578,6 +641,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.RemoveRecord(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 确认缴费
         /// </summary>
@@ -589,8 +653,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.EditContract(Key.Id, Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 入住合同
+
         #region 支付宝微信银行支付
+
         /// <summary>
         /// 支付宝支付
         /// </summary>
@@ -601,6 +668,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.AliPay(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 微信支付
         /// </summary>
@@ -611,6 +679,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.WxPay(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 查询支付宝支付
         /// </summary>
@@ -621,6 +690,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.AliQueryPay(Key.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 更新支付
         /// </summary>
@@ -631,8 +701,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.EditPay(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 支付宝微信银行支付
+
         #region 消息盒子
+
         /// <summary>
         /// 消息盒子分页
         /// </summary>
@@ -643,8 +716,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetMsgPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 消息盒子
+
         #region 新闻资讯
+
         /// <summary>
         /// 新闻分页
         /// </summary>
@@ -656,6 +732,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetNewsPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 编辑新闻
         /// </summary>
@@ -666,6 +743,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.EditNews(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 新闻详情
         /// </summary>
@@ -677,6 +755,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetNewsDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 删除新闻
         /// </summary>
@@ -687,8 +766,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.RemoveNews(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 新闻资讯
+
         #region 数据报表
+
         /// <summary>
         /// 二维码统计
         /// </summary>
@@ -699,6 +781,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetCodeCountCenter(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 入住企业统计
         /// </summary>
@@ -709,6 +792,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetCompanyCountCenter(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 产品统计
         /// </summary>
@@ -719,6 +803,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetProductCountCenter(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取合同统计
         /// </summary>
@@ -730,9 +815,13 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetContractCountCenter(Range), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 数据报表
+
         #region 订单管理
+
         #region 订单中心
+
         /// <summary>
         /// 订单分页
         /// </summary>
@@ -743,6 +832,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetOrderPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 下单
         /// </summary>
@@ -753,6 +843,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.OrderEdit(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 订单详情
         /// </summary>
@@ -763,6 +854,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetOrderDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 订单状态
         /// </summary>
@@ -773,8 +865,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.OrderCheck(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 订单中心
+
         #region 订单日志
+
         /// <summary>
         /// 日志分页
         /// </summary>
@@ -785,6 +880,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetOrderLogPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 添加日志
         /// </summary>
@@ -795,6 +891,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.EditOrderLog(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 删除日志
         /// </summary>
@@ -805,6 +902,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.RemoveLog(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 日志详情
         /// </summary>
@@ -815,8 +913,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetOrderLogDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 订单日志
+
         #region 评分记录
+
         /// <summary>
         /// 评分记录
         /// </summary>
@@ -827,6 +928,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetOrderScorePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 添加评分
         /// </summary>
@@ -837,6 +939,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.EditOrderScore(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 评分详情
         /// </summary>
@@ -847,8 +950,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetOrderScoreDetail(Key.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 评分记录
+
         #region 线下人员
+
         /// <summary>
         /// 线下人员分页
         /// </summary>
@@ -859,6 +965,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetPersonOffPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取人员详情
         /// </summary>
@@ -869,7 +976,9 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetOffDetail(Key.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
-        #endregion
+
+        #endregion 线下人员
+
+        #endregion 订单管理
     }
 }

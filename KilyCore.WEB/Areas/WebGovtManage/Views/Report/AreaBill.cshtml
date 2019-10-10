@@ -3,55 +3,60 @@
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
+    <script src="~/Content/ExportPlugin/Script/xlsx.core.min.js"></script>
+    <script src="~/Content/ExportPlugin/Script/tableExport.js"></script>
     <script>
         //配置
         var options = {
             Init: function () {
-                controller.LayDate({
-                    elem: "input[name='SDate']",
-                    max: controller.GetDate(1),
-                    format: "yyyy-MM-dd"
-                });
-                controller.LayDate({
-                    elem: "input[name='EDate']",
-                    max: controller.GetDate(1),
-                    format: "yyyy-MM-dd"
-                });
                 this.InitDom(undefined);
                 this.InitEvents();
             },
             //元素
-            InitDom: function (Param) {
-                var data = { "Id": CompanyInfo.Id, "CompanyType": CompanyInfo.CompanyType };
-                if (controller.CheckFeild(Param))
-                    data.Date = Param;
-                //controller.ajax({
-                //    url: "EnterpriseWeb/GetTickPrint",
-                //    data: { Id: data },
-                //    async: false,
-                //    success: function (result) {
-                //        let html = '';
-                //        $.each(result.data, function (index, item) {
-                //            html += '<tr><td>' + item.BatchNo + '</td>';
-                //            html += '<td>' + item.ProductName + '</td>';
-                //            html += '<td>' + item.Num + '</td>';
-                //            html += '<td>' + item.Spec + '</td>';
-                //            html += '<td>' + item.Unit + '</td>';
-                //            html += '<td>' + item.CheckResult + '</td>';
-                //            html += '<td>' + item.Supplier + '</td>';
-                //            html += '<td>' + item.Seller + '</td>';
-                //            html += '<td>' + item.Time + '</td>';
-                //            html += '<td>' + item.OutStockUser + '</td></tr>';
-                //        });
-                //        $("tbody").html(html);
-                //    }
-                //});
+            InitDom: function (name, type) {
+                var data = {};
+                if (controller.CheckFeild(type))
+                    data.Parameter = type;
+                if (controller.CheckFeild(name))
+                    data.Id = name;
+                controller.ajax({
+                    url: "GovtWeb/GetAreaShow",
+                    data: data,
+                    async: false,
+                    success: function (result) {
+                        let html = '';
+                        arr = [];
+                        $.each(result.data, function (index, item) {
+                            html += '<tr><td>' + (index + 1) + '</td>';
+                            html += '<td>' + item.TypePath + '</td>';
+                            html += '<td>' + item.CompanyName + '</td>';
+                            html += '<td>' + (controller.CheckFeild(item.SafeOffer) ? item.SafeOffer : "-") + '</td>';
+                            html += '<td>' + (controller.CheckFeild(item.CommunityCode) ? item.CommunityCode : "-") + '</td>';
+                            html += '<td>' + (controller.CheckFeild(item.CompanyAddress) ? item.CompanyAddress : "-") + '</td>';
+                            html += '<td>' + (controller.CheckFeild(item.CompanyPhone) ? item.CompanyPhone : "-") + '</td>';
+                            html += '<td>' + item.CompanyTypeName + '</td></tr>';
+                        });
+                        $("tbody").html(html);
+                    }
+                });
             },
             //事件
             InitEvents: function () {
+                //导出Excel
+                $("#exportIn").on('click', function () {
+                     $("#tableList").tableExport({
+                        fileName: "区域企业一览表",
+                        ignoreColumn: ["Handler"],
+                        type: "excel",
+                        mso: {
+                            worksheetName: "区域企业一览表",
+                        }
+                    });
+                });
                 $("#search").on("click", function () {
-                    var time = $("input[name='Date']").val();
-                    options.InitDom(time);
+                    var name = $("input[name='CompanyName']").val();
+                    var type = $("select[name='CompanyType']").find("option:selected").val();
+                    options.InitDom(name, type);
                 });
             },
         };
@@ -80,7 +85,7 @@
                             <div class="col-sm-8">
                                 <div class="col-sm-2 m-b-xs">
                                     <select class="form-control" name="CompanyType">
-                                        <option value="全部">全部</option>
+                                        <option value="">全部</option>
                                         <option value="种植企业" class="show x">种植企业</option>
                                         <option value="养殖企业" class="show x">养殖企业</option>
                                         <option value="生产企业" class="show x">生产企业</option>
@@ -91,13 +96,7 @@
                                         <option value="小经营店" class="show x">小经营店</option>
                                         <option value="小作坊" class="show x">小作坊</option>
                                         <option value="小摊贩" class="show x">小摊贩</option>
-                                        <option value="学前教育" class="hidden y">学前教育</option>
-                                        <option value="义务教育" class="hidden y">义务教育</option>
-                                        <option value="高中教育" class="hidden y">高中教育</option>
-                                        <option value="高等教育" class="hidden y">高等教育</option>
-                                        <option value="职业教育" class="hidden y">职业教育</option>
                                     </select>
-
                                 </div>
                                 <div class="col-sm-3 m-b-xs"><input type="text" placeholder="企业名称" class="form-control" name="CompanyName"></div>
                                 <div class="col-sm-2 m-b-xs"><button type="button" class="btn btn-white" id="search"><i class="fa fa-search"></i>查询</button></div>
@@ -110,8 +109,7 @@
                         <thead>
                             <tr>
                                 <th class="th-center" colspan="10" style="font-size:18px;">区域企业一览表</th>
-                            </tr>                         
-
+                            </tr>
                             <tr>
                                 <th class="th-center">序号</th>
                                 <th class="th-center">区域</th>

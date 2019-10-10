@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using KilyCore.Extension.ApplicationService.DependencyIdentity;
+﻿using KilyCore.Extension.ApplicationService.DependencyIdentity;
 using KilyCore.Service.IServiceCore;
 using Microsoft.AspNetCore.Mvc;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点13分

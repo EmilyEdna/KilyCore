@@ -1785,7 +1785,7 @@ namespace KilyCore.Service.ServiceCore
                 HandleTime = t.HandleTime,
                 ReleaseTime = t.ReleaseTime,
                 Status = t.Status ?? "待处理",
-            }).OrderByDescending(o=>o.ReleaseTime).ToList();
+            }).OrderByDescending(o => o.ReleaseTime).ToList();
             return data;
         }
 
@@ -1797,9 +1797,9 @@ namespace KilyCore.Service.ServiceCore
         public string EditNetPatrol(RequestGovtMsg Param)
         {
             GovtNetPatrol govtNet = Kily.Set<GovtNetPatrol>().Where(t => t.Id == Param.Id).AsNoTracking().FirstOrDefault();
-            if(govtNet==null)//详情通报
+            if (govtNet == null)//详情通报
             {
-                govtNet= Kily.Set<GovtNetPatrol>().Where(t => t.CompanyId == Param.Id).AsNoTracking().FirstOrDefault();
+                govtNet = Kily.Set<GovtNetPatrol>().Where(t => t.CompanyId == Param.Id).AsNoTracking().FirstOrDefault();
             }
             govtNet.BulletinNum += 1;
             govtNet.QualifiedNum = (((govtNet.PotrolNum - govtNet.BulletinNum) * 100) / govtNet.PotrolNum).ToString() + "%";
@@ -3922,5 +3922,87 @@ namespace KilyCore.Service.ServiceCore
         }
 
         #endregion 操作日志
+
+        #region 综合
+        /// <summary>
+        /// 企业综合
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public object GetAreaShow(string name, string type)
+        {
+            IQueryable<EnterpriseInfo> Info = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
+            IQueryable<RepastInfo> Infos = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false);
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+            {
+                Info = Info.Where(t => t.TypePath.Contains(GovtInfo().City));
+                Infos = Infos.Where(t => t.TypePath.Contains(GovtInfo().City));
+            }
+            else
+            {
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                    {
+                        Expression<Func<EnterpriseInfo, bool>> exp_1 = null;
+                        Expression<Func<RepastInfo, bool>> exp_2 = null;
+                        for (int i = 0; i < Areas.Count; i++)
+                        {
+                            if (i == 0)
+                            {
+                                exp_1 = ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                                exp_2 = ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                            }
+                            else
+                            {
+                                exp_1 = exp_1.Or(ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                                exp_2 = ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                            }
+                        }
+                        Info = Info.Where(exp_1);
+                        Infos = Infos.Where(exp_2);
+                    }
+                    else
+                    {
+                        Info = Info.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                        Infos = Infos.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    }
+                }
+                else
+                {
+                    Info = Info.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                    Infos = Infos.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                }
+            }
+            var Einfo = Info.Select(t => new ResponseEnterprise()
+            {
+                CompanyName = t.CompanyName,
+                TypePath = Kily.Set<SystemArea>().Where(x => x.Id.ToString() == GovtInfo().Area).FirstOrDefault().Name,
+                SafeOffer = t.SafeOffer,
+                CommunityCode = t.CommunityCode,
+                CompanyAddress = t.CompanyAddress,
+                CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
+                CompanyPhone = t.CompanyPhone
+            }).ToList();
+            var Rinfo = Infos.Select(t => new ResponseEnterprise()
+            {
+                CompanyName = t.MerchantName,
+                TypePath = Kily.Set<SystemArea>().Where(x => x.Id.ToString() == GovtInfo().Area).FirstOrDefault().Name,
+                SafeOffer = t.SafeOffer,
+                CommunityCode = t.CommunityCode,
+                CompanyAddress = t.Address,
+                CompanyTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
+                CompanyPhone = t.Phone
+            }).ToList();
+            Einfo.AddRange(Rinfo);
+            if (!string.IsNullOrEmpty(name))
+                return Einfo.Where(t => t.CompanyName.Contains(name)).ToList();
+            if (!string.IsNullOrEmpty(type))
+                return Einfo.Where(t => t.CompanyTypeName.Contains(type)).ToList();
+            return Einfo;
+        }
+        #endregion
     }
 }
