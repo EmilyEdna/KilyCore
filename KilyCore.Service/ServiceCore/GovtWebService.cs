@@ -1053,11 +1053,12 @@ namespace KilyCore.Service.ServiceCore
             var data = goods.Join(queryable, t => t.CompanyId, x => x.Id, (t, x) => new ResponseEnterpriseGoods()
             {
                 Id = t.Id,
+                CompanyId=t.CompanyId,
                 ProductName = t.ProductName,
                 CompanyName = x.CompanyName,
                 ProductType = t.ProductType,
                 ExpiredDate = t.ExpiredDate,
-                ProductImg = "",
+                ProductImg = t.Image,
                 Spec = t.Spec,
                 Unit = x.ProductionAddress,
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
