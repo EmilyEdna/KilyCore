@@ -15,14 +15,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 
 #region << 版 本 注 释 >>
+
 /*----------------------------------------------------------------
 * 类 名 称 ：GovtService
 * 类 描 述 ：
 * 命名空间 ：KilyCore.Service.ServiceCore
-* 机器名称 ：EMILY 
+* 机器名称 ：EMILY
 * CLR 版本 ：4.0.30319.42000
 * 作    者 ：$刘泽华$
 * 创建时间 ：2018/9/6 14:37:52
@@ -30,12 +30,15 @@ using System.Text;
 * Copyright @ $刘泽华$ 2018. All rights reserved.
 *******************************************************************
 //----------------------------------------------------------------*/
-#endregion
+
+#endregion << 版 本 注 释 >>
+
 namespace KilyCore.Service.ServiceCore
 {
     public class GovtService : Repository, IGovtService
     {
         #region 政府监管
+
         /// <summary>
         /// 获取父级菜单
         /// </summary>
@@ -50,6 +53,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
             return data;
         }
+
         /// <summary>
         /// 政府菜单分页
         /// </summary>
@@ -70,6 +74,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 获取政府菜单详情
         /// </summary>
@@ -89,6 +94,7 @@ namespace KilyCore.Service.ServiceCore
             }).FirstOrDefault();
             return data;
         }
+
         /// <summary>
         /// 删除政府菜单
         /// </summary>
@@ -100,6 +106,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.REMOVEFAIL;
         }
+
         /// <summary>
         /// 新增政府菜单
         /// </summary>
@@ -137,9 +144,11 @@ namespace KilyCore.Service.ServiceCore
                     return ServiceMessage.INSERTFAIL;
             }
         }
-        #endregion
+
+        #endregion 政府监管
 
         #region 权限菜单树
+
         /// <summary>
         /// 获取权限菜单树
         /// </summary>
@@ -170,9 +179,11 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.ToList();
             return data;
         }
-        #endregion
+
+        #endregion 权限菜单树
 
         #region 角色权限
+
         /// <summary>
         /// 权限分页
         /// </summary>
@@ -191,6 +202,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 删除角色
         /// </summary>
@@ -200,6 +212,7 @@ namespace KilyCore.Service.ServiceCore
         {
             return Remove<GovtRoleAuthor>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
+
         /// <summary>
         /// 编辑权限
         /// </summary>
@@ -210,9 +223,11 @@ namespace KilyCore.Service.ServiceCore
             GovtRoleAuthor author = Param.MapToEntity<GovtRoleAuthor>();
             return Insert(author) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
-        #endregion
+
+        #endregion 角色权限
 
         #region 政府账号
+
         /// <summary>
         /// 账号分页
         /// </summary>
@@ -225,9 +240,9 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.DepartName.Contains(pageParam.QueryParam.DepartName));
             if (UserInfo().AccountType > AccountEnum.Country)
             {
-                queryable=queryable.Where(t=>t.TypePath.Contains(UserInfo().Province)||
-                    t.TypePath.Contains(UserInfo().City)||
-                    t.TypePath.Contains(UserInfo().Area));
+                queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().Province) ||
+                      t.TypePath.Contains(UserInfo().City) ||
+                      t.TypePath.Contains(UserInfo().Area));
             }
             var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseGovtInfo()
             {
@@ -238,9 +253,10 @@ namespace KilyCore.Service.ServiceCore
                 TrueName = t.TrueName,
                 Phone = t.Phone,
                 Email = t.Email,
-                TypePath=t.TypePath
+                TypePath = t.TypePath
             }).ToList();
-            data.ForEach(t => {
+            data.ForEach(t =>
+            {
                 t.TableName = Kily.Set<SystemProvince>()
                 .Where(x => x.Id.ToString() == t.Province)
                 .Select(x => x.Name).AsNoTracking().FirstOrDefault() + "," +
@@ -253,6 +269,7 @@ namespace KilyCore.Service.ServiceCore
             });
             return data.ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
         }
+
         /// <summary>
         /// 编辑账号
         /// </summary>
@@ -264,6 +281,7 @@ namespace KilyCore.Service.ServiceCore
             GovtInfo Info = Param.MapToEntity<GovtInfo>();
             return Insert(Info) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
+
         /// <summary>
         /// 推送账号
         /// </summary>
@@ -274,6 +292,7 @@ namespace KilyCore.Service.ServiceCore
             GovtInfo Info = Param.MapToEntity<GovtInfo>();
             return Insert(Info) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
-        #endregion
+
+        #endregion 政府账号
     }
 }

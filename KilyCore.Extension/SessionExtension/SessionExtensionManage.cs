@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Text;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点51分
@@ -22,6 +21,7 @@ namespace KilyCore.Extension.SessionExtension
         {
             session.SetString(key, JsonConvert.SerializeObject(value));
         }
+
         /// <summary>
         /// 取出Session
         /// </summary>
@@ -30,6 +30,7 @@ namespace KilyCore.Extension.SessionExtension
         {
             return session.GetString(key) == null ? default(T) : JsonConvert.DeserializeObject<T>(session.GetString(key));
         }
+
         /// <summary>
         /// 删除Session
         /// </summary>
@@ -39,6 +40,7 @@ namespace KilyCore.Extension.SessionExtension
         {
             session.Remove(Key);
         }
+
         /// <summary>
         /// 清空Session
         /// </summary>

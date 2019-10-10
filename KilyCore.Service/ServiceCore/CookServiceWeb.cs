@@ -20,14 +20,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 
 #region << 版 本 注 释 >>
+
 /*----------------------------------------------------------------
 * 类 名 称 ：CookServiceWeb
 * 类 描 述 ：
 * 命名空间 ：KilyCore.Service.ServiceCore
-* 机器名称 ：EMILY 
+* 机器名称 ：EMILY
 * CLR 版本 ：4.0.30319.42000
 * 作    者 ：$刘泽华$
 * 创建时间 ：2018/8/24 15:08:18
@@ -35,12 +35,15 @@ using System.Text;
 * Copyright @ $刘泽华$ 2018. All rights reserved.
 *******************************************************************
 //----------------------------------------------------------------*/
-#endregion
+
+#endregion << 版 本 注 释 >>
+
 namespace KilyCore.Service.ServiceCore
 {
     public class CookServiceWeb : Repository, ICookWebService
     {
         #region 登录注册
+
         /// <summary>
         /// 厨师注册
         /// </summary>
@@ -56,6 +59,7 @@ namespace KilyCore.Service.ServiceCore
                 return "账号不能包含中文和特殊字符";
             return Insert<CookVip>(vip) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
+
         /// <summary>
         /// 厨师登录
         /// </summary>
@@ -91,9 +95,11 @@ namespace KilyCore.Service.ServiceCore
             }).AsNoTracking().FirstOrDefault();
             return data;
         }
-        #endregion
+
+        #endregion 登录注册
 
         #region 获取全局集团菜单
+
         /// <summary>
         /// 获取导航菜单
         /// </summary>
@@ -130,11 +136,12 @@ namespace KilyCore.Service.ServiceCore
               }).ToList()
             }).ToList();
             return data;
-
         }
-        #endregion
+
+        #endregion 获取全局集团菜单
 
         #region 账号管理
+
         /// <summary>
         /// 账号分页
         /// </summary>
@@ -154,6 +161,7 @@ namespace KilyCore.Service.ServiceCore
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 账号详情
         /// </summary>
@@ -175,6 +183,7 @@ namespace KilyCore.Service.ServiceCore
             }).FirstOrDefault();
             return data;
         }
+
         /// <summary>
         /// 修改账号
         /// </summary>
@@ -188,6 +197,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return Insert(vip) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
+
         /// <summary>
         /// 开通服务
         /// </summary>
@@ -227,9 +237,11 @@ namespace KilyCore.Service.ServiceCore
                 return new ResponseStayContract() { PayInfoMsg = WxPayCore.Instance.WebPay(WxPayModel) };
             }
         }
-        #endregion
+
+        #endregion 账号管理
 
         #region 厨师信息
+
         /// <summary>
         /// 厨师详情
         /// </summary>
@@ -257,6 +269,7 @@ namespace KilyCore.Service.ServiceCore
             }).AsNoTracking().FirstOrDefault();
             return data;
         }
+
         /// <summary>
         /// 编辑厨师信息
         /// </summary>
@@ -270,9 +283,11 @@ namespace KilyCore.Service.ServiceCore
             else
                 return Insert(info) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
-        #endregion
+
+        #endregion 厨师信息
 
         #region 办宴报备
+
         /// <summary>
         /// 报备列表
         /// </summary>
@@ -294,6 +309,7 @@ namespace KilyCore.Service.ServiceCore
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 新增报备记录
         /// </summary>
@@ -309,6 +325,7 @@ namespace KilyCore.Service.ServiceCore
             });
             return Insert(banquet) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
+
         /// <summary>
         /// 查看详情
         /// </summary>
@@ -336,13 +353,14 @@ namespace KilyCore.Service.ServiceCore
                 CookBook = t.CookBook,
                 Stauts = t.Stauts,
                 ResultImg = t.ResultImg,
-                HoldTheme=t.HoldTheme,
-                HoldFoo=t.HoldFoo,
-                HoldTotal=t.HoldTotal,
-                DeskNum=t.DeskNum
+                HoldTheme = t.HoldTheme,
+                HoldFoo = t.HoldFoo,
+                HoldTotal = t.HoldTotal,
+                DeskNum = t.DeskNum
             }).AsNoTracking().FirstOrDefault();
             return data;
         }
+
         /// <summary>
         /// 删除报备信息
         /// </summary>
@@ -352,9 +370,11 @@ namespace KilyCore.Service.ServiceCore
         {
             return Remove<CookBanquet>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
-        #endregion
+
+        #endregion 办宴报备
 
         #region 帮厨管理
+
         /// <summary>
         /// 帮厨分页
         /// </summary>
@@ -376,6 +396,7 @@ namespace KilyCore.Service.ServiceCore
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 编辑帮厨
         /// </summary>
@@ -386,6 +407,7 @@ namespace KilyCore.Service.ServiceCore
             CookHelper helper = Param.MapToEntity<CookHelper>();
             return Insert(helper) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
+
         /// <summary>
         /// 删除帮厨
         /// </summary>
@@ -395,6 +417,7 @@ namespace KilyCore.Service.ServiceCore
         {
             return Remove<CookHelper>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
+
         /// <summary>
         /// 帮厨列表
         /// </summary>
@@ -408,9 +431,11 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
             return data;
         }
-        #endregion
+
+        #endregion 帮厨管理
 
         #region 食材信息
+
         /// <summary>
         /// 食材分页
         /// </summary>
@@ -436,6 +461,7 @@ namespace KilyCore.Service.ServiceCore
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 删除食材
         /// </summary>
@@ -445,6 +471,7 @@ namespace KilyCore.Service.ServiceCore
         {
             return Remove<CookFood>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
+
         /// <summary>
         /// 编辑食材
         /// </summary>
@@ -455,6 +482,7 @@ namespace KilyCore.Service.ServiceCore
             CookFood food = Param.MapToEntity<CookFood>();
             return Insert(food) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
+
         /// <summary>
         /// 食材列表
         /// </summary>
@@ -474,9 +502,11 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
             return data;
         }
-        #endregion
+
+        #endregion 食材信息
 
         #region 数据统计
+
         /// <summary>
         /// 数据统计
         /// </summary>
@@ -489,9 +519,11 @@ namespace KilyCore.Service.ServiceCore
             int Helper = queryables.Select(t => t.Id).Count();
             return new { Banquet, Helper };
         }
-        #endregion
+
+        #endregion 数据统计
 
         #region 微信支付
+
         /// <summary>
         /// 查询微信支付
         /// </summary>
@@ -528,6 +560,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return null;
         }
-        #endregion
+
+        #endregion 微信支付
     }
 }

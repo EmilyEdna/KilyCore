@@ -16,14 +16,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 
 #region << 版 本 注 释 >>
+
 /*----------------------------------------------------------------
 * 类 名 称 ：CookService
 * 类 描 述 ：
 * 命名空间 ：KilyCore.Service.ServiceCore
-* 机器名称 ：EMILY 
+* 机器名称 ：EMILY
 * CLR 版本 ：4.0.30319.42000
 * 作    者 ：$刘泽华$
 * 创建时间 ：2018/8/24 14:26:01
@@ -31,12 +31,15 @@ using System.Text;
 * Copyright @ $刘泽华$ 2018. All rights reserved.
 *******************************************************************
 //----------------------------------------------------------------*/
-#endregion
+
+#endregion << 版 本 注 释 >>
+
 namespace KilyCore.Service.ServiceCore
 {
     public class CookService : Repository, ICookService
     {
         #region 厨师菜单
+
         /// <summary>
         /// 父级菜单
         /// </summary>
@@ -51,6 +54,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
             return data;
         }
+
         /// <summary>
         /// 获取菜单详情
         /// </summary>
@@ -70,6 +74,7 @@ namespace KilyCore.Service.ServiceCore
             }).FirstOrDefault();
             return data;
         }
+
         /// <summary>
         /// 厨师菜单分页
         /// </summary>
@@ -90,6 +95,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 删除菜单
         /// </summary>
@@ -101,6 +107,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.REMOVEFAIL;
         }
+
         /// <summary>
         /// 新增菜单
         /// </summary>
@@ -138,9 +145,11 @@ namespace KilyCore.Service.ServiceCore
                     return ServiceMessage.INSERTFAIL;
             }
         }
-        #endregion
+
+        #endregion 厨师菜单
 
         #region 权限菜单树
+
         /// <summary>
         /// 获取权限菜单树
         /// </summary>
@@ -171,9 +180,11 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.ToList();
             return data;
         }
-        #endregion
+
+        #endregion 权限菜单树
 
         #region 厨师角色
+
         /// <summary>
         /// 获取角色权限列表
         /// </summary>
@@ -192,6 +203,7 @@ namespace KilyCore.Service.ServiceCore
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 添加角色
         /// </summary>
@@ -212,6 +224,7 @@ namespace KilyCore.Service.ServiceCore
                     return ServiceMessage.INSERTFAIL;
             }
         }
+
         /// <summary>
         /// 删除角色
         /// </summary>
@@ -221,9 +234,11 @@ namespace KilyCore.Service.ServiceCore
         {
             return Remove<CookRoleAuthor>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
-        #endregion
+
+        #endregion 厨师角色
 
         #region 厨师信息
+
         /// <summary>
         /// 厨师信息
         /// </summary>
@@ -231,7 +246,6 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseCookInfo> GetCookInfoPage(PageParamList<RequestCookInfo> pageParam)
         {
-         
             IQueryable<CookInfo> queryable = Kily.Set<CookInfo>().OrderByDescending(t => t.CreateTime);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.AreaTree))
                 queryable = queryable.Where(t => t.TypePath.Contains(pageParam.QueryParam.AreaTree));
@@ -241,7 +255,7 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().City));
             if (UserInfo().AccountType == AccountEnum.Area)
                 queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().Area));
-            if(UserInfo().AccountType==AccountEnum.Village)
+            if (UserInfo().AccountType == AccountEnum.Village)
                 queryable = queryable.Where(t => t.TypePath.Contains(UserInfo().Town));
             var data = queryable.Select(t => new ResponseCookInfo()
             {
@@ -253,6 +267,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 厨师详情
         /// </summary>
@@ -279,6 +294,7 @@ namespace KilyCore.Service.ServiceCore
             }).AsNoTracking().FirstOrDefault();
             return data;
         }
+
         /// <summary>
         /// 审核厨师信息
         /// </summary>
@@ -292,9 +308,11 @@ namespace KilyCore.Service.ServiceCore
             SystemAudit audit = Param.MapToEntity<SystemAudit>();
             return Insert(audit) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
-        #endregion
+
+        #endregion 厨师信息
 
         #region 服务管理
+
         /// <summary>
         /// 厨师开通的服务分页
         /// </summary>
@@ -327,6 +345,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 启用
         /// </summary>
@@ -341,6 +360,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.UPDATEFAIL;
         }
+
         /// <summary>
         /// 停用
         /// </summary>
@@ -353,6 +373,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.UPDATEFAIL;
         }
+
         /// <summary>
         /// 确认缴费并分配角色
         /// </summary>
@@ -366,6 +387,7 @@ namespace KilyCore.Service.ServiceCore
             vip.RoleId = author.Id;
             return UpdateField(vip, "RoleId") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
-        #endregion
+
+        #endregion 服务管理
     }
 }

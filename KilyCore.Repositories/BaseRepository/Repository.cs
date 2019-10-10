@@ -2,27 +2,27 @@
 using KilyCore.Cache.MongoCache;
 using KilyCore.Cache.RedisCache;
 using KilyCore.Configure;
-using KilyCore.DataEntity.ResponseMapper.Repast;
+using KilyCore.DataEntity.ResponseMapper.Cook;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
+using KilyCore.DataEntity.ResponseMapper.Govt;
+using KilyCore.DataEntity.ResponseMapper.Repast;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.EntityFrameWork;
+using KilyCore.EntityFrameWork.Attributes;
+using KilyCore.EntityFrameWork.Model.System;
+using KilyCore.Extension.HttpClientFactory;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
+using System.Data.Common;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
-using KilyCore.Extension.HttpClientFactory;
-using KilyCore.DataEntity.ResponseMapper.Cook;
-using KilyCore.DataEntity.ResponseMapper.Govt;
-using System.Data;
-using System.Data.SqlClient;
-using System.Data.Common;
-using System.Collections;
-using KilyCore.EntityFrameWork.Attributes;
-using KilyCore.EntityFrameWork.Model.System;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日12点01分
@@ -34,6 +34,7 @@ namespace KilyCore.Repositories.BaseRepository
         public ICache Cache = CacheFactory.Cache();
         public IMongoDbCache Caches = CacheFactory.Caches();
         public KilyContext Kily = KilyContextFactory.GetContext();
+
         /// <summary>
         /// 软删除
         /// </summary>
@@ -114,6 +115,7 @@ namespace KilyCore.Repositories.BaseRepository
                 //throw ex;
             }
         }
+
         /// <summary>
         /// 新增
         /// </summary>
@@ -191,6 +193,7 @@ namespace KilyCore.Repositories.BaseRepository
                 throw ex;
             }
         }
+
         /// <summary>
         /// 更新实体
         /// </summary>
@@ -294,6 +297,7 @@ namespace KilyCore.Repositories.BaseRepository
                 throw ex;
             }
         }
+
         /// <summary>
         ///更新指定单个字段或者多个字段
         /// </summary>
@@ -409,6 +413,7 @@ namespace KilyCore.Repositories.BaseRepository
                 throw ex;
             }
         }
+
         /// <summary>
         /// 真删除
         /// </summary>
@@ -470,6 +475,7 @@ namespace KilyCore.Repositories.BaseRepository
                 throw ex;
             }
         }
+
         /// <summary>
         /// SQL查询
         /// </summary>
@@ -485,8 +491,8 @@ namespace KilyCore.Repositories.BaseRepository
             {
                 throw ex;
             }
-
         }
+
         /// <summary>
         /// 执行SQL语句
         /// </summary>
@@ -502,8 +508,8 @@ namespace KilyCore.Repositories.BaseRepository
             {
                 throw ex;
             }
-
         }
+
         /// <summary>
         /// 提交
         /// </summary>
@@ -512,6 +518,7 @@ namespace KilyCore.Repositories.BaseRepository
         {
             return Kily.SaveChanges();
         }
+
         /// <summary>
         /// 缓存中取登陆信息
         /// </summary>
@@ -521,6 +528,7 @@ namespace KilyCore.Repositories.BaseRepository
             ResponseAdmin Data = Cache.GetCache<ResponseAdmin>(SystemInfoKey.PrivateKey);
             return Data == null ? null : (Data.TableName.Equals(typeof(ResponseAdmin).Name) ? Data : null);
         }
+
         /// <summary>
         /// 从缓存中获取登录的公司信息
         /// </summary>
@@ -530,6 +538,7 @@ namespace KilyCore.Repositories.BaseRepository
             ResponseEnterprise Data = Cache.GetCache<ResponseEnterprise>(SystemInfoKey.PrivateKey);
             return Data == null ? null : (Data.TableName.Equals(typeof(ResponseEnterprise).Name) ? Data : null);
         }
+
         /// <summary>
         /// 从缓存中获取登录的公司子用户信息
         /// </summary>
@@ -539,6 +548,7 @@ namespace KilyCore.Repositories.BaseRepository
             ResponseEnterpriseUser Data = Cache.GetCache<ResponseEnterpriseUser>(SystemInfoKey.PrivateKey);
             return Data == null ? null : (Data.TableName.Equals(typeof(ResponseEnterpriseUser).Name) ? Data : null);
         }
+
         /// <summary>
         /// 从缓存中获取登录的餐饮商家信息
         /// </summary>
@@ -548,6 +558,7 @@ namespace KilyCore.Repositories.BaseRepository
             ResponseMerchant Data = Cache.GetCache<ResponseMerchant>(SystemInfoKey.PrivateKey);
             return Data == null ? null : (Data.TableName.Equals(typeof(ResponseMerchant).Name) ? Data : null);
         }
+
         /// <summary>
         /// 从缓存中获取登录的餐饮商家子用户信息
         /// </summary>
@@ -557,6 +568,7 @@ namespace KilyCore.Repositories.BaseRepository
             ResponseMerchantUser Data = Cache.GetCache<ResponseMerchantUser>(SystemInfoKey.PrivateKey);
             return Data == null ? null : (Data.TableName.Equals(typeof(ResponseMerchantUser).Name) ? Data : null);
         }
+
         /// <summary>
         /// 从缓存中获取登录的厨师信息
         /// </summary>
@@ -566,6 +578,7 @@ namespace KilyCore.Repositories.BaseRepository
             ResponseCookInfo Data = Cache.GetCache<ResponseCookInfo>(SystemInfoKey.PrivateKey);
             return Data == null ? null : (Data.TableName.Equals(typeof(ResponseCookInfo).Name) ? Data : null);
         }
+
         /// <summary>
         /// 从缓存中获取登录的政府监管信息
         /// </summary>
@@ -575,6 +588,7 @@ namespace KilyCore.Repositories.BaseRepository
             ResponseGovtInfo Data = Cache.GetCache<ResponseGovtInfo>(SystemInfoKey.PrivateKey);
             return Data == null ? null : (Data.TableName.Equals(typeof(ResponseGovtInfo).Name) ? Data : null);
         }
+
         /// <summary>
         /// 返回动态属性集合
         /// </summary>
@@ -601,6 +615,7 @@ namespace KilyCore.Repositories.BaseRepository
             });
             return Props;
         }
+
         /// <summary>
         /// 删除图片物理路径
         /// </summary>
@@ -631,6 +646,7 @@ namespace KilyCore.Repositories.BaseRepository
             }
         }
     }
+
     /// <summary>
     ///  EF查询存储过程拓展
     /// </summary>
@@ -669,6 +685,7 @@ namespace KilyCore.Repositories.BaseRepository
             db.Database.CloseConnection();
             return ds;
         }
+
         /// <summary>
         /// 执行SQL返回DataTable
         /// </summary>
@@ -690,6 +707,7 @@ namespace KilyCore.Repositories.BaseRepository
             db.Database.CloseConnection();
             return dt;
         }
+
         /// <summary>
         /// DataTable转List
         /// </summary>
@@ -718,6 +736,7 @@ namespace KilyCore.Repositories.BaseRepository
             }
             return lst;
         }
+
         /// <summary>
         /// DateSet转IEnumerable
         /// </summary>

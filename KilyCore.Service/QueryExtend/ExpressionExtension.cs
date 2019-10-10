@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日12点01分
@@ -36,27 +35,35 @@ namespace KilyCore.Service.QueryExtend
                 case ExpressionEnum.Like:
                     Filter = Expression.Call(Left, typeof(String).GetMethod("Contains", new Type[] { typeof(String) }), Right);
                     break;
+
                 case ExpressionEnum.NotLike:
                     Filter = Expression.Not(Expression.Call(Left, typeof(String).GetMethod("Contains", new Type[] { typeof(String) }), Right));
                     break;
+
                 case ExpressionEnum.Equals:
-                    Filter = Expression.Equal(Left,Right);
+                    Filter = Expression.Equal(Left, Right);
                     break;
+
                 case ExpressionEnum.NotEquals:
-                    Filter=Expression.NotEqual(Left, Right);
+                    Filter = Expression.NotEqual(Left, Right);
                     break;
+
                 case ExpressionEnum.GreaterThan:
-                    Filter=Expression.GreaterThan(Left, Right);
+                    Filter = Expression.GreaterThan(Left, Right);
                     break;
+
                 case ExpressionEnum.GreaterThanOrEqual:
-                    Filter =Expression.GreaterThanOrEqual(Left, Right);
+                    Filter = Expression.GreaterThanOrEqual(Left, Right);
                     break;
+
                 case ExpressionEnum.LessThan:
-                    Filter=Expression.LessThan(Left, Right);
+                    Filter = Expression.LessThan(Left, Right);
                     break;
+
                 case ExpressionEnum.LessThanOrEqual:
                     Filter = Expression.LessThanOrEqual(Left, Right);
                     break;
+
                 default:
                     Filter = Expression.Equal(Left, Right);
                     break;

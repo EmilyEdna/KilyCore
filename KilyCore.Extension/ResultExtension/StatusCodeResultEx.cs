@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点51分
@@ -11,11 +9,16 @@ namespace KilyCore.Extension.ResultExtension
     /// <summary>
     /// StatusCodeResult结果封装
     /// </summary>
-    public class StatusCodeResultEx: StatusCodeResult
+    public class StatusCodeResultEx : StatusCodeResult
     {
-        public StatusCodeResultEx(object obj):this(0) { Value = obj; }
+        public StatusCodeResultEx(object obj) : this(0)
+        {
+            Value = obj;
+        }
 
-        public StatusCodeResultEx(int code) : base(code) { }
+        public StatusCodeResultEx(int code) : base(code)
+        {
+        }
 
         public object Value { get; set; }
         public int Flag { get; set; }
@@ -32,6 +35,5 @@ namespace KilyCore.Extension.ResultExtension
             ex.Code = code;
             return ex;
         }
-
     }
 }

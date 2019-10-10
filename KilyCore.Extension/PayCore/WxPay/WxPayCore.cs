@@ -1,18 +1,17 @@
 ﻿using KilyCore.DataEntity.RequestMapper.System;
 using Newtonsoft.Json;
+using PaySharp.Wechatpay;
 using PaySharp.Wechatpay.Domain;
 using PaySharp.Wechatpay.Request;
-using PaySharp.Wechatpay;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 #region << 版 本 注 释 >>
+
 /*----------------------------------------------------------------
 * 类 名 称 ：WxPayCore
 * 类 描 述 ：
 * 命名空间 ：KilyCore.Extension.PayCore.WxPay
-* 机器名称 ：DESKTOP-QPIVQ28 
+* 机器名称 ：DESKTOP-QPIVQ28
 * CLR 版本 ：4.0.30319.42000
 * 作    者 ：刘泽华
 * 创建时间 ：2018/7/26 13:01:36
@@ -20,12 +19,15 @@ using System.Text;
 * Copyright @ 刘泽华 2018. All rights reserved.
 *******************************************************************
 //----------------------------------------------------------------*/
-#endregion
+
+#endregion << 版 本 注 释 >>
+
 namespace KilyCore.Extension.PayCore.WxPay
 {
     public class WxPayCore
     {
         public static WxPayCore Instance { get => new WxPayCore(); }
+
         /// <summary>
         /// 商户数据
         /// </summary>
@@ -41,6 +43,7 @@ namespace KilyCore.Extension.PayCore.WxPay
                 NotifyUrl = WxPayModel.NotifyUrl
             };
         }
+
         /// <summary>
         /// 网关数据
         /// </summary>
@@ -52,6 +55,7 @@ namespace KilyCore.Extension.PayCore.WxPay
                 GatewayUrl = WxPayModel.GateWayUrl
             };
         }
+
         /// <summary>
         /// 初始化微信支付请求
         /// </summary>
@@ -68,6 +72,7 @@ namespace KilyCore.Extension.PayCore.WxPay
             });
             return Request;
         }
+
         /// <summary>
         /// 微信PC端支付
         /// </summary>
@@ -81,6 +86,7 @@ namespace KilyCore.Extension.PayCore.WxPay
             };
             return JsonConvert.SerializeObject(Model);
         }
+
         /// <summary>
         /// 获取订单号
         /// </summary>
@@ -89,6 +95,7 @@ namespace KilyCore.Extension.PayCore.WxPay
         {
             return WxPayModel.OutTradeNo;
         }
+
         /// <summary>
         /// 查询订单
         /// </summary>

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-/// <summary>
+﻿/// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日12点01分
 /// </summary>
@@ -22,6 +19,7 @@ namespace KilyCore.Service.QueryExtend
         /// 当前页
         /// </summary>
         public int pageNumber { get; set; }
+
         /// <summary>
         /// 每页显示的条数
         /// </summary>
@@ -29,6 +27,7 @@ namespace KilyCore.Service.QueryExtend
 
         public T QueryParam { get; set; }
     }
+
     /// <summary>
     /// 单个值查询
     /// </summary>

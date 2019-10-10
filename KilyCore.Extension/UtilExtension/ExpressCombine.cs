@@ -1,26 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 
 namespace KilyCore.Extension.UtilExtension
 {
     internal class NewExpressionVisitor : ExpressionVisitor
     {
         public ParameterExpression _NewParameter { get; private set; }
+
         public NewExpressionVisitor(ParameterExpression param)
         {
             this._NewParameter = param;
         }
+
         public Expression Replace(Expression exp)
         {
             return this.Visit(exp);
         }
+
         protected override Expression VisitParameter(ParameterExpression node)
         {
             return this._NewParameter;
         }
     }
+
     public static class ExpressionExt
     {
         /// <summary>
@@ -45,8 +47,8 @@ namespace KilyCore.Extension.UtilExtension
             var right = visitor.Replace(expr2.Body);
             var body = Expression.And(left, right);
             return Expression.Lambda<Func<T, bool>>(body, newParameter);
-
         }
+
         /// <summary>
         /// 合并表达式 expr1 or expr2
         /// </summary>
@@ -69,6 +71,7 @@ namespace KilyCore.Extension.UtilExtension
             var body = Expression.Or(left, right);
             return Expression.Lambda<Func<T, bool>>(body, newParameter);
         }
+
         public static Expression<Func<T, bool>> Not<T>(this Expression<Func<T, bool>> expr)
         {
             if (expr == null)

@@ -2,7 +2,7 @@
 using AutoMapper.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Text;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点51分
@@ -27,6 +27,7 @@ namespace KilyCore.Extension.AutoMapperExtension
             IMapper mapper = new MapperConfiguration(t => t.CreateMap(Obj.GetType(), typeof(K))).CreateMapper();
             return mapper.Map<K>(Obj);
         }
+
         /// <summary>
         /// 数据传输对象转实体
         /// </summary>
@@ -39,6 +40,7 @@ namespace KilyCore.Extension.AutoMapperExtension
             IMapper mapper = new MapperConfiguration(t => t.CreateMap(Obj.GetType(), typeof(T))).CreateMapper();
             return mapper.Map<T>(Obj);
         }
+
         /// <summary>
         /// 自定义过滤映射
         /// </summary>
@@ -54,6 +56,7 @@ namespace KilyCore.Extension.AutoMapperExtension
             IMapper mapper = new MapperConfiguration(expression).CreateMapper();
             return mapper.Map<T>(Obj);
         }
+
         /// <summary>
         /// 集合映射
         /// </summary>
@@ -66,6 +69,7 @@ namespace KilyCore.Extension.AutoMapperExtension
             IMapper mapper = new MapperConfiguration(t => t.CreateMap(Obj.GetType(), typeof(K))).CreateMapper();
             return mapper.Map<List<K>>(Obj);
         }
+
         /// <summary>
         /// 集合映射
         /// </summary>

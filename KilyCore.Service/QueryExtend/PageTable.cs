@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
-using System.Text;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日12点01分
@@ -46,6 +45,7 @@ namespace KilyCore.Service.QueryExtend
             }
             return dt;
         }
+
         /// <summary>
         /// 数据表分页
         /// </summary>

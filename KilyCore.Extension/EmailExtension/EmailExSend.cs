@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点51分
@@ -20,7 +20,7 @@ namespace KilyCore.Extension.EmailExtension
         /// <param name="receive">收件人</param>
         /// <param name="title">标题</param>
         /// <param name="body">内容</param>
-        public static bool SendEmail(string receive,string title,string content)
+        public static bool SendEmail(string receive, string title, string content)
         {
             try
             {

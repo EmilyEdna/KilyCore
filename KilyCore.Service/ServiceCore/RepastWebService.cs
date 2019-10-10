@@ -30,11 +30,12 @@ using System.Linq;
 using System.Text;
 
 #region << 版 本 注 释 >>
+
 /*----------------------------------------------------------------
 * 类 名 称 ：RepastWebService
 * 类 描 述 ：
 * 命名空间 ：KilyCore.Service.ServiceCore
-* 机器名称 ：DESKTOP-QPIVQ28 
+* 机器名称 ：DESKTOP-QPIVQ28
 * CLR 版本 ：4.0.30319.42000
 * 作    者 ：刘泽华
 * 创建时间 ：2018/7/16 15:13:14
@@ -42,12 +43,15 @@ using System.Text;
 * Copyright @ 刘泽华 2018. All rights reserved.
 *******************************************************************
 //----------------------------------------------------------------*/
-#endregion
+
+#endregion << 版 本 注 释 >>
+
 namespace KilyCore.Service.ServiceCore
 {
     public class RepastWebService : Repository, IRepastWebService
     {
         #region 获取全局集团菜单
+
         /// <summary>
         /// 返回子公司Id列表
         /// </summary>
@@ -57,6 +61,7 @@ namespace KilyCore.Service.ServiceCore
         {
             return Kily.Set<RepastInfo>().Where(t => t.InfoId == Id).Select(t => t.Id).AsQueryable();
         }
+
         /// <summary>
         /// 下拉字典类型
         /// </summary>
@@ -86,8 +91,8 @@ namespace KilyCore.Service.ServiceCore
                 }).AsNoTracking().ToList();
             });
             return data;
-
         }
+
         /// <summary>
         /// 获取导航菜单
         /// </summary>
@@ -171,6 +176,7 @@ namespace KilyCore.Service.ServiceCore
                 return data;
             }
         }
+
         /// <summary>
         /// 获取权限菜单树
         /// </summary>
@@ -286,10 +292,13 @@ namespace KilyCore.Service.ServiceCore
                 return data;
             }
         }
-        #endregion
+
+        #endregion 获取全局集团菜单
 
         #region 编辑不需要权限的
+
         #region 商家资料
+
         /// <summary>
         /// 编辑商家资料
         /// </summary>
@@ -341,6 +350,7 @@ namespace KilyCore.Service.ServiceCore
             }
             return Update<RepastInfo, RequestMerchant>(Info, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
+
         /// <summary>
         /// 修改账号密码
         /// </summary>
@@ -356,6 +366,7 @@ namespace KilyCore.Service.ServiceCore
                 "账号不能包含中文和特殊字符" :
                 (UpdateField(info, null, Fields) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL);
         }
+
         /// <summary>
         /// 修改所属区域
         /// </summary>
@@ -367,8 +378,11 @@ namespace KilyCore.Service.ServiceCore
             info.TypePath = Param.TypePath;
             return UpdateField(info, "TypePath") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
-        #endregion
+
+        #endregion 商家资料
+
         #region 商家认证
+
         /// <summary>
         /// 商家认证
         /// </summary>
@@ -384,8 +398,11 @@ namespace KilyCore.Service.ServiceCore
             RepastIdentAttach attach = Param.MapToEntity<RepastIdentAttach>();
             return Insert<RepastIdent>(ident, false) && Insert<RepastIdentAttach>(attach) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
-        #endregion
+
+        #endregion 商家认证
+
         #region 权限角色
+
         /// <summary>
         /// 新增账户
         /// </summary>
@@ -399,8 +416,11 @@ namespace KilyCore.Service.ServiceCore
             else
                 return Update<RepastRoleAuthorWeb, RequestRoleAuthorWeb>(Author, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
-        #endregion
+
+        #endregion 权限角色
+
         #region 人员管理
+
         /// <summary>
         /// 编辑子账户
         /// </summary>
@@ -435,8 +455,11 @@ namespace KilyCore.Service.ServiceCore
                     return ServiceMessage.INSERTFAIL;
             }
         }
-        #endregion
+
+        #endregion 人员管理
+
         #region 集团账户
+
         /// <summary>
         /// 编辑子账户
         /// </summary>
@@ -457,8 +480,11 @@ namespace KilyCore.Service.ServiceCore
             }
             return "无权限创建!";
         }
-        #endregion
+
+        #endregion 集团账户
+
         #region 餐饮字典
+
         /// <summary>
         /// 编辑字典
         /// </summary>
@@ -476,8 +502,11 @@ namespace KilyCore.Service.ServiceCore
                 return Insert<RepastDictionary>(dictionary) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
             }
         }
-        #endregion
+
+        #endregion 餐饮字典
+
         #region 升级续费
+
         /// <summary>
         /// 编辑续费
         /// </summary>
@@ -489,6 +518,7 @@ namespace KilyCore.Service.ServiceCore
             continued.AuditType = AuditEnum.WaitAduit;
             return Insert<RepastContinued>(continued) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
+
         /// <summary>
         /// 编辑升级
         /// </summary>
@@ -500,8 +530,11 @@ namespace KilyCore.Service.ServiceCore
             level.AuditType = AuditEnum.WaitAduit;
             return Insert<RepastUpLevel>(level) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
-        #endregion
+
+        #endregion 升级续费
+
         #region 供应商
+
         /// <summary>
         /// 编辑供应商
         /// </summary>
@@ -512,8 +545,11 @@ namespace KilyCore.Service.ServiceCore
             RepastSupplier supplier = Param.MapToEntity<RepastSupplier>();
             return Insert(supplier) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
-        #endregion
+
+        #endregion 供应商
+
         #region 实时监控
+
         /// <summary>
         /// 编辑视频
         /// </summary>
@@ -528,8 +564,11 @@ namespace KilyCore.Service.ServiceCore
                 video.TypePath = MerchantUser().TypePath;
             return Insert(video) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
-        #endregion
+
+        #endregion 实时监控
+
         #region 菜品管理
+
         /// <summary>
         /// 编辑菜品
         /// </summary>
@@ -543,11 +582,15 @@ namespace KilyCore.Service.ServiceCore
             else
                 return Update<RepastDish, RequestRepastDish>(dish, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
-        #endregion
-        #endregion
+
+        #endregion 菜品管理
+
+        #endregion 编辑不需要权限的
 
         #region 删除不需要权限的
+
         #region 权限角色
+
         /// <summary>
         /// 删除账户
         /// </summary>
@@ -560,8 +603,11 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.REMOVEFAIL;
         }
-        #endregion
+
+        #endregion 权限角色
+
         #region 人员管理
+
         /// <summary>
         /// 删除子账号
         /// </summary>
@@ -574,8 +620,11 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.REMOVEFAIL;
         }
-        #endregion
+
+        #endregion 人员管理
+
         #region 餐饮字典
+
         /// <summary>
         /// 删除码表
         /// </summary>
@@ -585,8 +634,11 @@ namespace KilyCore.Service.ServiceCore
         {
             return Remove<RepastDictionary>(ExpressionExtension.GetExpression<RepastDictionary>("Id", Id, ExpressionEnum.Equals)) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
-        #endregion
+
+        #endregion 餐饮字典
+
         #region 供应商
+
         /// <summary>
         /// 删除供应商
         /// </summary>
@@ -596,8 +648,11 @@ namespace KilyCore.Service.ServiceCore
         {
             return Delete(ExpressionExtension.GetExpression<RepastSupplier>("Id", Id, ExpressionEnum.Equals)) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
-        #endregion
+
+        #endregion 供应商
+
         #region 台账凭证
+
         /// <summary>
         /// 删除台账凭证
         /// </summary>
@@ -607,8 +662,11 @@ namespace KilyCore.Service.ServiceCore
         {
             return Remove<RepastBillTicket>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
-        #endregion
+
+        #endregion 台账凭证
+
         #region 周菜谱
+
         /// <summary>
         /// 删除周菜谱
         /// </summary>
@@ -618,8 +676,11 @@ namespace KilyCore.Service.ServiceCore
         {
             return Delete<RepastFoodMenu>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
-        #endregion
+
+        #endregion 周菜谱
+
         #region 实时监控
+
         /// <summary>
         /// 删除视频
         /// </summary>
@@ -629,8 +690,11 @@ namespace KilyCore.Service.ServiceCore
         {
             return Remove<RepastVideo>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
-        #endregion
+
+        #endregion 实时监控
+
         #region 菜品管理
+
         /// <summary>
         /// 删除菜品
         /// </summary>
@@ -640,11 +704,15 @@ namespace KilyCore.Service.ServiceCore
         {
             return Delete(ExpressionExtension.GetExpression<RepastDish>("Id", Id, ExpressionEnum.Equals)) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
-        #endregion
-        #endregion
+
+        #endregion 菜品管理
+
+        #endregion 删除不需要权限的
 
         #region 基础管理
+
         #region 商家资料
+
         /// <summary>
         /// 商家资料分页
         /// </summary>
@@ -666,6 +734,7 @@ namespace KilyCore.Service.ServiceCore
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 获取详情
         /// </summary>
@@ -707,6 +776,7 @@ namespace KilyCore.Service.ServiceCore
                 }).FirstOrDefault();
             return data;
         }
+
         /// <summary>
         /// 获取子公司
         /// </summary>
@@ -720,6 +790,7 @@ namespace KilyCore.Service.ServiceCore
             Maps.Add(Map.Keys.FirstOrDefault(), Map.Values.FirstOrDefault());
             return Maps;
         }
+
         /// <summary>
         /// 保存合同
         /// </summary>
@@ -891,6 +962,7 @@ namespace KilyCore.Service.ServiceCore
                 };
             }
         }
+
         /// <summary>
         /// 获取合同状态
         /// </summary>
@@ -913,8 +985,11 @@ namespace KilyCore.Service.ServiceCore
                 }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
-        #endregion
+
+        #endregion 商家资料
+
         #region 商家认证
+
         /// <summary>
         /// 商家认证分页
         /// </summary>
@@ -938,8 +1013,11 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
-        #endregion
+
+        #endregion 商家认证
+
         #region 权限角色
+
         /// <summary>
         /// 账户分页列表
         /// </summary>
@@ -962,6 +1040,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 集团账户权限列表
         /// </summary>
@@ -980,8 +1059,11 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
             return data;
         }
-        #endregion
+
+        #endregion 权限角色
+
         #region 人员管理
+
         /// <summary>
         /// 人员分页
         /// </summary>
@@ -1009,6 +1091,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 获取子账户详情
         /// </summary>
@@ -1035,6 +1118,7 @@ namespace KilyCore.Service.ServiceCore
             }).AsNoTracking().FirstOrDefault();
             return data;
         }
+
         /// <summary>
         /// 人员列表
         /// </summary>
@@ -1053,8 +1137,11 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
             return data;
         }
-        #endregion
+
+        #endregion 人员管理
+
         #region 集团账户
+
         /// <summary>
         /// 集团账户列表
         /// </summary>
@@ -1074,6 +1161,7 @@ namespace KilyCore.Service.ServiceCore
                }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 集团账号详情
         /// </summary>
@@ -1093,8 +1181,11 @@ namespace KilyCore.Service.ServiceCore
                 DingRoleId = t.DingRoleId
             }).FirstOrDefault();
         }
-        #endregion
+
+        #endregion 集团账户
+
         #region 餐饮字典
+
         /// <summary>
         /// 字典分页
         /// </summary>
@@ -1120,6 +1211,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 字典详情
         /// </summary>
@@ -1139,8 +1231,10 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
 
-        #endregion
+        #endregion 餐饮字典
+
         #region 升级续费
+
         /// <summary>
         /// 查看版本信息
         /// </summary>
@@ -1160,6 +1254,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 续费记录
         /// </summary>
@@ -1179,6 +1274,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 升级记录
         /// </summary>
@@ -1199,6 +1295,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 审核审计续费
         /// </summary>
@@ -1261,8 +1358,11 @@ namespace KilyCore.Service.ServiceCore
                 }
             }
         }
-        #endregion
+
+        #endregion 升级续费
+
         #region 商家自查
+
         /// <summary>
         /// 获取企业检查分页
         /// </summary>
@@ -1287,6 +1387,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 自查详情
         /// </summary>
@@ -1296,6 +1397,7 @@ namespace KilyCore.Service.ServiceCore
         {
             return Kily.Set<GovtTemplateChild>().Where(t => t.Id == Id).FirstOrDefault().MapToEntity<ResponseGovtTemplateChild>();
         }
+
         /// <summary>
         /// 编辑企业自查信息
         /// </summary>
@@ -1306,6 +1408,7 @@ namespace KilyCore.Service.ServiceCore
             GovtTemplateChild Data = Param.MapToEntity<GovtTemplateChild>();
             return Insert(Data) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
+
         /// <summary>
         /// 删除企业自查记录
         /// </summary>
@@ -1315,8 +1418,11 @@ namespace KilyCore.Service.ServiceCore
         {
             return Remove<GovtTemplateChild>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
-        #endregion
+
+        #endregion 商家自查
+
         #region 委员
+
         /// <summary>
         /// 委员分页
         /// </summary>
@@ -1343,6 +1449,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 委员详情
         /// </summary>
@@ -1352,6 +1459,7 @@ namespace KilyCore.Service.ServiceCore
         {
             return Kily.Set<RepastOrg>().Where(t => t.Id == Id).FirstOrDefault().MapToEntity<ResponseRepastOrg>();
         }
+
         /// <summary>
         /// 编辑委员
         /// </summary>
@@ -1365,6 +1473,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return Update(Org, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
+
         /// <summary>
         /// 删除委员
         /// </summary>
@@ -1374,6 +1483,7 @@ namespace KilyCore.Service.ServiceCore
         {
             return Remove<RepastOrg>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
+
         /// <summary>
         /// 判断是否存在家委会
         /// </summary>
@@ -1387,11 +1497,15 @@ namespace KilyCore.Service.ServiceCore
             else
                 return repast.InfoId.ToString();
         }
-        #endregion
-        #endregion
+
+        #endregion 委员
+
+        #endregion 基础管理
 
         #region 功能管理
+
         #region 供应商
+
         /// <summary>
         /// 供应商列表
         /// </summary>
@@ -1419,6 +1533,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 供应商列表
         /// </summary>
@@ -1441,9 +1556,11 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
             return data;
         }
-        #endregion
+
+        #endregion 供应商
 
         #region 进货台账
+
         /// <summary>
         /// 进货台账分页
         /// </summary>
@@ -1475,6 +1592,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 删除进货台账
         /// </summary>
@@ -1484,6 +1602,7 @@ namespace KilyCore.Service.ServiceCore
         {
             return Delete<RepastBuybill>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
+
         /// <summary>
         /// 进货台账详情
         /// </summary>
@@ -1508,6 +1627,7 @@ namespace KilyCore.Service.ServiceCore
             }).FirstOrDefault();
             return data;
         }
+
         /// <summary>
         /// 编辑进货台账
         /// </summary>
@@ -1524,9 +1644,11 @@ namespace KilyCore.Service.ServiceCore
             else
                 return Update<RepastBuybill, RequestRepastBuybill>(buybill, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
-        #endregion
+
+        #endregion 进货台账
 
         #region 台账凭证
+
         /// <summary>
         ///  凭证分页
         /// </summary>
@@ -1550,6 +1672,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 台账详情
         /// </summary>
@@ -1559,6 +1682,7 @@ namespace KilyCore.Service.ServiceCore
         {
             return Kily.Set<RepastBillTicket>().Where(t => t.IsDelete == false).AsNoTracking().Where(t => t.Id == Id).FirstOrDefault().MapToEntity<ResponseBillTicket>();
         }
+
         /// <summary>
         /// 添加凭证
         /// </summary>
@@ -1569,9 +1693,11 @@ namespace KilyCore.Service.ServiceCore
             RepastBillTicket ticket = Param.MapToEntity<RepastBillTicket>();
             return Insert(ticket) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
-        #endregion
+
+        #endregion 台账凭证
 
         #region 销售台账
+
         /// <summary>
         /// 销售台账分页
         /// </summary>
@@ -1600,6 +1726,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 删除销售台账
         /// </summary>
@@ -1609,6 +1736,7 @@ namespace KilyCore.Service.ServiceCore
         {
             return Delete<RepastSellbill>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
+
         /// <summary>
         /// 销售台账详情
         /// </summary>
@@ -1630,6 +1758,7 @@ namespace KilyCore.Service.ServiceCore
             }).FirstOrDefault();
             return data;
         }
+
         /// <summary>
         /// 编辑销售台账
         /// </summary>
@@ -1646,9 +1775,11 @@ namespace KilyCore.Service.ServiceCore
             else
                 return Update<RepastSellbill, RequestRepastSellbill>(sellbill, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
-        #endregion
+
+        #endregion 销售台账
 
         #region 进销台账
+
         /// <summary>
         /// 进销台账分页
         /// </summary>
@@ -1732,9 +1863,11 @@ namespace KilyCore.Service.ServiceCore
             }
             return List.ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
         }
-        #endregion
+
+        #endregion 进销台账
 
         #region 实时监控
+
         /// <summary>
         /// 视频分页
         /// </summary>
@@ -1759,6 +1892,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 首页显示
         /// </summary>
@@ -1770,10 +1904,13 @@ namespace KilyCore.Service.ServiceCore
             Video.IsIndex = flag;
             return UpdateField(Video, "IsIndex") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
-        #endregion
-        #endregion
+
+        #endregion 实时监控
+
+        #endregion 功能管理
 
         #region 菜品管理
+
         /// <summary>
         /// 菜品分页
         /// </summary>
@@ -1798,6 +1935,7 @@ namespace KilyCore.Service.ServiceCore
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 菜品详情
         /// </summary>
@@ -1821,6 +1959,7 @@ namespace KilyCore.Service.ServiceCore
             }).FirstOrDefault();
             return data;
         }
+
         /// <summary>
         /// 周菜谱
         /// </summary>
@@ -1844,6 +1983,7 @@ namespace KilyCore.Service.ServiceCore
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 编辑周菜谱
         /// </summary>
@@ -1854,10 +1994,13 @@ namespace KilyCore.Service.ServiceCore
             RepastFoodMenu Menu = Param.MapToEntity<RepastFoodMenu>();
             return Insert(Menu) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
-        #endregion
+
+        #endregion 菜品管理
 
         #region 溯源追踪
+
         #region 原料溯源
+
         /// <summary>
         /// 原料溯源分页
         /// </summary>
@@ -1883,6 +2026,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 删除溯源信息
         /// </summary>
@@ -1892,6 +2036,7 @@ namespace KilyCore.Service.ServiceCore
         {
             return Delete<RepastStuff>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
+
         /// <summary>
         /// 编辑溯源信息
         /// </summary>
@@ -1905,6 +2050,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return Update(stuff, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
+
         /// <summary>
         /// 获取溯源详情
         /// </summary>
@@ -1931,9 +2077,11 @@ namespace KilyCore.Service.ServiceCore
             }).FirstOrDefault();
             return data;
         }
-        #endregion
+
+        #endregion 原料溯源
 
         #region 留样管理
+
         /// <summary>
         /// 留样分页
         /// </summary>
@@ -1959,6 +2107,7 @@ namespace KilyCore.Service.ServiceCore
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 编辑留样
         /// </summary>
@@ -1969,6 +2118,7 @@ namespace KilyCore.Service.ServiceCore
             RepastSample sample = Param.MapToEntity<RepastSample>();
             return Insert(sample) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
+
         /// <summary>
         /// 删除留样
         /// </summary>
@@ -1978,9 +2128,11 @@ namespace KilyCore.Service.ServiceCore
         {
             return Delete<RepastSample>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
-        #endregion
+
+        #endregion 留样管理
 
         #region 抽样管理
+
         /// <summary>
         /// 抽样分页
         /// </summary>
@@ -2006,6 +2158,7 @@ namespace KilyCore.Service.ServiceCore
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 编辑抽样
         /// </summary>
@@ -2016,6 +2169,7 @@ namespace KilyCore.Service.ServiceCore
             RepastDraw draw = Param.MapToEntity<RepastDraw>();
             return Insert(draw) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
+
         /// <summary>
         /// 删除抽样
         /// </summary>
@@ -2025,9 +2179,11 @@ namespace KilyCore.Service.ServiceCore
         {
             return Delete<RepastDraw>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
-        #endregion
+
+        #endregion 抽样管理
 
         #region 废物处理
+
         /// <summary>
         /// 废物分页
         /// </summary>
@@ -2051,6 +2207,7 @@ namespace KilyCore.Service.ServiceCore
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 编辑废物
         /// </summary>
@@ -2061,6 +2218,7 @@ namespace KilyCore.Service.ServiceCore
             RepastDuck duck = Param.MapToEntity<RepastDuck>();
             return Insert(duck) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
+
         /// <summary>
         /// 删除废物
         /// </summary>
@@ -2070,9 +2228,11 @@ namespace KilyCore.Service.ServiceCore
         {
             return Remove<RepastDuck>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
-        #endregion
+
+        #endregion 废物处理
 
         #region 消毒管理
+
         /// <summary>
         /// 消毒分页
         /// </summary>
@@ -2097,6 +2257,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 编辑消毒
         /// </summary>
@@ -2110,6 +2271,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return Update(disinfect, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
+
         /// <summary>
         /// 删除消毒
         /// </summary>
@@ -2119,6 +2281,7 @@ namespace KilyCore.Service.ServiceCore
         {
             return Delete<RepastDisinfect>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
+
         /// <summary>
         /// 获取消毒详情
         /// </summary>
@@ -2139,9 +2302,11 @@ namespace KilyCore.Service.ServiceCore
             }).FirstOrDefault();
             return data;
         }
-        #endregion
+
+        #endregion 消毒管理
 
         #region 添加剂管理
+
         /// <summary>
         /// 添加剂分页
         /// </summary>
@@ -2166,6 +2331,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 编辑添加剂
         /// </summary>
@@ -2179,6 +2345,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return Update(additive, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
+
         /// <summary>
         /// 删除添加剂
         /// </summary>
@@ -2188,6 +2355,7 @@ namespace KilyCore.Service.ServiceCore
         {
             return Delete<RepastAdditive>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
+
         /// <summary>
         /// 获取添加剂详情
         /// </summary>
@@ -2210,11 +2378,15 @@ namespace KilyCore.Service.ServiceCore
             }).FirstOrDefault();
             return data;
         }
-        #endregion
-        #endregion
+
+        #endregion 添加剂管理
+
+        #endregion 溯源追踪
 
         #region 仓库管理
+
         #region 原料仓库-入库
+
         /// <summary>
         /// 原料入库分页
         /// </summary>
@@ -2241,6 +2413,7 @@ namespace KilyCore.Service.ServiceCore
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 仓库原料列表
         /// </summary>
@@ -2260,6 +2433,7 @@ namespace KilyCore.Service.ServiceCore
                 }).AsNoTracking().ToList();
             return data;
         }
+
         /// <summary>
         /// 编辑原料入库
         /// </summary>
@@ -2273,6 +2447,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return null;
         }
+
         /// <summary>
         /// 删除原料入库
         /// </summary>
@@ -2282,6 +2457,7 @@ namespace KilyCore.Service.ServiceCore
         {
             return Delete(ExpressionExtension.GetExpression<RepastInStorage>("Id", Id, ExpressionEnum.Equals)) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
+
         /// <summary>
         /// 原料入库详情
         /// </summary>
@@ -2311,9 +2487,11 @@ namespace KilyCore.Service.ServiceCore
             }).AsNoTracking().FirstOrDefault();
             return data;
         }
-        #endregion
+
+        #endregion 原料仓库-入库
 
         #region 原料仓库-出库
+
         /// <summary>
         /// 出库分页
         /// </summary>
@@ -2342,6 +2520,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 编辑出库
         /// </summary>
@@ -2357,8 +2536,8 @@ namespace KilyCore.Service.ServiceCore
             inStorage.InStorageNum -= Param.OutStorageNum;
             RepastOutStorage outStorage = Param.MapToEntity<RepastOutStorage>();
             return Insert(outStorage) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
-
         }
+
         /// <summary>
         /// 删除出库
         /// </summary>
@@ -2368,9 +2547,11 @@ namespace KilyCore.Service.ServiceCore
         {
             return Delete<RepastOutStorage>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
-        #endregion
+
+        #endregion 原料仓库-出库
 
         #region 物品仓库-入库
+
         /// <summary>
         /// 物品入库分页
         /// </summary>
@@ -2397,6 +2578,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 删除物品入库
         /// </summary>
@@ -2406,6 +2588,7 @@ namespace KilyCore.Service.ServiceCore
         {
             return Delete<RepastArticleInStock>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
+
         /// <summary>
         /// 编辑物品入库
         /// </summary>
@@ -2419,6 +2602,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return null;
         }
+
         /// <summary>
         /// 获取物品入库详情
         /// </summary>
@@ -2443,9 +2627,11 @@ namespace KilyCore.Service.ServiceCore
             }).AsNoTracking().FirstOrDefault();
             return data;
         }
-        #endregion
+
+        #endregion 物品仓库-入库
 
         #region 物品仓库-出库
+
         /// <summary>
         /// 物品出库分页
         /// </summary>
@@ -2474,6 +2660,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 删除物品出库
         /// </summary>
@@ -2483,6 +2670,7 @@ namespace KilyCore.Service.ServiceCore
         {
             return Delete<RepastArticleOutStock>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
+
         /// <summary>
         /// 编辑物品出库
         /// </summary>
@@ -2499,9 +2687,11 @@ namespace KilyCore.Service.ServiceCore
             RepastArticleOutStock outStock = Param.MapToEntity<RepastArticleOutStock>();
             return Insert(outStock) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
-        #endregion
+
+        #endregion 物品仓库-出库
 
         #region 库存报表
+
         /// <summary>
         /// 原料报表
         /// </summary>
@@ -2530,6 +2720,7 @@ namespace KilyCore.Service.ServiceCore
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 物品报表
         /// </summary>
@@ -2558,9 +2749,11 @@ namespace KilyCore.Service.ServiceCore
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
-        #endregion
+
+        #endregion 库存报表
 
         #region 名称管理
+
         /// <summary>
         /// 名称分页
         /// </summary>
@@ -2584,6 +2777,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize); ;
             return data;
         }
+
         /// <summary>
         /// 编辑名称
         /// </summary>
@@ -2601,6 +2795,7 @@ namespace KilyCore.Service.ServiceCore
                 return "原料名称已经存在请勿重复添加";
             return Insert(typeName) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
+
         /// <summary>
         /// 删除名称
         /// </summary>
@@ -2610,6 +2805,7 @@ namespace KilyCore.Service.ServiceCore
         {
             return Remove<RepastTypeName>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
+
         /// <summary>
         /// 名称列表
         /// </summary>
@@ -2632,10 +2828,13 @@ namespace KilyCore.Service.ServiceCore
                 TypeNames = $"{t.TypeNames}({t.Spec})"
             }).ToList();
         }
-        #endregion
-        #endregion
+
+        #endregion 名称管理
+
+        #endregion 仓库管理
 
         #region 陪餐管理
+
         /// <summary>
         /// 陪餐列表
         /// </summary>
@@ -2659,6 +2858,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 删除陪餐
         /// </summary>
@@ -2668,6 +2868,7 @@ namespace KilyCore.Service.ServiceCore
         {
             return Remove<RepastUnitIns>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
+
         /// <summary>
         /// 编辑陪餐
         /// </summary>
@@ -2681,6 +2882,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return Update(Param, Ins) ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
         }
+
         /// <summary>
         /// 陪餐详情
         /// </summary>
@@ -2690,6 +2892,7 @@ namespace KilyCore.Service.ServiceCore
         {
             return Kily.Set<RepastUnitIns>().Where(t => t.Id == Id).FirstOrDefault().MapToEntity<ReponseRepastUnitIns>();
         }
+
         /// <summary>
         /// 陪餐记录
         /// </summary>
@@ -2715,6 +2918,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 删除陪餐记录
         /// </summary>
@@ -2724,6 +2928,7 @@ namespace KilyCore.Service.ServiceCore
         {
             return Remove<RepastUnitInsRecord>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
         }
+
         /// <summary>
         /// 编辑陪餐记录
         /// </summary>
@@ -2737,6 +2942,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return Update(Ins, Param) ? ServiceMessage.HANDLESUCCESS : ServiceMessage.HANDLEFAIL;
         }
+
         /// <summary>
         /// 陪餐记录详情
         /// </summary>
@@ -2746,9 +2952,11 @@ namespace KilyCore.Service.ServiceCore
         {
             return Kily.Set<RepastUnitInsRecord>().Where(t => t.Id == Id).FirstOrDefault().MapToEntity<ReponseRepastUnitInsRecord>();
         }
-        #endregion
+
+        #endregion 陪餐管理
 
         #region 微信和支付宝调用
+
         /// <summary>
         /// 版本续费和升级使用支付宝支付
         /// </summary>
@@ -2792,6 +3000,7 @@ namespace KilyCore.Service.ServiceCore
             }
             return AliPayCore.Instance.WebPay(AliPayModel);
         }
+
         /// <summary>
         /// 版本续费和升级使用微信支付
         /// </summary>
@@ -2835,6 +3044,7 @@ namespace KilyCore.Service.ServiceCore
             }
             return WxPayCore.Instance.WebPay(WxPayModel);
         }
+
         /// <summary>
         /// 查询微信支付
         /// </summary>
@@ -2869,9 +3079,11 @@ namespace KilyCore.Service.ServiceCore
             else
                 return null;
         }
-        #endregion
+
+        #endregion 微信和支付宝调用
 
         #region 导出Excel
+
         /// <summary>
         /// 食材入库Excel导出
         /// </summary>
@@ -2899,6 +3111,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToList<Object>();
             return data;
         }
+
         /// <summary>
         /// 食材出库Excel导出
         /// </summary>
@@ -2925,6 +3138,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToList<Object>();
             return data;
         }
+
         /// <summary>
         /// 物品入库Excel导出
         /// </summary>
@@ -2951,6 +3165,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToList<Object>();
             return data;
         }
+
         /// <summary>
         /// 物品出库Excel导出
         /// </summary>
@@ -2977,9 +3192,11 @@ namespace KilyCore.Service.ServiceCore
             }).ToList<Object>();
             return data;
         }
-        #endregion
+
+        #endregion 导出Excel
 
         #region 数据统计
+
         /// <summary>
         /// 数据统计
         /// </summary>
@@ -2995,6 +3212,7 @@ namespace KilyCore.Service.ServiceCore
             Object data = new { bill, supplier, record, touser, exp };
             return data;
         }
+
         /// <summary>
         /// 数据统计
         /// </summary>
@@ -3057,9 +3275,11 @@ namespace KilyCore.Service.ServiceCore
             };
             return new { 自查, 配餐, 留样, 废物 };
         }
-        #endregion
+
+        #endregion 数据统计
 
         #region 扫码信息
+
         /// <summary>
         /// 信息分页
         /// </summary>
@@ -3084,6 +3304,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 编辑信息
         /// </summary>
@@ -3102,6 +3323,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return Update(Scan, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
+
         /// <summary>
         /// 删除信息
         /// </summary>
@@ -3121,6 +3343,7 @@ namespace KilyCore.Service.ServiceCore
                 return Remove<RepastScanInfo>(t => t.Id == Id) ? ServiceMessage.REMOVESUCCESS : ServiceMessage.REMOVEFAIL;
             }
         }
+
         /// <summary>
         /// 信息详情
         /// </summary>
@@ -3131,9 +3354,11 @@ namespace KilyCore.Service.ServiceCore
             var data = Kily.Set<RepastScanInfo>().Where(t => t.Id == Id).AsNoTracking().FirstOrDefault().MapToEntity<ResponseRepastScanInfo>();
             return data;
         }
-        #endregion
+
+        #endregion 扫码信息
 
         #region 列表集合
+
         /// <summary>
         /// 菜品列表
         /// </summary>
@@ -3152,6 +3377,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
             return data;
         }
+
         /// <summary>
         /// 原料列表
         /// </summary>
@@ -3170,6 +3396,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
             return data;
         }
+
         /// <summary>
         /// 视频列表
         /// </summary>
@@ -3188,6 +3415,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
             return data;
         }
+
         /// <summary>
         /// 人员列表
         /// </summary>
@@ -3206,6 +3434,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
             return data;
         }
+
         /// <summary>
         /// 废物列表
         /// </summary>
@@ -3224,6 +3453,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
             return data;
         }
+
         /// <summary>
         /// 抽样列表
         /// </summary>
@@ -3242,6 +3472,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
             return data;
         }
+
         /// <summary>
         /// 留样列表
         /// </summary>
@@ -3260,6 +3491,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
             return data;
         }
+
         /// <summary>
         /// 消毒列表
         /// </summary>
@@ -3278,6 +3510,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
             return data;
         }
+
         /// <summary>
         /// 添加剂列表
         /// </summary>
@@ -3296,6 +3529,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
             return data;
         }
+
         /// <summary>
         /// 台账列表
         /// </summary>
@@ -3314,6 +3548,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
             return data;
         }
+
         /// <summary>
         /// 周菜谱列表
         /// </summary>
@@ -3332,9 +3567,11 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
             return data;
         }
-        #endregion
+
+        #endregion 列表集合
 
         #region 手机端扫码信息
+
         /// <summary>
         /// 商家的二维码
         /// </summary>
@@ -3348,9 +3585,11 @@ namespace KilyCore.Service.ServiceCore
             var data = Kily.Execute("Sp_GetScanMerchantInfo", Param).ToCollection<ResponseRepastScanInfos>().FirstOrDefault();
             return data;
         }
-        #endregion
+
+        #endregion 手机端扫码信息
 
         #region APP接口
+
         /// <summary>
         /// 督查信息
         /// </summary>
@@ -3373,6 +3612,7 @@ namespace KilyCore.Service.ServiceCore
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 投诉建议
         /// </summary>
@@ -3397,6 +3637,7 @@ namespace KilyCore.Service.ServiceCore
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 风险预警
         /// </summary>
@@ -3422,6 +3663,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
-        #endregion
+
+        #endregion APP接口
     }
 }

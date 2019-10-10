@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点29分
@@ -23,12 +23,13 @@ namespace KilyCore.Extension.ApplicationService.DependencyIdentity
     /// </summary>
     public class AutoFacEngine : IEngine
     {
-        AutoFacManager IocInstance = AutoFacManager.IocInstance;
+        private AutoFacManager IocInstance = AutoFacManager.IocInstance;
         private IList<Assembly> Assembly => Configer.Assembly;
         private IEnumerable<Type> Service => Assembly.SelectMany(t => t.ExportedTypes.Where(x => x.GetInterfaces().Contains(typeof(IService))));
         private IEnumerable<Type> Cache => Assembly.SelectMany(t => t.ExportedTypes.Where(x => x.GetInterfaces().Contains(typeof(ICache))));
         private IEnumerable<Type> Caches => Assembly.SelectMany(t => t.ExportedTypes.Where(x => x.GetInterfaces().Contains(typeof(IMongoDbCache))));
         private IEnumerable<Type> Context => Assembly.SelectMany(t => t.ExportedTypes.Where(x => x.GetInterfaces().Contains(typeof(IKilyContext))));
+
         /// <summary>
         /// 取出实例
         /// </summary>
@@ -38,6 +39,7 @@ namespace KilyCore.Extension.ApplicationService.DependencyIdentity
         {
             return IocInstance.Resolve<T>();
         }
+
         /// <summary>
         /// 返回AutoFac服务
         /// </summary>
@@ -54,6 +56,7 @@ namespace KilyCore.Extension.ApplicationService.DependencyIdentity
             //return new AutofacServiceProvider(container);
             return container.Resolve<IServiceProvider>();
         }
+
         /// <summary>
         /// 程序集注入
         /// </summary>

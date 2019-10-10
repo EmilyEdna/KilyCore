@@ -1,14 +1,13 @@
 ﻿using KilyCore.Configure;
-using KilyCore.DataEntity.RequestMapper.Repast;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
+using KilyCore.DataEntity.RequestMapper.Repast;
 using KilyCore.DataEntity.RequestMapper.System;
-using KilyCore.DataEntity.ResponseMapper.Repast;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
+using KilyCore.DataEntity.ResponseMapper.Repast;
 using KilyCore.DataEntity.ResponseMapper.System;
 using KilyCore.Service.QueryExtend;
 using System;
-using System.Collections.Generic;
-using System.Text;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日12点01分
@@ -21,26 +20,47 @@ namespace KilyCore.Service.IServiceCore
     public interface IFinanceService : IService
     {
         #region 加盟缴费
+
         PagedResult<ResponseAdminAttach> GetJoinPayPage(PageParamList<RequestAdminAttach> pageParam);
+
         String StartUse(Guid Id);
+
         String BlockUp(Guid Id);
+
         String Archive(RequestAdminAttach param);
+
         String SendEmail(RequestEMail Param);
-        #endregion
+
+        #endregion 加盟缴费
+
         #region 企业认证
+
         PagedResult<ResponseEnterpriseIdent> IdentEnterprisePay(PageParamList<RequestEnterpriseIdent> pageParam);
+
         String AuditIndetEnterprisePay(Guid Key, bool Param);
-        #endregion
+
+        #endregion 企业认证
+
         #region 餐饮认证
+
         PagedResult<ResponseRepastIdent> IdentFoodPay(PageParamList<RequestRepastIdent> pageParam);
+
         String AuditIndetFoodPay(Guid Key, bool Param);
-        #endregion
+
+        #endregion 餐饮认证
+
         #region 缴费凭证
+
         ResponsePayment WatchCertificate(Guid Id, string Param);
-        #endregion
+
+        #endregion 缴费凭证
+
         #region 物码缴费
+
         PagedResult<ResponseEnterpriseApply> GetTagAuditPage(PageParamList<RequestEnterpriseApply> pageParam);
+
         String AuditCode(RequestAudit Param);
-        #endregion
+
+        #endregion 物码缴费
     }
 }

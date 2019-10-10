@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点29分
@@ -35,6 +35,7 @@ namespace KilyCore.Extension.AttributeExtension
             }
             return dic;
         }
+
         /// <summary>
         /// 获取DescriptAttribute List方式
         /// </summary>
@@ -60,6 +61,7 @@ namespace KilyCore.Extension.AttributeExtension
             }
             return dic;
         }
+
         /// <summary>
         /// 获取单个DescriptAttribute
         /// </summary>
@@ -69,13 +71,13 @@ namespace KilyCore.Extension.AttributeExtension
         /// <returns></returns>
         public static string GetSingleDescription<TEnum, T>(Object obj) where T : Attribute
         {
-
             if (Convert.ToInt32(obj) == 0)
                 return "";
             FieldInfo field = typeof(TEnum).GetField(Enum.GetName(typeof(TEnum), obj));
             dynamic attr = (T)field.GetCustomAttribute(typeof(T), false);
             return attr.Description.ToString();
         }
+
         /// <summary>
         /// 获取单个DescriptAttribute
         /// </summary>
@@ -90,6 +92,7 @@ namespace KilyCore.Extension.AttributeExtension
             dynamic attr = (T)field.GetCustomAttribute(typeof(T), false);
             return attr.Description.ToString();
         }
+
         /// <summary>
         /// 获取某个属性的DescriptAttribute
         /// </summary>
@@ -97,9 +100,9 @@ namespace KilyCore.Extension.AttributeExtension
         /// <param name="entity">实体</param>
         /// <param name="FieldName">字段名称</param>
         /// <returns></returns>
-        public static string GetSingleDescription<T>(Object entity ,String FieldName) where T : Attribute
+        public static string GetSingleDescription<T>(Object entity, String FieldName) where T : Attribute
         {
-            dynamic attr =  entity.GetType().GetProperty(FieldName).GetCustomAttribute(typeof(T), false);
+            dynamic attr = entity.GetType().GetProperty(FieldName).GetCustomAttribute(typeof(T), false);
             return attr.Description.ToString();
         }
     }

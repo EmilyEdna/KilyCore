@@ -1,5 +1,4 @@
-﻿using KilyCore.Configure;
-using KilyCore.DataEntity.RequestMapper.Enterprise;
+﻿using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.DataEntity.ResponseMapper.System;
@@ -18,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日12点01分
@@ -27,6 +27,7 @@ namespace KilyCore.Service.ServiceCore
     public class EnterpriseService : Repository, IEnterpriseService
     {
         #region 集团菜单
+
         /// <summary>
         /// 父级菜单
         /// </summary>
@@ -41,6 +42,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
             return data;
         }
+
         /// <summary>
         /// 获取菜单详情
         /// </summary>
@@ -60,6 +62,7 @@ namespace KilyCore.Service.ServiceCore
             }).FirstOrDefault();
             return data;
         }
+
         /// <summary>
         /// 企业菜单分页
         /// </summary>
@@ -80,6 +83,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 删除菜单
         /// </summary>
@@ -91,6 +95,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.REMOVEFAIL;
         }
+
         /// <summary>
         /// 新增菜单
         /// </summary>
@@ -128,9 +133,11 @@ namespace KilyCore.Service.ServiceCore
                     return ServiceMessage.INSERTFAIL;
             }
         }
-        #endregion
+
+        #endregion 集团菜单
 
         #region 权限菜单树
+
         /// <summary>
         /// 获取权限菜单树
         /// </summary>
@@ -166,9 +173,11 @@ namespace KilyCore.Service.ServiceCore
             var data = queryable.ToList();
             return data;
         }
-        #endregion
+
+        #endregion 权限菜单树
 
         #region 集团角色
+
         /// <summary>
         /// 集团角色分页列表
         /// </summary>
@@ -191,6 +200,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 角色分页
         /// </summary>
@@ -209,6 +219,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 编辑集团角色菜单
         /// </summary>
@@ -226,6 +237,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return Update<EnterpriseRoleAuthor, RequestEnterpriseRoleAuthor>(RoleAuthor, Param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
+
         /// <summary>
         /// 角色分页列表
         /// </summary>
@@ -244,6 +256,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 删除集团角色
         /// </summary>
@@ -256,6 +269,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.REMOVEFAIL;
         }
+
         /// <summary>
         /// 获取角色列表
         /// </summary>
@@ -269,6 +283,7 @@ namespace KilyCore.Service.ServiceCore
                 EnterpriseRoleName = t.EnterpriseRoleName
             }).ToList();
         }
+
         /// <summary>
         /// 分配角色
         /// </summary>
@@ -288,7 +303,7 @@ namespace KilyCore.Service.ServiceCore
             if (Param.EnterpriseRoleName.Contains("旗舰"))
                 info.Version = SystemVersionEnum.Enterprise;
             info.EnterpriseRoleId = Param.EnterpriseRoleId;
-          var Money =   Kily.Set<SystemStayContract>().Where(t => t.CompanyId == info.Id && t.IsPay == true).Select(t => t.ActualPrice).FirstOrDefault();
+            var Money = Kily.Set<SystemStayContract>().Where(t => t.CompanyId == info.Id && t.IsPay == true).Select(t => t.ActualPrice).FirstOrDefault();
             if (Money == null)
             {
                 return "请先让财务确认实收金额";
@@ -298,6 +313,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.HANDLEFAIL;
         }
+
         /// <summary>
         /// 获取角色详情
         /// </summary>
@@ -312,9 +328,11 @@ namespace KilyCore.Service.ServiceCore
                 AuthorMenuPath = t.AuthorMenuPath
             }).AsNoTracking().FirstOrDefault();
         }
-        #endregion
+
+        #endregion 集团角色
 
         #region 资料审核
+
         /// <summary>
         /// 企业分页列表
         /// </summary>
@@ -347,12 +365,13 @@ namespace KilyCore.Service.ServiceCore
                 CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
                 AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.AuditType),
                 TableName = t.GetType().Name,
-                InviteCode = t.InviteCode??"-",
+                InviteCode = t.InviteCode ?? "-",
                 CreateTime = t.CreateTime.Value,
                 AuditType = t.AuditType
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 获取企业详情
         /// </summary>
@@ -397,6 +416,7 @@ namespace KilyCore.Service.ServiceCore
                  }).FirstOrDefault();
             return data;
         }
+
         /// <summary>
         /// 审核企业
         /// </summary>
@@ -418,9 +438,11 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.INSERTFAIL;
         }
-        #endregion
+
+        #endregion 资料审核
 
         #region 认证审核
+
         /// <summary>
         /// 企业认证分页列表
         /// </summary>
@@ -464,6 +486,7 @@ namespace KilyCore.Service.ServiceCore
                 }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 企业认证详情
         /// </summary>
@@ -635,6 +658,7 @@ namespace KilyCore.Service.ServiceCore
             }
             return data;
         }
+
         /// <summary>
         /// 审核认证
         /// </summary>
@@ -656,6 +680,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.INSERTFAIL;
         }
+
         /// <summary>
         /// 认证缴费
         /// </summary>
@@ -669,9 +694,11 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.INSERTFAIL;
         }
-        #endregion
+
+        #endregion 认证审核
 
         #region 登录注册
+
         /// <summary>
         /// 集团客服注册账号
         /// </summary>
@@ -683,7 +710,7 @@ namespace KilyCore.Service.ServiceCore
             EnterpriseRoleAuthor Author = Kily.Set<EnterpriseRoleAuthor>().Where(t => t.IsDelete == false).Where(t => t.EnterpriseRoleName.Contains("基本")).OrderBy(t => t.CreateTime).FirstOrDefault();
             Param.EnterpriseRoleId = Author.Id;
             EnterpriseInfo Info = Param.MapToEntity<EnterpriseInfo>();
-           var IsReplay =  Kily.Set<EnterpriseInfo>().Where(t => t.CompanyAccount == Param.CompanyAccount).FirstOrDefault();
+            var IsReplay = Kily.Set<EnterpriseInfo>().Where(t => t.CompanyAccount == Param.CompanyAccount).FirstOrDefault();
             if (IsReplay != null)
                 return "账号已经被注册";
             var IsReplays = Kily.Set<EnterpriseInfo>().Where(t => t.CompanyName == Param.CompanyName).FirstOrDefault();
@@ -696,10 +723,12 @@ namespace KilyCore.Service.ServiceCore
                 else
                     return ServiceMessage.INSERTFAIL;
             }
-            else {
+            else
+            {
                 return "账号不能包含中文和特殊字符";
             }
         }
+
         /// <summary>
         /// 企业登录
         /// </summary>
@@ -708,6 +737,7 @@ namespace KilyCore.Service.ServiceCore
         public Object EnterpriseLogin(RequestValidate LoginValidate)
         {
             #region 公司账号登录
+
             IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>()
                 .Where(t => t.CompanyAccount.Equals(LoginValidate.Account) || t.CompanyPhone.Equals(LoginValidate.Account))
                 .Where(t => t.PassWord.Equals(LoginValidate.PassWord))
@@ -733,14 +763,17 @@ namespace KilyCore.Service.ServiceCore
                 Certification = t.Certification,
                 Honor = t.HonorCertification,
                 Discription = t.Discription,
-                CodeStar=t.CodeStar,
+                CodeStar = t.CodeStar,
                 NetAddress = t.NetAddress,
                 ProductionAddress = t.ProductionAddress,
                 SellerAddress = t.SellerAddress,
                 TableName = typeof(ResponseEnterprise).Name
             }).FirstOrDefault();
-            #endregion
+
+            #endregion 公司账号登录
+
             #region 公司子账号登录
+
             IQueryable<EnterpriseUser> queryables = Kily.Set<EnterpriseUser>()
                 .Where(t => t.Account.Equals(LoginValidate.Account) || t.Phone.Equals(LoginValidate.Account))
                 .Where(t => t.PassWord.Equals(LoginValidate.PassWord))
@@ -764,16 +797,20 @@ namespace KilyCore.Service.ServiceCore
                 TrueName = t.TrueName,
                 TableName = typeof(ResponseEnterpriseUser).Name
             }).FirstOrDefault();
-            #endregion
+
+            #endregion 公司子账号登录
+
             if (Info != null)
                 return Info;
             else if (User != null)
                 return User;
             else return null;
         }
-        #endregion
+
+        #endregion 登录注册
 
         #region 标签管理
+
         /// <summary>
         /// 二维码审核的标签分页
         /// </summary>
@@ -808,6 +845,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 审核标签
         /// </summary>
@@ -832,6 +870,7 @@ namespace KilyCore.Service.ServiceCore
             else
                 return ServiceMessage.INSERTFAIL;
         }
+
         /// <summary>
         /// 获取审核详情
         /// </summary>
@@ -849,9 +888,11 @@ namespace KilyCore.Service.ServiceCore
                 }).AsNoTracking().ToList();
             return data;
         }
-        #endregion
 
-        #region  产品审核
+        #endregion 标签管理
+
+        #region 产品审核
+
         /// <summary>
         /// 产品审核列表分页
         /// </summary>
@@ -881,6 +922,7 @@ namespace KilyCore.Service.ServiceCore
             }).Distinct().AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
+
         /// <summary>
         /// 审核产品
         /// </summary>
@@ -892,6 +934,7 @@ namespace KilyCore.Service.ServiceCore
             goods.AuditType = AuditEnum.AuditSuccess;
             return UpdateField(goods, "AuditType") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
+
         /// <summary>
         /// 产品详情
         /// </summary>
@@ -993,6 +1036,7 @@ namespace KilyCore.Service.ServiceCore
                 MaterialProductTime = MaterialData.ProductTime
             };
         }
-        #endregion
+
+        #endregion 产品审核
     }
 }

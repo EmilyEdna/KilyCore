@@ -1,14 +1,14 @@
 ﻿using KilyCore.Extension.HttpClientFactory;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 #region << 版 本 注 释 >>
+
 /*----------------------------------------------------------------
 * 类 名 称 ：PhoneSMS
 * 类 描 述 ：
 * 命名空间 ：KilyCore.Extension.SendMessage
-* 机器名称 ：EMILY 
+* 机器名称 ：EMILY
 * CLR 版本 ：4.0.30319.42000
 * 作    者 ：$刘泽华$
 * 创建时间 ：2018/9/5 14:02:39
@@ -16,7 +16,9 @@ using System.Text;
 * Copyright @ $刘泽华$ 2018. All rights reserved.
 *******************************************************************
 //----------------------------------------------------------------*/
-#endregion
+
+#endregion << 版 本 注 释 >>
+
 namespace KilyCore.Extension.SendMessage
 {
     public class PhoneSMS

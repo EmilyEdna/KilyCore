@@ -1,8 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
-using NLog;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using NLog;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点51分
@@ -14,7 +11,8 @@ namespace KilyCore.Extension.NlogExtension
     /// </summary>
     public static class LogFactoryExtension
     {
-        static Logger logger = LogManager.GetCurrentClassLogger();
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         /// <summary>
         /// 信息日志
         /// </summary>
@@ -23,6 +21,7 @@ namespace KilyCore.Extension.NlogExtension
         {
             logger.Info($"位置：{path}，方法名：{MethodName}，参数：{parameter}，信息：{msg}");
         }
+
         /// <summary>
         /// 栈日志
         /// </summary>
@@ -31,6 +30,7 @@ namespace KilyCore.Extension.NlogExtension
         {
             logger.Trace($"位置：{path}，方法名：{MethodName}，参数：{parameter}，信息：{msg}");
         }
+
         /// <summary>
         /// 调试日志
         /// </summary>
@@ -39,6 +39,7 @@ namespace KilyCore.Extension.NlogExtension
         {
             logger.Debug($"位置：{path}，方法名：{MethodName}，参数：{parameter}，信息：{msg}");
         }
+
         /// <summary>
         /// 错误日志
         /// </summary>
@@ -47,6 +48,7 @@ namespace KilyCore.Extension.NlogExtension
         {
             logger.Error($"位置：{path}，方法名：{MethodName}，参数：{parameter}，信息：{msg}");
         }
+
         /// <summary>
         /// 警告日志
         /// </summary>
@@ -55,6 +57,7 @@ namespace KilyCore.Extension.NlogExtension
         {
             logger.Warn($"位置：{path}，方法名：{MethodName}，参数：{parameter}，信息：{msg}");
         }
+
         /// <summary>
         /// 异常日志
         /// </summary>

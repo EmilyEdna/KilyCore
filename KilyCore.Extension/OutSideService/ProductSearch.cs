@@ -1,8 +1,6 @@
 ﻿using KilyCore.Extension.HttpClientFactory;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 
@@ -42,6 +40,7 @@ namespace KilyCore.Extension.OutSideService
             }
             return lm;
         }
+
         public static object GetProDetail(string qs)
         {
             var detailhtml = HttpClientExtension.HttpGetAsync($"http://spscxk.gsxt.gov.cn/spscxk/detail.xhtml?zsbh={qs}&lb=QS").Result;
@@ -50,6 +49,7 @@ namespace KilyCore.Extension.OutSideService
                 result = Regex.Match(t.Value, ">(.*?)<").Value.Split(">")[1].Split("<")[0]
             }).ToList();
         }
+
         public class ProductInfoModel
         {
             public string ComName { get; set; }

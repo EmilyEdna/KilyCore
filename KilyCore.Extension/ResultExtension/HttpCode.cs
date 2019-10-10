@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-/// <summary>
+﻿/// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点51分
 /// </summary>
@@ -15,29 +12,34 @@ namespace KilyCore.Extension.ResultExtension
         /// <summary>
         /// 成功
         /// </summary>
-        Success=10,
+        Success = 10,
+
         /// <summary>
         /// 无授权
         /// </summary>
-        NoAuth=20,
+        NoAuth = 20,
+
         /// <summary>
         /// 系统异常
         /// </summary>
-        SystemEx=30,
+        SystemEx = 30,
+
         /// <summary>
         /// 404
         /// </summary>
-        NULL=40,
+        NULL = 40,
+
         /// <summary>
         /// 失败
         /// </summary>
-        FAIL=50
-
+        FAIL = 50
     }
+
     /// <summary>
     /// 消息操作返回
     /// </summary>
-    public class RetrunMessge {
+    public class RetrunMessge
+    {
         public const string SUCCESS = "操作成功!";
         public const string FAIL = "操作失败!";
         public const string EXCEPTION = "操作异常!";
