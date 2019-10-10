@@ -357,5 +357,9 @@ namespace KilyCore.Service.IServiceCore
         Object GetAppTodayCount();
 
         #endregion 手机APP
+
+        #region  综合
+        object GetAreaShow(string name, string type);
+        #endregion
     }
 }

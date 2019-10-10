@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using KilyCore.Cache;
+﻿using KilyCore.Cache;
 using KilyCore.Configure;
 using KilyCore.DataEntity.RequestMapper.Repast;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.Extension.ResultExtension;
-using KilyCore.Extension.SessionExtension;
 using KilyCore.Extension.Token;
 using KilyCore.Service.QueryExtend;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 /// <summary>
 /// 作者：刘泽华
@@ -25,7 +21,8 @@ namespace KilyCore.API.Controllers
     [Route("api/[controller]")]
     public class RepastController : BaseController
     {
-        #region  商家资料
+        #region 商家资料
+
         /// <summary>
         /// 商家分页列表
         /// </summary>
@@ -36,6 +33,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastService.GetMerchantPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取商家详情
         /// </summary>
@@ -45,6 +43,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastService.GetMerchantDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 审核商家
         /// </summary>
@@ -55,8 +54,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastService.AuditMerchant(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 商家资料
+
         #region 餐饮菜单
+
         /// <summary>
         /// 餐饮菜单分页列表
         /// </summary>
@@ -67,6 +69,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastService.GetDiningMenuPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 编辑菜单
         /// </summary>
@@ -77,6 +80,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastService.EditDiningMenu(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 删除菜单
         /// </summary>
@@ -87,6 +91,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastService.RemoveMenu(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 菜单详情
         /// </summary>
@@ -97,6 +102,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastService.GetDiningMenuDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 显示父节菜单
         /// </summary>
@@ -106,8 +112,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastService.AddDiningParentMenu(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 餐饮菜单
+
         #region 权限菜单树
+
         /// <summary>
         /// 权限菜单树
         /// </summary>
@@ -117,8 +126,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastService.GetDiningTree(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 权限菜单树
+
         #region 角色管理
+
         /// <summary>
         /// 添加角色
         /// </summary>
@@ -128,6 +140,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastService.EditRole(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 角色分页
         /// </summary>
@@ -138,15 +151,18 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastService.GetMerchantAuthorPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 权限分页
         /// </summary>
         /// <param name="pageParam"></param>
         /// <returns></returns>
         [HttpPost("WatchRolePage")]
-        public ObjectResultEx WatchRolePage(PageParamList<RequestRepastRoleAuthor> pageParam) {
+        public ObjectResultEx WatchRolePage(PageParamList<RequestRepastRoleAuthor> pageParam)
+        {
             return ObjectResultEx.Instance(RepastService.WatchRolePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 删除角色
         /// </summary>
@@ -157,6 +173,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastService.RemoveAuthorRole(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 角色分页
         /// </summary>
@@ -167,6 +184,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastService.GetRoleAuthorPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 权限下拉列表
         /// </summary>
@@ -176,6 +194,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastService.GetRoleAuthorList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 分配角色
         /// </summary>
@@ -186,17 +205,22 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastService.DistributionRole(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 权限详情
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("GetRepastRoleAuthorDetail")]
-        public ObjectResultEx GetRepastRoleAuthorDetail(SimpleParam<Guid> Param) {
+        public ObjectResultEx GetRepastRoleAuthorDetail(SimpleParam<Guid> Param)
+        {
             return ObjectResultEx.Instance(RepastService.GetRepastRoleAuthorDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 角色管理
+
         #region 认证审核
+
         /// <summary>
         /// 商家认证分页列表
         /// </summary>
@@ -207,6 +231,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastService.GetDiningIdentPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取认证审核详情
         /// </summary>
@@ -217,6 +242,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastService.GetDiningIdentDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 认证审核
         /// </summary>
@@ -227,6 +253,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastService.AuditIdent(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 认证缴费
         /// </summary>
@@ -237,8 +264,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastService.AuditPayment(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 认证审核
+
         #region 登录注册退出
+
         /// <summary>
         /// 餐饮企业注册
         /// </summary>
@@ -250,6 +280,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(RepastService.RegistRepastAccount(Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 餐饮企业登录
         /// </summary>
@@ -265,7 +296,6 @@ namespace KilyCore.API.Controllers
                 string Code = string.Empty;
                 if (!LoginValidate.IsApp)
                 {
-                    
                     Code = CacheFactory.Cache().GetCache<string>("ValidateCode").Trim();
                     if (RepAdmin != null && Code.ToUpper().Equals(LoginValidate.ValidateCode.Trim().ToUpper()))
                     {
@@ -278,7 +308,8 @@ namespace KilyCore.API.Controllers
                     else
                         return ObjectResultEx.Instance(null, -1, "登录失败或账户冻结", HttpCode.NoAuth);
                 }
-                else {
+                else
+                {
                     if (RepAdmin != null)
                     {
                         CookieInfo cookie = new CookieInfo();
@@ -298,6 +329,7 @@ namespace KilyCore.API.Controllers
                 return ObjectResultEx.Instance(null, -1, "请输入验证码", HttpCode.FAIL);
             }
         }
+
         /// <summary>
         /// 安全退出
         /// </summary>
@@ -307,6 +339,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(VerificationExtension.LoginOut(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 登录注册退出
     }
 }

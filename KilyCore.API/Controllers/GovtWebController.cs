@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using KilyCore.Cache;
+﻿using KilyCore.Cache;
 using KilyCore.Configure;
 using KilyCore.DataEntity.RequestMapper.Cook;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
@@ -10,12 +6,11 @@ using KilyCore.DataEntity.RequestMapper.Govt;
 using KilyCore.DataEntity.RequestMapper.Repast;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.Extension.ResultExtension;
-using KilyCore.Extension.SessionExtension;
 using KilyCore.Extension.Token;
 using KilyCore.Service.QueryExtend;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace KilyCore.API.Controllers
 {
@@ -26,6 +21,7 @@ namespace KilyCore.API.Controllers
     public class GovtWebController : BaseController
     {
         #region 获取全局集团菜单
+
         /// <summary>
         /// 获取全局集团菜单
         /// </summary>
@@ -35,9 +31,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetGovtMenu(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 获取全局集团菜单
 
         #region 获取所有商家和企业
+
         /// <summary>
         /// 获取所有商家和企业
         /// </summary>
@@ -49,9 +47,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetAllMerchant(Key.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 获取所有商家和企业
 
         #region 登录退出
+
         /// <summary>
         /// 监管登录
         /// </summary>
@@ -100,6 +100,7 @@ namespace KilyCore.API.Controllers
                 return ObjectResultEx.Instance(null, -1, "请输入验证码", HttpCode.FAIL);
             }
         }
+
         /// <summary>
         /// 安全退出
         /// </summary>
@@ -109,6 +110,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(VerificationExtension.LoginOut(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 第一次登录更新密码
         /// </summary>
@@ -119,9 +121,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.EditPwd(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 登录退出
 
         #region 企业监管
+
         /// <summary>
         /// 监管企业分页
         /// </summary>
@@ -132,6 +136,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetCompanyPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 监管餐饮分页
         /// </summary>
@@ -142,6 +147,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetMerchantPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 企业详情
         /// </summary>
@@ -152,6 +158,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetCompanyDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 商家详情
         /// </summary>
@@ -162,6 +169,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetRepastDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 查询企业
         /// </summary>
@@ -173,6 +181,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetAllComWithKeyWord(KeyWord.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 查询商家
         /// </summary>
@@ -184,6 +193,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetAllMerWithKeyWord(KeyWord.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取所有企业
         /// </summary>
@@ -194,6 +204,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetAllCom(Param.AreaTree, (int)Param.CompanyType), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取所有商家
         /// </summary>
@@ -204,6 +215,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetAllMer(Param.AreaTree, (int)Param.DiningType), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取所有视频
         /// </summary>
@@ -216,9 +228,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetAllVideo(Param.Id, Type.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 企业监管
 
         #region 部门信息
+
         /// <summary>
         /// 获取或有企业
         /// </summary>
@@ -229,6 +243,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetAllGovt(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 机构分页
         /// </summary>
@@ -239,6 +254,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetInsPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 机构列表
         /// </summary>
@@ -248,6 +264,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetInsList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 删除机构
         /// </summary>
@@ -257,6 +274,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.RemoveIns(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取机构详情
         /// </summary>
@@ -267,6 +285,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetInsDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 编辑机构
         /// </summary>
@@ -277,6 +296,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.EditIns(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 政府用户分页
         /// </summary>
@@ -287,6 +307,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetGovtInfoPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 删除政府用户
         /// </summary>
@@ -297,6 +318,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.RemoveGovtInfo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 政府用户详情
         /// </summary>
@@ -307,6 +329,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetGovtInfoDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 编辑政府用户
         /// </summary>
@@ -317,9 +340,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.EditUser(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 部门信息
 
         #region 管辖区域
+
         /// <summary>
         /// 获取所属区域的市名称
         /// </summary>
@@ -330,6 +355,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetCityName(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取分配的区域
         /// </summary>
@@ -339,6 +365,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetDistributArea(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 当前登录账号是市级账号则查询该市下所有区县
         /// </summary>
@@ -349,6 +376,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetArea(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 当前登录账号是区县级账号则查询该市下所有乡镇
         /// </summary>
@@ -359,9 +387,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetTown(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 管辖区域
 
         #region 产品监管
+
         /// <summary>
         /// 加工产品分页
         /// </summary>
@@ -372,6 +402,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetWorkPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 加工产品详情
         /// </summary>
@@ -383,6 +414,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetWorkDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 食用品分页
         /// </summary>
@@ -393,6 +425,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetEdiblePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 食用品详情
         /// </summary>
@@ -404,9 +437,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetEdibleDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 产品监管
 
         #region 餐饮监管
+
         /// <summary>
         /// 群宴报备分页
         /// </summary>
@@ -417,6 +452,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetBanquetPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 群宴报备详情
         /// </summary>
@@ -427,6 +463,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetBanquetDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 现在检测-APP
         /// </summary>
@@ -438,6 +475,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.SiteImg(Key.Id, Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 审核群宴
         /// </summary>
@@ -449,9 +487,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.EditCookBanquet(Key.Id, Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 餐饮监管
 
         #region 风险预警
+
         /// <summary>
         /// 预警信息分页
         /// </summary>
@@ -462,6 +502,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetWaringRiskPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 编辑预警信息
         /// </summary>
@@ -472,6 +513,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.EditWaringRisk(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 预警详情
         /// </summary>
@@ -482,6 +524,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetWaringDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 发布广播
         /// </summary>
@@ -492,6 +535,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.ReportWaringRisk(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 删除信息
         /// </summary>
@@ -502,6 +546,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.RemoveWaringRisk(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 事件分布图
         /// </summary>
@@ -512,6 +557,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetRiskCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取市名称
         /// </summary>
@@ -522,6 +568,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetCity(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 企业证件到期分页
         /// </summary>
@@ -532,6 +579,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetCardPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 证件提醒
         /// </summary>
@@ -543,9 +591,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.ReportCardWaring(Param.Id, Key.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 风险预警
 
         #region 执法检查
+
         /// <summary>
         /// 网上执法分页
         /// </summary>
@@ -556,6 +606,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetNetPatrolPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 添加网上执法
         /// </summary>
@@ -566,6 +617,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.EditPatrol(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 删除网上执法
         /// </summary>
@@ -576,6 +628,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.RemovePatrol(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取网上巡检详情
         /// </summary>
@@ -586,6 +639,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetNetPatrolDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 通报批评
         /// </summary>
@@ -596,6 +650,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.EditNetPatrol(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取巡查处理内容
         /// </summary>
@@ -605,6 +660,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetMsgList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 巡查记录日志
         /// </summary>
@@ -614,9 +670,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetNetPatrolLogs(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 执法检查
 
         #region 执法类目
+
         /// <summary>
         /// 执法类目分页
         /// </summary>
@@ -627,6 +685,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetCategoryPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 编辑类目
         /// </summary>
@@ -637,6 +696,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.EditCategory(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 类目详情
         /// </summary>
@@ -647,6 +707,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetCategoryDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 删除类目
         /// </summary>
@@ -657,6 +718,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.RemoveCategory(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 题库分页
         /// </summary>
@@ -667,6 +729,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetCategoryAttachPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 编辑题库
         /// </summary>
@@ -677,6 +740,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.EditCategoryAttach(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 题库详情
         /// </summary>
@@ -687,6 +751,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetCategoryAttachDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 删除题库
         /// </summary>
@@ -697,9 +762,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.RemoveCategoryAttach(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 执法类目
 
         #region 移动执法
+
         /// <summary>
         /// 移动执法分页
         /// </summary>
@@ -710,6 +777,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetMovePatralPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 删除移动执法记录
         /// </summary>
@@ -720,6 +788,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.RemoveMovePatral(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 编辑移动执法
         /// </summary>
@@ -730,6 +799,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.EditMovePatrol(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取移动执法表
         /// </summary>
@@ -741,9 +811,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetGovtMovePatrolDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 移动执法
 
         #region 企业自查模板
+
         /// <summary>
         /// 获取企业检查分页
         /// </summary>
@@ -754,6 +826,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetTemplateChild(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取企业检查详情
         /// </summary>
@@ -764,6 +837,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetTemplateChildDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取模板列表
         /// </summary>
@@ -775,6 +849,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetTemplateContentList(Key.Id, Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 自查模板分页
         /// </summary>
@@ -785,6 +860,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetTemplatePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 编辑模板
         /// </summary>
@@ -795,6 +871,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.EditGovtTemplate(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 删除模板
         /// </summary>
@@ -805,6 +882,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.RemoveTemplate(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取详情
         /// </summary>
@@ -815,10 +893,13 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetTemplateDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 企业自查模板
 
         #region 应急培训
+
         #region 培训通知
+
         /// <summary>
         /// 通知分页
         /// </summary>
@@ -829,6 +910,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetTrainNoticePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 编辑通知
         /// </summary>
@@ -839,6 +921,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.EditNotice(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 删除通知
         /// </summary>
@@ -849,6 +932,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.RemoveNotice(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 通知详情
         /// </summary>
@@ -859,6 +943,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetTrainNoticeDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 推送通知
         /// </summary>
@@ -869,8 +954,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.ReportTrainNotice(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 培训通知
+
         #region 培训报道
+
         /// <summary>
         /// 报道分页
         /// </summary>
@@ -881,6 +969,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetTrainReportPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 编辑报道
         /// </summary>
@@ -891,6 +980,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.EditTrainReport(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 删除报道
         /// </summary>
@@ -901,6 +991,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.RemoveReport(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 报道详情
         /// </summary>
@@ -911,6 +1002,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetTrainReportDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 推送报道
         /// </summary>
@@ -921,10 +1013,13 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.ReportTrainReport(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
-        #endregion
+
+        #endregion 培训报道
+
+        #endregion 应急培训
 
         #region 投诉信息
+
         /// <summary>
         /// 投诉信息分页
         /// </summary>
@@ -935,6 +1030,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetComplainPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 删除投诉
         /// </summary>
@@ -945,6 +1041,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.RemoveComplain(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 编辑投诉
         /// </summary>
@@ -967,6 +1064,7 @@ namespace KilyCore.API.Controllers
                 return ObjectResultEx.Instance(GovtWebService.EditComplain(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
             }
         }
+
         /// <summary>
         /// 推送投诉
         /// </summary>
@@ -976,8 +1074,8 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx ReportComplain(SimpleParam<Guid> Param)
         {
             return ObjectResultEx.Instance(GovtWebService.ReportComplain(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-
         }
+
         /// <summary>
         /// 处理投诉
         /// </summary>
@@ -989,6 +1087,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.ReportComplainInfo(Key.Id, Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 投诉详情
         /// </summary>
@@ -999,10 +1098,13 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetComplainDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 投诉信息
 
         #region 数据统计
+
         #region 新大屏
+
         /// <summary>
         /// 今日数据
         /// </summary>
@@ -1012,6 +1114,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetNewStayInTodayCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 历史所有企业数据统计
         /// </summary>
@@ -1021,6 +1124,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetNewStayInAllCompanyCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 今日入住
         /// </summary>
@@ -1030,6 +1134,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetTodayNow(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 投诉和风险
         /// </summary>
@@ -1039,6 +1144,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetNewWeekRiskAndComplainCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 网上巡查统计
         /// </summary>
@@ -1048,6 +1154,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetNewNetCheckCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取最新视频
         /// </summary>
@@ -1057,7 +1164,9 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetNewVedioToday(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 新大屏
+
         /// <summary>
         /// 获取产品统计
         /// </summary>
@@ -1067,6 +1176,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetProductRank(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取人员统计
         /// </summary>
@@ -1076,6 +1186,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetPersonBank(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取执行检查统计
         /// </summary>
@@ -1085,6 +1196,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetLawRank(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 统计数据
         /// </summary>
@@ -1094,6 +1206,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetCountNum(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 区域入住分布排行
         /// </summary>
@@ -1103,6 +1216,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetAreaRank(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取入驻的企业地图
         /// </summary>
@@ -1112,6 +1226,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetAllCityMerchantCount(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 投诉折线图
         /// </summary>
@@ -1121,6 +1236,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetComplainLine(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 板块占比
         /// </summary>
@@ -1130,6 +1246,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetComDataRatio(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 投诉占比
         /// </summary>
@@ -1139,9 +1256,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetComplainDataRatio(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 数据统计
 
         #region 责任协议
+
         /// <summary>
         /// 协议分页
         /// </summary>
@@ -1152,6 +1271,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetAgreePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 编辑协议
         /// </summary>
@@ -1162,6 +1282,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.EditAgree(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 协议详情
         /// </summary>
@@ -1172,6 +1293,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetAgreeDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 删除协议
         /// </summary>
@@ -1182,9 +1304,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.RemoveAgree(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 责任协议
 
         #region 操作日志
+
         /// <summary>
         /// 获取操作日志
         /// </summary>
@@ -1194,6 +1318,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetLogInfos(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 日志列表
         /// </summary>
@@ -1204,6 +1329,23 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetHandlerLogPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 操作日志
+
+        #region 综合
+
+        /// <summary>
+        /// 企业综合
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        [HttpGet("GetAreaShow")]
+        public ObjectResultEx GetAreaShow(SimpleParam<string> name, SimpleParam<string> type)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetAreaShow(name.Id, type.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+
+        #endregion 综合
     }
 }

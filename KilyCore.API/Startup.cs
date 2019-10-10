@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Loader;
-using KilyCore.Configure;
+﻿using KilyCore.Configure;
 using KilyCore.Extension.ApplicationService.DependencyIdentity;
 using KilyCore.Extension.FilterGroup;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyModel;
@@ -16,8 +11,14 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Serialization;
 using NLog.Extensions.Logging;
 using NLog.Web;
-using Microsoft.AspNetCore.HttpOverrides;
 using Swashbuckle.AspNetCore.Swagger;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Loader;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点13分
@@ -27,6 +28,7 @@ namespace KilyCore.API
     public class Startup
     {
         public IEngine Engine { get; private set; }
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -117,6 +119,7 @@ namespace KilyCore.API
             });
             app.UseMvc();
         }
+
         /// <summary>
         /// 加载所有程序集
         /// </summary>
@@ -132,6 +135,7 @@ namespace KilyCore.API
             }
             Configer.Assembly = ass;
         }
+
         /// <summary>
         /// 获取系统配置
         /// </summary>
@@ -146,6 +150,7 @@ namespace KilyCore.API
             Configer.ApiKey = Configuration["Key:ApiKey"];
             Configer.RemovePathHost = Configuration["RemovePathHost"];
         }
+
         /// <summary>
         /// 获取版本价格
         /// </summary>
@@ -153,34 +158,46 @@ namespace KilyCore.API
         {
             ConfigMoney.Common = Convert.ToInt32(Configuration["ConfigMoney:Common"]);
             ConfigMoney.Cook = Convert.ToInt32(Configuration["ConfigMoney:Cook"]);
+
             #region 体验版
+
             ConfigMoney.PlantAndCultureTest = Convert.ToInt32(Configuration["ConfigMoney:PlantAndCultureTest"]);
             ConfigMoney.ProductionTest = Convert.ToInt32(Configuration["ConfigMoney:ProductionTest"]);
             ConfigMoney.CirculationTest = Convert.ToInt32(Configuration["ConfigMoney:CirculationTest"]);
             ConfigMoney.UnitCanteenTest = Convert.ToInt32(Configuration["ConfigMoney:UnitCanteenTest"]);
             ConfigMoney.RepastTest = Convert.ToInt32(Configuration["ConfigMoney:RepastTest"]);
-            #endregion
+
+            #endregion 体验版
+
             #region 基础版
+
             ConfigMoney.PlantAndCultureBase = Convert.ToInt32(Configuration["ConfigMoney:PlantAndCultureBase"]);
             ConfigMoney.ProductionBase = Convert.ToInt32(Configuration["ConfigMoney:ProductionBase"]);
             ConfigMoney.CirculationBase = Convert.ToInt32(Configuration["ConfigMoney:CirculationBase"]);
             ConfigMoney.UnitCanteenBase = Convert.ToInt32(Configuration["ConfigMoney:UnitCanteenBase"]);
             ConfigMoney.RepastBase = Convert.ToInt32(Configuration["ConfigMoney:RepastBase"]);
-            #endregion
+
+            #endregion 基础版
+
             #region 升级版
+
             ConfigMoney.PlantAndCultureLv = Convert.ToInt32(Configuration["ConfigMoney:PlantAndCultureLv"]);
             ConfigMoney.ProductionLv = Convert.ToInt32(Configuration["ConfigMoney:ProductionLv"]);
             ConfigMoney.CirculationLv = Convert.ToInt32(Configuration["ConfigMoney:CirculationLv"]);
             ConfigMoney.UnitCanteenLv = Convert.ToInt32(Configuration["ConfigMoney:UnitCanteenLv"]);
             ConfigMoney.RepastLv = Convert.ToInt32(Configuration["ConfigMoney:RepastLv"]);
-            #endregion
+
+            #endregion 升级版
+
             #region 旗舰版
+
             ConfigMoney.PlantAndCultureEnterprise = Convert.ToInt32(Configuration["ConfigMoney:PlantAndCultureEnterprise"]);
             ConfigMoney.ProductionEnterprise = Convert.ToInt32(Configuration["ConfigMoney:ProductionEnterprise"]);
             ConfigMoney.CirculationEnterprise = Convert.ToInt32(Configuration["ConfigMoney:CirculationEnterprise"]);
             ConfigMoney.UnitCanteenEnterprise = Convert.ToInt32(Configuration["ConfigMoney:UnitCanteenEnterprise"]);
             ConfigMoney.RepastEnterprise = Convert.ToInt32(Configuration["ConfigMoney:RepastEnterprise"]);
-            #endregion
+
+            #endregion 旗舰版
         }
     }
 }

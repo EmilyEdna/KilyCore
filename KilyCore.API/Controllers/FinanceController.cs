@@ -1,10 +1,11 @@
-﻿using System;
+﻿using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.Repast;
-using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.Extension.ResultExtension;
 using KilyCore.Service.QueryExtend;
 using Microsoft.AspNetCore.Mvc;
+using System;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点13分
@@ -18,6 +19,7 @@ namespace KilyCore.API.Controllers
     public class FinanceController : BaseController
     {
         #region 加盟缴费
+
         /// <summary>
         /// 加盟缴费分页
         /// </summary>
@@ -28,6 +30,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(FinanceService.GetJoinPayPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 启用
         /// </summary>
@@ -38,6 +41,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(FinanceService.StartUse(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 停用
         /// </summary>
@@ -48,6 +52,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(FinanceService.BlockUp(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 加盟归档
         /// </summary>
@@ -58,6 +63,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(FinanceService.Archive(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 发送邮件
         /// </summary>
@@ -68,8 +74,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(FinanceService.SendEmail(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 加盟缴费
+
         #region 企业认证
+
         /// <summary>
         /// 企业认证
         /// </summary>
@@ -80,6 +89,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(FinanceService.IdentEnterprisePay(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 是否通过终审
         /// </summary>
@@ -91,8 +101,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(FinanceService.AuditIndetEnterprisePay(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 企业认证
+
         #region 餐饮认证
+
         /// <summary>
         /// 餐饮认证
         /// </summary>
@@ -103,6 +116,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(FinanceService.IdentFoodPay(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 是否通过终审
         /// </summary>
@@ -114,8 +128,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(FinanceService.AuditIndetFoodPay(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 餐饮认证
+
         #region 缴费凭证
+
         /// <summary>
         /// 查看缴费凭证
         /// </summary>
@@ -127,8 +144,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(FinanceService.WatchCertificate(Key.Id, Value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 缴费凭证
+
         #region 物码缴费
+
         /// <summary>
         /// 物码缴费分页
         /// </summary>
@@ -139,6 +159,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(FinanceService.GetTagAuditPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 审核物码缴费
         /// </summary>
@@ -149,6 +170,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(FinanceService.AuditCode(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 物码缴费
     }
 }

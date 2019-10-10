@@ -1,16 +1,16 @@
-﻿using System;
+﻿using KilyCore.Cache;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
-using KilyCore.Extension.ResultExtension;
-using KilyCore.Service.QueryExtend;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using System.Collections.Generic;
-using KilyCore.DataEntity;
-using KilyCore.Cache;
 using KilyCore.DataEntity.ResponseMapper.Enterprise;
 using KilyCore.Extension.HttpClientFactory;
-using Newtonsoft.Json.Linq;
 using KilyCore.Extension.OutSideService;
+using KilyCore.Extension.ResultExtension;
+using KilyCore.Service.QueryExtend;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点13分
@@ -24,6 +24,7 @@ namespace KilyCore.API.Controllers
     public class TempController : BaseController
     {
         #region 中继API
+
         /// <summary>
         /// 获取所有人员
         /// </summary>
@@ -35,6 +36,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(Temp.GetAllUser(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取所有供应商
         /// </summary>
@@ -47,6 +49,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(Temp.GetAllSupply(Param.Id, Key.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取商家留样
         /// </summary>
@@ -58,6 +61,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(Temp.GetAllSample(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取废物处理
         /// </summary>
@@ -69,6 +73,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(Temp.RepastDuck(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取食材供应
         /// </summary>
@@ -80,6 +85,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(Temp.RepastThing(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取周菜谱
         /// </summary>
@@ -91,6 +97,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(Temp.RepastWeek(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取抽检
         /// </summary>
@@ -102,6 +109,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(Temp.RepastCheck(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 陪餐记录
         /// </summary>
@@ -113,6 +121,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(Temp.RepastMarket(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 商家自查
         /// </summary>
@@ -124,6 +133,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(Temp.RepastSelfCheck(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         ///产品图片
         /// </summary>
@@ -135,8 +145,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(Temp.RepastProduct(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 中继API
+
         #region 微信公众号
+
         /// <summary>
         /// 微信活动注册接口
         /// </summary>
@@ -148,6 +161,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(Temp.WeChatRegist(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取邀请码
         /// </summary>
@@ -159,8 +173,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(Temp.GetInviteCode(Key.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 微信公众号
+
         #region Redis缓存
+
         /// <summary>
         /// 监测实时数据
         /// </summary>
@@ -191,8 +208,11 @@ namespace KilyCore.API.Controllers
             CacheFactory.Cache().WriteCache(env, Param.Flag, 24);
             return ObjectResultEx.Instance(env, 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion Redis缓存
+
         #region 爬虫
+
         /// <summary>
         /// QS列表
         /// </summary>
@@ -204,6 +224,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(ProductSearch.GetProList(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// QS详情
         /// </summary>
@@ -215,6 +236,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(ProductSearch.GetProDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 安全标准
         /// </summary>
@@ -227,6 +249,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(ProTarget.GetTargetDb(key.Id, value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 爬虫
     }
 }

@@ -1,14 +1,14 @@
-﻿using System;
-using KilyCore.Cache;
+﻿using KilyCore.Cache;
 using KilyCore.Configure;
 using KilyCore.DataEntity.RequestMapper.Enterprise;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.Extension.ResultExtension;
-using KilyCore.Extension.SessionExtension;
 using KilyCore.Extension.Token;
 using KilyCore.Service.QueryExtend;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+
 /// <summary>
 /// 作者：刘泽华
 /// 时间：2018年5月29日11点13分
@@ -22,6 +22,7 @@ namespace KilyCore.API.Controllers
     public class EnterpriseController : BaseController
     {
         #region 集团菜单
+
         /// <summary>
         /// 修改新增菜单
         /// </summary>
@@ -32,6 +33,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.EditEnterpriseMenu(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取菜单详情
         /// </summary>
@@ -42,6 +44,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.GetEnterpriseMenuDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 父节菜单
         /// </summary>
@@ -51,6 +54,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.AddEnterpriseParentMenu(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 企业菜单分页
         /// </summary>
@@ -61,6 +65,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.GetEnterpriseMenuPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 删除企业菜单
         /// </summary>
@@ -71,6 +76,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.RemoveEnterpriseMenu(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 角色权限菜单
         /// </summary>
@@ -81,9 +87,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.GetEnterpriseTree(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 集团菜单
 
         #region 集团角色
+
         /// <summary>
         /// 集团角色分页
         /// </summary>
@@ -94,6 +102,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.GetCompanyRoleAuthorPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 角色分页
         /// </summary>
@@ -104,6 +113,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.WatchRolePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 编辑集团角色菜单
         /// </summary>
@@ -114,6 +124,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.EditEnterpriseRoleAuthor(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 角色列表分页
         /// </summary>
@@ -124,6 +135,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.GetRoleAuthorPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 删除角色
         /// </summary>
@@ -134,6 +146,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.RemoveEnterpriseRoleAuthor(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 角色列表
         /// </summary>
@@ -143,6 +156,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.GetRoleAuthorList(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 分配角色
         /// </summary>
@@ -153,6 +167,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.DistributionRole(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取角色详情
         /// </summary>
@@ -163,9 +178,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.GetEnterpriseRoleAuthorDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
 
-        #region  资料审核
+        #endregion 集团角色
+
+        #region 资料审核
+
         /// <summary>
         /// 企业分页列表
         /// </summary>
@@ -176,6 +193,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.GetCompanyPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取企业详情
         /// </summary>
@@ -185,6 +203,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.GetCompanyDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 审核企业
         /// </summary>
@@ -195,9 +214,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.AuditCompany(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 资料审核
 
         #region 认证审核
+
         /// <summary>
         /// 企业认证分页列表
         /// </summary>
@@ -208,6 +229,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.GetCompanyIdentPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取认证详情
         /// </summary>
@@ -218,6 +240,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.GetCompanyIdentDetail(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 认证审核
         /// </summary>
@@ -228,6 +251,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.AuditIdent(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 认证缴费
         /// </summary>
@@ -238,9 +262,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.AuditPayment(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 认证审核
 
         #region 登录注册退出
+
         /// <summary>
         /// 企业注册
         /// </summary>
@@ -252,6 +278,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.RegistCompanyAccount(Param.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 集团登录
         /// </summary>
@@ -273,7 +300,7 @@ namespace KilyCore.API.Controllers
                         VerificationExtension.WriteToken(cookie, ComAdmin);
                         return ObjectResultEx.Instance(new { ResponseCookieInfo.RSAToKen, ResponseCookieInfo.RSAApiKey, ResponseCookieInfo.RSASysKey, ComAdmin }, 1, RetrunMessge.SUCCESS, HttpCode.Success);
                     }
-                    else if(!Code.ToUpper().Equals(LoginValidate.ValidateCode.Trim().ToUpper()))
+                    else if (!Code.ToUpper().Equals(LoginValidate.ValidateCode.Trim().ToUpper()))
                         return ObjectResultEx.Instance(null, -1, "验证码错误", HttpCode.NoAuth);
                     else
                         return ObjectResultEx.Instance(null, -1, "登录失败或账户冻结", HttpCode.NoAuth);
@@ -299,6 +326,7 @@ namespace KilyCore.API.Controllers
                 return ObjectResultEx.Instance(null, -1, "请输入验证码", HttpCode.FAIL);
             }
         }
+
         /// <summary>
         /// 安全退出
         /// </summary>
@@ -308,9 +336,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(VerificationExtension.LoginOut(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 登录注册退出
 
         #region 标签管理
+
         /// <summary>
         /// 二维码审核的标签分页
         /// </summary>
@@ -321,6 +351,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.GetTagAuditPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 审核标签
         /// </summary>
@@ -331,6 +362,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.AuditCode(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取二维码审核记录
         /// </summary>
@@ -341,9 +373,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.GetTagAuditDetail(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
 
-        #region  产品审核
+        #endregion 标签管理
+
+        #region 产品审核
+
         /// <summary>
         /// 产品审核列表分页
         /// </summary>
@@ -354,6 +388,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.GetWaitAuditGoodPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 审核产品
         /// </summary>
@@ -364,6 +399,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.AuditGoodSuccess(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 产品详情
         /// </summary>
@@ -374,6 +410,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(EnterpriseService.GetAuditProductDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 产品审核
     }
 }

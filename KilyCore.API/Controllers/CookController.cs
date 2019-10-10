@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using KilyCore.DataEntity.RequestMapper.Cook;
+﻿using KilyCore.DataEntity.RequestMapper.Cook;
 using KilyCore.DataEntity.RequestMapper.System;
 using KilyCore.Extension.ResultExtension;
 using KilyCore.Service.QueryExtend;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace KilyCore.API.Controllers
 {
@@ -18,6 +14,7 @@ namespace KilyCore.API.Controllers
     public class CookController : BaseController
     {
         #region 厨师菜单
+
         /// <summary>
         /// 父级菜单
         /// </summary>
@@ -27,6 +24,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(CookService.AddCookParentMenu(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 获取菜单详情
         /// </summary>
@@ -37,6 +35,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(CookService.GetCookMenuDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 厨师菜单分页
         /// </summary>
@@ -47,6 +46,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(CookService.GetCookMenuPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 删除菜单
         /// </summary>
@@ -56,6 +56,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(CookService.RemoveCookMenu(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 新增菜单
         /// </summary>
@@ -66,9 +67,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(CookService.EditCookMenu(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 厨师菜单
 
         #region 权限菜单树
+
         /// <summary>
         /// 获取权限菜单树
         /// </summary>
@@ -78,9 +81,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(CookService.GetCookTree(), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 权限菜单树
 
         #region 厨师角色
+
         /// <summary>
         /// 获取角色权限列表
         /// </summary>
@@ -91,6 +96,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(CookService.GetCookAuthorPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 添加角色
         /// </summary>
@@ -101,6 +107,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(CookService.EditRole(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 删除角色
         /// </summary>
@@ -111,9 +118,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(CookService.RemoveAuthorRole(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 厨师角色
 
         #region 厨师信息
+
         /// <summary>
         /// 厨师信息
         /// </summary>
@@ -124,6 +133,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(CookService.GetCookInfoPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 厨师详情
         /// </summary>
@@ -133,6 +143,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(CookService.GetCookInfoDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 审核厨师信息
         /// </summary>
@@ -143,9 +154,11 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(CookService.AuditCookInfo(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 厨师信息
 
         #region 服务管理
+
         /// <summary>
         /// 厨师开通的服务分页
         /// </summary>
@@ -156,6 +169,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(CookService.GetCookServicePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 启用账号
         /// </summary>
@@ -166,6 +180,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(CookService.StartUse(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 停用账号
         /// </summary>
@@ -176,6 +191,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(CookService.BlockUp(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+
         /// <summary>
         /// 确认缴费
         /// </summary>
@@ -186,6 +202,7 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(CookService.CheckPayment(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-        #endregion
+
+        #endregion 服务管理
     }
 }
