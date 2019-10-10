@@ -928,6 +928,8 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 ProductName = t.ProductName,
+                CompanyId=t.CompanyId,
+                CompanyName=x.CompanyName,
                 ProductType = t.ProductType,
                 ExpiredDate = t.ExpiredDate + "天",
                 Spec = t.Spec,
@@ -1137,6 +1139,32 @@ namespace KilyCore.Service.ServiceCore
                 t.g.e.c.a.OutStockTime,
                 t.g.e.c.a.OutStockUser
             }).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// 企业产品列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public object GetGoodsPage(Guid CompanyId)
+        {
+            IQueryable<EnterpriseGoods> queryable = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseProductSeries> queryables = Kily.Set<EnterpriseProductSeries>().Where(t => t.IsDelete == false);
+            queryable = queryable.Where(t => t.CompanyId ==CompanyId);
+            var data = queryable.OrderByDescending(t => t.CreateTime).GroupJoin(queryables, t => t.ProductSeriesId, x => x.Id, (t, x) => new ResponseEnterpriseGoods()
+            {
+                Id = t.Id,
+                CompanyId = t.CompanyId,
+                Spec = t.Spec,
+                ProductSeriesName = x.FirstOrDefault().SeriesName + "-" + x.FirstOrDefault().Standard,
+                ExpiredDate = t.ExpiredDate,
+                ProductName = t.ProductName,
+                ProductType = t.ProductType,
+                Unit = t.Unit,
+                Image = t.Image,
+                Remark = t.Remark
+            }).AsNoTracking().ToList();
+            return data;
         }
 
         #endregion 产品监管

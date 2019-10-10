@@ -334,7 +334,7 @@
                                 showName = `${result.data.rows[index].PersonName}(${result.data.rows[index].Name})`;
                             }
                             listStr += `
-                                    <li class="clearfix" data-id="${result.data.rows[index].Id}" data-title="${result.data.rows[index].Name}" data-content='${result.data.rows[index].Remark}' data-name='${result.data.rows[index].PersonName}' data-type="${result.data.rows[index].CompanyType}" data-time="${result.data.rows[index].CardExpiredDate.split(" ")[0]}" data-img="${result.data.rows[index].CardImg}">
+                                    <li class="clearfix" data-id="${result.data.rows[index].Id}" data-title="${result.data.rows[index].Name}" data-content='${result.data.rows[index].Remark}' data-name='${result.data.rows[index].PersonName}' data-card="${result.data.rows[index].CardType}" data-type="${result.data.rows[index].CompanyType}" data-time="${result.data.rows[index].CardExpiredDate.split(" ")[0]}" data-img="${result.data.rows[index].CardImg}">
                                         <div class="hidden">${result.data.rows[index].Id}</div>
                                         <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" title="${result.data.rows[index].Name}">${showName}</div>
                                         <div>${result.data.rows[index].CompanyType}</div>
@@ -468,16 +468,16 @@
                     var Type = $(this).attr("data-type");
                     var CompanyName = $(this).attr("data-title");
                     var PersonName = $(this).attr("data-name");
-                    var CardType = $(this).attr("data-type");
+                    var CardType = $(this).attr("data-card");
                     var CardImg = $(this).attr("data-img");
                     var CardImg = $(this).attr("data-img");
                     var ExpiredDate = $(this).attr("data-time");
                     var Remark = $(this).attr("data-content");
-                    if (Type == "健康证") {
+                    if (CardType == "健康证") {
                         var Content = PersonName + "健康证于" + ExpiredDate + "到期.";
                         ShowModelDetail("WebGovtManage/Risk/CertificateRiskDetail?Name=" + CompanyName + "&PersonName=" + PersonName + "&CardType=" + CardType + "&CardExpiredDate=" + ExpiredDate + "&CardImg=" + CardImg + "&Remark=" + Remark, "预警提示",Id,Type, Content);
                     }
-                    else if (Type == "营业执照") {
+                    else if (CardType == "营业执照") {
                          var Content = "营业执照于" + ExpiredDate+"到期.";
                         ShowModelDetail("WebGovtManage/Risk/CertificateRiskDetail?Name=" + CompanyName + "&PersonName=" + PersonName + "&CardType=" + CardType + "&CardExpiredDate=" + ExpiredDate + "&CardImg=" + CardImg + "&Remark=" + Remark,"预警提示",Id,Type,Content);
                     }

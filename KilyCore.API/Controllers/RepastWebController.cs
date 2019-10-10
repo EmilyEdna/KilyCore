@@ -1000,7 +1000,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("EditAdditive")]
+        [HttpPost("SaveAdditive")]
         public ObjectResultEx SaveAdditive(RequestRepastAdditive Param)
         {
             return ObjectResultEx.Instance(RepastWebService.SaveAdditive(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);

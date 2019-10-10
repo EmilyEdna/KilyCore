@@ -12,6 +12,16 @@
             },
             //元素
             InitDom: function () {
+                controller.LayDate({
+                    elem: "input[name='SDate']",
+                    max: controller.GetDate(1),
+                    format: "yyyy-MM-dd"
+                });
+                controller.LayDate({
+                    elem: "input[name='EDate']",
+                    max: controller.GetDate(1),
+                    format: "yyyy-MM-dd"
+                });
                 //取详情
                 controller.ajax({
                     url: "GovtWeb/GetCompanyDetail",
@@ -46,20 +56,42 @@
             //主要产品
             BindProduct: function (data) {
                 if (data == undefined || data == null) return;
+                //取列表
+                controller.ajax({
+                    url: "GovtWeb/GetGoodsPage",
+                    data: { Id: controller.GetParam("Id")},
+                    async: false,
+                    type: "post",
+                    success: function (res) {
+                        $.each(res.data, function (i, item) {
+                            if (item.Image == null) item.Image = "<img src='http://system.cfda.vip/content/HPlus/img/Nopic.jpg' style='height:32px;'>";
+                            var DetailFunction = "javascrip:";
+                            if (item.ProductType == "食品" || item.ProductType == "农产品") {
+                                DetailFunction = "javascript:ShowProductDetail('','" + item.ProductName + "')";
+                            }
+                            else if (item.ProductType == "化妆品" || item.ProductType == "药品") {
+                                DetailFunction = "javascript:ShowProductDetail('','" + item.ProductName + "')";
+                            }
+                            else if (item.ProductType == "其他") {
+                                DetailFunction = "javascript:ShowProductDetail('','" + item.ProductName + "')";
+                            }
+                            $("#CompanyProduct").append("<tr><td align='center'>" + item.Image + "</td><td align='left'><a href='"+DetailFunction+"'>" + item.ProductName + "</a></td><td align='center'>" + item.ProductType + "</td><td align='center'>" + item.Spec + "</td><td align='center'>" + item.ExpiredDate + "天</td></tr>")
+                        });
+                    }
+                });
                 //主要产品
-                if (data.indexOf("/") > -1) {
-                    $.each(data.split(","), function (i, item) {
-                       
-                            $("#CompanyProduct").append('<a class="fancybox" src="http://system.cfda.vip'+item+'" title="图片1"><img alt="image" src="http://system.cfda.vip'+item+'"></a>');
-                    });
-                }
+                //if (data.indexOf("/") > -1) {
+                //    $.each(data.split(","), function (i, item) {
+                //       $("#CompanyProduct").append('<a class="fancybox" src="http://system.cfda.vip'+item+'" title="图片1"><img alt="image" src="http://system.cfda.vip'+item+'"></a>');
+                //    });
+                //}
             },
             //绑定荣誉证书
             BindHonor: function (data) {                
                 if (data != null) {
                     var html = '';
                     $.each(data, function (i, obj) {
-                        html += '<img src="' + obj + '" class="img-preview-sm" title="点击放大"/>';
+                        html += '<img src="' + obj + '"  style="width:256px;"/>';
                     });
                     $("#tab-3").find(".ibox-content").html(html);
                     if (data.length > 4)
@@ -266,6 +298,7 @@
                         </table>
                     </div>
                 </div>
+                <!--分销商-->
                 <div id="tab-6" class="tab-pane">
                     <div  style="padding-top:12px;">
                         <table class="table table-bordered">
@@ -283,12 +316,59 @@
                         </table>
                     </div>
                 </div>
+                <!--主要产品-->
                 <div id="tab-7" class="tab-pane">
-                    <div class="ibox-content" id="CompanyProduct">
+                    <div style="padding-top:12px;">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="th-center">产品图片</th>
+                                    <th class="th-center">产品名称</th>
+                                    <th class="th-center">产品类型</th>
+                                    <th class="th-center">产品规格</th>
+                                    <th class="th-center">保质期</th>
+                                </tr>
+                            </thead>
+                            <tbody id="CompanyProduct">
+                            </tbody>
+                        </table>
                     </div>
+                    @*<div class="ibox-content" id="CompanyProduct">
+                    </div>*@
                 </div>
+                <!--进销台账-->
                 <div id="tab-8" class="tab-pane">
                     <div class="ibox-content" id="CompanyBook">
+                        <div class="row">
+                                <div class="col-sm-2 m-b-xs"><input type="text" class="form-control" placeholder="请选择开始日期" name="SDate" /></div>
+                                <div class="col-sm-1 m-b-xs" style="width:16px;">-</div>
+                                <div class="col-sm-2 m-b-xs"><input type="text" class="form-control" placeholder="请选择结束日期" name="EDate" /></div>
+                                <div class="col-sm-2 m-b-xs"><button type="button" class="btn btn-white" id="search"><i class="fa fa-search"></i>查询</button></div>
+                        </div>
+                        <div class="table-responsive m-t-sm">
+                            <table id="tableList" class="table table-hover table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="th-center" colspan="10" style="font-size:16px;">最近7天进销台账</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="th-center">批次号</th>
+                                        <th class="th-center">产品名称</th>
+                                        <th class="th-center">数量</th>
+                                        <th class="th-center">规格</th>
+                                        <th class="th-center">单位</th>
+                                        <th class="th-center">质检结果</th>
+                                        <th class="th-center">供应商</th>
+                                        <th class="th-center">经销商</th>
+                                        <th class="th-center">日期</th>
+                                        <th class="th-center">负责人</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+
                     </div>
                 </div>
             </div>

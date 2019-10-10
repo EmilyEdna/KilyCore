@@ -126,6 +126,8 @@ namespace KilyCore.Service.IServiceCore
 
         Object GetEdibleDetail(Guid Id);
 
+        object GetGoodsPage(Guid CompanyId);
+
         #endregion 产品监管
 
         #region 餐饮监管
