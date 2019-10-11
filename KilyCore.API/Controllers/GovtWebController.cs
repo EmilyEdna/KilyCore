@@ -11,6 +11,7 @@ using KilyCore.Service.QueryExtend;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 
 namespace KilyCore.API.Controllers
 {
@@ -437,8 +438,33 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetEdibleDetail(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 企业产品列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetGoodsPage")]
+        public ObjectResultEx GetGoodsPage(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetGoodsPage(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
 
         #endregion 产品监管
+
+        #region 台账管理
+
+        /// <summary>
+        /// 进销台账
+        /// </summary>
+        /// <param name="Key"></param>
+        /// <returns></returns>
+        [HttpGet("GetTickPrint")]
+        public ObjectResultEx GetTickPrint(SimpleParam<Dictionary<String, String>> Key)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetTickPrint(Key.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+
+        #endregion 台账管理
 
         #region 餐饮监管
 
@@ -588,6 +614,17 @@ namespace KilyCore.API.Controllers
         /// <returns></returns>
         [HttpPost("ReportCardWaring")]
         public ObjectResultEx ReportCardWaring(SimpleParam<Guid> Param, SimpleParam<String> Key)
+        {
+            return ObjectResultEx.Instance(GovtWebService.ReportCardWaring(Param.Id, Key.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 预警提醒
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <param name="Key"></param>
+        /// <returns></returns>
+        [HttpPost("ReportCardWaring")]
+        public ObjectResultEx ReportCardWaring(SimpleParam<Guid> Param, SimpleParam<String> Key, SimpleParam<String> Content)
         {
             return ObjectResultEx.Instance(GovtWebService.ReportCardWaring(Param.Id, Key.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }

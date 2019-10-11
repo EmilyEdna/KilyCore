@@ -126,7 +126,15 @@ namespace KilyCore.Service.IServiceCore
 
         Object GetEdibleDetail(Guid Id);
 
+        object GetGoodsPage(Guid CompanyId);
+
         #endregion 产品监管
+
+        #region 台账管理
+
+        Object GetTickPrint(Dictionary<String, String> pairs);
+
+        #endregion 台账管理
 
         #region 餐饮监管
 

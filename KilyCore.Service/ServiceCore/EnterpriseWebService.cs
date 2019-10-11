@@ -5696,7 +5696,7 @@ namespace KilyCore.Service.ServiceCore
         #region 台账管理
 
         /// <summary>
-        /// 进销台账
+        /// 进销台账(日期范围内)
         /// </summary>
         /// <param name="pairs"></param>
         /// <returns></returns>
@@ -5704,11 +5704,16 @@ namespace KilyCore.Service.ServiceCore
         {
             var Id = Guid.Parse(pairs["Id"]);
             var CompanyType = (CompanyEnum)Convert.ToInt32(pairs["CompanyType"]);
-            DateTime? SearchTime = null;
+            DateTime? SearchTime = null;//结束日期
+            DateTime? StartTime = null;//开始日期
             if (pairs.ContainsKey("Date"))
                 SearchTime = DateTime.Parse(pairs["Date"]);
             else
                 SearchTime = DateTime.Parse(DateTime.Now.ToShortDateString());
+            if (pairs.ContainsKey("SDate"))
+                StartTime = DateTime.Parse(pairs["SDate"]);
+            else
+                StartTime = DateTime.Parse(DateTime.Now.ToShortDateString());
             List<EnterpriseGoods> Goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).Where(t => t.CompanyId == Id).ToList();
             List<EnterpriseGoodsStock> Stocks = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false).Where(t => t.CompanyId == Id).ToList();
             List<EnterpriseBuyer> Buyers = Kily.Set<EnterpriseBuyer>().Where(t => t.IsDelete == false).Where(t => t.CompanyId == Id).ToList();
@@ -5724,10 +5729,10 @@ namespace KilyCore.Service.ServiceCore
                 var Temps = Temp.GroupJoin(Logistics, n => n.t.x.ProductName, m => m.GoodsName, (n, m) => new { n, GainUser = (m.FirstOrDefault() == null ? "" : m.FirstOrDefault().GainUser) }).ToList();
                 if (CompanyEnum.Circulation == CompanyType)
                     return Temps.Join(Buyers, o => o.n.t.x.BuyId, y => y.Id, (o, y) => new { o.n.t.x.ProductName, o.n.t.x.Spec, o.n.t.x.Unit, y.Num, y.BatchNo, y.Supplier, Time = y.GetGoodsTime, o.n.t.OutStockUser, o.n.CheckResult, Seller = o.GainUser })
-                        .Where(t => t.Time >= SearchTime).ToList();
+                        .Where(t => t.Time <= SearchTime && t.Time >= StartTime).ToList();
                 else
                     return Temps.Select(o => new { o.n.t.x.ProductName, o.n.t.x.Spec, o.n.t.x.Unit, Num = o.n.t.OutStockNum, BatchNo = o.n.t.GoodsBatchNo, Supplier = "", Time = o.n.t.OutStockTime, o.n.t.OutStockUser, o.n.CheckResult, Seller = o.GainUser })
-                        .Where(t => t.Time >= SearchTime).ToList();
+                        .Where(t => t.Time <= SearchTime && t.Time >= StartTime).ToList();
             }
             else
             {
@@ -5735,10 +5740,10 @@ namespace KilyCore.Service.ServiceCore
                     .GroupJoin(Logistics, n => n.a.t.x.ProductName, m => m.GoodsName, (n, m) => new { n, GainUser = (m.FirstOrDefault() == null ? "" : m.FirstOrDefault().GainUser) }).ToList();
                 if (CompanyEnum.Circulation == CompanyType)
                     return Temps.Join(Buyers, o => o.n.a.t.x.BuyId, y => y.Id, (o, y) => new { o.n.a.t.x.ProductName, o.n.a.t.x.Spec, o.n.a.t.x.Unit, y.Num, y.BatchNo, y.Supplier, Time = y.GetGoodsTime, o.n.a.t.OutStockUser, o.n.a.CheckResult, Seller = o.GainUser })
-                        .Where(t => t.Time >= SearchTime).ToList();
+                        .Where(t => t.Time <= SearchTime&&t.Time>=StartTime).ToList();
                 else
                     return Temps.Select(o => new { o.n.a.t.x.ProductName, o.n.a.t.x.Spec, o.n.a.t.x.Unit, Num = o.n.a.t.OutStockNum, BatchNo = o.n.a.t.GoodsBatchNo, Supplier = "", Time = o.n.a.t.OutStockTime, o.n.a.t.OutStockUser, o.n.a.CheckResult, Seller = o.GainUser })
-                         .Where(t => t.Time >= SearchTime).ToList();
+                         .Where(t => t.Time <= SearchTime && t.Time >= StartTime).ToList();
             }
         }
 

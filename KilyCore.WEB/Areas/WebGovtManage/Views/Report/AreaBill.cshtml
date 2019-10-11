@@ -27,14 +27,14 @@
                         let html = '';
                         arr = [];
                         $.each(result.data, function (index, item) {
-                            html += '<tr><td>' + (index + 1) + '</td>';
-                            html += '<td>' + item.TypePath + '</td>';
+                            html += '<tr><td align="center">' + (index + 1) + '</td>';
+                            html += '<td align="center">' + item.TypePath + '</td>';
                             html += '<td>' + item.CompanyName + '</td>';
-                            html += '<td>' + (controller.CheckFeild(item.SafeOffer) ? item.SafeOffer : "-") + '</td>';
-                            html += '<td>' + (controller.CheckFeild(item.CommunityCode) ? item.CommunityCode : "-") + '</td>';
+                            html += '<td align="center">' + (controller.CheckFeild(item.SafeOffer) ? item.SafeOffer : "-") + '</td>';
+                            html += '<td align="center">' + (controller.CheckFeild(item.CommunityCode) ? item.CommunityCode : "-") + '</td>';
                             html += '<td>' + (controller.CheckFeild(item.CompanyAddress) ? item.CompanyAddress : "-") + '</td>';
-                            html += '<td>' + (controller.CheckFeild(item.CompanyPhone) ? item.CompanyPhone : "-") + '</td>';
-                            html += '<td>' + item.CompanyTypeName + '</td></tr>';
+                            html += '<td align="center">' + (controller.CheckFeild(item.CompanyPhone) ? item.CompanyPhone : "-") + '</td>';
+                            html += '<td align="center">' + item.CompanyTypeName + '</td></tr>';
                         });
                         $("tbody").html(html);
                     }

@@ -4,6 +4,30 @@
 }
 @section script{
     <script>
+          // 对Date的扩展，将 Date 转化为指定格式的String   
+        // 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，   
+        // 年(y)可以用 1-4 个占位符，毫秒(S)只能用 1 个占位符(是 1-3 位的数字)   
+        // 例子：   
+        // (new Date()).Format("yyyy-MM-dd hh:mm:ss.S") ==> 2006-07-02 08:09:04.423   
+        // (new Date()).Format("yyyy-M-d h:m:s.S")      ==> 2006-7-2 8:9:4.18   
+        Date.prototype.Format = function(fmt)   
+        { //author: meizz   
+          var o = {   
+            "M+" : this.getMonth()+1,                 //月份   
+            "d+" : this.getDate(),                    //日   
+            "h+" : this.getHours(),                   //小时   
+            "m+" : this.getMinutes(),                 //分   
+            "s+" : this.getSeconds(),                 //秒   
+            "q+" : Math.floor((this.getMonth()+3)/3), //季度   
+            "S"  : this.getMilliseconds()             //毫秒   
+          };   
+          if(/(y+)/.test(fmt))   
+            fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));   
+          for(var k in o)   
+            if(new RegExp("("+ k +")").test(fmt))   
+          fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));   
+          return fmt;   
+        }
         //配置
         var options = {
             Init: function () {
@@ -12,6 +36,13 @@
             },
             //元素
             InitDom: function () {
+                controller.LayDate({ elem: "input[name='Date']", max: controller.GetDate(1) });
+                controller.LayDate({ elem: "input[name='SDate']", max: controller.GetDate(1) });
+                var CurDate = new Date();
+                SDate = CurDate.getFullYear() +"-" +(CurDate.getMonth()+1)+"-" + (CurDate.getDate()-7) + " " + CurDate.Format("hh:mm:ss");
+                EdDate= CurDate.Format("yyyy-MM-dd hh:mm:ss");
+                $("input[name='Date']").val(EdDate);
+                $("input[name='SDate']").val(SDate);
                 //取详情
                 controller.ajax({
                     url: "GovtWeb/GetCompanyDetail",
@@ -24,6 +55,8 @@
                         options.BindProduct(result.data.MainPro);
                         options.BindCompanyApply(result.data.Id);
                         options.BindCompanySell(result.data.Id);
+                        options.CompanyType = result.data.CompanyType;
+                        options.BindBook();
                         //加载视频
                         $.each(result.data.Video, function (i, obj) {
                             var url = "../../StaticHtml/PlayVedio.html?addr="+obj;
@@ -46,20 +79,43 @@
             //主要产品
             BindProduct: function (data) {
                 if (data == undefined || data == null) return;
+                //取列表
+                controller.ajax({
+                    url: "GovtWeb/GetGoodsPage",
+                    data: { Id: controller.GetParam("Id")},
+                    async: false,
+                    type: "post",
+                    success: function (res) {
+                        $.each(res.data, function (i, item) {
+                            if (item.Image == null) { item.Image = "<img src='http://system.cfda.vip/content/HPlus/img/Nopic.jpg' style='height:32px;'>"; }
+                            else { item.Image = `<img src='${item.Image}' style='height:32px;'>`;}
+                            var DetailFunction = "javascrip:";
+                            if (item.ProductType == "食品" || item.ProductType == "农产品") {
+                                 DetailFunction = "javascript:ShowProductDetail('" + item.ProductName + "','WebGovtManage/Product/EdibleSuperviseDetail?Id=" + item.Id + "')";
+                            }
+                            else if (item.ProductType == "化妆品" || item.ProductType == "药品") {
+                                DetailFunction = "javascript:ShowProductDetail('" + item.ProductName + "','WebGovtManage/Product/WorkSuperviseDetail?Id=" + item.Id + "')";
+                            }
+                            else if (item.ProductType == "其他") {
+                                 DetailFunction = "javascript:ShowProductDetail('" + item.ProductName + "','WebGovtManage/Product/OtherSuperviseDetail?Id=" + item.Id + "')";
+                            }
+                            $("#CompanyProduct").append("<tr><td align='center'>" + item.Image + `</td><td align='left'><a href="${DetailFunction}">` + item.ProductName + "</a></td><td align='center'>" + item.ProductType + "</td><td align='center'>" + item.Spec + "</td><td align='center'>" + item.ExpiredDate + "天</td></tr>")
+                        });
+                    }
+                });
                 //主要产品
-                if (data.indexOf("/") > -1) {
-                    $.each(data.split(","), function (i, item) {
-                       
-                            $("#CompanyProduct").append('<a class="fancybox" src="http://system.cfda.vip'+item+'" title="图片1"><img alt="image" src="http://system.cfda.vip'+item+'"></a>');
-                    });
-                }
+                //if (data.indexOf("/") > -1) {
+                //    $.each(data.split(","), function (i, item) {
+                //       $("#CompanyProduct").append('<a class="fancybox" src="http://system.cfda.vip'+item+'" title="图片1"><img alt="image" src="http://system.cfda.vip'+item+'"></a>');
+                //    });
+                //}
             },
             //绑定荣誉证书
             BindHonor: function (data) {                
                 if (data != null) {
                     var html = '';
                     $.each(data, function (i, obj) {
-                        html += '<img src="' + obj + '" class="img-preview-sm" title="点击放大"/>';
+                        html += '<img src="' + obj + '"  style="width:256px;"/>';
                     });
                     $("#tab-3").find(".ibox-content").html(html);
                     if (data.length > 4)
@@ -108,6 +164,46 @@
                     }
                 });
             },
+            BindBook: function () {
+                var time = $("input[name='Date']").val();
+                    var stime = $("input[name='SDate']").val();
+                    var sDate = new Date(stime);
+                    var eDate = new Date(time);
+                    var DateStr = "";
+                    if (sDate.getMonth() == eDate.getMonth()) {
+                        DateStr = sDate.getFullYear() + "年" + (sDate.getMonth() + 1) + "月" + sDate.getDate() + "-" + eDate.getDate() + "日";
+                    }
+                    else {
+                        DateStr = sDate.getFullYear() + "年" + (sDate.getMonth() + 1) + "月" + sDate.getDate() + "-" +(eDate.getMonth() + 1) + "月"+ eDate.getDate() + "日";
+                    }
+                    $("#TimeSection").html(DateStr);
+                var data = { "Id": controller.GetParam("Id"), "CompanyType": options.CompanyType };
+                if (controller.CheckFeild(time))
+                    data.Date = time;
+                if (controller.CheckFeild(stime))
+                    data.SDate = stime;
+                controller.ajax({
+                    url: "GovtWeb/GetTickPrint",
+                    data: { Id: data },
+                    async: false,
+                    success: function (result) {
+                        let html = '';
+                        $.each(result.data, function (index, item) {
+                            html += '<tr align="center"><td>' + item.BatchNo + '</td>';
+                            html += '<td align="left">' + item.ProductName + '</td>';
+                            html += '<td align="center">' + item.Num + '</td>';
+                            html += '<td align="center">' + item.Spec + '</td>';
+                            html += '<td align="center">' + item.Unit + '</td>';
+                            html += '<td align="center">' + item.CheckResult + '</td>';
+                            html += '<td align="center">' + item.Supplier + '</td>';
+                            html += '<td align="center">' + item.Seller + '</td>';
+                            html += '<td align="center">' + item.Time + '</td>';
+                            html += '<td align="center">' + item.OutStockUser + '</td></tr>';
+                        });
+                        $("#BookList").html(html);
+                    }
+                });
+            },
             //事件
             InitEvents: function () {
                 $("#four").click(function () {
@@ -119,13 +215,31 @@
                     var img = $(this);
                     $(this).wrap("<a href='" + $(this).attr("src") + "' target='_blank'></a>");
                 });
+                $("#search").on("click", function () {                    
+                    options.BindBook();
+                });
 
             },
         };
         //初始化
         $(document).ready(function () {
             options.Init();
+            //$("#search").trigger("click").focus();
         });
+        //产品详细界面
+        function ShowProductDetail(ProductName,Url) {
+            controller.OpenWindow({
+                title: ProductName,
+                type: 2,
+                height: "90%",
+                width: "80%",  
+                btn:["关闭"],
+                url: Url,
+                callBack: function (result) {
+                   
+                }
+            })
+        }
 
     </script>
 }
@@ -266,6 +380,7 @@
                         </table>
                     </div>
                 </div>
+                <!--分销商-->
                 <div id="tab-6" class="tab-pane">
                     <div  style="padding-top:12px;">
                         <table class="table table-bordered">
@@ -283,12 +398,58 @@
                         </table>
                     </div>
                 </div>
+                <!--主要产品-->
                 <div id="tab-7" class="tab-pane">
-                    <div class="ibox-content" id="CompanyProduct">
+                    <div style="padding-top:12px;">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="th-center">产品图片</th>
+                                    <th class="th-center">产品名称</th>
+                                    <th class="th-center">产品类型</th>
+                                    <th class="th-center">产品规格</th>
+                                    <th class="th-center">保质期</th>
+                                </tr>
+                            </thead>
+                            <tbody id="CompanyProduct">
+                            </tbody>
+                        </table>
                     </div>
+                    @*<div class="ibox-content" id="CompanyProduct">
+                    </div>*@
                 </div>
+                <!--进销台账-->
                 <div id="tab-8" class="tab-pane">
                     <div class="ibox-content" id="CompanyBook">
+                        <div class="row">
+                                <div class="col-sm-2 m-b-xs" style="width:262px;"><span>开始日期：</span><input type="text" class="form-control input-sm" placeholder="开始日期" name="SDate" style="display:inline-block;width:164px;" /></div>
+                                <div class="col-sm-1 m-b-xs" style="width:24px;padding:6px 4px;">-</div>
+                                <div class="col-sm-2 m-b-xs" style="width:262px;"><span>结束日期：</span><input type="text" class="form-control input-sm" placeholder="结束日期" name="Date" style="display:inline-block;width:164px;" /></div>
+                                <div class="col-sm-2 m-b-xs"><button type="button" class="btn btn-sm btn-white" id="search"><i class="fa fa-search"></i>查询</button></div>
+                        </div>
+                        <div class="table-responsive m-t-sm">
+                            <table id="tableList" class="table table-hover table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="th-center" colspan="10" style="font-size:16px;"><span id="TimeSection">最近7天</span>进销台账</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="th-center">批次号</th>
+                                        <th class="th-center">产品名称</th>
+                                        <th class="th-center">数量</th>
+                                        <th class="th-center">规格</th>
+                                        <th class="th-center">单位</th>
+                                        <th class="th-center">质检结果</th>
+                                        <th class="th-center">供应商</th>
+                                        <th class="th-center">经销商</th>
+                                        <th class="th-center">日期</th>
+                                        <th class="th-center">负责人</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="BookList">
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

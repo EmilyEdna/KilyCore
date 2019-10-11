@@ -36,13 +36,23 @@
                 TableEvents: {
                     "click .detail": function (event, val, row, index) {
                         controller.OpenWindow({
-                            title: "产品详情",
+                            title: row.ProductName,
                             type: 2,
                             height: "400px",
                             width: "800px",
+                             btn:["通报","关闭"],
                             url: "WebGovtManage/Product/OtherSuperviseDetail?Id=" + row.Id,
                             callBack: function (result) {
-                                result.$("#Edit").submit();
+                               controller.OpenWindow({
+                                    title: "通报批评-"+ row.CompanyName,
+                                    type: 2,
+                                    height: "50%",
+                                    width: "60%",  
+                                    url: "WebGovtManage/Inspect/NetPatrolEdit?Id=" + row.CompanyId,
+                                    callBack: function (res) {
+                                        res.$("#Edit").submit();
+                                    }
+                                })
                             }
                         })
                     }
