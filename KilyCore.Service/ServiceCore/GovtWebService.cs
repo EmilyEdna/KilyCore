@@ -1083,7 +1083,7 @@ namespace KilyCore.Service.ServiceCore
             var data = goods.Join(queryable, t => t.CompanyId, x => x.Id, (t, x) => new ResponseEnterpriseGoods()
             {
                 Id = t.Id,
-                CompanyId=t.CompanyId,
+                CompanyId = t.CompanyId,
                 ProductName = t.ProductName,
                 CompanyName = x.CompanyName,
                 ProductType = t.ProductType,
@@ -3895,9 +3895,9 @@ namespace KilyCore.Service.ServiceCore
 
         #endregion 操作日志
 
-        #region 综合
+        #region 综合统计
         /// <summary>
-        /// 企业综合
+        /// 区域综合
         /// </summary>
         /// <param name="name"></param>
         /// <param name="type"></param>
@@ -3974,6 +3974,150 @@ namespace KilyCore.Service.ServiceCore
             if (!string.IsNullOrEmpty(type))
                 return Einfo.Where(t => t.CompanyTypeName.Contains(type)).ToList();
             return Einfo;
+        }
+        /// <summary>
+        /// 企业巡查
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="stime"></param>
+        /// <param name="etime"></param>
+        /// <returns></returns>
+        public object GetAreaBill(string type, string name)
+        {
+            var einfo = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
+            var rinfo = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false);
+            var temp = Kily.Set<GovtTemplateChild>().Where(t => t.IsDelete == false);
+            var web = Kily.Set<GovtNetPatrol>().Where(t => t.IsDelete == false);
+            var app = Kily.Set<GovtMovePatrol>().Where(t => t.IsDelete == false);
+            var plain = Kily.Set<GovtComplain>().Where(t => t.IsDelete == false);
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+            {
+                einfo = einfo.Where(t => t.TypePath.Contains(GovtInfo().City));
+                rinfo = rinfo.Where(t => t.TypePath.Contains(GovtInfo().City));
+            }
+            else
+            {
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                    {
+                        Expression<Func<EnterpriseInfo, bool>> exp_1 = null;
+                        Expression<Func<RepastInfo, bool>> exp_2 = null;
+                        for (int i = 0; i < Areas.Count; i++)
+                        {
+                            if (i == 0)
+                            {
+                                exp_1 = ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                                exp_2 = ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                            }
+                            else
+                            {
+                                exp_1 = exp_1.Or(ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                                exp_2 = ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                            }
+                        }
+                        einfo = einfo.Where(exp_1);
+                        rinfo = rinfo.Where(exp_2);
+                    }
+                    else
+                    {
+                        einfo = einfo.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                        rinfo = rinfo.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    }
+                }
+                else
+                {
+                    einfo = einfo.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                    rinfo = rinfo.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                }
+            }
+            var data1 = einfo.Select(t => new
+            {
+                CompanyName = t.CompanyName,
+                CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
+                Temp = temp.Where(x => x.CompanyName == t.CompanyName).Count(),
+                Web = web.Where(x => x.CompanyId == t.Id).Select(x => x.PotrolNum).Sum(),
+                App = app.Where(x => x.CompanyId == t.Id).Count(),
+                Risk = Kily.Set<SystemMessage>().Where(x => x.CompanyId == t.Id).Where(x => x.MsgName == "证件到期提醒").Count(),
+                Plain = plain.Where(x => x.CompanyId == t.Id).Count(),
+                Back = web.Where(x => x.CompanyId == t.Id).Select(x => x.BulletinNum).Sum(),
+            }).ToList();
+            var data2 = rinfo.Select(t => new
+            {
+                CompanyName = t.MerchantName,
+                CompanyTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
+                Temp = temp.Where(x => x.CompanyName == t.MerchantName).Count(),
+                Web = web.Where(x => x.CompanyId == t.Id).Select(x => x.PotrolNum).Sum(),
+                App = app.Where(x => x.CompanyId == t.Id).Count(),
+                Risk = Kily.Set<SystemMessage>().Where(x => x.CompanyId == t.Id).Where(x => x.MsgName == "证件到期提醒").Count(),
+                Plain = plain.Where(x => x.CompanyId == t.Id).Count(),
+                Back = web.Where(x => x.CompanyId == t.Id).Select(x => x.BulletinNum).Sum(),
+            }).ToList();
+            data1.AddRange(data2);
+            if (!string.IsNullOrEmpty(name))
+                return data1.Where(t => t.CompanyName.Contains(name)).ToList();
+            if (!string.IsNullOrEmpty(type))
+                return data1.Where(t => t.CompanyName.Contains(type)).ToList();
+            return data1;
+        }
+        /// <summary>
+        /// 所有产品
+        /// </summary>
+        /// <param name="ProName"></param>
+        /// <returns></returns>
+        public object GetAllPro(string ProName)
+        {
+            var info = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
+            var good = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
+            var stock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false);
+            var stocks = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false);
+            var plain = Kily.Set<GovtComplain>().Where(t => t.IsDelete == false);
+            var code = Kily.Set<EnterpriseScanCodeInfo>().Where(t => t.IsDelete == false);
+            var Logs = Kily.Set<EnterpriseLogistics>().Where(t => t.IsDelete == false);
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+                info = info.Where(t => t.TypePath.Contains(GovtInfo().City));
+            else
+            {
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                    {
+                        Expression<Func<EnterpriseInfo, bool>> exp_1 = null;
+                        for (int i = 0; i < Areas.Count; i++)
+                        {
+                            if (i == 0)
+                            {
+                                exp_1 = ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                            }
+                            else
+                            {
+                                exp_1 = exp_1.Or(ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                            }
+                        }
+                        info = info.Where(exp_1);
+                    }
+                    else
+                        info = info.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                }
+                else
+                    info = info.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            }
+            var data = info.Join(good, t => t.Id, x => x.CompanyId, (t, x) => new { t, x }).Select(x => new
+            {
+                x.t.CompanyName,
+                x.x.ProductName,
+                x.x.Spec,
+                x.x.ProductType,
+                Plian = plain.Where(t => t.CompanyId == x.t.Id).Where(t => t.ProductName == x.x.ProductName).Count(),
+                Lost = stock.Join(stocks, m => m.Id, n => n.StockId, (m, n) => new { m.GoodsId, m.InStockNum }).Where(t => t.GoodsId == x.x.Id).Select(t => t.InStockNum).Sum(),
+                Sell = stock.Join(stocks, m => m.Id, n => n.StockId, (m, n) => new { n.OutStockNum, m.GoodsId }).Where(t => t.GoodsId == x.x.Id).Select(t => t.OutStockNum).Sum(),
+                Scan = code.Join(Logs, a => a.TakeCarId, b => b.Id, (a, b) => new { b.GoodsName, a.ScanNum }).Join(good, c => c.GoodsName, d => d.ProductName, (c, d) => new { c.ScanNum, d.CompanyId }).Where(t => t.CompanyId == x.t.Id).Select(t => t.ScanNum).Sum()
+            }).ToList();
+            if (!string.IsNullOrEmpty(ProName))
+                return data.Where(t => t.ProductName.Contains(ProName)).ToList();
+            return data;
         }
         #endregion
     }
