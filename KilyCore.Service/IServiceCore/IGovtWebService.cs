@@ -368,6 +368,8 @@ namespace KilyCore.Service.IServiceCore
 
         #region  综合
         object GetAreaShow(string name, string type);
+        object GetAreaBill(string type, string name);
+        object GetAllPro(string ProName);
         #endregion
     }
 }

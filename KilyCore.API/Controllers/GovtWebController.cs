@@ -1382,7 +1382,28 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(GovtWebService.GetAreaShow(name.Id, type.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-
+        /// <summary>
+        /// 企业巡查
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="stime"></param>
+        /// <param name="etime"></param>
+        /// <returns></returns>
+        [HttpGet("GetAreaBill")]
+        public ObjectResultEx GetAreaBill(SimpleParam<string> type, SimpleParam<string> name)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetAreaBill(type.Id, name.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 所有产品
+        /// </summary>
+        /// <param name="keys"></param>
+        /// <returns></returns>
+        [HttpGet("GetAllPro")]
+        public ObjectResultEx GetAllPro(SimpleParam<string> keys)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetAllPro(keys.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion 综合
     }
 }
