@@ -130,6 +130,12 @@ namespace KilyCore.Service.IServiceCore
 
         #endregion 产品监管
 
+        #region 台账管理
+
+        Object GetTickPrint(Dictionary<String, String> pairs);
+
+        #endregion 台账管理
+
         #region 餐饮监管
 
         PagedResult<ResponseCookBanquet> GetBanquetPage(PageParamList<RequestCookBanquet> pageParam);

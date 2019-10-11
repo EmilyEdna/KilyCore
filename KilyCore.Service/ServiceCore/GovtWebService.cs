@@ -355,6 +355,7 @@ namespace KilyCore.Service.ServiceCore
                 CommunityCode = t.CommunityCode,
                 CompanyPhone = t.CompanyPhone,
                 Certification = t.Certification,
+                CompanyType=t.CompanyType,
                 CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
                 Scope = t.Scope,
                 VideoAddress = t.VideoAddress,
@@ -1148,7 +1149,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public object GetGoodsPage(Guid CompanyId)
         {
-            IQueryable<EnterpriseGoods> queryable = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseGoods> queryable = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess);
             IQueryable<EnterpriseProductSeries> queryables = Kily.Set<EnterpriseProductSeries>().Where(t => t.IsDelete == false);
             queryable = queryable.Where(t => t.CompanyId ==CompanyId);
             var data = queryable.OrderByDescending(t => t.CreateTime).GroupJoin(queryables, t => t.ProductSeriesId, x => x.Id, (t, x) => new ResponseEnterpriseGoods()
@@ -2718,7 +2719,7 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 AreaName = t.Name
             }).ToList();
-            List<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).Where(t => !string.IsNullOrEmpty(t.TypePath)).ToList();
+            List<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).Where(t => !string.IsNullOrEmpty(t.TypePath)).Where(o=>o.AuditType==AuditEnum.AuditSuccess).ToList();
             List<RepastInfo> queryables = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).Where(t => !string.IsNullOrEmpty(t.TypePath)).ToList();
             List<ResponseGovtRanking> data = new List<ResponseGovtRanking>();
             Area.ForEach(t =>
@@ -2863,7 +2864,7 @@ namespace KilyCore.Service.ServiceCore
             }
             List<DataPie> Pie = coms.GroupBy(t => t.CompanyType).Select(t => new DataPie { name = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.Key), value = t.Count() }).ToList();
             Pie.AddRange(mers.GroupBy(t => t.DiningType).Select(t => new DataPie { name = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.Key), value = t.Count() }).ToList());
-            Pie.Add(new DataPie { name = "乡村厨师", value = cooks.Count() });
+            //Pie.Add(new DataPie { name = "乡村厨师", value = cooks.Count() });
             var total = Pie.Where(t => t.name == "小经营店" || t.name == "小作坊" || t.name == "小摊贩").Sum(t => t.value);
             Pie.RemoveAll(t => t.name == "小经营店" || t.name == "小作坊" || t.name == "小摊贩");
             Pie.Add(new DataPie { name = "三小企业", value = total });
@@ -4004,5 +4005,61 @@ namespace KilyCore.Service.ServiceCore
             return Einfo;
         }
         #endregion
+
+        #region 台账管理
+
+        /// <summary>
+        /// 进销台账(日期范围内)
+        /// </summary>
+        /// <param name="pairs"></param>
+        /// <returns></returns>
+        public Object GetTickPrint(Dictionary<String, String> pairs)
+        {
+            var Id = Guid.Parse(pairs["Id"]);
+            var CompanyType = (CompanyEnum)Convert.ToInt32(pairs["CompanyType"]);
+            DateTime? SearchTime = null;//结束日期
+            DateTime? StartTime = null;//开始日期
+            if (pairs.ContainsKey("Date"))
+                SearchTime = DateTime.Parse(pairs["Date"]);
+            else
+                SearchTime = DateTime.Parse(DateTime.Now.ToShortDateString());
+            if (pairs.ContainsKey("SDate"))
+                StartTime = DateTime.Parse(pairs["SDate"]);
+            else
+                StartTime = DateTime.Parse(DateTime.Now.ToShortDateString());
+            List<EnterpriseGoods> Goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).Where(t => t.CompanyId == Id).ToList();
+            List<EnterpriseGoodsStock> Stocks = Kily.Set<EnterpriseGoodsStock>().Where(t => t.IsDelete == false).Where(t => t.CompanyId == Id).ToList();
+            List<EnterpriseBuyer> Buyers = Kily.Set<EnterpriseBuyer>().Where(t => t.IsDelete == false).Where(t => t.CompanyId == Id).ToList();
+            List<EnterpriseGoodsStockAttach> StockAttach = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.IsDelete == false).Where(t => t.CompanyId == Id).ToList();
+            List<EnterpriseCheckGoods> Checks = Kily.Set<EnterpriseCheckGoods>().Where(t => t.IsDelete == false).Where(t => t.CompanyId == Id).ToList();
+            List<EnterpriseLogistics> Logistics = Kily.Set<EnterpriseLogistics>().Where(t => t.IsDelete == false).Where(t => t.CompanyId == Id).ToList();
+            List<EnterpriseGoodsPackage> Packs = Kily.Set<EnterpriseGoodsPackage>().Where(t => t.IsDelete == false).Where(t => t.CompanyId == Id).ToList();
+            var Temp = Goods.Join(Stocks, t => t.Id, x => x.GoodsId, (t, x) => new { t.ProductName, t.Spec, t.Unit, x.InStockNum, x.Id, x.CheckGoodsId, x.BuyId })
+                 .Join(StockAttach, x => x.Id, t => t.StockId, (x, t) => new { x, t.OutStockNum, t.GoodsBatchNo, t.OutStockTime, t.OutStockUser })
+                 .Join(Checks, t => t.x.CheckGoodsId, x => x.Id, (t, x) => new { t, x.CheckResult }).ToList();
+            if (Packs.Count == 0)
+            {
+                var Temps = Temp.GroupJoin(Logistics, n => n.t.x.ProductName, m => m.GoodsName, (n, m) => new { n, GainUser = (m.FirstOrDefault() == null ? "" : m.FirstOrDefault().GainUser) }).ToList();
+                if (CompanyEnum.Circulation == CompanyType)
+                    return Temps.Join(Buyers, o => o.n.t.x.BuyId, y => y.Id, (o, y) => new { o.n.t.x.ProductName, o.n.t.x.Spec, o.n.t.x.Unit, y.Num, y.BatchNo, y.Supplier, Time = y.GetGoodsTime, o.n.t.OutStockUser, o.n.CheckResult, Seller = o.GainUser })
+                        .Where(t => t.Time <= SearchTime && t.Time >= StartTime).ToList();
+                else
+                    return Temps.Select(o => new { o.n.t.x.ProductName, o.n.t.x.Spec, o.n.t.x.Unit, Num = o.n.t.OutStockNum, BatchNo = o.n.t.GoodsBatchNo, Supplier = "", Time = o.n.t.OutStockTime, o.n.t.OutStockUser, o.n.CheckResult, Seller = o.GainUser })
+                        .Where(t => t.Time <= SearchTime && t.Time >= StartTime).ToList();
+            }
+            else
+            {
+                var Temps = Temp.GroupJoin(Packs, a => a.t.GoodsBatchNo, b => b.ProductOutStockNo, (a, b) => new { a, b.FirstOrDefault()?.PackageNo })
+                    .GroupJoin(Logistics, n => n.a.t.x.ProductName, m => m.GoodsName, (n, m) => new { n, GainUser = (m.FirstOrDefault() == null ? "" : m.FirstOrDefault().GainUser) }).ToList();
+                if (CompanyEnum.Circulation == CompanyType)
+                    return Temps.Join(Buyers, o => o.n.a.t.x.BuyId, y => y.Id, (o, y) => new { o.n.a.t.x.ProductName, o.n.a.t.x.Spec, o.n.a.t.x.Unit, y.Num, y.BatchNo, y.Supplier, Time = y.GetGoodsTime, o.n.a.t.OutStockUser, o.n.a.CheckResult, Seller = o.GainUser })
+                        .Where(t => t.Time <= SearchTime && t.Time >= StartTime).ToList();
+                else
+                    return Temps.Select(o => new { o.n.a.t.x.ProductName, o.n.a.t.x.Spec, o.n.a.t.x.Unit, Num = o.n.a.t.OutStockNum, BatchNo = o.n.a.t.GoodsBatchNo, Supplier = "", Time = o.n.a.t.OutStockTime, o.n.a.t.OutStockUser, o.n.a.CheckResult, Seller = o.GainUser })
+                         .Where(t => t.Time <= SearchTime && t.Time >= StartTime).ToList();
+            }
+        }
+
+        #endregion 台账管理
     }
 }

@@ -56,16 +56,16 @@ namespace KilyCore.Extension.FilterGroup
             }
             if (RequestPath.Contains("EnterpriseWeb/Edit") || RequestPath.Contains("EnterpriseWeb/Remove"))
             {
-                if (RequestPath.Contains("Edit"))
-                {
-                    if (string.IsNullOrEmpty(request.Form["Id"].ToString()))
-                    {
-                        return;
-                    }
-                    if (RequestPath.Contains("EditProBatchAttach"))
-                        return;
-                }
-                context.Result = new StatusCodeResult(403);
+                //if (RequestPath.Contains("Edit"))
+                //{
+                //    if (string.IsNullOrEmpty(request.Form["Id"].ToString()))
+                //    {
+                //        return;
+                //    }
+                //    if (RequestPath.Contains("EditProBatchAttach"))
+                //        return;
+                //}
+                //context.Result = new StatusCodeResult(403);
             }
             //if (RequestPath.Contains("RepastWeb/Edit") || RequestPath.Contains("RepastWeb/Remove"))
             //{

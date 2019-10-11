@@ -60,7 +60,7 @@
                         success: function (result) {
                             controller.SetCtrlValue("#Edit", result.data);
                             $("#Unit").selectpicker('val', result.data.Unit);
-                            $("#Spec").selectpicker('val', result.data.Spec);
+                            //$("#Spec").selectpicker('val', result.data.Spec);
                              options.Editor.summernote('code', result.data.Remark);
                             if (controller.CheckFeild(result.data.Image)) {
                                 //产品图片
@@ -103,6 +103,12 @@
             <input type="hidden" name="CompanyId" />
             <input type="hidden" name="Remark" />
             <table class="table table-hover table-bordered">
+                <colgroup>
+                    <col width="136" />
+                    <col />
+                    <col width="136" />
+                    <col />
+                </colgroup>
                 <tr>
                     <th><label class="control-label">产品名称</label></th>
                     <td class="has-warning">
