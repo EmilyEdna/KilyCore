@@ -164,6 +164,28 @@ namespace KilyCore.Service.ServiceCore
                 DateTime = t.DrawTime.Value
             }).Take(9).ToList();
         }
+        /// <summary>
+        /// 主营菜品
+        /// </summary>
+        /// <param name="CompanyId"></param>
+        /// <returns></returns>
+        [Obsolete]
+        public object RepastFoods(Guid CompanyId)
+        {
+            return Kily.Set<RepastDish>().Where(t => t.InfoId == CompanyId && t.IsDelete == false).OrderByDescending(o => o.DishName).Select(t => new
+            {
+                Id = t.Id,
+                DishName = t.DishName,
+                DishType = t.DishType,
+                CookingTime = t.CookingTime,
+                CookingType = t.CookingType,
+                MainBatch=t.MainBatch,
+                Batching=t.Batching,
+                Seasoning=t.Seasoning,
+                FoodImg=""
+
+            }).Take(20).ToList();
+        }
 
         /// <summary>
         /// 陪餐打卡
@@ -216,6 +238,32 @@ namespace KilyCore.Service.ServiceCore
                        Types = t.x.Types,
                        Remark = t.t.Remark
                    }).ToList();
+        }
+        /// <summary>
+        /// 进货台账
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public object GetBuybillPage(Guid CompanyId,string SDate, string EDate)
+        {
+            IQueryable<RepastBuybill> queryable = Kily.Set<RepastBuybill>().Where(t => t.IsDelete == false).Where(o=>o.OrderTime>=DateTime.Parse(SDate)&&o.OrderTime<= DateTime.Parse(EDate));
+            queryable = queryable.Where(t => t.InfoId == CompanyId);
+            var data = queryable.OrderByDescending(t => t.CreateTime).Select(t => new ResponseRepastBuybill()
+            {
+                Id = t.Id,
+                GoodsName = t.GoodsName,
+                GoodsNum = t.GoodsNum,
+                LinkPhone = t.LinkPhone,
+                Purchase = t.Purchase,
+                Unit = t.Unit,
+                NoExp = t.NoExp,
+                ProTime = t.ProTime,
+                ToPay = t.ToPay,
+                Supplier = t.Supplier,
+                OrderTime = t.OrderTime,
+                UnPay = t.UnPay
+            }).ToList();
+            return data;
         }
 
         #endregion 弃用-中间系统

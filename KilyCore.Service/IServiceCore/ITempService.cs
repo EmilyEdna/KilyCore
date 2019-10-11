@@ -25,8 +25,11 @@ namespace KilyCore.Service.IServiceCore
         object RepastMarket(Guid id);
 
         object RepastCheck(Guid id);
+        object RepastFoods(Guid id);
 
         object RepastSelfCheck(Guid id);
+
+        object GetBuybillPage(Guid CompanyId, string SDate, string EDate);
 
         object RepastProduct(Guid CompanyId);
     }

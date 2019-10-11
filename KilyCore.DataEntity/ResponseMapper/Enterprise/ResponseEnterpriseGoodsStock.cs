@@ -24,11 +24,13 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
     {
         public Guid Id { get; set; }
         public Guid CompanyId { get; set; }
+        public string CompanyName { set; get; }
         public string GoodsBatchNo { get; set; }
         /// <summary>
         /// 产品名称
         /// </summary>
         public string GoodsName { get; set; }
+        public string CreateTime { set; get; }
         /// <summary>
         /// 产品表Id
         /// </summary>

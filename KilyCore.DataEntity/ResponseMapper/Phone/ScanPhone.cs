@@ -41,6 +41,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Phone
         public string 荣誉证书 { get; set; }
         public string 工商代码 { get; set; }
         public string 企业网站 { get; set; }
+        public string 企业视频 { get; set; }
         public string 所在区域 { get; set; }
         public string 仓库名称 { get; set; }
         public string 贮藏方式 { get; set; }

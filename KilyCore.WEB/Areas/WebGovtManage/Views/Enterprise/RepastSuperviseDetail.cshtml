@@ -11,6 +11,30 @@
 }
 @section script{
     <script>
+         // 对Date的扩展，将 Date 转化为指定格式的String   
+        // 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，   
+        // 年(y)可以用 1-4 个占位符，毫秒(S)只能用 1 个占位符(是 1-3 位的数字)   
+        // 例子：   
+        // (new Date()).Format("yyyy-MM-dd hh:mm:ss.S") ==> 2006-07-02 08:09:04.423   
+        // (new Date()).Format("yyyy-M-d h:m:s.S")      ==> 2006-7-2 8:9:4.18   
+        Date.prototype.Format = function(fmt)   
+        { //author: meizz   
+          var o = {   
+            "M+" : this.getMonth()+1,                 //月份   
+            "d+" : this.getDate(),                    //日   
+            "h+" : this.getHours(),                   //小时   
+            "m+" : this.getMinutes(),                 //分   
+            "s+" : this.getSeconds(),                 //秒   
+            "q+" : Math.floor((this.getMonth()+3)/3), //季度   
+            "S"  : this.getMilliseconds()             //毫秒   
+          };   
+          if(/(y+)/.test(fmt))   
+            fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));   
+          for(var k in o)   
+            if(new RegExp("("+ k +")").test(fmt))   
+          fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));   
+          return fmt;   
+        }
         //配置
         var options = {
             Init: function () {
@@ -20,9 +44,20 @@
                 this.InitThing();
                 this.InitBad();
                 this.InitTemp();
+                this.InitFoods();
+                this.InitCheck();
+                this.InitSelfCheck();
+                this.InitBuyList();
             },
             //元素
             InitDom: function () {
+                 controller.LayDate({ elem: "input[name='Date']", max: controller.GetDate(1) });
+                controller.LayDate({ elem: "input[name='SDate']", max: controller.GetDate(1) });
+                var CurDate = new Date();
+                SDate = CurDate.getFullYear() +"-" +(CurDate.getMonth()+1)+"-" + (CurDate.getDate()-7) + " " + CurDate.Format("hh:mm:ss");
+                EdDate= CurDate.Format("yyyy-MM-dd hh:mm:ss");
+                $("input[name='Date']").val(EdDate);
+                $("input[name='SDate']").val(SDate);
                 //取详情
                 controller.ajax({
                     url: "GovtWeb/GetRepastDetail",
@@ -79,10 +114,10 @@
                             }
 
                             PersonHTML += '<tr>'
-                                + '<td>' + item.PersonName + '</td>'
-                                + '<td>' + item.JobStatus + '</td>'
-                                + '<td style="' + Color + '">' + item.TimeLength + '</td>'
-                                + '<td><img src="' + item.HealthImg + '" alt="" class="img-preview-sm" title="点击查看"/></td>'
+                                + '<td align="center">' + item.PersonName + '</td>'
+                                + '<td align="center">' + item.JobStatus + '</td>'
+                                + '<td align="center" style="' + Color + '">' + item.TimeLength + '</td>'
+                                + '<td align="center"><img src="' + item.HealthImg + '" alt="" class="img-preview-sm" title="点击查看"/></td>'
 
                                 + '</tr>';
                         });
@@ -124,11 +159,11 @@
                         $.each(result.data, function (i, item) {
                             if (item.BadRemark == null) item.BadRemark = "";
                             BadHTML += '<tr>'
-                                + '<td>' + item.BadType + '</td>'
-                                + '<td>' + item.BadPhone + '</td>'
-                                + '<td>' + item.BadTime + '</td>'
-                                + '<td>' + item.BadPerson + '</td>'
-                                + '<td>' + item.BadRemark.replace(new RegExp("<img ", 'g'), "<img class='photo' style='max-height:36px;width:auto'").replace(new RegExp("<p", 'g'), "<p style='display:inline-block;' ") + '</td>'
+                                + '<td align="center">' + item.BadType + '</td>'
+                                + '<td align="center">' + item.BadPhone + '</td>'
+                                + '<td align="center">' + item.BadTime + '</td>'
+                                + '<td align="center">' + item.BadPerson + '</td>'
+                                + '<td align="center">' + item.BadRemark.replace(new RegExp("<img ", 'g'), "<img class='photo' style='max-height:36px;width:auto'").replace(new RegExp("<p", 'g'), "<p style='display:inline-block;' ") + '</td>'
                                 + '</tr>';
                         });
                         $("#BadList").append(BadHTML);
@@ -148,11 +183,11 @@
                         $.each(result.data, function (i, item) {
                             if (item.Remark == null) item.Remark = "冷藏";
                             TempHTML += '<tr>'
-                                + '<td>' + item.FoodsName + '</td>'
-                                + '<td>' + item.Remark + '</td>'
-                                + '<td>' + item.SavePerson + '</td>'
-                                + '<td>' + item.SaveTime + '</td>'
-                                + '<td><img src="' + item.ReportImg + '" alt="" class="img-preview-sm" title="点击查看"/></td>'
+                                + '<td align="center">' + item.FoodsName + '</td>'
+                                + '<td align="center">' + item.Remark + '</td>'
+                                + '<td align="center">' + item.SavePerson + '</td>'
+                                + '<td align="center">' + item.SaveTime + '</td>'
+                                + '<td align="center"><img src="' + item.ReportImg + '" alt="" class="img-preview-sm" title="点击查看"/></td>'
                                 + '</tr>';
                         });
                         $("#TempList").append(TempHTML);
@@ -171,14 +206,37 @@
                         var CheckHTML = "";
                         $.each(result.data, function (i, item) {
                             CheckHTML += '<tr>'
-                                + '<td>' + item.Title + '</td>'
-                                + '<td>' + item.DateTime + '</td>'
-                                + '<td>' + item.Person + '</td>'
-                                + '<td>' + item.Remark + '</td>'
-
+                                + '<td align="left">' + item.Title + '</td>'
+                                + '<td align="center">' + item.DateTime + '</td>'
+                                + '<td align="center">' + item.Person + '</td>'
+                                + '<td align="left">' + item.Remark + '</td>'
                                 + '</tr>';
                         });
                         $("#CheckList").append(CheckHTML);
+                    }
+                });
+            },
+            //主营菜品
+            InitFoods: function () {
+                controller.ajax({
+                    url: "Temp/RepastFoods",
+                    data: { Id: controller.GetParam("Id") },
+                    async: false,
+                    type: "get",
+                    success: function (result) {
+                        var FoodsHTML = "";
+                        $.each(result.data, function (i, item) {
+                            FoodsHTML += '<tr>'
+                                + '<td align="center">' + item.DishName + '</td>'
+                                + '<td align="center">' + item.DishType + '</td>'
+                                + '<td align="center">' + item.CookingType + '</td>'
+                                + '<td align="center">' + item.CookingTime + '</td>'
+                                + '<td align="center">' + item.MainBatch + '</td>'
+                                + '<td align="center">' + item.Seasoning + '</td>'
+                                + '<td align="center">' + item.Batching + '</td>'
+                                + '</tr>';
+                        });
+                        $("#FoodsList").append(FoodsHTML);
                     }
                 });
             },
@@ -202,6 +260,47 @@
                                 + '</tr>';
                         });
                         $("#SelfCheckList").append(SelfCheckHTML);
+                    }
+                });
+            },
+             //食材供应
+            InitBuyList: function () {
+                var time = $("input[name='Date']").val();
+                    var stime = $("input[name='SDate']").val();
+                    var sDate = new Date(stime);
+                    var eDate = new Date(time);
+                    var DateStr = "";
+                    if (sDate.getMonth() == eDate.getMonth()) {
+                        DateStr = sDate.getFullYear() + "年" + (sDate.getMonth() + 1) + "月" + sDate.getDate() + "-" + eDate.getDate() + "日";
+                    }
+                    else {
+                        DateStr = sDate.getFullYear() + "年" + (sDate.getMonth() + 1) + "月" + sDate.getDate() + "-" +(eDate.getMonth() + 1) + "月"+ eDate.getDate() + "日";
+                    }
+                $("#TimeSection").html(DateStr);
+                //取详情
+                controller.ajax({
+                    url: "Temp/GetBuybillPage",
+                    data: { CompanyId: controller.GetParam("Id"), SDate: sDate.Format("yyyy-MM-dd hh:mm:ss"), EDate: eDate.Format("yyyy-MM-dd hh:mm:ss") },
+                    async: false,
+                    type: "get",
+                    success: function (result) {
+                        var BuyHTML = "";
+                        $.each(result.data, function (i, item) {
+                            BuyHTML += '<tr>'
+                                + '<td align="center">' + item.GoodsName + '</td>'
+                                + '<td align="center">' + item.GoodsNum + '</td>'
+                                + '<td align="center">' + item.Unit + '</td>'
+                                + '<td align="center">' + item.UnPay + '</td>'
+                                + '<td align="center">' + item.ToPay + '</td>'
+                                + '<td align="center">' + item.Supplier + '</td>'
+                                + '<td align="center">' + item.LinkPhone + '</td>'
+                                + '<td align="center">' + item.NoExp + '</td>'
+                                + '<td align="center">' + item.ProTime + '</td>'
+                                + '<td align="center">' + item.Purchase + '</td>'
+                                + '<td align="center">' + item.OrderTime + '</td>'
+                                + '</tr>';
+                        });
+                        $("#BuyList").append(BuyHTML);
                     }
                 });
             },
@@ -229,6 +328,9 @@
                 $(".table-bordered img").each(function (i) {
                     var img = $(this);
                     $(this).wrap("<a href='" + $(this).attr("src") + "' target='_blank'></a>");
+                });
+                $("#search").on("click", function () {                    
+                    options.InitBuyList();
                 });
             },
         };
@@ -292,7 +394,7 @@
                 <li class="ts">
                     <a data-toggle="tab" href="#tab-11" aria-expanded="false">陪餐打卡</a>
                 </li>
-                <li class="ts">
+                <li>
                     <a data-toggle="tab" href="#tab-12" aria-expanded="false">自查记录</a>
                 </li>
                 <li>
@@ -395,7 +497,7 @@
                         </table>
                     </div>
                 </div>
-                <!--食材供应-->
+                <!--台账凭证-->
                 <div id="tab-6" class="tab-pane">
                     <div class="ibox-content">
                         <table id="tableList" class="table table-bordered">
@@ -414,6 +516,21 @@
                 <!--主营菜品-->
                 <div id="tab-7" class="tab-pane">
                     <div class="ibox-content">
+                        <table id="tableList" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="th-center">菜品名称</th>
+                                    <th class="th-center">菜品类型</th>
+                                    <th class="th-center">烹饪方式</th>
+                                    <th class="th-center">烹饪时长</th>
+                                    <th class="th-center">主料</th>
+                                    <th class="th-center">调料</th>
+                                    <th class="th-center">配料</th>
+                                </tr>
+                            </thead>
+                            <tbody id="FoodsList">
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <!--废物处理-->
@@ -503,12 +620,42 @@
                         </table>
                     </div>
                 </div>
-            </div>
-            <!--食材供应-->
-            <div id="tab-12" class="tab-pane">
-                <div class="ibox-content">
+                <!--食材供应-->
+                <div id="tab-13" class="tab-pane">
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-sm-2 m-b-xs" style="width:262px;"><span>开始日期：</span><input type="text" class="form-control input-sm" placeholder="开始日期" name="SDate" style="display:inline-block;width:164px;" /></div>
+                            <div class="col-sm-1 m-b-xs" style="width:24px;padding:6px 4px;">-</div>
+                            <div class="col-sm-2 m-b-xs" style="width:262px;"><span>结束日期：</span><input type="text" class="form-control input-sm" placeholder="结束日期" name="Date" style="display:inline-block;width:164px;" /></div>
+                            <div class="col-sm-2 m-b-xs"><button type="button" class="btn btn-sm btn-white" id="search"><i class="fa fa-search"></i>查询</button></div>
+                        </div>
+                        <table id="tableList" class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="th-center" colspan="13" style="font-size:16px;"><span id="TimeSection">最近7天</span>进销台账</th>
+                                </tr>
+                            <tr>
+                                <th data-field="GoodsName" class="th-center">食材名称</th>
+                                <th data-field="GoodsNum" class="th-center">进货数量</th>
+                                <th data-field="Unit" class="th-center">单位</th>
+                                <th data-field="UnPay" class="th-center">单价</th>
+                                <th data-field="ToPay" class="th-center">总价</th>
+                                <th data-field="Supplier" class="th-center">供应商</th>
+                                <th data-field="LinkPhone" class="th-center">电话</th>
+                                <th data-field="NoExp" class="th-center">有效期</th>
+                                <th data-field="ProTime" class="th-center">生产日期</th>
+                                <th data-field="Purchase" class="th-center">采购负责人</th>
+                                <th data-field="OrderTime" class="th-center">进货时间</th>
+
+                            </tr>
+                            </thead>
+                            <tbody id="BuyList">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
+           
         </div>
     </div>
     </div>

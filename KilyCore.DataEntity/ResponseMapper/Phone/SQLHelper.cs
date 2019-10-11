@@ -52,6 +52,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Phone
        企业表.LngAndLat AS 经纬度,
        企业表.Discription AS 企业介绍,
        企业表.Certification AS 营业执照,
+       企业表.VideoAddress AS 企业视频,
        企业表.HonorCertification AS 荣誉证书,
        企业表.CommunityCode AS 工商代码,
        企业表.NetAddress AS 企业网站,

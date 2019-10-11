@@ -133,13 +133,13 @@
                     async: false,
                     type: "get",
                     success: function (res) {
-                         $.each(res.data, function (i, item) {
+                        $.each(res.data, function (i, item) {
                             if (item.CompanyCode == null) item.CompanyCode = "-";
                             if (item.CompanyName == null) item.CompanyName = "-";
                             if (item.CompanyTel == null) item.CompanyTel = "-";
                             if (item.CompanyFace == null) item.CompanyFace = "-";
                             else item.CompanyFace = "<img src='http://system.cfda.vip" + item.CompanyFace + "'style='max-width:100%;height:56px;'/>";
-                            $("#CompanyApply").append("<tr><td>" + item.CompanyName + "</td><td>" + "-" + "</td><td>" + item.CompanyUser + "</td><td>" + item.CompanyTel + "</td><td>" + item.CompanyFace + "</td></tr>")
+                            $("#CompanyApply").append("<tr><td>" + item.CompanyName + "</td><td>" +  item.CompanyCode + "</td><td>" + item.CompanyUser + "</td><td>" + item.CompanyTel + "</td><td>" + item.CompanyFace + "</td></tr>")
                         });
                     }
                 });
@@ -159,11 +159,12 @@
                             if (item.CompanyTel == null) item.CompanyTel = "-";
                             if (item.CompanyFace == null) item.CompanyFace = "-";
                             else item.CompanyFace = "<img src='http://system.cfda.vip" + item.CompanyFace + "'style='max-width:100%;height:56px;'/>";
-                            $("#CompanySell").append("<tr><td>" + item.CompanyName + "</td><td>" + "-" + "</td><td>" + item.CompanyUser + "</td><td>" + item.CompanyTel + "</td><td>" + item.CompanyFace + "</td></tr>")
+                            $("#CompanySell").append("<tr><td>" + item.CompanyName + "</td><td>" + item.CompanyCode + "</td><td>" + item.CompanyUser + "</td><td>" + item.CompanyTel + "</td><td>" + item.CompanyFace + "</td></tr>")
                         });
                     }
                 });
             },
+            //进销台账
             BindBook: function () {
                 var time = $("input[name='Date']").val();
                     var stime = $("input[name='SDate']").val();
