@@ -53,12 +53,54 @@
                             }
                     }
                 },
+                OpenFormatter:function(val, row, index) {//打开新窗口
+                    var action = [];
+                    if (row.Name != null) {
+                        if (row.CardType == "健康证") {
+                            var Content = row.PersonName + "健康证于" + row.CardExpiredDate + "到期.";
+                            action.push(`<a href='javascript:ShowModelDetail("WebGovtManage/Risk/CertificateRiskDetail?Name=${row.Name}&PersonName=${row.PersonName}&CardType=${row.CardType}&CardExpiredDate=${row.ExpiredDate}&CardImg=${row.CardImg}&Remark=${row.Remark}", "预警提示","${row.Id}","${row.CompanyType}","")'>${row.Name}</a>`);
+                        }
+                        else if (row.CardType == "营业执照") {
+                            var Content = "营业执照于" + row.CardExpiredDate + "到期.";
+                             action.push(`<a href='javascript:ShowModelDetail("WebGovtManage/Risk/CertificateRiskDetail?Name=${row.Name}&PersonName=${row.PersonName}&CardType=${row.CardType}&CardExpiredDate=${row.ExpiredDate}&CardImg=${row.CardImg}&Remark=${row.Remark}", "预警提示","${row.Id}","${row.CompanyType}","")'>${row.Name}</a>`);
+                        }
+                        else {//投诉
+                            var Content = "投诉信息："+ row.Remark;
+                            action.push(`<a href='javascript:ShowModelDetail("WebGovtManage/Complain/InfoComplainDetail?Id=${row.Id}","投诉提示","")'>${row.Name}</a>`);
+                        }
+                    }                     return action.join("&nbsp;");
+                }
             }
         };
         //初始化
         $(document).ready(function () {
             options.Init();
         });
+        //展示
+        function ShowModelDetail(Url, Title,ID,Type,Content) {
+            controller.OpenWindow({
+                title: Title,
+                type: 2,
+                height: "50%",
+                width: "40%",
+                url: Url,
+                btn: ["提醒","关闭"],
+                callBack: function (result) {//提醒企业
+                   controller.ajax({
+                        url: "GovtWeb/ReportCardWaring",
+                        data: { Id: ID, Parameter:Type },
+                        type: 'post',
+                       success: function (result) {
+                           if (result.HttpCode == 10) {
+                               controller.Msg("提醒成功");
+                               controller.Close();
+                           }
+                        }
+                    });
+                    
+                }
+            });
+        }
     </script>
 }
 <div class="container-fluid">
@@ -91,10 +133,10 @@
                         <thead>
                             <tr>
                                 <th class="th-center" data-field="Stutas" data-checkbox="true" data-formatter="options.action.CheckFormatter"></th>
-                                <th data-field="Name" class="th-center">企业名称</th>
+                                <th data-field="Name" class="th-center" data-align="left" data-halign="center"  data-formatter="options.action.OpenFormatter">企业名称</th>
                                 <th data-field="CardType" class="th-center">预警类型</th>
                                 <th data-field="CardExpiredDate" class="th-center">预警时间</th>
-                                <th data-field="Remark" class="th-center">预警内容</th>
+                                <th data-field="Remark" class="th-center" data-align="left" data-halign="center">预警内容</th>
                                 <th data-field="Status" class="th-center">状态</th>
                             </tr>
                         </thead>

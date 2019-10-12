@@ -4242,6 +4242,7 @@ namespace KilyCore.Service.ServiceCore
             }
             var Einfo = Info.Select(t => new ResponseEnterprise()
             {
+                CompanyId=t.Id,
                 CompanyName = t.CompanyName,
                 TypePath = Kily.Set<SystemArea>().Where(x => x.Id.ToString() == GovtInfo().Area).FirstOrDefault().Name,
                 SafeOffer = t.SafeOffer,
@@ -4252,6 +4253,7 @@ namespace KilyCore.Service.ServiceCore
             }).ToList();
             var Rinfo = Infos.Select(t => new ResponseEnterprise()
             {
+                CompanyId = t.Id,
                 CompanyName = t.MerchantName,
                 TypePath = Kily.Set<SystemArea>().Where(x => x.Id.ToString() == GovtInfo().Area).FirstOrDefault().Name,
                 SafeOffer = t.SafeOffer,
@@ -4398,6 +4400,8 @@ namespace KilyCore.Service.ServiceCore
             }
             var data = info.Join(good, t => t.Id, x => x.CompanyId, (t, x) => new { t, x }).Select(x => new
             {
+                Id=x.x.Id,
+                CompanyId=x.x.CompanyId,
                 x.t.CompanyName,
                 x.x.ProductName,
                 x.x.Spec,
