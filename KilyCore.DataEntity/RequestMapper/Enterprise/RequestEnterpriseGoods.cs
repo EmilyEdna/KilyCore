@@ -32,5 +32,13 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public AuditEnum AuditType { get; set; }
         public string Image { get; set; }
         public string Remark { get; set; }
+        /// <summary>
+        /// 条码编号
+        /// </summary>
+        public virtual string LineCode { get; set; }
+        /// <summary>
+        /// 销售网址
+        /// </summary>
+        public virtual string SellWebNet { get; set; }
     }
 }

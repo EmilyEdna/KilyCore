@@ -26,6 +26,14 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public string ProductType { get; set; }
         public string ProductName { get; set; }
         /// <summary>
+        /// 条码编号
+        /// </summary>
+        public virtual string LineCode { get; set; }
+        /// <summary>
+        /// 销售网址
+        /// </summary>
+        public virtual string SellWebNet { get; set; }
+        /// <summary>
         /// 产品图片
         /// </summary>
         public string ProductImg { set; get; }

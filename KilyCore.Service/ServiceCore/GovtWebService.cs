@@ -3079,13 +3079,13 @@ namespace KilyCore.Service.ServiceCore
             {
                 name = "自查",
                 data = new List<int> {
-                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==0).Count(),
-                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-1).Count(),
-                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-2).Count(),
-                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-3).Count(),
-                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-4).Count(),
-                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-5).Count(),
-                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-6).Count()
+                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-6&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Count(),
+                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-5&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Count(),
+                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-4&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Count(),
+                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-3&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Count(),
+                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-2&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Count(),
+                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-1&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Count(),
+                    children.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==0&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Count()
                 }
             });
             //抽查
@@ -3093,13 +3093,13 @@ namespace KilyCore.Service.ServiceCore
             {
                 name = "抽查",
                 data = new List<int> {
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==0).Sum(t=>t.PotrolNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-1).Sum(t=>t.PotrolNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-2).Sum(t=>t.PotrolNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-3).Sum(t=>t.PotrolNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-4).Sum(t=>t.PotrolNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-5).Sum(t=>t.PotrolNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-6).Sum(t=>t.PotrolNum)
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-6&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Sum(t=>t.PotrolNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-5&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Sum(t=>t.PotrolNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-4&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Sum(t=>t.PotrolNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-3&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Sum(t=>t.PotrolNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-2&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Sum(t=>t.PotrolNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-1&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Sum(t=>t.PotrolNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==0&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Sum(t=>t.PotrolNum)
                 }
             });
             //通报
@@ -3107,13 +3107,13 @@ namespace KilyCore.Service.ServiceCore
             {
                 name = "通报",
                 data = new List<int> {
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==0).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-1).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-2).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-3).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-4).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-5).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-6).Sum(t=>t.BulletinNum)
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-6&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Sum(t=>t.BulletinNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-5&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Sum(t=>t.BulletinNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-4&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Sum(t=>t.BulletinNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-3&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Sum(t=>t.BulletinNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-2&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Sum(t=>t.BulletinNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-1&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Sum(t=>t.BulletinNum),
+                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-0&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Sum(t=>t.BulletinNum)
                 }
             });
             return lines;
@@ -3180,8 +3180,8 @@ namespace KilyCore.Service.ServiceCore
             }
             else
             {
-                CompanyVedio = vedios.Where(t => t.CreateTime.Value >= DateTime.Parse(DateTime.Now.ToShortDateString()) && t.CreateTime.Value <= DateTime.Parse(DateTime.Now.ToShortDateString())).Count();
-                MerchantVedio = videos.Where(t => t.CreateTime.Value >= DateTime.Parse(DateTime.Now.ToShortDateString()) && t.CreateTime.Value <= DateTime.Parse(DateTime.Now.ToShortDateString())).Count();
+                CompanyVedio = vedios.Count();
+                MerchantVedio = videos.Count();
             }
             if (!GovtInfo().IsEdu.Value)
             {

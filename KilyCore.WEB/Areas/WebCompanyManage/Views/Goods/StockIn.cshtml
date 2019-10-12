@@ -99,7 +99,7 @@
                     success: function (result) {
                         var html = '<option>==请选择==</option>';
                         $.each(result.data, function (i, obj) {
-                            html += '<option value="' + obj.Id + '">' + obj.NoteName + '</option>';
+                            html += '<option value="' + obj.Id + '">' + obj.NoteName + '(' + obj.BatchNo + ')</option>';
                         });
                         $("#GrowNoteId").html(html);
                     }
