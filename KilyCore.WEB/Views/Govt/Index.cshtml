@@ -26,6 +26,10 @@
                         $("#B2").prepend(result.data.CGTotal + "%");
                         $("#B3").prepend(result.data.CPTotal + "%");
                         $("#B4").prepend(result.data.CBTotal + "%");
+                        $("#C1").html(result.data.CompanyTotal);
+                        $("#C2").html(result.data.TotalPro);
+                        $("#C3").html(result.data.PtTotal);
+                        $("#C4").html(result.data.BqTotal);
 
                         //教育局
                         if (GovtInfo.IsEdu) {
@@ -399,6 +403,7 @@
                     <div class="right">
                         <p>月入驻：<span id="A1"></span></p>
                         <p>增长比：<span id="B1">&emsp;<i class="fa fa-bolt" style="color: #1C84C6;"></i></span></p>
+                        <p>总&nbsp;&nbsp;&nbsp;&nbsp;量：<span id="C1"></span></p>
                     </div>
                 </a>
             </div>
@@ -415,6 +420,7 @@
                     <div class="right">
                         <p class="ts">月产品：<span id="A2"></span></p>
                         <p>增长比：<span id="B2">&emsp;<i class="fa fa-level-up" style="color: #23C6C8;"></i></span></p>
+                        <p class="ts">总&nbsp;&nbsp;&nbsp;&nbsp;量：<span id="C2"></span></p>
                     </div>
                 </a>
             </div>
@@ -431,6 +437,7 @@
                     <div class="right">
                         <p>月巡查：<span id="A3"></span></p>
                         <p>增长比：<span id="B3">&emsp;<i class="fa fa-level-up" style="color: #F8AC59;"></i></span></p>
+                        <p>总&nbsp;&nbsp;&nbsp;&nbsp;量：<span id="C3"></span></p>
                     </div>
                 </a>
             </div>
@@ -447,6 +454,7 @@
                     <div class="right">
                         <p class="tq">月报备：<span id="A4"></span></p>
                         <p>增长比：<span id="B4">&emsp;<i class="fa fa-level-up" style="color: #ED5565;"></i></span></p>
+                        <p class="tq">总&nbsp;&nbsp;&nbsp;&nbsp;量：<span id="C4"></span></p>
                     </div>
                 </a>
             </div>
