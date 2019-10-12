@@ -12,5 +12,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Govt
         public DateTime? HandlerTime { get; set; }
         public string HandlerContent { get; set; }
         public string TypePath { get; set; }
+        public string Status { set; get; }
     }
 }

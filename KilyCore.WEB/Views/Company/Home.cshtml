@@ -110,7 +110,7 @@
                     success: function (result) {
                         var html = '';
                         $.each(result.data.rows, function (i, obj) {
-                            html += '<li><a href="#" data-id="' + obj.ComplainId + '" class="Replay"><div class="row"><section>';
+                            html += '<li><a href="#" data-id="' + obj.ComplainId + '" class="Replay" data-type="'+obj.Category+'"><div class="row"><section>';
                             html += ' <dl><i class="fa fa-comment fa-fw"></i>' + obj.MsgName + '[' + (obj.Status == null ? "待处理" : obj.Status) + '][' + obj.Category + ']</dl>';
                             html += '<article class="text text-warning">' + obj.MsgContent + '</article>';
                             html += ' <span class="pull-right small">发布时间：' + obj.ReleaseTime + '</span>';
@@ -142,17 +142,24 @@
                 //处理消息
                 $(".Replay").on('click', function () {
                     var Id = $(this).data().id;
-                    controller.Prompt({ formType: 2, title: "消息处理" }, function (index) {
-                        controller.ajax({
-                            url: "GovtWeb/ReportComplainInfo",
-                            data: { Id: Id, Parameter: index },
-                            type: 'post',
-                            success: function (result) {
-                                controller.Close();
-                                options.InitMsg();
-                            }
+                    var Category = $(this).data().type;
+                    if (Category == "通报" || Category == "投诉") {
+                        controller.Prompt({ formType: 2, title: Category + "处理" }, function (index) {
+                            controller.ajax({
+                                url: "GovtWeb/ReportComplainInfo",
+                                data: { Id: Id, Parameter: index },
+                                type: 'post',
+                                success: function (result) {
+                                    controller.Close();
+                                    options.InitMsg();
+                                }
+                            });
                         });
-                    });
+                    }
+                    else
+                    {
+
+                    }
 
                 });
             },

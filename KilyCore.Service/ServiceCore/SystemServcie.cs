@@ -1492,7 +1492,8 @@ namespace KilyCore.Service.ServiceCore
                 MsgContent = t.MsgContent,
                 ReleaseTime = t.ReleaseTime,
                 Category = t.Category,
-                ComplainId = (t.ComplainId == Guid.Empty ? t.CompanyId.Value : t.ComplainId),
+                ComplainId = (t.ComplainId == Guid.Empty ? t.Id : t.ComplainId),
+                //ComplainId = (t.ComplainId == Guid.Empty ? t.CompanyId.Value : t.ComplainId),
                 Status = string.IsNullOrEmpty(x.FirstOrDefault().Status) ? t.Status : x.FirstOrDefault().Status
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
