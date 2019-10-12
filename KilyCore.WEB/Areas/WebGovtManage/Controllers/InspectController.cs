@@ -67,5 +67,9 @@ namespace KilyCore.WEB.Areas.WebGovtManage.Controllers
         public IActionResult HandlerLog() {
             return View();
         }
+        public IActionResult WarnLog()
+        {
+            return View();
+        }
     }
 }
