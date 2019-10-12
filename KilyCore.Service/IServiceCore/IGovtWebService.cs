@@ -163,6 +163,7 @@ namespace KilyCore.Service.IServiceCore
         String GetCity(Guid Id);
 
         Object GetCardPage(PageParamList<RequestGovtRiskCompany> pageParam);
+        Object GetWarnList(PageParamList<RequestGovtRiskCompany> pageParam);
 
         String ReportCardWaring(Guid Id, String Key);
 
