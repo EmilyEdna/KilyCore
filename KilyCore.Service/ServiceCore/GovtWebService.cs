@@ -3044,7 +3044,7 @@ namespace KilyCore.Service.ServiceCore
                     risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-5).Count(),
                     risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-4).Count(),
                     risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-3).Count(),
-                    risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-1).Count(),
+                    risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-2).Count(),
                     risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-1).Count(),
                     risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==0).Count(),
                 }
