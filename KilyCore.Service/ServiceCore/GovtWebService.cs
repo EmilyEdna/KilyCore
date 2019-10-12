@@ -2602,9 +2602,20 @@ namespace KilyCore.Service.ServiceCore
         public string ReportComplainInfo(Guid Id, string Param)
         {
             GovtComplain complain = Kily.Set<GovtComplain>().Where(t => t.Id == Id).AsNoTracking().FirstOrDefault();
-            SystemMessage message = Kily.Set<SystemMessage>().Where(t => t.CompanyId == Id).AsNoTracking().FirstOrDefault();
+            SystemMessage message = Kily.Set<SystemMessage>().Where(t => t.Id == Id).AsNoTracking().FirstOrDefault();
+            SystemLogInfo Log = new SystemLogInfo();
             if (complain != null)
             {
+                //日志记录
+                Log.HandlerUser = complain.CompanyName;
+                Log.TypePath = complain.TypePath;
+                Log.HandlerType = "投诉处理";
+                Log.HandlerTime = DateTime.Now;
+                Log.Id = Guid.NewGuid();
+                Log.HandlerContent = $"[{Log.HandlerUser}]对投诉内容：{complain.ComplainContent}进行了处理，处理时间[{Log.HandlerTime.Value.ToShortDateString()}]";
+                Kily.Add(Log);
+                Kily.SaveChanges();
+                //投诉状态
                 complain.HandlerContent = Param;
                 complain.Status = "已处理";
                 List<String> Fields = new List<String> { "HandlerContent", "Status" };
@@ -2612,10 +2623,29 @@ namespace KilyCore.Service.ServiceCore
             }
             else
             {
+                if(message.TrageType.Contains("企业")&&message.TrageType!="餐饮企业")
+                {
+                    Log.HandlerUser = Kily.Set<EnterpriseInfo>().Where(o=>o.Id==message.CompanyId).FirstOrDefault().CompanyName;
+                }
+                else
+                {
+                    Log.HandlerUser = Kily.Set<RepastInfo>().Where(o => o.Id == message.CompanyId).FirstOrDefault().MerchantName;
+                }
+                //日志记录
+               
+                Log.TypePath = message.TypePath;
+                Log.HandlerType = "通报处理";
+                Log.HandlerTime = DateTime.Now;
+                Log.Id = Guid.NewGuid();
+                Log.HandlerContent = $"[{ Log.HandlerUser}]对通报内容：{message.MsgContent}进行了处理，处理时间[{Log.HandlerTime.Value.ToShortDateString()}]";
+                Kily.Add(Log);
+                Kily.SaveChanges();
+
                 message.HandleTime = DateTime.Now;
                 message.HandleContent = Param;
                 message.Status = "已处理";
-                return UpdateField(message, "Status") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+                List<String> Fields = new List<String> { "HandleContent", "Status", "HandleTime" };
+                return UpdateField(message, null, Fields) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
             }
         }
 
@@ -3941,7 +3971,7 @@ namespace KilyCore.Service.ServiceCore
             }
             if (!string.IsNullOrEmpty(pageParam.QueryParam.HandlerType))
                 queryable = queryable.Where(t => t.HandlerType.Contains(pageParam.QueryParam.HandlerType));
-            var data = queryable.MapToList<SystemLogInfo, ResponseSystemLogInfo>().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            var data = queryable.OrderByDescending(x => x.HandlerTime).MapToList<SystemLogInfo, ResponseSystemLogInfo>().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
 
