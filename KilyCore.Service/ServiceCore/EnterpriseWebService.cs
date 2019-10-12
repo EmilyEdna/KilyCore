@@ -3533,7 +3533,9 @@ namespace KilyCore.Service.ServiceCore
                 ProductType = t.ProductType,
                 Unit = t.Unit,
                 Image = t.Image,
-                Remark = t.Remark
+                Remark = t.Remark,
+                LineCode=t.LineCode,
+                SellWebNet=t.SellWebNet
             }).AsNoTracking().FirstOrDefault();
             return data;
         }

@@ -58,6 +58,14 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// </summary>
         public virtual string Image { get; set; }
         /// <summary>
+        /// 条码编号
+        /// </summary>
+        public virtual string LineCode { get; set; }
+        /// <summary>
+        /// 销售网址
+        /// </summary>
+        public virtual string SellWebNet { get; set; }
+        /// <summary>
         /// 介绍
         /// </summary>
         public virtual string Remark { get; set; }
