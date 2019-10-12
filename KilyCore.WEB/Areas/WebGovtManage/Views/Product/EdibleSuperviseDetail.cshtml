@@ -19,8 +19,20 @@
                     async: false,
                     type: "post",
                     success: function (result) {
-                        //controller.SetCtrlValue("#Edit", result.data);
                         controller.SetLableValue("#Edit", result.data);
+                        //绑定库存列表
+                        $.each(result.data.StockGoods, function (i, item) {
+                            $("#StockList").append('<tr>'
+                                + '<td align="center">' + item.GoodsBatchNo + '</td>'
+                                + '<td align="center">' + item.ProductName + '</td>'
+                                + '<td align="center">' + item.Spec + '</td>'
+                                + '<td align="center">' + item.StockInTime + '</td>'
+                                + '<td align="center">' + item.ExpiredDate + '天</td>'
+                                + '<td align="center">' + item.InStockNum + '</td>'
+                                + '<td align="center">' + item.TotalCount + '</td>'
+                                + '<td align="center">' + item.Manager + '</td>'
+                                + '</tr>');
+                        });
                     }
                 });
                 //查看大图
@@ -61,6 +73,12 @@
                 </li>
                 <li>
                     <a data-toggle="tab" href="#tab-4" aria-expanded="false">仓库信息</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-5" aria-expanded="false"> 成长档案</a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#tab-6" aria-expanded="false"> 物流信息</a>
                 </li>
             </ul>
             <div class="tab-content">
@@ -132,8 +150,9 @@
                         </tr>
                     </table>
                 </div>
+                <!--库存信息-->
                 <div id="tab-3" class="tab-pane">
-                    <table class="table table-hover table-bordered m-t-sm">
+                    <table class="table table-hover table-bordered m-t-sm" style="display:none;">
                         <colgroup>
                             <col width="120" />
                             <col width="40%" />
@@ -161,6 +180,25 @@
                             </td>
                         </tr>
                     </table>
+                    <div style="padding-top:12px;">
+                        <table id="tableList" class="table table-bordered">
+                            <thead>
+                                <tr><th colspan="9" style="font-size:16px;text-align:center" align="center">最近一个月库存一览表</th></tr>
+                                <tr>
+                                    <th class="th-center" data-field="GoodsBatchNo">入库批次</th>
+                                    <th class="th-center" data-field="GoodsName">产品名称</th>
+                                    <th class="th-center" data-field="Spec">规格</th>
+                                    <th class="th-center" data-field="InStockNum">入库时间</th>
+                                    <th class="th-center" data-field="MaterialName">保质期</th>
+                                    <th class="th-center" data-field="AuditTypeName">当前库存</th>
+                                    <th class="th-center" data-field="Manager">入库量</th>
+                                    <th class="th-center" data-field="TotalCount">负责人</th>
+                                </tr>
+                            </thead>
+                            <tbody id="StockList">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div id="tab-4" class="tab-pane">
                     <table class="table table-hover table-bordered m-t-sm">
@@ -191,8 +229,15 @@
                             </td>
                         </tr>
                     </table>
+                     
+                </div>
+                <!--成长档案-->
+                <div id="tab-5" class="tab-pane">
+                </div>
+                <!--物流信息-->
+                <div id="tab-6" class="tab-pane">
                 </div>
             </div>
-        </div>
+         </div>
     </div>
 </form>

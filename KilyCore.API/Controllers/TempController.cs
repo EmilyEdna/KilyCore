@@ -109,7 +109,28 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(Temp.RepastCheck(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-
+        /// <summary>
+        /// 主营菜品
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpGet("RepastFoods")]
+        [AllowAnonymous]
+        public ObjectResultEx RepastFoods(SimpleParam<Guid> Param)
+        {
+            return ObjectResultEx.Instance(Temp.RepastFoods(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 进货台账
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpGet("GetBuybillPage")]
+        [AllowAnonymous]
+        public ObjectResultEx GetBuybillPage(Guid CompanyId, string SDate, string EDate)
+        {
+            return ObjectResultEx.Instance(Temp.GetBuybillPage(CompanyId,SDate,EDate), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         /// <summary>
         /// 陪餐记录
         /// </summary>

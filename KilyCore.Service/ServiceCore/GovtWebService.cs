@@ -1117,6 +1117,18 @@ namespace KilyCore.Service.ServiceCore
                 .Join(StockType, e => e.c.b.StockTypeId, f => f.Id, (e, f) => new { e, f })
                 .GroupJoin(CheckGoods, g => g.e.c.b.CheckGoodsId, h => h.Id, (g, h) => new { g, h })
                 .Where(t => t.g.e.d.Id == Id).AsNoTracking();
+            //库存列表
+            var StockGoods = GoodsData.Where(t => t.g.e.c.b.GoodsId == Id&&t.g.e.c.b.ProductTime>=DateTime.Now.AddDays(-60)).Select(t => new
+            {
+               t.g.e.c.b.GoodsBatchNo,
+               t.g.e.d.ProductName,
+               t.g.e.d.Spec,
+               StockInTime=t.g.e.c.b.ProductTime,
+               t.g.e.d.ExpiredDate,
+               t.g.e.c.b.InStockNum,
+               TotalCount= GoodsStockAttach.Where(i => i.StockId == t.g.e.c.b.Id).Select(j=> j.OutStockNum).Sum() + t.g.e.c.b.InStockNum,
+               t.g.e.c.b.Manager
+            }).ToList();
             return GoodsData.Select(t => new
             {
                 t.h.FirstOrDefault().CheckUint,
@@ -1138,7 +1150,8 @@ namespace KilyCore.Service.ServiceCore
                 t.g.e.c.b.ProductTime,
                 t.g.e.c.b.Manager,
                 t.g.e.c.a.OutStockTime,
-                t.g.e.c.a.OutStockUser
+                t.g.e.c.a.OutStockUser,
+                StockGoods= StockGoods
             }).FirstOrDefault();
         }
 

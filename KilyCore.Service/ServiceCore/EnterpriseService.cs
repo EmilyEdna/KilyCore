@@ -907,19 +907,21 @@ namespace KilyCore.Service.ServiceCore
                 info = info.Where(t => t.TypePath.Contains(pageParam.QueryParam.TempPath));
             if (!string.IsNullOrEmpty(pageParam.QueryParam.GoodsName))
                 goods = goods.Where(t => t.ProductName.Contains(pageParam.QueryParam.GoodsName));
-            var data = goods.Join(info, x => x.CompanyId, y => y.Id, (x, y) => new { x }).Join(stocks, t => t.x.Id, p => p.GoodsId, (t, p) => new ResponseEnterpriseGoodsStock()
+            var data = goods.Join(info, x => x.CompanyId, y => y.Id, (x, y) => new { x,y }).Join(stocks, t => t.x.Id, p => p.GoodsId, (t, p) => new ResponseEnterpriseGoodsStock()
             {
                 Id = p.Id,
                 GoodsId = t.x.Id,
                 GoodsName = t.x.ProductName,
+                CompanyName=t.y.CompanyName,
                 Spec = t.x.Spec,
+                CreateTime=t.x.CreateTime.Value.ToString("yyyy-MM-dd HH:mm:ss"),
                 Unit = t.x.Unit,
                 ExpiredDate = t.x.ExpiredDate,
                 AuditType = t.x.AuditType,
                 AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(t.x.AuditType),
                 ImgUrl = p.ImgUrl,
                 Remark = p.Remark
-            }).Distinct().AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            }).OrderByDescending(o=>o.CreateTime).OrderBy(o=>o.AuditTypeName).Distinct().AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
 
