@@ -3534,8 +3534,8 @@ namespace KilyCore.Service.ServiceCore
                 Unit = t.Unit,
                 Image = t.Image,
                 Remark = t.Remark,
-                LineCode=t.LineCode,
-                SellWebNet=t.SellWebNet
+                LineCode = t.LineCode,
+                SellWebNet = t.SellWebNet
             }).AsNoTracking().FirstOrDefault();
             return data;
         }
@@ -3648,7 +3648,7 @@ namespace KilyCore.Service.ServiceCore
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material
                     }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
-                if (CompanyInfo().CompanyType == CompanyEnum.Production)
+                else if (CompanyInfo().CompanyType == CompanyEnum.Production)
                     return Temp.GroupJoin(Batch, p => p.t.BatchId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
                     {
                         Id = p.t.Id,
@@ -3669,7 +3669,27 @@ namespace KilyCore.Service.ServiceCore
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
                     }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
-                if (CompanyInfo().CompanyType == CompanyEnum.Circulation)
+                else if (CompanyInfo().CompanyType == CompanyEnum.Circulation)
+                    return Temp.GroupJoin(Buyer, p => p.t.BuyId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
+                    {
+                        Id = p.t.Id,
+                        CompanyId = p.t.CompanyId,
+                        GoodsName = p.x.ProductName,
+                        GoodsBatchNo = p.t.GoodsBatchNo,
+                        StockType = p.t.StockType,
+                        Spec = p.x.Spec,
+                        InStockNum = p.t.InStockNum,
+                        ProBatch = o.FirstOrDefault().BatchNo,
+                        GoodsId = p.x.Id,
+                        ImgUrl = p.t.ImgUrl,
+                        IsBindBoxCode = p.t.IsBindBoxCode,
+                        CheckGoodsId = p.t.CheckGoodsId,
+                        Manager = p.t.Manager,
+                        TotalCount = attaches.Where(t => t.StockId == p.t.Id).Select(t => t.OutStockNum).Sum() + p.t.InStockNum,
+                        AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
+                        MaterialList = Material.ToList()
+                    }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                else
                     return Temp.GroupJoin(Buyer, p => p.t.BuyId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
                     {
                         Id = p.t.Id,
@@ -3714,7 +3734,7 @@ namespace KilyCore.Service.ServiceCore
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material
                     }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
-                if (CompanyUser().CompanyType == CompanyEnum.Production)
+                else if (CompanyUser().CompanyType == CompanyEnum.Production)
                     return Temp.GroupJoin(Batch, p => p.t.BatchId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
                     {
                         Id = p.t.Id,
@@ -3735,7 +3755,27 @@ namespace KilyCore.Service.ServiceCore
                         AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
                         MaterialList = Material.ToList()
                     }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
-                if (CompanyUser().CompanyType == CompanyEnum.Circulation)
+                else if (CompanyUser().CompanyType == CompanyEnum.Circulation)
+                    return Temp.GroupJoin(Buyer, p => p.t.BuyId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
+                    {
+                        Id = p.t.Id,
+                        CompanyId = p.t.CompanyId,
+                        GoodsName = p.x.ProductName,
+                        GoodsBatchNo = p.t.GoodsBatchNo,
+                        StockType = p.t.StockType,
+                        ImgUrl = p.t.ImgUrl,
+                        Spec = p.x.Spec,
+                        IsBindBoxCode = p.t.IsBindBoxCode,
+                        InStockNum = p.t.InStockNum,
+                        ProBatch = o.FirstOrDefault().BatchNo,
+                        GoodsId = p.x.Id,
+                        Manager = p.t.Manager,
+                        CheckGoodsId = p.t.CheckGoodsId,
+                        TotalCount = attaches.Where(t => t.StockId == p.t.Id).Select(t => t.OutStockNum).Sum() + p.t.InStockNum,
+                        AuditTypeName = AttrExtension.GetSingleDescription<AuditEnum, DescriptionAttribute>(p.x.AuditType),
+                        MaterialList = Material.ToList()
+                    }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                else
                     return Temp.GroupJoin(Buyer, p => p.t.BuyId, o => o.Id, (p, o) => new ResponseEnterpriseGoodsStock()
                     {
                         Id = p.t.Id,
@@ -3756,7 +3796,6 @@ namespace KilyCore.Service.ServiceCore
                         MaterialList = Material.ToList()
                     }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             }
-            return null;
         }
 
         /// <summary>
@@ -5742,7 +5781,7 @@ namespace KilyCore.Service.ServiceCore
                     .GroupJoin(Logistics, n => n.a.t.x.ProductName, m => m.GoodsName, (n, m) => new { n, GainUser = (m.FirstOrDefault() == null ? "" : m.FirstOrDefault().GainUser) }).ToList();
                 if (CompanyEnum.Circulation == CompanyType)
                     return Temps.Join(Buyers, o => o.n.a.t.x.BuyId, y => y.Id, (o, y) => new { o.n.a.t.x.ProductName, o.n.a.t.x.Spec, o.n.a.t.x.Unit, y.Num, y.BatchNo, y.Supplier, Time = y.GetGoodsTime, o.n.a.t.OutStockUser, o.n.a.CheckResult, Seller = o.GainUser })
-                        .Where(t => t.Time <= SearchTime&&t.Time>=StartTime).ToList();
+                        .Where(t => t.Time <= SearchTime && t.Time >= StartTime).ToList();
                 else
                     return Temps.Select(o => new { o.n.a.t.x.ProductName, o.n.a.t.x.Spec, o.n.a.t.x.Unit, Num = o.n.a.t.OutStockNum, BatchNo = o.n.a.t.GoodsBatchNo, Supplier = "", Time = o.n.a.t.OutStockTime, o.n.a.t.OutStockUser, o.n.a.CheckResult, Seller = o.GainUser })
                          .Where(t => t.Time <= SearchTime && t.Time >= StartTime).ToList();
