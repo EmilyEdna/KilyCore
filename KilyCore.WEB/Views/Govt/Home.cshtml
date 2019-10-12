@@ -51,8 +51,9 @@
                 if (Govt.TypePath == null || Govt.TypePath == "")
                     controller.Alter("请前往部门信息用户管理完善账户信息！", "系统提示");
 
-                //获取消息
+                //获取企业日志记录
                 setInterval(function () {
+                    //获取企业日志记录
                     controller.ajax({
                         url: "GovtWeb/GetLogInfos",
                         data: {},
@@ -64,28 +65,74 @@
                         crossDomain: true,
                         success: function (result) {
                             $(".dropdown-messages").html("");
+                            $(".dropdown-messages").append(`<li>
+                                        <div class="text-center link-block">
+                                            <a class="J_menuItem" href="/WebGovtManage/Inspect/HandlerLog">
+                                                <span style="display:none;">操作日志</span><i class="fa fa-envelope"></i> <strong> 查看所有消息</strong>
+                                            </a>
+                                        </div>
+                                    </li>`);
                             $("#MsgNum").html(result.data.length);
                             $.each(result.data, function (i, item) {
-                                if (i < 10) {
+                                if (i < 6) {
                                     $(".dropdown-messages").prepend(`<li>
-                                    <div class="dropdown-messages-box">
-                                        <div class="media-body ">
-                                            ${item.HandlerContent}
-                                            <br>
-                                            <small class="pull-right text-navy">${item.HandlerTime}</small>                                          
+                                        <div class="dropdown-messages-box">
+                                            <div class="media-body ">
+                                                ${item.HandlerContent}
+                                                <br>
+                                                <small class="pull-right text-navy">${item.HandlerTime}</small>
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
-                                <li class="divider"></li>`);
+                                    </li>
+                                    <li class="divider"></li>`);
                                 }
                             });
-                            $(".dropdown-messages").append(`<li>
-                                    <div class="text-center link-block">
-                                        <a class="J_menuItem" href="/WebGovtManage/Inspect/HandlerLog">
-                                            <span style="display:none;">操作日志</span><i class="fa fa-envelope"></i> <strong> 查看所有消息</strong>
+
+                        }
+                    });
+                }, 10000);
+                //实时获取预警提示（证件、投诉、监控预警）
+                setInterval(function () {
+                    //获取企业日志记录
+                    controller.ajax({
+                        url: "GovtWeb/GetWarnList",
+                        data: {
+                            pageSize: 20,
+                            pageNumber: 1
+                        },
+                        type: "post",
+                        async: false,
+                        xhrFields: {
+                            withCredentials: true
+                        },
+                        crossDomain: true,
+                        success: function (result) {
+                            $(".dropdown-alerts").html("");
+                            $(".dropdown-alerts").append(`<li>
+                                        <div class="text-center link-block">
+                                            <a class="J_menuItem" href="/WebGovtManage/Inspect/HandlerLog">
+                                                <span style="display:none;">预警提示</span><i class="fa fa-envelope"></i> <strong> 查看所有</strong>
+                                            </a>
+                                        </div>
+                                    </li>`);
+                            $("#WarnNum").html(result.data.rows.length);
+                            if (result.data.rows.length > 0) {
+                                $("#WarnNum").attr("style", "background-color:red;");
+                            }
+                            $.each(result.data.rows, function (i, item) {
+                                if (i < 6) {
+                                    $(".dropdown-alerts").prepend(`<li>
+                                        <a href="javascript:">
+                                            <div>
+                                                <i class="fa fa-envelope fa-fw"></i> ${item.Remark}
+                                                <span class="pull-right text-muted small">${item.Times}</span>
+                                            </div>
                                         </a>
-                                    </div>
-                                </li>`);
+                                    </li>
+                                    <li class="divider"></li>`);
+                                }
+                            });
+
                         }
                     });
                 }, 10000);
@@ -134,7 +181,7 @@
             },
             //事件
             InitEvents: function () {
-                   //修改密码
+                //修改密码
                 $("#EditPwd").click(function () {
                     controller.OpenWindow({
                         title: "修改登陆信息",
@@ -215,10 +262,9 @@
                         </li>
                         <li class="dropdown">
                             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                <i class="fa fa-bell"></i> <span class="label label-primary">0</span>
+                                <i class="fa fa-bell"></i> <span class="label label-primary" id="WarnNum">0</span>
                             </a>
                             <ul class="dropdown-menu dropdown-alerts">
-
                             </ul>
                         </li>
                     </ul>

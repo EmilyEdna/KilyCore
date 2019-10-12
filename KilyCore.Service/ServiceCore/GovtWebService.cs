@@ -1604,8 +1604,20 @@ namespace KilyCore.Service.ServiceCore
                     Remark = t.MerchantName + "人员：" + t.TrueName + "健康证于" + t.ExpiredTime.Value.ToString("yyyy年MM月dd日") + "到期.",
                     CardExpiredDate = t.ExpiredTime
                 }).ToList();
+                var complains = complain.Where(t => t.Status != "已处理").Select(t => new
+                {
+                    t.Id,
+                    Name = t.CompanyName,
+                    CardType = "投诉",
+                    PersonName = t.ComplainUser,
+                    CompanyType =t.CompanyType,
+                    CardImg = t.ComplainContent,                    
+                    Remark = t.ComplainContent,
+                    CardExpiredDate = t.ComplainTime
+                }).ToList();
                 Enterprise.AddRange(Repast);
                 Enterprise.AddRange(MerUser);
+                Enterprise.AddRange(complains);
                 Enterprise.RemoveAll(t => !t.CardExpiredDate.HasValue);
                 return Enterprise.Where(t => t.CardExpiredDate.Value <= DateTime.Now.AddDays(20)).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             }
@@ -1633,13 +1645,13 @@ namespace KilyCore.Service.ServiceCore
                     CardExpiredDate = t.ExpiredTime,
                     Remark = t.MerchantName + "人员：" + t.TrueName + "健康证于" + t.ExpiredTime.Value.ToString("yyyy年MM月dd日") + "到期."
                 }).ToList();
-                var complains = complain.Where(t => t.CompanyType == "单位食堂").Select(t => new
+                var complains = complain.Where(t => t.CompanyType == "单位食堂"&&t.Status!="已处理").Select(t => new
                 {
                     t.Id,
                     Name = t.CompanyName,
                     CardType = "投诉",
-                    PersonName = "",
-                    CompanyType = queryables.Where(x => x.Id == t.CompanyId).Select(x => x.AllowUnit).FirstOrDefault(),
+                    PersonName = t.ComplainUser,
+                    CompanyType = t.CompanyType,
                     CardImg = t.ComplainContent,
                     CardExpiredDate = t.ComplainTime,
                     Remark = t.ComplainContent
@@ -1669,7 +1681,185 @@ namespace KilyCore.Service.ServiceCore
             };
             return Insert(message) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
-
+        /// <summary>
+        /// 预警提示
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public Object GetWarnList(PageParamList<RequestGovtRiskCompany> pageParam)
+        {
+            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<RepastInfo> queryables = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<RepastInfoUser> users = Kily.Set<RepastInfoUser>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<GovtComplain> complain = Kily.Set<GovtComplain>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.CompanyName))
+            {
+                queryable = queryable.Where(t => t.CompanyName.Contains(pageParam.QueryParam.CompanyName));
+                queryables = queryables.Where(t => t.MerchantName.Contains(pageParam.QueryParam.CompanyName));
+                users = users.Where(t => t.MerchantName.Contains(pageParam.QueryParam.CompanyName));
+            }
+            if (GovtInfo().AccountType <= GovtAccountEnum.City)
+            {
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
+                queryables = queryables.Where(t => t.TypePath.Contains(GovtInfo().City));
+                users = users.Where(t => t.TypePath.Contains(GovtInfo().City));
+                complain = complain.Where(t => t.TypePath.Contains(GovtInfo().City));
+            }
+            else
+            {
+                IList<string> Areas = GetDepartArea();
+                if (Areas != null)
+                {
+                    if (Areas.Count > 1)
+                    {
+                        Expression<Func<EnterpriseInfo, bool>> exp_1 = null;
+                        Expression<Func<RepastInfo, bool>> exp_2 = null;
+                        Expression<Func<RepastInfoUser, bool>> exp_3 = null;
+                        Expression<Func<GovtComplain, bool>> exp_4 = null;
+                        for (int i = 0; i < Areas.Count; i++)
+                        {
+                            if (i == 0)
+                            {
+                                exp_1 = ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                                exp_2 = ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                                exp_3 = ExpressionExtension.GetExpression<RepastInfoUser>("TypePath", Areas[i], ExpressionEnum.Like);
+                                exp_4 = ExpressionExtension.GetExpression<GovtComplain>("TypePath", Areas[i], ExpressionEnum.Like);
+                            }
+                            else
+                            {
+                                exp_1 = exp_1.Or(ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                                exp_2 = exp_2.Or(ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                                exp_3 = exp_3.Or(ExpressionExtension.GetExpression<RepastInfoUser>("TypePath", Areas[i], ExpressionEnum.Like));
+                                exp_4 = exp_4.Or(ExpressionExtension.GetExpression<GovtComplain>("TypePath", Areas[i], ExpressionEnum.Like));
+                            }
+                        }
+                        queryable = queryable.Where(exp_1);
+                        queryables = queryables.Where(exp_2);
+                        users = users.Where(exp_3);
+                        complain = complain.Where(exp_4);
+                    }
+                    else
+                    {
+                        queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                        queryables = queryables.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                        users = users.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                        complain = complain.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    }
+                }
+                else
+                {
+                    queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                    queryables = queryables.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                    users = users.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                    complain = complain.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                }
+            }
+            if (!GovtInfo().IsEdu.Value)
+            {
+                var Enterprise = queryable.Select(t => new
+                {
+                    t.Id,
+                    Name = t.CompanyName,
+                    CardType = "营业执照",
+                    PersonName = "",
+                    CompanyType = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
+                    CardImg = t.Certification,
+                    Title = t.CompanyName + "营业执照到期",
+                    Times = DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
+                    Remark = t.CompanyName + "营业执照于" + (t.CardExpiredDate.HasValue ? t.CardExpiredDate.Value.ToString("yyyy年MM月dd日") : "-") + "到期.",
+                    t.CardExpiredDate
+                }).ToList();
+                var Repast = queryables.Select(t => new
+                {
+                    t.Id,
+                    Name = t.MerchantName,
+                    CardType = "营业执照",
+                    PersonName = "",
+                    CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
+                    CardImg = t.Certification,
+                    Title = t.MerchantName + "营业执照到期",
+                    Times = DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
+                    Remark = t.MerchantName + "营业执照于" + (t.CardExpiredDate.HasValue ? t.CardExpiredDate.Value.ToString("yyyy年MM月dd日") : "-") + "到期.",
+                    t.CardExpiredDate
+                }).ToList();
+                var MerUser = users.Select(t => new
+                {
+                    t.Id,
+                    Name = t.MerchantName,
+                    CardType = "健康证",
+                    PersonName = t.TrueName,
+                    CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
+                    CardImg = t.HealthCard,
+                    Title = t.MerchantName + "人员："+ t.TrueName +"健康证到期",
+                    Times = DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
+                    Remark = t.MerchantName + "人员：" + t.TrueName + "健康证于" + t.ExpiredTime.Value.ToString("yyyy年MM月dd日") + "到期.",
+                    CardExpiredDate = t.ExpiredTime
+                }).ToList();
+                var complains = complain.Where(t => t.Status!="已处理").Select(t => new
+                {
+                    t.Id,
+                    Name = t.CompanyName,
+                    CardType = "投诉",
+                    PersonName = t.ComplainUser,
+                    CompanyType = t.CompanyType,
+                    CardImg = "",
+                    Title = t.ComplainUser + "投诉[" + t.CompanyName + "]",
+                    Times = t.ComplainTime.Value.ToString("yyyy-MM-dd HH:mm"),                  
+                    Remark = t.ComplainUser + "投诉[" + t.CompanyName + "]:" + t.ComplainContent,
+                    CardExpiredDate = t.ComplainTime,
+                }).ToList();
+                Enterprise.AddRange(Repast);
+                Enterprise.AddRange(MerUser);
+                Enterprise.AddRange(complains);
+                Enterprise.RemoveAll(t => !t.CardExpiredDate.HasValue);
+                return Enterprise.Where(t => t.CardExpiredDate.Value <= DateTime.Now.AddDays(20)).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            }
+            else
+            {
+                var Repast = queryables.Select(t => new
+                {
+                    t.Id,
+                    Name = t.MerchantName,
+                    CardType = "营业执照",
+                    PersonName = "",
+                    CompanyType = t.AllowUnit,
+                    CardImg = t.Certification,
+                    Title = t.MerchantName + "营业执照到期",
+                    Times = DateTime.Now.ToString("yyyy-MM-dd HH:mm"),                    
+                    Remark = t.MerchantName + "营业执照于" + (t.CardExpiredDate.HasValue ? t.CardExpiredDate.Value.ToString("yyyy年MM月dd日") : "-") + "到期.",
+                    t.CardExpiredDate,
+                }).ToList();
+                var MerUser = users.Where(t => t.DiningType == MerchantEnum.UnitCanteen).Select(t => new
+                {
+                    t.Id,
+                    Name = t.MerchantName,
+                    CardType = "健康证",
+                    PersonName = t.TrueName,
+                    CompanyType = Repast.Where(x => x.Id == t.InfoId).Select(x => x.CompanyType).FirstOrDefault(),
+                    CardImg = t.HealthCard,                    
+                    Title = t.MerchantName + "人员：" + t.TrueName + "健康证到期",
+                    Times = DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
+                    Remark = t.MerchantName + "人员：" + t.TrueName + "健康证于" + t.ExpiredTime.Value.ToString("yyyy年MM月dd日") + "到期.",
+                    CardExpiredDate = t.ExpiredTime
+                }).ToList();
+                var complains = complain.Where(t => t.CompanyType == "单位食堂"&& t.Status != "已处理").Select(t => new
+                {
+                    t.Id,
+                    Name = t.CompanyName,
+                    CardType = "投诉",
+                    PersonName = t.ComplainUser,
+                    CompanyType = t.CompanyType,
+                    CardImg = "",
+                    Title = t.ComplainUser + "投诉[" + t.CompanyName + "]",
+                    Times = t.ComplainTime.Value.ToString("yyyy-MM-dd HH:mm"),                                    
+                    Remark = t.ComplainUser + "投诉[" + t.CompanyName + "]:" + t.ComplainContent,
+                    CardExpiredDate = t.ComplainTime,
+                }).ToList();
+                Repast.AddRange(MerUser);
+                Repast.AddRange(complains);
+                return Repast.Where(t => t.CardExpiredDate.Value <= DateTime.Now.AddDays(20)).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            }
+        }
         #endregion 风险预警
 
         #region 执法检查
@@ -2561,7 +2751,7 @@ namespace KilyCore.Service.ServiceCore
                 ComplainContent = t.ComplainContent,
                 ComplainTime = t.ComplainTime,
                 ComplainUserPhone = t.ComplainUserPhone,
-                HandlerTime = t.UpdateTime.Value.ToString("yyyy年MM月dd日 HH:mm"),
+                HandlerTime =t.UpdateTime.HasValue?t.UpdateTime.Value.ToString("yyyy年MM月dd日 HH:mm"):"-",
                 ProductName = t.ProductName,
                 ComplainUser = t.ComplainUser,
                 HandlerContent = t.HandlerContent,
@@ -3896,7 +4086,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public List<ResponseSystemLogInfo> GetLogInfos()
         {
-            IQueryable<SystemLogInfo> queryable = Kily.Set<SystemLogInfo>();
+            IQueryable<SystemLogInfo> queryable = Kily.Set<SystemLogInfo>().Where(o=>o.Status!="已读");
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
             else
@@ -3966,6 +4156,10 @@ namespace KilyCore.Service.ServiceCore
         }
 
         #endregion 操作日志
+
+        #region  预警提示
+
+        #endregion
 
         #region 综合统计
         /// <summary>

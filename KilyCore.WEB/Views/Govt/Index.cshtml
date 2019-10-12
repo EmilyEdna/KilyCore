@@ -99,7 +99,7 @@
                 //风险预警
                 controller.ajax({
                     url: "GovtWeb/GetWaringRiskPage",
-                    data: { pageSize: 10, pageNumber: 1 },
+                    data: { pageSize: 1, pageNumber: 1 },
                     async: false,
                     type: "post",
                     success: function (result) {
@@ -278,6 +278,7 @@
         $(document).ready(function () {
             options.Init();
             $(".CardTR").click(function () {
+                 var Id = $(this).attr("data-id");
                 var Type = $(this).attr("data-type");
                 var CompanyName = $(this).attr("data-title");
                 var PersonName = $(this).attr("data-name");
@@ -293,7 +294,7 @@
                    ShowModelDetail("WebGovtManage/Risk/CertificateRiskDetail?Name=" + CompanyName+"&PersonName="+PersonName+"&CardType="+CardType+"&CardExpiredDate="+ExpiredDate+"&CardImg="+CardImg+"&Remark="+Remark);
                 }
                 else {//投诉
-                    ShowModelDetail("WebGovtManage/Complain/InfoComplainDetail?Id=" + row.Id);
+                    ShowModelDetail("WebGovtManage/Complain/InfoComplainDetail?Id=" + Id,"投诉信息");
                 }
             });
         });

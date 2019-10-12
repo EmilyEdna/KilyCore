@@ -607,6 +607,17 @@ namespace KilyCore.API.Controllers
         }
 
         /// <summary>
+        /// 预警提示
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetWarnList")]
+        public ObjectResultEx GetWarnList(PageParamList<RequestGovtRiskCompany> pageParam)
+        {
+            return ObjectResultEx.Instance(GovtWebService.GetWarnList(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+
+        /// <summary>
         /// 证件提醒
         /// </summary>
         /// <param name="Param"></param>
