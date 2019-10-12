@@ -8,9 +8,8 @@ namespace KilyCore.EntityFrameWork.Model.System
     /// <summary>
     /// 日志表
     /// </summary>
-    public class SystemLogInfo
+    public class SystemLogInfo: BaseEntity
     {
-        public virtual Guid Id { get; set; }
         public virtual string HandlerUser { get; set; }
         public virtual string HandlerType { get; set; }
         public virtual DateTime? HandlerTime { get; set; }

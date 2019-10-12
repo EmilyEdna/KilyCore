@@ -2623,16 +2623,16 @@ namespace KilyCore.Service.ServiceCore
             }
             else
             {
-                if(message.TrageType.Contains("企业")&&message.TrageType!="餐饮企业")
+                if (message.TrageType.Contains("企业") && message.TrageType != "餐饮企业")
                 {
-                    Log.HandlerUser = Kily.Set<EnterpriseInfo>().Where(o=>o.Id==message.CompanyId).FirstOrDefault().CompanyName;
+                    Log.HandlerUser = Kily.Set<EnterpriseInfo>().Where(o => o.Id == message.CompanyId).FirstOrDefault().CompanyName;
                 }
                 else
                 {
                     Log.HandlerUser = Kily.Set<RepastInfo>().Where(o => o.Id == message.CompanyId).FirstOrDefault().MerchantName;
                 }
                 //日志记录
-               
+
                 Log.TypePath = message.TypePath;
                 Log.HandlerType = "通报处理";
                 Log.HandlerTime = DateTime.Now;
@@ -3074,6 +3074,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<GovtTemplateChild> children = Kily.Set<GovtTemplateChild>().Where(t => t.IsDelete == false);
             IQueryable<GovtNetPatrol> patrols = Kily.Set<GovtNetPatrol>().Where(t => t.IsDelete == false);
+            IQueryable<SystemMessage> msg = Kily.Set<SystemMessage>();
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
             {
                 children = children.Where(t => t.TypePath.Contains(GovtInfo().City));
@@ -3117,6 +3118,7 @@ namespace KilyCore.Service.ServiceCore
                 }
             }
             List<DataLine> lines = new List<DataLine>();
+            var datas = patrols.Join(msg, t => t.CompanyId, x => x.CompanyId, (t, x) => new { x.ReleaseTime, x.Category });
             //自查
             lines.Add(new DataLine
             {
@@ -3150,13 +3152,13 @@ namespace KilyCore.Service.ServiceCore
             {
                 name = "通报",
                 data = new List<int> {
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-6&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-5&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-4&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-3&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-2&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-1&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-0&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Sum(t=>t.BulletinNum)
+                    datas.Where(t=>t.Category.Equals("通报")).Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-6&& t.ReleaseTime.Value.Month==DateTime.Now.Month&&t.ReleaseTime.Value.Year==DateTime.Now.Year).Count(),
+                    datas.Where(t=>t.Category.Equals("通报")).Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-5&& t.ReleaseTime.Value.Month==DateTime.Now.Month&&t.ReleaseTime.Value.Year==DateTime.Now.Year).Count(),
+                    datas.Where(t=>t.Category.Equals("通报")).Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-4&& t.ReleaseTime.Value.Month==DateTime.Now.Month&&t.ReleaseTime.Value.Year==DateTime.Now.Year).Count(),
+                    datas.Where(t=>t.Category.Equals("通报")).Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-3&& t.ReleaseTime.Value.Month==DateTime.Now.Month&&t.ReleaseTime.Value.Year==DateTime.Now.Year).Count(),
+                    datas.Where(t=>t.Category.Equals("通报")).Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-2&& t.ReleaseTime.Value.Month==DateTime.Now.Month&&t.ReleaseTime.Value.Year==DateTime.Now.Year).Count(),
+                    datas.Where(t=>t.Category.Equals("通报")).Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-1&& t.ReleaseTime.Value.Month==DateTime.Now.Month&&t.ReleaseTime.Value.Year==DateTime.Now.Year).Count(),
+                    datas.Where(t=>t.Category.Equals("通报")).Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-0&& t.ReleaseTime.Value.Month==DateTime.Now.Month&&t.ReleaseTime.Value.Year==DateTime.Now.Year).Count()
                 }
             });
             return lines;
@@ -3549,7 +3551,7 @@ namespace KilyCore.Service.ServiceCore
             decimal CPTotal = Math.Round((CPSum / (Patrol.Count() == 0 ? 1 : Patrol.Count())) * 100M, 2);
             //月群宴数
             int CBSum = Banquet.Where(t => t.CreateTime >= DateTime.Now.AddMonths(-1)).Count();
-            decimal CBTotal = Math.Round((CPSum / (Banquet.Count() == 0 ? 1 : Banquet.Count())) * 100M, 2);
+            decimal CBTotal = Math.Round((CBSum / (Banquet.Count() == 0 ? 1 : Banquet.Count())) * 100M, 2);
             return new { CMSum, CMTotal, CGSum, CGTotal, CPSum, CPTotal, CBSum, CBTotal, CompanyTotal, TotalPro, PtTotal = Patrol.Count(), BqTotal = Banquet.Count() };
         }
 
@@ -3973,6 +3975,20 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.HandlerType.Contains(pageParam.QueryParam.HandlerType));
             var data = queryable.OrderByDescending(x => x.HandlerTime).MapToList<SystemLogInfo, ResponseSystemLogInfo>().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
+        }
+        /// <summary>
+        /// 批量阅读
+        /// </summary>
+        /// <param name="Keys"></param>
+        public string EditHandlerLog(List<Guid> Keys)
+        {
+            var Info = Kily.Set<SystemLogInfo>().Where(t => Keys.Contains(t.Id)).ToList();
+            foreach (var item in Info)
+            {
+                item.Status = "已读";
+                UpdateField(item, "Status");
+            }
+            return ServiceMessage.UPDATESUCCESS;
         }
 
         #endregion 操作日志

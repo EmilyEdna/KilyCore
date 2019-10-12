@@ -9,6 +9,7 @@
         var options = {
             Init: function () {
                 this.InitDom();
+                this.InitEvent();
             },
             //元素
             InitDom: function () {
@@ -21,6 +22,37 @@
                 });
                 //设置表单
                 this.$table = controller.Table("#tableList", { url: "GovtWeb/GetHandlerLogPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
+                options.IdListIn = null;
+                //入库绑定复选框事件
+                $('#tableList').on('uncheck.bs.table check.bs.table check-all.bs.table uncheck-all.bs.table', function (event, rows) {
+                    options.IdListIn = controller.TableEvent(event.type, rows, -1);
+                });
+            },
+            InitEvent: function () {
+                $("#add").click(() => {
+                    const Ids = Array.from(options.IdListIn);
+                    controller.ajax({
+                        url: "GovtWeb/EditHandlerLog",
+                        type: "post",
+                        async:false,
+                        data: { keys: Ids },
+                        success: (res) => {
+                            controller.Msg(res.data);
+                             options.$table.refresh();
+                        }
+                    });
+                });
+            },
+            action: {
+                CheckFormatter: function (val, row, index) {
+                    if (options.IdList != null) {
+                        //集合先转数组
+                        if ($.inArray(row.Id, Array.from(options.IdListIn)) != -1)
+                            return {
+                                checked: true
+                            }
+                    }
+                },
             }
         };
         //初始化
@@ -40,6 +72,7 @@
                     <form id="Edit">
                         <div class="col-sm-8 m-b-xs">
                             <div class="input-group">
+                                <button type="button" class="btn btn-sm btn-white" id="add"><i class="fa fa-plus"></i>阅读</button>
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -57,6 +90,7 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
+                                <th class="th-center" data-field="Stutas" data-checkbox="true" data-formatter="options.action.CheckFormatter"></th>
                                 <th data-field="HandlerUser" class="th-center">操作人</th>
                                 <th data-field="HandlerType" class="th-center">操作类型</th>
                                 <th data-field="HandlerTime" class="th-center">操作时间</th>

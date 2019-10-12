@@ -1367,6 +1367,16 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(GovtWebService.GetHandlerLogPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
 
+        /// <summary>
+        /// 批量阅读
+        /// </summary>
+        /// <param name="keys"></param>
+        /// <returns></returns>
+        [HttpPost("EditHandlerLog")]
+        public ObjectResultEx EditHandlerLog(List<Guid> keys) 
+        {
+            return ObjectResultEx.Instance(GovtWebService.EditHandlerLog(keys), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion 操作日志
 
         #region 综合
