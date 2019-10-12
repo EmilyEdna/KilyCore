@@ -355,7 +355,7 @@ namespace KilyCore.Service.ServiceCore
                 CommunityCode = t.CommunityCode,
                 CompanyPhone = t.CompanyPhone,
                 Certification = t.Certification,
-                CompanyType=t.CompanyType,
+                CompanyType = t.CompanyType,
                 CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
                 Scope = t.Scope,
                 VideoAddress = t.VideoAddress,
@@ -929,8 +929,8 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 ProductName = t.ProductName,
-                CompanyId=t.CompanyId,
-                CompanyName=x.CompanyName,
+                CompanyId = t.CompanyId,
+                CompanyName = x.CompanyName,
                 ProductType = t.ProductType,
                 ExpiredDate = t.ExpiredDate + "天",
                 Spec = t.Spec,
@@ -1118,16 +1118,16 @@ namespace KilyCore.Service.ServiceCore
                 .GroupJoin(CheckGoods, g => g.e.c.b.CheckGoodsId, h => h.Id, (g, h) => new { g, h })
                 .Where(t => t.g.e.d.Id == Id).AsNoTracking();
             //库存列表
-            var StockGoods = GoodsData.Where(t => t.g.e.c.b.GoodsId == Id&&t.g.e.c.b.ProductTime>=DateTime.Now.AddDays(-60)).Select(t => new
+            var StockGoods = GoodsData.Where(t => t.g.e.c.b.GoodsId == Id && t.g.e.c.b.ProductTime >= DateTime.Now.AddDays(-60)).Select(t => new
             {
-               t.g.e.c.b.GoodsBatchNo,
-               t.g.e.d.ProductName,
-               t.g.e.d.Spec,
-               StockInTime=t.g.e.c.b.ProductTime,
-               t.g.e.d.ExpiredDate,
-               t.g.e.c.b.InStockNum,
-               TotalCount= GoodsStockAttach.Where(i => i.StockId == t.g.e.c.b.Id).Select(j=> j.OutStockNum).Sum() + t.g.e.c.b.InStockNum,
-               t.g.e.c.b.Manager
+                t.g.e.c.b.GoodsBatchNo,
+                t.g.e.d.ProductName,
+                t.g.e.d.Spec,
+                StockInTime = t.g.e.c.b.ProductTime,
+                t.g.e.d.ExpiredDate,
+                t.g.e.c.b.InStockNum,
+                TotalCount = GoodsStockAttach.Where(i => i.StockId == t.g.e.c.b.Id).Select(j => j.OutStockNum).Sum() + t.g.e.c.b.InStockNum,
+                t.g.e.c.b.Manager
             }).ToList();
             return GoodsData.Select(t => new
             {
@@ -1151,7 +1151,7 @@ namespace KilyCore.Service.ServiceCore
                 t.g.e.c.b.Manager,
                 t.g.e.c.a.OutStockTime,
                 t.g.e.c.a.OutStockUser,
-                StockGoods= StockGoods
+                StockGoods = StockGoods
             }).FirstOrDefault();
         }
 
@@ -1164,7 +1164,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<EnterpriseGoods> queryable = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess);
             IQueryable<EnterpriseProductSeries> queryables = Kily.Set<EnterpriseProductSeries>().Where(t => t.IsDelete == false);
-            queryable = queryable.Where(t => t.CompanyId ==CompanyId);
+            queryable = queryable.Where(t => t.CompanyId == CompanyId);
             var data = queryable.OrderByDescending(t => t.CreateTime).GroupJoin(queryables, t => t.ProductSeriesId, x => x.Id, (t, x) => new ResponseEnterpriseGoods()
             {
                 Id = t.Id,
@@ -2813,16 +2813,16 @@ namespace KilyCore.Service.ServiceCore
             }
             else
             {
-                if(message.TrageType.Contains("企业")&&message.TrageType!="餐饮企业")
+                if (message.TrageType.Contains("企业") && message.TrageType != "餐饮企业")
                 {
-                    Log.HandlerUser = Kily.Set<EnterpriseInfo>().Where(o=>o.Id==message.CompanyId).FirstOrDefault().CompanyName;
+                    Log.HandlerUser = Kily.Set<EnterpriseInfo>().Where(o => o.Id == message.CompanyId).FirstOrDefault().CompanyName;
                 }
                 else
                 {
                     Log.HandlerUser = Kily.Set<RepastInfo>().Where(o => o.Id == message.CompanyId).FirstOrDefault().MerchantName;
                 }
                 //日志记录
-               
+
                 Log.TypePath = message.TypePath;
                 Log.HandlerType = "通报处理";
                 Log.HandlerTime = DateTime.Now;
@@ -2952,7 +2952,7 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 AreaName = t.Name
             }).ToList();
-            List<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).Where(t => !string.IsNullOrEmpty(t.TypePath)).Where(o=>o.AuditType==AuditEnum.AuditSuccess).ToList();
+            List<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).Where(t => !string.IsNullOrEmpty(t.TypePath)).Where(o => o.AuditType == AuditEnum.AuditSuccess).ToList();
             List<RepastInfo> queryables = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).Where(t => !string.IsNullOrEmpty(t.TypePath)).ToList();
             List<ResponseGovtRanking> data = new List<ResponseGovtRanking>();
             Area.ForEach(t =>
@@ -3264,6 +3264,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<GovtTemplateChild> children = Kily.Set<GovtTemplateChild>().Where(t => t.IsDelete == false);
             IQueryable<GovtNetPatrol> patrols = Kily.Set<GovtNetPatrol>().Where(t => t.IsDelete == false);
+            IQueryable<SystemMessage> msg = Kily.Set<SystemMessage>();
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
             {
                 children = children.Where(t => t.TypePath.Contains(GovtInfo().City));
@@ -3307,6 +3308,7 @@ namespace KilyCore.Service.ServiceCore
                 }
             }
             List<DataLine> lines = new List<DataLine>();
+            var datas = patrols.Join(msg, t => t.CompanyId, x => x.CompanyId, (t, x) => new { x.ReleaseTime, x.Category });
             //自查
             lines.Add(new DataLine
             {
@@ -3340,13 +3342,13 @@ namespace KilyCore.Service.ServiceCore
             {
                 name = "通报",
                 data = new List<int> {
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-6&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-5&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-4&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-3&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-2&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-1&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Sum(t=>t.BulletinNum),
-                    patrols.Where(t => t.CreateTime.Value.Day-DateTime.Now.Day==-0&& t.CreateTime.Value.Month==DateTime.Now.Month&&t.CreateTime.Value.Year==DateTime.Now.Year).Sum(t=>t.BulletinNum)
+                    datas.Where(t=>t.Category.Equals("通报")).Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-6&& t.ReleaseTime.Value.Month==DateTime.Now.Month&&t.ReleaseTime.Value.Year==DateTime.Now.Year).Count(),
+                    datas.Where(t=>t.Category.Equals("通报")).Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-5&& t.ReleaseTime.Value.Month==DateTime.Now.Month&&t.ReleaseTime.Value.Year==DateTime.Now.Year).Count(),
+                    datas.Where(t=>t.Category.Equals("通报")).Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-4&& t.ReleaseTime.Value.Month==DateTime.Now.Month&&t.ReleaseTime.Value.Year==DateTime.Now.Year).Count(),
+                    datas.Where(t=>t.Category.Equals("通报")).Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-3&& t.ReleaseTime.Value.Month==DateTime.Now.Month&&t.ReleaseTime.Value.Year==DateTime.Now.Year).Count(),
+                    datas.Where(t=>t.Category.Equals("通报")).Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-2&& t.ReleaseTime.Value.Month==DateTime.Now.Month&&t.ReleaseTime.Value.Year==DateTime.Now.Year).Count(),
+                    datas.Where(t=>t.Category.Equals("通报")).Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-1&& t.ReleaseTime.Value.Month==DateTime.Now.Month&&t.ReleaseTime.Value.Year==DateTime.Now.Year).Count(),
+                    datas.Where(t=>t.Category.Equals("通报")).Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-0&& t.ReleaseTime.Value.Month==DateTime.Now.Month&&t.ReleaseTime.Value.Year==DateTime.Now.Year).Count()
                 }
             });
             return lines;
@@ -3657,6 +3659,7 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseInfo> Enterprise = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess);
             IQueryable<RepastInfo> Merchant = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess);
             IQueryable<CookBanquet> Banquet = Kily.Set<CookBanquet>();
+            IQueryable<GovtNetPatrol> Patrol = Kily.Set<GovtNetPatrol>();
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
             {
                 //外环
@@ -3664,6 +3667,7 @@ namespace KilyCore.Service.ServiceCore
                 //内环
                 Enterprise = Enterprise.Where(t => t.TypePath.Contains(GovtInfo().City));
                 Banquet = Banquet.Where(t => t.TypePath.Contains(GovtInfo().City));
+                Patrol = Patrol.Where(t => t.TypePath.Contains(GovtInfo().City));
             }
             else
             {
@@ -3675,6 +3679,7 @@ namespace KilyCore.Service.ServiceCore
                         Expression<Func<EnterpriseInfo, bool>> exp_1 = null;
                         Expression<Func<RepastInfo, bool>> exp_2 = null;
                         Expression<Func<CookBanquet, bool>> exp_3 = null;
+                        Expression<Func<GovtNetPatrol, bool>> exp_4 = null;
                         for (int i = 0; i < Areas.Count; i++)
                         {
                             if (i == 0)
@@ -3682,12 +3687,14 @@ namespace KilyCore.Service.ServiceCore
                                 exp_1 = ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like);
                                 exp_2 = ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like);
                                 exp_3 = ExpressionExtension.GetExpression<CookBanquet>("TypePath", Areas[i], ExpressionEnum.Like);
+                                exp_4 = ExpressionExtension.GetExpression<GovtNetPatrol>("TypePath", Areas[i], ExpressionEnum.Like);
                             }
                             else
                             {
                                 exp_1 = exp_1.Or(ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like));
                                 exp_2 = exp_2.Or(ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like));
                                 exp_3 = exp_3.Or(ExpressionExtension.GetExpression<CookBanquet>("TypePath", Areas[i], ExpressionEnum.Like));
+                                exp_4 = exp_4.Or(ExpressionExtension.GetExpression<GovtNetPatrol>("TypePath", Areas[i], ExpressionEnum.Like));
                             }
                         }
                         //外环
@@ -3695,6 +3702,7 @@ namespace KilyCore.Service.ServiceCore
                         //内环
                         Enterprise = Enterprise.Where(exp_1);
                         Banquet = Banquet.Where(exp_3);
+                        Patrol = Patrol.Where(exp_4);
                     }
                     else
                     {
@@ -3703,6 +3711,7 @@ namespace KilyCore.Service.ServiceCore
                         //内环
                         Enterprise = Enterprise.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                         Banquet = Banquet.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                        Patrol = Patrol.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                     }
                 }
                 else
@@ -3712,6 +3721,7 @@ namespace KilyCore.Service.ServiceCore
                     //内环
                     Enterprise = Enterprise.Where(t => t.TypePath.Contains(GovtInfo().Area));
                     Banquet = Banquet.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                    Patrol = Patrol.Where(t => t.TypePath.Contains(GovtInfo().Area));
                 }
             }
             //月入住
@@ -3724,13 +3734,15 @@ namespace KilyCore.Service.ServiceCore
             var TotalPro = goods.Join(Enterprise, t => t.CompanyId, x => x.Id, (t, x) => new { t.CreateTime }).Count();
             decimal CGTotal = Math.Round((CGSum / (TotalPro == 0 ? 1 : TotalPro)) * 100M, 2);
             //月移动执法总数
-            IQueryable<GovtMovePatrol> MovePatrol = Kily.Set<GovtMovePatrol>().Where(t => t.GovtId == GovtInfo().Id);
-            int CPSum = MovePatrol.Where(t => t.CreateTime >= DateTime.Now.AddMonths(-1)).Count();
-            decimal CPTotal = Math.Round((CPSum / (MovePatrol.Count() == 0 ? 1 : MovePatrol.Count())) * 100M, 2);
+            //IQueryable<GovtMovePatrol> MovePatrol = Kily.Set<GovtMovePatrol>().Where(t => t.GovtId == GovtInfo().Id);
+            //int CPSum = MovePatrol.Where(t => t.CreateTime >= DateTime.Now.AddMonths(-1)).Count();
+            //decimal CPTotal = Math.Round((CPSum / (MovePatrol.Count() == 0 ? 1 : MovePatrol.Count())) * 100M, 2);
+            int CPSum = Patrol.Where(t => t.CreateTime >= DateTime.Now.AddMonths(-1)).Count();
+            decimal CPTotal = Math.Round((CPSum / (Patrol.Count() == 0 ? 1 : Patrol.Count())) * 100M, 2);
             //月群宴数
             int CBSum = Banquet.Where(t => t.CreateTime >= DateTime.Now.AddMonths(-1)).Count();
-            decimal CBTotal = Math.Round((CPSum / (Banquet.Count() == 0 ? 1 : Banquet.Count())) * 100M, 2);
-            return new { CMSum, CMTotal, CGSum, CGTotal, CPSum, CPTotal, CBSum, CBTotal };
+            decimal CBTotal = Math.Round((CBSum / (Banquet.Count() == 0 ? 1 : Banquet.Count())) * 100M, 2);
+            return new { CMSum, CMTotal, CGSum, CGTotal, CPSum, CPTotal, CBSum, CBTotal, CompanyTotal, TotalPro, PtTotal = Patrol.Count(), BqTotal = Banquet.Count() };
         }
 
         /// <summary>
@@ -4153,6 +4165,20 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.HandlerType.Contains(pageParam.QueryParam.HandlerType));
             var data = queryable.OrderByDescending(x => x.HandlerTime).MapToList<SystemLogInfo, ResponseSystemLogInfo>().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
+        }
+        /// <summary>
+        /// 批量阅读
+        /// </summary>
+        /// <param name="Keys"></param>
+        public string EditHandlerLog(List<Guid> Keys)
+        {
+            var Info = Kily.Set<SystemLogInfo>().Where(t => Keys.Contains(t.Id)).ToList();
+            foreach (var item in Info)
+            {
+                item.Status = "已读";
+                UpdateField(item, "Status");
+            }
+            return ServiceMessage.UPDATESUCCESS;
         }
 
         #endregion 操作日志

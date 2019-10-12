@@ -359,6 +359,8 @@ namespace KilyCore.Service.IServiceCore
 
         PagedResult<ResponseSystemLogInfo> GetHandlerLogPage(PageParamList<RequestSystemLogInfo> pageParam);
 
+        string EditHandlerLog(List<Guid> Keys);
+
         #endregion 操作日志
 
         #region 手机APP
