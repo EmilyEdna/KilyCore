@@ -29,10 +29,10 @@
                         $.each(result.data, function (index, item) {
                             html += '<tr><td align="center">' + (index + 1) + '</td>';
                             html += '<td align="center">' + item.TypePath + '</td>';
-                            html += '<td>' + item.CompanyName + '</td>';
+                            html += `<td style="text-align:left"><a href="javascript:ShowCompanyDetail('${item.CompanyId}','${item.CompanyName}','${item.CompanyTypeName}');">${item.CompanyName}</a></td>`;
                             html += '<td align="center">' + (controller.CheckFeild(item.SafeOffer) ? item.SafeOffer : "-") + '</td>';
                             html += '<td align="center">' + (controller.CheckFeild(item.CommunityCode) ? item.CommunityCode : "-") + '</td>';
-                            html += '<td>' + (controller.CheckFeild(item.CompanyAddress) ? item.CompanyAddress : "-") + '</td>';
+                            html += '<td style="text-align:left">' + (controller.CheckFeild(item.CompanyAddress) ? item.CompanyAddress : "-") + '</td>';
                             html += '<td align="center">' + (controller.CheckFeild(item.CompanyPhone) ? item.CompanyPhone : "-") + '</td>';
                             html += '<td align="center">' + item.CompanyTypeName + '</td></tr>';
                         });
@@ -64,6 +64,51 @@
         $(document).ready(function () {
             options.Init();
         });
+        //企业详情
+        function ShowCompanyDetail(Id,CompanyName,CompanyTypeName) {
+             //追加抽查次数
+                controller.ajax({
+                    url: "GovtWeb/EditPatrol",
+                    data: { CompanyId: Id, TradeType: CompanyTypeName, CompanyName: CompanyName, TypePath: GovtInfo.TypePath },
+                    async: false,
+                    type: "post",
+                    success: function (result) { }
+                });
+                var Url = "";
+                if (CompanyTypeName.indexOf("企业")>-1 && CompanyTypeName != "餐饮企业") {
+                    Url = "WebGovtManage/Enterprise/CompanySuperviseDetail?Id=" + Id;
+                }else {
+                    if (CompanyTypeName == "餐饮企业") {
+                        Url = "WebGovtManage/Enterprise/RepastSuperviseDetail?Id=" + Id;
+                    }
+                    else if (CompanyTypeName.indexOf("小") > -1) {
+                        Url = "WebGovtManage/Restaurant/SamllSuperviseDetail?Id=" + Id;
+                    }
+                    else {
+                        Url = "WebGovtManage/Restaurant/UnitSuperviseDetail?Id=" + Id;
+                    }
+                }
+                controller.OpenWindow({
+                    title:  CompanyName,
+                    type: 2,
+                    height: "90%",
+                    width: "80%", 
+                    btn:["通报","关闭"],
+                    url: Url,
+                    callBack: function (result) {
+                        controller.OpenWindow({
+                            title: "通报批评-"+ CompanyName,
+                            type: 2,
+                            height: "50%",
+                            width: "60%",  
+                            url: "WebGovtManage/Inspect/NetPatrolEdit?Id=" + Id,
+                            callBack: function (res) {
+                                res.$("#Edit").submit();
+                            }
+                        })
+                    }
+                })
+        }
     </script>
 }
 @section css{
@@ -121,7 +166,7 @@
                             <tr>
                                 <th class="th-center">序号</th>
                                 <th class="th-center">区域</th>
-                                <th class="th-center">企业名称</th>
+                                <th class="th-center" data-align="left" data-halign="center">企业名称</th>
                                 <th class="th-center">法人代表</th>
                                 <th class="th-center">信用代码</th>
                                 <th class="th-center">地址</th>

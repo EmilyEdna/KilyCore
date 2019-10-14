@@ -299,8 +299,8 @@
         sidePagination: 'client', // client or server
         totalRows: 0, // server side need to set
         pageNumber: 1,
-        pageSize: 10,
-        pageList: [10, 25, 50, 100],
+        pageSize: 15,
+        pageList: [15, 25, 50, 100],
         paginationHAlign: 'right', //right, left
         paginationVAlign: 'bottom', //bottom, top, both
         paginationDetailHAlign: 'left', //right, left

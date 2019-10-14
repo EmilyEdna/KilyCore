@@ -1,0 +1,148 @@
+﻿
+@{
+    ViewData["Title"] = "预警提示";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvent();
+            },
+            //元素
+            InitDom: function () {
+                //恢复高度
+                $(window).resize(function (e) {
+                    window.setTimeout(function () {
+                        options.$table.bootstrapTable("resetView", { height: $(window).height() - 150 });
+                    }, 200);
+                    e.stopPropagation();
+                });
+                //设置表单
+                this.$table = controller.Table("#tableList", { url: "GovtWeb/GetWarnList", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit" });
+                options.IdListIn = null;
+                //入库绑定复选框事件
+                $('#tableList').on('uncheck.bs.table check.bs.table check-all.bs.table uncheck-all.bs.table', function (event, rows) {
+                    options.IdListIn = controller.TableEvent(event.type, rows, -1);
+                });
+            },
+            InitEvent: function () {
+                $("#add").click(() => {
+                    const Ids = Array.from(options.IdListIn);
+                    controller.ajax({
+                        url: "GovtWeb/EditHandlerLog",
+                        type: "post",
+                        async:false,
+                        data: { keys: Ids },
+                        success: (res) => {
+                            controller.Msg(res.data);
+                             options.$table.refresh();
+                        }
+                    });
+                });
+            },
+            action: {
+                CheckFormatter: function (val, row, index) {
+                    if (options.IdList != null) {
+                        //集合先转数组
+                        if ($.inArray(row.Id, Array.from(options.IdListIn)) != -1)
+                            return {
+                                checked: true
+                            }
+                    }
+                },
+                OpenFormatter:function(val, row, index) {//打开新窗口
+                    var action = [];
+                    if (row.Name != null) {
+                        if (row.CardType == "健康证") {
+                            var Content = row.PersonName + "健康证于" + row.CardExpiredDate + "到期.";
+                            action.push(`<a href='javascript:ShowModelDetail("WebGovtManage/Risk/CertificateRiskDetail?Name=${row.Name}&PersonName=${row.PersonName}&CardType=${row.CardType}&CardExpiredDate=${row.ExpiredDate}&CardImg=${row.CardImg}&Remark=${row.Remark}", "预警提示","${row.Id}","${row.CompanyType}","")'>${row.Name}</a>`);
+                        }
+                        else if (row.CardType == "营业执照") {
+                            var Content = "营业执照于" + row.CardExpiredDate + "到期.";
+                             action.push(`<a href='javascript:ShowModelDetail("WebGovtManage/Risk/CertificateRiskDetail?Name=${row.Name}&PersonName=${row.PersonName}&CardType=${row.CardType}&CardExpiredDate=${row.ExpiredDate}&CardImg=${row.CardImg}&Remark=${row.Remark}", "预警提示","${row.Id}","${row.CompanyType}","")'>${row.Name}</a>`);
+                        }
+                        else {//投诉
+                            var Content = "投诉信息："+ row.Remark;
+                            action.push(`<a href='javascript:ShowModelDetail("WebGovtManage/Complain/InfoComplainDetail?Id=${row.Id}","投诉提示","")'>${row.Name}</a>`);
+                        }
+                    }                     return action.join("&nbsp;");
+                }
+            }
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+        //展示
+        function ShowModelDetail(Url, Title,ID,Type,Content) {
+            controller.OpenWindow({
+                title: Title,
+                type: 2,
+                height: "50%",
+                width: "40%",
+                url: Url,
+                btn: ["提醒","关闭"],
+                callBack: function (result) {//提醒企业
+                   controller.ajax({
+                        url: "GovtWeb/ReportCardWaring",
+                        data: { Id: ID, Parameter:Type },
+                        type: 'post',
+                       success: function (result) {
+                           if (result.HttpCode == 10) {
+                               controller.Msg("提醒成功");
+                               controller.Close();
+                           }
+                        }
+                    });
+                    
+                }
+            });
+        }
+    </script>
+}
+<div class="container-fluid">
+    <div class="col-lg-12">
+        <div class="ibox ibox-c float-e-margins">
+            <div class="ibox-title ibox-title-c">
+                <h5>预警提示</h5>
+            </div>
+            <div class="ibox-content ibox-content-c">
+                <div class="row">
+                    <form id="Edit">
+                        <div class="col-sm-8 m-b-xs">
+                            @*<div class="input-group">
+                                <button type="button" class="btn btn-sm btn-white" id="add"><i class="fa fa-eye"></i>标记为已读</button>
+                            </div>*@
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="input-group">
+                                <input type="text" placeholder="企业名称" class="input-sm form-control" name="CompanyName">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
+                                    <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive">
+                    <table id="tableList" class="table">
+                        <thead>
+                            <tr>
+                                <th class="th-center" data-field="Stutas" data-checkbox="true" data-formatter="options.action.CheckFormatter"></th>
+                                <th data-field="Name" class="th-center" data-align="left" data-halign="center"  data-formatter="options.action.OpenFormatter">企业名称</th>
+                                <th data-field="CardType" class="th-center">预警类型</th>
+                                <th data-field="CardExpiredDate" class="th-center">预警时间</th>
+                                <th data-field="Remark" class="th-center" data-align="left" data-halign="center">预警内容</th>
+                                <th data-field="Status" class="th-center">状态</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
