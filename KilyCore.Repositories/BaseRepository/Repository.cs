@@ -691,21 +691,28 @@ namespace KilyCore.Repositories.BaseRepository
         /// </summary>
         public static DataTable ExecuteTable(this KilyContext db, string sql, SqlParameter[] sqlParams)
         {
-            DbConnection connection = db.Database.GetDbConnection();
-            SqlCommand cmd = connection.CreateCommand() as SqlCommand;
-            db.Database.OpenConnection();
-            cmd.CommandText = sql;
-            if (sqlParams != null)
+            try
             {
-                cmd.Parameters.AddRange(sqlParams);
+                DbConnection connection = db.Database.GetDbConnection();
+                SqlCommand cmd = connection.CreateCommand() as SqlCommand;
+                db.Database.OpenConnection();
+                cmd.CommandText = sql;
+                if (sqlParams != null)
+                {
+                    cmd.Parameters.AddRange(sqlParams);
+                }
+                DataTable dt = new DataTable();
+                using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                {
+                    adapter.Fill(dt);
+                }
+                db.Database.CloseConnection();
+                return dt;
             }
-            DataTable dt = new DataTable();
-            using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+            catch (Exception)
             {
-                adapter.Fill(dt);
+                return null;
             }
-            db.Database.CloseConnection();
-            return dt;
         }
 
         /// <summary>

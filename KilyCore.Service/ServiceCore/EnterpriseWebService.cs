@@ -5951,7 +5951,7 @@ namespace KilyCore.Service.ServiceCore
                 SqlParameter[] Mater = {
                     new SqlParameter("@Ids",生产批次.MaterialId)
                 };
-                Base.Materials = Kily.ExecuteTable(SQLHelper.SQLMaterial, Mater).ToList<Material>();
+                Base.Materials = Kily.ExecuteTable(SQLHelper.SQLMaterial, Mater)!=null?Kily.ExecuteTable(SQLHelper.SQLMaterial, Mater).ToList<Material>():null;
             }
             //种养殖企业
             if (Base.企业类型 == "10" || Base.企业类型 == "20")
