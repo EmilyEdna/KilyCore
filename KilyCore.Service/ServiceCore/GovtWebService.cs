@@ -3265,12 +3265,13 @@ namespace KilyCore.Service.ServiceCore
         public IList<DataLine> GetNewNetCheckCount()
         {
             IQueryable<GovtTemplateChild> children = Kily.Set<GovtTemplateChild>().Where(t => t.IsDelete == false);
+            IQueryable<GovtMovePatrol> moves = Kily.Set<GovtMovePatrol>().Where(t => t.IsDelete == false);
             IQueryable<GovtNetPatrol> patrols = Kily.Set<GovtNetPatrol>().Where(t => t.IsDelete == false);
             IQueryable<SystemMessage> msg = Kily.Set<SystemMessage>();
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
             {
                 children = children.Where(t => t.TypePath.Contains(GovtInfo().City));
-                patrols = patrols.Where(t => t.TypePath.Contains(GovtInfo().City));
+                patrols = patrols.Where(t => t.TypePath.Contains(GovtInfo().City));                
             }
             else
             {
@@ -3311,6 +3312,7 @@ namespace KilyCore.Service.ServiceCore
             }
             List<DataLine> lines = new List<DataLine>();
             var datas = patrols.Join(msg, t => t.CompanyId, x => x.CompanyId, (t, x) => new { x.ReleaseTime, x.Category });
+            moves = moves.Where(t => t.GovtId==GovtInfo().Id);
             //自查
             lines.Add(new DataLine
             {
@@ -3351,6 +3353,20 @@ namespace KilyCore.Service.ServiceCore
                     datas.Where(t=>t.Category.Equals("通报")).Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-2&& t.ReleaseTime.Value.Month==DateTime.Now.Month&&t.ReleaseTime.Value.Year==DateTime.Now.Year).Count(),
                     datas.Where(t=>t.Category.Equals("通报")).Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-1&& t.ReleaseTime.Value.Month==DateTime.Now.Month&&t.ReleaseTime.Value.Year==DateTime.Now.Year).Count(),
                     datas.Where(t=>t.Category.Equals("通报")).Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-0&& t.ReleaseTime.Value.Month==DateTime.Now.Month&&t.ReleaseTime.Value.Year==DateTime.Now.Year).Count()
+                }
+            });
+            //执法
+            lines.Add(new DataLine
+            {
+                name = "执法",
+                data = new List<int> {
+                    moves.Where(t => t.PatrolTime.Value.Day-DateTime.Now.Day==-6&& t.PatrolTime.Value.Month==DateTime.Now.Month&&t.PatrolTime.Value.Year==DateTime.Now.Year).Count(),
+                    moves.Where(t => t.PatrolTime.Value.Day-DateTime.Now.Day==-5&& t.PatrolTime.Value.Month==DateTime.Now.Month&&t.PatrolTime.Value.Year==DateTime.Now.Year).Count(),
+                    moves.Where(t => t.PatrolTime.Value.Day-DateTime.Now.Day==-4&& t.PatrolTime.Value.Month==DateTime.Now.Month&&t.PatrolTime.Value.Year==DateTime.Now.Year).Count(),
+                    moves.Where(t => t.PatrolTime.Value.Day-DateTime.Now.Day==-3&& t.PatrolTime.Value.Month==DateTime.Now.Month&&t.PatrolTime.Value.Year==DateTime.Now.Year).Count(),
+                    moves.Where(t => t.PatrolTime.Value.Day-DateTime.Now.Day==-2&& t.PatrolTime.Value.Month==DateTime.Now.Month&&t.PatrolTime.Value.Year==DateTime.Now.Year).Count(),
+                    moves.Where(t => t.PatrolTime.Value.Day-DateTime.Now.Day==-1&& t.PatrolTime.Value.Month==DateTime.Now.Month&&t.PatrolTime.Value.Year==DateTime.Now.Year).Count(),
+                    moves.Where(t => t.PatrolTime.Value.Day-DateTime.Now.Day==-0&& t.PatrolTime.Value.Month==DateTime.Now.Month&&t.PatrolTime.Value.Year==DateTime.Now.Year).Count()
                 }
             });
             return lines;

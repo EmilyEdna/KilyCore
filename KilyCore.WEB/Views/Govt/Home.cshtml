@@ -64,18 +64,18 @@
                         },
                         crossDomain: true,
                         success: function (result) {
-                            $(".dropdown-messages").html("");
-                            $(".dropdown-messages").append(`<li>
-                                        <div class="text-center link-block">
-                                            <a class="J_menuItem" href="/WebGovtManage/Inspect/HandlerLog">
-                                                <span style="display:none;">操作日志</span><i class="fa fa-envelope"></i> <strong> 查看所有消息</strong>
-                                            </a>
-                                        </div>
-                                    </li>`);
+                            $("#MsgList").html("");
+                            //$(".dropdown-messages").append(`<li>
+                            //            <div class="text-center link-block">
+                            //                <a class="J_menuItem" href="/WebGovtManage/Inspect/HandlerLog">
+                            //                    <span style="display:none;">操作日志</span><i class="fa fa-envelope"></i> <strong> 查看所有消息</strong>
+                            //                </a>
+                            //            </div>
+                            //        </li>`);
                             $("#MsgNum").html(result.data.length);
                             $.each(result.data, function (i, item) {
                                 if (i < 6) {
-                                    $(".dropdown-messages").prepend(`<li>
+                                    $("#MsgList").prepend(`<li>
                                         <div class="dropdown-messages-box">
                                             <div class="media-body ">
                                                 ${item.HandlerContent}
@@ -107,21 +107,21 @@
                         },
                         crossDomain: true,
                         success: function (result) {
-                            $(".dropdown-alerts").html("");
-                            $(".dropdown-alerts").append(`<li>
-                                        <div class="text-center link-block">
-                                            <a class="J_menuItem" href="/WebGovtManage/Inspect/WarnLog">
-                                                <span style="display:none;">预警提示</span><i class="fa fa-envelope"></i> <strong> 查看所有</strong>
-                                            </a>
-                                        </div>
-                                    </li>`);
+                            $("#WarnList").html("");
+                            //$(".dropdown-alerts").append(`<li>
+                            //            <div class="text-center link-block">
+                            //                <a class="J_menuItem" href="/WebGovtManage/Inspect/WarnLog">
+                            //                    <span style="display:none;">预警提示</span><i class="fa fa-envelope"></i> <strong> 查看所有</strong>
+                            //                </a>
+                            //            </div>
+                            //        </li>`);
                             $("#WarnNum").html(result.data.rows.length);
                             if (result.data.rows.length > 0) {
                                 $("#WarnNum").attr("style", "background-color:red;");
                             }
                             $.each(result.data.rows, function (i, item) {
                                 if (i < 6) {
-                                    $(".dropdown-alerts").prepend(`<li>
+                                    $("#WarnList").prepend(`<li>
                                         <a href="javascript:">
                                             <div>
                                                 <i class="fa fa-envelope fa-fw"></i> ${item.Remark}
@@ -135,7 +135,7 @@
 
                         }
                     });
-                }, 10000);
+                }, 5000);
             },
             //获取树
             GetMenu: function () {
@@ -251,6 +251,7 @@
                                 <i class="fa fa-envelope"></i> <span class="label label-warning" id="MsgNum">0</span>
                             </a>
                             <ul class="dropdown-menu dropdown-messages">
+                                <div id="MsgList"></div>
                                 <li>
                                     <div class="text-center link-block">
                                         <a class="J_menuItem" href="/WebGovtManage/Inspect/HandlerLog">
@@ -265,11 +266,12 @@
                                 <i class="fa fa-bell"></i> <span class="label label-primary" id="WarnNum">0</span>
                             </a>
                             <ul class="dropdown-menu dropdown-alerts">
-                                <div class="text-center link-block">
+                                <div id="WarnList"></div>
+                                <li class="text-center link-block">
                                     <a class="J_menuItem" href="/WebGovtManage/Inspect/WarnLog">
                                         <span style="display:none;">预警提示</span><i class="fa fa-envelope"></i> <strong> 查看所有</strong>
                                     </a>
-                                </div>
+                                </li>
                             </ul>
                         </li>
                     </ul>
