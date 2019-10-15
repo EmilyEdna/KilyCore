@@ -385,56 +385,23 @@
                     async: false,
                     type: "Post",
                     success: function (result) {
-                        $.each(result.data.Vedio, function (index, item) {
-                            if (index == 0) {
-                                let type = ((item.VedioAddr.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
-                                $($(".videoitem").find("p")[0]).before(`<video id="vedio_${index}" poster="${item.VedioCover}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.VedioAddr}" type="${type}"></video > `);
-                                $($(".videoitem").find("p")[0]).find("span").text(item.VedioName);
-                            }
-                            if (index == 1) {
-                                let type = ((item.VedioAddr.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
-                                $($(".videoitem").find("p")[1]).before(`<video id="vedio_${index}" poster="${item.VedioCover}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.VedioAddr}" type="${type}"></video > `);
-                                $($(".videoitem").find("p")[1]).find("span").text(item.VedioName);
-                            }
-                            if (index == 2) {
-                                let type = ((item.VedioAddr.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
-                                $($(".videoitem").find("p")[2]).before(`<video id="vedio_${index}" poster="${item.VedioCover}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.VedioAddr}" type="${type}"></video > `);
-                                $($(".videoitem").find("p")[2]).find("span").text(item.VedioName);
-                            }
-                            if (index == 3) {
-                                let type = ((item.VedioAddr.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
-                                $($(".videoitem").find("p")[3]).before(`<video id="vedio_${index}" poster="${item.VedioCover}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.VedioAddr}" type="${type}"></video >`);
-                                $($(".videoitem").find("p")[3]).find("span").text(item.VedioName);
-                            }
-                        });
                         if (result.data.Vedio.length > 0) {
-                            videojs('vedio_0', {
-                                autoplay: false,
-                                controls: true,
-                                width: 216,
-                                height: 120
-                            });
-                            videojs('vedio_1', {
-                                autoplay: false,
-                                controls: true,
-                                width: 216,
-                                height: 100
-                            });
-                            videojs('vedio_2', {
-                                autoplay: false,
-                                controls: true,
-                                width: 216,
-                                height: 100
-                            });
-                            videojs('vedio_3', {
-                                autoplay: false,
-                                controls: true,
-                                width: 216,
-                                height: 100
+                            $.each(result.data.Vedio, function (index, item) {
+                                 let type = ((item.VedioAddr.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
+                                    $($(".videoitem").find("p")[index]).before(`<video id="vedio_${index}" poster="${item.VedioCover}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.VedioAddr}" type="${type}"></video > `);
+                                    $($(".videoitem").find("p")[index]).find("span").text(item.VedioName);
+                               videojs('vedio_'+index, {
+                                    autoplay: false,
+                                    controls: true,
+                                    width: 216,
+                                    height: 120
+                                });
                             });
                         }
-                        $("#firmNo").text(result.data.CompanyVedio); // 今日企业视频条数
-                        $("#MerchantNo").text(result.data.MerchantVedio); //今日餐饮视频条数
+                        //$("#firmNo").text(result.data.CompanyVedio); // 今日企业视频条数
+                        //$("#MerchantNo").text(result.data.MerchantVedio); //今日餐饮视频条数
+                        options.VoidesCount = result.data.MerchantVedio;
+                        debugger;
                     }
                 });
                 //视频在线
@@ -462,7 +429,7 @@
                         hoverAnimation: false,
                         center: ['25%', '50%'],
                         data: [{
-                            value: 0,
+                            value: options.VoidesCount,
                             label: {
                                 normal: {
                                     rich: {
@@ -498,7 +465,7 @@
                                 }
                             }
                         }, {
-                            value: 0,
+                            value:0,
                             name: 'invisible',
                             itemStyle: {
                                 normal: {
@@ -554,7 +521,7 @@
                                 }
                             }
                         }, {
-                            value: 0,
+                            value:options.VoidesCount,
                             name: 'invisible',
                             itemStyle: {
                                 normal: {

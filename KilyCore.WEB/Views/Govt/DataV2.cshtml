@@ -130,7 +130,7 @@
                             });
                         });
                         //渲染当前城市入驻企业数量
-                        let All = result.data.All;
+                        let All = result.data.All-1;
                         if (All >= 0 && All < 10) {//补零
                             All = '0000000' + All;
                         } else if (All >= 10 && All < 100) {
