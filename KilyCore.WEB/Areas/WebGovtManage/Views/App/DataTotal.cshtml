@@ -11,7 +11,6 @@
             var Syskey = controller.GetParam("SysKey");
             var Token = controller.GetParam("Token");
             var obj = { "RSAToKen": Token, "RSAApiKey": ApiKey, "RSASysKey": Syskey };
-            debugger;
             controller.SetCookie(obj);
             this.InitEcharts();
             this.InitDom();

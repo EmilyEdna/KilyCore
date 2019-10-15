@@ -99,7 +99,6 @@
         });
         $(function () {
              $(".table tbody tr td img").each(function (i) {
-                debugger;
                 var img = $(this);
                 $(this).removeAttr("width").removeAttr("height").css("height", "48px").wrap("<a href='" + $(this).attr("src") + "' target='_blank'></a>");
             });

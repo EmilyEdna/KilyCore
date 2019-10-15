@@ -39,7 +39,6 @@ $.fn.SerializeJson = function () {
     $(array).each(function () {
         if (serializeObj[this.name]) {
             if ($.isArray(serializeObj[this.name])) {
-                debugger
                 serializeObj[this.name].push(this.value);
             } else {
                 serializeObj[this.name] = [serializeObj[this.name], this.value];
