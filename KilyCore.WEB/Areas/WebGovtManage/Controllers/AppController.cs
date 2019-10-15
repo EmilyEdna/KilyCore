@@ -41,5 +41,21 @@ namespace KilyCore.WEB.Areas.WebGovtManage.Controllers
         {
             return View();
         }
+        public IActionResult CompanyCount()
+        {
+            return View();
+        }
+        public IActionResult ProductCount()
+        {
+            return View();
+        }
+        public IActionResult WarnsCount()
+        {
+            return View();
+        }
+        public IActionResult CompanyWarns()
+        {
+            return View();
+        }
     }
 }
