@@ -50,7 +50,6 @@
                         async: false,
                         success: function (result) {
                             controller.SetCtrlValue("#Edit", result.data);
-                            debugger;
                             $("#ProductOutStockNo").selectpicker('val', result.data.ProductOutStockNo);
                         }
                     });

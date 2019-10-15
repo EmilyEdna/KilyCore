@@ -20,6 +20,7 @@
                     type: "post",
                     success: function (result) {
                         controller.SetLableValue("#Edit", result.data);
+                        controller.SetLableValue("#Edit", result.data.Note[0]);
                         //绑定库存列表
                         $.each(result.data.StockGoods, function (i, item) {
                             $("#StockList").append('<tr>'
@@ -233,6 +234,39 @@
                 </div>
                 <!--成长档案-->
                 <div id="tab-5" class="tab-pane">
+                    <table class="table table-hover table-bordered m-t-sm">
+                        <colgroup>
+                            <col width="120" />
+                            <col width="40%" />
+                            <col width="120" />
+                            <col />
+                        </colgroup>
+                        <tr>
+                            <th style="text-align:center"><label class="control-label">日记名称</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="NoteName"></label>
+                            </td>
+                            <th style="text-align:center"><label class="control-label">批次号</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="BatchNo"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="text-align:center"><label class="control-label">播种时间</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="SowingTime"></label>
+                            </td>
+                            <th style="text-align:center"><label class="control-label">收获时间</label></th>
+                            <td class="has-warning">
+                                <label type="txt" name="ResultTime"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="text-align:center"><label class="control-label">质检报告</label></th>
+                            <td class="has-warning" colspan="3">
+                                <img src="" type="img" class="img-preview" style="width:100px;height:100px" name="CheckReport"/>
+                            </td>
+                    </table>
                 </div>
                 <!--物流信息-->
                 <div id="tab-6" class="tab-pane">

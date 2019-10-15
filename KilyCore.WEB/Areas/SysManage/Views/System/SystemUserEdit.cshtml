@@ -202,7 +202,6 @@
                 controller.ValidateConfirm("#Edit");
             },
             InitArea: function () {
-                debugger;
                 if (SysUserInfo.AccountType == 30) {
                     $("#province").attr("disabled", true).find("option[value='" + SysUserInfo.Province + "']").attr("selected", true);
                     options.SetCity();

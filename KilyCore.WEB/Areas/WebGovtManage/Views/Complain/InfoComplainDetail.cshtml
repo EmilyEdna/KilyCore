@@ -18,7 +18,6 @@
                 $("#GovtId").val(GovtInfo.Id);
                 var Id = controller.GetParam("Id");
                 if (Id != null && Id != undefined && Id != "")
-                    debugger;
                     controller.ajax({
                         url: "GovtWeb/GetComplainDetail",
                         data: { Id: Id },

@@ -1111,6 +1111,7 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseInfo> Companys = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
             IQueryable<EnterpriseStockType> StockType = Kily.Set<EnterpriseStockType>().Where(t => t.IsDelete == false);
             IQueryable<EnterpriseCheckGoods> CheckGoods = Kily.Set<EnterpriseCheckGoods>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseNote> Note = Kily.Set<EnterpriseNote>().Where(t => t.IsDelete == false);
             //产品的查询
             var GoodsData = GoodsStockAttach.Join(GoodStock, a => a.StockId, b => b.Id, (a, b) => new { a, b })
                 .Join(Goods, c => c.b.GoodsId, d => d.Id, (c, d) => new { c, d })
@@ -1151,6 +1152,7 @@ namespace KilyCore.Service.ServiceCore
                 t.g.e.c.b.Manager,
                 t.g.e.c.a.OutStockTime,
                 t.g.e.c.a.OutStockUser,
+                Note = Note.Where(m=>m.Id==t.g.e.c.b.GrowNoteId),
                 StockGoods = StockGoods
             }).FirstOrDefault();
         }

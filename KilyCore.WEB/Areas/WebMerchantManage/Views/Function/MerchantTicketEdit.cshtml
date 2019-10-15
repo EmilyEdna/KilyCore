@@ -20,7 +20,6 @@
                     type: 'post',
                     success: function (result) {
                         controller.SetCtrlValue("#Edit", result.data);
-                        debugger;
                         options.Editor.summernote('code', result.data.Content);
                     }
                 });
