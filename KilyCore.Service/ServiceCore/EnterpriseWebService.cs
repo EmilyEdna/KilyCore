@@ -5769,8 +5769,14 @@ namespace KilyCore.Service.ServiceCore
             {
                 var Temps = Temp.GroupJoin(Logistics, n => n.t.x.ProductName, m => m.GoodsName, (n, m) => new { n, GainUser = (m.FirstOrDefault() == null ? "" : m.FirstOrDefault().GainUser) }).ToList();
                 if (CompanyEnum.Circulation == CompanyType)
-                    return Temps.Join(Buyers, o => o.n.t.x.BuyId, y => y.Id, (o, y) => new { o.n.t.x.ProductName, o.n.t.x.Spec, o.n.t.x.Unit, y.Num, y.BatchNo, y.Supplier, Time = y.GetGoodsTime, o.n.t.OutStockUser, o.n.CheckResult, Seller = o.GainUser })
+                {
+                    var sell = Temps.Join(Buyers, o => o.n.t.x.BuyId, y => y.Id, (o, y) => new { o.n.t.x.ProductName, o.n.t.x.Spec, o.n.t.x.Unit, y.Num, BatchNo = o.n.t.GoodsBatchNo, Supplier = "", Time = o.n.t.OutStockTime, o.n.t.OutStockUser, o.n.CheckResult, Seller = o.GainUser })
                         .Where(t => t.Time <= SearchTime && t.Time >= StartTime).ToList();
+                    var buy = Temps.Join(Buyers, o => o.n.t.x.BuyId, y => y.Id, (o, y) => new { o.n.t.x.ProductName, o.n.t.x.Spec, o.n.t.x.Unit, y.Num, y.BatchNo, y.Supplier, Time = y.GetGoodsTime.Value, o.n.t.OutStockUser, o.n.CheckResult, Seller = "" })
+                        .Where(t => t.Time <= SearchTime && t.Time >= StartTime).ToList();
+                    sell.AddRange(buy);
+                    return sell;
+                }
                 else
                     return Temps.Select(o => new { o.n.t.x.ProductName, o.n.t.x.Spec, o.n.t.x.Unit, Num = o.n.t.OutStockNum, BatchNo = o.n.t.GoodsBatchNo, Supplier = "", Time = o.n.t.OutStockTime, o.n.t.OutStockUser, o.n.CheckResult, Seller = o.GainUser })
                         .Where(t => t.Time <= SearchTime && t.Time >= StartTime).ToList();
