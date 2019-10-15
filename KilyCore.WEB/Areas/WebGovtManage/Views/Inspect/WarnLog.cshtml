@@ -68,7 +68,10 @@
                             var Content = "投诉信息："+ row.Remark;
                             action.push(`<a href='javascript:ShowModelDetail("WebGovtManage/Complain/InfoComplainDetail?Id=${row.Id}","投诉提示","")'>${row.Name}</a>`);
                         }
-                    }                     return action.join("&nbsp;");
+                    }
+                     return action.join("&nbsp;");
+
+
                 }
             }
         };
