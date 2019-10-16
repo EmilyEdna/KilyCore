@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "食用产品";
+    ViewData["Title"] = "药品";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
@@ -20,7 +20,7 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "GovtWeb/GetEdiblePage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { ProductType:"食品"} });
+                this.$table = controller.Table("#tableList", { url: "GovtWeb/GetWorkPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Edit", param: { ProductType: "药品" } });
             },
             //事件
             InitEvents: function () {
@@ -38,12 +38,12 @@
                         controller.OpenWindow({
                             title: row.ProductName,
                             type: 2,
-                            height: "90%",
-                            width: "80%",  
-                            btn:["通报","关闭"],
-                            url: "WebGovtManage/Product/EdibleSuperviseDetail?Id=" + row.Id,
+                            height: "400px",
+                            width: "800px",
+                             btn:["通报","关闭"],
+                            url: "WebGovtManage/Product/OtherSuperviseDetail?Id=" + row.Id,
                             callBack: function (result) {
-                                controller.OpenWindow({
+                               controller.OpenWindow({
                                     title: "通报批评-"+ row.CompanyName,
                                     type: 2,
                                     height: "50%",
@@ -69,7 +69,7 @@
     <div class="col-lg-12">
         <div class="ibox ibox-c float-e-margins">
             <div class="ibox-title ibox-title-c">
-                <h5>食品</h5>
+                <h5>其他产品</h5>
             </div>
             <div class="ibox-content ibox-content-c">
                 <div class="row">
@@ -94,12 +94,11 @@
                         <thead>
                             <tr>
                                 <th data-field="ProductName" class="th-center">产品名称</th>
-                                <th data-field="ProductType" data-halign="center" data-align="center" data-valign="middle">产品类型</th>
-                                <th data-field="ExpiredDate" data-halign="center" data-align="center" data-valign="middle">保质期</th>
-                                <th data-field="Spec" data-halign="center" data-align="center" data-valign="middle">规格</th>
-                                <th data-field="CompanyName" data-halign="center" data-align="center" data-valign="middle">生产商/供应商</th>
-                                <th data-field="Unit" data-halign="center" data-align="center" data-valign="middle">生产地址</th>
-                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" data-halign="center" data-align="center" data-valign="middle">操作</th>
+                                <th data-field="ProductType" class="th-center">产品类型</th>
+                                <th data-field="ExpiredDate" class="th-center">保质期</th>
+                                <th data-field="Spec" class="th-center">规格</th>
+                                <th data-field="Unit" class="th-center">生产地址</th>
+                                <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" class="th-center">操作</th>
                             </tr>
                         </thead>
                     </table>

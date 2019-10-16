@@ -9,6 +9,22 @@ namespace KilyCore.WEB.Areas.WebGovtManage.Controllers
     [Area("WebGovtManage")]
     public class ProductController : Controller
     {
+        public IActionResult PlantSupervise()
+        {
+            return View();
+        }
+        public IActionResult DuckSupervise()
+        {
+            return View();
+        }
+        public IActionResult GoodSupervise()
+        {
+            return View();
+        }
+        public IActionResult EquipSupervise()
+        {
+            return View();
+        }
         public IActionResult EdibleSupervise()
         {
             return View();

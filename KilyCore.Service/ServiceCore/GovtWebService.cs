@@ -88,9 +88,15 @@ namespace KilyCore.Service.ServiceCore
             if (!GovtInfo().IsEdu.Value)
             {
                 if (GovtInfo().AccountType <= GovtAccountEnum.Area)
+                {
                     queryables = queryables.Where(t => t.AuthorName.Contains("区县"));
+                    queryable = queryable.Where(t => t.MenuName != "学校监管");
+                }
                 else
+                {
                     queryables = queryables.Where(t => t.AuthorName.Contains("乡镇"));
+                    queryable = queryable.Where(t => t.MenuName != "学校监管");
+                }
                 Author = queryables.FirstOrDefault();
             }
             else
@@ -2986,10 +2992,14 @@ namespace KilyCore.Service.ServiceCore
         {
             var today = DateTime.Parse(DateTime.Now.ToShortDateString());
             var tomorrow = today.AddDays(1);
-            IQueryable<EnterpriseInfo> coms = Kily.Set<EnterpriseInfo>().Where(t => t.CreateTime >= today && t.CreateTime < tomorrow);
-            IQueryable<RepastInfo> mers = Kily.Set<RepastInfo>().Where(t => t.CreateTime >= today && t.CreateTime < tomorrow);
-            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.CreateTime <= today && t.CreateTime <= tomorrow).Where(t => t.AuditType == AuditEnum.AuditSuccess);
-            IQueryable<EnterpriseScanCodeInfo> infos = Kily.Set<EnterpriseScanCodeInfo>().Where(t => t.CreateTime >= today && t.CreateTime < tomorrow);
+            //IQueryable<EnterpriseInfo> coms = Kily.Set<EnterpriseInfo>().Where(t => t.CreateTime >= today && t.CreateTime < tomorrow);
+            //IQueryable<RepastInfo> mers = Kily.Set<RepastInfo>().Where(t => t.CreateTime >= today && t.CreateTime < tomorrow);
+            //IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.CreateTime <= today && t.CreateTime <= tomorrow).Where(t => t.AuditType == AuditEnum.AuditSuccess);
+            //IQueryable<EnterpriseScanCodeInfo> infos = Kily.Set<EnterpriseScanCodeInfo>().Where(t => t.CreateTime >= today && t.CreateTime < tomorrow);
+            IQueryable<EnterpriseInfo> coms = Kily.Set<EnterpriseInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess);
+            IQueryable<RepastInfo> mers = Kily.Set<RepastInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess);
+            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => 1 == 1).Where(t => t.AuditType == AuditEnum.AuditSuccess);
+            IQueryable<EnterpriseScanCodeInfo> infos = Kily.Set<EnterpriseScanCodeInfo>().Where(t => 1 == 1);
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
             {
                 coms = coms.Where(t => t.TypePath.Contains(GovtInfo().City));
@@ -3184,9 +3194,15 @@ namespace KilyCore.Service.ServiceCore
         {
             IQueryable<GovtRisk> risks = Kily.Set<GovtRisk>().Where(t => t.IsDelete == false);
             IQueryable<GovtComplain> complains = Kily.Set<GovtComplain>();
+            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<RepastInfo> queryables = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<RepastInfoUser> users = Kily.Set<RepastInfoUser>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
             {
                 risks = risks.Where(t => t.TypePath.Contains(GovtInfo().City));
+                queryables = queryables.Where(t => t.TypePath.Contains(GovtInfo().City));
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
+                users = users.Where(t => t.TypePath.Contains(GovtInfo().City));
                 complains = complains.Where(t => t.TypePath.Contains(GovtInfo().City));
             }
             else
@@ -3198,39 +3214,57 @@ namespace KilyCore.Service.ServiceCore
                     {
                         Expression<Func<GovtRisk, bool>> exp_1 = null;
                         Expression<Func<GovtComplain, bool>> exp_2 = null;
+                        Expression<Func<EnterpriseInfo, bool>> exp_3 = null;
+                        Expression<Func<RepastInfo, bool>> exp_4 = null;
+                        Expression<Func<RepastInfoUser, bool>> exp_5 = null;
                         for (int i = 0; i < Areas.Count; i++)
                         {
                             if (i == 0)
                             {
                                 exp_1 = ExpressionExtension.GetExpression<GovtRisk>("TypePath", Areas[i], ExpressionEnum.Like);
                                 exp_2 = ExpressionExtension.GetExpression<GovtComplain>("TypePath", Areas[i], ExpressionEnum.Like);
+                                exp_3 = ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                                exp_4 = ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like);
+                                exp_5 = ExpressionExtension.GetExpression<RepastInfoUser>("TypePath", Areas[i], ExpressionEnum.Like);
                             }
                             else
                             {
                                 exp_1 = exp_1.Or(ExpressionExtension.GetExpression<GovtRisk>("TypePath", Areas[i], ExpressionEnum.Like));
                                 exp_2 = exp_2.Or(ExpressionExtension.GetExpression<GovtComplain>("TypePath", Areas[i], ExpressionEnum.Like));
+                                exp_3 = exp_3.Or(ExpressionExtension.GetExpression<EnterpriseInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                                exp_4 = exp_4.Or(ExpressionExtension.GetExpression<RepastInfo>("TypePath", Areas[i], ExpressionEnum.Like));
+                                exp_5 = exp_5.Or(ExpressionExtension.GetExpression<RepastInfoUser>("TypePath", Areas[i], ExpressionEnum.Like));
                             }
                         }
                         risks = risks.Where(exp_1);
                         complains = complains.Where(exp_2);
+                        queryables = queryables.Where(exp_4);
+                        queryable = queryable.Where(exp_3);
+                        users = users.Where(exp_5);
                     }
                     else
                     {
                         risks = risks.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                         complains = complains.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                        queryables = queryables.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                        queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                        users = users.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                     }
                 }
                 else
                 {
                     risks = risks.Where(t => t.TypePath.Contains(GovtInfo().Area));
                     complains = complains.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                    queryables = queryables.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    queryable = queryable.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
+                    users = users.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                 }
             }
             List<DataBar> bars = new List<DataBar>();
             //风险
             bars.Add(new DataBar
             {
-                name = "风险",
+                name = "风险信息",
                 data = new List<int> {
                     risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-6).Count(),
                     risks.Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-5).Count(),
@@ -3244,7 +3278,7 @@ namespace KilyCore.Service.ServiceCore
             //投诉
             bars.Add(new DataBar
             {
-                name = "投诉",
+                name = "投诉信息",
                 data = new List<int> {
                     complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==-6).Count(),
                     complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==-5).Count(),
@@ -3253,6 +3287,34 @@ namespace KilyCore.Service.ServiceCore
                     complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==-1).Count(),
                     complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==-1).Count(),
                     complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==0).Count(),
+                }
+            });
+            //预警
+            bars.Add(new DataBar
+            {
+                name = "证件到期",
+                data = new List<int> {
+                    queryables.Where(t => t.CardExpiredDate.Value.Day-DateTime.Now.Day==-6).Count()+queryable.Where(t => t.CardExpiredDate.Value.Day-DateTime.Now.Day==-6).Count()+users.Where(t => t.ExpiredTime.Value.Day-DateTime.Now.Day==-6).Count(),
+                    queryables.Where(t => t.CardExpiredDate.Value.Day-DateTime.Now.Day==-5).Count()+queryable.Where(t => t.CardExpiredDate.Value.Day-DateTime.Now.Day==-5).Count()+users.Where(t => t.ExpiredTime.Value.Day-DateTime.Now.Day==-5).Count(),
+                    queryables.Where(t => t.CardExpiredDate.Value.Day-DateTime.Now.Day==-4).Count()+queryable.Where(t => t.CardExpiredDate.Value.Day-DateTime.Now.Day==-4).Count()+users.Where(t => t.ExpiredTime.Value.Day-DateTime.Now.Day==-4).Count(),
+                    queryables.Where(t => t.CardExpiredDate.Value.Day-DateTime.Now.Day==-3).Count()+queryable.Where(t => t.CardExpiredDate.Value.Day-DateTime.Now.Day==-3).Count()+users.Where(t => t.ExpiredTime.Value.Day-DateTime.Now.Day==-3).Count(),
+                    queryables.Where(t => t.CardExpiredDate.Value.Day-DateTime.Now.Day==-1).Count()+queryable.Where(t => t.CardExpiredDate.Value.Day-DateTime.Now.Day==-1).Count()+users.Where(t => t.ExpiredTime.Value.Day-DateTime.Now.Day==-1).Count(),
+                    queryables.Where(t => t.CardExpiredDate.Value.Day-DateTime.Now.Day==-1).Count()+queryable.Where(t => t.CardExpiredDate.Value.Day-DateTime.Now.Day==-1).Count()+users.Where(t => t.ExpiredTime.Value.Day-DateTime.Now.Day==-1).Count(),
+                    queryables.Where(t => t.CardExpiredDate.Value.Day-DateTime.Now.Day==0).Count()+queryable.Where(t => t.CardExpiredDate.Value.Day-DateTime.Now.Day==0).Count()+users.Where(t => t.ExpiredTime.Value.Day-DateTime.Now.Day==0).Count(),
+                }
+            });
+            //告警
+            bars.Add(new DataBar
+            {
+                name = "视频告警",
+                data = new List<int> {
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
                 }
             });
             return bars;
@@ -3265,12 +3327,13 @@ namespace KilyCore.Service.ServiceCore
         public IList<DataLine> GetNewNetCheckCount()
         {
             IQueryable<GovtTemplateChild> children = Kily.Set<GovtTemplateChild>().Where(t => t.IsDelete == false);
+            IQueryable<GovtMovePatrol> moves = Kily.Set<GovtMovePatrol>().Where(t => t.IsDelete == false);
             IQueryable<GovtNetPatrol> patrols = Kily.Set<GovtNetPatrol>().Where(t => t.IsDelete == false);
             IQueryable<SystemMessage> msg = Kily.Set<SystemMessage>();
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
             {
                 children = children.Where(t => t.TypePath.Contains(GovtInfo().City));
-                patrols = patrols.Where(t => t.TypePath.Contains(GovtInfo().City));
+                patrols = patrols.Where(t => t.TypePath.Contains(GovtInfo().City));                
             }
             else
             {
@@ -3309,8 +3372,18 @@ namespace KilyCore.Service.ServiceCore
                     patrols = patrols.Where(t => t.TypePath.Contains(GovtInfo().City));
                 }
             }
+            //是否教育局
+            if(GovtInfo().IsEdu.HasValue)
+            {
+                //patrols = patrols.Where(o => o.GovtId == GovtInfo().Id);
+            }
+            else
+            {
+
+            }
             List<DataLine> lines = new List<DataLine>();
             var datas = patrols.Join(msg, t => t.CompanyId, x => x.CompanyId, (t, x) => new { x.ReleaseTime, x.Category });
+            moves = moves.Where(t => t.GovtId==GovtInfo().Id);
             //自查
             lines.Add(new DataLine
             {
@@ -3351,6 +3424,20 @@ namespace KilyCore.Service.ServiceCore
                     datas.Where(t=>t.Category.Equals("通报")).Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-2&& t.ReleaseTime.Value.Month==DateTime.Now.Month&&t.ReleaseTime.Value.Year==DateTime.Now.Year).Count(),
                     datas.Where(t=>t.Category.Equals("通报")).Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-1&& t.ReleaseTime.Value.Month==DateTime.Now.Month&&t.ReleaseTime.Value.Year==DateTime.Now.Year).Count(),
                     datas.Where(t=>t.Category.Equals("通报")).Where(t => t.ReleaseTime.Value.Day-DateTime.Now.Day==-0&& t.ReleaseTime.Value.Month==DateTime.Now.Month&&t.ReleaseTime.Value.Year==DateTime.Now.Year).Count()
+                }
+            });
+            //执法
+            lines.Add(new DataLine
+            {
+                name = "执法",
+                data = new List<int> {
+                    moves.Where(t => t.PatrolTime.Value.Day-DateTime.Now.Day==-6&& t.PatrolTime.Value.Month==DateTime.Now.Month&&t.PatrolTime.Value.Year==DateTime.Now.Year).Count(),
+                    moves.Where(t => t.PatrolTime.Value.Day-DateTime.Now.Day==-5&& t.PatrolTime.Value.Month==DateTime.Now.Month&&t.PatrolTime.Value.Year==DateTime.Now.Year).Count(),
+                    moves.Where(t => t.PatrolTime.Value.Day-DateTime.Now.Day==-4&& t.PatrolTime.Value.Month==DateTime.Now.Month&&t.PatrolTime.Value.Year==DateTime.Now.Year).Count(),
+                    moves.Where(t => t.PatrolTime.Value.Day-DateTime.Now.Day==-3&& t.PatrolTime.Value.Month==DateTime.Now.Month&&t.PatrolTime.Value.Year==DateTime.Now.Year).Count(),
+                    moves.Where(t => t.PatrolTime.Value.Day-DateTime.Now.Day==-2&& t.PatrolTime.Value.Month==DateTime.Now.Month&&t.PatrolTime.Value.Year==DateTime.Now.Year).Count(),
+                    moves.Where(t => t.PatrolTime.Value.Day-DateTime.Now.Day==-1&& t.PatrolTime.Value.Month==DateTime.Now.Month&&t.PatrolTime.Value.Year==DateTime.Now.Year).Count(),
+                    moves.Where(t => t.PatrolTime.Value.Day-DateTime.Now.Day==-0&& t.PatrolTime.Value.Month==DateTime.Now.Month&&t.PatrolTime.Value.Year==DateTime.Now.Year).Count()
                 }
             });
             return lines;
@@ -3446,6 +3533,7 @@ namespace KilyCore.Service.ServiceCore
                     VedioName = t.MonitorAddress,
                     VedioCover = t.CoverPhoto
                 }).Take(4).ToList();
+                MerchantVedio = videos.Where(o => Ids.Contains(o.InfoId)).ToList().Count;
                 return new { Vedio = datas, CompanyVedio, MerchantVedio };
             }
         }
