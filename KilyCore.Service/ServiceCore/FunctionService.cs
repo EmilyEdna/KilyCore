@@ -354,6 +354,7 @@ namespace KilyCore.Service.ServiceCore
             //计算个数
             Param.TotalNo = (int)(Param.EndSerialNo - Param.StarSerialNo) + 1;
             EnterpriseVeinTag Tag = Param.MapToEntity<EnterpriseVeinTag>();
+            Tag.AcceptNo = "A" + DateTime.Now.ToString("yyyyMMddHHmmss");
             Tag.CompanyId = Guid.Parse(Param.AcceptUser);
             FunctionVeinTagAttach Attach = Param.MapToEntity<FunctionVeinTagAttach>();
             //查询主表当权限等级为全国以上

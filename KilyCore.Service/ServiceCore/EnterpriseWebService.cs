@@ -2560,7 +2560,7 @@ namespace KilyCore.Service.ServiceCore
                 return queryable.Where(t => t.TotalNo != 0).Select(t => new ResponseVeinTag()
                 {
                     Id = t.Id,
-                    BatchNo = t.BatchNo,
+                    BatchNo = t.AcceptNo,
                     TotalNo = t.TotalNo,
                 }).AsNoTracking().ToList();
             }
@@ -2593,7 +2593,7 @@ namespace KilyCore.Service.ServiceCore
         {
             IList<EnterpriseTagAttach> Tags = Kily.Set<EnterpriseTagAttach>().Where(t => t.IsDelete == false).Where(t => t.TagBatchNo == BatchNo).OrderByDescending(t => t.CreateTime).AsNoTracking().ToList();
             EnterpriseTag Tag = Kily.Set<EnterpriseTag>().Where(t => t.IsDelete == false).Where(t => t.BatchNo == BatchNo).FirstOrDefault();
-            EnterpriseVeinTag VeinTag = Kily.Set<EnterpriseVeinTag>().Where(t => t.IsDelete == false).Where(t => t.BatchNo == BatchNo).FirstOrDefault();
+            EnterpriseVeinTag VeinTag = Kily.Set<EnterpriseVeinTag>().Where(t => t.IsDelete == false).Where(t => t.AcceptNo == BatchNo).FirstOrDefault();
             if (Tags.Count == 0)
             {
                 if (Type != 1)
@@ -3980,7 +3980,7 @@ namespace KilyCore.Service.ServiceCore
                 return ServiceMessage.HANDLEFAIL;
             if (TagAttach.TagType.Equals("1"))
             {
-                EnterpriseVeinTag data = Kily.Set<EnterpriseVeinTag>().Where(t => t.IsDelete == false).Where(t => t.BatchNo == Param.TagBatchNo).FirstOrDefault();
+                EnterpriseVeinTag data = Kily.Set<EnterpriseVeinTag>().Where(t => t.IsDelete == false).Where(t => t.AcceptNo == Param.TagBatchNo).FirstOrDefault();
                 int SumCount = Kily.Set<EnterpriseTagAttach>().Where(t => t.IsDelete == false).Where(t => t.TagBatchNo == Param.TagBatchNo).Select(t => t.UseNum).Sum();
                 if (!data.IsAccept)
                     return "请先签收";

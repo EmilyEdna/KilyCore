@@ -60,5 +60,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 使用数量
         /// </summary>
         public virtual int UseNum { get; set; }
+        /// <summary>
+        /// 接受编号
+        /// </summary>
+        public virtual string AcceptNo { get; set; }
     }
 }

@@ -59,6 +59,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Function
         public string SingleBatchNo { get; set; }
         public int AllotNum { get; set; }
         public string AcceptUser { get; set; }
+        public string AcceptNo { get; set; }
     }
     public class ResponseVienTagPreson
     {
