@@ -6,6 +6,7 @@
     <script>
         var options = {
             Init: function () {
+                options.Arr = [];
                 this.InitDom();
                 this.InitEvents();
             },
@@ -81,6 +82,32 @@
                 $('#tableListOut').on('uncheck.bs.table check.bs.table check-all.bs.table uncheck-all.bs.table', function (event, rows) {
                     options.IdListOut = controller.TableEvent(event.type, rows, 1);
                 });
+                $("#batchpack").click(function () {
+                    let Arr = Array.from(options.IdListOut);
+                    if (Arr.length == 0) {
+                        controller.Msg("前勾选需要装包的产品");
+                        return;
+                    }
+                    controller.ajax({
+                        url: "EnterpriseWeb/GetBoxCodeNo",
+                        data: { Id: Array.from(options.IdListOut) },
+                        type: "post",
+                        async: false,
+                        success: function (res) {
+                            var Host = CompanyInfo.CodeStar + "B";
+                            controller.OpenWindow({
+                                title: "箱码绑定情况",
+                                type: 2,
+                                height: "90%",
+                                width: "80%",
+                                url: "WebCompanyManage/ThingCode/WatchBoxCodeBind?Star=" + Host + res.data[0].substring(0, res.data[0].length-1) + "&End=" + Host + res.data[res.data.length - 1].substring(0, res.data[0].length-1),
+                                callBack: function (result) {
+                                    result.popClose();
+                                }
+                            });
+                        }
+                    });
+                });
             },
             //行为
             action: {
@@ -106,7 +133,7 @@
                     var action = [];
                     //入库
                     if (row.InStockNum != undefined) {
-                        action.push('<button class="btn btn-sm btn-primary watch"><i class="fa fa-eye-o"></i>追溯码绑定记录</button>');
+                        action.push('<button class="btn btn-sm btn-primary watch"><i class="fa fa-eye"></i>追溯码绑定记录</button>');
                         if (row.CheckGoodsId === '00000000-0000-0000-0000-000000000000')
                             action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>添加产品质检</button>');
                         action.push('<button class="btn btn-sm btn-primary out"><i class="fa fa-pencil-square-o"></i>出库</button>');
@@ -136,11 +163,11 @@
                             width: "80%",
                             url: "WebCompanyManage/ThingCode/WatchCodeUse?StockNo=" + r.GoodsBatchNo,
                             callBack: function (result) {
-                                result.$("#Edit").submit();
+                                result.popClose();
                             }
                         });
                     },
-                        "click .del": function (event, val, row, index) {
+                    "click .del": function (event, val, row, index) {
                         if (row.InStockNum != null) {
                             controller.Confirm("确认删除?", function (bool) {
                                 if (bool) {
@@ -300,6 +327,7 @@
                     <form id="OutStock">
                         <div class="col-sm-8 m-b-xs">
                             <button type="button" class="btn btn-sm btn-white" id="exportOut"><i class="fa fa-file-excel-o"></i>导出Excel</button>
+                            <button type="button" class="btn btn-sm btn-white" id="batchpack"><i class="fa fa-plus"></i>批量装包</button>
                         </div>
                         <div class="col-sm-4">
                             <div class="input-group">

@@ -2359,8 +2359,10 @@ namespace KilyCore.Service.ServiceCore
                     Tag.CodeDiscern = Param.CodeStar + "P";
                 else if (Tag.TagType == TagEnum.OneThing)
                     Tag.CodeDiscern = Param.CodeStar + "W";
-                else
+                else if (Tag.TagType == TagEnum.OneBox)
                     Tag.CodeDiscern = Param.CodeStar + "B";
+                else
+                    Tag.CodeDiscern = Param.CodeStar + "Q";
                 info.TagCodeNum -= Tag.TotalNo;
                 if (info.TagCodeNum < 0)
                     return $"当前剩余标签数量:{info.TagCodeNum},请升级版本或申请购买数量!";
@@ -3483,8 +3485,8 @@ namespace KilyCore.Service.ServiceCore
                 Unit = t.Unit,
                 Image = t.Image,
                 Remark = t.Remark,
-                BatchPrice=t.BatchPrice,
-                Price=t.Price
+                BatchPrice = t.BatchPrice,
+                Price = t.Price
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -3537,8 +3539,8 @@ namespace KilyCore.Service.ServiceCore
                 Image = t.Image,
                 Remark = t.Remark,
                 LineCode = t.LineCode,
-                BatchPrice=t.BatchPrice,
-                Price=t.Price,
+                BatchPrice = t.BatchPrice,
+                Price = t.Price,
                 SellWebNet = t.SellWebNet
             }).AsNoTracking().FirstOrDefault();
             return data;
@@ -4063,7 +4065,8 @@ namespace KilyCore.Service.ServiceCore
                     GoodsName = p.ProductName,
                     OutStockNum = o.t.OutStockNum,
                     OutStockTime = o.t.OutStockTime,
-                    StockEx = o.x.InStockNum
+                    StockEx = o.x.InStockNum,
+                    BoxCodeNo = o.t.BoxCodeNo,
                 }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -4338,6 +4341,22 @@ namespace KilyCore.Service.ServiceCore
             EnterpriseGoodsStock Stock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.Id == Param.Id).AsNoTracking().FirstOrDefault();
             Stock.CheckGoodsId = Param.CheckGoodsId;
             return UpdateField(Stock, "CheckGoodsId") ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+
+        /// <summary>
+        /// 获取绑定出库的装箱码
+        /// </summary>
+        /// <param name="keys"></param>
+        /// <returns></returns>
+        public List<string> GetBoxCodeNo(List<Guid> keys)
+        {
+            List<string> Codes = new List<string>();
+            Kily.Set<EnterpriseGoodsStockAttach>().Where(t => keys.Contains(t.Id)).Select(t => new { t.BoxCodeNo }).Where(t=>!string.IsNullOrEmpty(t.BoxCodeNo)).ToList().ForEach(item =>
+            {
+                var Code = item.BoxCodeNo.Split("B")[1];
+                Codes.Add(Code);
+            });
+            return Codes.OrderBy(t=>t).ToList();
         }
 
         #endregion 产品仓库
@@ -5962,7 +5981,7 @@ namespace KilyCore.Service.ServiceCore
                     new SqlParameter("@Ids",生产批次.MaterialId)
                 };
                 var DataTable = Kily.ExecuteTable(SQLHelper.SQLMaterial, Mater);
-                Base.Materials = DataTable != null? DataTable.ToList<Material>():null;
+                Base.Materials = DataTable != null ? DataTable.ToList<Material>() : null;
             }
             //种养殖企业
             if (Base.企业类型 == "10" || Base.企业类型 == "20")

@@ -1,0 +1,73 @@
+﻿
+@{
+    ViewData["Title"] = "绑定";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        //配置
+        var options = {
+            Init: function () {
+                this.InitDom();
+                this.InitEvents();
+            },
+            //元素
+            InitDom: function () {
+                $("#CompanyId").val(CompanyInfo.Id);
+                $("input[name='PacBatchNo']").val("B" + controller.FormatDate("YYMMDDHHmmss"));
+                $("#ThingCode").val( controller.GetParam("Id"))
+                controller.LayDate({ elem: 'input[name="PacTime"]' });
+            },
+            //事件
+            InitEvents: function () {
+                controller.ValidateConfirm("#Edit");
+            },
+        };
+        //初始化
+        $(document).ready(function () {
+            options.Init();
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/EditPac" id="Edit">
+            <input type="hidden" name="CompanyId" id="CompanyId" />
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th><label class="control-label">装包批次</label></th>
+                    <td class="has-warning">
+                        <input class="form-control" name="PacBatchNo" type="text" readonly />
+                    </td>
+                    <th><label class="control-label">产品名称</label></th>
+                    <td class="has-warning">
+                        <input class="form-control" name="GoodName" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">装包规格</label></th>
+                    <td class="has-warning">
+                        <input class="form-control" name="PacSpec" type="text" />
+                    </td>
+                    <th><label class="control-label">装包时间</label></th>
+                    <td class="has-warning">
+                        <input class="form-control" name="PacTime" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">包码</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input class="form-control" name="PackCode" type="text" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">装箱码</label><span style="color:red">*</span></th>
+                    <td class="has-warning" colspan="3">
+                        <textarea class="form-control"  id ="ThingCode" name="ThingCode" rows="10" cols="10" placeholder="每箱最大建议扫入2000个物品，建议不要超过4000个"></textarea>
+                    </td>
+                </tr>
+
+            </table>
+        </form>
+    </div>
+</div>
