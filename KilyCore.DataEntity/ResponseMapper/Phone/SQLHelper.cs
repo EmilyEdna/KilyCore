@@ -11,6 +11,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Phone
        绑定记录表.EndSerialNo AS 结束,
        产品表.ProductName AS 产品名称,
        产品表.ProductType AS 产品类型,
+       产品表.Image AS 产品图片集合,
        产品表.ExpiredDate AS 保质期,
        产品表.Spec AS 规格,
        产品表.ProductSeriesId AS 产品系列,
