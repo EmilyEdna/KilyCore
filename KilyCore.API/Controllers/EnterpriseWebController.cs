@@ -1876,6 +1876,17 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.UpdateStockCheck(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
 
+        /// <summary>
+        /// 获取绑定出库的装箱码
+        /// </summary>
+        /// <param name="keys"></param>
+        /// <returns></returns>
+        [HttpPost("GetBoxCodeNo")]
+        public ObjectResultEx GetBoxCodeNo(SimpleParam<List<Guid>> keys)
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetBoxCodeNo(keys.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+
         #endregion 产品仓库
 
         #region 仓库类型

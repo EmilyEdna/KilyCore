@@ -33,9 +33,14 @@
                     var other = $("input[name='TagType']").not($("input[name='TagType']:checked"));
                     $(other).attr("disabled", "disabled");
                 }
-                else {
+                else if (Flag == 4) {
                     $("#BatchNo").val("B" + controller.FormatDate("YYMMDDHHmmss"));
                     $("input[name='TagType']").eq(3).attr("checked", true);
+                    var other = $("input[name='TagType']").not($("input[name='TagType']:checked"));
+                    $(other).attr("disabled", "disabled");
+                } else {
+                    $("#BatchNo").val("M" + controller.FormatDate("YYMMDDHHmmss"));
+                    $("input[name='TagType']").eq(4).attr("checked", true);
                     var other = $("input[name='TagType']").not($("input[name='TagType']:checked"));
                     $(other).attr("disabled", "disabled");
                 }
@@ -80,6 +85,10 @@
                         <label class="radio-inline">
                             <input type="radio" name="TagType" value="40" style="margin-top:3px" />
                             <text title="一箱一码">一箱一码</text>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="TagType" value="50" style="margin-top:3px" />
+                            <text title="包码">一包一码</text>
                         </label>
                     </td>
                     <td class="has-warning" colspan="2">

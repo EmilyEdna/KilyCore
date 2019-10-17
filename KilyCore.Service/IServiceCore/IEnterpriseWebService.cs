@@ -469,6 +469,8 @@ namespace KilyCore.Service.IServiceCore
 
         String UpdateStockCheck(RequestEnterpriseGoodsStock Param);
 
+       List<string>  GetBoxCodeNo(List<Guid> keys);
+
         #endregion 产品仓库
 
         #region 仓库类型

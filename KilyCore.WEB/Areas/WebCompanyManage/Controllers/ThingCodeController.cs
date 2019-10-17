@@ -132,5 +132,13 @@ namespace KilyCore.WEB.Areas.WebCompanyManage.Controllers
         {
             return View();
         }
+        public IActionResult PackCode()
+        {
+            return View();
+        }
+        public IActionResult BindEdit()
+        {
+            return View();
+        }
     }
 }
