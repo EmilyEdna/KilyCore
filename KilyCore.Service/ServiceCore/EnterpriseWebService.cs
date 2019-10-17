@@ -3482,7 +3482,9 @@ namespace KilyCore.Service.ServiceCore
                 ProductType = t.ProductType,
                 Unit = t.Unit,
                 Image = t.Image,
-                Remark = t.Remark
+                Remark = t.Remark,
+                BatchPrice=t.BatchPrice,
+                Price=t.Price
             }).AsNoTracking().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -3535,6 +3537,8 @@ namespace KilyCore.Service.ServiceCore
                 Image = t.Image,
                 Remark = t.Remark,
                 LineCode = t.LineCode,
+                BatchPrice=t.BatchPrice,
+                Price=t.Price,
                 SellWebNet = t.SellWebNet
             }).AsNoTracking().FirstOrDefault();
             return data;

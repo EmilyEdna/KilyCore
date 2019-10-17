@@ -26,6 +26,27 @@
             InitEvents: function () {
 
             },
+            action: {
+                TableFormatter: function (val, row, index) {
+                    var action = [];
+                    action.push('<button class="btn btn-sm btn-primary print"><i class="fa fa-eye"></i>打印</button>');
+                    return action.join("&nbsp;")
+                },
+                TableEvents: {
+                    "click .print": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "打印二维码",
+                            type: 2,
+                            height: "90%",
+                            width: "80%",
+                            url: encodeURI("StaticHtml/PrintBoxCode.html?B=" + row.BoxCode),
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
+                    },
+                }//表单事件结束
+            }
         };
         //初始化
         $(document).ready(function () {
@@ -50,11 +71,11 @@
                             <th data-field="GoodName" class="th-center">产品名称</th>
                             <th data-field="BoxCount" class="th-center">每箱数量/件</th>
                             <th data-field="BoxTime" class="th-center">装箱时间</th>
+                            <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" class="th-center">操作</th>
                         </tr>
                     </thead>
                 </table>
             </div>
         </div>
     </div>
-</div>
 </div>

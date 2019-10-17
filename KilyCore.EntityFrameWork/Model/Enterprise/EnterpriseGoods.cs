@@ -69,5 +69,13 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 介绍
         /// </summary>
         public virtual string Remark { get; set; }
+        /// <summary>
+        /// 批发价
+        /// </summary>
+        public virtual string BatchPrice { get; set; }
+        /// <summary>
+        /// 单价
+        /// </summary>
+        public virtual string Price { get; set; }
     }
 }

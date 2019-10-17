@@ -35,10 +35,18 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         /// <summary>
         /// 条码编号
         /// </summary>
-        public virtual string LineCode { get; set; }
+        public string LineCode { get; set; }
         /// <summary>
         /// 销售网址
         /// </summary>
-        public virtual string SellWebNet { get; set; }
+        public string SellWebNet { get; set; }
+        /// <summary>
+        /// 批发价
+        /// </summary>
+        public string BatchPrice { get; set; }
+        /// <summary>
+        /// 单价
+        /// </summary>
+        public string Price { get; set; }
     }
 }

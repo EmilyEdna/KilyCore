@@ -65,5 +65,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 发货使用过的码
         /// </summary>
         public virtual string SendTag { get; set; }
+        /// <summary>
+        /// 规格
+        /// </summary>
+        public virtual string BoxSpec { get; set; }
     }
 }

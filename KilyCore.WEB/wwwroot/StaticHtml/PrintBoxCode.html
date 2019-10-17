@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>二维码打印</title>
+    <script src="../Content/JavaScript/jquery.min.js"></script>
+    <script src="../Content/QRCode/Script/Jquery.QRCode.js"></script>
+    <script src="../Content/QRCode/Script/QRCode.js"></script>
+    <script src="../Content/JavaScript/jquery.cookie.js"></script>
+    <script src="../Content/JavaScript/Controller.js"></script>
+    <!--<script src="http://printfree.jatools.com/demos/jcpfree.js"></script>-->
+    <script>
+        var option = {
+            Init: function () {
+                option.s = controller.GetParam("B");
+                option.InitDom();
+            },
+            InitDom: function () {
+                controller.ajax({
+                    url: "EnterpriseWeb/GetScanBoxInfo",
+                    data: { Parameter: option.s },
+                    async: false,
+                    type: "post",
+                    success: function (result) {
+                        var html = '<div class="wrap1" id="page">'
+                            + '<div class="left">'
+                            + '<p>产品名称：<span>' + result.data.GoodName + '</span></p>'
+                            + '<p>出库批次：<span>' + result.data.StockBatchNo + '</span></p>'
+                            + '<p>装箱规格：<span>' + (controller.CheckFeild(result.data.BoxSpec)?result.data.BoxSpec:"-") + '</span></p>'
+                            + '<p>装箱时间 ：<span>' + result.data.BoxTime + '</span></p>'
+                            + '<p>装箱批次：<span>' + result.data.BoxBatchNo + '</span></p>'
+                            + '<p>溯源编码：<span>' + result.data.BoxCode + '</span></p></div>'
+                            + '<div class="right">'
+                            + '<img src="StaticImg/TagFlag.png" width="40" height="40">'
+                            + '<div id="code" width="40" height="40" style="margin-top: 10px"></div>'
+                            + '</div>'
+                            + '</div>';
+                        $("body").append(html);
+                    }
+                });
+
+                controller.QRCode("#code", {
+                    text: "http://phone.cfda.vip/NewPhone/boxing.html?Id=&Code=" + option.s,
+                    height: 40,
+                    width: 40
+                });
+            },
+        };
+        $(document).ready(function () {
+            option.Init();
+            printWin("打印预览");
+        });
+        function printWin(how) {
+            var myDoc = {
+                documents: document, // 打印页面(div)们在本文档中
+                copyrights: '杰创软件拥有版权  www.jatools.com' // 版权声明必须
+            };
+            var jcp = getJCP();
+            // 调用打印方法
+            if (how == '打印预览')
+                jcp.printPreview(myDoc, false);
+            else if (how == "打印预览(显示进度条)") {
+                jcp.printPreview(myDoc, true);
+            } else if (how == '弹出打印机选择对话框打印') {
+                jcp.print(myDoc, true);
+            } else {
+                jcp.print(myDoc, false); // 不弹出对话框打印
+            }
+        }
+    </script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            font-family: "Microsoft YaHei"
+        }
+
+        .wrap1 {
+            width: 236px;
+            height: 110px;
+            margin: 0 auto 0px;
+            box-sizing: border-box;
+            padding: 2px;
+            overflow: hidden;
+            border: 1px solid #f1f1f1;
+            position: relative;
+        }
+
+        .left p {
+            font-size: 8px;
+            line-height: 10px;
+        }
+
+            .left p:not(:first-child) {
+                margin-top: 6px;
+            }
+
+        .right {
+            width: 40px;
+            position: absolute;
+            right: 6px;
+            top: 6px;
+            text-align: right;
+        }
+
+            .right p {
+                font-size: 8px;
+                line-height: 20px;
+                margin-top: 10px;
+            }
+    </style>
+</head>
+
+<body>
+    <OBJECT id="jatoolsPrinter" classid="CLSID:B43D3361-D075-4BE2-87FE-057188254255" codebase="jatoolsPrinter.cab#version=8,6,0,0"></OBJECT>
+</body>
+
+</html>

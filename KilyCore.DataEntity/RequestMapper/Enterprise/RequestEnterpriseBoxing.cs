@@ -61,5 +61,6 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public Int64 BoxCodeSort { get; set; }
         public String StarCode { get; set; }
         public String EndCode { get; set; }
+        public string BoxSpec { get; set; }
     }
 }

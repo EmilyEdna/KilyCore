@@ -59,5 +59,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         /// 箱码短码
         /// </summary>
         public Int64 BoxCodeSort { get; set; }
+        public string BoxSpec { get; set; }
     }
 }
