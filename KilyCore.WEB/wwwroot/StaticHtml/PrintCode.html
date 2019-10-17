@@ -53,23 +53,27 @@
                         + '<p>产&emsp;&emsp;地：<span>' + $.parseJSON(localStorage.CompanyUser).CompanyAddress + '</span></p>'
                         + '</div>'
                         + '<div class="right">'
-                        + '<img src="StaticImg/TagFlag.png" width="40" height="40">'
-                        + '<div id="code_' + i + '" width="40" height="40" style="margin-top: 10px"></div>'
+                        + '<img src="http://system.cfda.vip/StaticHtml/StaticImg/TagFlag.png" width="60" height="60">'
+                        +'<div><img id="CodeImg'+i+'" src="" style="width:60px;"></div>'
+                        + '<div id="code_' + i + '" width="60" height="60" style="margin-top: 10px;display:none;"></div>'
                         + '</div>'
-                        + '<p style="font-size:8px;text-align:right;">溯源编码：<span>' + FullCode + '</span></p>'
+                      + '<p style="font-size:8px;text-align:right;position:absolution;bottom:12px;width:100%;">溯源编码：<span>' + FullCode + '</span></p>'
                         + '</div>';
                     $("body").append(html);
                     controller.QRCode("#code_" + i, {
                         text: "http://phone.cfda.vip/newphone/codeindex.html?id=&Code=" + FullCode,
-                        height: 40,
-                        width: 40
+                        height: 60,
+                        width: 60
                     });
+                    var codeImg = $("#code_" + i).find('canvas')[0].toDataURL("image/png");
+                    $("#CodeImg"+i).attr("src",codeImg);
                 }
             },
         };
         $(document).ready(function () {
             option.Init();
-            printWin("打印预览");
+            
+            printWin('打印预览');
         });
         function printWin(how) {
 		    var myDoc = {
@@ -97,31 +101,37 @@
         }
 
         .wrap1 {
-            width: 236px;
+            width: 256px;
             height: 156px;
-            margin: 0 auto 0px;
             box-sizing: border-box;
-            padding: 2px;
-            overflow: hidden;
+            padding: 20px 20px;
+            line-height:24px;
             border: 1px solid #f1f1f1;
             position: relative;
+            overflow:hidden;
+            z-index:1;
+            display:table;
         }
-
+        .left{position:absolute;z-index:2;left:20px;}
         .left p {
             font-size: 8px;
-            line-height: 10px;
+            display:block;
+            height:16px;
+            line-height:16px;
         }
 
             .left p:not(:first-child) {
                 margin-top: 6px;
             }
 
+
         .right {
-            width:40px;
+            width:60px;
             position: absolute;
-            right: 6px;
+            right: 36px;
             top: 6px;
             text-align: right;
+            z-index:100;
         }
 
             .right p {

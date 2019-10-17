@@ -25,28 +25,31 @@
                     async: false,
                     type: "post",
                     success: function (result) {
-                        var html = '<div class="wrap1" id="page">'
+                        var html = '<div class="wrap1" id="page1" style="position:relative">'
                             + '<div class="left">'
                             + '<p>产品名称：<span>' + result.data.GoodName + '</span></p>'
                             + '<p>出库批次：<span>' + result.data.StockBatchNo + '</span></p>'
-                            + '<p>装箱规格：<span>' + (controller.CheckFeild(result.data.BoxSpec)?result.data.BoxSpec:"-") + '</span></p>'
+                            + '<p>装箱规格：<span>' + (controller.CheckFeild(result.data.BoxSpec) ? result.data.BoxSpec : "-") + '</span></p>'
                             + '<p>装箱时间 ：<span>' + result.data.BoxTime + '</span></p>'
                             + '<p>装箱批次：<span>' + result.data.BoxBatchNo + '</span></p>'
                             + '<p>溯源编码：<span>' + result.data.BoxCode + '</span></p></div>'
-                            + '<div class="right">'
-                            + '<img src="StaticImg/TagFlag.png" width="40" height="40">'
-                            + '<div id="code" width="40" height="40" style="margin-top: 10px"></div>'
-                            + '</div>'
-                            + '</div>';
-                        $("body").append(html);
+                            + '<div class="right" style="position:absolute;right:36px;top:12px;">'
+                            + '<img src="http://system.cfda.vip/StaticHtml/StaticImg/TagFlag.png" width="60" height="60">'
+                           +'<div><img id="CodeImg1" src="" style="width:60px;margin-top:6px;"></div>'
+                            + '<div id="code_1" width="60" height="60" style="margin-top: 10px;display:none;"></div>'
+                                + '</div>'
+                            $("body").append(html);
                     }
                 });
 
-                controller.QRCode("#code", {
-                    text: "http://phone.cfda.vip/NewPhone/boxing.html?Id=&Code=" + option.s,
-                    height: 40,
-                    width: 40
-                });
+               controller.QRCode("#code_1", {
+                   text: "http://phone.cfda.vip/newphone/boxing.html?id=&Code=" + encodeURI(option.s),
+                    correctLevel :QRErrorCorrectLevel.M,
+                        height: 60,
+                        width: 60
+                    });
+                var codeImg = $("#code_1").find('canvas')[0].toDataURL("image/png");
+                $("#CodeImg1").attr("src",codeImg);
             },
         };
         $(document).ready(function () {
@@ -79,11 +82,12 @@
         }
 
         .wrap1 {
-            width: 236px;
-            height: 110px;
+            max-width: 236px;
+            height: 156px;
             margin: 0 auto 0px;
             box-sizing: border-box;
-            padding: 2px;
+            padding: 20px 20px;
+            line-height:24px;
             overflow: hidden;
             border: 1px solid #f1f1f1;
             position: relative;
@@ -91,7 +95,9 @@
 
         .left p {
             font-size: 8px;
-            line-height: 10px;
+            display:block;
+            height:16px;
+            line-height:16px;
         }
 
             .left p:not(:first-child) {
@@ -101,7 +107,7 @@
         .right {
             width: 40px;
             position: absolute;
-            right: 6px;
+            right: 0px;
             top: 6px;
             text-align: right;
         }
