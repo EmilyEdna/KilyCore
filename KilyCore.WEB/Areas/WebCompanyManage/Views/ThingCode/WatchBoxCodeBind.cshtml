@@ -46,9 +46,9 @@
                         type: 2,
                         height: "90%",
                         width: "80%",
-                        url: "WebCompanyManage/ThingCode/BindEdit?Id=" + Array.from(options.IdListOut).join(','),
+                        url: "WebCompanyManage/ThingCode/BindEdit?Id=" + Array.from(options.IdListOut).join(',') + "&Tag=" + row.Id,
                         callBack: function (result) {
-                            result.popClose();
+                            result.$("#Edit").submit();
                         }
                     })
                 });

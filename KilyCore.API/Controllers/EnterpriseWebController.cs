@@ -1086,6 +1086,16 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.GetBoxPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
 
+        /// <summary>
+        /// 编辑包码
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpPost("EditPic")]
+        public ObjectResultEx EditPic(RequestEnterprisePackCodeBind Param) 
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.EditPackCode(Param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion 二维码管理
 
         #region 厂商管理
@@ -2592,6 +2602,17 @@ namespace KilyCore.API.Controllers
             return ObjectResultEx.Instance(EnterpriseWebService.GetScanPackageInfo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
 
+        /// <summary>
+        /// 获取包码
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpGet("GetPackCodeInfo")]
+        [AllowAnonymous]
+        public ObjectResultEx GetPackCodeInfo(SimpleParam<Guid> Param) 
+        {
+            return ObjectResultEx.Instance(EnterpriseWebService.GetPackCodeInfo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion 手机扫描页面
 
         #region APP 接口

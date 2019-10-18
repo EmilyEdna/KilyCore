@@ -2704,6 +2704,17 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
 
+        /// <summary>
+        /// 编辑包码
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        public string EditPackCode(RequestEnterprisePackCodeBind Param)
+        {
+            var entity = Param.MapToEntity<EnterprisePackCodeBind>();
+            return Insert(entity) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+        }
+
         #endregion 物码管理
 
         #region 厂商管理
@@ -4351,12 +4362,12 @@ namespace KilyCore.Service.ServiceCore
         public List<string> GetBoxCodeNo(List<Guid> keys)
         {
             List<string> Codes = new List<string>();
-            Kily.Set<EnterpriseGoodsStockAttach>().Where(t => keys.Contains(t.Id)).Select(t => new { t.BoxCodeNo }).Where(t=>!string.IsNullOrEmpty(t.BoxCodeNo)).ToList().ForEach(item =>
-            {
-                var Code = item.BoxCodeNo.Split("B")[1];
-                Codes.Add(Code);
-            });
-            return Codes.OrderBy(t=>t).ToList();
+            Kily.Set<EnterpriseGoodsStockAttach>().Where(t => keys.Contains(t.Id)).Select(t => new { t.BoxCodeNo }).Where(t => !string.IsNullOrEmpty(t.BoxCodeNo)).ToList().ForEach(item =>
+              {
+                  var Code = item.BoxCodeNo.Split("B")[1];
+                  Codes.Add(Code);
+              });
+            return Codes.OrderBy(t => t).ToList();
         }
 
         #endregion 产品仓库
@@ -6187,6 +6198,16 @@ namespace KilyCore.Service.ServiceCore
             return data;
         }
 
+        /// <summary>
+        ///  获取包详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public Object GetPackCodeInfo(Guid Id)
+        {
+            EnterpriseTag Tag = Kily.Set<EnterpriseTag>().Where(t => t.Id == Id).FirstOrDefault();
+            return Kily.Set<EnterprisePackCodeBind>().Where(t => t.TagId == Tag.Id).FirstOrDefault();
+        }
         #endregion 手机扫描页面
 
         #region APP 接口

@@ -99,7 +99,7 @@ namespace KilyCore.WEB.Model
         public static String WebHost { get; set; }
         public static String WebHostClass { get; set; }
         public static String WebHostBox { get; set; }
-
+        public static string WebHostPack { get; set; }
     }
     public class ExcelModel
     {
@@ -112,8 +112,8 @@ namespace KilyCore.WEB.Model
     public class ScanCodeModel
     {
         public String Id { get; set; }
-        public Int64 SCode => SCodes.Contains("W") ? Convert.ToInt64(SCodes.Split("W")[1]) : (SCodes.Contains("P") ? Convert.ToInt64(SCodes.Split("P")[1]) : Convert.ToInt64(SCodes.Split("B")[1]));
-        public Int64 ECode => ECodes.Contains("W") ? Convert.ToInt64(ECodes.Split("W")[1]) : (ECodes.Contains("P") ? Convert.ToInt64(ECodes.Split("P")[1]) : Convert.ToInt64(ECodes.Split("B")[1]));
+        public Int64 SCode => SCodes.Contains("W") ? Convert.ToInt64(SCodes.Split("W")[1]) : (SCodes.Contains("P") ? Convert.ToInt64(SCodes.Split("P")[1]) : (SCodes.Contains("Q")?Convert.ToInt64(SCodes.Split("Q")[1]):Convert.ToInt64(SCodes.Split("B")[1])));
+        public Int64 ECode => ECodes.Contains("W") ? Convert.ToInt64(ECodes.Split("W")[1]) : (ECodes.Contains("P") ? Convert.ToInt64(ECodes.Split("P")[1]) : (ECodes.Contains("Q") ? Convert.ToInt64(ECodes.Split("Q")[1]):Convert.ToInt64(ECodes.Split("B")[1])));
         public String SCodes { get; set; }
         public String ECodes { get; set; }
         public String CodeHost => ECodes.Contains("W") ? ECodes.Split("W")[0] + "W" : (ECodes.Contains("P") ? ECodes.Split("P")[0] + "P" : ECodes.Split("B")[0] + "B");

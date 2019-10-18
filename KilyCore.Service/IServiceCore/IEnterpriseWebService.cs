@@ -287,6 +287,8 @@ namespace KilyCore.Service.IServiceCore
 
         PagedResult<ResponseEnterpriseBoxing> GetBoxPage(PageParamList<RequestEnterpriseBoxing> pageParam);
 
+        String EditPackCode(RequestEnterprisePackCodeBind Param);
+
         #endregion 物码管理
 
         #region 厂商管理
@@ -634,6 +636,8 @@ namespace KilyCore.Service.IServiceCore
         String CheckLogistics(RequestEnterpriseLogistics Param);
 
         ResponseEnterpriseGoodsPackage GetScanPackageInfo(Guid Id);
+
+        Object GetPackCodeInfo(Guid Id);
 
         #endregion 手机扫描页面
 

@@ -13,6 +13,7 @@
             },
             //元素
             InitDom: function () {
+                $("#TagId").val(controller.GetParam("Tag"));
                 $("#CompanyId").val(CompanyInfo.Id);
                 $("input[name='PacBatchNo']").val("B" + controller.FormatDate("YYMMDDHHmmss"));
                 $("#ThingCode").val( controller.GetParam("Id"))
@@ -31,8 +32,9 @@
 }
 <div class="ibox float-e-margins">
     <div class="ibox-content">
-        <form class="form-horizontal" method="post" action="EnterpriseWeb/EditPac" id="Edit">
+        <form class="form-horizontal" method="post" action="EnterpriseWeb/EditPic" id="Edit">
             <input type="hidden" name="CompanyId" id="CompanyId" />
+            <input type="hidden" name="TagId" id="TagId" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">装包批次</label></th>
@@ -63,7 +65,7 @@
                 <tr>
                     <th><label class="control-label">装箱码</label><span style="color:red">*</span></th>
                     <td class="has-warning" colspan="3">
-                        <textarea class="form-control"  id ="ThingCode" name="ThingCode" rows="10" cols="10" placeholder="每箱最大建议扫入2000个物品，建议不要超过4000个"></textarea>
+                        <textarea class="form-control" id="ThingCode" name="ThingCode" rows="10" cols="10" placeholder="每箱最大建议扫入2000个物品，建议不要超过4000个"></textarea>
                     </td>
                 </tr>
 
