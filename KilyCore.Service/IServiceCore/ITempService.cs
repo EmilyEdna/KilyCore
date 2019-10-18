@@ -32,5 +32,9 @@ namespace KilyCore.Service.IServiceCore
         object GetBuybillPage(Guid CompanyId, string SDate, string EDate);
 
         object RepastProduct(Guid CompanyId);
+
+        object GetProductPage(string Category, int PageIndex, int PageSize);
+
+        object GetProductDetail(Guid ID);
     }
 }

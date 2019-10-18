@@ -272,5 +272,30 @@ namespace KilyCore.API.Controllers
         }
 
         #endregion 爬虫
+
+        #region 平台产品
+        /// <summary>
+        /// 产品详情
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpGet("GetProDetail")]
+        [AllowAnonymous]
+        public ObjectResultEx GetProductDetail(Guid ID)
+        {
+            return ObjectResultEx.Instance(Temp.GetProductDetail(ID), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 产品列表
+        /// </summary>
+        /// <param name="Param"></param>
+        /// <returns></returns>
+        [HttpGet("GetProductPage")]
+        [AllowAnonymous]
+        public ObjectResultEx GetProductPage(string Category, int PageIndex, int PageSize)
+        {
+            return ObjectResultEx.Instance(Temp.GetProductPage(Category, PageIndex, PageSize), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        #endregion
     }
 }
