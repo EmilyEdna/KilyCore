@@ -897,6 +897,7 @@ namespace KilyCore.Service.ServiceCore
         public PagedResult<ResponseEnterpriseGoods> GetWorkPage(PageParamList<RequestEnterpriseGoods> pageParam)
         {
             IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess);
+            IQueryable<EnterpriseProductSeries> queryables = Kily.Set<EnterpriseProductSeries>().Where(t => t.IsDelete == false);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.ProductType))
                 goods = goods.Where(t => pageParam.QueryParam.ProductType.Contains(t.ProductType));
             IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess);
@@ -939,8 +940,14 @@ namespace KilyCore.Service.ServiceCore
                 CompanyName = x.CompanyName,
                 ProductType = t.ProductType,
                 ExpiredDate = t.ExpiredDate + "天",
+                Image=t.Image,
+                Price=t.Price,
+                SellWebNet=t.SellWebNet,
+                LineCode=t.LineCode,
+                Remark=t.Remark,
                 Spec = t.Spec,
                 Unit = x.ProductionAddress,
+                ProductSeriesName="-",
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }

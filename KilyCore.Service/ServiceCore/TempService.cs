@@ -4,11 +4,13 @@ using KilyCore.EntityFrameWork.Model.Enterprise;
 using KilyCore.EntityFrameWork.Model.Govt;
 using KilyCore.EntityFrameWork.Model.Repast;
 using KilyCore.EntityFrameWork.Model.System;
+using KilyCore.EntityFrameWork.ModelEnum;
 using KilyCore.Extension.AutoMapperExtension;
 using KilyCore.Extension.ValidateExtension;
 using KilyCore.Repositories.BaseRepository;
 using KilyCore.Service.ConstMessage;
 using KilyCore.Service.IServiceCore;
+using KilyCore.Service.QueryExtend;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -267,6 +269,69 @@ namespace KilyCore.Service.ServiceCore
         }
 
         #endregion 弃用-中间系统
+
+        #region 产品信息
+        /// <summary>
+        /// 获取产品列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public object GetProductPage(string Category,int PageIndex,int PageSize)
+        {
+            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess).Where(o=>o.Image.Length>0);
+            IQueryable<EnterpriseProductSeries> queryables = Kily.Set<EnterpriseProductSeries>().Where(t => t.IsDelete == false);
+            if (!string.IsNullOrEmpty(Category))
+                goods = goods.Where(t => Category.Contains(t.ProductType));
+            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess);
+            var data = goods.Join(queryable, t => t.CompanyId, x => x.Id, (t, x) => new
+            {
+                Id = t.Id,
+                ProductName = t.ProductName,
+                CompanyId = t.CompanyId,
+                CompanyName = x.CompanyName,
+                ProductType = t.ProductType,
+                ExpiredDate = t.ExpiredDate + "天",
+                Image ="http://system.cfda.vip"+t.Image.Split(new char[] { ','},StringSplitOptions.None)[0],
+                Price = t.Price,
+                SellWebNet = t.SellWebNet,
+                LineCode = t.LineCode,
+                Remark = t.Remark,
+                Spec = t.Spec,
+                Unit = x.ProductionAddress,
+                ProductSeriesName = "-",
+            }).ToPagedResult(PageIndex, PageSize);
+            return data;
+        }
+        /// <summary>
+        /// 获取产品详情
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public object GetProductDetail(Guid ID)
+        {
+            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess&&t.Id==ID);
+            IQueryable<EnterpriseProductSeries> queryables = Kily.Set<EnterpriseProductSeries>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess);
+            var data = goods.Join(queryable, t => t.CompanyId, x => x.Id, (t, x) => new
+            {
+                Id = t.Id,
+                ProductName = t.ProductName,
+                CompanyId = t.CompanyId,
+                CompanyName = x.CompanyName,
+                ProductType = t.ProductType,
+                ExpiredDate = t.ExpiredDate + "天",
+                Image = t.Image,
+                Price = t.Price,
+                SellWebNet = t.SellWebNet,
+                LineCode = t.LineCode,
+                Remark = t.Remark,
+                Spec = t.Spec,
+                Unit = x.ProductionAddress,
+                ProductSeriesName = "-",
+            }).FirstOrDefault();
+            return data;
+        }
+        #endregion
 
         #region 推广活动
 
