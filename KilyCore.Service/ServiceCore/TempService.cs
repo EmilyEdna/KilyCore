@@ -278,7 +278,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public object GetProductPage(string Category,int PageIndex,int PageSize)
         {
-            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess).Where(o=>o.Image.Length>0);
+            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess).Where(o=>o.Image.Length>0&&o.LineCode.Length>0);
             IQueryable<EnterpriseProductSeries> queryables = Kily.Set<EnterpriseProductSeries>().Where(t => t.IsDelete == false);
             if (!string.IsNullOrEmpty(Category))
                 goods = goods.Where(t => Category.Contains(t.ProductType));
@@ -298,7 +298,7 @@ namespace KilyCore.Service.ServiceCore
                 Remark = t.Remark,
                 Spec = t.Spec,
                 Unit = x.ProductionAddress,
-                ProductSeriesName = "-",
+                ProductSeriesName = ""
             }).ToPagedResult(PageIndex, PageSize);
             return data;
         }
@@ -327,7 +327,7 @@ namespace KilyCore.Service.ServiceCore
                 Remark = t.Remark,
                 Spec = t.Spec,
                 Unit = x.ProductionAddress,
-                ProductSeriesName = "-",
+                ProductSeriesName = (queryables.Where(o => o.Id == t.ProductSeriesId).FirstOrDefault() ?? new EnterpriseProductSeries()).SeriesName,
             }).FirstOrDefault();
             return data;
         }

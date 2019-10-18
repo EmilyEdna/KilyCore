@@ -279,7 +279,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpGet("GetProDetail")]
+        [HttpGet("GetProductDetail")]
         [AllowAnonymous]
         public ObjectResultEx GetProductDetail(Guid ID)
         {
