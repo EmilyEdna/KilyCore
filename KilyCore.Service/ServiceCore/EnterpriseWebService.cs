@@ -5077,6 +5077,7 @@ namespace KilyCore.Service.ServiceCore
                 var Box = boxings.ToList();
                 EnterpriseBoxing box = null;
                 string UseTag = string.Empty;
+                int num = 0;
                 foreach (var item in Nums)
                 {
                     box = Box.Where(t => t.BoxCode.Contains(item)).FirstOrDefault();
@@ -5098,8 +5099,9 @@ namespace KilyCore.Service.ServiceCore
                         return $"当前号段：{UseTag}，已经被发货使用过，请勿重复使用！";
                     UpdateField(box, "SendTag");
                     Param.GoodsName = Param.GoodsName.Split("_")[0];
-                    Param.SendGoodsNum += box.ThingCode.Split(",").Count();
+                    num += box.ThingCode.Split(",").Count();
                 }
+                Param.SendGoodsNum =  num.ToString();
             }
             else if (Param.SendType == 3)
             {
