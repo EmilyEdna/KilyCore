@@ -2711,6 +2711,8 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string EditPackCode(RequestEnterprisePackCodeBind Param)
         {
+            var Id = Regex.Match(Param.PackCode, "[a-fA-F0-9]{8}(-[a-fA-F0-9]{4}){3}-[a-fA-F0-9]{12}").Value;
+            Param.TagId = Guid.Parse(Id);
             var entity = Param.MapToEntity<EnterprisePackCodeBind>();
             return Insert(entity) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }

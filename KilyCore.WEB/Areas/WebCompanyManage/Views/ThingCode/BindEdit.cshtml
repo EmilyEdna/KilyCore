@@ -13,7 +13,6 @@
             },
             //元素
             InitDom: function () {
-                $("#TagId").val(controller.GetParam("Tag"));
                 $("#CompanyId").val(CompanyInfo.Id);
                 $("input[name='PacBatchNo']").val("B" + controller.FormatDate("YYMMDDHHmmss"));
                 $("#ThingCode").val( controller.GetParam("Id"))
@@ -34,7 +33,6 @@
     <div class="ibox-content">
         <form class="form-horizontal" method="post" action="EnterpriseWeb/EditPic" id="Edit">
             <input type="hidden" name="CompanyId" id="CompanyId" />
-            <input type="hidden" name="TagId" id="TagId" />
             <table class="table table-hover table-bordered">
                 <tr>
                     <th><label class="control-label">装包批次</label></th>
