@@ -42,12 +42,24 @@
             action: {
                 TableFormatter: function (val, row, index) {
                     var action = [];
-                    action.push('<button class="btn btn-sm btn-primary watch"><i class="fa fa-eye"></i>查看绑定信息</button>');
+                    action.push('<button class="btn btn-sm btn-primary print"><i class="fa fa-eye"></i>打印</button>');
                     action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>生成标签</button>');
                     action.push('<button class="btn btn-sm btn-primary del"><i class="fa fa-trash-o"></i>删除</button>');
                     return action.join("&nbsp;")
                 },
                 TableEvents: {
+                       "click .print": function (event, val, row, index) {
+                        controller.OpenWindow({
+                            title: "打印二维码",
+                            type: 2,
+                            height: "90%",
+                            width: "80%",
+                            url: encodeURI("StaticHtml/PrintPackCode.html?Id=" + row.Id + "&S=" + row.StarSerialNo + "&E=" + row.EndSerialNo),
+                            callBack: function (result) {
+                                result.$("#Edit").submit();
+                            }
+                        })
+                    },
                     "click .del": function (event, val, row, index) {
                         controller.Confirm("确认删除？", function (bool) {
                             if (bool) {
@@ -61,18 +73,6 @@
                                 });
                             }
                         });
-                    },
-                    "click .watch": function (event, val, row, index) {
-                        controller.OpenWindow({
-                            title: "绑定信息",
-                            type: 2,
-                            height: "90%",
-                            width: "80%",
-                            url: "WebCompanyManage/ThingCode/WatchBoxCodeBind?Star=" + row.StarSerialNo + "&End=" + row.EndSerialNo,
-                            callBack: function (result) {
-                                result.popClose();
-                            }
-                        })
                     },
                     "click .edit": function (event, val, row, index) {
                         controller.Confirm("确认生成？", function (bool) {

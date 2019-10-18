@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>二维码打印</title>
+    <script src="../Content/JavaScript/jquery.min.js"></script>
+    <script src="../Content/QRCode/Script/Jquery.QRCode.js"></script>
+    <script src="../Content/QRCode/Script/QRCode.js"></script>
+    <script src="../Content/JavaScript/jquery.cookie.js"></script>
+    <script src="../Content/JavaScript/Controller.js"></script>
+    <script src="http://printfree.jatools.com/demos/jcpfree.js"></script>
+    <script>
+        var option = {
+            Init: function () {
+                option.Id = controller.GetParam("Id");
+                option.S = controller.GetParam("S");
+                option.E = controller.GetParam("E");
+                option.InitDom();
+            },
+            InitDom: function () {
+                controller.ajax({
+                    url: "EnterpriseWeb/GetPackCodeInfo",
+                    data: { Id: option.Id },
+                    async: false,
+                    type: "get",
+                    success: function (result) {
+                        var S = Number(option.S.split('Q')[1]);
+                        var E = Number(option.E.split('Q')[1]);
+                        var rand = (Math.floor(Math.random() * 9)) + 1;
+                        for (var i = 0; i <= (E - S); i++) {
+                            var html = '<div class="wrap1" id="page1" style="position:relative">'
+                                + '<div class="left">'
+                                + '<p>产品名称：<span>' + result.data.GoodName + '</span></p>'
+                                + '<p>包装批次：<span>' + result.data.PacBatchNo + '</span></p>'
+                                + '<p>包装规格：<span>' + (controller.CheckFeild(result.data.PacSpec) ? result.data.PacSpec : "-") + '</span></p>'
+                                + '<p>包装时间 ：<span>' + result.data.PacTime + '</span></p>'
+                                + '<p>溯源编码：<span>' + option.S.split('Q')[0] + 'Q' +(S+  i) +rand+ '</span></p></div>'
+                                + '<div class="right" style="position:absolute;right:36px;top:12px;">'
+                                + '<img src="http://system.cfda.vip/StaticHtml/StaticImg/TagFlag.png" width="60" height="60">'
+                                + '<div><img id="CodeImg1" src="" style="width:60px;margin-top:6px;"></div>'
+                                + '<div id="code_1_' + i + '" width="60" height="60" style="margin-top: 10px;display:none;"></div>'
+                                + '</div>'
+                            $("body").append(html);
+                            controller.QRCode("#code_1_"+i, {
+                                text: "http://phone.cfda.vip/newphone/packcode.html?id=" + encodeURI(option.Id),
+                                correctLevel: QRErrorCorrectLevel.M,
+                                height: 60,
+                                width: 60
+                            });
+                            var codeImg = $("#code_1_" + i).find('canvas')[0].toDataURL("image/png");
+                            $("#CodeImg1").attr("src", codeImg);
+                        }
+                    }
+                });
+            },
+        };
+        $(document).ready(function () {
+            option.Init();
+            //printWin("打印预览");
+        });
+        function printWin(how) {
+            var myDoc = {
+                documents: document, // 打印页面(div)们在本文档中
+                copyrights: '杰创软件拥有版权  www.jatools.com' // 版权声明必须
+            };
+            var jcp = getJCP();
+            // 调用打印方法
+            if (how == '打印预览')
+                jcp.printPreview(myDoc, false);
+            else if (how == "打印预览(显示进度条)") {
+                jcp.printPreview(myDoc, true);
+            } else if (how == '弹出打印机选择对话框打印') {
+                jcp.print(myDoc, true);
+            } else {
+                jcp.print(myDoc, false); // 不弹出对话框打印
+            }
+        }
+    </script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            font-family: "Microsoft YaHei"
+        }
+
+        .wrap1 {
+            max-width: 290px;
+            height: 156px;
+            margin: 0 auto 0px;
+            box-sizing: border-box;
+            padding: 20px 20px;
+            line-height: 24px;
+            overflow: hidden;
+            border: 1px solid #f1f1f1;
+            position: relative;
+        }
+
+        .left p {
+            font-size: 8px;
+            display: block;
+            height: 16px;
+            line-height: 16px;
+        }
+
+            .left p:not(:first-child) {
+                margin-top: 6px;
+            }
+
+        .right {
+            width: 40px;
+            position: absolute;
+            right: 0px;
+            top: 6px;
+            text-align: right;
+        }
+
+            .right p {
+                font-size: 8px;
+                line-height: 20px;
+                margin-top: 10px;
+            }
+    </style>
+</head>
+
+<body>
+    <OBJECT id="jatoolsPrinter" classid="CLSID:B43D3361-D075-4BE2-87FE-057188254255" codebase="jatoolsPrinter.cab#version=8,6,0,0"></OBJECT>
+</body>
+
+</html>
