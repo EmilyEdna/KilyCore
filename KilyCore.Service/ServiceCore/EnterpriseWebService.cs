@@ -6124,7 +6124,7 @@ namespace KilyCore.Service.ServiceCore
         {
             EnterpriseScanCodeInfo CodeInfo = Param.MapToEntity<EnterpriseScanCodeInfo>();
             EnterpriseScanCodeInfo Code = Kily.Set<EnterpriseScanCodeInfo>()
-                .Where(t => t.ScanPackageNo.Equals(CodeInfo.ScanPackageNo))
+                //.Where(t => t.ScanPackageNo.Equals(CodeInfo.ScanPackageNo))
                 .Where(t => t.TakeCarId == Param.TakeCarId)
                 .Where(t => t.ScanIP == Param.ScanIP)
                 .AsNoTracking().FirstOrDefault();
@@ -6173,7 +6173,8 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public RequestEnterpriseLogistics GetScanSendInfo(String Id)
         {
-            var data = Kily.Set<EnterpriseLogistics>().Where(t => t.GainId.ToString() == Id || t.GainUser.Equals(Id)).FirstOrDefault().MapToEntity<RequestEnterpriseLogistics>();
+            //var data = Kily.Set<EnterpriseLogistics>().Where(t => t.GainId.ToString() == Id || t.GainUser.Equals(Id)).FirstOrDefault().MapToEntity<RequestEnterpriseLogistics>();
+            var data = Kily.Set<EnterpriseLogistics>().Where(t => t.Id.ToString()==Id).FirstOrDefault().MapToEntity<RequestEnterpriseLogistics>();
             return data;
         }
 
@@ -6188,9 +6189,9 @@ namespace KilyCore.Service.ServiceCore
                 .Where(t => t.SellerType == SellerEnum.Sale)
                 .Where(t => t.LinkPhone.Equals(Param.LinkPhone)).AsNoTracking().FirstOrDefault();
             if (Temp == null)
-                return "请勿串货";
+                return "请勿窜货";
             EnterpriseLogistics logistics = Kily.Set<EnterpriseLogistics>().Where(t => t.GainId == Temp.Id).FirstOrDefault();
-            logistics.Flag = true;
+            logistics.Flag = false;
             logistics.GetGoodTime = DateTime.Now;
             List<String> Fields = new List<String> { "Flag", "GetGoodTime" };
             return UpdateField(logistics, null, Fields) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
