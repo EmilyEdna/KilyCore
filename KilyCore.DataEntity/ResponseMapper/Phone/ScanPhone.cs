@@ -54,6 +54,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Phone
         public string 质检报告 { get; set; }
         public string 装车编号 { get; set; }
         public string 发货绑定码 { get; set; }
+        public string 发货装箱码 { get; set; }
         public string 装车标识 { get; set; }
         public string 发货批次 { get; set; }
         public string 运单号 { get; set; }

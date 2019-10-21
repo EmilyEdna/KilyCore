@@ -471,7 +471,7 @@ namespace KilyCore.Service.IServiceCore
 
         String UpdateStockCheck(RequestEnterpriseGoodsStock Param);
 
-       List<string>  GetBoxCodeNo(List<Guid> keys);
+        List<string> GetBoxCodeNo(List<Guid> keys);
 
         #endregion 产品仓库
 
@@ -631,7 +631,7 @@ namespace KilyCore.Service.IServiceCore
 
         ResponseEnterpriseBoxing GetScanBoxInfo(Guid? Id, String Code);
 
-        RequestEnterpriseLogistics GetScanSendInfo(String Id);
+        RequestEnterpriseLogistics GetScanSendInfo(String Id, String Phone, String Num);
 
         String CheckLogistics(RequestEnterpriseLogistics Param);
 
