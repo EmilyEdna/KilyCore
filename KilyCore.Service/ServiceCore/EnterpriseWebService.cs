@@ -5101,7 +5101,7 @@ namespace KilyCore.Service.ServiceCore
                     Param.GoodsName = Param.GoodsName.Split("_")[0];
                     num += box.ThingCode.Split(",").Count();
                 }
-                Param.SendGoodsNum =  num.ToString();
+                Param.SendGoodsNum = num.ToString();
             }
             else if (Param.SendType == 3)
             {
@@ -5965,7 +5965,7 @@ namespace KilyCore.Service.ServiceCore
                 if (预发货实体 == null)//箱码
                 {
                     var BoxCode = Kily.Set<EnterpriseBoxing>().Where(t => t.ThingCode.Contains(Code)).FirstOrDefault().BoxCode;
-                    var List = 预发货列表.Where(t => t.发货装箱码!=null).ToList();
+                    var List = 预发货列表.Where(t => t.发货装箱码 != null).ToList();
                     预发货实体 = List.Where(t => t.发货装箱码.Contains(BoxCode.ToUpper())).FirstOrDefault();
                 }
                 Base.装车标识 = 预发货实体?.装车标识;
@@ -5994,7 +5994,7 @@ namespace KilyCore.Service.ServiceCore
                     关键点限值 = t.TargetValue
                 }).ToList();
                 Base.生产批次号 = 生产批次.BatchNo;
-                Base.生产时间= 生产批次.StartTime.Value.ToString("yyyy-MM-dd HH:mm:ss");
+                Base.生产时间 = 生产批次.StartTime.Value.ToString("yyyy-MM-dd HH:mm:ss");
                 Base.设备名称 = 设备.DeviceName;
                 Base.执行标准 = 产品系列.Standard;
                 Base.设备供应商 = 设备.SupplierName;
@@ -6171,9 +6171,9 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public RequestEnterpriseLogistics GetScanSendInfo(String Id)
+        public RequestEnterpriseLogistics GetScanSendInfo(String Id, String Phone, String Num)
         {
-            var data = Kily.Set<EnterpriseLogistics>().Where(t=>t.GainUser.Equals(Id)).FirstOrDefault().MapToEntity<RequestEnterpriseLogistics>();
+            var data = Kily.Set<EnterpriseLogistics>().Where(t => t.GainUser == Id && t.LinkPhone == Phone && t.SendGoodsNum == Num).FirstOrDefault().MapToEntity<RequestEnterpriseLogistics>();
             return data;
         }
 

@@ -2568,9 +2568,9 @@ namespace KilyCore.API.Controllers
         /// <returns></returns>
         [HttpPost("GetScanSendInfo")]
         [AllowAnonymous]
-        public ObjectResultEx GetScanSendInfo(SimpleParam<String> Param)
+        public ObjectResultEx GetScanSendInfo(SimpleParam<String> Param,SimpleParam<String> Key,SimpleParam<String> Keys)
         {
-            return ObjectResultEx.Instance(EnterpriseWebService.GetScanSendInfo(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(EnterpriseWebService.GetScanSendInfo(Param.Id,Key.Parameter,Keys.Params), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
 
         /// <summary>

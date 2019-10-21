@@ -36,5 +36,6 @@ namespace KilyCore.Service.QueryExtend
     {
         public T Id { get; set; }
         public T Parameter { get; set; }
+        public T Params { get; set; }
     }
 }
