@@ -4962,8 +4962,6 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<EnterpriseLogistics> queryable = Kily.Set<EnterpriseLogistics>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.GoodsName))
                 queryable = queryable.Where(t => t.GoodsName.Contains(pageParam.QueryParam.GoodsName));
-            if (pageParam.QueryParam.GainId != Guid.Empty)
-                queryable = queryable.Where(t => t.GainId == pageParam.QueryParam.GainId);
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || GetChildIdList(CompanyInfo().Id).Contains(t.CompanyId));
             else
