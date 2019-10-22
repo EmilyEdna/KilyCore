@@ -24,7 +24,7 @@ namespace KilyCore.Extension.OutSideService
             int y = 0;
             for (int i = 0; i < companyInfo.Count; i++)
             {
-                if (i % 4 == 0)
+                if (i % 3 == 0)
                 {
                     if (i != 0)
                         y += 1;
@@ -32,9 +32,8 @@ namespace KilyCore.Extension.OutSideService
                     {
                         ComName = companyName[y].Name,
                         QS = companyInfo[i].Data,
-                        ProName = companyInfo[i + 1].Data,
-                        Time = companyInfo[i + 2].Data,
-                        Addr = companyInfo[i + 3].Data
+                        Time = companyInfo[i + 1].Data,
+                        Addr = companyInfo[i + 2].Data
                     });
                 }
             }
@@ -54,7 +53,6 @@ namespace KilyCore.Extension.OutSideService
         {
             public string ComName { get; set; }
             public string QS { get; set; }
-            public string ProName { get; set; }
             public string Time { get; set; }
             public string Addr { get; set; }
         }
