@@ -5913,6 +5913,8 @@ namespace KilyCore.Service.ServiceCore
             EnterpriseGoodsPackage 装车 = Kily.Set<EnterpriseGoodsPackage>().Where(t => t.IsDelete == false).Where(t => t.ProductOutStockNo == Base.出库批次).FirstOrDefault();
             Base.装车编号 = 装车?.PackageNo;
             IQueryable<EnterpriseLogistics> 预发货 = Kily.Set<EnterpriseLogistics>().Where(t => t.IsDelete == false);
+            var 产品系列 = Kily.Set<EnterpriseProductSeries>().Where(t => t.Id.ToString() == Base.产品系列).FirstOrDefault()??new EnterpriseProductSeries();
+            Base.执行标准 = 产品系列.Standard;
             if (!string.IsNullOrEmpty(Base.装车编号))
             {
                 var 预发货实体 = 预发货.Where(t => t.PackageNo.Equals(Base.装车编号)).Select(t => new BaseInfo
@@ -5982,7 +5984,7 @@ namespace KilyCore.Service.ServiceCore
             if (Base.企业类型 == "30")
             {
                 var 生产批次 = Kily.Set<EnterpriseProductionBatch>().Where(t => t.SeriesId.ToString() == Base.产品系列).FirstOrDefault();
-                var 产品系列 = Kily.Set<EnterpriseProductSeries>().Where(t => t.Id.ToString() == Base.产品系列).FirstOrDefault();
+                产品系列 = Kily.Set<EnterpriseProductSeries>().Where(t => t.Id.ToString() == Base.产品系列).FirstOrDefault();
                 var 设备 = Kily.Set<EnterpriseDevice>().Where(t => t.DeviceName.Equals(生产批次.DeviceName)).FirstOrDefault();
                 var 设施 = Kily.Set<EnterpriseFacilities>().Where(t => t.Id == 生产批次.FacId).FirstOrDefault();
                 var 关键点 = Kily.Set<EnterpriseProductionBatchAttach>().Where(t => t.ProBatchId == 生产批次.Id).Select(t => new Target
@@ -5995,6 +5997,7 @@ namespace KilyCore.Service.ServiceCore
                 Base.生产时间 = 生产批次.StartTime.Value.ToString("yyyy-MM-dd HH:mm:ss");
                 Base.设备名称 = 设备.DeviceName;
                 Base.执行标准 = 产品系列.Standard;
+                Base.产品系列 = 产品系列.SeriesName;
                 Base.设备供应商 = 设备.SupplierName;
                 Base.车间名称 = 设施.WorkShopName;
                 Base.环境信息 = 设施.Environment;

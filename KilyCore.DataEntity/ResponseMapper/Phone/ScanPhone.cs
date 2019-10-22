@@ -12,6 +12,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Phone
         public string 保质期 { get; set; }
         public string 规格 { get; set; }
         public string 产品系列 { get; set; }
+        public string 产品编号 { get; set; }
+        public string 产品价格 { get; set; }
+        public string 销售网址 { get; set; }
+        public string 计量单位 { set; get; }
         public string 入库批次 { get; set; }
         public string 生产时间 { get; set; }
         public string 成长档案 { get; set; }

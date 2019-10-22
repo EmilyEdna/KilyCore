@@ -297,8 +297,43 @@ namespace KilyCore.Service.ServiceCore
                 LineCode = t.LineCode,
                 Remark = t.Remark,
                 Spec = t.Spec,
-                Unit = x.ProductionAddress,
-                ProductSeriesName = ""
+                Unit = t.Unit,
+                ProductAddress = x.ProductionAddress,
+                ProductSeriesName = (queryables.Where(o => o.Id == t.ProductSeriesId).FirstOrDefault() ?? new EnterpriseProductSeries()).SeriesName,//产品系列
+                BasePoint = (queryables.Where(o => o.Id == t.ProductSeriesId).FirstOrDefault() ?? new EnterpriseProductSeries()).Standard //执行标准
+            }).ToPagedResult(PageIndex, PageSize);
+            return data;
+        }
+        /// <summary>
+        /// 搜索产品列表
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        public object GetProductSearch(string KeyWords, int PageIndex, int PageSize)
+        {
+            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess).Where(o => o.Image.Length > 0 && o.LineCode.Length > 0);
+            IQueryable<EnterpriseProductSeries> queryables = Kily.Set<EnterpriseProductSeries>().Where(t => t.IsDelete == false);
+            if (!string.IsNullOrEmpty(KeyWords))
+                goods = goods.Where(t => t.ProductName.Contains(KeyWords));
+            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess);
+            var data = goods.Join(queryable, t => t.CompanyId, x => x.Id, (t, x) => new
+            {
+                Id = t.Id,
+                ProductName = t.ProductName,
+                CompanyId = t.CompanyId,
+                CompanyName = x.CompanyName,
+                ProductType = t.ProductType,
+                ExpiredDate = t.ExpiredDate + "天",
+                Image = "http://system.cfda.vip" + t.Image.Split(new char[] { ',' }, StringSplitOptions.None)[0],
+                Price = t.Price,
+                SellWebNet = t.SellWebNet,
+                LineCode = t.LineCode,
+                Remark = t.Remark,
+                Spec = t.Spec,
+                Unit = t.Unit,
+                ProductAddress = x.ProductionAddress,
+                ProductSeriesName = (queryables.Where(o => o.Id == t.ProductSeriesId).FirstOrDefault() ?? new EnterpriseProductSeries()).SeriesName,//产品系列
+                BasePoint = (queryables.Where(o => o.Id == t.ProductSeriesId).FirstOrDefault() ?? new EnterpriseProductSeries()).Standard //执行标准
             }).ToPagedResult(PageIndex, PageSize);
             return data;
         }
@@ -326,8 +361,10 @@ namespace KilyCore.Service.ServiceCore
                 LineCode = t.LineCode,
                 Remark = t.Remark,
                 Spec = t.Spec,
-                Unit = x.ProductionAddress,
-                ProductSeriesName = (queryables.Where(o => o.Id == t.ProductSeriesId).FirstOrDefault() ?? new EnterpriseProductSeries()).SeriesName,
+                Unit = t.Unit,
+                ProductAddress=x.ProductionAddress,
+                ProductSeriesName = (queryables.Where(o => o.Id == t.ProductSeriesId).FirstOrDefault() ?? new EnterpriseProductSeries()).SeriesName,//产品系列
+                BasePoint= (queryables.Where(o => o.Id == t.ProductSeriesId).FirstOrDefault() ?? new EnterpriseProductSeries()).Standard //执行标准
             }).FirstOrDefault();
             return data;
         }
