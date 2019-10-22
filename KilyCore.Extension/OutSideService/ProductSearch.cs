@@ -12,33 +12,37 @@ namespace KilyCore.Extension.OutSideService
         {
             var param = HttpUtility.UrlEncode(HttpUtility.UrlEncode(name));
             var html = HttpClientExtension.HttpGetAsync($"http://spscxk.gsxt.gov.cn/spscxk/spscxkindexquery.xhtml?qymc={param}&fzjg=&zsbh=&lb=").Result;
-            var companyName = Regex.Matches(html, "<h2\\s\\w+=\"(.*?)\">.*?<").Select(item => new
+            var datas = Regex.Matches(html.Replace("\r", "").Replace("\n", ""), "<li class=\"search-result-item\"(.*?)</li>").Select(item => new ProductInfoModel
             {
-                Name = Regex.Match(item.Value, "：(.*?)<").Value.Split("<")[0].Split("：")[1]
+                ComName = Regex.Match(Regex.Match(item.Value, "<h2\\s\\w+=\"(.*?)\">.*?<").Value, "：(.*?)<").Value.Split("<")[0].Split("：")[1],
+                QS = CheckNum(Regex.Matches(Regex.Matches(item.Value, "<div class=\"result-item-desc\">(.*?)</div>")[0].Value, "<span\\s\\w+=\"desc-item-value\">.*?<"), 0),
+                ProName= CheckNum(Regex.Matches(Regex.Matches(item.Value, "<div class=\"result-item-desc\">(.*?)</div>")[0].Value, "<span\\s\\w+=\"desc-item-value\">.*?<"), 1),
+                Time = CheckNum(Regex.Matches(Regex.Matches(item.Value, "<div class=\"result-item-desc\">(.*?)</div>")[0].Value, "<span\\s\\w+=\"desc-item-value\">.*?<"), 2),
+                Addr= CheckNum(Regex.Matches(Regex.Matches(item.Value, "<div class=\"result-item-desc\">(.*?)</div>")[1].Value, "<span\\s\\w+=\"desc-item-value\">.*?<"), 0),
             }).ToList();
-            var companyInfo = Regex.Matches(html, "<span\\s\\w+=\"desc-item-value\">.*?<").Select(item => new
+            return datas;
+        }
+
+        private static string CheckNum(MatchCollection Col, int index)
+        {
+            if (Col.Count == 2)
             {
-                Data = Regex.Match(item.Value, ">(.*?)<").Value.Split(">")[1].Split("<")[0]
-            }).ToList();
-            List<ProductInfoModel> lm = new List<ProductInfoModel>();
-            int y = 0;
-            for (int i = 0; i < companyInfo.Count; i++)
-            {
-                if (i % 3 == 0)
+                if (index != 1)
                 {
-                    if (i != 0)
-                        y += 1;
-                    lm.Add(new ProductInfoModel
-                    {
-                        ComName = companyName[y].Name,
-                        QS = companyInfo[i].Data,
-                        Time = companyInfo[i + 1].Data,
-                        Addr = companyInfo[i + 2].Data
-                    });
+                    if (index == 2)
+                        index = index-1;
+                    return Regex.Match(Col[index].Value, ">(.*?)<").Value.Split(">")[1].Split("<")[0];
+                }
+                else {
+                    return "";
                 }
             }
-            return lm;
+            else
+                return Regex.Match(Col[index].Value, ">(.*?)<").Value.Split(">")[1].Split("<")[0];
+            
         }
+
+
 
         public static object GetProDetail(string qs)
         {
@@ -52,6 +56,7 @@ namespace KilyCore.Extension.OutSideService
         public class ProductInfoModel
         {
             public string ComName { get; set; }
+            public string ProName { get; set; }
             public string QS { get; set; }
             public string Time { get; set; }
             public string Addr { get; set; }
