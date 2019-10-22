@@ -6139,7 +6139,7 @@ namespace KilyCore.Service.ServiceCore
                 queryable = queryable.Where(t => t.PackageNo == CodeInfo.ScanPackageNo);
             else
                 queryable = queryable.Where(t => t.OneCode.Contains(CodeInfo.ScanCode));
-            EnterpriseLogistics Log = queryable.FirstOrDefault();
+            EnterpriseLogistics Log = queryable.FirstOrDefault()??new EnterpriseLogistics();
             if (CodeInfo.ScanAddress.Contains(Log.Address))
             {
                 Log.Correct += 1;
