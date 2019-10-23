@@ -885,6 +885,7 @@ namespace KilyCore.Service.ServiceCore
                 TypePath = t.TypePath,
                 NatureAgent = t.NatureAgent,
                 TagCodeNum = t.TagCodeNum,
+                Category=t.Category,
                 CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType)
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
@@ -922,6 +923,7 @@ namespace KilyCore.Service.ServiceCore
                     Certification = t.Certification,
                     Honor = t.HonorCertification,
                     CodeStar = t.CodeStar,
+                    Category = t.Category,
                     Discription = t.Discription,
                     NetAddress = t.NetAddress,
                     ProductionAddress = t.ProductionAddress,

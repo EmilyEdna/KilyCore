@@ -257,6 +257,7 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 CompanyName = t.CompanyName,
                 CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
+                Category = t.Category,
                 CommunityCode = t.CommunityCode,
                 CompanyPhone = t.CompanyPhone,
                 CompanyAddress = t.CompanyAddress
@@ -376,6 +377,7 @@ namespace KilyCore.Service.ServiceCore
                 IdCard = t.IdCard,
                 Honor = t.HonorCertification,
                 Discription = t.Discription,
+                Category = t.Category,
                 Video = Kily.Set<EnterpriseVedio>().Where(x => x.CompanyId == Id && x.IsIndex == true)
                 .OrderByDescending(x => x.CreateTime).Select(x => x.VedioAddr).Take(4).ToList()
             }).AsNoTracking().FirstOrDefault();
@@ -940,14 +942,14 @@ namespace KilyCore.Service.ServiceCore
                 CompanyName = x.CompanyName,
                 ProductType = t.ProductType,
                 ExpiredDate = t.ExpiredDate + "天",
-                Image=t.Image,
-                Price=t.Price,
-                SellWebNet=t.SellWebNet,
-                LineCode=t.LineCode,
-                Remark=t.Remark,
+                Image = t.Image,
+                Price = t.Price,
+                SellWebNet = t.SellWebNet,
+                LineCode = t.LineCode,
+                Remark = t.Remark,
                 Spec = t.Spec,
                 Unit = x.ProductionAddress,
-                ProductSeriesName="-",
+                ProductSeriesName = "-",
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -1006,42 +1008,46 @@ namespace KilyCore.Service.ServiceCore
                 t.l.SaveH2,
                 t.l.SaveTemp
             }).FirstOrDefault();
-            var MaterialData = MaterialsData.Where(t => GoodData.MaterialId.Contains(t.e.d.Id.ToString())).Select(t => new
+            dynamic MaterialData = null;
+            if (GoodData != null)
             {
-                t.f.FirstOrDefault().CheckUint,
-                t.f.FirstOrDefault().CheckUser,
-                t.f.FirstOrDefault().CheckResult,
-                t.f.FirstOrDefault().CheckReport,
-                t.e.d.Address,
-                t.e.d.ExpiredDay,
-                t.e.d.MaterName,
-                t.e.d.MaterType,
-                t.e.d.Supplier,
-                t.e.c.b.ProductTime
-            }).FirstOrDefault();
+                MaterialData = MaterialsData.Where(t => GoodData.MaterialId.Contains(t.e.d.Id.ToString())).Select(t => new
+                {
+                    t.f.FirstOrDefault().CheckUint,
+                    t.f.FirstOrDefault().CheckUser,
+                    t.f.FirstOrDefault().CheckResult,
+                    t.f.FirstOrDefault().CheckReport,
+                    t.e.d.Address,
+                    t.e.d.ExpiredDay,
+                    t.e.d.MaterName,
+                    t.e.d.MaterType,
+                    t.e.d.Supplier,
+                    t.e.c.b.ProductTime
+                }).FirstOrDefault();
+            }
 
             return new
             {
-                GoodData.StockName,
-                GoodData.SaveH2,
-                GoodData.SaveType,
-                GoodData.SaveTemp,
-                GoodData.GoodsName,
-                GoodData.ExpiredDay,
-                GoodData.Spec,
-                GoodData.ProductType,
-                GoodData.Standard,
-                GoodData.DeviceName,
-                GoodData.OutNo,
-                GoodData.OutStockTime,
-                GoodData.OutStockUser,
-                GoodData.Manager,
-                GoodProductTime = GoodData.ProductTime,
-                GoodData.InNo,
-                GoodCheckUint = GoodData.CheckUint,
-                GoodCheckUser = GoodData.CheckUser,
-                GoodCheckResult = GoodData.CheckResult,
-                GoodCheckReport = GoodData.CheckReport,
+                StockName = GoodData?.StockName,
+                SaveH2 = GoodData?.SaveH2,
+                SaveType = GoodData?.SaveType,
+                SaveTemp = GoodData?.SaveTemp,
+                GoodsName = GoodData?.GoodsName,
+                ExpiredDay = GoodData?.ExpiredDay,
+                Spec = GoodData?.Spec,
+                ProductType = GoodData?.ProductType,
+                Standard = GoodData?.Standard,
+                DeviceName = GoodData?.DeviceName,
+                OutNo = GoodData?.OutNo,
+                OutStockTime = GoodData?.OutStockTime,
+                OutStockUser = GoodData?.OutStockUser,
+                Manager = GoodData?.Manager,
+                GoodProductTime = GoodData?.ProductTime,
+                InNo = GoodData?.InNo,
+                GoodCheckUint = GoodData?.CheckUint,
+                GoodCheckUser = GoodData?.CheckUser,
+                GoodCheckResult = GoodData?.CheckResult,
+                GoodCheckReport = GoodData?.CheckReport,
                 MaterialCheckUint = MaterialData?.CheckUint,
                 MaterialCheckUser = MaterialData?.CheckUser,
                 MaterialCheckResult = MaterialData?.CheckResult,
@@ -1165,7 +1171,7 @@ namespace KilyCore.Service.ServiceCore
                 t.g.e.c.b.Manager,
                 t.g.e.c.a.OutStockTime,
                 t.g.e.c.a.OutStockUser,
-                Note = Note.Where(m=>m.Id==t.g.e.c.b.GrowNoteId),
+                Note = Note.Where(m => m.Id == t.g.e.c.b.GrowNoteId),
                 StockGoods = StockGoods
             }).FirstOrDefault();
         }
@@ -1625,8 +1631,8 @@ namespace KilyCore.Service.ServiceCore
                     Name = t.CompanyName,
                     CardType = "投诉",
                     PersonName = t.ComplainUser,
-                    CompanyType =t.CompanyType,
-                    CardImg = t.ComplainContent,                    
+                    CompanyType = t.CompanyType,
+                    CardImg = t.ComplainContent,
                     Remark = t.ComplainContent,
                     CardExpiredDate = t.ComplainTime
                 }).ToList();
@@ -1660,7 +1666,7 @@ namespace KilyCore.Service.ServiceCore
                     CardExpiredDate = t.ExpiredTime,
                     Remark = t.MerchantName + "人员：" + t.TrueName + "健康证于" + t.ExpiredTime.Value.ToString("yyyy年MM月dd日") + "到期."
                 }).ToList();
-                var complains = complain.Where(t => t.CompanyType == "单位食堂"&&t.Status!="已处理").Select(t => new
+                var complains = complain.Where(t => t.CompanyType == "单位食堂" && t.Status != "已处理").Select(t => new
                 {
                     t.Id,
                     Name = t.CompanyName,
@@ -1805,12 +1811,12 @@ namespace KilyCore.Service.ServiceCore
                     PersonName = t.TrueName,
                     CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
                     CardImg = t.HealthCard,
-                    Title = t.MerchantName + "人员："+ t.TrueName +"健康证到期",
+                    Title = t.MerchantName + "人员：" + t.TrueName + "健康证到期",
                     Times = DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
                     Remark = t.MerchantName + "人员：" + t.TrueName + "健康证于" + t.ExpiredTime.Value.ToString("yyyy年MM月dd日") + "到期.",
                     CardExpiredDate = t.ExpiredTime
                 }).ToList();
-                var complains = complain.Where(t => t.Status!="已处理").Select(t => new
+                var complains = complain.Where(t => t.Status != "已处理").Select(t => new
                 {
                     t.Id,
                     Name = t.CompanyName,
@@ -1819,7 +1825,7 @@ namespace KilyCore.Service.ServiceCore
                     CompanyType = t.CompanyType,
                     CardImg = "",
                     Title = t.ComplainUser + "投诉[" + t.CompanyName + "]",
-                    Times = t.ComplainTime.Value.ToString("yyyy-MM-dd HH:mm"),                  
+                    Times = t.ComplainTime.Value.ToString("yyyy-MM-dd HH:mm"),
                     Remark = t.ComplainUser + "投诉[" + t.CompanyName + "]:" + t.ComplainContent,
                     CardExpiredDate = t.ComplainTime,
                 }).ToList();
@@ -1840,7 +1846,7 @@ namespace KilyCore.Service.ServiceCore
                     CompanyType = t.AllowUnit,
                     CardImg = t.Certification,
                     Title = t.MerchantName + "营业执照到期",
-                    Times = DateTime.Now.ToString("yyyy-MM-dd HH:mm"),                    
+                    Times = DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
                     Remark = t.MerchantName + "营业执照于" + (t.CardExpiredDate.HasValue ? t.CardExpiredDate.Value.ToString("yyyy年MM月dd日") : "-") + "到期.",
                     t.CardExpiredDate,
                 }).ToList();
@@ -1851,13 +1857,13 @@ namespace KilyCore.Service.ServiceCore
                     CardType = "健康证",
                     PersonName = t.TrueName,
                     CompanyType = Repast.Where(x => x.Id == t.InfoId).Select(x => x.CompanyType).FirstOrDefault(),
-                    CardImg = t.HealthCard,                    
+                    CardImg = t.HealthCard,
                     Title = t.MerchantName + "人员：" + t.TrueName + "健康证到期",
                     Times = DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
                     Remark = t.MerchantName + "人员：" + t.TrueName + "健康证于" + t.ExpiredTime.Value.ToString("yyyy年MM月dd日") + "到期.",
                     CardExpiredDate = t.ExpiredTime
                 }).ToList();
-                var complains = complain.Where(t => t.CompanyType == "单位食堂"&& t.Status != "已处理").Select(t => new
+                var complains = complain.Where(t => t.CompanyType == "单位食堂" && t.Status != "已处理").Select(t => new
                 {
                     t.Id,
                     Name = t.CompanyName,
@@ -1866,7 +1872,7 @@ namespace KilyCore.Service.ServiceCore
                     CompanyType = t.CompanyType,
                     CardImg = "",
                     Title = t.ComplainUser + "投诉[" + t.CompanyName + "]",
-                    Times = t.ComplainTime.Value.ToString("yyyy-MM-dd HH:mm"),                                    
+                    Times = t.ComplainTime.Value.ToString("yyyy-MM-dd HH:mm"),
                     Remark = t.ComplainUser + "投诉[" + t.CompanyName + "]:" + t.ComplainContent,
                     CardExpiredDate = t.ComplainTime,
                 }).ToList();
@@ -2766,7 +2772,7 @@ namespace KilyCore.Service.ServiceCore
                 ComplainContent = t.ComplainContent,
                 ComplainTime = t.ComplainTime,
                 ComplainUserPhone = t.ComplainUserPhone,
-                HandlerTime =t.UpdateTime.HasValue?t.UpdateTime.Value.ToString("yyyy年MM月dd日 HH:mm"):"-",
+                HandlerTime = t.UpdateTime.HasValue ? t.UpdateTime.Value.ToString("yyyy年MM月dd日 HH:mm") : "-",
                 ProductName = t.ProductName,
                 ComplainUser = t.ComplainUser,
                 HandlerContent = t.HandlerContent,
@@ -3340,7 +3346,7 @@ namespace KilyCore.Service.ServiceCore
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
             {
                 children = children.Where(t => t.TypePath.Contains(GovtInfo().City));
-                patrols = patrols.Where(t => t.TypePath.Contains(GovtInfo().City));                
+                patrols = patrols.Where(t => t.TypePath.Contains(GovtInfo().City));
             }
             else
             {
@@ -3380,7 +3386,7 @@ namespace KilyCore.Service.ServiceCore
                 }
             }
             //是否教育局
-            if(GovtInfo().IsEdu.HasValue)
+            if (GovtInfo().IsEdu.HasValue)
             {
                 //patrols = patrols.Where(o => o.GovtId == GovtInfo().Id);
             }
@@ -3390,7 +3396,7 @@ namespace KilyCore.Service.ServiceCore
             }
             List<DataLine> lines = new List<DataLine>();
             var datas = patrols.Join(msg, t => t.CompanyId, x => x.CompanyId, (t, x) => new { x.ReleaseTime, x.Category });
-            moves = moves.Where(t => t.GovtId==GovtInfo().Id);
+            moves = moves.Where(t => t.GovtId == GovtInfo().Id);
             //自查
             lines.Add(new DataLine
             {
@@ -4195,7 +4201,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public List<ResponseSystemLogInfo> GetLogInfos()
         {
-            IQueryable<SystemLogInfo> queryable = Kily.Set<SystemLogInfo>().Where(o=>o.Status!="已读");
+            IQueryable<SystemLogInfo> queryable = Kily.Set<SystemLogInfo>().Where(o => o.Status != "已读");
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
             else
@@ -4339,7 +4345,7 @@ namespace KilyCore.Service.ServiceCore
             }
             var Einfo = Info.Select(t => new ResponseEnterprise()
             {
-                CompanyId=t.Id,
+                CompanyId = t.Id,
                 CompanyName = t.CompanyName,
                 TypePath = Kily.Set<SystemArea>().Where(x => x.Id.ToString() == GovtInfo().Area).FirstOrDefault().Name,
                 SafeOffer = t.SafeOffer,
@@ -4497,8 +4503,8 @@ namespace KilyCore.Service.ServiceCore
             }
             var data = info.Join(good, t => t.Id, x => x.CompanyId, (t, x) => new { t, x }).Select(x => new
             {
-                Id=x.x.Id,
-                CompanyId=x.x.CompanyId,
+                Id = x.x.Id,
+                CompanyId = x.x.CompanyId,
                 x.t.CompanyName,
                 x.x.ProductName,
                 x.x.Spec,
@@ -4548,10 +4554,11 @@ namespace KilyCore.Service.ServiceCore
             if (Packs.Count == 0)
             {
                 var Temps = Temp.GroupJoin(Logistics, n => n.t.x.ProductName, m => m.GoodsName, (n, m) => new { n, GainUser = (m.FirstOrDefault() == null ? "" : m.FirstOrDefault().GainUser) }).ToList();
-                if (CompanyEnum.Circulation == CompanyType) {
-                    var sell = Temps.Join(Buyers, o => o.n.t.x.BuyId, y => y.Id, (o, y) => new { o.n.t.x.ProductName, o.n.t.x.Spec, o.n.t.x.Unit, y.Num, BatchNo= o.n.t.GoodsBatchNo, Supplier="", Time = o.n.t.OutStockTime, o.n.t.OutStockUser, o.n.CheckResult, Seller = o.GainUser })
+                if (CompanyEnum.Circulation == CompanyType)
+                {
+                    var sell = Temps.Join(Buyers, o => o.n.t.x.BuyId, y => y.Id, (o, y) => new { o.n.t.x.ProductName, o.n.t.x.Spec, o.n.t.x.Unit, y.Num, BatchNo = o.n.t.GoodsBatchNo, Supplier = "", Time = o.n.t.OutStockTime, o.n.t.OutStockUser, o.n.CheckResult, Seller = o.GainUser })
                         .Where(t => t.Time <= SearchTime && t.Time >= StartTime).ToList();
-                    var buy = Temps.Join(Buyers, o => o.n.t.x.BuyId, y => y.Id, (o, y) => new { o.n.t.x.ProductName, o.n.t.x.Spec, o.n.t.x.Unit, y.Num, y.BatchNo, y.Supplier , Time = y.GetGoodsTime.Value, o.n.t.OutStockUser, o.n.CheckResult, Seller = "" })
+                    var buy = Temps.Join(Buyers, o => o.n.t.x.BuyId, y => y.Id, (o, y) => new { o.n.t.x.ProductName, o.n.t.x.Spec, o.n.t.x.Unit, y.Num, y.BatchNo, y.Supplier, Time = y.GetGoodsTime.Value, o.n.t.OutStockUser, o.n.CheckResult, Seller = "" })
                         .Where(t => t.Time <= SearchTime && t.Time >= StartTime).ToList();
                     sell.AddRange(buy);
                     return sell;

@@ -27,6 +27,9 @@
                     success: function (result) {
                         controller.SetCtrlValue("#Edit", result.data);
                         options.Editor.summernote('code', result.data.Discription);
+                        if (result.data.CompanyType == 40) {
+                            $("input[name='Category']").attr("disabled", false);
+                        }
                         if (controller.CheckFeild(result.data.Certification)) {
                             //营业执照
                             $.each(result.data.Certification.split(","), function (i, item) {
@@ -179,12 +182,6 @@
             <input type="hidden" name="CompanyType" />
             <input type="hidden" name="NatureAgent" />
             <table class="table table-hover table-bordered">
-                <colgroup>
-                    <col width="10%" />
-                    <col width="40%" />
-                    <col width="10%" />
-                    <col width="40%" />
-                </colgroup>
                 <tr>
                     <th><label class="control-label">企业性质</label></th>
                     <td class="has-warning">
@@ -307,8 +304,12 @@
                 </tr>
                 <tr>
                     <th><label class="control-label">投诉电话</label></th>
-                    <td class="has-warning" colspan="3">
+                    <td class="has-warning">
                         <input type="text" class="form-control" name="ComplainPhone">
+                    </td>
+                    <th><label class="control-label">企业分属类型</label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Category" disabled="disabled" placeholder="例如：药店">
                     </td>
                 </tr>
                 <tr>

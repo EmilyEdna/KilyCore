@@ -14,7 +14,24 @@
             InitDom: function () {
                 var Guid = controller.GetParam("Id");
                 $("#Id").val(Guid);
-                controller.Editor(".summernote");
+                options.Editor = controller.Editor(".summernote");
+                var GId = controller.GetParam("Good");
+                controller.ajax({
+                    url: "EnterpriseWeb/GetGoodsDetail",
+                    type: "post",
+                    async: false,
+                    data: { Id: GId },
+                    success: function (res) {
+                        options.Editor.summernote('code', res.data.Remark);
+                        if (controller.CheckFeild(res.data.Image)) {
+                            //企业形象
+                            $.each(res.data.Image.split(","), function (i, item) {
+                                $("#Img5").append('<section class="image-section" img-url="' + item + '"><div class="image-shade"></div><div class="image-delete"></div><div class="image-zoom"></div><img class="image-show" src="' + item + '"></section>');
+                            })
+                            $("#ImgUrl").val(res.data.Image);
+                        }
+                    }
+                });
             },
             //设置文件值
             SetFileValue: function (data, elememt) {
@@ -61,7 +78,7 @@
                 <tr>
                     <th><label class="control-label">产品图片</label></th>
                     <td class="has-warning" colspan="3">
-                        <div class="image-box clear">
+                        <div class="image-box clear" id="Img5">
                             <section class="upload-section">
                                 <div class="upload-btn"></div>
                                 <input type="file" name="Files" class="upload-input" value="" accept="image/*" multiple="multiple" />

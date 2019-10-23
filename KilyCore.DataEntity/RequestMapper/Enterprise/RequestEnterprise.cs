@@ -55,6 +55,7 @@ namespace KilyCore.DataEntity.RequestMapper.Enterprise
         public string SafeOffer { get; set; }
         public string OfferLv { get; set; }
         public string CodeStar { get; set; }
+        public string Category { get; set; }
         /// <summary>
         /// 安全等级
         /// </summary>

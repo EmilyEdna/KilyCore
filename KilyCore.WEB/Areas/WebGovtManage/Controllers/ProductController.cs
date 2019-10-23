@@ -49,5 +49,13 @@ namespace KilyCore.WEB.Areas.WebGovtManage.Controllers
         {
             return View();
         }
+        public IActionResult VillSupervise()
+        {
+            return View();
+        }
+        public IActionResult SpeSupervise()
+        {
+            return View();
+        }
     }
 }
