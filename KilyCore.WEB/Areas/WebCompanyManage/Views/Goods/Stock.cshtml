@@ -137,12 +137,12 @@
                         if (row.CheckGoodsId === '00000000-0000-0000-0000-000000000000')
                             action.push('<button class="btn btn-sm btn-primary edit"><i class="fa fa-pencil-square-o"></i>添加产品质检</button>');
                         action.push('<button class="btn btn-sm btn-primary out"><i class="fa fa-pencil-square-o"></i>出库</button>');
-                        if (row.ImgUrl == null) {
-                            if (row.AuditTypeName == "等待审核" || row.ImgUrl == null)
+                        //if (row.ImgUrl == null) {
+                        //    if (row.AuditTypeName == "等待审核" || row.ImgUrl == null)
                                 action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-pencil-square-o"></i>提交审核</button>');
-                            else
-                                action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-pencil-square-o"></i>提交修改</button>');
-                        }
+                        //    else
+                        //        action.push('<button class="btn btn-sm btn-primary audit"><i class="fa fa-pencil-square-o"></i>提交修改</button>');
+                        //}
                         if (!row.IsBindBoxCode)
                             action.push('<button class="btn btn-sm btn-primary pack"><i class="fa fa-pencil-square-o"></i>装箱</button>');
                     }
@@ -249,7 +249,7 @@
                             type: 2,
                             height: "600px",
                             width: "900px",
-                            url: "WebCompanyManage/Goods/SubmitAudit?Id=" + row.Id,
+                            url: "WebCompanyManage/Goods/SubmitAudit?Id=" + row.Id + "&Good=" + row.GoodsId,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }

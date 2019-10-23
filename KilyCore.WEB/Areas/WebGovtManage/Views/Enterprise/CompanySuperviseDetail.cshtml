@@ -225,7 +225,6 @@
         //初始化
         $(document).ready(function () {
             options.Init();
-            //$("#search").trigger("click").focus();
         });
         //产品详细界面
         function ShowProductDetail(ProductName,Url) {
@@ -334,8 +333,12 @@
                             </tr>
                             <tr>
                                 <th style="text-align:center"><label class="control-label">经营范围</label></th>
-                                <td class="has-warning" colspan="3">
+                                <td class="has-warning">
                                     <label type="txt" name="Scope"></label>
+                                </td>
+                                <th style="text-align:center"><label class="control-label">企业下属分类</label></th>
+                                <td class="has-warning">
+                                    <label type="txt" name="Category"></label>
                                 </td>
                             </tr>
                             <tr>

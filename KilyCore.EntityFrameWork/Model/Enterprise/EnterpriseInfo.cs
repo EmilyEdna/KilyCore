@@ -158,5 +158,9 @@ namespace KilyCore.EntityFrameWork.Model.Enterprise
         /// 邀请码
         /// </summary>
         public virtual string InviteCode { get; set; }
+        /// <summary>
+        /// 下属分类
+        /// </summary>
+        public virtual string Category { get; set; }
     }
 }

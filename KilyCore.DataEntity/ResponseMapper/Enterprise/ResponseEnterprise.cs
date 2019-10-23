@@ -24,6 +24,7 @@ namespace KilyCore.DataEntity.ResponseMapper.Enterprise
         public CompanyEnum CompanyType { get; set; }
         public string CompanyAccount { get; set; }
         public SystemVersionEnum Version { get; set; }
+        public string Category { get; set; }
         public string PassWord { get; set; }
         #region 辅助字段
         public string VersionName { get; set; }
