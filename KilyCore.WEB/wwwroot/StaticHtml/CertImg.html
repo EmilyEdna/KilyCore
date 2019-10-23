@@ -1,0 +1,69 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>certificate-中食药追溯管理平台</title>
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #certificate {
+            text-align: center;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            margin-left: -600px;
+            margin-top: -425px;
+            width: 1200px;
+            height: 850px;
+            background: url("./image/certificate.png") 0 0 no-repeat;
+            background-size: 100% 100%;
+            color: #935E27;
+        }
+
+        #certificate .company-name {
+            margin-top: 560px;
+            font-size: 46px;
+            line-height: 76px;
+        }
+
+        #certificate .membership-number {
+            font-size: 32px;
+            line-height: 60px;
+        }
+
+        #certificate .validity-period {
+            font-size: 22px;
+            line-height: 50px;
+        }
+        #certificate .code{
+            position: absolute;
+            right: 110px;
+            bottom: 110px;
+            width: 130px;
+            height: 130px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="certificate">
+        <!-- 企业名称 -->
+        <div class="company-name">成都溯本源科技有限公司</div>
+        <!-- 会员编号 -->
+        <div class="membership-number">会员编号：<span>CFDA485662458</span></div>
+        <!-- 有效期限 -->
+        <div class="validity-period">2019年1月-2020年1月</div>
+        <!-- 企业二维码 -->
+        <img class="code" src="./staticImg/gzh.jpg">
+    </div>
+</body>
+
+</html>

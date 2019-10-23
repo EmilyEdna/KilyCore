@@ -2454,6 +2454,7 @@ namespace KilyCore.Service.ServiceCore
             EnterpriseTagApply TagApply = Param.MapToEntity<EnterpriseTagApply>();
             if (Param.Id == Guid.Empty)
             {
+
                 TagApply.AuditType = AuditEnum.WaitAduit;
                 if (TagApply.Payment == 1)
                 {
