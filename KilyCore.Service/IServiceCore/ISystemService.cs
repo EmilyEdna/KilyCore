@@ -126,13 +126,26 @@ namespace KilyCore.Service.IServiceCore
 
         String PresonEdit(RequestPreson Param);
 
-        String RemovePreson(Guid Id);
+        String RemovePreson(Guid Id,bool Key);
 
         ResponsePreson GetPresonDetail(Guid Id);
 
-        ResponsePreson GetPresonDetailWeb(String key);
+        List<ResponsePreson> GetPresonDetailWeb(String key);
 
         #endregion 人员归档
+
+        #region 服务网点
+        PagedResult<ResponseSystemNetService> GetNetServicePage(PageParamList<RequestSystemNetService> pageParam);
+
+        ResponseSystemNetService GetNetServiceDetail(Guid Id);
+
+        string IsOpen(Guid Id, bool key);
+
+        string EditNetService(RequestSystemNetService param);
+
+        List<ResponseSystemNetService> GetNetServiceWeb(string key);
+        
+        #endregion
 
         #region 入住合同
 

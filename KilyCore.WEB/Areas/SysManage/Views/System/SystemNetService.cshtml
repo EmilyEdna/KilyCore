@@ -1,5 +1,6 @@
-﻿@{
-    ViewData["Title"] = "人员管理";
+﻿
+@{
+    ViewData["Title"] = "服务网点";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
@@ -20,17 +21,17 @@
                     e.stopPropagation();
                 });
                 //设置表单
-                this.$table = controller.Table("#tableList", { url: "System/GetPresonPage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Preson" });
+                this.$table = controller.Table("#tableList", { url: "System/GetNetServicePage", height: $(window).height() - 150, refreshBtn: "#btn-refresh", formElement: "#Preson" });
             },
             //事件
             InitEvents: function () {
                 $("#add").on('click', function () {
                     controller.OpenWindow({
-                        title: "新增人员",
+                        title: "新增网点",
                         type: 2,
                         height: "90%",
                         width: "80%",
-                        url: "SysManage/System/SystemPresonEdit",
+                        url: "SysManage/System/SystemNetServiceEdit",
                         callBack: function (result) {
                             result.$("#Edit").submit();
                         }
@@ -51,7 +52,7 @@
                         controller.Confirm("确认启用？", function (bool) {
                             if (bool) {
                                 controller.ajax({
-                                    url: "System/RemovePreson",
+                                    url: "System/IsOpen",
                                     data: { Id: row.Id, Parameter: false },
                                     type: 'post',
                                     success: function (result) {
@@ -65,7 +66,7 @@
                         controller.Confirm("确认禁用？", function (bool) {
                             if (bool) {
                                 controller.ajax({
-                                    url: "System/RemovePreson",
+                                    url: "System/IsOpen",
                                     data: { Id: row.Id, Parameter: true },
                                     type: 'post',
                                     success: function (result) {
@@ -77,11 +78,11 @@
                     },
                     "click .edit": function (event, val, row, index) {
                         controller.OpenWindow({
-                            title: "编辑人员",
+                            title: "编辑网点",
                             type: 2,
                             height: "90%",
                             width: "80%",
-                            url: "SysManage/System/SystemPresonEdit?Id=" + row.Id,
+                            url: "SysManage/System/SystemNetServiceEdit?Id=" + row.Id,
                             callBack: function (result) {
                                 result.$("#Edit").submit();
                             }
@@ -112,7 +113,7 @@
                         </div>
                         <div class="col-sm-3">
                             <div class="input-group">
-                                <input type="text" placeholder="人员工号" class="input-sm form-control" name="WorkNum"> <span class="input-group-btn">
+                                <input type="text" placeholder="公司名称" class="input-sm form-control" name="ServiceNetName"> <span class="input-group-btn">
                                     <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i>搜索</button>
                                     <button type="button" id="btn-refresh" class="btn btn-sm btn-primary"><i class="fa fa-refresh"></i>刷新</button>
                                 </span>
@@ -124,10 +125,12 @@
                     <table id="tableList" class="table">
                         <thead>
                             <tr>
-                                <th data-field="TrueName" class="th-center">姓名</th>
-                                <th data-field="WorkNum" class="th-center">工号</th>
+                                <th data-field="ServiceNetName" class="th-center">网点名称</th>
+                                <th data-field="CompanyName" class="th-center">公司名称</th>
+                                <th data-field="Code" class="th-center">信用代码</th>
                                 <th data-field="LinkPhone" class="th-center">电话</th>
-                                <th data-field="IdCard" class="th-center">身份证</th>
+                                <th data-field="Off" class="th-center">法人代表</th>
+                                <th data-field="Address" class="th-center">地址</th>
                                 <th data-field="Status" class="th-center">状态</th>
                                 <th data-formatter="options.action.TableFormatter" data-events="options.action.TableEvents" class="th-center">操作</th>
                             </tr>

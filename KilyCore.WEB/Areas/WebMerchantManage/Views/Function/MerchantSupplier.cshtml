@@ -41,9 +41,9 @@
             action: {
                 ImgFormatter: function (val, row, index) {
                     var action = [];
-                    if(row.HealthCard==null)
+                    if(controller.CheckFeild(row.HealthCard))
                         action.push('<img class="photo" src="' + row.HealthCard + '" style="width:48px;height:32px;"">');
-                    if(row.RunCard==null)
+                    if(controller.CheckFeild(row.RunCard))
                         action.push('<img class="photo" src="' + row.RunCard + '" style="width:48px;height:32px;"">');
                     return action.join("&nbsp;")
                 },

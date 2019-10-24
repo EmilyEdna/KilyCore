@@ -1,51 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-/// <summary>
-/// 作者：刘泽华
-/// 时间：2018年5月29日11点29分
-/// </summary>
+
 namespace KilyCore.DataEntity.ResponseMapper.System
 {
-    public class ResponsePreson
+    public class ResponseSystemNetService
     {
         public Guid Id { get; set; }
         /// <summary>
-        /// 姓名
+        /// 网点名称
         /// </summary>
-        public virtual string TrueName { get; set; }
+        public virtual string ServiceNetName { get; set; }
         /// <summary>
-        /// 工号
+        /// 公司名称
         /// </summary>
-        public virtual string WorkNum { get; set; }
+        public virtual string CompanyName { get; set; }
         /// <summary>
-        /// 所属种类
+        /// 信誉代码
         /// </summary>
-        public virtual string Type { get; set; }
+        public virtual string Code { get; set; }
         /// <summary>
         /// 联系电话
         /// </summary>
         public virtual string LinkPhone { get; set; }
         /// <summary>
-        /// 身份证
+        /// 法人
         /// </summary>
-        public virtual string IdCard { get; set; }
+        public virtual string Off { get; set; }
         /// <summary>
         /// 地址
         /// </summary>
         public virtual string Address { get; set; }
         /// <summary>
-        /// 头像
+        /// 营业执照副本
         /// </summary>
-        public virtual string HeadImage { get; set; }
+        public virtual string IdImage { get; set; }
         /// <summary>
         /// 服务年限
         /// </summary>
         public virtual string ServiceYear { get; set; }
-        /// <summary>
-        /// 银行信息
-        /// </summary>
-        public virtual string BankInfo { get; set; }
         /// <summary>
         /// 开始时间
         /// </summary>

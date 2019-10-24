@@ -85,5 +85,13 @@ namespace KilyCore.WEB.Areas.SysManage.Controllers
         {
             return View();
         }
+        public IActionResult SystemNetService()
+        {
+            return View();
+        }
+        public IActionResult SystemNetServiceEdit()
+        {
+            return View();
+        }
     }
 }
