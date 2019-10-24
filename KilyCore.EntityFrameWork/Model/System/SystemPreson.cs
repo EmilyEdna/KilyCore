@@ -42,5 +42,25 @@ namespace KilyCore.EntityFrameWork.Model.System
         /// 头像
         /// </summary>
         public virtual string HeadImage { get; set; }
+        /// <summary>
+        /// 服务年限
+        /// </summary>
+        public virtual string ServiceYear { get; set; }
+        /// <summary>
+        /// 银行信息
+        /// </summary>
+        public virtual string BankInfo { get; set; }
+        /// <summary>
+        /// 开始时间
+        /// </summary>
+        public virtual DateTime? STime { get; set; }
+        /// <summary>
+        /// 结束时间
+        /// </summary>
+        public virtual DateTime? ETime { get; set; }
+        /// <summary>
+        /// 服务区域
+        /// </summary>
+        public virtual string ServciePath { get; set; }
     }
 }

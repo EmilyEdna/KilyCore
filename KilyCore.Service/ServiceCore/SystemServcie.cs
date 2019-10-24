@@ -1068,7 +1068,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponsePreson> GetPresonPage(PageParamList<RequestPreson> pageParam)
         {
-            IQueryable<SystemPreson> queryable = Kily.Set<SystemPreson>().Where(t => t.IsDelete == false).OrderByDescending(t => t.CreateTime);
+            IQueryable<SystemPreson> queryable = Kily.Set<SystemPreson>().OrderByDescending(t => t.CreateTime);
             if (!string.IsNullOrEmpty(pageParam.QueryParam.WorkNum))
                 queryable = queryable.Where(t => t.WorkNum.Contains(pageParam.QueryParam.WorkNum));
             if (UserInfo().AccountType == AccountEnum.Province)
@@ -1086,7 +1086,8 @@ namespace KilyCore.Service.ServiceCore
                 Address = t.Address,
                 IdCard = t.IdCard,
                 LinkPhone = t.LinkPhone,
-                WorkNum = t.WorkNum
+                WorkNum = t.WorkNum,
+                Status = t.IsDelete.Value ? "禁用" : "启用"
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -1096,35 +1097,15 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         public ResponsePreson GetPresonDetail(Guid Id)
         {
-            var data = Kily.Set<SystemPreson>().Where(t => t.Id == Id).Select(t => new ResponsePreson()
-            {
-                Id = t.Id,
-                TrueName = t.TrueName,
-                Address = t.Address,
-                IdCard = t.IdCard,
-                LinkPhone = t.LinkPhone,
-                WorkNum = t.WorkNum,
-                HeadImage = t.HeadImage
-            }).FirstOrDefault();
-            return data;
+            return Kily.Set<SystemPreson>().Where(t => t.Id == Id).FirstOrDefault().MapToEntity<ResponsePreson>();
         }
 
         /// <summary>
         /// 首页人员查询
         /// </summary>
-        public ResponsePreson GetPresonDetailWeb(String key)
+        public List<ResponsePreson> GetPresonDetailWeb(String key)
         {
-            var data = Kily.Set<SystemPreson>().Where(t => t.WorkNum.Equals(key)).Select(t => new ResponsePreson()
-            {
-                Id = t.Id,
-                TrueName = t.TrueName,
-                Address = t.Address,
-                IdCard = t.IdCard,
-                LinkPhone = t.LinkPhone,
-                WorkNum = t.WorkNum,
-                HeadImage = t.HeadImage
-            }).FirstOrDefault();
-            return data;
+            return Kily.Set<SystemPreson>().Where(t => t.WorkNum.Contains(key) || t.TrueName.Contains(key) || t.ServciePath.Contains(key)).ToList().MapToEntity<List<ResponsePreson>>();
         }
 
         /// <summary>
@@ -1226,15 +1207,69 @@ namespace KilyCore.Service.ServiceCore
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public string RemovePreson(Guid Id)
+        public string RemovePreson(Guid Id, bool key)
         {
-            if (Delete<SystemPreson>(t => t.Id == Id))
-                return ServiceMessage.REMOVESUCCESS;
+            SystemPreson preson = Kily.Set<SystemPreson>().Where(t => t.Id == Id).FirstOrDefault();
+            if (key == true)
+                Delete<SystemPreson>(t => t.Id == Id);
             else
-                return ServiceMessage.REMOVEFAIL;
+            {
+                preson.IsDelete = false;
+                UpdateField(preson, "IsDelete");
+            }
+            return ServiceMessage.HANDLESUCCESS;
         }
 
         #endregion 人员归档
+
+        #region 服务网点
+        public PagedResult<ResponseSystemNetService> GetNetServicePage(PageParamList<RequestSystemNetService> pageParam)
+        {
+            IQueryable<SystemNetService> queryable = Kily.Set<SystemNetService>().OrderByDescending(t => t.CreateTime);
+            if (!string.IsNullOrEmpty(pageParam.QueryParam.CompanyName))
+                queryable = queryable.Where(t => t.CompanyName.Contains(pageParam.QueryParam.CompanyName));
+            var data = queryable.Select(t => new ResponseSystemNetService
+            {
+                Id = t.Id,
+                Status = t.IsDelete.Value ? "禁用" : "启用",
+                ServiceNetName=t.ServiceNetName,
+                CompanyName = t.CompanyName,
+                Address = t.Address,
+                Code = t.Code,
+                Off = t.Off,
+                LinkPhone = t.LinkPhone
+            }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            return data;
+        }
+        public ResponseSystemNetService GetNetServiceDetail(Guid Id)
+        {
+            return Kily.Set<SystemNetService>().Where(t => t.Id == Id).FirstOrDefault().MapToEntity<ResponseSystemNetService>();
+        }
+        public string IsOpen(Guid Id, bool key)
+        {
+            SystemNetService preson = Kily.Set<SystemNetService>().Where(t => t.Id == Id).FirstOrDefault();
+            if (key == true)
+                Delete<SystemNetService>(t => t.Id == Id);
+            else
+            {
+                preson.IsDelete = false;
+                UpdateField(preson, "IsDelete");
+            }
+            return ServiceMessage.HANDLESUCCESS;
+        }
+        public string EditNetService(RequestSystemNetService param)
+        {
+            SystemNetService service = param.MapToEntity<SystemNetService>();
+            if (param.Id == Guid.Empty)
+                return Insert(service) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
+            else
+                return Update(service, param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
+        }
+        public List<ResponseSystemNetService> GetNetServiceWeb(string key)
+        {
+            return Kily.Set<SystemNetService>().OrderByDescending(t => t.CreateTime).Where(t => t.CompanyName.Contains(key) || t.ServciePath.Contains(key)).ToList().MapToEntity<List<ResponseSystemNetService>>();
+        }
+        #endregion
 
         #region 入住合同
 

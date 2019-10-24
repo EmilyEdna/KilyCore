@@ -1,5 +1,6 @@
-﻿@{
-    ViewData["Title"] = "PresonEdit";
+﻿
+@{
+    ViewData["Title"] = "";
     Layout = "~/Views/Shared/BaseView.cshtml";
 }
 @section script{
@@ -40,7 +41,7 @@
                     node: '.image-box',
                     success: function (result) {
                         controller.Alter(result.msg);
-                        $("#HeadImage").val(result.data);
+                        $("#IdImage").val(result.data);
                     }
                 });
                 //验证
@@ -57,15 +58,14 @@
 }
 <div class="ibox float-e-margins">
     <div class="ibox-content">
-        <form class="form-horizontal" method="post" action="System/PresonEdit" id="Edit">
+        <form class="form-horizontal" method="post" action="System/EditNetService" id="Edit">
             <input type="hidden" name="Id" />
-            <input type="hidden" class="form-control" name="HeadImage" id="HeadImage" />
-            <input type="hidden" class="form-control" name="WorkNum" id="WorkNum" />
+            <input type="hidden" class="form-control" name="IdImage" id="IdImage" />
             <table class="table table-hover table-bordered">
                 <tr>
-                    <th><label class="control-label">姓名<span style="color:red">*</span></label></th>
+                    <th><label class="control-label">公司名称<span style="color:red">*</span></label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control required" name="TrueName" data-msg-required="请输入姓名" />
+                        <input type="text" class="form-control required" name="CompanyName" data-msg-required="请输入公司名称" />
                     </td>
                     <th><label class="control-label">联系电话<span style="color:red">*</span></label></th>
                     <td class="has-warning">
@@ -73,23 +73,33 @@
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">身份证<span style="color:red">*</span></label></th>
+                    <th><label class="control-label">信用代码<span style="color:red">*</span></label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control  required" name="IdCard" data-msg-required="请输入身份证" />
+                        <input type="text" class="form-control  required" name="Code" data-msg-required="请输入信用代码" />
+                    </td>
+                    <th><label class="control-label">网点名称<span style="color:red">*</span></label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control required" name="ServiceNetName" data-msg-required="请输入网点名称" />
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">法人代表<span style="color:red">*</span></label></th>
+                    <td class="has-warning">
+                        <input type="text" class="form-control" name="Off" />
                     </td>
                     <th><label class="control-label">公司地址<span style="color:red">*</span></label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control required" name="Address" data-msg-required="请输入公司地址" />
+                        <input type="text" class="form-control" name="Address" />
                     </td>
                 </tr>
                 <tr>
                     <th><label class="control-label">合约期限<span style="color:red">*</span></label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="ServiceYear"/>
+                        <input type="text" class="form-control" name="ServiceYear" />
                     </td>
-                    <th><label class="control-label">银行信息<span style="color:red">*</span></label></th>
+                    <th><label class="control-label">服务区域<span style="color:red">*</span></label></th>
                     <td class="has-warning">
-                        <input type="text" class="form-control" name="BankInfo" placeholder="例如:农行-卡号"/>
+                        <input type="text" class="form-control" name="ServciePath" />
                     </td>
                 </tr>
                 <tr>
@@ -103,13 +113,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th><label class="control-label">服务区域<span style="color:red">*</span></label></th>
-                    <td class="has-warning" colspan="3">
-                        <input type="text" class="form-control" name="ServciePath" />
-                    </td>
-                </tr>
-                <tr>
-                    <th><label class="control-label">个人头像</label></th>
+                    <th><label class="control-label">营业执照</label></th>
                     <td class="has-warning" colspan="3">
                         <div class="image-box clear">
                             <section class="upload-section">

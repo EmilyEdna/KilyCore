@@ -566,9 +566,9 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpPost("RemovePreson")]
-        public ObjectResultEx RemovePreson(SimpleParam<Guid> Param)
+        public ObjectResultEx RemovePreson(SimpleParam<Guid> Param, SimpleParam<bool> Key)
         {
-            return ObjectResultEx.Instance(SystemService.RemovePreson(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(SystemService.RemovePreson(Param.Id, Key.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
 
         /// <summary>
@@ -595,6 +595,40 @@ namespace KilyCore.API.Controllers
         }
 
         #endregion 人员归档
+
+        #region 服务网点
+        /// <summary>
+        /// 网点分页
+        /// </summary>
+        /// <param name="pageParam"></param>
+        /// <returns></returns>
+        [HttpPost("GetNetServicePage")]
+        public ObjectResultEx GetNetServicePage(PageParamList<RequestSystemNetService> pageParam)
+        {
+            return ObjectResultEx.Instance(SystemService.GetNetServicePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        [HttpPost("GetNetServiceDetail")]
+        public ObjectResultEx GetNetServiceDetail(SimpleParam<Guid> key)
+        {
+            return ObjectResultEx.Instance(SystemService.GetNetServiceDetail(key.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        [HttpPost("IsOpen")]
+        public ObjectResultEx IsOpen(SimpleParam<Guid> Ids, SimpleParam<bool> key)
+        {
+            return ObjectResultEx.Instance(SystemService.IsOpen(Ids.Id, key.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        [HttpPost("EditNetService")]
+        public ObjectResultEx EditNetService(RequestSystemNetService param)
+        {
+            return ObjectResultEx.Instance(SystemService.EditNetService(param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        [HttpPost("GetNetServiceWeb")]
+        public ObjectResultEx GetNetServiceWeb(SimpleParam<string> key)
+        {
+            return ObjectResultEx.Instance(SystemService.GetNetServiceWeb(key.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+
+        #endregion
 
         #region 入住合同
 
