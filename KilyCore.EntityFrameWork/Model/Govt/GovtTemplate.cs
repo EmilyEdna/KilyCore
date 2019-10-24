@@ -1,6 +1,7 @@
 ﻿using KilyCore.EntityFrameWork.Model.Base;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 #region << 版 本 注 释 >>
@@ -58,6 +59,7 @@ namespace KilyCore.EntityFrameWork.Model.Govt
         /// <summary>
         /// 模板名称
         /// </summary>
+        [Description("企业自查")]
         public virtual string TemplateName { get; set; }
         /// <summary>
         /// 企业类型

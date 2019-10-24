@@ -58,11 +58,11 @@
                     if (row.Name != null) {
                         if (row.CardType == "健康证") {
                             var Content = row.PersonName + "健康证于" + row.CardExpiredDate + "到期.";
-                            action.push(`<a href='javascript:ShowModelDetail("WebGovtManage/Risk/CertificateRiskDetail?Name=${row.Name}&PersonName=${row.PersonName}&CardType=${row.CardType}&CardExpiredDate=${row.ExpiredDate}&CardImg=${row.CardImg}&Remark=${row.Remark}", "预警提示","${row.Id}","${row.CompanyType}","")'>${row.Name}</a>`);
+                            action.push(`<a href='javascript:ShowModelDetail("WebGovtManage/Risk/CertificateRiskDetail?Name=${row.Name}&PersonName=${row.PersonName}&CardType=${row.CardType}&CardExpiredDate=${row.CardExpiredDate}&CardImg=${row.CardImg}&Remark=${row.Remark}", "预警提示","${row.Id}","${row.CompanyType}","")'>${row.Name}</a>`);
                         }
                         else if (row.CardType == "营业执照") {
                             var Content = "营业执照于" + row.CardExpiredDate + "到期.";
-                             action.push(`<a href='javascript:ShowModelDetail("WebGovtManage/Risk/CertificateRiskDetail?Name=${row.Name}&PersonName=${row.PersonName}&CardType=${row.CardType}&CardExpiredDate=${row.ExpiredDate}&CardImg=${row.CardImg}&Remark=${row.Remark}", "预警提示","${row.Id}","${row.CompanyType}","")'>${row.Name}</a>`);
+                             action.push(`<a href='javascript:ShowModelDetail("WebGovtManage/Risk/CertificateRiskDetail?Name=${row.Name}&PersonName=${row.PersonName}&CardType=${row.CardType}&CardExpiredDate=${row.CardExpiredDate}&CardImg=${row.CardImg}&Remark=${row.Remark}", "预警提示","${row.Id}","${row.CompanyType}","")'>${row.Name}</a>`);
                         }
                         else {//投诉
                             var Content = "投诉信息："+ row.Remark;

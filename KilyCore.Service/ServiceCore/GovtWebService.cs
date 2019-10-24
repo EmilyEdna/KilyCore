@@ -785,6 +785,7 @@ namespace KilyCore.Service.ServiceCore
                     Name = t.CompanyName,
                     LngAndLat = t.LngAndLat,
                     Address = t.CompanyAddress,
+                    CompanyImg = t.ComImage,
                     CompanyCode = t.CommunityCode,
                     CompanyType = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType)
                 }).ToList();
@@ -794,6 +795,7 @@ namespace KilyCore.Service.ServiceCore
                     Name = t.MerchantName,
                     LngAndLat = t.LngAndLat,
                     Address = t.Address,
+                    CompanyImg = t.MerchantImage,
                     CompanyCode = t.CommunityCode,
                     CompanyType = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType)
                 }).ToList();
@@ -808,6 +810,7 @@ namespace KilyCore.Service.ServiceCore
                     LngAndLat = t.LngAndLat,
                     Address = t.Address,
                     CompanyCode = t.CommunityCode,
+                    CompanyImg=t.MerchantImage,
                     CompanyType = t.AllowUnit
                 }).ToList();
             }

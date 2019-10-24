@@ -177,6 +177,13 @@
                             color: #666;
                             margin: auto auto
                         }
+        .maptishi li{
+            border-bottom:1px solid #ddd;
+            width:100%;
+            display:table;
+        }
+        .maptishi li a{display:inline-block;float:left;}
+        .maptishi li a div{margin:8px 12px;}
     </style>
 }
 @section script{
@@ -232,28 +239,51 @@
                     async: false,
                     type: "post",
                     success: function (result) {
+                        var PlantCounts = 0;
+                        var ProduceCounts = 0;
+                        var OtherCounts = 0;
+                        var ExpressCounts = 0;
+                        var CookerCounts = 0;
+                        var RoomCounts = 0;
+                        var StreetCounts = 0;
+                        var DuckCounts = 0;
                         $.each(result.data, function (i, obj) {
                             var url = "WebGovtManage/Enterprise/RepastSuperviseDetail?Id=";
                             var imgLoction = "http://system.cfda.vip/content/HPlus/img/keysor.png";
                             if (obj.CompanyType == "种植企业" || obj.CompanyType == "养殖企业") {
                                 imgLoction = "http://system.cfda.vip/content/HPlus/img/blue.png";
                                 url = "WebGovtManage/Enterprise/CompanySuperviseDetail?Id=";
+                                PlantCounts++;
                             }
                             if (obj.CompanyType == "生产企业") {
                                 imgLoction = "http://system.cfda.vip/content/HPlus/img/green.png";
-                                 url = "WebGovtManage/Enterprise/CompanySuperviseDetail?Id=";
+                                url = "WebGovtManage/Enterprise/CompanySuperviseDetail?Id=";
+                                ProduceCounts++;
                             }
                             if (obj.CompanyType == "流通企业") {
                                 imgLoction = "http://system.cfda.vip/content/HPlus/img/lightblue.png";
+                                url = "WebGovtManage/Enterprise/CompanySuperviseDetail?Id=";
+                                ExpressCounts++;
+                            }
+                             if (obj.CompanyType == "其他企业") {
+                                imgLoction = "http://system.cfda.vip/content/HPlus/img/lightblue.png";
                                  url = "WebGovtManage/Enterprise/CompanySuperviseDetail?Id=";
+                                 OtherCounts++;
                             }
                             if (obj.CompanyType == "餐饮企业") {
                                 imgLoction = "http://system.cfda.vip/content/HPlus/img/red.png";
-                                 url = "WebGovtManage/Enterprise/RepastSuperviseDetail?Id=";
+                                url = "WebGovtManage/Enterprise/RepastSuperviseDetail?Id=";
+                                CookerCounts++;
                             }
                             if (obj.CompanyType == "单位食堂") {
                                 imgLoction = "http://system.cfda.vip/content/HPlus/img/yellow.png";
-                                 url = "WebGovtManage/Enterprise/RepastSuperviseDetail?Id=";
+                                url = "WebGovtManage/Enterprise/RepastSuperviseDetail?Id=";
+                                RoomCounts++;
+                            }
+                             if (obj.CompanyType == "小作坊"||obj.CompanyType == "小摊贩"||obj.CompanyType == "小经营店") {
+                                imgLoction = "http://system.cfda.vip/content/HPlus/img/yellow.png";
+                                 url = "WebGovtManage/Restaurant/SamllSuperviseDetail?Id=";
+                                 StreetCounts++;
                             }
                             var myIcon = new BMap.Icon(imgLoction, new BMap.Size(26, 33));
                             options.marker = new BMap.Marker(new BMap.Point(obj.Lng, obj.Lat), { icon: myIcon });
@@ -264,7 +294,7 @@
                             if (obj.CompanyUser == null) {
                                 obj.CompanyUser = "-";
                             }
-                            
+
                             var CompanyHtml = '<li>'
                                 + '<img src="' + obj.CompanyImg + '">'
                                 + '<div>'
@@ -278,14 +308,20 @@
                             $("#CompanyList").append(CompanyHtml);
                         });
                         $("#Num").html(result.data.length);
-
+                        $("#PlantCount").html(PlantCounts);
+                        $("#OtherCount").html(OtherCounts);
+                        $("#ProduceCount").html(ProduceCounts);
+                        $("#ExpressCount").html(ExpressCounts);
+                        $("#CookerCount").html(CookerCounts);
+                        $("#RoomCount").html(RoomCounts);
+                        $("#StreetCount").html(StreetCounts);
                     }
                 });
             },
             AddClickHandler: function (id, name, path, code, type, img) {
                 options.marker.addEventListener("click", function (e) {
                     var InfoWin = '<table class="table table-bordered" style="width:596px;">' +
-                        `<tr><th style="width:156px">商家名称</th> <td><a href="javascript:Detail('` + id +` ','` + name +` ','` + type +` ');" style="color:#333">` + name + `</a></td><td rowspan="4" style="width:196px;"><img src="' + img + '" style="height:156px;max-width:196px;"/></td></tr>` +
+                        `<tr><th style="width:156px">商家名称</th> <td><a href="javascript:Detail('` + id + ` ','` + name + ` ','` + type + ` ');" style="color:#333">` + name + `</a></td><td rowspan="4" style="width:196px;"><img src="` + img + `" style="height:156px;max-width:196px;"/></td></tr>` +
                         '<tr><th>商家类型</th><td>' + type + '</td></tr>' +
                         '<tr><th>工商代码</th><td>' + code + '</td></tr>' +
                         '<tr><th>商家地址</th><td>' + path + '</td></tr></table>'
@@ -295,7 +331,7 @@
                     options.Map.openInfoWindow(infoWindow, point); //开启信息窗口
                 });
             },
-            
+
             //事件
             InitEvents: function () {
                 $("select").change(function () {
@@ -344,7 +380,7 @@
                     var text = $("#input").val();
                     if ($.trim(text) != "") {
                         $("#CompanyList li").hide().filter(":contains('" + text + "')").show();
-                    } 
+                    }
                 });
             }
         };
@@ -453,55 +489,55 @@
             map.setViewport(pointArray);    //调整视野
 
             //添加遮蔽层
-            var plyall = new BMap.Polygon(pArray, { strokeOpacity: 0.0000001, strokeColor: "#000000", strokeWeight: 0.00001, fillColor: "#000000", fillOpacity: 0.4 }); //建立多边形覆盖物
+            var plyall = new BMap.Polygon(pArray, { strokeOpacity: 0.0000001, strokeColor: "#000000", strokeWeight: 0.00001, fillColor: "#000000", fillOpacity: 0.05 }); //建立多边形覆盖物
             map.addOverlay(plyall);
         }
-         //展示
-        function ShowModelDetail(Url,Title) {
-             controller.OpenWindow({
-                    title:Title,
-                    type: 2,
-                    height: "80%",
-                    width: "90%",  
-                 url: Url,
-                    btn:["关闭"],
-                    callBack: function (result) {
-                        controller.Close();
-                    }
-                });
+        //展示
+        function ShowModelDetail(Url, Title) {
+            controller.OpenWindow({
+                title: Title,
+                type: 2,
+                height: "80%",
+                width: "90%",
+                url: Url,
+                btn: ["关闭"],
+                callBack: function (result) {
+                    controller.Close();
+                }
+            });
         }
         function Detail(id, names, types) {
-                if (types == "餐饮企业") {
-                    //追加抽查次数
-                    controller.ajax({
-                        url: "GovtWeb/EditPatrol",
-                        data: { CompanyId: id, TradeType: type, CompanyName: names, TypePath: GovtInfo.TypePath },
-                        async: false,
-                        type: "post",
-                        success: function (result) { }
-                    });
-                    controller.OpenWindow({
-                        title: row.MerchantName,
-                        type: 2,
-                        height: "90%",
-                        width: "80%",
-                         btn:["通报","关闭"],
-                        url: "WebGovtManage/Enterprise/RepastSuperviseDetail?Id=" + id,
-                        callBack: function (result) {
-                             controller.OpenWindow({
-                                title: "通报批评-"+ names,
-                                type: 2,
-                                height: "50%",
-                                width: "60%",  
-                                url: "WebGovtManage/Inspect/NetPatrolEdit?Id=" + id,
-                                callBack: function (res) {
-                                    res.$("#Edit").submit();
-                                }
-                            })
-                        }
-                    })
-                }
+            if (types == "餐饮企业") {
+                //追加抽查次数
+                controller.ajax({
+                    url: "GovtWeb/EditPatrol",
+                    data: { CompanyId: id, TradeType: type, CompanyName: names, TypePath: GovtInfo.TypePath },
+                    async: false,
+                    type: "post",
+                    success: function (result) { }
+                });
+                controller.OpenWindow({
+                    title: row.MerchantName,
+                    type: 2,
+                    height: "90%",
+                    width: "80%",
+                    btn: ["通报", "关闭"],
+                    url: "WebGovtManage/Enterprise/RepastSuperviseDetail?Id=" + id,
+                    callBack: function (result) {
+                        controller.OpenWindow({
+                            title: "通报批评-" + names,
+                            type: 2,
+                            height: "50%",
+                            width: "60%",
+                            url: "WebGovtManage/Inspect/NetPatrolEdit?Id=" + id,
+                            callBack: function (res) {
+                                res.$("#Edit").submit();
+                            }
+                        })
+                    }
+                })
             }
+        }
     </script>
 }
 <div class="search_com">
@@ -523,6 +559,82 @@
         <option value="高等教育" class="hidden y">高等教育</option>
         <option value="职业教育" class="hidden y">职业教育</option>
     </select>
+    <div class="maptishi">
+        <ul style="width: auto;">
+            <li>
+                <a href="javascript:76">
+                    <div style="width: 16px; height: 14px; background-color: #4DCC59"></div>
+                </a>
+                <a href="">
+                    种养殖业(<span id="PlantCount">0</span>家)
+                </a>
+            </li>           
+            <li>
+                <a href="javascript:77">
+                    <div style="width: 16px; height: 14px; background-color: #ED2C2D"></div>
+                </a>
+                <a href="">
+                    生产企业(<span id="ProduceCount">0</span>家)
+                </a>
+            </li>            
+            <li>
+                <a href="javascript:78">
+                    <div style="width: 16px; height: 14px; background-color: #FF8418"></div>
+                </a>
+                <a href="">
+                    流通企业(<span id="ExpressCount">0</span>家)
+                </a>
+            </li>           
+            <li>
+                <a href="javascript:82">
+                    <div style="width: 16px; height: 14px; background-color: #3F6FD3"></div>
+                </a>
+                <a href="">
+                    其他(<span id="OtherCount">0</span>家)
+                </a>
+            </li>            
+            <li>
+                <a href="javascript:103">
+                    <div style="width: 16px; height: 14px; background-color: #49A2FE"></div>
+                </a>
+                <a href="">
+                    餐饮企业(<span id="CookerCount">0</span>家)
+                </a>
+            </li>
+            <li>
+                <a href="javascript:124">
+                    <div style="width: 16px; height: 14px; background-color: #fd3ac4"></div>
+                </a>
+                <a href="">
+                    单位食堂(<span id="RoomCount">0</span>家)
+                </a>
+            </li>
+            <li>
+                <a href="javascript:136">
+                    <div style="width: 16px; height: 14px; background-color: #eec110"></div>
+                </a>
+                <a href="">
+                    药房药企(<span id="DuckCount">0</span>家)
+                </a>
+            </li>
+            <li>
+                <a href="javascript:137">
+                    <div style="width: 16px; height: 14px; background-color: #fd3ac4"></div>
+                </a>
+                <a href="">
+                    三小企业(<span id="StreetCount">0</span>家)
+                </a>
+            </li>
+            @*<li>
+                <a href="javascript:138">
+                    <div style="width: 16px; height: 14px; background-color: #fd3ac4"></div>
+                </a>
+                <a href="map_search.aspx?action=builder&category_id=138&province=510000&city=0&area=0">
+                    特种设备(<span id="EquipCount">0</span>家)
+                </a>
+            </li>*@
+        </ul>
+    </div>
 </div>
 <div class="ibox" id="Map"></div>
 <!-- 右侧停靠栏 -->

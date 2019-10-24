@@ -1,15 +1,57 @@
-﻿
-@{
-    Layout = null;
+﻿@{
+    ViewData["Title"] = "产品数量";
+    Layout = "~/Views/Shared/BaseView.cshtml";
 }
+
 
 <!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    <link href="http://old.cfda.vip/Cashier/MUI/mui.min.css" rel="stylesheet" />
     <title>产品数量</title>
 </head>
 <body>
+    <div class="mui-content">
+        <ul class="mui-table-view mui-grid-view mui-grid-9">
+            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
+                <a href="#">
+                    <span>农产品</span>
+                    <div class="mui-media-body" id="PatrolsCount">0</div>
+                </a>
+            </li>
+            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
+                <a href="#">
+                    <span>食品</span>
+                    <div class="mui-media-body" id="PatrolsCount">0</div>
+                </a>
+            </li>
+            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
+                <a href="#">
+                    <span>化妆品</span>
+                    <div class="mui-media-body" id="BadCount">0</div>
+                </a>
+            </li>
+            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
+                <a href="#">
+                    <span>医疗器械</span>
+                    <div class="mui-media-body" id="Percents">0</div>
+                </a>
+            </li>
+            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
+                <a href="#">
+                    <span>中药材</span>
+                    <div class="mui-media-body" id="PartyCounts">0</div>
+                </a>
+            </li>
+            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
+                <a href="#">
+                    <span>其他</span>
+                    <div class="mui-media-body" id="RiskCount">0</div>
+                </a>
+            </li>
+        </ul>
+    </div>
 </body>
 </html>
