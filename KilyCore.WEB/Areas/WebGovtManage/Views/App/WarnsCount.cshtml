@@ -1,15 +1,51 @@
-﻿
-@{
-    Layout = null;
+﻿@{
+    ViewData["Title"] = "预警提示";
+    Layout = "~/Views/Shared/BaseView.cshtml";
 }
+
 
 <!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    <link href="http://old.cfda.vip/Cashier/MUI/mui.min.css" rel="stylesheet" />
     <title>预警提示</title>
 </head>
 <body>
+    <div class="mui-content">
+        <ul class="mui-table-view mui-grid-view mui-grid-9">
+            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
+                <a href="#">
+                    <span>证件到期</span>
+                    <div class="mui-media-body" id="PatrolsCount">0</div>
+                </a>
+            </li>
+            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
+                <a href="#">
+                    <span>预警消息</span>
+                    <div class="mui-media-body" id="PatrolsCount">0</div>
+                </a>
+            </li>
+            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
+                <a href="#">
+                    <span>投诉建议</span>
+                    <div class="mui-media-body" id="BadCount">0</div>
+                </a>
+            </li>
+            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
+                <a href="#">
+                    <span>监控预警</span>
+                    <div class="mui-media-body" id="Percents">0</div>
+                </a>
+            </li>
+            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
+                <a href="#">
+                    <span>通报处理</span>
+                    <div class="mui-media-body" id="PartyCounts">0</div>
+                </a>
+            </li>
+        </ul>
+    </div>
 </body>
 </html>

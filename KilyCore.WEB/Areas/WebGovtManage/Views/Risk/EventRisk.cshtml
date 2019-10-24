@@ -134,7 +134,7 @@
             map.setViewport(pointArray);    //调整视野
 
             //添加遮蔽层
-            var plyall = new BMap.Polygon(pArray, { strokeOpacity: 0.0000001, strokeColor: "#000000", strokeWeight: 0.00001, fillColor: "#000000", fillOpacity: 0.4 }); //建立多边形覆盖物
+            var plyall = new BMap.Polygon(pArray, { strokeOpacity: 0.0000001, strokeColor: "#000000", strokeWeight: 0.00001, fillColor: "#000000", fillOpacity: 0.05 }); //建立多边形覆盖物
             map.addOverlay(plyall);
         }
         //配置
@@ -172,8 +172,8 @@
                             async: false,
                             type: "post",
                             success: function (result) {
-                                var label = new BMap.Label("风险预警(" + result.data[0] + "条)", { offset: new BMap.Size(20, -20) });
-                                var labels = new BMap.Label("意见投诉(" + result.data[1] + "条)", { offset: new BMap.Size(20, 20) });
+                                var label = new BMap.Label("风险预警(<a href='/WebGovtManage/Risk/WaringRisk' class='J_menuItem'>" + result.data[0] + "</a>条)", { offset: new BMap.Size(20, -20) });
+                                var labels = new BMap.Label("意见投诉(<a href='/WebGovtManage/Complain/InfoComplain' class='J_menuItem'>" + result.data[1] + "</a>条)", { offset: new BMap.Size(20, 20) });
                                 label.setStyle({
                                     width: "80px",
                                     background: '#ff8355',
