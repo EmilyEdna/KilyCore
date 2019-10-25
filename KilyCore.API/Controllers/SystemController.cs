@@ -587,7 +587,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
-        [HttpPost("GetPresonDetailWeb")]
+        [HttpGet("GetPresonDetailWeb")]
         [AllowAnonymous]
         public ObjectResultEx GetPresonDetailWeb(SimpleParam<String> Param)
         {
@@ -643,7 +643,7 @@ namespace KilyCore.API.Controllers
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        [HttpPost("GetNetServiceWeb")]
+        [HttpGet("GetNetServiceWeb")]
         [AllowAnonymous]
         public ObjectResultEx GetNetServiceWeb(SimpleParam<string> key)
         {
