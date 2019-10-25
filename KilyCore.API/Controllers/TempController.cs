@@ -129,7 +129,7 @@ namespace KilyCore.API.Controllers
         [AllowAnonymous]
         public ObjectResultEx GetBuybillPage(Guid CompanyId, string SDate, string EDate)
         {
-            return ObjectResultEx.Instance(Temp.GetBuybillPage(CompanyId,SDate,EDate), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(Temp.GetBuybillPage(CompanyId, SDate, EDate), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         /// <summary>
         /// 陪餐记录
@@ -269,6 +269,19 @@ namespace KilyCore.API.Controllers
         public ObjectResultEx GetTargetDb(SimpleParam<String> key, SimpleParam<String> value)
         {
             return ObjectResultEx.Instance(ProTarget.GetTargetDb(key.Id, value.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
+        /// <summary>
+        /// 获取国家监管总局
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
+        [HttpGet("GetTargetDb")]
+        [AllowAnonymous]
+        public ObjectResultEx GetCountyInfo(SimpleParam<String> key, SimpleParam<int> pageIndex, SimpleParam<int> pageSize)
+        {
+            return ObjectResultEx.Instance(ProTarget.GetCountyInfo(key.Id, pageIndex.Parameter, pageSize.Params), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
 
         #endregion 爬虫

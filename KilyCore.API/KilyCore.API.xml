@@ -1115,6 +1115,13 @@
             <param name="pageParam"></param>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.EditPic(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterprisePackCodeBind)">
+            <summary>
+            编辑包码
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
         <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetSellerPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseSeller})">
             <summary>
             厂商分页
@@ -1554,6 +1561,13 @@
             <param name="Param"></param>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetBoxCodeNo(KilyCore.Service.QueryExtend.SimpleParam{System.Collections.Generic.List{System.Guid}})">
+            <summary>
+            获取绑定出库的装箱码
+            </summary>
+            <param name="keys"></param>
+            <returns></returns>
+        </member>
         <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetStockTypePage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterpriseStockType})">
             <summary>
             仓库类型分页
@@ -1899,7 +1913,7 @@
             <param name="Param"></param>
             <returns></returns>
         </member>
-        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetScanSendInfo(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetScanSendInfo(KilyCore.Service.QueryExtend.SimpleParam{System.String},KilyCore.Service.QueryExtend.SimpleParam{System.String},KilyCore.Service.QueryExtend.SimpleParam{System.String})">
             <summary>
             发货二维码
             </summary>
@@ -1916,6 +1930,13 @@
         <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetScanPackageInfo(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
             <summary>
             装车信息
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.EnterpriseWebController.GetPackCodeInfo(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            获取包码
             </summary>
             <param name="Param"></param>
             <returns></returns>
@@ -2605,6 +2626,20 @@
             <param name="Param"></param>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetGoodsPage(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            企业产品列表
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetTickPrint(KilyCore.Service.QueryExtend.SimpleParam{System.Collections.Generic.Dictionary{System.String,System.String}})">
+            <summary>
+            进销台账
+            </summary>
+            <param name="Key"></param>
+            <returns></returns>
+        </member>
         <member name="M:KilyCore.API.Controllers.GovtWebController.GetBanquetPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Cook.RequestCookBanquet})">
             <summary>
             群宴报备分页
@@ -2690,6 +2725,13 @@
             <param name="pageParam"></param>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetWarnList(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Govt.RequestGovtRiskCompany})">
+            <summary>
+            预警提示
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
         <member name="M:KilyCore.API.Controllers.GovtWebController.ReportCardWaring(KilyCore.Service.QueryExtend.SimpleParam{System.Guid},KilyCore.Service.QueryExtend.SimpleParam{System.String})">
             <summary>
             证件提醒
@@ -2731,6 +2773,18 @@
             通报批评
             </summary>
             <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetMsgList">
+            <summary>
+            获取巡查处理内容
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetNetPatrolLogs(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            巡查记录日志
+            </summary>
             <returns></returns>
         </member>
         <member name="M:KilyCore.API.Controllers.GovtWebController.GetCategoryPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Govt.RequestGovtPatrolCategory})">
@@ -2973,6 +3027,13 @@
             <param name="Param"></param>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetComplainDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            投诉详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
         <member name="M:KilyCore.API.Controllers.GovtWebController.GetNewStayInTodayCount">
             <summary>
             今日数据
@@ -3003,7 +3064,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:KilyCore.API.Controllers.GovtWebController.GetNewVedioToday">
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetNewVedioToday(KilyCore.Service.QueryExtend.SimpleParam{System.Nullable{System.Guid}})">
             <summary>
             获取最新视频
             </summary>
@@ -3089,6 +3150,50 @@
             删除协议
             </summary>
             <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetLogInfos">
+            <summary>
+            获取操作日志
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetHandlerLogPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.System.RequestSystemLogInfo})">
+            <summary>
+            日志列表
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.EditHandlerLog(System.Collections.Generic.List{System.Guid})">
+            <summary>
+            批量阅读
+            </summary>
+            <param name="keys"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetAreaShow(KilyCore.Service.QueryExtend.SimpleParam{System.String},KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            企业综合
+            </summary>
+            <param name="name"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetAreaBill(KilyCore.Service.QueryExtend.SimpleParam{System.String},KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            企业巡查
+            </summary>
+            <param name="type"></param>
+            <param name="stime"></param>
+            <param name="etime"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.GovtWebController.GetAllPro(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            所有产品
+            </summary>
+            <param name="keys"></param>
             <returns></returns>
         </member>
         <member name="T:KilyCore.API.Controllers.RepastController">
@@ -3523,6 +3628,48 @@
         <member name="M:KilyCore.API.Controllers.RepastWebController.DeleteTemplate(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
             <summary>
             删除企业自查
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetTemplateChildDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            模板详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetOrgPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastOrg})">
+            <summary>
+            委员分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetOrgDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            委员详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.EditOrg(KilyCore.DataEntity.RequestMapper.Repast.RequestRepastOrg)">
+            <summary>
+            编辑委员
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.RemoveOrg(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            删除委员
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetOrgInfo(KilyCore.Service.QueryExtend.SimpleParam{System.String},KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            判断是否存在家委会
             </summary>
             <param name="Param"></param>
             <returns></returns>
@@ -4073,6 +4220,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.RepastWebController.GetLineData">
+            <summary>
+            数据统计
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:KilyCore.API.Controllers.RepastWebController.GetScanInfoPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.Repast.RequestRepastScanInfo})">
             <summary>
             信息分页
@@ -4343,12 +4496,14 @@
             <returns></returns>
         </member>
         <member name="M:KilyCore.API.Controllers.SystemController.GetPhoneCode(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
-            <summary>
-            获取手机短信验证码
-            </summary>
-
-            <param name="Param"></param>
-            <returns></returns>
+             <summary>
+             获取手机短信验证码
+             </summary>
+            
+            
+            
+             <param name="Param"></param>
+             <returns></returns>
         </member>
         <member name="M:KilyCore.API.Controllers.SystemController.SendPhoneMsg(KilyCore.Service.QueryExtend.SimpleParam{System.String},KilyCore.Service.QueryExtend.SimpleParam{System.String})">
             <summary>
@@ -4538,7 +4693,7 @@
             <param name="Param"></param>
             <returns></returns>
         </member>
-        <member name="M:KilyCore.API.Controllers.SystemController.RemovePreson(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+        <member name="M:KilyCore.API.Controllers.SystemController.RemovePreson(KilyCore.Service.QueryExtend.SimpleParam{System.Guid},KilyCore.Service.QueryExtend.SimpleParam{System.Boolean})">
             <summary>
             删除人员
             </summary>
@@ -4552,11 +4707,47 @@
             <param name="Param"></param>
             <returns></returns>
         </member>
-        <member name="M:KilyCore.API.Controllers.SystemController.GetPresonDetailWeb(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+        <member name="M:KilyCore.API.Controllers.SystemController.GetPresonDetailWeb(KilyCore.Service.QueryExtend.SimpleParam{System.String},KilyCore.Service.QueryExtend.SimpleParam{System.Int32},KilyCore.Service.QueryExtend.SimpleParam{System.Int32})">
             <summary>
-            首页人员查询
+            网点人员查询
             </summary>
             <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetNetServicePage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.System.RequestSystemNetService})">
+            <summary>
+            网点分页
+            </summary>
+            <param name="pageParam"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetNetServiceDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            详情
+            </summary>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.IsOpen(KilyCore.Service.QueryExtend.SimpleParam{System.Guid},KilyCore.Service.QueryExtend.SimpleParam{System.Boolean})">
+            <summary>
+            禁用启用
+            </summary>
+            <param name="Ids"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.EditNetService(KilyCore.DataEntity.RequestMapper.System.RequestSystemNetService)">
+            <summary>
+            编辑网点
+            </summary>
+            <param name="param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetNetServiceWeb(KilyCore.Service.QueryExtend.SimpleParam{System.String},KilyCore.Service.QueryExtend.SimpleParam{System.Int32},KilyCore.Service.QueryExtend.SimpleParam{System.Int32})">
+            <summary>
+            网页查询
+            </summary>
+            <param name="key"></param>
             <returns></returns>
         </member>
         <member name="M:KilyCore.API.Controllers.SystemController.GetStayContractPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.System.RequestStayContract})">
@@ -4829,6 +5020,41 @@
             <param name="Param"></param>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.TempController.RepastFoods(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            主营菜品
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.TempController.GetBuybillPage(System.Guid,System.String,System.String)">
+            <summary>
+            进货台账
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.TempController.RepastMarket(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            陪餐记录
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.TempController.RepastSelfCheck(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+            <summary>
+            商家自查
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.TempController.RepastProduct(KilyCore.Service.QueryExtend.SimpleParam{System.Guid})">
+             <summary>
+            产品图片
+             </summary>
+             <param name="Param"></param>
+             <returns></returns>
+        </member>
         <member name="M:KilyCore.API.Controllers.TempController.WeChatRegist(KilyCore.DataEntity.RequestMapper.Enterprise.RequestEnterprise)">
             <summary>
             微信活动注册接口
@@ -4846,6 +5072,51 @@
         <member name="M:KilyCore.API.Controllers.TempController.GetTempTime(KilyCore.DataEntity.ResponseMapper.Enterprise.ResponseEnterpriseEnv)">
             <summary>
             监测实时数据
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.TempController.GetProList(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            QS列表
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.TempController.GetProDetail(KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            QS详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.TempController.GetTargetDb(KilyCore.Service.QueryExtend.SimpleParam{System.String},KilyCore.Service.QueryExtend.SimpleParam{System.String})">
+            <summary>
+            安全标准
+            </summary>
+            <param name="key"></param>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.TempController.GetCountyInfo(KilyCore.Service.QueryExtend.SimpleParam{System.String},KilyCore.Service.QueryExtend.SimpleParam{System.Int32},KilyCore.Service.QueryExtend.SimpleParam{System.Int32})">
+            <summary>
+            获取国家监管总局
+            </summary>
+            <param name="key"></param>
+            <param name="pageIndex"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.TempController.GetProductDetail(System.Guid)">
+            <summary>
+            产品详情
+            </summary>
+            <param name="Param"></param>
+            <returns></returns>
+        </member>
+        <member name="M:KilyCore.API.Controllers.TempController.GetProductPage(System.String,System.Int32,System.Int32)">
+            <summary>
+            产品列表
             </summary>
             <param name="Param"></param>
             <returns></returns>

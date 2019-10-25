@@ -1,4 +1,5 @@
 ﻿using KilyCore.Extension.HttpClientFactory;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +33,35 @@ namespace KilyCore.Extension.OutSideService
                 lo.Add(new { Title = Titil[i].data, Content = content[i].data, Remark = remark[i].data });
             }
             return new { lo, Page };
+        }
+        public static Object GetCountyInfo(string key, int pageIndex, int pageSize)
+        {
+            var keys = HttpClientExtension.KeyValuePairs<Object>(new { siteCode = "bm30000012", keyPlace = 1, qt = key, tab = "xw", pageSize = pageSize, page = pageIndex, redTitleLength = 28, combine = "MD5TITLE", mode = 1 });
+            return JsonConvert.DeserializeObject<RootObject>(HttpClientExtension.HttpPostAsync("http://www.samr.gov.cn/so/interest", null, keys).Result);
+        }
+
+
+        public class MyValues
+        {
+            public string C1 { get; set; }
+            public string L1 { get; set; }
+            public string QUICKDESCRIPTION { get; set; }
+
+        }
+
+        public class ResultList
+        {
+            public string indexDate { get; set; }
+            public MyValues myValues { get; set; }
+            public string summary { get; set; }
+            public string title { get; set; }
+            public string url { get; set; }
+        }
+
+        public class RootObject
+        {
+            public int totalHits { get; set; }
+            public List<ResultList> resultList { get; set; }
         }
     }
 }
