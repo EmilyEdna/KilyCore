@@ -634,11 +634,11 @@ namespace KilyCore.API.Controllers
         /// <param name="Param"></param>
         /// <param name="Key"></param>
         /// <returns></returns>
-        [HttpPost("ReportCardWaring")]
-        public ObjectResultEx ReportCardWaring(SimpleParam<Guid> Param, SimpleParam<String> Key, SimpleParam<String> Content)
-        {
-            return ObjectResultEx.Instance(GovtWebService.ReportCardWaring(Param.Id, Key.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
-        }
+        //[HttpPost("ReportCardWaring")]
+        //public ObjectResultEx ReportCardWaring(SimpleParam<Guid> Param, SimpleParam<String> Key, SimpleParam<String> Content)
+        //{
+        //    return ObjectResultEx.Instance(GovtWebService.ReportCardWaring(Param.Id, Key.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        //}
 
         #endregion 风险预警
 
