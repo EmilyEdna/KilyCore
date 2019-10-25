@@ -130,7 +130,7 @@ namespace KilyCore.Service.IServiceCore
 
         ResponsePreson GetPresonDetail(Guid Id);
 
-        List<ResponsePreson> GetPresonDetailWeb(String key);
+        PagedResult<ResponsePreson> GetPresonDetailWeb(String key, int pageSize, int pageIndex);
 
         #endregion 人员归档
 
@@ -143,8 +143,8 @@ namespace KilyCore.Service.IServiceCore
 
         string EditNetService(RequestSystemNetService param);
 
-        List<ResponseSystemNetService> GetNetServiceWeb(string key);
-        
+        PagedResult<ResponseSystemNetService> GetNetServiceWeb(String key, int pageSize, int pageIndex);
+
         #endregion
 
         #region 入住合同

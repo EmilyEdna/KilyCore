@@ -583,15 +583,15 @@ namespace KilyCore.API.Controllers
         }
 
         /// <summary>
-        /// 首页人员查询
+        /// 网点人员查询
         /// </summary>
         /// <param name="Param"></param>
         /// <returns></returns>
         [HttpGet("GetPresonDetailWeb")]
         [AllowAnonymous]
-        public ObjectResultEx GetPresonDetailWeb(SimpleParam<String> Param)
+        public ObjectResultEx GetPresonDetailWeb(SimpleParam<String> Param, SimpleParam<int> pageSize, SimpleParam<int> pageIndex)
         {
-            return ObjectResultEx.Instance(SystemService.GetPresonDetailWeb(Param.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(SystemService.GetPresonDetailWeb(Param.Id,pageSize.Parameter,pageIndex.Params), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
 
         #endregion 人员归档
@@ -645,9 +645,9 @@ namespace KilyCore.API.Controllers
         /// <returns></returns>
         [HttpGet("GetNetServiceWeb")]
         [AllowAnonymous]
-        public ObjectResultEx GetNetServiceWeb(SimpleParam<string> key)
+        public ObjectResultEx GetNetServiceWeb(SimpleParam<string> key,SimpleParam<int> pageIndex,SimpleParam<int> pageSize)
         {
-            return ObjectResultEx.Instance(SystemService.GetNetServiceWeb(key.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(SystemService.GetNetServiceWeb(key.Id, pageSize.Parameter, pageIndex.Params), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
 
         #endregion

@@ -1103,9 +1103,9 @@ namespace KilyCore.Service.ServiceCore
         /// <summary>
         /// 首页人员查询
         /// </summary>
-        public List<ResponsePreson> GetPresonDetailWeb(String key)
+        public PagedResult<ResponsePreson> GetPresonDetailWeb(String key,int pageSize,int pageIndex)
         {
-            return Kily.Set<SystemPreson>().Where(t => t.WorkNum.Contains(key) || t.TrueName.Contains(key) || t.ServciePath.Contains(key)).ToList().MapToEntity<List<ResponsePreson>>();
+            return Kily.Set<SystemPreson>().Where(t => t.WorkNum.Contains(key) || t.TrueName.Contains(key) || t.ServciePath.Contains(key)).ToList().MapToEntity<List<ResponsePreson>>().ToPagedResult(pageIndex, pageSize);
         }
 
         /// <summary>
@@ -1265,9 +1265,9 @@ namespace KilyCore.Service.ServiceCore
             else
                 return Update(service, param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
-        public List<ResponseSystemNetService> GetNetServiceWeb(string key)
+        public PagedResult<ResponseSystemNetService> GetNetServiceWeb(String key, int pageSize, int pageIndex)
         {
-            return Kily.Set<SystemNetService>().OrderByDescending(t => t.CreateTime).Where(t => t.CompanyName.Contains(key) || t.ServciePath.Contains(key)).ToList().MapToEntity<List<ResponseSystemNetService>>();
+            return Kily.Set<SystemNetService>().OrderByDescending(t => t.CreateTime).Where(t => t.CompanyName.Contains(key) || t.ServciePath.Contains(key)).ToList().MapToEntity<List<ResponseSystemNetService>>().ToPagedResult(pageIndex, pageSize);
         }
         #endregion
 
