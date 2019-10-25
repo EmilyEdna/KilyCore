@@ -14,7 +14,7 @@
             //元素
             InitDom: function () {
                 var Guid = controller.GetParam("Id");
-                controller.LayDate({ elem: "input[name='STime']",max: controller.GetDate(10) });
+                controller.LayDate({ elem: "input[name='STime']", max: controller.GetDate(10) });
                 controller.LayDate({ elem: "input[name='ETime']", max: controller.GetDate(10) });
                 options.GetDetail(Guid);
             },

@@ -3882,7 +3882,6 @@ namespace KilyCore.Service.ServiceCore
                 EnterpriseBoxing Box = Param.MapToEntity<EnterpriseBoxing>();
                 EnterpriseGoodsStock Stock = Kily.Set<EnterpriseGoodsStock>().Where(t => t.GoodsBatchNo == Param.StockBatchNo).AsNoTracking().FirstOrDefault();
                 EnterpriseGoodsStockAttach StockAttach = Kily.Set<EnterpriseGoodsStockAttach>().Where(t => t.GoodsBatchNo == Param.StockBatchNo).AsNoTracking().FirstOrDefault();
-                var TotalSum = Kily.Set<EnterpriseBoxing>().Where(t => t.StockBatchNo == Param.StockBatchNo).Sum(t => Convert.ToInt32(t.BoxCount));
                 //判断是否使用了箱码
                 var TempBox = Kily.Set<EnterpriseBoxing>().Where(t => t.BoxCode.Contains(Param.BoxCode)).FirstOrDefault();
                 if (TempBox != null)
@@ -3911,9 +3910,9 @@ namespace KilyCore.Service.ServiceCore
                                 if (TempEntity == null)
                                     return $"{Host + Temp}溯源号段不在此批次中";
                             }
-                        if (TotalSum + OncTag.Count > Stock.InStockNum)
+                        if (OncTag.Count > Stock.InStockNum)
                             return "超出库存!";
-                        else if (TotalSum + OncTag.Count == Stock.InStockNum)
+                        else if (OncTag.Count ==Stock.InStockNum)
                         {
                             Stock.IsBindBoxCode = true;
                             UpdateField(Stock, "IsBindBoxCode");
@@ -3928,9 +3927,9 @@ namespace KilyCore.Service.ServiceCore
                             if (TempEntity == null)
                                 return $"{Temp}纹理码号段不在此批次中";
                         }
-                        if (TotalSum + VenTag.Count > Stock.InStockNum)
+                        if (VenTag.Count > Stock.InStockNum)
                             return "超出库存!";
-                        else if (TotalSum + VenTag.Count == Stock.InStockNum)
+                        else if (VenTag.Count == Stock.InStockNum)
                         {
                             Stock.IsBindBoxCode = true;
                             UpdateField(Stock, "IsBindBoxCode");
