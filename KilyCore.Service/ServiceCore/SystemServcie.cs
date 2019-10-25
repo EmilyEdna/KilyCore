@@ -1103,9 +1103,25 @@ namespace KilyCore.Service.ServiceCore
         /// <summary>
         /// 首页人员查询
         /// </summary>
-        public PagedResult<ResponsePreson> GetPresonDetailWeb(String key,int pageSize,int pageIndex)
+        public PagedResult<ResponsePreson> GetPresonDetailWeb(String key, int pageIndex, int pageSize)
         {
-            return Kily.Set<SystemPreson>().Where(t => t.WorkNum.Contains(key) || t.TrueName.Contains(key) || t.ServciePath.Contains(key)).ToList().MapToEntity<List<ResponsePreson>>().ToPagedResult(pageIndex, pageSize);
+            var data = Kily.Set<SystemPreson>().Where(t => t.WorkNum.Contains(key) || t.TrueName.Contains(key) || t.ServciePath.Contains(key))
+                .Select(t => new ResponsePreson
+                {
+                    Id = t.Id,
+                    TrueName = t.TrueName,
+                    WorkNum = t.WorkNum,
+                    Type = t.Type,
+                    LinkPhone = t.LinkPhone,
+                    HeadImage = t.HeadImage,
+                    Address = t.Address,
+                    IdCard = t.IdCard,
+                    ServiceYear = t.ServiceYear,
+                    STime = t.STime,
+                    ETime = t.ETime,
+                    ServciePath = t.ServciePath,
+                }).ToPagedResult(pageIndex, pageSize);
+            return data;
         }
 
         /// <summary>
@@ -1232,7 +1248,7 @@ namespace KilyCore.Service.ServiceCore
             {
                 Id = t.Id,
                 Status = t.IsDelete.Value ? "禁用" : "启用",
-                ServiceNetName=t.ServiceNetName,
+                ServiceNetName = t.ServiceNetName,
                 CompanyName = t.CompanyName,
                 Address = t.Address,
                 Code = t.Code,
@@ -1265,9 +1281,24 @@ namespace KilyCore.Service.ServiceCore
             else
                 return Update(service, param) ? ServiceMessage.UPDATESUCCESS : ServiceMessage.UPDATEFAIL;
         }
-        public PagedResult<ResponseSystemNetService> GetNetServiceWeb(String key, int pageSize, int pageIndex)
+        public PagedResult<ResponseSystemNetService> GetNetServiceWeb(String key, int pageIndex, int pageSize)
         {
-            return Kily.Set<SystemNetService>().OrderByDescending(t => t.CreateTime).Where(t => t.CompanyName.Contains(key) || t.ServciePath.Contains(key)).ToList().MapToEntity<List<ResponseSystemNetService>>().ToPagedResult(pageIndex, pageSize);
+            var data = Kily.Set<SystemNetService>().OrderByDescending(t => t.CreateTime).Where(t => t.CompanyName.Contains(key) || t.ServciePath.Contains(key)).Select(t => new ResponseSystemNetService
+            {
+                Id = t.Id,
+                ServiceNetName = t.ServiceNetName,
+                CompanyName = t.CompanyName,
+                Code = t.Code,
+                LinkPhone = t.LinkPhone,
+                Off = t.Off,
+                Address = t.Address,
+                IdImage = t.IdImage,
+                ServiceYear = t.ServiceYear,
+                STime = t.STime,
+                ETime = t.ETime,
+                ServciePath = t.ServciePath,
+            }).ToPagedResult(pageIndex, pageSize);
+            return data;
         }
         #endregion
 
