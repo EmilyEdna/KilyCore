@@ -607,22 +607,44 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetNetServicePage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 详情
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         [HttpPost("GetNetServiceDetail")]
         public ObjectResultEx GetNetServiceDetail(SimpleParam<Guid> key)
         {
             return ObjectResultEx.Instance(SystemService.GetNetServiceDetail(key.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 禁用启用
+        /// </summary>
+        /// <param name="Ids"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
         [HttpPost("IsOpen")]
         public ObjectResultEx IsOpen(SimpleParam<Guid> Ids, SimpleParam<bool> key)
         {
             return ObjectResultEx.Instance(SystemService.IsOpen(Ids.Id, key.Parameter), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 编辑网点
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
         [HttpPost("EditNetService")]
         public ObjectResultEx EditNetService(RequestSystemNetService param)
         {
             return ObjectResultEx.Instance(SystemService.EditNetService(param), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
+        /// <summary>
+        /// 网页查询
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         [HttpPost("GetNetServiceWeb")]
+        [AllowAnonymous]
         public ObjectResultEx GetNetServiceWeb(SimpleParam<string> key)
         {
             return ObjectResultEx.Instance(SystemService.GetNetServiceWeb(key.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
