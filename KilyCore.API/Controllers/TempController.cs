@@ -277,7 +277,7 @@ namespace KilyCore.API.Controllers
         /// <param name="pageIndex"></param>
         /// <param name="pageSize"></param>
         /// <returns></returns>
-        [HttpGet("GetTargetDb")]
+        [HttpGet("GetCountyInfo")]
         [AllowAnonymous]
         public ObjectResultEx GetCountyInfo(SimpleParam<String> key, SimpleParam<int> pageIndex, SimpleParam<int> pageSize)
         {
