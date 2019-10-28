@@ -1693,16 +1693,33 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public string ReportCardWaring(Guid Id, string Key)
         {
-            SystemMessage message = new SystemMessage
+            SystemMessage message = new SystemMessage();
+            if (Key != "投诉")
             {
-                CompanyId = Id,
-                TypePath = GovtInfo().TypePath,
-                ReleaseTime = DateTime.Now,
-                TrageType = Key,
-                MsgName = "证件到期提醒",
-                MsgContent = "您的证件日期即将到期，请尽快续期",
-                Category = "常规"
-            };
+                message = new SystemMessage
+                {
+                    CompanyId = Id,
+                    TypePath = GovtInfo().TypePath,
+                    ReleaseTime = DateTime.Now,
+                    TrageType = Key,
+                    MsgName = "证件到期提醒",
+                    MsgContent = "您的证件日期即将到期，请尽快续期",
+                    Category = "常规"
+                };
+            }
+            else
+            {
+                message = new SystemMessage
+                {
+                    CompanyId = Id,
+                    TypePath = GovtInfo().TypePath,
+                    ReleaseTime = DateTime.Now,
+                    TrageType = Key,
+                    MsgName = "投诉建议",
+                    MsgContent = "您有新的投诉信息请尽快处理！",
+                    Category = "常规"
+                };
+            }
             return Insert(message) ? ServiceMessage.INSERTSUCCESS : ServiceMessage.INSERTFAIL;
         }
         /// <summary>

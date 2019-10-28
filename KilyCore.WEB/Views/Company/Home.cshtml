@@ -104,7 +104,7 @@
             InitMsg: function (Index) {
                 controller.ajax({
                     url: "System/GetMsgPage",
-                    data: { pageNumber: Index, pageSize: 10 },
+                    data: { pageNumber: Index, pageSize: 5 },
                     type: "post",
                     async: false,
                     success: function (result) {
