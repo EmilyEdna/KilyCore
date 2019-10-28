@@ -37,7 +37,7 @@ namespace KilyCore.Extension.OutSideService
         public static Object GetCountyInfo(string key, int pageIndex, int pageSize)
         {
             var keys = HttpClientExtension.KeyValuePairs<Object>(new { siteCode = "bm30000012", keyPlace = 1, qt = key, tab = "xw", pageSize = pageSize, page = pageIndex, redTitleLength = 28, combine = "MD5TITLE", mode = 1 });
-            return JsonConvert.DeserializeObject<RootObject>(HttpClientExtension.HttpPostAsync("http://www.samr.gov.cn/so/interest", null, keys).Result);
+            return JsonConvert.DeserializeObject<RootObject>(HttpClientExtension.HttpPostAsync("http://39.97.130.35/interest", null, keys).Result);
         }
 
 

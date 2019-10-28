@@ -12,7 +12,7 @@
             },
             //元素
             InitDom: function () {
-                var host = decodeURI("http://phone.cfda.vip/NewPhone/logistics.html?Id=" + controller.GetParam("Id") + "&Phone=" + controller.GetParam("Phone") + "&Num" + controller.GetParam("Num"));
+                var host = decodeURI("http://phone.cfda.vip/NewPhone/logistics.html?Id=" + controller.GetParam("Id") + "&Phone=" + controller.GetParam("Phone") + "&Num=" + controller.GetParam("Num"));
                 controller.QRCode('#QRcode', { text: host });
             },
             //事件
