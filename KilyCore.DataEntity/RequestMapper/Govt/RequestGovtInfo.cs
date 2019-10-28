@@ -24,6 +24,9 @@ namespace KilyCore.DataEntity.RequestMapper.Govt
         public Guid Id { get; set; }
         public bool? IsEdu { get; set; }
         public Guid? GovtId { get; set; }
+        public bool? IsActiveUser { get; set; }
+        public string WorkNum { get; set; }
+        public string ActiveImg { get; set; }
         /// <summary>
         /// 账号
         /// </summary>

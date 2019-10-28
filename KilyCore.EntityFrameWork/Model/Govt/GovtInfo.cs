@@ -65,5 +65,8 @@ namespace KilyCore.EntityFrameWork.Model.Govt
         /// 邮箱
         /// </summary>
         public virtual string Email { get; set; }
+        public bool? IsActiveUser { get; set; }
+        public string WorkNum { get; set; }
+        public string ActiveImg { get; set; }
     }
 }
