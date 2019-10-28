@@ -1898,7 +1898,7 @@ namespace KilyCore.Service.ServiceCore
                 }).ToList();
                 Repast.AddRange(MerUser);
                 Repast.AddRange(complains);
-                return Repast.Where(t => t.CardExpiredDate.Value <= DateTime.Now.AddDays(20)).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                return Repast.Where(t => t.CardExpiredDate.Value <= DateTime.Now.AddDays(20)).OrderByDescending(o=>o.CardExpiredDate).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             }
         }
         #endregion 风险预警
@@ -2892,7 +2892,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public IList<DataPie> GetProductRank()
         {
-            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false&&t.AuditType==AuditEnum.AuditSuccess);
             IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess);
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
@@ -3088,9 +3088,9 @@ namespace KilyCore.Service.ServiceCore
         public IList<DataPie> GetNewStayInAllCompanyCount()
         {
             var Temp = GovtInfo();
-            IQueryable<EnterpriseInfo> coms = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false);
-            IQueryable<RepastInfo> mers = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false);
-            IQueryable<CookInfo> cooks = Kily.Set<CookInfo>().Where(t => t.IsDelete == false);
+            IQueryable<EnterpriseInfo> coms = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false&&t.AuditType==AuditEnum.AuditSuccess);
+            IQueryable<RepastInfo> mers = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false && t.AuditType == AuditEnum.AuditSuccess);
+            IQueryable<CookInfo> cooks = Kily.Set<CookInfo>().Where(t => t.IsDelete == false && t.AuditType == AuditEnum.AuditSuccess);
             if (Temp.AccountType <= GovtAccountEnum.City)
             {
                 coms = coms.Where(t => t.TypePath.Contains(Temp.City));

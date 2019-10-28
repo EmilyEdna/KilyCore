@@ -193,6 +193,7 @@
                     }
                 });
             },
+            
             //抽检记录
             InitCheck: function () {
                 //取详情
@@ -202,43 +203,18 @@
                     async: false,
                     type: "get",
                     success: function (result) {
-                        var CheckHTML = "";
+                        
                         $.each(result.data, function (i, item) {
-                            CheckHTML += '<tr>'
+                           $("#CheckList").append('<tr>'
                                 + '<td align="left">' + item.Title + '</td>'
                                 + '<td align="center">' + item.DateTime + '</td>'
                                 + '<td align="center">' + item.Person + '</td>'
                                 + '<td align="left">' + item.Remark + '</td>'
-                                + '</tr>';
+                                + '</tr>');
                         });
-                        $("#CheckList").append(CheckHTML);
                     }
                 });
-            },
-            //主营菜品
-            InitFoods: function () {
-                controller.ajax({
-                    url: "Temp/RepastFoods",
-                    data: { Id: controller.GetParam("Id") },
-                    async: false,
-                    type: "get",
-                    success: function (result) {
-                        var FoodsHTML = "";
-                        $.each(result.data, function (i, item) {
-                            FoodsHTML += '<tr>'
-                                + '<td align="center">' + item.DishName + '</td>'
-                                + '<td align="center">' + item.DishType + '</td>'
-                                + '<td align="center">' + item.CookingType + '</td>'
-                                + '<td align="center">' + item.CookingTime + '</td>'
-                                + '<td align="center">' + item.MainBatch + '</td>'
-                                + '<td align="center">' + item.Seasoning + '</td>'
-                                + '<td align="center">' + item.Batching + '</td>'
-                                + '</tr>';
-                        });
-                        $("#FoodsList").append(FoodsHTML);
-                    }
-                });
-            },
+            },           
             //自查记录
             InitSelfCheck: function () {
                 //取详情
@@ -259,6 +235,27 @@
                                 + '</tr>';
                         });
                         $("#SelfCheckList").append(SelfCheckHTML);
+                    }
+                });
+            },
+             //主营菜品
+            InitFoods: function () {
+                controller.ajax({
+                    url: "Temp/RepastFoods",
+                    data: { Id: controller.GetParam("Id") },
+                    async: false,
+                    type: "get",
+                    success: function (result) {
+                        $.each(result.data, function (i, item) {
+                             $("#FoodsList").append( `<tr>
+                                <td align="center">${item.DishName}</td>
+                                <td align="center">${item.DishType}</td>
+                                <td align="center">${item.CookingType}</td>
+                                <td align="center">${item.CookingTime}</td>
+                                <td align="center">${item.MainBatch }</td>
+                                <td align="center"> ${item.Seasoning}</td>
+                                </tr>`);
+                        });
                     }
                 });
             },
@@ -324,10 +321,7 @@
                         $(this).attr("style", "width:456px;");
                     });
                 });
-                $(".table-bordered img").each(function (i) {
-                    var img = $(this);
-                    $(this).wrap("<a href='" + $(this).attr("src") + "' target='_blank'></a>");
-                });
+               
                 $("#search").on("click", function () {                    
                     options.InitBuyList();
                 });
@@ -336,6 +330,10 @@
         //初始化
         $(document).ready(function () {
             options.Init();
+             $(".table-bordered img").each(function (i) {
+                    var img = $(this);
+                    $(this).wrap("<a href='" + $(this).attr("src") + "' target='_blank'></a>");
+                });
         });
         function DateCompare(TimeLength) {
             // 获取当前日期

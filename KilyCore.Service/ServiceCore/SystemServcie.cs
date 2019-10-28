@@ -1541,17 +1541,13 @@ namespace KilyCore.Service.ServiceCore
             IQueryable<SystemMessage> queryable = Kily.Set<SystemMessage>().Where(t => !t.Status.Equals("已处理")).OrderByDescending(t => t.CreateTime);
             IQueryable<GovtComplain> queryables = Kily.Set<GovtComplain>().Where(t => !t.Status.Equals("已处理")).OrderByDescending(t => t.CreateTime);
             if (CompanyInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || t.TypePath.Contains(CompanyInfo().Area))
-                    .Where(t => t.TrageType.Equals(CompanyInfo().CompanyTypeName));
+                queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || t.TypePath.Contains(CompanyInfo().Area));
             else if (CompanyUser() != null)
-                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id || t.TypePath.Contains(CompanyUser().Area))
-                     .Where(t => t.TrageType.Equals(CompanyUser().CompanyTypeName));
+                queryable = queryable.Where(t => t.CompanyId == CompanyUser().Id || t.TypePath.Contains(CompanyUser().Area));
             else if (MerchantInfo() != null)
-                queryable = queryable.Where(t => t.CompanyId == MerchantInfo().Id || t.TypePath.Contains(MerchantInfo().Area))
-                     .Where(t => t.TrageType.Equals(MerchantInfo().DiningTypeName));
+                queryable = queryable.Where(t => t.CompanyId == MerchantInfo().Id || t.TypePath.Contains(MerchantInfo().Area));
             else if (MerchantUser() != null)
-                queryable = queryable.Where(t => t.CompanyId == MerchantUser().Id || t.TypePath.Contains(MerchantUser().Area))
-                     .Where(t => t.TrageType.Equals(MerchantUser().DiningTypeName));
+                queryable = queryable.Where(t => t.CompanyId == MerchantUser().Id || t.TypePath.Contains(MerchantUser().Area));
             var data = queryable.GroupJoin(queryables, t => t.ComplainId, x => x.Id, (t, x) => new ResponseSystemMessage()
             {
                 MsgName = t.MsgName,
