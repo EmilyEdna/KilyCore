@@ -24,7 +24,7 @@
                         $("#IsEdu").find("option:contains('是')").attr("selected", true);
                     else
                         $("#IsEdu").find("option:contains('否')").attr("selected", true);
-                    if (GovtInfo.AccountType == 20) 
+                    if (GovtInfo.AccountType == 20)
                         $("#AccountType").find("option:contains('区县账号')").attr("selected", true);
                     if (GovtInfo.AccountType == 30)
                         $("#AccountType").find("option:contains('乡镇账号')").attr("selected", true);
@@ -113,8 +113,7 @@
                             controller.SetCtrlValue("#Edit", result.data);
                             options.SetArea();
                             controller.SetCtrlValue("#Edit", result.data);
-                            if (GovtInfo.AccountType == 20)
-                            {
+                            if (GovtInfo.AccountType == 20) {
                                 $("#area").attr("disabled", true);
                             }
                         }
@@ -171,6 +170,23 @@
             },
             //事件
             InitEvents: function () {
+                $("input:radio[name='IsActiveUser']").click(function () {
+                    if ($(this).val() == "true") {
+                        $(".ms").removeClass("hidden");
+                    } else {
+                        $(".ms").addClass("hidden");
+                    }
+                })
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#up",
+                    maxNum: 2,
+                    node: '.clear',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        $("#ActiveImg").val(result.data);
+                    }
+                });
                 controller.ValidateConfirm("#Edit")
             },
         };
@@ -194,6 +210,23 @@
                     <th><label class="control-label">密码<span style="color:red">*</span></label></th>
                     <td class="has-warning">
                         <input type="password" class="form-control required" name="PassWord" data-msg-required="请输入密码">
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">是否执法人员</label></th>
+                    <td class="has-warning">
+                        <label class="radio-inline">
+                            <input type="radio" name="IsActiveUser" value="true" style="margin-top:3px" />
+                            <text title="是">是</text>
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="IsActiveUser" value="false" style="margin-top:3px" checked />
+                            <text title="否">否</text>
+                        </label>
+                    </td>
+                    <th class="ms hidden"><label class="control-label">执法编号<span style="color:red">*</span></label></th>
+                    <td class="has-warning ms hidden">
+                        <input type="password" class="form-control" name="WorkNum">
                     </td>
                 </tr>
                 <tr>
@@ -265,6 +298,18 @@
                                 </td>
                             </tr>
                         </table>
+                    </td>
+                </tr>
+                <tr class="ms hidden">
+                    <th><label class="control-label">执法证</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" id="up" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                        <input type="hidden" id="ActiveImg" name="ActiveImg" />
                     </td>
                 </tr>
             </table>

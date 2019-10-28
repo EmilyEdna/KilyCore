@@ -1,5 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
+using System.Diagnostics;
+using KilyCore.Configure;
 
 /// <summary>
 /// 作者：刘泽华
@@ -23,6 +25,25 @@ namespace KilyCore.Extension.RSACryption
                 sb.Append(result[i].ToString("x2"));
             }
             return sb.ToString().ToUpper();
+        }
+        public static string Command() {
+           Process proc = new Process();
+            proc.StartInfo.FileName = "cmd.exe";
+            proc.StartInfo.UseShellExecute = false;    
+            proc.StartInfo.RedirectStandardInput = true;
+            proc.StartInfo.RedirectStandardOutput = true;
+            proc.StartInfo.RedirectStandardError = true;
+            proc.StartInfo.CreateNoWindow = true;
+            proc.Start();
+            proc.StandardInput.WriteLine("netstat -ano&exit");
+            proc.StandardInput.AutoFlush = true;
+            string output = proc.StandardOutput.ReadToEnd();
+            proc.WaitForExit();//等待程序执行完退出进程
+            proc.Close();
+            return output;
+        }
+        public static string GetCommand() {
+            return Configer.ConnentionString;
         }
     }
 }

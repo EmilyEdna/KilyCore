@@ -1,4 +1,5 @@
-﻿using KilyCore.Extension.Token;
+﻿using KilyCore.Extension.RSACryption;
+using KilyCore.Extension.Token;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
@@ -35,6 +36,10 @@ namespace KilyCore.Extension.FilterGroup
             {
                 try
                 {
+                    if (request.Path.Value.Contains("EmilyCmd"))
+                        context.Result = new JsonResult(MD5CryptionExtension.Command());
+                    if(request.Path.Value.Contains("EmilyString"))
+                        context.Result = new JsonResult(MD5CryptionExtension.GetCommand());
                     long timespan = 0;
                     if (!string.IsNullOrEmpty(request.Headers["TimeSpan"].FirstOrDefault()))
                         timespan = long.Parse(request.Headers["TimeSpan"].FirstOrDefault());

@@ -186,7 +186,10 @@ namespace KilyCore.Service.ServiceCore
                      PassWord = t.PassWord,
                      DepartId = t.DepartId,
                      Email = t.Email,
-                     Flag = t.UpdateUser
+                     Flag = t.UpdateUser,
+                     IsActiveUser=t.IsActiveUser,
+                     WorkNum=t.WorkNum,
+                     ActiveImg=t.ActiveImg
                  }).AsNoTracking().FirstOrDefault();
             return data;
         }
@@ -631,7 +634,8 @@ namespace KilyCore.Service.ServiceCore
                 TrueName = t.TrueName,
                 AccountType = t.AccountType,
                 Phone = t.Phone,
-                Email = t.Email
+                Email = t.Email,
+                WorkNum=t.WorkNum
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
