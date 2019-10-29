@@ -780,6 +780,11 @@ namespace KilyCore.Service.ServiceCore
                     queryables = queryables.Where(t => t.TypePath.Contains(Areas.FirstOrDefault()));
                 }
             }
+            else
+            {
+                queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
+                queryables = queryables.Where(t => t.TypePath.Contains(GovtInfo().Area));
+            }
             List<ResponseGovtDistribut> data = new List<ResponseGovtDistribut>();
             if (!GovtInfo().IsEdu.Value)
             {
