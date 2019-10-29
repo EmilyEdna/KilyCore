@@ -11,11 +11,45 @@
     <meta name="viewport" content="width=device-width" />
     <link href="http://old.cfda.vip/Cashier/MUI/mui.min.css" rel="stylesheet" />
     <title>预警提示</title>
+    <script type="text/javascript">
+    var options = {
+        Init: function () {
+             this.InitDom();
+        },
+        InitDom: function () {
+            var ApiKey = controller.GetParam("ApiKey");
+            var Syskey = controller.GetParam("SysKey");
+            var Token = controller.GetParam("Token");
+            var obj = { "RSAToKen": Token, "RSAApiKey": ApiKey, "RSASysKey": Syskey };
+            controller.SetCookie(obj);
+            controller.ajax({
+                url: "GovtWeb/GetNewWeekRiskAndComplainCount",
+                data: {},
+                type: "post",
+                async: false,
+                success: function (result) {
+                    $.each(result.data, function (i,item) {
+                        $("#WarnCount").append(` <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
+                            <a href="#">
+                                <span>${item.name}</span>
+                                <div class="mui-media-body">${item.data[6]}</div>
+                            </a>
+                        </li>`);
+                    });
+                }
+            });
+        }
+    };
+     //页面初始化
+    $(document).ready(function () {
+        options.Init();
+    });
+    </script>
 </head>
 <body>
     <div class="mui-content">
-        <ul class="mui-table-view mui-grid-view mui-grid-9">
-            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
+        <ul class="mui-table-view mui-grid-view mui-grid-9" id="WarnCount">
+            @*<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
                 <a href="#">
                     <span>证件到期</span>
                     <div class="mui-media-body" id="PatrolsCount">0</div>
@@ -44,7 +78,7 @@
                     <span>通报处理</span>
                     <div class="mui-media-body" id="PartyCounts">0</div>
                 </a>
-            </li>
+            </li>*@
         </ul>
     </div>
 </body>

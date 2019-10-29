@@ -11,64 +11,46 @@
     <meta name="viewport" content="width=device-width" />
     <link href="http://old.cfda.vip/Cashier/MUI/mui.min.css" rel="stylesheet" />
     <title>企业数量</title>
+    <script type="text/javascript">
+    var options = {
+        Init: function () {
+             this.InitDom();
+        },
+        InitDom: function () {
+            var ApiKey = controller.GetParam("ApiKey");
+            var Syskey = controller.GetParam("SysKey");
+            var Token = controller.GetParam("Token");
+            var obj = { "RSAToKen": Token, "RSAApiKey": ApiKey, "RSASysKey": Syskey };
+            controller.SetCookie(obj);
+            controller.ajax({
+                url: "GovtWeb/GetNewStayInAllCompanyCount",
+                data: {},
+                type: "post",
+                async: false,
+                success: function (result) {
+                    $.each(result.data, function (i,item) {
+                        $("#CompanyCount").append(` <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
+                            <a href="#">
+                                <span>${item.name}</span>
+                                <div class="mui-media-body">${item.value}</div>
+                            </a>
+                        </li>`);
+                    });
+                }
+            });
+        }
+    };
+     //页面初始化
+    $(document).ready(function () {
+        options.Init();
+    });
+    </script>
 </head>
 <body>
     <div class="mui-content">
-        <ul class="mui-table-view mui-grid-view mui-grid-9">
-            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
-                <a href="#">
-                    <span>种植企业</span>
-                    <div class="mui-media-body" id="PatrolsCount">0</div>
-                </a>
-            </li>
-            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
-                <a href="#">
-                    <span>养殖企业</span>
-                    <div class="mui-media-body" id="PatrolsCount">0</div>
-                </a>
-            </li>
-            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
-                <a href="#">
-                    <span>生产企业</span>
-                    <div class="mui-media-body" id="BadCount">0</div>
-                </a>
-            </li>
-            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
-                <a href="#">
-                    <span>流通企业</span>
-                    <div class="mui-media-body" id="Percents">0</div>
-                </a>
-            </li>
-            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
-                <a href="#">
-                    <span>其他企业</span>
-                    <div class="mui-media-body" id="PartyCounts">0</div>
-                </a>
-            </li>
-            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
-                <a href="#">
-                    <span>药企药房</span>
-                    <div class="mui-media-body" id="RiskCount">0</div>
-                </a>
-            </li>
-            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
-                <a href="#">
-                    <span>餐饮企业</span>
-                    <div class="mui-media-body" id="ComplainCount">0</div>
-                </a>
-            </li>
-            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
-                <a href="#">
-                    <span>“三小”企业</span>
-                    <div class="mui-media-body" id="ComplainCount">0</div>
-                </a>
-            </li>
-            <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" style="background-color:#fff;">
-                <a href="#">
-                    <span>单位食堂</span>
-                    <div class="mui-media-body" id="ComplainCount">0</div>
-                </a>
-            </li>
+        <ul class="mui-table-view mui-grid-view mui-grid-9" id="CompanyCount">
+           
+           
         </ul>
     </div>
 </body>

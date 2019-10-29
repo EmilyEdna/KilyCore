@@ -69,6 +69,7 @@
                     "click .edit": function (event, val, row, index) {
                         controller.Confirm("确认提醒？", function (bool) {
                             if (bool) {
+                               
                                 controller.ajax({
                                     url: "GovtWeb/ReportCardWaring",
                                     data: { Id: row.Id, Parameter: row.CompanyType },
@@ -141,7 +142,7 @@
     <div class="col-lg-12">
         <div class="ibox ibox-c float-e-margins">
             <div class="ibox-title ibox-title-c">
-                <h5>预警提示</h5>
+                <h5>证件到期</h5>
             </div>
             <div class="ibox-content ibox-content-c">
                 <div class="row">

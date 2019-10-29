@@ -38,6 +38,17 @@
                         }
                     });
                 });
+                 $("#sea").on('click', function () {
+                    controller.OpenWindow({
+                        title: "责任协议",
+                        type: 2,
+                        height: "90%",
+                        width: "80%",
+                        url: "WebGovtManage/Restaurant/GovtAgree",
+                        callBack: function (result) {
+                        }
+                    })
+                });
             },
             //行为
             action: {
@@ -111,6 +122,7 @@
                         <div class="col-sm-8 m-b-xs">
                             <div class="input-group">
                                 <button type="button" class="btn btn-sm btn-white" id="export"><i class="fa fa-file-excel-o"></i>导出Excel</button>
+                                <button type="button" class="btn btn-sm btn-white" id="sea" style="margin-left: 10px"><i class="fa fa-plus"></i>责任协议</button>
                             </div>
                         </div>
                         <div class="col-sm-4">
