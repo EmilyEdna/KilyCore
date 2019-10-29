@@ -247,6 +247,11 @@
                         var RoomCounts = 0;
                         var StreetCounts = 0;
                         var DuckCounts = 0;
+                        var SchoolONE = 0;
+                        var SchoolTWO = 0;
+                        var SchoolTHREE = 0;
+                        var SchoolFOUR = 0;
+                         var SchoolFIVE = 0;
                         $.each(result.data, function (i, obj) {
                             var url = "WebGovtManage/Enterprise/RepastSuperviseDetail?Id=";
                             var imgLoction = "http://system.cfda.vip/content/HPlus/img/keysor.png";
@@ -285,6 +290,31 @@
                                  url = "WebGovtManage/Restaurant/SamllSuperviseDetail?Id=";
                                  StreetCounts++;
                             }
+                            if (obj.CompanyType == "学前教育") {
+                                imgLoction = "http://system.cfda.vip/content/HPlus/img/yellow.png";
+                                url = "WebGovtManage/Enterprise/RepastSuperviseDetail?Id=";
+                                SchoolONE++;
+                            }
+                            if (obj.CompanyType == "义务教育") {
+                                imgLoction = "http://system.cfda.vip/content/HPlus/img/lightblue.png";
+                                url = "WebGovtManage/Enterprise/RepastSuperviseDetail?Id=";
+                                SchoolTWO++;
+                            }
+                            if (obj.CompanyType == "高中教育") {
+                                imgLoction = "http://system.cfda.vip/content/HPlus/img/blue.png";
+                                url = "WebGovtManage/Enterprise/RepastSuperviseDetail?Id=";
+                                SchoolTHREE++;
+                            }
+                            if (obj.CompanyType == "高等教育") {
+                                imgLoction = "http://system.cfda.vip/content/HPlus/img/keysor.png";
+                                url = "WebGovtManage/Enterprise/RepastSuperviseDetail?Id=";
+                                SchoolFOUR++;
+                            }
+                             if (obj.CompanyType == "职业教育") {
+                                imgLoction = "http://system.cfda.vip/content/HPlus/img/red.png";
+                                url = "WebGovtManage/Enterprise/RepastSuperviseDetail?Id=";
+                                SchoolFIVE++;
+                            }
                             var myIcon = new BMap.Icon(imgLoction, new BMap.Size(26, 33));
                             options.marker = new BMap.Marker(new BMap.Point(obj.Lng, obj.Lat), { icon: myIcon });
                             options.marker.setTitle(obj.CompanyType);
@@ -315,6 +345,11 @@
                         $("#CookerCount").html(CookerCounts);
                         $("#RoomCount").html(RoomCounts);
                         $("#StreetCount").html(StreetCounts);
+                        $("#SchoolONE").html(SchoolONE);
+                        $("#SchoolTWO").html(SchoolTWO);
+                        $("#SchoolTHREE").html(SchoolTHREE);
+                        $("#SchoolFOUR").html(SchoolFOUR);
+                        $("#SchoolFIVE").html(SchoolFIVE);
                     }
                 });
             },
@@ -561,39 +596,39 @@
     </select>
     <div class="maptishi">
         <ul style="width: auto;">
-            <li>
+            <li class="x">
                 <a href="javascript:76">
                     <div style="width: 16px; height: 14px; background-color: #4DCC59"></div>
                 </a>
                 <a href="">
                     种养殖业(<span id="PlantCount">0</span>家)
                 </a>
-            </li>           
-            <li>
+            </li>
+            <li class="x">
                 <a href="javascript:77">
                     <div style="width: 16px; height: 14px; background-color: #ED2C2D"></div>
                 </a>
                 <a href="">
                     生产企业(<span id="ProduceCount">0</span>家)
                 </a>
-            </li>            
-            <li>
+            </li>
+            <li class="x">
                 <a href="javascript:78">
                     <div style="width: 16px; height: 14px; background-color: #FF8418"></div>
                 </a>
                 <a href="">
                     流通企业(<span id="ExpressCount">0</span>家)
                 </a>
-            </li>           
-            <li>
+            </li>
+            <li class="x">
                 <a href="javascript:82">
                     <div style="width: 16px; height: 14px; background-color: #3F6FD3"></div>
                 </a>
                 <a href="">
                     其他(<span id="OtherCount">0</span>家)
                 </a>
-            </li>            
-            <li>
+            </li>
+            <li class="x">
                 <a href="javascript:103">
                     <div style="width: 16px; height: 14px; background-color: #49A2FE"></div>
                 </a>
@@ -601,7 +636,7 @@
                     餐饮企业(<span id="CookerCount">0</span>家)
                 </a>
             </li>
-            <li>
+            <li class="x">
                 <a href="javascript:124">
                     <div style="width: 16px; height: 14px; background-color: #fd3ac4"></div>
                 </a>
@@ -609,7 +644,7 @@
                     单位食堂(<span id="RoomCount">0</span>家)
                 </a>
             </li>
-            <li>
+            <li class="x">
                 <a href="javascript:136">
                     <div style="width: 16px; height: 14px; background-color: #eec110"></div>
                 </a>
@@ -617,7 +652,7 @@
                     药房药企(<span id="DuckCount">0</span>家)
                 </a>
             </li>
-            <li>
+            <li class="x">
                 <a href="javascript:137">
                     <div style="width: 16px; height: 14px; background-color: #fd3ac4"></div>
                 </a>
@@ -625,14 +660,54 @@
                     三小企业(<span id="StreetCount">0</span>家)
                 </a>
             </li>
-            @*<li>
-                <a href="javascript:138">
+            <li class="hidden y" style="display:table!important;">
+                <a href="javascript:137">
+                    <div style="width: 16px; height: 14px; background-color: #eec110"></div>
+                </a>
+                <a href="">
+                    学前教育(<span id="SchoolONE">0</span>家)
+                </a>
+            </li>
+            <li class="hidden y" style="display:table!important;">
+                <a href="javascript:137">
                     <div style="width: 16px; height: 14px; background-color: #fd3ac4"></div>
                 </a>
-                <a href="map_search.aspx?action=builder&category_id=138&province=510000&city=0&area=0">
-                    特种设备(<span id="EquipCount">0</span>家)
+                <a href="">
+                    义务教育(<span id="SchoolTWO">0</span>家)
                 </a>
-            </li>*@
+            </li>
+            <li class="hidden y" style="display:table!important;">
+                <a href="javascript:137">
+                    <div style="width: 16px; height: 14px; background-color: red"></div>
+                </a>
+                <a href="">
+                    高中教育(<span id="SchoolTHREE">0</span>家)
+                </a>
+            </li>
+            <li class="hidden y" style="display:table!important;">
+                <a href="javascript:137">
+                    <div style="width: 16px; height: 14px; background-color: #FF8418"></div>
+                </a>
+                <a href="">
+                    高等教育(<span id="SchoolFOUR">0</span>家)
+                </a>
+            </li>
+            <li class="hidden y" style="display:table!important;">
+                <a href="javascript:137">
+                    <div style="width: 16px; height: 14px; background-color: #49A2FE"></div>
+                </a>
+                <a href="">
+                    职业教育(<span id="SchoolFIVE">0</span>家)
+                </a>
+            </li>
+            @*<li>
+            <a href="javascript:138">
+                <div style="width: 16px; height: 14px; background-color: #fd3ac4"></div>
+            </a>
+            <a href="map_search.aspx?action=builder&category_id=138&province=510000&city=0&area=0">
+                特种设备(<span id="EquipCount">0</span>家)
+            </a>
+        </li>*@
         </ul>
     </div>
 </div>

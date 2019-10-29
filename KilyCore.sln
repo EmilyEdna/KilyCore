@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KilyCore.WEB", "KilyCore.WE
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KilyCore.API", "KilyCore.API\KilyCore.API.csproj", "{BEE75562-14E6-4F93-8B56-364978C8D609}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KilyCore.Nethereums", "KilyCore.Nethereum\KilyCore.Nethereums.csproj", "{B07754C2-0705-45CF-AA23-5FBE5FE001C2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{BEE75562-14E6-4F93-8B56-364978C8D609}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEE75562-14E6-4F93-8B56-364978C8D609}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEE75562-14E6-4F93-8B56-364978C8D609}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B07754C2-0705-45CF-AA23-5FBE5FE001C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B07754C2-0705-45CF-AA23-5FBE5FE001C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B07754C2-0705-45CF-AA23-5FBE5FE001C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B07754C2-0705-45CF-AA23-5FBE5FE001C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

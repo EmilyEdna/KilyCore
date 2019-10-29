@@ -36,6 +36,40 @@
                             </a>
                         </li>`);
                     });
+                    //图形
+                    var Charts = document.getElementById("productCharts");
+                    options.Pro = echarts.init(Charts, "light");
+                    options.Pro.setOption({
+                        title: {
+                            text: '产品统计',
+                            x: 'left'
+                        },
+                        tooltip: {
+                            trigger: "item",
+                            formatter: "{b0}<br />产品数：{c0}<br />占比：{d0}%"
+                        },
+                        legend: {
+                            type: "scroll",
+                            orient: "vertical",
+                            padding: 0,
+                            top: 15,
+                            right: 0,
+                            itemGap: 5,
+                            itemWidth: 10,
+                            itemHeight: 10,
+                            textStyle: {
+                                fontSize: 10,
+                                color: "#b0c2f9"
+                            }
+                        },
+                        series: [{
+                            name: "产品统计",
+                            type: "pie",
+                            center: ["47%", "55%"],
+                            radius: ["45%", "70%"],
+                            data: result.data
+                        }]
+                    });
                 }
             });
         }
@@ -51,6 +85,11 @@
         <ul class="mui-table-view mui-grid-view mui-grid-9" id="ProductCount">
             
         </ul>
+    </div>
+    <div class="mui-content">
+        <div style="padding:4px 0px;background-color:#fff;margin-top:12px;">
+            <div id="productCharts" style="height: 360px;width:98%;"></div>
+        </div>
     </div>
 </body>
 </html>
