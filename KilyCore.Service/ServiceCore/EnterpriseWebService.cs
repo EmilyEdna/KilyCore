@@ -18,11 +18,13 @@ using KilyCore.Extension.OutSideService;
 using KilyCore.Extension.PayCore.AliPay;
 using KilyCore.Extension.PayCore.WxPay;
 using KilyCore.Extension.UtilExtension;
+using KilyCore.Nethereums;
 using KilyCore.Repositories.BaseRepository;
 using KilyCore.Service.ConstMessage;
 using KilyCore.Service.IServiceCore;
 using KilyCore.Service.QueryExtend;
 using Microsoft.EntityFrameworkCore;
+using Nethereum.Web3;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,6 +32,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 /// <summary>
 /// 作者：刘泽华
@@ -888,6 +891,11 @@ namespace KilyCore.Service.ServiceCore
                 Category=t.Category,
                 CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType)
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            //写入区块链
+            //Task.Run(async () => {
+            //    Web3 web = new Web3("http://localhost:8101");
+            //    NethereumUtil.SendEtherBlock(web, "0x9B65ec00758DF15d7De0C7E70aFA6Ee0cD1859C3", "123456", "0x0FCB94b4B1f6763008aC6bE0de68B50B8f777a10", 2135566);
+            //});
             return data;
         }
 

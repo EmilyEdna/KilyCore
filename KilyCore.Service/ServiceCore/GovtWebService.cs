@@ -744,8 +744,8 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public IList<ResponseGovtDistribut> GetDistributArea()
         {
-            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess);
-            IQueryable<RepastInfo> queryables = Kily.Set<RepastInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess);
+            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess && t.IsDelete == false) ;
+            IQueryable<RepastInfo> queryables = Kily.Set<RepastInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess && t.IsDelete == false);
             if (GovtInfo().AccountType <= GovtAccountEnum.Area)
             {
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
@@ -3326,11 +3326,13 @@ namespace KilyCore.Service.ServiceCore
                     complains.Where(t => t.ComplainTime.Value.Day-DateTime.Now.Day==0).Count(),
                 }
             });
-            //预警
-            bars.Add(new DataBar
+            try
             {
-                name = "证件到期",
-                data = new List<int> {
+                //预警
+                bars.Add(new DataBar
+                {
+                    name = "证件到期",
+                    data = new List<int> {
                     queryables.Where(t => t.CardExpiredDate.Value.Day-DateTime.Now.Day==-6).Count()+queryable.Where(t => t.CardExpiredDate.Value.Day-DateTime.Now.Day==-6).Count()+users.Where(t => t.ExpiredTime.Value.Day-DateTime.Now.Day==-6).Count(),
                     queryables.Where(t => t.CardExpiredDate.Value.Day-DateTime.Now.Day==-5).Count()+queryable.Where(t => t.CardExpiredDate.Value.Day-DateTime.Now.Day==-5).Count()+users.Where(t => t.ExpiredTime.Value.Day-DateTime.Now.Day==-5).Count(),
                     queryables.Where(t => t.CardExpiredDate.Value.Day-DateTime.Now.Day==-4).Count()+queryable.Where(t => t.CardExpiredDate.Value.Day-DateTime.Now.Day==-4).Count()+users.Where(t => t.ExpiredTime.Value.Day-DateTime.Now.Day==-4).Count(),
@@ -3339,7 +3341,13 @@ namespace KilyCore.Service.ServiceCore
                     queryables.Where(t => t.CardExpiredDate.Value.Day-DateTime.Now.Day==-1).Count()+queryable.Where(t => t.CardExpiredDate.Value.Day-DateTime.Now.Day==-1).Count()+users.Where(t => t.ExpiredTime.Value.Day-DateTime.Now.Day==-1).Count(),
                     queryables.Where(t => t.CardExpiredDate.Value.Day-DateTime.Now.Day==0).Count()+queryable.Where(t => t.CardExpiredDate.Value.Day-DateTime.Now.Day==0).Count()+users.Where(t => t.ExpiredTime.Value.Day-DateTime.Now.Day==0).Count(),
                 }
-            });
+                });
+            }
+            catch
+            {
+
+            }
+           
             //告警
             bars.Add(new DataBar
             {
@@ -4367,34 +4375,58 @@ namespace KilyCore.Service.ServiceCore
                     Infos = Infos.Where(t => t.TypePath.Contains(GovtInfo().Area));
                 }
             }
-            var Einfo = Info.Select(t => new ResponseEnterprise()
+            if (!GovtInfo().IsEdu.Value)
             {
-                CompanyId = t.Id,
-                CompanyName = t.CompanyName,
-                TypePath = Kily.Set<SystemArea>().Where(x => x.Id.ToString() == GovtInfo().Area).FirstOrDefault().Name,
-                SafeOffer = t.SafeOffer,
-                CommunityCode = t.CommunityCode,
-                CompanyAddress = t.CompanyAddress,
-                CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
-                CompanyPhone = t.CompanyPhone
-            }).ToList();
-            var Rinfo = Infos.Select(t => new ResponseEnterprise()
+                var Einfo = Info.Select(t => new ResponseEnterprise()
+                {
+                    CompanyId = t.Id,
+                    CompanyName = t.CompanyName,
+                    TypePath = Kily.Set<SystemArea>().Where(x => x.Id.ToString() == GovtInfo().Area).FirstOrDefault().Name,
+                    SafeOffer = t.SafeOffer,
+                    CommunityCode = t.CommunityCode,
+                    CompanyAddress = t.CompanyAddress,
+                    CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
+                    CompanyPhone = t.CompanyPhone
+                }).ToList();
+                var Rinfo = Infos.Select(t => new ResponseEnterprise()
+                {
+                    CompanyId = t.Id,
+                    CompanyName = t.MerchantName,
+                    TypePath = Kily.Set<SystemArea>().Where(x => x.Id.ToString() == GovtInfo().Area).FirstOrDefault().Name,
+                    SafeOffer = t.SafeOffer,
+                    CommunityCode = t.CommunityCode,
+                    CompanyAddress = t.Address,
+                    CompanyTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
+                    CompanyPhone = t.Phone
+                }).ToList();
+                Einfo.AddRange(Rinfo);
+                if (!string.IsNullOrEmpty(name))
+                    return Einfo.Where(t => t.CompanyName.Contains(name)).ToList();
+                if (!string.IsNullOrEmpty(type))
+                    return Einfo.Where(t => t.CompanyTypeName.Contains(type)).ToList();
+                return Einfo;
+            }
+            else
             {
-                CompanyId = t.Id,
-                CompanyName = t.MerchantName,
-                TypePath = Kily.Set<SystemArea>().Where(x => x.Id.ToString() == GovtInfo().Area).FirstOrDefault().Name,
-                SafeOffer = t.SafeOffer,
-                CommunityCode = t.CommunityCode,
-                CompanyAddress = t.Address,
-                CompanyTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
-                CompanyPhone = t.Phone
-            }).ToList();
-            Einfo.AddRange(Rinfo);
-            if (!string.IsNullOrEmpty(name))
-                return Einfo.Where(t => t.CompanyName.Contains(name)).ToList();
-            if (!string.IsNullOrEmpty(type))
-                return Einfo.Where(t => t.CompanyTypeName.Contains(type)).ToList();
-            return Einfo;
+                
+                var Einfo = Infos.Where(o=>o.DiningType==MerchantEnum.UnitCanteen).Select(t => new ResponseEnterprise()
+                {
+                    CompanyId = t.Id,
+                    CompanyName = t.MerchantName,
+                    TypePath = Kily.Set<SystemArea>().Where(x => x.Id.ToString() == GovtInfo().Area).FirstOrDefault().Name,
+                    SafeOffer = t.SafeOffer,
+                    CommunityCode = t.CommunityCode,
+                    CompanyAddress = t.Address,
+                    CompanyTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
+                    CompanyPhone = t.Phone
+                }).ToList();
+                if (!string.IsNullOrEmpty(name))
+                    return Einfo.Where(t => t.CompanyName.Contains(name)).ToList();
+                if (!string.IsNullOrEmpty(type))
+                    return Einfo.Where(t => t.CompanyTypeName.Contains(type)).ToList();
+                return Einfo;
+            }
+            
         }
         /// <summary>
         /// 企业巡查
@@ -4453,34 +4485,57 @@ namespace KilyCore.Service.ServiceCore
                     rinfo = rinfo.Where(t => t.TypePath.Contains(GovtInfo().Area));
                 }
             }
-            var data1 = einfo.Select(t => new
+            if (!GovtInfo().IsEdu.Value)
             {
-                CompanyName = t.CompanyName,
-                CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
-                Temp = temp.Where(x => x.CompanyName == t.CompanyName).Count(),
-                Web = web.Where(x => x.CompanyId == t.Id).Select(x => x.PotrolNum).Sum(),
-                App = app.Where(x => x.CompanyId == t.Id).Count(),
-                Risk = Kily.Set<SystemMessage>().Where(x => x.CompanyId == t.Id).Where(x => x.MsgName == "证件到期提醒").Count(),
-                Plain = plain.Where(x => x.CompanyId == t.Id).Count(),
-                Back = web.Where(x => x.CompanyId == t.Id).Select(x => x.BulletinNum).Sum(),
-            }).ToList();
-            var data2 = rinfo.Select(t => new
+                var data1 = einfo.Select(t => new
+                {
+                    CompanyName = t.CompanyName,
+                    CompanyTypeName = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType),
+                    Temp = temp.Where(x => x.CompanyName == t.CompanyName).Count(),
+                    Web = web.Where(x => x.CompanyId == t.Id).Select(x => x.PotrolNum).Sum(),
+                    App = app.Where(x => x.CompanyId == t.Id).Count(),
+                    Risk = Kily.Set<SystemMessage>().Where(x => x.CompanyId == t.Id).Where(x => x.MsgName == "证件到期提醒").Count(),
+                    Plain = plain.Where(x => x.CompanyId == t.Id).Count(),
+                    Back = web.Where(x => x.CompanyId == t.Id).Select(x => x.BulletinNum).Sum(),
+                }).ToList();
+                var data2 = rinfo.Select(t => new
+                {
+                    CompanyName = t.MerchantName,
+                    CompanyTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
+                    Temp = temp.Where(x => x.CompanyName == t.MerchantName).Count(),
+                    Web = web.Where(x => x.CompanyId == t.Id).Select(x => x.PotrolNum).Sum(),
+                    App = app.Where(x => x.CompanyId == t.Id).Count(),
+                    Risk = Kily.Set<SystemMessage>().Where(x => x.CompanyId == t.Id).Where(x => x.MsgName == "证件到期提醒").Count(),
+                    Plain = plain.Where(x => x.CompanyId == t.Id).Count(),
+                    Back = web.Where(x => x.CompanyId == t.Id).Select(x => x.BulletinNum).Sum(),
+                }).ToList();
+                data1.AddRange(data2);
+                if (!string.IsNullOrEmpty(name))
+                    return data1.Where(t => t.CompanyName.Contains(name)).ToList();
+                if (!string.IsNullOrEmpty(type))
+                    return data1.Where(t => t.CompanyName.Contains(type)).ToList();
+                return data1;
+            }
+            else
             {
-                CompanyName = t.MerchantName,
-                CompanyTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
-                Temp = temp.Where(x => x.CompanyName == t.MerchantName).Count(),
-                Web = web.Where(x => x.CompanyId == t.Id).Select(x => x.PotrolNum).Sum(),
-                App = app.Where(x => x.CompanyId == t.Id).Count(),
-                Risk = Kily.Set<SystemMessage>().Where(x => x.CompanyId == t.Id).Where(x => x.MsgName == "证件到期提醒").Count(),
-                Plain = plain.Where(x => x.CompanyId == t.Id).Count(),
-                Back = web.Where(x => x.CompanyId == t.Id).Select(x => x.BulletinNum).Sum(),
-            }).ToList();
-            data1.AddRange(data2);
-            if (!string.IsNullOrEmpty(name))
-                return data1.Where(t => t.CompanyName.Contains(name)).ToList();
-            if (!string.IsNullOrEmpty(type))
-                return data1.Where(t => t.CompanyName.Contains(type)).ToList();
-            return data1;
+               
+                var data1= rinfo.Where(o=>o.DiningType==MerchantEnum.UnitCanteen).Select(t => new
+                {
+                    CompanyName = t.MerchantName,
+                    CompanyTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),
+                    Temp = temp.Where(x => x.CompanyName == t.MerchantName).Count(),
+                    Web = web.Where(x => x.CompanyId == t.Id).Select(x => x.PotrolNum).Sum(),
+                    App = app.Where(x => x.CompanyId == t.Id).Count(),
+                    Risk = Kily.Set<SystemMessage>().Where(x => x.CompanyId == t.Id).Where(x => x.MsgName == "证件到期提醒").Count(),
+                    Plain = plain.Where(x => x.CompanyId == t.Id).Count(),
+                    Back = web.Where(x => x.CompanyId == t.Id).Select(x => x.BulletinNum).Sum(),
+                }).ToList();
+                if (!string.IsNullOrEmpty(name))
+                    return data1.Where(t => t.CompanyName.Contains(name)).ToList();
+                if (!string.IsNullOrEmpty(type))
+                    return data1.Where(t => t.CompanyName.Contains(type)).ToList();
+                return data1;
+            }
         }
         /// <summary>
         /// 所有产品

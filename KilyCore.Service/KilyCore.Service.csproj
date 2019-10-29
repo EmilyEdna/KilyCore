@@ -11,12 +11,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Nethereum.Web3" Version="3.4.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\KilyCore.DataEntity\KilyCore.DataEntity.csproj" />
     <ProjectReference Include="..\KilyCore.EntityFrameWork\KilyCore.EntityFrameWork.csproj" />
+    <ProjectReference Include="..\KilyCore.Nethereum\KilyCore.Nethereums.csproj" />
     <ProjectReference Include="..\KilyCore.Quartz\KilyCore.Quartz.csproj" />
     <ProjectReference Include="..\KilyCore.Repositories\KilyCore.Repositories.csproj" />
   </ItemGroup>
