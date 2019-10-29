@@ -205,5 +205,16 @@ namespace KilyCore.WEB.Controllers
             var WebRootPath = Environment.WebRootPath;
             return FileUtil.UploadAPK(Files, WebRootPath);
         }
+        /// <summary>
+        /// html转PDF
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public FileResult ConvertHtml2Pdf(string Content) 
+        {
+            FileResult PDF = new FileContentResult(FileUtil.ConvertHtml2Pdf(Content), "application/pdf");
+            PDF.FileDownloadName = "执法结果.pdf";
+            return PDF;
+        }
     }
 }

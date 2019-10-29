@@ -26,13 +26,19 @@
                     type: "post",
                     async: false,
                     success: function (result) {
-                        if (result.data != null)
+                        if (result.data != null) {
                             $("#Content").html(result.data.PatrolTable);
+                            $("#mp3").attr("herf", "http://http://system.cfda.vip"+result.data.Sound);
+                        }
                     }
                 });
             },
             //事件
             InitEvents: function () {
+                $("#pdf").click(function () {
+                    $("#cs").val($("#Content").html());
+                    $("#Pdfform").submit();
+                });
                 //编辑
                 $("#Edit").on("click", function () {
                     var html = $("#Content").html();
@@ -53,8 +59,6 @@
                         controller.Alter("请先保存");
                 });
             },
-            //行为
-            action: {}
         };
         //初始化
         $(document).ready(function () {
@@ -62,6 +66,9 @@
         });
     </script>
 }
+<form id="Pdfform" action="/File/ConvertHtml2Pdf" method="post">
+    <textarea class="hidden" name="Content" id="cs"></textarea>
+</form>
 <div class="ibox float-e-margins">
     <div class="ibox-content">
         <form class="form-horizontal" id="Form" method="post" action="GovtWeb/EditMovePatrol">
@@ -70,6 +77,8 @@
             <div class="btn-group">
                 <button type="button" class="btn btn-default" id="Edit"><i class="fa fa-edit"></i>编辑</button>
                 <button type="button" class="btn btn-default" id="Export" style="margin-left: 10px"><i class="fa fa-file-word-o fa-fw"></i>导出Word</button>
+                <button type="button" class="btn btn-default" id="pdf" style="margin-left: 10px"><i class="fa fa-file-pdf-o fa-fw"></i>导出Pdf</button>
+                <a  class="btn btn-default" id="mp3" style="margin-left: 10px" href="" download="录音.amr"><i class="fa fa-youtube-play fa-fw"></i>下载语音</a>
             </div>
             <div class="row">
                 <div class="col-sm-12" id="Content">

@@ -712,5 +712,14 @@ namespace KilyCore.WEB.Util
             }
             return RootPath + replay + Files.FileName;
         }
+        public static byte[] ConvertHtml2Pdf(string content) {
+            HtmlToPdf converter = new HtmlToPdf();
+            converter.Options.PdfPageSize = PdfPageSize.A4;
+            converter.Options.PdfPageOrientation = PdfPageOrientation.Portrait;
+           SelectPdf.PdfDocument doc = converter.ConvertHtmlString(content);
+            var data = doc.Save();
+            doc.Close();
+            return data;
+        }
     }
 }

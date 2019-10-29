@@ -4821,6 +4821,13 @@
             <param name="pageParam"></param>
             <returns></returns>
         </member>
+        <member name="M:KilyCore.API.Controllers.SystemController.GetMsgDetail(KilyCore.Service.QueryExtend.SimpleParam{System.Nullable{System.Guid}})">
+            <summary>
+            详情
+            </summary>
+            <param name="keys"></param>
+            <returns></returns>
+        </member>
         <member name="M:KilyCore.API.Controllers.SystemController.GetNewsPage(KilyCore.Service.QueryExtend.PageParamList{KilyCore.DataEntity.RequestMapper.System.RequestSystemNews})">
             <summary>
             新闻分页

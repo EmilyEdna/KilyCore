@@ -54,5 +54,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Govt
         /// 执法表
         /// </summary>
         public string PatrolTable { get; set; }
+        public string Sound { get; set; }
     }
 }

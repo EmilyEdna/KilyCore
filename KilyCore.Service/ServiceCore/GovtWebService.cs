@@ -2371,6 +2371,7 @@ namespace KilyCore.Service.ServiceCore
             return Kily.Set<GovtMovePatrol>().Where(t => t.Id == Id).Select(t => new ResponseGovtMovePatrol()
             {
                 Id = t.Id,
+                Sound= t.Sound,
                 PatrolTable = t.PatrolTable
             }).FirstOrDefault();
         }

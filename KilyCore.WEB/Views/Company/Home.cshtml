@@ -104,7 +104,7 @@
             InitMsg: function (Index) {
                 controller.ajax({
                     url: "System/GetMsgPage",
-                    data: { pageNumber: Index, pageSize: 5 },
+                    data: { pageNumber: Index, pageSize: 5},
                     type: "post",
                     async: false,
                     success: function (result) {
@@ -112,13 +112,12 @@
                         $.each(result.data.rows, function (i, obj) {
                             html += '<li><a href="#" data-id="' + obj.ComplainId + '" class="Replay" data-type="'+obj.Category+'"><div class="row"><section>';
                             html += ' <dl><i class="fa fa-comment fa-fw"></i>' + obj.MsgName + '[' + (obj.Status == null ? "待处理" : obj.Status) + '][' + obj.Category + ']</dl>';
-                            html += '<article class="text text-warning">' + obj.MsgContent + '</article>';
                             html += ' <span class="pull-right small">发布时间：' + obj.ReleaseTime + '</span>';
                             html += '</section></div></a></li><li class="divider"></li>';
                         });
                         html += '<div style="margin-left:30%"><label class="label label-warning m-r" id="lastPage" data-index="' + result.data.Index + '">上一页</label>'
                             + '<small>' + result.data.Index + '/' + result.data.TotalPage + '</small>'
-                            + '<label class="label label-warning m-l" id = "nextPage" data - index="' + result.data.Index + '" data - total="' + result.data.TotalPage + '" > 下一页</label ></div > '
+                            + '<label class="label label-warning m-l" id="nextPage" data-index="' + result.data.Index + '" data-total="' + result.data.TotalPage + '" > 下一页</label></div>'
                         $(".dropdown-alerts").html(html);
                         $(".label-primary").html(result.data.total);
                     }
@@ -139,28 +138,19 @@
                         }
                     })
                 });
-                //处理消息
-                $(".Replay").on('click', function () {
-                    var Id = $(this).data().id;
-                    var Category = $(this).data().type;
-                    if (Category == "通报" || Category == "投诉") {
-                        controller.Prompt({ formType: 2, title: Category + "处理" }, function (index) {
-                            controller.ajax({
-                                url: "GovtWeb/ReportComplainInfo",
-                                data: { Id: Id, Parameter: index },
-                                type: 'post',
-                                success: function (result) {
-                                    controller.Close();
-                                    options.InitMsg();
-                                }
-                            });
-                        });
-                    }
-                    else
-                    {
-
-                    }
-
+                //查看详情
+                $(".Replay").click(function () {
+                    let Id = $(this).data().id;
+                    controller.OpenWindow({
+                         title: "消息详情",
+                        type: 2,
+                        height: "90%",
+                        width: "60%",
+                        url: "Common/Msg?Id=" + Id,
+                        callBack: result => {
+                            result.$("#Edit").submit();
+                        }
+                    });
                 });
             },
             //初始化操作文档

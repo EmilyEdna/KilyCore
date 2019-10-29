@@ -30,7 +30,7 @@
             },
             //元素
             InitDom: function () {
-                
+
                 //安全退出
                 options.SignOut();
                 //用户信息
@@ -39,17 +39,17 @@
                 else
                     //获取树
                     options.GetMenu();
-                 //根据餐饮企业类型显示相应模块
-            if (RepastInfo.DiningTypeName == "单位食堂") {
-                $("#iframe0").attr("src", "/Repast/Room");
-                $("#iframe0").attr("data-id", "/Repast/Room");
-            }
-            else {
-                $("#FirstTab").attr("data-id", "/Repast/index");
-                $("#iframe0").attr("src", "/Repast/Index");
-                $("#iframe0").attr("data-id", "/Repast/index");
-            }
-                
+                //根据餐饮企业类型显示相应模块
+                if (RepastInfo.DiningTypeName == "单位食堂") {
+                    $("#iframe0").attr("src", "/Repast/Room");
+                    $("#iframe0").attr("data-id", "/Repast/Room");
+                }
+                else {
+                    $("#FirstTab").attr("data-id", "/Repast/index");
+                    $("#iframe0").attr("src", "/Repast/Index");
+                    $("#iframe0").attr("data-id", "/Repast/index");
+                }
+
                 //显示登录
                 $(".text-muted").prepend(RepastInfo.MerchantName);
                 $(".font-bold").prepend(RepastInfo.Account);
@@ -115,12 +115,11 @@
                         $.each(result.data.rows, function (i, obj) {
                             html += '<li><a href="#" data-id="' + obj.ComplainId + '" class="Replay"><div class="row"><section>';
                             html += ' <dl> <i class="fa fa-comment fa-fw"></i>' + obj.MsgName + '[' + (obj.Status == null ? "待处理" : obj.Status) + '][' + obj.Category + ']</dl>';
-                            html += '<article class="text text-warning">' + obj.MsgContent + '</article>';
                             html += ' <span class="pull-right small">发布时间：' + obj.ReleaseTime + '</span>';
                             html += '</section></div></a></li><li class="divider"></li>';
                         });
                         html += '<div style="margin-left:30%"><label class="label label-warning m-r" id="lastPage" data-index="' + result.data.Index + '">上一页</label>'
-                            + '<small>' + result.data.Index + '/' + result.data.TotalPage+'</small>'
+                            + '<small>' + result.data.Index + '/' + result.data.TotalPage + '</small>'
                             + '<label class="label label-warning m-l" id = "nextPage" data - index="' + result.data.Index + '" data - total="' + result.data.TotalPage + '" > 下一页</label ></div > '
                         $(".dropdown-alerts").html(html);
                         $(".label-primary").html(result.data.total);
@@ -142,20 +141,19 @@
                         }
                     })
                 });
-                //处理消息
-                $(".Replay").on('click', function () {
-                    controller.Prompt({ formType: 2, title: "消息处理" }, function (index) {
-                        controller.ajax({
-                            url: "GovtWeb/ReportComplainInfo",
-                            data: { Id: $(this).data().id, Parameter: index },
-                            type: 'post',
-                            success: function (result) {
-                                controller.Close();
-                                options.InitMsg();
-                            }
-                        });
+                //查看详情
+                $("#more").click(function () {
+                    let Id = $(this).data().id;
+                    controller.OpenWindow({
+                        title: "消息详情",
+                        type: 2,
+                        height: "80%",
+                        width: "90%",
+                        url: "Company/Msg?Id=" + Id,
+                        callBack: result => {
+                           result.$("#Edit").submit();
+                        }
                     });
-
                 });
             },
             //初始化操作文档
@@ -164,7 +162,7 @@
                     $("#HandleFile").attr("href", "../StaticHtml/File/餐饮企业操作手册.docx");
                 if (Param == 20)
                     $("#HandleFile").attr("href", "../StaticHtml/File/单位食堂操作手册.docx");
-                if (Param >20)
+                if (Param > 20)
                     $("#HandleFile").attr("href", "../StaticHtml/File/三小企业操作手册.docx");
             },
             //分页事件
@@ -184,7 +182,7 @@
         //初始化
         $(document).ready(function () {
             options.Init();
-           
+
         });
     </script>
 </head>
@@ -216,7 +214,7 @@
                             </ul>
                         </div>
                         <div class="logo-element">
-                           溯本源
+                            溯本源
                         </div>
                     </li>
                 </ul>

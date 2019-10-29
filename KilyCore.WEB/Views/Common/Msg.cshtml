@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewData["Title"] = "Msg";
+    Layout = "~/Views/Shared/BaseView.cshtml";
+}
+@section script{
+    <script>
+        $(function () {
+            $("#Id").val(controller.GetParam("Id"));
+            var editor1 = controller.Editor("#Content", { width: $(window).width });
+             var editor2 = controller.Editor("#Parameter", { width: $(window).width });
+            controller.ajax({
+                url: "system/GetMsgDetail",
+                type: "get",
+                data: { Id: controller.GetParam("Id") },
+                async: false,
+                success: function (res) {
+                    controller.SetCtrlValue("#Edit", res.data);
+                    $("#Replay").val(res.data.Replay);
+                    editor1.summernote('code', res.data.Content);
+                    editor2.summernote('code', res.data.Replay);
+                }
+            });
+             controller.ValidateConfirm("#Edit");
+        });
+    </script>
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <form class="form-horizontal" method="post" action="GovtWeb/ReportComplainInfo" id="Edit">
+            <input type="hidden" name="Id" id="Id" />
+            <input type="hidden" name="Parameter"  id="Replay"/>
+            <table class="table table-hover table-bordered">
+                <tr>
+                    <th style="text-align:center"><label class="control-label">消息摘要</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" name="Title" class="form-control" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center"><label class="control-label">当前状态</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" name="Status" class="form-control" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center"><label class="control-label">消息类别</label></th>
+                    <td class="has-warning" colspan="3">
+                        <input type="text" name="Category" class="form-control" readonly />
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center"><label class="control-label">消息内容</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="summernote" name="Content" id="Content"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <th style="text-align:center"><label class="control-label">处理回复</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="summernote" name="Parameter" id="Parameter"></div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
