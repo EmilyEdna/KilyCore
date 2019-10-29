@@ -176,7 +176,7 @@ namespace KilyCore.Service.IServiceCore
         #region 消息盒子
 
         PagedResult<ResponseSystemMessage> GetMsgPage(PageParamList<Object> pageParam);
-
+        Object GetMsgDetail(Guid? Id);
         #endregion 消息盒子
 
         #region 新闻资讯

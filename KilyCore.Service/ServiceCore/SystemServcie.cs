@@ -1538,8 +1538,8 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public PagedResult<ResponseSystemMessage> GetMsgPage(PageParamList<Object> pageParam)
         {
-            IQueryable<SystemMessage> queryable = Kily.Set<SystemMessage>().Where(t => !t.Status.Equals("已处理")).OrderByDescending(t => t.CreateTime);
-            IQueryable<GovtComplain> queryables = Kily.Set<GovtComplain>().Where(t => !t.Status.Equals("已处理")).OrderByDescending(t => t.CreateTime);
+            IQueryable<SystemMessage> queryable = Kily.Set<SystemMessage>().OrderByDescending(t => t.CreateTime);
+            IQueryable<GovtComplain> queryables = Kily.Set<GovtComplain>().OrderByDescending(t => t.CreateTime);
             if (CompanyInfo() != null)
                 queryable = queryable.Where(t => t.CompanyId == CompanyInfo().Id || t.TypePath.Contains(CompanyInfo().Area))
                     .Where(t => t.TrageType.Equals(CompanyInfo().CompanyTypeName));
@@ -1559,12 +1559,32 @@ namespace KilyCore.Service.ServiceCore
                 ReleaseTime = t.ReleaseTime,
                 Category = t.Category,
                 ComplainId = (t.ComplainId == Guid.Empty ? t.Id : t.ComplainId),
-                //ComplainId = (t.ComplainId == Guid.Empty ? t.CompanyId.Value : t.ComplainId),
                 Status = string.IsNullOrEmpty(x.FirstOrDefault().Status) ? t.Status : x.FirstOrDefault().Status
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
 
+        /// <summary>
+        /// 消息详情
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public Object GetMsgDetail(Guid? Id)
+        {
+            IQueryable<SystemMessage> queryable = Kily.Set<SystemMessage>().OrderByDescending(t => t.CreateTime);
+            IQueryable<GovtComplain> queryables = Kily.Set<GovtComplain>().OrderByDescending(t => t.CreateTime);
+            SystemMessage message = queryable.Where(t => t.Id == Id).AsNoTracking().FirstOrDefault();
+            GovtComplain complain = queryables.Where(t => t.Id == Id).AsNoTracking().FirstOrDefault();
+            var obj = new
+            {
+                Title = message != null ? message.MsgName : complain.ProductName,
+                Content = message != null ? message.MsgContent : complain.ComplainContent,
+                Replay = message != null ? message.HandleContent : complain.HandlerContent,
+                Status = message != null ? message.Status : complain.Status,
+                Category = message != null ? message.Category : complain.Category
+            };
+            return obj;
+        }
         #endregion 消息盒子
 
         #region 新闻资讯

@@ -772,7 +772,16 @@ namespace KilyCore.API.Controllers
         {
             return ObjectResultEx.Instance(SystemService.GetMsgPage(pageParam), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
-
+        /// <summary>
+        /// 详情
+        /// </summary>
+        /// <param name="keys"></param>
+        /// <returns></returns>
+        [HttpGet("GetMsgDetail")]
+        public ObjectResultEx GetMsgDetail(SimpleParam<Guid?> keys) 
+        {
+            return ObjectResultEx.Instance(SystemService.GetMsgDetail(keys.Id), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+        }
         #endregion 消息盒子
 
         #region 新闻资讯
