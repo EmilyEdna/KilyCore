@@ -115,8 +115,7 @@
                         $.each(result.data.rows, function (i, obj) {
                             html += '<li><a href="#" data-id="' + obj.ComplainId + '" class="Replay"><div class="row"><section>';
                             html += ' <dl> <i class="fa fa-comment fa-fw"></i>' + obj.MsgName + '[' + (obj.Status == null ? "待处理" : obj.Status) + '][' + obj.Category + ']</dl>';
-                            html += '<article class="text text-warning">' + obj.MsgContent + '</article>';
-                            html += ' <span class="pull-right small">发布时间：' + obj.ReleaseTime + '</span><label class="label label-success" id="more" data-id="' + obj.ComplainId + '" data-mo="">详情</label>';
+                            html += ' <span class="pull-right small">发布时间：' + obj.ReleaseTime + '</span>';
                             html += '</section></div></a></li><li class="divider"></li>';
                         });
                         html += '<div style="margin-left:30%"><label class="label label-warning m-r" id="lastPage" data-index="' + result.data.Index + '">上一页</label>'
@@ -145,7 +144,6 @@
                 //查看详情
                 $("#more").click(function () {
                     let Id = $(this).data().id;
-                    $(this).data().mo = true;
                     controller.OpenWindow({
                         title: "消息详情",
                         type: 2,
@@ -153,28 +151,9 @@
                         width: "90%",
                         url: "Company/Msg?Id=" + Id,
                         callBack: result => {
-                            result.popClose();
+                           result.$("#Edit").submit();
                         }
                     });
-                });
-                //处理消息
-                $(".Replay").on('click', function () {
-                    var more = $(this).find("#more").data();
-                    if (more.mo != true) {
-                        controller.Prompt({ formType: 2, title: "消息处理" }, function (index) {
-                            controller.ajax({
-                                url: "GovtWeb/ReportComplainInfo",
-                                data: { Id: $(this).data().id, Parameter: index },
-                                type: 'post',
-                                success: function (result) {
-                                    controller.Close();
-                                    options.InitMsg();
-                                }
-                            });
-                        });
-                    } else {
-                        more.mo = false;
-                    }
                 });
             },
             //初始化操作文档

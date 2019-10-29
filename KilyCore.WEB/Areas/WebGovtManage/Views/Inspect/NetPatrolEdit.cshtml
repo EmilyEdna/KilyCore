@@ -13,6 +13,7 @@
             //元素
             InitDom: function () {
                 $("#Id").val(controller.GetParam("Id"));
+               controller.Editor(".summernote", { width: $(window).width });
             },
             //事件
             InitEvents: function () {
@@ -32,21 +33,22 @@
     <div class="ibox-content">
         <form class="form-horizontal" method="post" action="GovtWeb/EditNetPatrol" id="Edit">
             <input type="hidden" name="Id" id="Id" />
+            <input type="hidden" name="Content" />
             <table class="table table-hover table-bordered">
                 <colgroup>
-                    <col width="120" />
+                    <col width="140" />
                     <col />
                 </colgroup>
                 <tr>
-                    <th style="text-align:center;"><label class="control-label">通报原因</label></th>
+                    <th style="text-align:center;"><label class="control-label">标题</label></th>
                     <td class="has-warning" colspan="3">
-                        <input  type="text" class="form-control" name="Title"/>
+                        <input type="text" class="form-control" name="Title" />
                     </td>
                 </tr>
                 <tr>
-                    <th style="text-align:center;"><label class="control-label">整改意见</label></th>
+                    <th style="text-align:center;"><label class="control-label">通报原因及整改意见</label></th>
                     <td class="has-warning" colspan="3">
-                        <textarea class="form-control" name="Content" rows="8" maxlength="300"></textarea>
+                        <div class="summernote" name="Content"></div>
                     </td>
                 </tr>
             </table>
