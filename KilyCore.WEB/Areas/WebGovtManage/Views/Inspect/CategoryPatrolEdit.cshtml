@@ -49,12 +49,6 @@
             <input type="hidden" name="TypePath" id="TypePath" />
             <input  type="hidden" name="Template"/>
             <table class="table table-hover table-bordered">
-                <colgroup>
-                    <col width="10%" />
-                    <col width="40%" />
-                    <col width="10%" />
-                    <col width="40%" />
-                </colgroup>
                 <tr>
                     <th><label class="control-label">类目名称</label></th>
                     <td class="has-warning">
@@ -73,9 +67,22 @@
                     <td class="has-warning">
                         <input class="form-control" name="Grade" maxlength="300" />
                     </td>
-                    <th><label class="control-label">备注</label></th>
+                    <th><label class="control-label">企业类型</label></th>
                     <td class="has-warning">
-                        <input class="form-control" name="Remark" maxlength="300" />
+                        <select type="select" name="CompanyType" class="form-control">
+                            <option value="种植企业">种植企业</option>
+                            <option value="养殖企业">养殖企业</option>
+                            <option value="生产企业">生产企业</option>
+                            <option value="流通企业">流通企业</option>
+                            <option value="餐饮企业">餐饮企业</option>
+                            <option value="学校单位">学校单位</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">备注</label></th>
+                    <td class="has-warning" colspan="3">
+                        <textarea  class="form-control" name="Remark" rows="3"></textarea>
                     </td>
                 </tr>
                 <tr>

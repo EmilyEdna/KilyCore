@@ -359,7 +359,7 @@ namespace KilyCore.Service.IServiceCore
 
         PagedResult<ResponseSystemLogInfo> GetHandlerLogPage(PageParamList<RequestSystemLogInfo> pageParam);
 
-        string EditHandlerLog(List<Guid> Keys);
+        string EditHandlerLog(List<Guid> Keys, bool flag);
 
         #endregion 操作日志
 

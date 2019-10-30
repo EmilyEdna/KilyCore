@@ -33,6 +33,10 @@ namespace KilyCore.EntityFrameWork.Model.Govt
         /// </summary>
         public virtual string CategoryType { get; set; }
         /// <summary>
+        /// 企业类型
+        /// </summary>
+        public virtual string CompanyType { get; set; }
+        /// <summary>
         /// 评分项
         /// </summary>
         public virtual string Grade { get; set; }

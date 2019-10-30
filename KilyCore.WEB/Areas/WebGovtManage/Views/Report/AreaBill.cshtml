@@ -43,7 +43,8 @@
             //事件
             InitEvents: function () {
                 //导出Excel
-                $("#exportIn").on('click', function () {
+                $("#export").on('click', function () {
+                    debugger;
                     $("#tableList").tableExport({
                         fileName: "区域企业一览表",
                         ignoreColumn: ["Handler"],
@@ -65,49 +66,49 @@
             options.Init();
         });
         //企业详情
-        function ShowCompanyDetail(Id,CompanyName,CompanyTypeName) {
-             //追加抽查次数
-                controller.ajax({
-                    url: "GovtWeb/EditPatrol",
-                    data: { CompanyId: Id, TradeType: CompanyTypeName, CompanyName: CompanyName, TypePath: GovtInfo.TypePath },
-                    async: false,
-                    type: "post",
-                    success: function (result) { }
-                });
-                var Url = "";
-                if (CompanyTypeName.indexOf("企业")>-1 && CompanyTypeName != "餐饮企业") {
-                    Url = "WebGovtManage/Enterprise/CompanySuperviseDetail?Id=" + Id;
-                }else {
-                    if (CompanyTypeName == "餐饮企业") {
-                        Url = "WebGovtManage/Enterprise/RepastSuperviseDetail?Id=" + Id;
-                    }
-                    else if (CompanyTypeName.indexOf("小") > -1) {
-                        Url = "WebGovtManage/Restaurant/SamllSuperviseDetail?Id=" + Id;
-                    }
-                    else {
-                        Url = "WebGovtManage/Restaurant/UnitSuperviseDetail?Id=" + Id;
-                    }
+        function ShowCompanyDetail(Id, CompanyName, CompanyTypeName) {
+            //追加抽查次数
+            controller.ajax({
+                url: "GovtWeb/EditPatrol",
+                data: { CompanyId: Id, TradeType: CompanyTypeName, CompanyName: CompanyName, TypePath: GovtInfo.TypePath },
+                async: false,
+                type: "post",
+                success: function (result) { }
+            });
+            var Url = "";
+            if (CompanyTypeName.indexOf("企业") > -1 && CompanyTypeName != "餐饮企业") {
+                Url = "WebGovtManage/Enterprise/CompanySuperviseDetail?Id=" + Id;
+            } else {
+                if (CompanyTypeName == "餐饮企业") {
+                    Url = "WebGovtManage/Enterprise/RepastSuperviseDetail?Id=" + Id;
                 }
-                controller.OpenWindow({
-                    title:  CompanyName,
-                    type: 2,
-                    height: "90%",
-                    width: "80%", 
-                    btn:["通报","关闭"],
-                    url: Url,
-                    callBack: function (result) {
-                        controller.OpenWindow({
-                            title: "通报批评-"+ CompanyName,
-                            type: 2,
-                            height: "50%",
-                            width: "60%",  
-                            url: "WebGovtManage/Inspect/NetPatrolEdit?Id=" + Id,
-                            callBack: function (res) {
-                                res.$("#Edit").submit();
-                            }
-                        })
-                    }
-                })
+                else if (CompanyTypeName.indexOf("小") > -1) {
+                    Url = "WebGovtManage/Restaurant/SamllSuperviseDetail?Id=" + Id;
+                }
+                else {
+                    Url = "WebGovtManage/Restaurant/UnitSuperviseDetail?Id=" + Id;
+                }
+            }
+            controller.OpenWindow({
+                title: CompanyName,
+                type: 2,
+                height: "90%",
+                width: "80%",
+                btn: ["通报", "关闭"],
+                url: Url,
+                callBack: function (result) {
+                    controller.OpenWindow({
+                        title: "通报批评-" + CompanyName,
+                        type: 2,
+                        height: "50%",
+                        width: "60%",
+                        url: "WebGovtManage/Inspect/NetPatrolEdit?Id=" + Id,
+                        callBack: function (res) {
+                            res.$("#Edit").submit();
+                        }
+                    })
+                }
+            })
         }
     </script>
 }

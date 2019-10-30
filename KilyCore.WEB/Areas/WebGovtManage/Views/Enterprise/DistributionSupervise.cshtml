@@ -177,13 +177,21 @@
                             color: #666;
                             margin: auto auto
                         }
-        .maptishi li{
-            border-bottom:1px solid #ddd;
-            width:100%;
-            display:table;
+
+        .maptishi li {
+            border-bottom: 1px solid #ddd;
+            width: 100%;
+            display: table;
         }
-        .maptishi li a{display:inline-block;float:left;}
-        .maptishi li a div{margin:8px 12px;}
+
+            .maptishi li a {
+                display: inline-block;
+                float: left;
+            }
+
+                .maptishi li a div {
+                    margin: 8px 12px;
+                }
     </style>
 }
 @section script{
@@ -251,7 +259,7 @@
                         var SchoolTWO = 0;
                         var SchoolTHREE = 0;
                         var SchoolFOUR = 0;
-                         var SchoolFIVE = 0;
+                        var SchoolFIVE = 0;
                         $.each(result.data, function (i, obj) {
                             var url = "WebGovtManage/Enterprise/RepastSuperviseDetail?Id=";
                             var imgLoction = "http://system.cfda.vip/content/HPlus/img/keysor.png";
@@ -270,10 +278,10 @@
                                 url = "WebGovtManage/Enterprise/CompanySuperviseDetail?Id=";
                                 ExpressCounts++;
                             }
-                             if (obj.CompanyType == "其他企业") {
+                            if (obj.CompanyType == "其他企业") {
                                 imgLoction = "http://system.cfda.vip/content/HPlus/img/lightblue.png";
-                                 url = "WebGovtManage/Enterprise/CompanySuperviseDetail?Id=";
-                                 OtherCounts++;
+                                url = "WebGovtManage/Enterprise/CompanySuperviseDetail?Id=";
+                                OtherCounts++;
                             }
                             if (obj.CompanyType == "餐饮企业") {
                                 imgLoction = "http://system.cfda.vip/content/HPlus/img/red.png";
@@ -285,10 +293,10 @@
                                 url = "WebGovtManage/Enterprise/RepastSuperviseDetail?Id=";
                                 RoomCounts++;
                             }
-                             if (obj.CompanyType == "小作坊"||obj.CompanyType == "小摊贩"||obj.CompanyType == "小经营店") {
+                            if (obj.CompanyType == "小作坊" || obj.CompanyType == "小摊贩" || obj.CompanyType == "小经营店") {
                                 imgLoction = "http://system.cfda.vip/content/HPlus/img/yellow.png";
-                                 url = "WebGovtManage/Restaurant/SamllSuperviseDetail?Id=";
-                                 StreetCounts++;
+                                url = "WebGovtManage/Restaurant/SamllSuperviseDetail?Id=";
+                                StreetCounts++;
                             }
                             if (obj.CompanyType == "学前教育") {
                                 imgLoction = "http://system.cfda.vip/content/HPlus/img/yellow.png";
@@ -310,7 +318,7 @@
                                 url = "WebGovtManage/Enterprise/RepastSuperviseDetail?Id=";
                                 SchoolFOUR++;
                             }
-                             if (obj.CompanyType == "职业教育") {
+                            if (obj.CompanyType == "职业教育") {
                                 imgLoction = "http://system.cfda.vip/content/HPlus/img/red.png";
                                 url = "WebGovtManage/Enterprise/RepastSuperviseDetail?Id=";
                                 SchoolFIVE++;
@@ -381,9 +389,14 @@
                             allOverlays[i].show();
                     }
                 });
-                //搜索
-                $("#search").click(function () {
-
+                $(".so").click(function () {
+                    var allOverlays = options.Map.getOverlays();
+                    for (var i = 0; i < allOverlays.length - 1; i++) {
+                        if ($(this).data().view !== allOverlays[i].getTitle())
+                            allOverlays[i].hide();
+                        else
+                            allOverlays[i].show();
+                    }
                 });
 
             },
@@ -597,116 +610,77 @@
     <div class="maptishi">
         <ul style="width: auto;">
             <li class="x">
-                <a href="javascript:76">
-                    <div style="width: 16px; height: 14px; background-color: #4DCC59"></div>
-                </a>
-                <a href="">
+                <small class="btn btn-sm btn-default so" data-view="种养殖业" style="background-color: #4DCC59;margin:0 0 0 35px">
                     种养殖业(<span id="PlantCount">0</span>家)
-                </a>
+                </small>
             </li>
             <li class="x">
-                <a href="javascript:77">
-                    <div style="width: 16px; height: 14px; background-color: #ED2C2D"></div>
-                </a>
-                <a href="">
+                <small data-view="种养殖业" class="btn btn-sm btn-default so" style="background-color: #ED2C2D;margin:0 0 0 35px">
                     生产企业(<span id="ProduceCount">0</span>家)
-                </a>
+                </small>
             </li>
             <li class="x">
-                <a href="javascript:78">
-                    <div style="width: 16px; height: 14px; background-color: #FF8418"></div>
-                </a>
-                <a href="">
+                <small class="btn btn-sm btn-default so" data-view="流通企业" style="background-color: #FF8418;margin:0 0 0 35px">
                     流通企业(<span id="ExpressCount">0</span>家)
-                </a>
+                </small>
             </li>
             <li class="x">
-                <a href="javascript:82">
-                    <div style="width: 16px; height: 14px; background-color: #3F6FD3"></div>
-                </a>
-                <a href="">
+                <small class="btn btn-sm btn-default so" data-view="其他" style="background-color: #3F6FD3;margin:0 0 0 35px">
                     其他(<span id="OtherCount">0</span>家)
-                </a>
+                </small>
             </li>
             <li class="x">
-                <a href="javascript:103">
-                    <div style="width: 16px; height: 14px; background-color: #49A2FE"></div>
-                </a>
-                <a href="">
+                <small class="btn btn-sm btn-default so" data-view="餐饮企业" style="background-color: #49A2FE;margin:0 0 0 35px">
                     餐饮企业(<span id="CookerCount">0</span>家)
-                </a>
+                </small>
             </li>
             <li class="x">
-                <a href="javascript:124">
-                    <div style="width: 16px; height: 14px; background-color: #fd3ac4"></div>
-                </a>
-                <a href="">
+                <small class="btn btn-sm btn-default so" data-view="单位食堂" style="background-color: #fd3ac4;margin:0 0 0 35px">
                     单位食堂(<span id="RoomCount">0</span>家)
-                </a>
+                </small>
             </li>
             <li class="x">
-                <a href="javascript:136">
-                    <div style="width: 16px; height: 14px; background-color: #eec110"></div>
-                </a>
-                <a href="">
+                <small class="btn btn-sm btn-default so" data-view="药房药企" style="background-color: #eec110;margin:0 0 0 35px">
                     药房药企(<span id="DuckCount">0</span>家)
-                </a>
+                </small>
             </li>
             <li class="x">
-                <a href="javascript:137">
-                    <div style="width: 16px; height: 14px; background-color: #fd3ac4"></div>
-                </a>
-                <a href="">
+                <small class="btn btn-sm btn-default so" data-view="三小企业" style="background-color: #fd3ac4;margin:0 0 0 35px">
                     三小企业(<span id="StreetCount">0</span>家)
-                </a>
+                </small>
             </li>
             <li class="hidden y" style="display:table!important;">
-                <a href="javascript:137">
-                    <div style="width: 16px; height: 14px; background-color: #eec110"></div>
-                </a>
-                <a href="">
+                <small class="btn btn-sm btn-default so" data-view="学前教育" style="background-color: #eec110;margin:0 0 0 35px">
                     学前教育(<span id="SchoolONE">0</span>家)
-                </a>
+                </small>
             </li>
             <li class="hidden y" style="display:table!important;">
-                <a href="javascript:137">
-                    <div style="width: 16px; height: 14px; background-color: #fd3ac4"></div>
-                </a>
-                <a href="">
+                <small class="btn btn-sm btn-default so" data-view="义务教育" style="background-color: #fd3ac4;margin:0 0 0 35px">
                     义务教育(<span id="SchoolTWO">0</span>家)
-                </a>
+                </small>
             </li>
             <li class="hidden y" style="display:table!important;">
-                <a href="javascript:137">
-                    <div style="width: 16px; height: 14px; background-color: red"></div>
-                </a>
-                <a href="">
+                <small class="btn btn-sm btn-default so" data-view="高中教育" style="background-color: red;margin:0 0 0 35px">
                     高中教育(<span id="SchoolTHREE">0</span>家)
-                </a>
+                </small>
             </li>
             <li class="hidden y" style="display:table!important;">
-                <a href="javascript:137">
-                    <div style="width: 16px; height: 14px; background-color: #FF8418"></div>
-                </a>
-                <a href="">
+                <small class="btn btn-sm btn-default so" data-view="高等教育" style="background-color: #FF8418;margin:0 0 0 35px">
                     高等教育(<span id="SchoolFOUR">0</span>家)
-                </a>
+                </small>
             </li>
             <li class="hidden y" style="display:table!important;">
-                <a href="javascript:137">
-                    <div style="width: 16px; height: 14px; background-color: #49A2FE"></div>
-                </a>
-                <a href="">
+                <small class="btn btn-sm btn-default so" data-view="职业教育" style="background-color: #49A2FE;margin:0 0 0 35px">
                     职业教育(<span id="SchoolFIVE">0</span>家)
-                </a>
+                </small>
             </li>
             @*<li>
-            <a href="javascript:138">
+            <small href="javascript:138">
                 <div style="width: 16px; height: 14px; background-color: #fd3ac4"></div>
-            </a>
-            <a href="map_search.aspx?action=builder&category_id=138&province=510000&city=0&area=0">
+            </small>
+            <small href="map_search.aspx?action=builder&category_id=138&province=510000&city=0&area=0">
                 特种设备(<span id="EquipCount">0</span>家)
-            </a>
+            </small>
         </li>*@
         </ul>
     </div>

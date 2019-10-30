@@ -3165,11 +3165,12 @@
             <param name="pageParam"></param>
             <returns></returns>
         </member>
-        <member name="M:KilyCore.API.Controllers.GovtWebController.EditHandlerLog(System.Collections.Generic.List{System.Guid})">
+        <member name="M:KilyCore.API.Controllers.GovtWebController.EditHandlerLog(System.Collections.Generic.List{System.Guid},System.Boolean)">
             <summary>
-            批量阅读
+            批量阅读和广播
             </summary>
             <param name="keys"></param>
+            <param name="flag"></param>
             <returns></returns>
         </member>
         <member name="M:KilyCore.API.Controllers.GovtWebController.GetAreaShow(KilyCore.Service.QueryExtend.SimpleParam{System.String},KilyCore.Service.QueryExtend.SimpleParam{System.String})">

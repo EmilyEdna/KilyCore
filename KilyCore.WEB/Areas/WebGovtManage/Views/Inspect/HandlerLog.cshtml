@@ -34,8 +34,21 @@
                     controller.ajax({
                         url: "GovtWeb/EditHandlerLog",
                         type: "post",
-                        async:false,
-                        data: { keys: Ids },
+                        async: false,
+                        data: { keys: Ids, flag: true },
+                        success: (res) => {
+                            controller.Msg(res.data);
+                             options.$table.refresh();
+                        }
+                    });
+                });
+                 $("#open").click(() => {
+                    const Ids = Array.from(options.IdListIn);
+                    controller.ajax({
+                        url: "GovtWeb/EditHandlerLog",
+                        type: "post",
+                        async: false,
+                        data: { keys: Ids, flag: false },
                         success: (res) => {
                             controller.Msg(res.data);
                              options.$table.refresh();
@@ -72,7 +85,8 @@
                     <form id="Edit">
                         <div class="col-sm-8 m-b-xs">
                             <div class="input-group">
-                                <button type="button" class="btn btn-sm btn-white" id="add"><i class="fa fa-eye"></i>标记为已读</button>
+                                <button type="button" class="btn btn-sm btn-white" id="add"><i class="fa fa-eye"></i>标记已读</button>
+                                <button type="button" class="btn btn-sm btn-white" id="open"><i class="fa fa-rss"></i>一键广播</button>
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -96,6 +110,7 @@
                                 <th data-field="HandlerTime" class="th-center">操作时间</th>
                                 <th data-field="HandlerContent" class="th-center" data-align="left" data-halign="center">操作详情</th>
                                 <th data-field="Status" class="th-center">状态</th>
+                                <th data-field="Open" class="th-center">广播状态</th>
                             </tr>
                         </thead>
                     </table>

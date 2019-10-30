@@ -62,37 +62,37 @@
             options.Init();
         });
         //产品详情
-        function ShowProductDetail(Id,CompanyId,CompanyName,ProductName,ProductTypeName) {
-                var Url = "";                
-                if (ProductTypeName == "食品"||ProductTypeName == "农产品") {
-                    Url = "WebGovtManage/Product/EdibleSuperviseDetail?Id=" + Id;
+        function ShowProductDetail(Id, CompanyId, CompanyName, ProductName, ProductTypeName) {
+            var Url = "";
+            if (ProductTypeName == "食品" || ProductTypeName == "农产品") {
+                Url = "WebGovtManage/Product/EdibleSuperviseDetail?Id=" + Id;
+            }
+            else if (ProductTypeName == "化妆品" || ProductTypeName == "药品") {
+                Url = "WebGovtManage/Product/WorkSuperviseDetail?Id=" + Id;
+            }
+            else {
+                Url = "WebGovtManage/Product/OtherSuperviseDetail?Id=" + Id;
+            }
+            controller.OpenWindow({
+                title: ProductName,
+                type: 2,
+                height: "90%",
+                width: "80%",
+                btn: ["通报", "关闭"],
+                url: Url,
+                callBack: function (result) {
+                    controller.OpenWindow({
+                        title: "通报批评-" + CompanyName,
+                        type: 2,
+                        height: "50%",
+                        width: "60%",
+                        url: "WebGovtManage/Inspect/NetPatrolEdit?Id=" + CompanyId,
+                        callBack: function (res) {
+                            res.$("#Edit").submit();
+                        }
+                    })
                 }
-                else if (ProductTypeName == "化妆品"||ProductTypeName == "药品") {
-                    Url = "WebGovtManage/Product/WorkSuperviseDetail?Id=" + Id;
-                }
-                else {
-                    Url = "WebGovtManage/Product/OtherSuperviseDetail?Id=" + Id;
-                }
-                controller.OpenWindow({
-                    title: ProductName,
-                    type: 2,
-                    height: "90%",
-                    width: "80%",  
-                    btn:["通报","关闭"],
-                    url: Url,
-                    callBack: function (result) {
-                        controller.OpenWindow({
-                            title: "通报批评-"+ CompanyName,
-                            type: 2,
-                            height: "50%",
-                            width: "60%",  
-                            url: "WebGovtManage/Inspect/NetPatrolEdit?Id=" + CompanyId,
-                            callBack: function (res) {
-                                res.$("#Edit").submit();
-                            }
-                        })
-                    }
-                })
+            })
         }
     </script>
 }

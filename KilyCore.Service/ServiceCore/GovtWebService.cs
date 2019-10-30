@@ -187,9 +187,9 @@ namespace KilyCore.Service.ServiceCore
                      DepartId = t.DepartId,
                      Email = t.Email,
                      Flag = t.UpdateUser,
-                     IsActiveUser=t.IsActiveUser,
-                     WorkNum=t.WorkNum,
-                     ActiveImg=t.ActiveImg
+                     IsActiveUser = t.IsActiveUser,
+                     WorkNum = t.WorkNum,
+                     ActiveImg = t.ActiveImg
                  }).AsNoTracking().FirstOrDefault();
             return data;
         }
@@ -635,7 +635,7 @@ namespace KilyCore.Service.ServiceCore
                 AccountType = t.AccountType,
                 Phone = t.Phone,
                 Email = t.Email,
-                WorkNum=t.WorkNum
+                WorkNum = t.WorkNum
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -744,7 +744,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public IList<ResponseGovtDistribut> GetDistributArea()
         {
-            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess && t.IsDelete == false) ;
+            IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess && t.IsDelete == false);
             IQueryable<RepastInfo> queryables = Kily.Set<RepastInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess && t.IsDelete == false);
             if (GovtInfo().AccountType <= GovtAccountEnum.Area)
             {
@@ -819,7 +819,7 @@ namespace KilyCore.Service.ServiceCore
                     LngAndLat = t.LngAndLat,
                     Address = t.Address,
                     CompanyCode = t.CommunityCode,
-                    CompanyImg=t.MerchantImage,
+                    CompanyImg = t.MerchantImage,
                     CompanyType = t.AllowUnit
                 }).ToList();
             }
@@ -1907,7 +1907,7 @@ namespace KilyCore.Service.ServiceCore
                 }).ToList();
                 Repast.AddRange(MerUser);
                 Repast.AddRange(complains);
-                return Repast.Where(t => t.CardExpiredDate.Value <= DateTime.Now.AddDays(20)).OrderByDescending(o=>o.CardExpiredDate).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+                return Repast.Where(t => t.CardExpiredDate.Value <= DateTime.Now.AddDays(20)).OrderByDescending(o => o.CardExpiredDate).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             }
         }
         #endregion 风险预警
@@ -2143,7 +2143,7 @@ namespace KilyCore.Service.ServiceCore
                 Id = t.Id,
                 CategoryName = t.CategoryName,
                 CategoryType = t.CategoryType,
-                Remark = t.Remark
+                CompanyType = t.CompanyType
             }).ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
@@ -2376,7 +2376,7 @@ namespace KilyCore.Service.ServiceCore
             return Kily.Set<GovtMovePatrol>().Where(t => t.Id == Id).Select(t => new ResponseGovtMovePatrol()
             {
                 Id = t.Id,
-                Sound= t.Sound,
+                Sound = t.Sound,
                 PatrolTable = t.PatrolTable
             }).FirstOrDefault();
         }
@@ -2902,7 +2902,7 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public IList<DataPie> GetProductRank()
         {
-            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false&&t.AuditType==AuditEnum.AuditSuccess);
+            IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.IsDelete == false && t.AuditType == AuditEnum.AuditSuccess);
             IQueryable<EnterpriseInfo> queryable = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false).Where(t => t.AuditType == AuditEnum.AuditSuccess);
             if (GovtInfo().AccountType <= GovtAccountEnum.City)
                 queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().City));
@@ -3033,12 +3033,6 @@ namespace KilyCore.Service.ServiceCore
         /// <returns></returns>
         public Object GetNewStayInTodayCount()
         {
-            var today = DateTime.Parse(DateTime.Now.ToShortDateString());
-            var tomorrow = today.AddDays(1);
-            //IQueryable<EnterpriseInfo> coms = Kily.Set<EnterpriseInfo>().Where(t => t.CreateTime >= today && t.CreateTime < tomorrow);
-            //IQueryable<RepastInfo> mers = Kily.Set<RepastInfo>().Where(t => t.CreateTime >= today && t.CreateTime < tomorrow);
-            //IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => t.CreateTime <= today && t.CreateTime <= tomorrow).Where(t => t.AuditType == AuditEnum.AuditSuccess);
-            //IQueryable<EnterpriseScanCodeInfo> infos = Kily.Set<EnterpriseScanCodeInfo>().Where(t => t.CreateTime >= today && t.CreateTime < tomorrow);
             IQueryable<EnterpriseInfo> coms = Kily.Set<EnterpriseInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess);
             IQueryable<RepastInfo> mers = Kily.Set<RepastInfo>().Where(t => t.AuditType == AuditEnum.AuditSuccess);
             IQueryable<EnterpriseGoods> goods = Kily.Set<EnterpriseGoods>().Where(t => 1 == 1).Where(t => t.AuditType == AuditEnum.AuditSuccess);
@@ -3098,7 +3092,7 @@ namespace KilyCore.Service.ServiceCore
         public IList<DataPie> GetNewStayInAllCompanyCount()
         {
             var Temp = GovtInfo();
-            IQueryable<EnterpriseInfo> coms = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false&&t.AuditType==AuditEnum.AuditSuccess);
+            IQueryable<EnterpriseInfo> coms = Kily.Set<EnterpriseInfo>().Where(t => t.IsDelete == false && t.AuditType == AuditEnum.AuditSuccess);
             IQueryable<RepastInfo> mers = Kily.Set<RepastInfo>().Where(t => t.IsDelete == false && t.AuditType == AuditEnum.AuditSuccess);
             IQueryable<CookInfo> cooks = Kily.Set<CookInfo>().Where(t => t.IsDelete == false && t.AuditType == AuditEnum.AuditSuccess);
             if (Temp.AccountType <= GovtAccountEnum.City)
@@ -3152,7 +3146,6 @@ namespace KilyCore.Service.ServiceCore
             }
             List<DataPie> Pie = coms.GroupBy(t => t.CompanyType).Select(t => new DataPie { name = AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.Key), value = t.Count() }).ToList();
             Pie.AddRange(mers.GroupBy(t => t.DiningType).Select(t => new DataPie { name = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.Key), value = t.Count() }).ToList());
-            //Pie.Add(new DataPie { name = "乡村厨师", value = cooks.Count() });
             var total = Pie.Where(t => t.name == "小经营店" || t.name == "小作坊" || t.name == "小摊贩").Sum(t => t.value);
             Pie.RemoveAll(t => t.name == "小经营店" || t.name == "小作坊" || t.name == "小摊贩");
             Pie.Add(new DataPie { name = "三小企业", value = total });
@@ -3353,7 +3346,7 @@ namespace KilyCore.Service.ServiceCore
             {
 
             }
-           
+
             //告警
             bars.Add(new DataBar
             {
@@ -4265,10 +4258,8 @@ namespace KilyCore.Service.ServiceCore
                 else
                     queryable = queryable.Where(t => t.TypePath.Contains(GovtInfo().Area));
             }
-            var today = DateTime.Parse(DateTime.Now.ToShortDateString());
-            return queryable.Where(t => t.HandlerTime >= today).ToList().MapToList<SystemLogInfo, ResponseSystemLogInfo>();
+            return queryable.ToList().MapToList<SystemLogInfo, ResponseSystemLogInfo>();
         }
-
         /// <summary>
         /// 日志列表
         /// </summary>
@@ -4304,20 +4295,40 @@ namespace KilyCore.Service.ServiceCore
             }
             if (!string.IsNullOrEmpty(pageParam.QueryParam.HandlerType))
                 queryable = queryable.Where(t => t.HandlerType.Contains(pageParam.QueryParam.HandlerType));
-            var data = queryable.OrderByDescending(x => x.HandlerTime).MapToList<SystemLogInfo, ResponseSystemLogInfo>().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
+            var data = queryable.OrderByDescending(x => x.HandlerTime).ToList().MapToList<SystemLogInfo, ResponseSystemLogInfo>().ToPagedResult(pageParam.pageNumber, pageParam.pageSize);
             return data;
         }
         /// <summary>
         /// 批量阅读
         /// </summary>
         /// <param name="Keys"></param>
-        public string EditHandlerLog(List<Guid> Keys)
+        public string EditHandlerLog(List<Guid> Keys, bool flag)
         {
             var Info = Kily.Set<SystemLogInfo>().Where(t => Keys.Contains(t.Id)).ToList();
             foreach (var item in Info)
             {
-                item.Status = "已读";
-                UpdateField(item, "Status");
+                if (flag)
+                {
+                    item.Status = "已读";
+                    UpdateField(item, "Status");
+                }
+                else
+                {
+                    var CompanyType = Kily.Set<EnterpriseInfo>().Where(t => t.CompanyName.Contains(item.HandlerUser)).Select(t => AttrExtension.GetSingleDescription<CompanyEnum, DescriptionAttribute>(t.CompanyType)).FirstOrDefault();
+                    var MerchantType = Kily.Set<RepastInfo>().Where(t => t.MerchantName.Contains(item.HandlerUser)).Select(t => AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType)).FirstOrDefault();
+                    SystemMessage message = new SystemMessage
+                    {
+                        TypePath = item.TypePath,
+                        ReleaseTime = DateTime.Now,
+                        MsgName = "操作日志",
+                        MsgContent = item.HandlerContent,
+                        TrageType = string.IsNullOrEmpty(CompanyType)? MerchantType: CompanyType,
+                        Category = "常规"
+                    };
+                    Insert(message);
+                    item.Open = "已广播";
+                    UpdateField(item, "Open");
+                }
             }
             return ServiceMessage.UPDATESUCCESS;
         }
@@ -4414,8 +4425,8 @@ namespace KilyCore.Service.ServiceCore
             }
             else
             {
-                
-                var Einfo = Infos.Where(o=>o.DiningType==MerchantEnum.UnitCanteen).Select(t => new ResponseEnterprise()
+
+                var Einfo = Infos.Where(o => o.DiningType == MerchantEnum.UnitCanteen).Select(t => new ResponseEnterprise()
                 {
                     CompanyId = t.Id,
                     CompanyName = t.MerchantName,
@@ -4432,7 +4443,7 @@ namespace KilyCore.Service.ServiceCore
                     return Einfo.Where(t => t.CompanyTypeName.Contains(type)).ToList();
                 return Einfo;
             }
-            
+
         }
         /// <summary>
         /// 企业巡查
@@ -4524,8 +4535,8 @@ namespace KilyCore.Service.ServiceCore
             }
             else
             {
-               
-                var data1= rinfo.Where(o=>o.DiningType==MerchantEnum.UnitCanteen).Select(t => new
+
+                var data1 = rinfo.Where(o => o.DiningType == MerchantEnum.UnitCanteen).Select(t => new
                 {
                     CompanyName = t.MerchantName,
                     CompanyTypeName = AttrExtension.GetSingleDescription<MerchantEnum, DescriptionAttribute>(t.DiningType),

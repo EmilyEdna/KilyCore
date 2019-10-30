@@ -27,6 +27,10 @@ namespace KilyCore.DataEntity.ResponseMapper.Govt
         /// </summary>
         public string CategoryName { get; set; }
         /// <summary>
+        /// 企业类型
+        /// </summary>
+        public string CompanyType { get; set; }
+        /// <summary>
         /// 所属类型
         /// </summary>
         public string CategoryType { get; set; }

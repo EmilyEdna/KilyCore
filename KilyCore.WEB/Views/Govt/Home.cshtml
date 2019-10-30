@@ -59,32 +59,21 @@
                         data: {},
                         type: "post",
                         async: false,
-                        xhrFields: {
-                            withCredentials: true
-                        },
-                        crossDomain: true,
                         success: function (result) {
                             $("#MsgList").html("");
-                            //$(".dropdown-messages").append(`<li>
-                            //            <div class="text-center link-block">
-                            //                <a class="J_menuItem" href="/WebGovtManage/Inspect/HandlerLog">
-                            //                    <span style="display:none;">操作日志</span><i class="fa fa-envelope"></i> <strong> 查看所有消息</strong>
-                            //                </a>
-                            //            </div>
-                            //        </li>`);
                             $("#MsgNum").html(result.data.length);
                             $.each(result.data, function (i, item) {
                                 if (i < 6) {
                                     $("#MsgList").prepend(`<li>
-                                        <div class="dropdown-messages-box">
-                                            <div class="media-body ">
-                                                ${item.HandlerContent}
-                                                <br>
-                                                <small class="pull-right text-navy">${item.HandlerTime}</small>
+                                            <div class="dropdown-messages-box">
+                                                <div class="media-body ">
+                                                    ${item.HandlerContent}
+                                                    <br>
+                                                    <small class="pull-right text-navy">${item.HandlerTime}</small>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </li>
-                                    <li class="divider"></li>`);
+                                        </li>
+                                        <li class="divider"></li>`);
                                 }
                             });
 
@@ -108,13 +97,6 @@
                         crossDomain: true,
                         success: function (result) {
                             $("#WarnList").html("");
-                            //$(".dropdown-alerts").append(`<li>
-                            //            <div class="text-center link-block">
-                            //                <a class="J_menuItem" href="/WebGovtManage/Inspect/WarnLog">
-                            //                    <span style="display:none;">预警提示</span><i class="fa fa-envelope"></i> <strong> 查看所有</strong>
-                            //                </a>
-                            //            </div>
-                            //        </li>`);
                             $("#WarnNum").html(result.data.rows.length);
                             if (result.data.rows.length > 0) {
                                 $("#WarnNum").attr("style", "background-color:red;");
@@ -122,14 +104,14 @@
                             $.each(result.data.rows, function (i, item) {
                                 if (i < 6) {
                                     $("#WarnList").prepend(`<li>
-                                        <a href="javascript:">
-                                            <div>
-                                                <i class="fa fa-envelope fa-fw"></i> ${item.Remark}
-                                                <span class="pull-right text-muted small">${item.Times}</span>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li class="divider"></li>`);
+                                            <a href="javascript:">
+                                                <div>
+                                                    <i class="fa fa-envelope fa-fw"></i> ${item.Remark}
+                                                    <span class="pull-right text-muted small">${item.Times}</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li class="divider"></li>`);
                                 }
                             });
 
@@ -181,6 +163,27 @@
             },
             //事件
             InitEvents: function () {
+                setInterval(function () {
+                    controller.ajax({
+                        url: "GovtWeb/GetLogInfos",
+                        data: {},
+                        type: "post",
+                        async: false,
+                        success: function (res) {
+                            layer.open({
+                                title: "日志提醒",
+                                type: 1,
+                                skin: 'layui-layer-molv',
+                                area: ['250px', '150px'],
+                                offset: "rb",
+                                shade: 0,
+                                btn:["确定"],
+                                content: "<span style='margin:20px 35px'>当前有：<span style='color:red'>" + res.data.length + "</span>条日志未处理<span>",
+                                time: 3000,
+                            });
+                        }
+                    });
+                },300000)
                 //修改密码
                 $("#EditPwd").click(function () {
                     controller.OpenWindow({

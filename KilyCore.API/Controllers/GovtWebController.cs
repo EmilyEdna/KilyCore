@@ -1379,14 +1379,15 @@ namespace KilyCore.API.Controllers
         }
 
         /// <summary>
-        /// 批量阅读
+        /// 批量阅读和广播
         /// </summary>
         /// <param name="keys"></param>
+        /// <param name="flag"></param>
         /// <returns></returns>
         [HttpPost("EditHandlerLog")]
-        public ObjectResultEx EditHandlerLog(List<Guid> keys) 
+        public ObjectResultEx EditHandlerLog(List<Guid> keys, bool flag) 
         {
-            return ObjectResultEx.Instance(GovtWebService.EditHandlerLog(keys), 1, RetrunMessge.SUCCESS, HttpCode.Success);
+            return ObjectResultEx.Instance(GovtWebService.EditHandlerLog(keys, flag), 1, RetrunMessge.SUCCESS, HttpCode.Success);
         }
         #endregion 操作日志
 
