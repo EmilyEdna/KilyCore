@@ -21,7 +21,6 @@
                 this.InitDom();
                 this.InitCode();
                 this.InitEvent();
-                this.InitEventOther();
             },
             InitDom: function () {
                 //根据餐饮企业类型显示相应模块
@@ -35,7 +34,7 @@
                     $(".bd-item5").hide();
                 }
                 if (RepastUser.DiningTypeName == "小作坊") {
-                     $("#NavFoods").html("主要产品");
+                    $("#NavFoods").html("主要产品");
                 }
                 //缓存数据渲染页面dom
                 $(".RepastName").html(RepastUser.MerchantName);//餐饮企业或单位名称
@@ -83,94 +82,103 @@
                     success: function (result) {
                         let data = result.data;
                         //渲染基础信息
-                        controller.SetLableValue(".bd-item1", data.InfoScan[0]);
+                        if (data.InfoScan != null) controller.SetLableValue(".bd-item1", data.InfoScan[0]);
                         //循环渲染监控视频
-                        let str3 = "";
-                        $.each(data.VedioScan, function (i, item) {
-                            if (i == 0) {
-                                let type = ((item.视频连接.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
-                                $($(".bd-item3-item").find("p")[0]).before(`<video id="vedio_${i}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.视频连接}" type="${type}"></video>`);
-                                $($(".bd-item3-item").find("p")[0]).find("span").text(item.监控区域);
-                            }
-                            if (i == 1) {
-                                let type = ((item.视频连接.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
-                                $($(".bd-item3-item").find("p")[1]).before(`<video id="vedio_${i}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.视频连接}" type="${type}"></video>`);
-                                $($(".bd-item3-item").find("p")[1]).find("span").text(item.监控区域);
-                            }
-                            if (i == 2) {
-                                let type = ((item.视频连接.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
-                                $($(".bd-item3-item").find("p")[2]).before(`<video id="vedio_${i}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.视频连接}" type="${type}"></video>`);
-                                $($(".bd-item3-item").find("p")[2]).find("span").text(item.监控区域);
-                            }
-                            if (i == 3) {
-                                let type = ((item.视频连接.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
-                                $($(".bd-item3-item").find("p")[3]).before(`<video id="vedio_${i}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.视频连接}" type="${type}"></video>`);
-                                $($(".bd-item3-item").find("p")[3]).find("span").text(item.监控区域);
-                            }
-                        });
-                        videojs("vedio_0", { autoplay: false, controls: true, width: 390, height: 220 });
-                        videojs("vedio_1", { autoplay: false, controls: true, width: 390, height: 220 });
-                        videojs("vedio_2", { autoplay: false, controls: true, width: 390, height: 220 });
-                        videojs("vedio_3", { autoplay: false, controls: true, width: 390, height: 220 });
-                        //$(".bd-item3").html(str3);
+                        if (data.VedioScan != null) {
+                            $.each(data.VedioScan, function (i, item) {
+                                if (i == 0) {
+                                    let type = ((item.视频连接.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
+                                    $($(".bd-item3-item").find("p")[0]).before(`<video id="vedio_${i}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.视频连接}" type="${type}"></video>`);
+                                    $($(".bd-item3-item").find("p")[0]).find("span").text(item.监控区域);
+                                }
+                                if (i == 1) {
+                                    let type = ((item.视频连接.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
+                                    $($(".bd-item3-item").find("p")[1]).before(`<video id="vedio_${i}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.视频连接}" type="${type}"></video>`);
+                                    $($(".bd-item3-item").find("p")[1]).find("span").text(item.监控区域);
+                                }
+                                if (i == 2) {
+                                    let type = ((item.视频连接.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
+                                    $($(".bd-item3-item").find("p")[2]).before(`<video id="vedio_${i}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.视频连接}" type="${type}"></video>`);
+                                    $($(".bd-item3-item").find("p")[2]).find("span").text(item.监控区域);
+                                }
+                                if (i == 3) {
+                                    let type = ((item.视频连接.toLowerCase().indexOf("mp4") > 0) ? "video/mp4" : "application/x-mpegURL");
+                                    $($(".bd-item3-item").find("p")[3]).before(`<video id="vedio_${i}" class="video-js vjs-default-skin vjs-big-play-centered"><source src="${item.视频连接}" type="${type}"></video>`);
+                                    $($(".bd-item3-item").find("p")[3]).find("span").text(item.监控区域);
+                                }
+                            });
+                            videojs("vedio_0", { autoplay: false, controls: true, width: 390, height: 220 });
+                            videojs("vedio_1", { autoplay: false, controls: true, width: 390, height: 220 });
+                            videojs("vedio_2", { autoplay: false, controls: true, width: 390, height: 220 });
+                            videojs("vedio_3", { autoplay: false, controls: true, width: 390, height: 220 });
+                        }
                         //循环渲染台账管理
                         let str6 = "";
                         for (let i in data.TicketScan) {
+                            if (data.TicketScan[i].台账内容 == null) data.TicketScan[i].台账内容 = '<img src="http://system.cfda.vip/content/HPlus/img/Nopic.jpg"/>';
                             str6 += `
-                                            <div class="bd-item6-item">
-                                                <p>主题名称：<span>${data.TicketScan[i].台账主题}</span></p>
-                                                <p>上报日期：<span>${data.TicketScan[i].上报时间}</span></p>
-                                                ${data.TicketScan[i].台账内容}
-                                            </div>`;
+                                        <div class="bd-item6-item">
+                                            <p>主题名称：<span>${data.TicketScan[i].台账主题}</span></p>
+                                            <p>上报日期：<span>${data.TicketScan[i].上报时间}</span></p>
+                                            ${data.TicketScan[i].台账内容}
+                                        </div>`;
                         };
                         $(".bd-item6").html(str6);
                         //循环渲染人员健康证
                         let str8 = "";
                         for (let i in data.UserScan) {
                             var Color = "";
-                            if (DateCompare(data.UserScan[i].健康证到期时间)) {
-                                var Color = "color:red;";
-                            }
+                            if (DateCompare(data.UserScan[i].健康证到期时间)) var Color = "color:red;";
+                            if (data.UserScan[i].健康证 == null || data.UserScan[i].健康证 == undefined) data.UserScan[i].健康证 = "/content/HPlus/img/Nopic.jpg";
+                            if (data.UserScan[i].人员姓名 == null || data.UserScan[i].人员姓名 == undefined) data.UserScan[i].人员姓名 = "-";
+                            if (data.UserScan[i].健康证到期时间 == null || data.UserScan[i].健康证到期时间 == undefined) data.UserScan[i].健康证到期时间 = "-";
                             str8 += `
-                                            <div class="bd-item8-item mark1">
-                                                <div class="marknum">${parseInt(i) + 1}</div>
-                                                <img src="http://system.cfda.vip${data.UserScan[i].健康证}"/>
-                                                <p class="p1"><label>姓名：<span>${data.UserScan[i].人员姓名}</span></label><label>状态：<span>在职</span></label></p>
-                                                <p><label>有效期: <span style="${Color}">${data.UserScan[i].健康证到期时间}</span></label></p>
-                                            </div>`;
+                                        <div class="bd-item8-item mark1">
+                                            <div class="marknum">${parseInt(i) + 1}</div>
+                                            <img src="http://system.cfda.vip${data.UserScan[i].健康证}"/>
+                                            <p class="p1"><label>姓名：<span>${data.UserScan[i].人员姓名}</span></label><label>状态：<span>在职</span></label></p>
+                                            <p><label>有效期: <span style="${Color}">${data.UserScan[i].健康证到期时间}</span></label></p>
+                                        </div>`;
                         };
                         $(".bd-item8").html(str8);
                         //循环渲染废物处理
                         let str9 = "";
                         for (let i in data.DuckScan) {
+                            if (data.DuckScan[i].处理时间 == null || data.DuckScan[i].处理时间 == undefined) data.DuckScan[i].处理时间 = "-";
+                            if (data.DuckScan[i].处理人 == null || data.DuckScan[i].处理人 == undefined) data.DuckScan[i].处理人 = "-";
+                            if (data.DuckScan[i].处理方式 == null || data.DuckScan[i].处理方式 == undefined) data.DuckScan[i].处理方式 = "-";
                             str9 += `
-                                            <div>
-                                                —&emsp;<span>${data.DuckScan[i].处理时间}</span>
-                                            </div>
-                                            <table>
-                                                <tr>
-                                                    <td>处理人</td>
-                                                    <td>处理方式</td>
-                                                    <td>处理时间</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>${data.DuckScan[i].处理人}</td>
-                                                    <td>${data.DuckScan[i].处理方式}</td>
-                                                    <td>${data.DuckScan[i].处理时间}</td>
-                                                </tr>
-                                            </table>`;
+                                        <div>
+                                            —&emsp;<span>${data.DuckScan[i].处理时间}</span>
+                                        </div>
+                                        <table>
+                                            <tr>
+                                                <td>处理人</td>
+                                                <td>处理方式</td>
+                                                <td>处理时间</td>
+                                            </tr>
+                                            <tr>
+                                                <td>${data.DuckScan[i].处理人}</td>
+                                                <td>${data.DuckScan[i].处理方式}</td>
+                                                <td>${data.DuckScan[i].处理时间}</td>
+                                            </tr>
+                                        </table>`;
                         };
                         $(".bd-item9").html(str9);
                         //循环渲染留样管理
                         let str10 = "";
                         for (let i in data.SampleScan) {
+                            if (data.SampleScan[i].留样图片 == null || data.SampleScan[i].留样图片 == undefined) data.SampleScan[i].留样图片 = "/content/HPlus/img/Nopic.jpg";
+                            if (data.SampleScan[i].留样菜品 == null || data.SampleScan[i].留样菜品 == undefined) data.SampleScan[i].留样菜品 = "-";
+                            if (data.SampleScan[i].操作人 == null || data.SampleScan[i].操作人 == undefined) data.SampleScan[i].操作人 = "-";
+                            if (data.SampleScan[i].留样时间 == null || data.SampleScan[i].留样时间 == undefined) data.SampleScan[i].留样时间 = "-";
                             str10 += `
-                                            <div class="bd-item10-item mark1">
-                                                <div class="marknum">${parseInt(i) + 1}</div>
-                                                <img src="http://system.cfda.vip${data.SampleScan[i].留样图片}" />
-                                                <p class="p1"><label>菜品名称：<span>${data.SampleScan[i].留样菜品}</span></label><label>储存方式：<span>冷藏</span></label></p>
-                                                <p><label>操作人员: <span>${data.SampleScan[i].操作人}</span></label><label>留样时间：<span>${data.SampleScan[i].留样时间}</span></label></p>
-                                            </div>`;
+                                        <div class="bd-item10-item mark1">
+                                            <div class="marknum">${parseInt(i) + 1}</div>
+                                            <img src="http://system.cfda.vip${data.SampleScan[i].留样图片}" />
+                                            <p class="p1"><label>菜品名称：<span>${data.SampleScan[i].留样菜品}</span></label><label>储存方式：<span>冷藏</span></label></p>
+                                            <p><label>操作人员: <span>${data.SampleScan[i].操作人}</span></label><label>留样时间：<span>${data.SampleScan[i].留样时间}</span></label></p>
+                                        </div>`;
                         };
                         $(".bd-item10").html(str10);
                     }
@@ -186,20 +194,23 @@
                         let data = result.data;
                         let str = "";
                         for (let i in data) {
-                            if (data[i].SupplierNo == null) data[i].SupplierNo = "-";
-                            if (data[i].LinkPhone == null) data[i].LinkPhone = "-";
+                            if (data[i].RunCard == null || data[i].RunCard == undefined) data[i].RunCard = "/content/HPlus/img/Nopic.jpg";
+                            if (data[i].SupplierName == null || data[i].SupplierName == undefined) data[i].SupplierName = "-";
+                            if (data[i].SupplierUser == null || data[i].SupplierUser == undefined) data[i].SupplierUser = "-";
+                            if (data[i].SupplierNo == null || data[i].SupplierNo == undefined) data[i].SupplierNo = "-";
+                            if (data[i].LinkPhone == null || data[i].LinkPhone == undefined) data[i].LinkPhone = "-";
                             str += `
-                                            <div class="bd-item7-item mark1">
-                                                <div class="marknum">${parseInt(i) + 1}</div>
-                                                <img src="http://system.cfda.vip${data[i].RunCard}"/>
-                                                <div>
-                                                    <p>供应商：<span>${data[i].SupplierName}</span></p>
-                                                    <p>法人代表：<span>${data[i].SupplierUser}</span></p>
-                                                    <p>单位编号：<span>${data[i].SupplierNo}</span></p>
-                                                    <p>联系方式：<span>${data[i].LinkPhone}</span></p>
-                                                    <p>经营资质是否齐全：<span>是</span></p>
-                                                </div>
-                                            </div>`;
+                                        <div class="bd-item7-item mark1">
+                                            <div class="marknum">${parseInt(i) + 1}</div>
+                                            <img src="http://system.cfda.vip${data[i].RunCard}"/>
+                                            <div>
+                                                <p>供应商：<span>${data[i].SupplierName}</span></p>
+                                                <p>法人代表：<span>${data[i].SupplierUser}</span></p>
+                                                <p>单位编号：<span>${data[i].SupplierNo}</span></p>
+                                                <p>联系方式：<span>${data[i].LinkPhone}</span></p>
+                                                <p>经营资质是否齐全：<span>是</span></p>
+                                            </div>
+                                        </div>`;
                         }
                         $(".bd-item7").html(str);
                     }
@@ -215,12 +226,15 @@
                         let data = result.data.rows;
                         let str = "";
                         $.each(data, function (i, item) {
+                            if (item.FoodMenuName == null || item.FoodMenuName == undefined) item.FoodMenuName = "-";
+                            if (item.UpTime == null || item.UpTime == undefined) item.UpTime = "-";
+                            if (item.Content == null || item.Content == undefined) item.Content = '<img src="http://system.cfda.vip/content/HPlus/img/Nopic.jpg"/>';
                             str += `
-                                            <div class="bd-item5-item">
-                                                <p>菜谱名称：<span>${item.FoodMenuName}</span></p>
-                                                <p>上报日期：<span>${item.UpTime}</span></p>
-                                                ${item.Content}
-                                            </div>`;
+                                        <div class="bd-item5-item">
+                                            <p>菜谱名称：<span>${item.FoodMenuName}</span></p>
+                                            <p>上报日期：<span>${item.UpTime}</span></p>
+                                            ${item.Content}
+                                        </div>`;
                         });
                         $(".bd-item5").html(str);
                     }
@@ -236,24 +250,28 @@
                         let data = result.data.rows;
                         let str = "";
                         $.each(data, function (i, item) {
-                            if (item.Remark == null) item.Remark = "-";
+                            if (item.DrawUnit == null || item.DrawUnit == undefined) item.DrawUnit = "-";
+                            if (item.DrawUser == null || item.DrawUser == undefined) item.DrawUser = "-";
+                            if (item.Phone == null || item.Phone == undefined) item.Phone = "-";
+                            if (item.DrawTime == null || item.DrawTime == undefined) item.DrawTime = "-";
+                            if (item.Remark == null || item.Remark == undefined) item.Remark = "-";
                             str += `
-                                            <div>
-                                                —&emsp;<span>抽检单位：${item.DrawUnit}</span>
-                                            </div>
-                                            <table>
-                                                <tr>
-                                                    <td style="text-align: left; text-indent: 3em;">负责人</td>
-                                                    <td>联系电话</td>
-                                                    <td>抽检时间</td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="text-align: left; text-indent: 3em;">${item.DrawUser}</td>
-                                                    <td>${item.Phone}</td>
-                                                    <td>${item.DrawTime}</td>
-                                                </tr>
-                                                <tr><td colspan="3" style="text-align: left; text-indent: 3em;">备注: <span style="color: #676a6c; font-weight: normal;">${item.Remark}</span></td></tr>
-                                            </table>`;
+                                        <div>
+                                            —&emsp;<span>抽检单位：${item.DrawUnit}</span>
+                                        </div>
+                                        <table>
+                                            <tr>
+                                                <td style="text-align: left; text-indent: 3em;">负责人</td>
+                                                <td>联系电话</td>
+                                                <td>抽检时间</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: left; text-indent: 3em;">${item.DrawUser}</td>
+                                                <td>${item.Phone}</td>
+                                                <td>${item.DrawTime}</td>
+                                            </tr>
+                                            <tr><td colspan="3" style="text-align: left; text-indent: 3em;">备注: <span style="color: #676a6c; font-weight: normal;">${item.Remark}</span></td></tr>
+                                        </table>`;
                         });
                         $(".bd-item11").html(str);
                     }
@@ -268,6 +286,7 @@
                         let data = result.data.rows;
                         let str = "";
                         $.each(data, function (i, item) {
+                            if (item.InsName == null || item.InsName == undefined) item.InsName = "-";
                             str += `<li><a href="javascript:">${item.InsName}</a></li>`;
                         });
                         $(".content .right .right-item1 .bd").html(str);
@@ -275,55 +294,9 @@
                 });
                 //点击图片放大
                 $(".bd img").each(function (i, item) {
-                     var img = $(this);
-                     $(this).removeAttr("width").removeAttr("height").wrap("<a href='" + $(this).attr("src") + "' target='_blank'></a>");
+                    var img = $(this);
+                    $(this).removeAttr("width").removeAttr("height").wrap("<a href='" + $(this).attr("src") + "' target='_blank'></a>");
                 });
-            },
-            //暂未用到的其他请求函数
-            InitEventOther: function () {
-                //进销台账
-                //controller.ajax({
-                //    url: "RepastWeb/GetSellBuyPage",
-                //    data: { pageSize: 10, pageNumber: 1 },
-                //    async: false,
-                //    type: "post",
-                //    success: function (result) {
-
-                //    }
-                //});
-
-                //风险预警
-                //controller.ajax({
-                //    url: "RepastWeb/GetWaringRiskPage",
-                //    data: { pageSize: 10, pageNumber: 1 },
-                //    async: false,
-                //    type: "post",
-                //    success: function (result) {
-
-                //    }
-                //});
-
-                //投诉建议
-                //controller.ajax({
-                //    url: "RepastWeb/GetComplainPage",
-                //    data: { pageSize: 10, pageNumber: 1 },
-                //    async: false,
-                //    type: "post",
-                //    success: function (result) {
-
-                //    }
-                //});
-
-                //督查信息
-                //controller.ajax({
-                //    url: "RepastWeb/GetNetPatrolPage",
-                //    data: { pageSize: 10, pageNumber: 1 },
-                //    async: false,
-                //    type: "post",
-                //    success: function (result) {
-
-                //    }
-                //});
             }
         };
         $(document).ready(function () {
@@ -402,7 +375,7 @@
                         </div>
                     </div>
                     <p>企业地址：<span name="商家地址"></span></p>
-                    <p>企业简介：<span name="商家介绍"></span></p>`
+                    <p>企业简介：<span name="商家介绍"></span></p>
                 </div>
                 <!--资质荣誉-->
                 <div class="bd-item2"></div>
@@ -440,14 +413,14 @@
             </div>
         </div>
         <div class="right">
-            @*<div class="right-item right-item1">
+            <div class="right-item right-item1">
                 <div class="hd"><div class="icon icon1"></div>陪餐制度</div>
                 <ul class="bd"></ul>
-            </div>*@
-            <div class="right-item right-item2">
-                <div class="hd"><div class="icon icon1"></div>法律法规</div>
-                <ul class="bd"></ul>
             </div>
+            @*<div class="right-item right-item2">
+                        <div class="hd"><div class="icon icon1"></div>法律法规</div>
+                        <ul class="bd"></ul>
+                    </div>
+              </div>*@
         </div>
-    </div>
 </form>
