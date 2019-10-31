@@ -100,7 +100,7 @@ namespace KilyCore.WEB.Util
                                 Supplier = worksheet.Cells[row, 6].Value.ToString(),
                                 LinkPhone = worksheet.Cells[row, 7].Value.ToString(),
                                 NoExp = worksheet.Cells[row, 8].Value.ToString(),
-                                ProTime = worksheet.Cells[row, 9].Value.ToString() == "-" ? DateTime.Now : DateTime.Parse(worksheet.Cells[row, 8].Value.ToString()),
+                                ProTime = worksheet.Cells[row, 9].Value.ToString() == "-" ? DateTime.Now : DateTime.Parse(worksheet.Cells[row, 9].Value.ToString()),
                                 Purchase = worksheet.Cells[row, 10].Value.ToString(),
                                 OrderTime = worksheet.Cells[row, 11].Value.ToString() == "-" ? DateTime.Now : DateTime.Parse(worksheet.Cells[row, 11].Value.ToString()),
                             };

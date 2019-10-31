@@ -62,10 +62,6 @@ namespace KilyCore.DataEntity.ResponseMapper.Repast
         /// 菜品介绍
         /// </summary>
         public string Remark { get; set; }
-        /// <summary>
-        /// 图片
-        /// </summary>
-        public string DishImg { get; set; }
     }
     public class ResponseFoodMenu
     {
