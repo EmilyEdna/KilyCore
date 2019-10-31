@@ -58,6 +58,7 @@ namespace KilyCore.DataEntity.RequestMapper.Repast
         /// 菜品介绍
         /// </summary>
         public  string Remark { get; set; }
+        public string DishImg { get; set; }
     }
     public class RequestFoodMenu {
         public string FoodMenuName { get; set; }

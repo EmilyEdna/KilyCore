@@ -33,6 +33,17 @@
             },
             //事件
             InitEvents: function () {
+                   //文件上传-执照
+                controller.Upload({
+                    url: "File/UploadImg",
+                    element: "#upload-input-2",
+                    maxNum: 2,
+                    node: '#Img2',
+                    success: function (result) {
+                        controller.Alter(result.msg);
+                        $("#DishImg").val(result.data);
+                    }
+                });
                 //验证
                 controller.ValidateConfirm("#Edit");
             },
@@ -102,6 +113,18 @@
                     <th><label class="control-label">菜品介绍</label></th>
                     <td class="has-warning" colspan="3">
                         <div class="summernote" name="Remark"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <th><label class="control-label">菜品图片</label></th>
+                    <td class="has-warning" colspan="3">
+                        <div class="image-box clear" id="Img2">
+                            <section class="upload-section">
+                                <div class="upload-btn"></div>
+                                <input type="file" name="Files" id="upload-input-2" class="upload-input" value="" accept="image/*" multiple="multiple" />
+                            </section>
+                        </div>
+                        <input type="hidden" id="DishImg" name="DishImg" />
                     </td>
                 </tr>
             </table>

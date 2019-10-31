@@ -60,5 +60,9 @@ namespace KilyCore.EntityFrameWork.Model.Repast
         /// 菜品介绍
         /// </summary>
         public virtual string Remark { get; set; }
+        /// <summary>
+        /// 图片
+        /// </summary>
+        public string DishImg { get; set; }
     }
 }
